@@ -1,4 +1,5 @@
 import { siteConfig } from "@/data/site";
+import { homepageAnswers } from "@/data/home";
 import type { BlogPost } from "@/lib/blog";
 
 type ItemListItem = {
@@ -56,7 +57,14 @@ export function createPersonJsonLd() {
       url: siteConfig.url,
     },
     knowsAbout: [
+      "高校物理",
+      "高校物理の塾",
       "教育ICT",
+      "教育DX",
+      "GIGAスクール",
+      "EdTech",
+      "教材作成AI",
+      "生成AI教材作成",
       "物理教材",
       "LaTeX教材作成",
       "教材制作",
@@ -75,6 +83,13 @@ export function createHomePageJsonLd() {
     description: siteConfig.description,
     inLanguage: "ja",
     about: [
+      "高校物理",
+      "高校物理の塾",
+      "教材作成AI",
+      "生成AI教材作成",
+      "教育DX",
+      "GIGAスクール",
+      "EdTech",
       "教育ICT",
       "物理教材",
       "LaTeX教材作成",
@@ -86,6 +101,58 @@ export function createHomePageJsonLd() {
       name: siteConfig.name,
       url: siteConfig.url,
     },
+  };
+}
+
+export function createEducationalServiceJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "高校物理学習支援・AI教材作成スタジオ",
+    url: siteConfig.url,
+    description:
+      "高校物理の概念理解、AI教材作成、LaTeX教材制作、教育DX、学習支援WebアプリをつなぐEdTech学習支援。",
+    serviceType: [
+      "高校物理学習支援",
+      "AI教材作成",
+      "LaTeX教材作成",
+      "学習支援Webアプリ設計",
+      "教育DXコンテンツ設計",
+    ],
+    provider: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    areaServed: {
+      "@type": "Country",
+      name: "Japan",
+    },
+    audience: [
+      {
+        "@type": "EducationalAudience",
+        educationalRole: "student",
+      },
+      {
+        "@type": "EducationalAudience",
+        educationalRole: "teacher",
+      },
+    ],
+  };
+}
+
+export function createHomeFaqJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: homepageAnswers.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
   };
 }
 

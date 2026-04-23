@@ -5,7 +5,9 @@ type JsonLdProps = {
 export function JsonLd({ data }: JsonLdProps) {
   return (
     <script
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(data).replace(/</g, "\\u003c"),
+      }}
       type="application/ld+json"
     />
   );

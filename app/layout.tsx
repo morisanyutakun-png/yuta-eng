@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   publisher: siteConfig.name,
   category: "education",
   classification:
-    "教育ICT、物理教材、LaTeX教材作成、学習支援Webアプリ開発",
+    "高校物理、AI教材作成、教育DX、GIGAスクール、LaTeX教材作成、学習支援Webアプリ開発",
   alternates: {
     canonical: "/",
   },
