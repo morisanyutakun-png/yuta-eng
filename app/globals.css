@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fbfaf7;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --muted: #f1f5f9;
+  --border: #e2e8f0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-serif: "Noto Serif JP", "Yu Mincho", serif;
+  --font-mono: "Geist Mono", "SFMono-Regular", monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans-jp), "Hiragino Sans", "Yu Gothic", sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #bae6fd;
+  color: #082f49;
+}
+
+a {
+  text-underline-offset: 0.18em;
+}
+
+.article-content {
+  color: #334155;
+  font-size: 1.0625rem;
+  line-height: 2;
+}
+
+.article-content h2,
+.article-content h3 {
+  color: #0f172a;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.article-content h2 {
+  margin-top: 3rem;
+  font-size: clamp(1.75rem, 4vw, 2.3rem);
+  line-height: 1.35;
+}
+
+.article-content h3 {
+  margin-top: 2.5rem;
+  font-size: 1.35rem;
+  line-height: 1.5;
+}
+
+.article-content p,
+.article-content ul,
+.article-content ol,
+.article-content blockquote,
+.article-content pre {
+  margin-top: 1.35rem;
+}
+
+.article-content ul,
+.article-content ol {
+  padding-left: 1.4rem;
+}
+
+.article-content li + li {
+  margin-top: 0.5rem;
+}
+
+.article-content ul {
+  list-style: disc;
+}
+
+.article-content ol {
+  list-style: decimal;
+}
+
+.article-content a {
+  color: #0369a1;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.article-content blockquote {
+  border-left: 4px solid #38bdf8;
+  border-radius: 0 1rem 1rem 0;
+  background: #f0f9ff;
+  padding: 1rem 1.25rem;
+  color: #0f172a;
+}
+
+.article-content pre {
+  overflow-x: auto;
+  border-radius: 1.5rem;
+  border: 1px solid #1e293b;
+  background: #0f172a;
+  padding: 1.25rem;
+  color: #e2e8f0;
+  font-size: 0.92rem;
+  line-height: 1.8;
+}
+
+.article-content code {
+  border-radius: 0.45rem;
+  background: #e2e8f0;
+  padding: 0.12rem 0.35rem;
+  color: #0f172a;
+  font-family: var(--font-geist-mono), "SFMono-Regular", monospace;
+  font-size: 0.9em;
+}
+
+.article-content pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
