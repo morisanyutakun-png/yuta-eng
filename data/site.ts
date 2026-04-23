@@ -1,11 +1,15 @@
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://yuta-eng.com";
+const contactEmail =
+  process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "contact@yuta-eng.com";
+
 export const siteConfig = {
   name: "Yuta Eng",
-  title: "Yuta Eng | 教育・物理・LaTeX・学習支援Webアプリの公式サイト",
+  title: "Yuta Eng | 物理教材・LaTeX教材作成・学習支援Webアプリ",
   description:
-    "教育、物理、教材制作、LaTeX、学習支援Webアプリ開発を軸に、学びの設計と情報発信を行う yuta-eng.com の公式サイトです。",
-  url: "https://yuta-eng.com",
+    "物理教材、LaTeX教材作成、教育ICT、学習支援Webアプリ開発を軸に、学びの導線を設計する yuta-eng.com の公式サイトです。",
+  url: siteUrl,
   author: "Yuta",
-  email: "contact@yuta-eng.com",
+  email: contactEmail,
   locale: "ja_JP",
 };
 

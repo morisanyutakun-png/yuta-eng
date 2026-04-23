@@ -11,6 +11,7 @@ app/
   blog/
     [slug]/
   contact/
+  studio/
   globals.css
   layout.tsx
   not-found.tsx
@@ -20,8 +21,10 @@ app/
 components/
   app-card.tsx
   article-card.tsx
+  blog-builder.tsx
   button-link.tsx
   container.tsx
+  json-ld.tsx
   mdx-components.tsx
   section.tsx
   site-footer.tsx
@@ -32,13 +35,30 @@ content/
 data/
   apps.ts
   focus-areas.ts
+  seo.ts
   site.ts
+docs/
+  seo-research.md
 lib/
   blog.ts
   metadata.ts
+  structured-data.ts
   utils.ts
 public/
 ```
+
+## 環境変数
+
+現時点で必須の環境変数はありません。何も設定しなくても `https://yuta-eng.com` と `contact@yuta-eng.com` を既定値としてビルドできます。
+
+必要に応じて Vercel 側で以下を設定できます。
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://yuta-eng.com
+NEXT_PUBLIC_CONTACT_EMAIL=contact@yuta-eng.com
+```
+
+`NEXT_PUBLIC_SITE_URL` は metadata、canonical、sitemap、robots、JSON-LD のURL生成に使います。`NEXT_PUBLIC_CONTACT_EMAIL` は Contact ページのメール導線に使います。
 
 ## セットアップ
 
@@ -78,7 +98,16 @@ npx vercel --prod
 
 ## ブログ記事追加手順
 
-`content/blog` に `.mdx` または `.md` ファイルを追加します。frontmatter は以下の形式です。
+運用者向けの簡易ビルダーは `/studio` にあります。ホームやナビには表示していない非公開導線です。
+
+1. `npm run dev` でローカル起動します。
+2. `http://localhost:3000/studio` を開きます。
+3. フォームにタイトル、説明文、タグ、検索意図、本文を入力します。
+4. 生成されたMDXをコピー、またはダウンロードします。
+5. `content/blog/{slug}.mdx` として保存します。
+6. `npm run lint` と `npm run build` で確認します。
+
+手で追加する場合は、`content/blog` に `.mdx` または `.md` ファイルを追加します。frontmatter は以下の形式です。
 
 ```mdx
 ---
@@ -91,6 +120,10 @@ tags:
 category: "Education"
 slug: "example-slug"
 draft: false
+searchIntent: "この記事を読む人の検索意図"
+keyPoints:
+  - "この記事でわかること1"
+  - "この記事でわかること2"
 coverImage: "/optional-image.jpg"
 ---
 
@@ -127,3 +160,4 @@ coverImage: "/optional-image.jpg"
 - Contact ページを Server Action や外部フォームに接続する
 - 記事末尾に関連記事、アプリCTA、ニュースレター導線を追加する
 - `public/og.png` を追加して Open Graph 画像を設定する
+- `/studio` に認証、下書き保存、GitHub連携、CMS連携を追加する

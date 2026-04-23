@@ -6,9 +6,11 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { ArticleCard } from "@/components/article-card";
 import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
+import { JsonLd } from "@/components/json-ld";
 import { mdxComponents } from "@/components/mdx-components";
 import { getPostBySlug, getPostSlugs, getRelatedPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
+import { createArticleJsonLd, createBreadcrumbJsonLd } from "@/lib/structured-data";
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -54,6 +56,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <Container>
+      <JsonLd
+        data={[
+          createArticleJsonLd(post),
+          createBreadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Blog", path: "/blog" },
+            { name: post.title, path: `/blog/${post.slug}` },
+          ]),
+        ]}
+      />
       <article className="mx-auto max-w-4xl py-16 sm:py-20">
         <Link
           className="text-sm font-semibold text-sky-800 transition hover:text-slate-950"
@@ -61,18 +73,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         >
           ← Blog一覧へ戻る
         </Link>
-        <header className="mt-8 border-b border-slate-200 pb-10">
-          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+        <header className="mt-8 overflow-hidden rounded-[2.75rem] border border-slate-200 bg-white shadow-[0_28px_100px_-80px_rgba(15,23,42,0.75)]">
+          <div className="bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.3),transparent_34%),linear-gradient(145deg,#0f172a,#111827_58%,#082f49)] p-8 text-white sm:p-10">
+            <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-slate-300">
             <time dateTime={post.date}>{post.formattedDate}</time>
-            <span className="h-1 w-1 rounded-full bg-slate-300" />
+              <span className="h-1 w-1 rounded-full bg-slate-500" />
             <span>{post.category}</span>
-            <span className="h-1 w-1 rounded-full bg-slate-300" />
+              <span className="h-1 w-1 rounded-full bg-slate-500" />
             <span>{post.readingTime}</span>
           </div>
-          <h1 className="mt-6 font-serif text-4xl font-semibold leading-tight tracking-[-0.07em] text-slate-950 sm:text-6xl">
+            <h1 className="text-balance mt-6 font-serif text-4xl font-semibold leading-tight tracking-[-0.07em] sm:text-6xl">
             {post.title}
           </h1>
-          <p className="mt-6 text-lg leading-9 text-slate-600">{post.description}</p>
+            <p className="text-pretty mt-6 text-lg leading-9 text-slate-300">
+              {post.description}
+            </p>
+          </div>
+          <div className="p-6 sm:p-8">
           <div className="mt-7 flex flex-wrap gap-2">
             {post.tags.map((tag) => (
               <span
@@ -82,6 +99,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 {tag}
               </span>
             ))}
+          </div>
+            {post.searchIntent ? (
+              <div className="mt-6 rounded-2xl bg-sky-50 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
+                  Search Intent
+                </p>
+                <p className="mt-2 text-sm leading-7 text-slate-700">
+                  {post.searchIntent}
+                </p>
+              </div>
+            ) : null}
+            {post.keyPoints ? (
+              <div className="mt-5 grid gap-3 md:grid-cols-3">
+                {post.keyPoints.map((point) => (
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4" key={point}>
+                    <p className="text-sm font-semibold leading-7 text-slate-800">{point}</p>
+                  </div>
+                ))}
+              </div>
+            ) : null}
           </div>
         </header>
 

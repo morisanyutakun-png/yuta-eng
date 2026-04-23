@@ -14,6 +14,8 @@ export type BlogFrontmatter = {
   slug: string;
   draft?: boolean;
   coverImage?: string;
+  keyPoints?: string[];
+  searchIntent?: string;
 };
 
 export type BlogPostMeta = BlogFrontmatter & {
@@ -69,6 +71,8 @@ function assertFrontmatter(data: Record<string, unknown>, fileName: string): Blo
     slug,
     draft: typeof data.draft === "boolean" ? data.draft : false,
     coverImage: typeof data.coverImage === "string" ? data.coverImage : undefined,
+    keyPoints: isStringArray(data.keyPoints) ? data.keyPoints : undefined,
+    searchIntent: typeof data.searchIntent === "string" ? data.searchIntent : undefined,
   };
 }
 
