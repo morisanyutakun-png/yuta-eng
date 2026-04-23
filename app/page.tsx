@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { AppCard } from "@/components/app-card";
@@ -5,12 +6,24 @@ import { ArticleCard } from "@/components/article-card";
 import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
 import { HeroMotion } from "@/components/hero-motion";
+import { JsonLd } from "@/components/json-ld";
 import { Section } from "@/components/section";
 import { StaggerReveal } from "@/components/stagger-reveal";
 import { apps } from "@/data/apps";
 import { focusAreas } from "@/data/focus-areas";
+import {
+  designSystemNotes,
+  homepageAnswers,
+  visitorPaths,
+} from "@/data/home";
 import { seoClusters } from "@/data/seo";
+import { siteConfig } from "@/data/site";
 import { getLatestPosts } from "@/lib/blog";
+import { createPageMetadata } from "@/lib/metadata";
+import {
+  createHomePageJsonLd,
+  createItemListJsonLd,
+} from "@/lib/structured-data";
 
 const heroKeywords = ["教育ICT", "物理学習", "LaTeX教材", "学習支援Webアプリ"];
 
@@ -35,11 +48,38 @@ const learningFlow = [
   },
 ];
 
+export const metadata: Metadata = createPageMetadata({
+  title: "物理教材・LaTeX教材作成・学習支援Webアプリ",
+  description:
+    "教育ICT、物理教材、LaTeX教材作成、学習支援Webアプリをつなぐ yuta-eng.com の公式ハブです。ブログ、制作思想、既存アプリへの導線を整理しています。",
+  path: "/",
+});
+
 export default function Home() {
   const latestPosts = getLatestPosts(3);
+  const homeJsonLd = [
+    createHomePageJsonLd(),
+    createItemListJsonLd(
+      "yuta-eng.com が案内する既存学習支援アプリ",
+      apps.map((app) => ({
+        name: app.name,
+        description: app.description,
+        url: app.href,
+      })),
+    ),
+    createItemListJsonLd(
+      "yuta-eng.com の最新ブログ記事",
+      latestPosts.map((post) => ({
+        name: post.title,
+        description: post.description,
+        url: new URL(`/blog/${post.slug}`, siteConfig.url).toString(),
+      })),
+    ),
+  ];
 
   return (
     <>
+      <JsonLd data={homeJsonLd} />
       <HeroMotion className="relative isolate overflow-hidden bg-[#f7f7f2]">
         <div className="ambient-grid absolute inset-0 -z-20" />
         <div className="hero-glow absolute left-1/2 top-10 -z-10 h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(56,189,248,0.38),rgba(14,165,233,0.16)_38%,transparent_68%)] blur-3xl" />
@@ -99,9 +139,9 @@ export default function Home() {
                         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-100">
                           Learning Hub
                         </p>
-                        <h2 className="mt-2 text-2xl font-semibold tracking-[-0.05em]">
+                        <p className="mt-2 text-2xl font-semibold tracking-[-0.05em]">
                           Yuta Eng OS
-                        </h2>
+                        </p>
                       </div>
                       <span className="rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-semibold text-emerald-100">
                         Live
@@ -156,6 +196,43 @@ export default function Home() {
 
       <Container>
         <Section
+          description="Canvaの編集ボードのように、目的ごとの入口を大きなカードで整理しました。検索して来た人が、自分に合う導線をすぐ選べる構成です。"
+          eyebrow="Visitor Paths"
+          title="探している目的から、最短で進める"
+        >
+          <StaggerReveal className="grid gap-5 lg:grid-cols-3">
+            {visitorPaths.map((path) => (
+              <Link
+                className="group visual-path-card relative flex min-h-80 flex-col overflow-hidden rounded-[2.5rem] border border-white/80 p-6 shadow-[0_30px_110px_-80px_rgba(15,23,42,0.85)] transition hover:-translate-y-1"
+                href={path.href}
+                key={path.title}
+              >
+                <div className="absolute inset-x-6 top-6 h-28 rounded-[2rem] bg-slate-950/95" />
+                <div className="relative">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-100">
+                    {path.label}
+                  </p>
+                  <p className="mt-8 max-w-[13rem] text-sm leading-6 text-slate-300">
+                    {path.query}
+                  </p>
+                </div>
+                <div className="mt-auto pt-16">
+                  <h3 className="text-3xl font-semibold tracking-[-0.06em] text-slate-950">
+                    {path.title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-7 text-slate-600">
+                    {path.description}
+                  </p>
+                  <p className="mt-6 text-sm font-semibold text-slate-950">
+                    {path.cta} <span aria-hidden="true">→</span>
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </StaggerReveal>
+        </Section>
+
+        <Section
           description="既存アプリを再実装せず、Apple Storeの棚のように見つけやすく並べる。各カードは公式の外部導線として機能します。"
           eyebrow="Apps Showcase"
           headerAction={
@@ -203,9 +280,68 @@ export default function Home() {
                     </span>
                   ))}
                 </div>
+                <div className="mt-5 border-t border-slate-100 pt-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
+                    long-tail
+                  </p>
+                  <ul className="mt-3 space-y-2 text-xs leading-5 text-slate-500">
+                    {cluster.longTail.map((word) => (
+                      <li key={word}>{word}</li>
+                    ))}
+                  </ul>
+                </div>
               </Link>
             ))}
           </StaggerReveal>
+        </Section>
+
+        <Section
+          description="装飾ではなく、情報を速く理解するためのデザイン言語として整理しています。運用でカードや記事が増えても崩れにくい構造です。"
+          eyebrow="Design System"
+          title="Canva的な見つけやすさを、サイトの情報設計に変換"
+        >
+          <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="canva-board relative overflow-hidden rounded-[3rem] border border-slate-200 p-6 shadow-[0_35px_130px_-90px_rgba(15,23,42,0.9)]">
+              <div className="grid gap-4 sm:grid-cols-2">
+                {designSystemNotes.map((note, index) => (
+                  <article
+                    className="rounded-[2rem] border border-white/80 bg-white/80 p-5 backdrop-blur-xl"
+                    key={note}
+                  >
+                    <p className="font-mono text-xs text-sky-700">
+                      design / 0{index + 1}
+                    </p>
+                    <p className="mt-5 text-base font-semibold leading-7 tracking-[-0.03em] text-slate-950">
+                      {note}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-[3rem] bg-slate-950 p-7 text-white">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-200">
+                Visual SEO
+              </p>
+              <h3 className="text-balance mt-5 font-serif text-4xl font-semibold tracking-[-0.07em]">
+                Googleにも、人にも、何のサイトかを迷わせない。
+              </h3>
+              <p className="mt-5 text-sm leading-8 text-slate-300">
+                見出し、内部リンク、カードのラベル、構造化データを同じテーマに揃えています。
+                教育ICT、物理教材、LaTeX教材作成、学習支援Webアプリという軸を、
+                視覚とHTML構造の両方から伝えます。
+              </p>
+              <div className="mt-7 flex flex-wrap gap-2">
+                {heroKeywords.map((keyword) => (
+                  <span
+                    className="rounded-full border border-white/10 bg-white/[0.08] px-3 py-1 text-xs font-semibold text-slate-200"
+                    key={keyword}
+                  >
+                    {keyword}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </Section>
 
         <Section
@@ -285,6 +421,28 @@ export default function Home() {
                 </h3>
                 <p className="mt-3 text-sm leading-7 text-slate-600 transition group-hover:text-slate-300">
                   {area.description}
+                </p>
+              </article>
+            ))}
+          </StaggerReveal>
+        </Section>
+
+        <Section
+          description="検索から来た人が最初に知りたいことを、短い回答としてホームにも置いています。詳しい解説はブログへ育てられる構成です。"
+          eyebrow="Helpful Answers"
+          title="検索意図に先回りして答える"
+        >
+          <StaggerReveal className="grid gap-4 md:grid-cols-2">
+            {homepageAnswers.map((item) => (
+              <article
+                className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_22px_80px_-65px_rgba(15,23,42,0.6)]"
+                key={item.question}
+              >
+                <h3 className="text-xl font-semibold tracking-[-0.04em] text-slate-950">
+                  {item.question}
+                </h3>
+                <p className="mt-4 text-sm leading-8 text-slate-600">
+                  {item.answer}
                 </p>
               </article>
             ))}

@@ -6,7 +6,11 @@ import { ScrollProgress } from "@/components/scroll-progress";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { siteConfig } from "@/data/site";
-import { createWebsiteJsonLd } from "@/lib/structured-data";
+import {
+  createOrganizationJsonLd,
+  createPersonJsonLd,
+  createWebsiteJsonLd,
+} from "@/lib/structured-data";
 
 import "./globals.css";
 
@@ -71,6 +75,8 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <ScrollProgress />
         <JsonLd data={createWebsiteJsonLd()} />
+        <JsonLd data={createOrganizationJsonLd()} />
+        <JsonLd data={createPersonJsonLd()} />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
