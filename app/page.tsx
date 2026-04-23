@@ -27,28 +27,24 @@ import {
   createItemListJsonLd,
 } from "@/lib/structured-data";
 
-const heroKeywords = [
-  "高校物理 塾",
-  "高校物理 オンライン塾",
-  "教材作成AI 自動",
-  "生成AI 教材作成",
-  "GIGAスクール",
-  "EdTech",
-  "学習支援Webアプリ",
+const heroFocuses = [
+  "高校物理の理解",
+  "AIとLaTeXの教材制作",
+  "学習支援アプリへの入口",
 ];
 
 const heroStats = [
   {
     value: "Physics",
-    label: "高校物理を図・数式・演習で理解",
+    label: "高校物理を現象・図・数式・演習でつなぐ",
   },
   {
     value: "AI",
-    label: "教材作成AIとLaTeXで制作を高速化",
+    label: "生成AIとLaTeXで教材制作を整える",
   },
   {
     value: "Apps",
-    label: "学習支援Webアプリへ自然に接続",
+    label: "必要な学習支援アプリへ案内する",
   },
 ];
 
@@ -72,16 +68,16 @@ const studioTiles = [
 
 const psychologyCards = [
   {
-    title: "安心して選べる",
-    text: "入口を3つに絞り、訪問者が自分の目的をすぐ選べるようにします。",
+    title: "目的が見える",
+    text: "高校物理、教材制作、学習アプリの入口を分け、今いる場所から選びやすくします。",
   },
   {
     title: "小さく進める",
-    text: "読む、理解する、演習する、アプリへ進む流れを段階化して負荷を下げます。",
+    text: "読む、理解する、演習する、アプリへ進む流れを短い単位に分けます。",
   },
   {
     title: "戻れるから続く",
-    text: "つまずいた前提知識へ戻れる導線を置き、自己効力感を保ちます。",
+    text: "つまずいた前提知識へ戻れる導線を置き、学び直しを続けやすくします。",
   },
 ];
 
@@ -90,42 +86,222 @@ const learningFlow = [
     label: "Physics",
     title: "高校物理の理解から始める",
     description:
-      "高校物理の塾を探す人が知りたいのは、公式の量ではなく、どこで理解できるかです。概念、図、数式、演習を同じ流れで整理します。",
+      "力学や物理基礎で止まりやすいところを、現象、図、数式、演習の順にほどいていきます。",
   },
   {
     label: "AI Materials",
     title: "AI教材作成で学びを速く形にする",
     description:
-      "教材作成AIを、下書き、問題案、解説案、LaTeX化、Web化へつなげます。自動化しつつ、学習者に伝わる順序へ編集します。",
+      "生成AIを下書きや問題案に使い、LaTeXやWebで再利用しやすい教材へ整えます。",
   },
   {
     label: "EdTech Apps",
     title: "学習支援Webアプリへ接続する",
     description:
-      "記事や教材だけで終わらせず、必要になったタイミングで Eddivom、IT Pass、Physics へ進める導線を設計します。",
+      "記事や教材で整理した内容を、必要なタイミングで Eddivom、IT Pass、Physics へつなげます。",
   },
 ];
 
 const actionCards = [
   {
     title: "高校物理でつまずいている",
-    text: "力学・物理基礎・問題演習の考え方を、まずは記事から整理できます。",
+    text: "力学・物理基礎・問題演習の考え方を、短い記事から確認できます。",
     href: "/blog/physics-material-creation",
-    cta: "物理の入口へ",
+    cta: "物理の記事から読む",
   },
   {
     title: "教材作成をAIで効率化したい",
-    text: "生成AI、LaTeX、Webを組み合わせた教材制作ワークフローへ進めます。",
+    text: "生成AI、LaTeX、Webを組み合わせた教材制作の流れを整理できます。",
     href: "/blog/latex-web-workflow",
-    cta: "教材制作へ",
+    cta: "教材制作を読む",
   },
   {
     title: "学習支援アプリを見たい",
-    text: "EdTechやGIGAスクール文脈に合う既存アプリの入口を一覧で確認できます。",
+    text: "目的に合う外部アプリへ、公式リンクからそのまま移動できます。",
     href: "/apps",
-    cta: "アプリを見る",
+    cta: "アプリを選ぶ",
   },
 ];
+
+const homeApps = apps.map((app) => {
+  if (app.name === "Eddivom") {
+    return {
+      ...app,
+      description:
+        "教育コンテンツや学習導線を整理し、必要なページへ進みやすくする学習支援アプリです。ここから公式アプリへ移動できます。",
+      status: "外部アプリ",
+    };
+  }
+
+  if (app.name === "IT Pass") {
+    return {
+      ...app,
+      description:
+        "ITの基礎学習や試験対策を続けるための学習アプリです。基礎を確認したいときの入口として案内します。",
+      status: "外部アプリ",
+    };
+  }
+
+  if (app.name === "Physics") {
+    return {
+      ...app,
+      description:
+        "物理の概念理解や演習への接続を助ける学習アプリです。記事で整理した内容を、手を動かす学びへつなげます。",
+      status: "外部アプリ",
+    };
+  }
+
+  return app;
+});
+
+const topicMapCopy: Record<
+  string,
+  {
+    title: string;
+    summary: string;
+    themes: string[];
+    paths: string[];
+  }
+> = {
+  "高校物理 塾": {
+    title: "高校物理を理解し直す",
+    summary:
+      "力学や物理基礎で止まったところを、概念、図、数式、演習のつながりから学び直します。",
+    themes: ["概念理解", "図解", "問題演習", "物理基礎", "学び直し"],
+    paths: [
+      "力学の考え方を整理したい",
+      "公式暗記から抜け出したい",
+      "定期テスト前に物理基礎を復習したい",
+      "物理をどこから戻ればよいか知りたい",
+    ],
+  },
+  "教材作成AI 自動": {
+    title: "AIで教材制作を整える",
+    summary:
+      "生成AIを下書きや問題案に使い、LaTeXやWebで更新しやすい教材へ仕上げます。",
+    themes: ["生成AI", "教材制作", "LaTeX", "問題案", "Web展開"],
+    paths: [
+      "AIで授業プリントの下書きを作りたい",
+      "問題集をLaTeXで管理したい",
+      "教材制作の手戻りを減らしたい",
+      "AI任せにしない編集手順を知りたい",
+    ],
+  },
+  "GIGAスクール 教材作成": {
+    title: "デジタル教材を学習導線につなぐ",
+    summary:
+      "GIGAスクール後の環境で、教材、演習、復習、アプリをどうつなぐかを整理します。",
+    themes: ["GIGAスクール", "教育DX", "AIドリル", "個別最適な学び", "学習導線"],
+    paths: [
+      "端末前提の教材をどう設計するか知りたい",
+      "AIドリルと教材の役割を分けたい",
+      "学習支援Webアプリの考え方を知りたい",
+      "教育ICTを授業や自学へつなげたい",
+    ],
+  },
+  "学習支援Webアプリ": {
+    title: "学習支援Webアプリを考える",
+    summary:
+      "アプリを機能一覧としてではなく、学ぶ順序、復習、記録を支える道具として設計します。",
+    themes: ["教育ICT", "復習導線", "演習", "学習ログ", "Webアプリ"],
+    paths: [
+      "学習アプリに必要な入口を整理したい",
+      "教材とWebアプリを連携したい",
+      "復習しやすい画面構成を考えたい",
+      "小さく始める教育アプリを作りたい",
+    ],
+  },
+  "物理 教材制作": {
+    title: "物理教材を作る",
+    summary:
+      "物理教材を、答えの説明だけでなく思考の順序が残るコンテンツとして組み立てます。",
+    themes: ["物理教材", "力学", "図解", "解説", "演習設計"],
+    paths: [
+      "物理の解説をわかりやすくしたい",
+      "図と数式を同じ流れで見せたい",
+      "演習につながる教材を作りたい",
+      "つまずきやすい前提を補いたい",
+    ],
+  },
+  "LaTeX 教材作成": {
+    title: "LaTeX教材を育てる",
+    summary:
+      "数式を含む教材や問題集を、印刷物にもWebにも展開しやすい形で管理します。",
+    themes: ["LaTeX", "数式組版", "問題集", "MDX", "教材管理"],
+    paths: [
+      "LaTeX教材をWebにも使いたい",
+      "問題集を再利用しやすくしたい",
+      "数式教材のテンプレートを整えたい",
+      "ブログと教材をつなげたい",
+    ],
+  },
+  "EdTech 個人ブランドサイト": {
+    title: "制作思想と実装をひとつにまとめる",
+    summary:
+      "教育、物理、教材制作、アプリ開発を横断する活動を、公式ハブとして見つけやすく整理します。",
+    themes: ["個人ブランド", "教育ブログ", "アプリ紹介", "制作思想", "公式ハブ"],
+    paths: [
+      "森祐太の活動全体を知りたい",
+      "教材制作とアプリ開発の考え方を読みたい",
+      "ブログとアプリの入口をまとめて見たい",
+      "相談前に専門領域を確認したい",
+    ],
+  },
+};
+
+const topicMapCards = seoClusters.map((cluster) => ({
+  ...cluster,
+  ...(topicMapCopy[cluster.primary] ?? {
+    title: cluster.label,
+    summary: cluster.intent,
+    themes: cluster.supporting.slice(0, 5),
+    paths: cluster.longTail,
+  }),
+}));
+
+const homeFocusAreas = focusAreas.map((area) => {
+  if (area.title === "Education / GIGA") {
+    return {
+      ...area,
+      description:
+        "GIGAスクールや教育DXの環境で、教材、演習、復習が自然につながる学びを設計します。",
+    };
+  }
+
+  if (area.title === "Physics") {
+    return {
+      ...area,
+      description:
+        "高校物理を、公式暗記ではなく現象・図・数式・演習の関係から理解できるように整理します。",
+    };
+  }
+
+  if (area.title === "LaTeX") {
+    return {
+      ...area,
+      description:
+        "数式教材や問題集を、きれいに組むだけでなく、再利用しやすい制作資産として整えます。",
+    };
+  }
+
+  if (area.title === "AI Material Creation") {
+    return {
+      ...area,
+      description:
+        "生成AIを下書きや問題案に活かし、人が理解しやすい順序と説明密度へ編集します。",
+    };
+  }
+
+  if (area.title === "EdTech / Web Apps") {
+    return {
+      ...area,
+      description:
+        "学習の入口、演習、復習、記録を支えるWebアプリを作り、教材と実践をつなげます。",
+    };
+  }
+
+  return area;
+});
 
 export const metadata: Metadata = createPageMetadata({
   title: "高校物理の塾・教材作成AI・EdTech学習支援 | Yuta Eng",
@@ -152,8 +328,8 @@ export default function Home() {
     createEducationalServiceJsonLd(),
     createHomeFaqJsonLd(),
     createItemListJsonLd(
-      "yuta-eng.com が案内する既存学習支援アプリ",
-      apps.map((app) => ({
+      "yuta-eng.com から移動できる学習支援アプリ",
+      homeApps.map((app) => ({
         name: app.name,
         description: app.description,
         url: app.href,
@@ -181,33 +357,32 @@ export default function Home() {
         <Container className="grid min-h-[calc(100vh-4rem)] items-center gap-14 py-16 lg:grid-cols-[0.94fr_1.06fr] lg:py-24">
           <div className="fade-up">
             <p className="liquid-glass inline-flex rounded-full px-4 py-2 text-sm font-semibold text-slate-700">
-              高校物理の塾 × AI教材作成 × EdTech学習支援
+              森祐太の教育開発ハブ
             </p>
             <h1 className="text-balance mt-7 max-w-5xl font-serif text-5xl font-semibold leading-[1.03] tracking-[-0.095em] text-slate-950 sm:text-6xl lg:text-7xl">
-              高校物理を、わかるまで導く。AI教材と学習アプリで育つ明るい学習スタジオ。
+              高校物理・教材制作・学習アプリをつなぐ、教育開発ハブ。
             </h1>
             <p className="text-pretty mt-7 max-w-2xl text-lg leading-9 text-slate-600">
-              Yuta Eng は、高校物理の理解、教材作成AIの自動化、
-              LaTeX教材、GIGAスクール時代の学習支援Webアプリをつなぐ
-              EdTechハブです。検索で来た人が、次に何をすればよいかまで
-              迷わず進めるホームにしています。
+              Yuta Eng は、高校物理の理解を支える記事、AIとLaTeXを使った
+              教材制作の知見、学習支援アプリへの入口をまとめた公式ハブです。
+              学びたい人も、教材を作りたい人も、目的に合わせて次の一歩を選べます。
             </p>
             <div className="mt-7 flex flex-wrap gap-2">
-              {heroKeywords.map((keyword) => (
-                <span className="keyword-pill" key={keyword}>
-                  {keyword}
+              {heroFocuses.map((focus) => (
+                <span className="keyword-pill" key={focus}>
+                  {focus}
                 </span>
               ))}
             </div>
             <div className="mt-9 flex flex-wrap gap-3">
               <ButtonLink href="/blog/physics-material-creation">
-                高校物理の入口へ
+                高校物理から読む
               </ButtonLink>
               <ButtonLink href="/blog/latex-web-workflow" variant="secondary">
-                AI教材制作を見る
+                教材制作を読む
               </ButtonLink>
               <ButtonLink href="/apps" variant="secondary">
-                学習アプリを見る
+                学習アプリを選ぶ
               </ButtonLink>
               <ButtonLink href="/contact" variant="ghost">
                 相談する
@@ -230,9 +405,9 @@ export default function Home() {
           <div className="fade-up fade-up-delay-2 relative">
             <div className="motion-depth-1 relative">
               <div className="float-slow liquid-glass absolute -left-4 top-10 hidden rounded-[1.7rem] p-4 shadow-[0_25px_80px_-55px_rgba(14,165,233,0.75)] md:block">
-                <p className="font-mono text-xs text-slate-500">search intent</p>
+                <p className="font-mono text-xs text-slate-500">start point</p>
                 <p className="mt-1 text-sm font-semibold text-slate-950">
-                  高校物理 塾
+                  高校物理の理解
                 </p>
               </div>
               <div className="studio-device rounded-[3.2rem] p-3 shadow-[0_45px_140px_-78px_rgba(15,23,42,0.72)]">
@@ -277,7 +452,7 @@ export default function Home() {
                     </div>
 
                     <div className="relative mt-4 grid gap-3 sm:grid-cols-3">
-                      {apps.map((app) => (
+                      {homeApps.map((app) => (
                         <a
                           className="app-dock-card rounded-[1.35rem] p-4 transition hover:-translate-y-1"
                           href={app.href}
@@ -302,9 +477,9 @@ export default function Home() {
 
       <Container>
         <Section
-          description="検索で来る人の目的を3つに分けました。高校生、先生、教材制作者、EdTech関係者が自分の入口をすぐ選べる構成です。"
-          eyebrow="Search Intent"
-          title="SEOキーワードを、迷わない入口に変える"
+          description="高校物理を学びたい人、教材を作りたい人、学習アプリを使いたい人が、自分に近い入口から進めるように整理しています。"
+          eyebrow="Purpose Guide"
+          title="目的に合わせて入口を選ぶ"
         >
           <StaggerReveal className="grid gap-5 lg:grid-cols-3">
             {visitorPaths.map((path) => (
@@ -338,9 +513,9 @@ export default function Home() {
         </Section>
 
         <Section
-          description="すぐ読む、作る、使うの3アクションに分け、初回訪問でも次の行動が自然に決まるようにしています。"
-          eyebrow="Action Design"
-          title="心理的ハードルを下げる、最初の一歩"
+          description="読む、作る、使うの3つに分けることで、初めて来た人でも今すぐできる行動を選びやすくしています。"
+          eyebrow="First Step"
+          title="読む・作る・使う。最初の一歩を選ぶ"
         >
           <StaggerReveal className="grid gap-4 md:grid-cols-3">
             {actionCards.map((card) => (
@@ -362,29 +537,29 @@ export default function Home() {
         </Section>
 
         <Section
-          description="既存アプリを再実装せず、見つけやすいアプリ棚として並べます。高校物理、IT学習、教材導線を明るいプロダクト体験に接続します。"
-          eyebrow="Apps Showcase"
+          description="Eddivom、IT Pass、Physics への公式リンクをまとめています。外部アプリであることを明示しながら、用途が一目で分かる入口にしています。"
+          eyebrow="Apps Hub"
           headerAction={
             <ButtonLink href="/apps" variant="secondary">
               アプリ一覧へ
             </ButtonLink>
           }
-          title="学習支援Webアプリを、きれいに選べる入口へ"
+          title="学習支援アプリへ迷わず移動する"
         >
           <StaggerReveal className="grid gap-5 lg:grid-cols-3">
-            {apps.map((app) => (
+            {homeApps.map((app) => (
               <AppCard app={app} featured key={app.href} />
             ))}
           </StaggerReveal>
         </Section>
 
         <Section
-          description="ロングテールSEOは、同じ言葉を詰め込むのではなく、検索意図ごとの答えと内部リンクを作ることが大切です。"
-          eyebrow="SEO Topic Map"
-          title="高校物理・教材作成AI・GIGAスクールを一貫したテーマへ"
+          description="高校物理、AI教材制作、LaTeX、教育ICT、Webアプリを別々の話題にせず、必要な記事やサービスへたどれる地図としてまとめています。"
+          eyebrow="Learning Map"
+          title="学びと制作のテーマを地図のようにたどる"
         >
           <StaggerReveal className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {seoClusters.map((cluster) => (
+            {topicMapCards.map((cluster) => (
               <Link
                 className="seo-cluster-card group rounded-[2rem] p-6 transition hover:-translate-y-1"
                 href={cluster.route}
@@ -394,13 +569,13 @@ export default function Home() {
                   {cluster.label}
                 </p>
                 <h2 className="mt-4 text-2xl font-semibold tracking-[-0.05em] text-slate-950">
-                  {cluster.primary}
+                  {cluster.title}
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-slate-600">
-                  {cluster.intent}
+                  {cluster.summary}
                 </p>
                 <div className="mt-5 flex flex-wrap gap-2">
-                  {cluster.supporting.slice(0, 5).map((word) => (
+                  {cluster.themes.map((word) => (
                     <span className="keyword-pill compact" key={word}>
                       {word}
                     </span>
@@ -408,10 +583,10 @@ export default function Home() {
                 </div>
                 <div className="mt-5 border-t border-sky-100 pt-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
-                    Long-tail
+                    よくある入口
                   </p>
                   <ul className="mt-3 space-y-2 text-xs leading-5 text-slate-500">
-                    {cluster.longTail.map((word) => (
+                    {cluster.paths.map((word) => (
                       <li key={word}>{word}</li>
                     ))}
                   </ul>
@@ -422,9 +597,9 @@ export default function Home() {
         </Section>
 
         <Section
-          description="見た目の装飾だけではなく、安心して選び、少しずつ進み、また戻れることをデザインの中心に置いています。"
-          eyebrow="Learning Psychology"
-          title="明るさ、余白、動きで「学べそう」を作る"
+          description="見た目の装飾だけではなく、目的を選びやすくし、必要な前提へ戻れることを学びやすさの中心に置いています。"
+          eyebrow="Learning Design"
+          title="迷いにくく、戻りやすい学びの設計"
         >
           <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="canva-board relative overflow-hidden rounded-[3rem] border border-white/80 p-6 shadow-[0_35px_130px_-90px_rgba(15,23,42,0.72)]">
@@ -466,7 +641,7 @@ export default function Home() {
         </Section>
 
         <Section
-          description="スクロールしながら、高校物理の記事、AI教材制作、学習支援アプリがどうつながるかを追える構成にしています。"
+          description="記事で考え方を読み、教材制作で形にし、必要に応じてアプリへ進む。サイト全体をその一本の流れとして見せています。"
           eyebrow="Learning Flow"
           title="記事から教材、アプリまでを一本の流れにする"
         >
@@ -474,14 +649,14 @@ export default function Home() {
             <div className="lg:sticky lg:top-28 lg:self-start">
               <div className="overflow-hidden rounded-[2.5rem] border border-white/15 bg-slate-950 p-7 text-white shadow-[0_30px_110px_-80px_rgba(15,23,42,0.95)]">
                 <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-200">
-                  Dynamic Hub
+                  Learning Hub
                 </p>
                 <h2 className="text-balance mt-5 font-serif text-4xl font-semibold tracking-[-0.07em]">
-                  読むほど、次に進む場所が見えてくる。
+                  読むほど、次に試す場所が見えてくる。
                 </h2>
                 <p className="mt-5 text-sm leading-7 text-slate-300">
-                  ホームページを固定の名刺ではなく、記事、教材、アプリが育つ
-                  学習ハブとして設計しています。
+                  ホームページを固定の名刺ではなく、記事、教材、アプリが
+                  自然につながる学習ハブとして設計しています。
                 </p>
                 <div className="mt-8 grid grid-cols-3 gap-2">
                   {["Blog", "AI", "Apps"].map((item) => (
@@ -524,12 +699,12 @@ export default function Home() {
         </Section>
 
         <Section
-          description="専門領域を5つに整理し、記事・教材・アプリへ展開しやすい情報設計にしています。"
+          description="教育、物理、LaTeX、AI教材制作、EdTech/Webアプリを横断し、学ぶ人と作る人の両方を支える領域として整理しています。"
           eyebrow="Focus Areas"
-          title="何をしている人か、一瞬で伝わる構造"
+          title="取り組んでいる領域"
         >
           <StaggerReveal className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {focusAreas.map((area, index) => (
+            {homeFocusAreas.map((area, index) => (
               <article
                 className="group rounded-[1.75rem] border border-slate-200 bg-white p-5 transition hover:-translate-y-1 hover:bg-slate-950 hover:text-white"
                 key={area.title}
@@ -549,8 +724,8 @@ export default function Home() {
         </Section>
 
         <Section
-          description="初めて来た人が最初に知りたいことを、短い回答としてホームにも置いています。FAQ構造化データとも対応させています。"
-          eyebrow="Helpful Answers"
+          description="初めて来た人が確認したいことを短くまとめました。詳しく知りたい場合は、関連する記事やアプリ一覧へ進めます。"
+          eyebrow="FAQ"
           title="よくある疑問に短く答える"
         >
           <StaggerReveal className="grid gap-4 md:grid-cols-2">
@@ -571,14 +746,14 @@ export default function Home() {
         </Section>
 
         <Section
-          description="一覧で要点を判断しやすく、詳細ページでは読み始める前に得られることを整理します。"
+          description="高校物理、教材制作、教育ICTの考え方を、実際に読んで使える形で整理しています。"
           eyebrow="Latest Articles"
           headerAction={
             <ButtonLink href="/blog" variant="secondary">
               Blog一覧へ
             </ButtonLink>
           }
-          title="最近の記事"
+          title="最近の記事から学ぶ"
         >
           <StaggerReveal className="grid gap-5 md:grid-cols-3">
             {latestPosts.map((post) => (
@@ -595,15 +770,15 @@ export default function Home() {
                   Start Here
                 </p>
                 <h2 className="text-balance mt-4 font-serif text-4xl font-semibold tracking-[-0.06em]">
-                  高校物理、AI教材、学習アプリをひとつの学習体験へ。
+                  高校物理、教材制作、学習アプリをひとつの流れへ。
                 </h2>
               </div>
               <div className="p-8 sm:p-10">
                 <p className="text-pretty text-base leading-8 text-slate-600">
-                  物理やITの学習で大切なのは、正しい情報だけでなく、
-                  どの順序で理解し、どこで手を動かし、どう復習に戻れるかです。
-                  Yuta Eng では、教材制作とWebアプリ開発の両面から、
-                  学習者が迷いにくい環境づくりを進めます。
+                  森祐太の Yuta Eng は、物理を学ぶ人、教材を作る人、
+                  学習アプリを探す人が同じ文脈で次へ進める場所です。
+                  記事で考え方を読み、教材制作で形にし、必要なアプリへつなげる。
+                  その流れを、落ち着いて選べる公式ハブとして育てています。
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                   <ButtonLink href="/about">制作思想を読む</ButtonLink>
