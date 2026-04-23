@@ -9,9 +9,17 @@ import { apps } from "@/data/apps";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Apps",
+  title: "学習支援Webアプリ一覧 | Eddivom・IT Pass・Physics",
   description:
-    "Eddivom、IT Pass、Physics など、yuta-eng.com が案内する既存の学習支援アプリ一覧です。各アプリは外部サービスとしてリンクしています。",
+    "Eddivom、IT Pass、Physics など、yuta-eng.com が案内する既存の学習支援Webアプリ一覧です。各アプリは外部サービスとして紹介し、公式リンクへ案内します。",
+  keywords: [
+    "学習支援Webアプリ",
+    "教育ICT アプリ",
+    "Eddivom",
+    "IT Pass",
+    "Physics",
+    "物理学習アプリ",
+  ],
   path: "/apps",
 });
 
@@ -24,7 +32,7 @@ export default function AppsPage() {
             Apps
           </p>
           <h1 className="mt-4 font-serif text-5xl font-semibold leading-tight tracking-[-0.08em] text-slate-950 sm:text-6xl">
-            既存アプリへの公式導線を、ひとつの場所に。
+            学習支援Webアプリへの公式導線を、ひとつの場所に。
           </h1>
           <p className="mt-6 text-lg leading-9 text-slate-600">
             このページはアプリ本体ではなく、すでに存在する外部アプリを紹介する一覧ページです。

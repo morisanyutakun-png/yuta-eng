@@ -7,9 +7,16 @@ import { focusAreas } from "@/data/focus-areas";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "About",
+  title: "About | 教育・物理・LaTeX教材制作のプロフィール",
   description:
-    "教育、物理、教材制作、LaTeX、学習支援Webアプリ開発に取り組む yuta-eng.com のプロフィール、思想、今後のビジョンを紹介します。",
+    "教育ICT、物理教材制作、LaTeX教材作成、学習支援Webアプリ開発に取り組む Yuta のプロフィール、制作思想、専門領域、今後のビジョンを紹介します。",
+  keywords: [
+    "教育 プロフィール",
+    "物理教材制作",
+    "LaTeX教材作成",
+    "学習支援Webアプリ開発",
+    "教材制作 ポートフォリオ",
+  ],
   path: "/about",
 });
 
@@ -47,7 +54,7 @@ export default function AboutPage() {
               About
             </p>
             <h1 className="mt-4 font-serif text-5xl font-semibold leading-tight tracking-[-0.08em] text-slate-950 sm:text-6xl">
-              教材制作とWeb開発の両側から、学びの体験を整える。
+              教育ICT・物理教材・LaTeX教材作成で、学びの体験を整える。
             </h1>
           </div>
           <p className="text-lg leading-9 text-slate-600">

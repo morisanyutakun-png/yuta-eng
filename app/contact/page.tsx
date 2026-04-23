@@ -7,9 +7,16 @@ import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Contact",
+  title: "Contact | 教材制作・学習支援Webアプリの相談",
   description:
-    "教育、物理、教材制作、LaTeX、学習支援Webアプリ制作に関する相談・連絡のための yuta-eng.com お問い合わせページです。",
+    "物理教材制作、LaTeX教材作成、教育ICT、学習支援Webアプリ開発、Webサイト設計に関する相談・連絡のための yuta-eng.com お問い合わせページです。",
+  keywords: [
+    "教材制作 相談",
+    "LaTeX教材作成 相談",
+    "物理教材制作",
+    "学習支援Webアプリ開発",
+    "教育ICT Webサイト",
+  ],
   path: "/contact",
 });
 
@@ -23,7 +30,7 @@ export default function ContactPage() {
               Contact
             </p>
             <h1 className="mt-4 font-serif text-5xl font-semibold leading-tight tracking-[-0.08em] text-slate-950 sm:text-6xl">
-              教材制作、学習支援、Web活用の相談窓口。
+              物理教材制作・LaTeX教材作成・学習支援Webアプリの相談窓口。
             </h1>
           </div>
           <p className="text-lg leading-9 text-slate-600">

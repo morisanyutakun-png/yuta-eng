@@ -9,9 +9,16 @@ import { getAllPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Blog",
+  title: "Blog | 物理教材・LaTeX教材作成・教育ICTの記事",
   description:
-    "学習支援Webアプリ、教育ICT、物理教材、LaTeX教材作成、Web制作に関する yuta-eng.com のブログ記事一覧です。",
+    "物理教材制作、LaTeX教材作成、教育ICT、学習支援Webアプリ開発、Web制作に関する yuta-eng.com のブログ記事一覧です。",
+  keywords: [
+    "物理教材 ブログ",
+    "LaTeX教材作成 ブログ",
+    "教育ICT 記事",
+    "学習支援Webアプリ",
+    "教材制作 ノウハウ",
+  ],
   path: "/blog",
 });
 
@@ -31,7 +38,7 @@ export default function BlogPage() {
                 Editorial Hub
               </p>
               <h1 className="text-balance mt-4 font-serif text-5xl font-semibold leading-tight tracking-[-0.08em] sm:text-6xl">
-                検索されるテーマを、読みやすい記事に育てる。
+                物理教材・LaTeX教材作成・教育ICTの記事を育てる。
               </h1>
               <p className="text-pretty mt-6 max-w-3xl text-lg leading-9 text-slate-300">
                 学習支援Webアプリ、教育ICT、物理教材、LaTeX教材作成を中心に、

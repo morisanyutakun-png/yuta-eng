@@ -4,13 +4,25 @@ const contactEmail =
 
 export const siteConfig = {
   name: "Yuta Eng",
-  title: "Yuta Eng | 物理教材・LaTeX教材作成・学習支援Webアプリ",
+  title: "Yuta Eng | 物理教材・LaTeX教材作成・学習支援Webアプリ開発",
   description:
-    "物理教材、LaTeX教材作成、教育ICT、学習支援Webアプリ開発を軸に、学びの導線を設計する yuta-eng.com の公式サイトです。",
+    "物理教材、LaTeX教材作成、教育ICT、学習支援Webアプリ開発を横断し、学びの導線を設計する yuta-eng.com の公式サイトです。",
   url: siteUrl,
   author: "Yuta",
   email: contactEmail,
   locale: "ja_JP",
+  keywords: [
+    "物理教材",
+    "物理教材制作",
+    "物理学習",
+    "LaTeX教材作成",
+    "LaTeX問題集",
+    "教材制作",
+    "教育ICT",
+    "学習支援Webアプリ",
+    "Webアプリ開発",
+    "教育ブログ",
+  ],
 };
 
 export const navItems = [

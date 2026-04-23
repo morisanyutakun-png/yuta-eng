@@ -39,6 +39,7 @@ export async function generateMetadata({
   return createPageMetadata({
     title: post.title,
     description: post.description,
+    keywords: [post.category, ...post.tags],
     path: `/blog/${post.slug}`,
     type: "article",
   });

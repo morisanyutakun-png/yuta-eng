@@ -35,14 +35,46 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
+  applicationName: siteConfig.name,
   title: {
     default: siteConfig.title,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: [{ name: siteConfig.author, url: siteConfig.url }],
+  creator: siteConfig.author,
+  publisher: siteConfig.name,
+  category: "education",
+  classification:
+    "教育ICT、物理教材、LaTeX教材作成、学習支援Webアプリ開発",
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: [
+      {
+        url: "/favicon.svg",
+        type: "image/svg+xml",
+        sizes: "512x512",
+      },
+      {
+        url: "/icon.svg",
+        type: "image/svg+xml",
+        sizes: "512x512",
+      },
+    ],
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/mask-icon.svg",
+        color: "#0f172a",
+      },
+    ],
+  },
+  manifest: "/site.webmanifest",
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,

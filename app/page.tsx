@@ -49,9 +49,16 @@ const learningFlow = [
 ];
 
 export const metadata: Metadata = createPageMetadata({
-  title: "物理教材・LaTeX教材作成・学習支援Webアプリ",
+  title: "物理教材・LaTeX教材作成・学習支援Webアプリ開発",
   description:
-    "教育ICT、物理教材、LaTeX教材作成、学習支援Webアプリをつなぐ yuta-eng.com の公式ハブです。ブログ、制作思想、既存アプリへの導線を整理しています。",
+    "物理教材、LaTeX教材作成、教育ICT、学習支援Webアプリ開発をつなぐ yuta-eng.com の公式ハブです。ブログ、制作思想、既存アプリへの導線を整理しています。",
+  keywords: [
+    "物理教材制作",
+    "LaTeX教材作成",
+    "学習支援Webアプリ開発",
+    "教育ICT",
+    "教材制作Webサイト",
+  ],
   path: "/",
 });
 
@@ -91,11 +98,12 @@ export default function Home() {
               教材制作・物理学習・LaTeX・Webアプリの公式ハブ
             </p>
             <h1 className="text-balance mt-7 max-w-4xl font-serif text-5xl font-semibold leading-[1.04] tracking-[-0.09em] text-slate-950 sm:text-6xl lg:text-7xl">
-              学びを、もっと探しやすく。もっと続けやすく。
+              物理教材・LaTeX教材作成・学習支援Webアプリ開発の公式ハブ。
             </h1>
             <p className="text-pretty mt-7 max-w-2xl text-lg leading-9 text-slate-600">
-              yuta-eng.com は、教育ICT、物理教材、LaTeX組版、学習支援Webアプリを
-              一つにつなぐブランドサイトです。記事で知見を蓄積し、既存アプリへ迷わず進める導線を作ります。
+              yuta-eng.com は、教育ICT、物理学習、教材制作、LaTeX組版、
+              学習支援Webアプリを一つにつなぐブランドサイトです。
+              記事で知見を蓄積し、既存アプリへ迷わず進める導線を作ります。
             </p>
             <div className="mt-7 flex flex-wrap gap-2">
               {heroKeywords.map((keyword) => (

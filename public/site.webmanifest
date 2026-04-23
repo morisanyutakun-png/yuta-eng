@@ -1,0 +1,17 @@
+{
+  "name": "Yuta Eng",
+  "short_name": "Yuta Eng",
+  "description": "物理教材、LaTeX教材作成、教育ICT、学習支援Webアプリの公式ハブ。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbfaf7",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
