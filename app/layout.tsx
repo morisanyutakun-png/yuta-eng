@@ -34,7 +34,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL("https://yuta-eng.com"),
   applicationName: siteConfig.name,
   title: {
     default: siteConfig.title,
