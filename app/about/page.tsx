@@ -26,7 +26,7 @@ const skills = [
   "LaTeX による教材・資料制作",
   "Next.js / TypeScript によるWebサイト設計",
   "学習支援Webアプリの企画・UI設計",
-  "SEOを意識した情報設計とブログ運用",
+  "読みやすさを重視した情報設計とブログ運用",
 ];
 
 const philosophy = [

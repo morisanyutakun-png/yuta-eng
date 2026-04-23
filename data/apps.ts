@@ -15,7 +15,7 @@ export const apps: AppItem[] = [
       "教育コンテンツや学習支援の導線を扱う既存アプリです。yuta-eng.com では紹介カードとして掲載し、アプリ本体へ案内します。",
     audience: "教材制作や学習環境を整理したい学習者・教育関係者",
     category: "Education / Learning Support",
-    href: "https://diivom.yuta-eng.com",
+    href: "https://eddivom.yuta-eng.com",
     ctaLabel: "Eddivom を開く",
     status: "外部の既存アプリ",
   },

@@ -18,7 +18,7 @@ export const seoClusters: SeoCluster[] = [
       "教材とWebアプリの連携",
     ],
     intent:
-      "教育現場や個人学習で、Webアプリをどう学習に接続するか知りたい人に向ける。",
+      "教育現場や個人学習で、Webアプリをどう学習に接続するかを整理する。",
     route: "/blog",
   },
   {
@@ -31,7 +31,7 @@ export const seoClusters: SeoCluster[] = [
       "物理 問題演習 解説",
     ],
     intent:
-      "公式暗記ではなく、概念・図・数式・演習の関係を理解したい人に向ける。",
+      "公式暗記ではなく、概念・図・数式・演習の関係を整理する。",
     route: "/blog/physics-material-creation",
   },
   {
@@ -44,7 +44,7 @@ export const seoClusters: SeoCluster[] = [
       "数式 教材 Web化",
     ],
     intent:
-      "数式を含む教材や問題集を、再利用しやすく美しく作りたい人に向ける。",
+      "数式を含む教材や問題集を、再利用しやすく美しく作るために整理する。",
     route: "/blog/latex-web-workflow",
   },
   {
@@ -57,7 +57,7 @@ export const seoClusters: SeoCluster[] = [
       "学習アプリ 公式サイト",
     ],
     intent:
-      "専門性、制作思想、既存アプリを一つの公式サイトで確認したい人に向ける。",
+      "専門性、制作思想、既存アプリを一つの公式サイトで確認しやすく整理する。",
     route: "/about",
   },
 ];

@@ -38,7 +38,7 @@ export default function BlogPage() {
                 Editorial Hub
               </p>
               <h1 className="text-balance mt-4 font-serif text-5xl font-semibold leading-tight tracking-[-0.08em] sm:text-6xl">
-                物理教材・LaTeX教材作成・教育ICTの記事を育てる。
+                物理教材・LaTeX教材作成・教育ICTの記事をまとめる。
               </h1>
               <p className="text-pretty mt-6 max-w-3xl text-lg leading-9 text-slate-300">
                 学習支援Webアプリ、教育ICT、物理教材、LaTeX教材作成を中心に、
@@ -64,9 +64,9 @@ export default function BlogPage() {
 
       <Section
         className="pt-8"
-        description="各記事は、検索キーワードそのものではなく、読者が解決したい課題に対応するように設計しています。"
-        eyebrow="Keyword Clusters"
-        title="狙う検索意図"
+        description="各記事は、読者が解決したい課題に対応するように整理しています。"
+        eyebrow="Topic Guide"
+        title="記事テーマ"
       >
         <StaggerReveal className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {seoClusters.map((cluster) => (

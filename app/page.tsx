@@ -30,9 +30,9 @@ const heroKeywords = ["教育ICT", "物理学習", "LaTeX教材", "学習支援W
 const learningFlow = [
   {
     label: "Article",
-    title: "検索意図を記事に変える",
+    title: "読者の目的を記事に変える",
     description:
-      "読者が探している言葉を、単なるキーワードではなく、理解しやすい記事テーマへ落とし込みます。",
+      "読者が抱えている問いを、理解しやすい記事テーマへ落とし込みます。",
   },
   {
     label: "Learning",
@@ -133,7 +133,7 @@ export default function Home() {
             <div className="motion-depth-1 relative">
               <div className="float-slow absolute -left-5 top-12 hidden rounded-3xl border border-white/70 bg-white/75 p-4 shadow-[0_25px_80px_-55px_rgba(15,23,42,0.7)] backdrop-blur-xl md:block">
                 <p className="font-mono text-xs text-slate-500">
-                  search intent
+                  learning topic
                 </p>
                 <p className="mt-1 text-sm font-semibold text-slate-950">
                   学習支援Webアプリ
@@ -190,7 +190,7 @@ export default function Home() {
                       <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.08] p-5">
                         <p className="font-mono text-3xl font-semibold">3</p>
                         <p className="mt-2 text-xs leading-5 text-slate-300">
-                          初期記事をSEOクラスタに接続
+                          初期記事をテーマ別に接続
                         </p>
                       </div>
                     </div>
@@ -204,7 +204,7 @@ export default function Home() {
 
       <Container>
         <Section
-          description="Canvaの編集ボードのように、目的ごとの入口を大きなカードで整理しました。検索して来た人が、自分に合う導線をすぐ選べる構成です。"
+          description="目的ごとの入口を大きなカードで整理しました。訪問者が自分に合う導線をすぐ選べる構成です。"
           eyebrow="Visitor Paths"
           title="探している目的から、最短で進める"
         >
@@ -241,7 +241,7 @@ export default function Home() {
         </Section>
 
         <Section
-          description="既存アプリを再実装せず、Apple Storeの棚のように見つけやすく並べる。各カードは公式の外部導線として機能します。"
+          description="既存アプリを再実装せず、見つけやすい棚のように並べます。各カードは公式の外部導線として機能します。"
           eyebrow="Apps Showcase"
           headerAction={
             <ButtonLink href="/apps" variant="secondary">
@@ -258,9 +258,9 @@ export default function Home() {
         </Section>
 
         <Section
-          description="検索されやすい語をただ並べるのではなく、読者の検索意図ごとに記事・About・Appsを接続します。"
-          eyebrow="SEO Content System"
-          title="SEOキーワードを、運用しやすい記事テーマに変換"
+          description="読者の目的ごとに、記事、プロフィール、既存アプリへの導線を整理しています。"
+          eyebrow="Content Map"
+          title="記事とアプリをつなぐテーママップ"
         >
           <StaggerReveal className="grid gap-4 lg:grid-cols-4">
             {seoClusters.map((cluster) => (
@@ -290,7 +290,7 @@ export default function Home() {
                 </div>
                 <div className="mt-5 border-t border-slate-100 pt-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
-                    long-tail
+                    関連テーマ
                   </p>
                   <ul className="mt-3 space-y-2 text-xs leading-5 text-slate-500">
                     {cluster.longTail.map((word) => (
@@ -306,7 +306,7 @@ export default function Home() {
         <Section
           description="装飾ではなく、情報を速く理解するためのデザイン言語として整理しています。運用でカードや記事が増えても崩れにくい構造です。"
           eyebrow="Design System"
-          title="Canva的な見つけやすさを、サイトの情報設計に変換"
+          title="見つけやすさを、サイトの情報設計に変換"
         >
           <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="canva-board relative overflow-hidden rounded-[3rem] border border-slate-200 p-6 shadow-[0_35px_130px_-90px_rgba(15,23,42,0.9)]">
@@ -328,15 +328,15 @@ export default function Home() {
             </div>
             <div className="rounded-[3rem] bg-slate-950 p-7 text-white">
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-200">
-                Visual SEO
+                Information Design
               </p>
               <h3 className="text-balance mt-5 font-serif text-4xl font-semibold tracking-[-0.07em]">
-                Googleにも、人にも、何のサイトかを迷わせない。
+                初めて来た人にも、何のサイトかを迷わせない。
               </h3>
               <p className="mt-5 text-sm leading-8 text-slate-300">
-                見出し、内部リンク、カードのラベル、構造化データを同じテーマに揃えています。
+                見出し、カードのラベル、本文、ページ同士のつながりを同じテーマに揃えています。
                 教育ICT、物理教材、LaTeX教材作成、学習支援Webアプリという軸を、
-                視覚とHTML構造の両方から伝えます。
+                視覚と文章の両方から伝えます。
               </p>
               <div className="mt-7 flex flex-wrap gap-2">
                 {heroKeywords.map((keyword) => (
@@ -367,7 +367,7 @@ export default function Home() {
                   読むほど、次に進む場所が見えてくる。
                 </h3>
                 <p className="mt-5 text-sm leading-7 text-slate-300">
-                  このホームページは固定の名刺ではなく、記事、SEOクラスタ、
+                  このホームページは固定の名刺ではなく、記事、テーマ、
                   既存アプリの導線が増えるほど育つ情報ハブです。
                 </p>
                 <div className="mt-8 grid grid-cols-3 gap-2">
@@ -398,7 +398,7 @@ export default function Home() {
                       </h3>
                     </div>
                     <span className="rounded-full bg-slate-950 px-3 py-1 text-xs font-semibold text-white">
-                      scroll step
+                      step
                     </span>
                   </div>
                   <p className="mt-5 text-sm leading-7 text-slate-600">
@@ -436,9 +436,9 @@ export default function Home() {
         </Section>
 
         <Section
-          description="検索から来た人が最初に知りたいことを、短い回答としてホームにも置いています。詳しい解説はブログへ育てられる構成です。"
+          description="初めて来た人が最初に知りたいことを、短い回答としてホームにも置いています。詳しい解説はブログへ育てられる構成です。"
           eyebrow="Helpful Answers"
-          title="検索意図に先回りして答える"
+          title="よくある疑問に短く答える"
         >
           <StaggerReveal className="grid gap-4 md:grid-cols-2">
             {homepageAnswers.map((item) => (

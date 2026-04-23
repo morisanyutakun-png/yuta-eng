@@ -104,7 +104,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {post.searchIntent ? (
               <div className="mt-6 rounded-2xl bg-sky-50 p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
-                  Search Intent
+                  読む前の整理
                 </p>
                 <p className="mt-2 text-sm leading-7 text-slate-700">
                   {post.searchIntent}

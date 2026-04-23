@@ -54,7 +54,7 @@ export default function ContactPage() {
               <li>教材制作やLaTeXを使った資料づくり</li>
               <li>物理学習コンテンツの構成や改善</li>
               <li>学習支援Webアプリやブランドサイトの設計</li>
-              <li>ブログ、SEO、情報設計を含むWeb運用</li>
+              <li>ブログ、情報設計を含むWeb運用</li>
             </ul>
           </aside>
 

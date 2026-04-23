@@ -175,7 +175,7 @@ ${body}`;
               value={tags}
             />
           </Field>
-          <Field label="検索意図">
+          <Field label="読者の目的">
             <input
               className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-sky-300 focus:bg-white"
               onChange={(event) => setSearchIntent(event.target.value)}

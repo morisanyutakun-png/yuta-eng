@@ -102,7 +102,7 @@ npx vercel --prod
 
 1. `npm run dev` でローカル起動します。
 2. `http://localhost:3000/studio` を開きます。
-3. フォームにタイトル、説明文、タグ、検索意図、本文を入力します。
+3. フォームにタイトル、説明文、タグ、読者の目的、本文を入力します。
 4. 生成されたMDXをコピー、またはダウンロードします。
 5. `content/blog/{slug}.mdx` として保存します。
 6. `npm run lint` と `npm run build` で確認します。
@@ -120,7 +120,7 @@ tags:
 category: "Education"
 slug: "example-slug"
 draft: false
-searchIntent: "この記事を読む人の検索意図"
+searchIntent: "この記事を読む人の目的"
 keyPoints:
   - "この記事でわかること1"
   - "この記事でわかること2"
