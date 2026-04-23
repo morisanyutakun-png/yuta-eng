@@ -4,7 +4,9 @@ import { AppCard } from "@/components/app-card";
 import { ArticleCard } from "@/components/article-card";
 import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
+import { HeroMotion } from "@/components/hero-motion";
 import { Section } from "@/components/section";
+import { StaggerReveal } from "@/components/stagger-reveal";
 import { apps } from "@/data/apps";
 import { focusAreas } from "@/data/focus-areas";
 import { seoClusters } from "@/data/seo";
@@ -12,15 +14,36 @@ import { getLatestPosts } from "@/lib/blog";
 
 const heroKeywords = ["教育ICT", "物理学習", "LaTeX教材", "学習支援Webアプリ"];
 
+const learningFlow = [
+  {
+    label: "Article",
+    title: "検索意図を記事に変える",
+    description:
+      "読者が探している言葉を、単なるキーワードではなく、理解しやすい記事テーマへ落とし込みます。",
+  },
+  {
+    label: "Learning",
+    title: "教材・図解・数式へ接続する",
+    description:
+      "物理やLaTeXの知見を記事だけで終わらせず、教材制作や演習設計に使える形へ整理します。",
+  },
+  {
+    label: "Apps",
+    title: "既存アプリへ自然に案内する",
+    description:
+      "必要になったタイミングで Eddivom、IT Pass、Physics へ移動できるよう、導線を邪魔にならない形で配置します。",
+  },
+];
+
 export default function Home() {
   const latestPosts = getLatestPosts(3);
 
   return (
     <>
-      <section className="relative isolate overflow-hidden bg-[#f7f7f2]">
+      <HeroMotion className="relative isolate overflow-hidden bg-[#f7f7f2]">
         <div className="ambient-grid absolute inset-0 -z-20" />
         <div className="hero-glow absolute left-1/2 top-10 -z-10 h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(56,189,248,0.38),rgba(14,165,233,0.16)_38%,transparent_68%)] blur-3xl" />
-        <div className="absolute right-[-18rem] top-24 -z-10 h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(245,158,11,0.25),transparent_64%)] blur-3xl" />
+        <div className="motion-depth-2 absolute right-[-18rem] top-24 -z-10 h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,rgba(245,158,11,0.25),transparent_64%)] blur-3xl" />
 
         <Container className="grid min-h-[calc(100vh-4rem)] items-center gap-14 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:py-24">
           <div className="fade-up">
@@ -59,65 +82,69 @@ export default function Home() {
           </div>
 
           <div className="fade-up fade-up-delay-2 relative">
-            <div className="float-slow absolute -left-5 top-12 hidden rounded-3xl border border-white/70 bg-white/75 p-4 shadow-[0_25px_80px_-55px_rgba(15,23,42,0.7)] backdrop-blur-xl md:block">
-              <p className="font-mono text-xs text-slate-500">search intent</p>
-              <p className="mt-1 text-sm font-semibold text-slate-950">
-                学習支援Webアプリ
-              </p>
-            </div>
-            <div className="rounded-[3rem] border border-white/80 bg-white/70 p-3 shadow-[0_45px_140px_-80px_rgba(15,23,42,0.9)] backdrop-blur-2xl">
-              <div className="rounded-[2.55rem] bg-slate-950 p-4 text-white">
-                <div className="rounded-[2.1rem] border border-white/10 bg-[radial-gradient(circle_at_20%_10%,rgba(56,189,248,0.36),transparent_28%),radial-gradient(circle_at_80%_0%,rgba(245,158,11,0.24),transparent_32%),linear-gradient(145deg,#0f172a,#111827_52%,#082f49)] p-6">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-100">
-                        Learning Hub
-                      </p>
-                      <h2 className="mt-2 text-2xl font-semibold tracking-[-0.05em]">
-                        Yuta Eng OS
-                      </h2>
-                    </div>
-                    <span className="rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-semibold text-emerald-100">
-                      Live
-                    </span>
-                  </div>
-
-                  <div className="mt-8 grid gap-3 sm:grid-cols-3">
-                    {apps.map((app) => (
-                      <a
-                        className="group rounded-[1.4rem] border border-white/10 bg-white/[0.08] p-4 backdrop-blur transition hover:-translate-y-1 hover:bg-white/[0.12]"
-                        href={app.href}
-                        key={app.href}
-                        rel="noreferrer noopener"
-                        target="_blank"
-                      >
-                        <p className="font-semibold">{app.name}</p>
-                        <p className="mt-5 text-xs leading-5 text-slate-300">
-                          {app.category}
+            <div className="motion-depth-1 relative">
+              <div className="float-slow absolute -left-5 top-12 hidden rounded-3xl border border-white/70 bg-white/75 p-4 shadow-[0_25px_80px_-55px_rgba(15,23,42,0.7)] backdrop-blur-xl md:block">
+                <p className="font-mono text-xs text-slate-500">
+                  search intent
+                </p>
+                <p className="mt-1 text-sm font-semibold text-slate-950">
+                  学習支援Webアプリ
+                </p>
+              </div>
+              <div className="rounded-[3rem] border border-white/80 bg-white/70 p-3 shadow-[0_45px_140px_-80px_rgba(15,23,42,0.9)] backdrop-blur-2xl">
+                <div className="rounded-[2.55rem] bg-slate-950 p-4 text-white">
+                  <div className="rounded-[2.1rem] border border-white/10 bg-[radial-gradient(circle_at_20%_10%,rgba(56,189,248,0.36),transparent_28%),radial-gradient(circle_at_80%_0%,rgba(245,158,11,0.24),transparent_32%),linear-gradient(145deg,#0f172a,#111827_52%,#082f49)] p-6">
+                    <div className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-100">
+                          Learning Hub
                         </p>
-                        <p className="mt-3 text-xs font-semibold text-sky-100">
-                          Open <span aria-hidden="true">→</span>
-                        </p>
-                      </a>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 grid gap-3 sm:grid-cols-[1.2fr_0.8fr]">
-                    <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.08] p-5">
-                      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
-                        Content Pipeline
-                      </p>
-                      <div className="mt-5 flex items-center gap-2 text-sm text-slate-300">
-                        <span className="h-2 flex-1 rounded-full bg-sky-300" />
-                        <span className="h-2 flex-1 rounded-full bg-cyan-200" />
-                        <span className="h-2 flex-1 rounded-full bg-amber-200" />
+                        <h2 className="mt-2 text-2xl font-semibold tracking-[-0.05em]">
+                          Yuta Eng OS
+                        </h2>
                       </div>
+                      <span className="rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-semibold text-emerald-100">
+                        Live
+                      </span>
                     </div>
-                    <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.08] p-5">
-                      <p className="font-mono text-3xl font-semibold">3</p>
-                      <p className="mt-2 text-xs leading-5 text-slate-300">
-                        初期記事をSEOクラスタに接続
-                      </p>
+
+                    <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                      {apps.map((app) => (
+                        <a
+                          className="group rounded-[1.4rem] border border-white/10 bg-white/[0.08] p-4 backdrop-blur transition hover:-translate-y-1 hover:bg-white/[0.12]"
+                          href={app.href}
+                          key={app.href}
+                          rel="noreferrer noopener"
+                          target="_blank"
+                        >
+                          <p className="font-semibold">{app.name}</p>
+                          <p className="mt-5 text-xs leading-5 text-slate-300">
+                            {app.category}
+                          </p>
+                          <p className="mt-3 text-xs font-semibold text-sky-100">
+                            Open <span aria-hidden="true">→</span>
+                          </p>
+                        </a>
+                      ))}
+                    </div>
+
+                    <div className="mt-4 grid gap-3 sm:grid-cols-[1.2fr_0.8fr]">
+                      <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.08] p-5">
+                        <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-300">
+                          Content Pipeline
+                        </p>
+                        <div className="mt-5 flex items-center gap-2 text-sm text-slate-300">
+                          <span className="h-2 flex-1 rounded-full bg-sky-300" />
+                          <span className="h-2 flex-1 rounded-full bg-cyan-200" />
+                          <span className="h-2 flex-1 rounded-full bg-amber-200" />
+                        </div>
+                      </div>
+                      <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.08] p-5">
+                        <p className="font-mono text-3xl font-semibold">3</p>
+                        <p className="mt-2 text-xs leading-5 text-slate-300">
+                          初期記事をSEOクラスタに接続
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -125,11 +152,10 @@ export default function Home() {
             </div>
           </div>
         </Container>
-      </section>
+      </HeroMotion>
 
       <Container>
         <Section
-          className="fade-up fade-up-delay-1"
           description="既存アプリを再実装せず、Apple Storeの棚のように見つけやすく並べる。各カードは公式の外部導線として機能します。"
           eyebrow="Apps Showcase"
           headerAction={
@@ -139,11 +165,11 @@ export default function Home() {
           }
           title="既存アプリを、きれいに選べる入口へ"
         >
-          <div className="grid gap-5 lg:grid-cols-3">
+          <StaggerReveal className="grid gap-5 lg:grid-cols-3">
             {apps.map((app) => (
               <AppCard app={app} featured key={app.href} />
             ))}
-          </div>
+          </StaggerReveal>
         </Section>
 
         <Section
@@ -151,7 +177,7 @@ export default function Home() {
           eyebrow="SEO Content System"
           title="SEOキーワードを、運用しやすい記事テーマに変換"
         >
-          <div className="grid gap-4 lg:grid-cols-4">
+          <StaggerReveal className="grid gap-4 lg:grid-cols-4">
             {seoClusters.map((cluster) => (
               <Link
                 className="group rounded-[2rem] border border-slate-200 bg-white p-6 transition hover:-translate-y-1 hover:border-sky-200 hover:shadow-[0_24px_80px_-55px_rgba(14,165,233,0.6)]"
@@ -179,6 +205,64 @@ export default function Home() {
                 </div>
               </Link>
             ))}
+          </StaggerReveal>
+        </Section>
+
+        <Section
+          description="スクロールしながら、記事・教材・アプリがどうつながるかを視覚的に追える構成にしています。"
+          eyebrow="Learning Flow"
+          title="情報発信からアプリ導線までを、一本の流れにする"
+        >
+          <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <div className="overflow-hidden rounded-[2.5rem] border border-slate-200 bg-slate-950 p-7 text-white shadow-[0_30px_110px_-80px_rgba(15,23,42,0.95)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-200">
+                  Dynamic Hub
+                </p>
+                <h3 className="text-balance mt-5 font-serif text-4xl font-semibold tracking-[-0.07em]">
+                  読むほど、次に進む場所が見えてくる。
+                </h3>
+                <p className="mt-5 text-sm leading-7 text-slate-300">
+                  このホームページは固定の名刺ではなく、記事、SEOクラスタ、
+                  既存アプリの導線が増えるほど育つ情報ハブです。
+                </p>
+                <div className="mt-8 grid grid-cols-3 gap-2">
+                  {["Blog", "Material", "Apps"].map((item) => (
+                    <div
+                      className="rounded-2xl border border-white/10 bg-white/[0.08] p-3 text-center text-xs font-semibold text-slate-200"
+                      key={item}
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <StaggerReveal className="grid gap-4" step={120}>
+              {learningFlow.map((item, index) => (
+                <article
+                  className="motion-step-card relative overflow-hidden rounded-[2.2rem] border border-slate-200 p-6 shadow-[0_22px_80px_-62px_rgba(15,23,42,0.75)] transition hover:-translate-y-1 hover:border-sky-200"
+                  key={item.title}
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-5">
+                    <div>
+                      <p className="font-mono text-sm font-semibold text-sky-700">
+                        0{index + 1} / {item.label}
+                      </p>
+                      <h3 className="mt-4 text-2xl font-semibold tracking-[-0.05em] text-slate-950">
+                        {item.title}
+                      </h3>
+                    </div>
+                    <span className="rounded-full bg-slate-950 px-3 py-1 text-xs font-semibold text-white">
+                      scroll step
+                    </span>
+                  </div>
+                  <p className="mt-5 text-sm leading-7 text-slate-600">
+                    {item.description}
+                  </p>
+                </article>
+              ))}
+            </StaggerReveal>
           </div>
         </Section>
 
@@ -187,7 +271,7 @@ export default function Home() {
           eyebrow="Focus Areas"
           title="何をしている人か、一瞬で伝わる構造"
         >
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <StaggerReveal className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {focusAreas.map((area, index) => (
               <article
                 className="group rounded-[1.75rem] border border-slate-200 bg-white p-5 transition hover:-translate-y-1 hover:bg-slate-950 hover:text-white"
@@ -204,7 +288,7 @@ export default function Home() {
                 </p>
               </article>
             ))}
-          </div>
+          </StaggerReveal>
         </Section>
 
         <Section
@@ -217,11 +301,11 @@ export default function Home() {
           }
           title="最近の記事"
         >
-          <div className="grid gap-5 md:grid-cols-3">
+          <StaggerReveal className="grid gap-5 md:grid-cols-3">
             {latestPosts.map((post) => (
               <ArticleCard key={post.slug} post={post} />
             ))}
-          </div>
+          </StaggerReveal>
         </Section>
 
         <Section className="pb-24">

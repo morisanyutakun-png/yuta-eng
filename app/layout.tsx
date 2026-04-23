@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist_Mono, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
 
 import { JsonLd } from "@/components/json-ld";
+import { ScrollProgress } from "@/components/scroll-progress";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { siteConfig } from "@/data/site";
@@ -68,6 +69,7 @@ export default function RootLayout({
       className={`${notoSans.variable} ${notoSerif.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <ScrollProgress />
         <JsonLd data={createWebsiteJsonLd()} />
         <SiteHeader />
         <main className="flex-1">{children}</main>

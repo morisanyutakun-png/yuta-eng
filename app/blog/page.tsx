@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { ArticleCard } from "@/components/article-card";
 import { Container } from "@/components/container";
 import { Section } from "@/components/section";
+import { StaggerReveal } from "@/components/stagger-reveal";
 import { seoClusters } from "@/data/seo";
 import { getAllPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
@@ -60,7 +61,7 @@ export default function BlogPage() {
         eyebrow="Keyword Clusters"
         title="狙う検索意図"
       >
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <StaggerReveal className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {seoClusters.map((cluster) => (
             <article className="rounded-[2rem] border border-slate-200 bg-white p-5" key={cluster.primary}>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
@@ -72,16 +73,16 @@ export default function BlogPage() {
               <p className="mt-3 text-sm leading-7 text-slate-600">{cluster.intent}</p>
             </article>
           ))}
-        </div>
+        </StaggerReveal>
       </Section>
 
       <Section className="pt-8" eyebrow="Articles" title="記事一覧">
         {posts.length > 0 ? (
-          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {posts.map((post) => (
               <ArticleCard key={post.slug} post={post} />
             ))}
-          </div>
+          </StaggerReveal>
         ) : (
           <div className="rounded-[2rem] border border-slate-200 bg-white p-8 text-slate-600">
             まだ公開記事はありません。`content/blog` に記事を追加すると一覧に表示されます。

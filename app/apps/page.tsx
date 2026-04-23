@@ -4,6 +4,7 @@ import { AppCard } from "@/components/app-card";
 import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
 import { Section } from "@/components/section";
+import { StaggerReveal } from "@/components/stagger-reveal";
 import { apps } from "@/data/apps";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -37,11 +38,11 @@ export default function AppsPage() {
         eyebrow="Official App Hub"
         title="アプリ一覧"
       >
-        <div className="grid gap-5 lg:grid-cols-3">
+        <StaggerReveal className="grid gap-5 lg:grid-cols-3">
           {apps.map((app) => (
             <AppCard app={app} key={app.href} />
           ))}
-        </div>
+        </StaggerReveal>
       </Section>
 
       <Section className="pb-24">
