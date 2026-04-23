@@ -29,23 +29,23 @@ export default function BlogPage() {
   return (
     <Container>
       <Section className="pb-10">
-        <div className="relative overflow-hidden rounded-[3rem] border border-slate-200 bg-slate-950 p-8 text-white shadow-[0_35px_120px_-85px_rgba(15,23,42,0.95)] sm:p-10 lg:p-12">
-          <div className="absolute right-[-10rem] top-[-10rem] h-96 w-96 rounded-full bg-sky-400/30 blur-3xl" />
-          <div className="absolute bottom-[-12rem] left-[-8rem] h-96 w-96 rounded-full bg-amber-300/20 blur-3xl" />
+        <div className="relative overflow-hidden rounded-[2.2rem] border border-slate-200 bg-slate-950 p-6 text-white shadow-[0_35px_120px_-85px_rgba(15,23,42,0.95)] sm:rounded-[3rem] sm:p-10 lg:p-12">
+          <div className="absolute right-[-10rem] top-[-10rem] hidden h-96 w-96 rounded-full bg-sky-400/30 blur-3xl sm:block" />
+          <div className="absolute bottom-[-12rem] left-[-8rem] hidden h-96 w-96 rounded-full bg-amber-300/20 blur-3xl sm:block" />
           <div className="relative grid gap-10 lg:grid-cols-[1fr_0.44fr] lg:items-end">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-200">
                 Editorial Hub
               </p>
-              <h1 className="text-balance mt-4 font-serif text-5xl font-semibold leading-tight tracking-[-0.08em] sm:text-6xl">
+              <h1 className="text-balance mt-4 font-serif text-4xl font-semibold leading-tight tracking-[-0.08em] sm:text-5xl lg:text-6xl">
                 物理教材・LaTeX教材作成・教育ICTの記事をまとめる。
               </h1>
-              <p className="text-pretty mt-6 max-w-3xl text-lg leading-9 text-slate-300">
+              <p className="text-pretty mt-5 max-w-3xl text-base leading-8 text-slate-300 sm:mt-6 sm:text-lg sm:leading-9">
                 学習支援Webアプリ、教育ICT、物理教材、LaTeX教材作成を中心に、
                 読者が次の行動へ進める記事を蓄積します。
               </p>
             </div>
-            <aside className="rounded-[2rem] border border-white/10 bg-white/[0.08] p-6 backdrop-blur">
+            <aside className="rounded-[1.7rem] border border-white/10 bg-white/[0.08] p-5 backdrop-blur sm:rounded-[2rem] sm:p-6">
               <p className="text-sm font-semibold text-white">Categories</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {categories.map((category) => (
@@ -70,11 +70,11 @@ export default function BlogPage() {
       >
         <StaggerReveal className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {seoClusters.map((cluster) => (
-            <article className="rounded-[2rem] border border-slate-200 bg-white p-5" key={cluster.primary}>
+            <article className="rounded-[1.7rem] border border-slate-200 bg-white p-4 sm:rounded-[2rem] sm:p-5" key={cluster.primary}>
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
                 {cluster.label}
               </p>
-              <h2 className="mt-3 text-xl font-semibold tracking-[-0.04em] text-slate-950">
+              <h2 className="mt-3 text-lg font-semibold tracking-[-0.04em] text-slate-950 sm:text-xl">
                 {cluster.primary}
               </h2>
               <p className="mt-3 text-sm leading-7 text-slate-600">{cluster.intent}</p>
@@ -91,7 +91,7 @@ export default function BlogPage() {
             ))}
           </StaggerReveal>
         ) : (
-          <div className="rounded-[2rem] border border-slate-200 bg-white p-8 text-slate-600">
+          <div className="rounded-[1.7rem] border border-slate-200 bg-white p-6 text-slate-600 sm:rounded-[2rem] sm:p-8">
             まだ公開記事はありません。`content/blog` に記事を追加すると一覧に表示されます。
           </div>
         )}

@@ -25,7 +25,7 @@ export default function StudioPage() {
         eyebrow="Private Tool"
         title="Article Studio"
       >
-        <div className="mb-8 rounded-[2rem] border border-amber-200 bg-amber-50 p-5 text-sm leading-7 text-amber-950">
+        <div className="mb-8 rounded-[1.7rem] border border-amber-200 bg-amber-50 p-4 text-sm leading-7 text-amber-950 sm:rounded-[2rem] sm:p-5">
           Vercel上の公開サイトからリポジトリへ直接書き込む機能は入れていません。
           生成したMDXを `content/blog` に追加してコミットする運用が、今のMVPでは安全で壊れにくいです。
         </div>

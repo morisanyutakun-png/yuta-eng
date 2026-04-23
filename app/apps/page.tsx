@@ -31,10 +31,10 @@ export default function AppsPage() {
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-700">
             Apps
           </p>
-          <h1 className="mt-4 font-serif text-5xl font-semibold leading-tight tracking-[-0.08em] text-slate-950 sm:text-6xl">
+          <h1 className="mt-4 font-serif text-4xl font-semibold leading-tight tracking-[-0.08em] text-slate-950 sm:text-5xl lg:text-6xl">
             学習支援Webアプリへの公式導線を、ひとつの場所に。
           </h1>
-          <p className="mt-6 text-lg leading-9 text-slate-600">
+          <p className="mt-5 text-base leading-8 text-slate-600 sm:mt-6 sm:text-lg sm:leading-9">
             このページはアプリ本体ではなく、すでに存在する外部アプリを紹介する一覧ページです。
             yuta-eng.com はブランドサイト兼公式ハブとして、それぞれの学習支援アプリへ自然に案内します。
           </p>
@@ -46,7 +46,7 @@ export default function AppsPage() {
         eyebrow="Official App Hub"
         title="アプリ一覧"
       >
-        <StaggerReveal className="grid gap-5 lg:grid-cols-3">
+        <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {apps.map((app) => (
             <AppCard app={app} key={app.href} />
           ))}
@@ -54,25 +54,27 @@ export default function AppsPage() {
       </Section>
 
       <Section className="pb-24">
-        <div className="rounded-[2.5rem] border border-slate-200 bg-white p-8 sm:p-10">
+        <div className="rounded-[2rem] border border-slate-200 bg-white p-6 sm:rounded-[2.5rem] sm:p-10">
           <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-700">
                 For Visitors
               </p>
-              <h2 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-slate-950">
+              <h2 className="mt-4 text-2xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-3xl">
                 アプリの背景や制作思想は Blog / About で読めます。
               </h2>
-              <p className="mt-4 text-base leading-8 text-slate-600">
+              <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
                 アプリを使う前に、教材制作や学習支援への考え方を知りたい場合は、
                 About や Blog から読むと全体像を把握しやすくなります。
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <ButtonLink href="/about" variant="secondary">
+            <div className="grid gap-3 sm:flex sm:flex-wrap">
+              <ButtonLink className="w-full sm:w-auto" href="/about" variant="secondary">
                 Aboutへ
               </ButtonLink>
-              <ButtonLink href="/blog">Blogへ</ButtonLink>
+              <ButtonLink className="w-full sm:w-auto" href="/blog">
+                Blogへ
+              </ButtonLink>
             </div>
           </div>
         </div>

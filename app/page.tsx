@@ -351,18 +351,18 @@ export default function Home() {
       <HeroMotion className="home-hero relative isolate overflow-hidden">
         <div className="ambient-grid absolute inset-0 -z-30" />
         <div className="home-aurora absolute inset-0 -z-20" />
-        <div className="hero-glow absolute left-[8%] top-28 -z-10 h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(125,211,252,0.42),rgba(56,189,248,0.16)_44%,transparent_70%)] blur-3xl" />
-        <div className="motion-depth-2 absolute right-[-12rem] top-10 -z-10 h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(circle,rgba(253,186,116,0.38),rgba(250,204,21,0.12)_48%,transparent_70%)] blur-3xl" />
+        <div className="hero-glow absolute left-[8%] top-20 -z-10 hidden h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle,rgba(125,211,252,0.42),rgba(56,189,248,0.16)_44%,transparent_70%)] blur-3xl sm:top-28 sm:block sm:h-[28rem] sm:w-[28rem]" />
+        <div className="motion-depth-2 absolute right-[-12rem] top-10 -z-10 hidden h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(circle,rgba(253,186,116,0.38),rgba(250,204,21,0.12)_48%,transparent_70%)] blur-3xl lg:block" />
 
-        <Container className="grid min-h-[calc(100vh-4rem)] items-center gap-14 py-16 lg:grid-cols-[0.94fr_1.06fr] lg:py-24">
+        <Container className="grid min-h-[calc(100vh-3.75rem)] items-center gap-10 py-12 sm:min-h-[calc(100vh-4rem)] sm:gap-14 sm:py-16 lg:grid-cols-[0.94fr_1.06fr] lg:py-24">
           <div className="fade-up">
             <p className="liquid-glass inline-flex rounded-full px-4 py-2 text-sm font-semibold text-slate-700">
               森祐太の教育開発ハブ
             </p>
-            <h1 className="text-balance mt-7 max-w-5xl font-serif text-5xl font-semibold leading-[1.03] tracking-[-0.095em] text-slate-950 sm:text-6xl lg:text-7xl">
+            <h1 className="text-balance mt-7 max-w-5xl font-serif text-[2.3rem] font-semibold leading-[1.06] tracking-[-0.085em] text-slate-950 sm:text-5xl sm:leading-[1.03] lg:text-7xl">
               高校物理・教材制作・学習アプリをつなぐ、教育開発ハブ。
             </h1>
-            <p className="text-pretty mt-7 max-w-2xl text-lg leading-9 text-slate-600">
+            <p className="text-pretty mt-6 max-w-2xl text-base leading-8 text-slate-600 sm:mt-7 sm:text-lg sm:leading-9">
               Yuta Eng は、高校物理の理解を支える記事、AIとLaTeXを使った
               教材制作の知見、学習支援アプリへの入口をまとめた公式ハブです。
               学びたい人も、教材を作りたい人も、目的に合わせて次の一歩を選べます。
@@ -374,17 +374,21 @@ export default function Home() {
                 </span>
               ))}
             </div>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <ButtonLink href="/blog/physics-material-creation">
+            <div className="mt-9 grid gap-3 sm:flex sm:flex-wrap">
+              <ButtonLink className="w-full sm:w-auto" href="/blog/physics-material-creation">
                 高校物理から読む
               </ButtonLink>
-              <ButtonLink href="/blog/latex-web-workflow" variant="secondary">
+              <ButtonLink
+                className="w-full sm:w-auto"
+                href="/blog/latex-web-workflow"
+                variant="secondary"
+              >
                 教材制作を読む
               </ButtonLink>
-              <ButtonLink href="/apps" variant="secondary">
+              <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
                 学習アプリを選ぶ
               </ButtonLink>
-              <ButtonLink href="/contact" variant="ghost">
+              <ButtonLink className="w-full sm:w-auto" href="/contact" variant="ghost">
                 相談する
               </ButtonLink>
             </div>
@@ -410,15 +414,15 @@ export default function Home() {
                   高校物理の理解
                 </p>
               </div>
-              <div className="studio-device rounded-[3.2rem] p-3 shadow-[0_45px_140px_-78px_rgba(15,23,42,0.72)]">
-                <div className="rounded-[2.75rem] bg-white p-4">
-                  <div className="studio-screen relative overflow-hidden rounded-[2.35rem] p-6">
+              <div className="studio-device rounded-[2.4rem] p-2.5 shadow-[0_45px_140px_-78px_rgba(15,23,42,0.72)] sm:rounded-[3.2rem] sm:p-3">
+                <div className="rounded-[2rem] bg-white p-3 sm:rounded-[2.75rem] sm:p-4">
+                  <div className="studio-screen relative overflow-hidden rounded-[1.75rem] p-4 sm:rounded-[2.35rem] sm:p-6">
                     <div className="relative flex items-center justify-between gap-4">
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">
                           Learning Studio
                         </p>
-                        <p className="mt-2 text-3xl font-semibold tracking-[-0.06em] text-slate-950">
+                        <p className="mt-2 text-2xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-3xl">
                           Physics OS
                         </p>
                       </div>
@@ -430,10 +434,10 @@ export default function Home() {
                     <div className="relative mt-8 grid gap-3">
                       {studioTiles.map((tile, index) => (
                         <div
-                          className="studio-tile grid gap-4 rounded-[1.65rem] p-4 sm:grid-cols-[auto_1fr]"
+                          className="studio-tile grid gap-4 rounded-[1.45rem] p-3.5 sm:rounded-[1.65rem] sm:p-4 sm:grid-cols-[auto_1fr]"
                           key={tile.title}
                         >
-                          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 font-mono text-sm font-semibold text-white">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 font-mono text-sm font-semibold text-white sm:h-12 sm:w-12">
                             0{index + 1}
                           </div>
                           <div>
@@ -451,7 +455,7 @@ export default function Home() {
                       ))}
                     </div>
 
-                    <div className="relative mt-4 grid gap-3 sm:grid-cols-3">
+                    <div className="relative mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
                       {homeApps.map((app) => (
                         <a
                           className="app-dock-card rounded-[1.35rem] p-4 transition hover:-translate-y-1"
@@ -481,10 +485,10 @@ export default function Home() {
           eyebrow="Purpose Guide"
           title="目的に合わせて入口を選ぶ"
         >
-          <StaggerReveal className="grid gap-5 lg:grid-cols-3">
+          <StaggerReveal className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {visitorPaths.map((path) => (
               <Link
-                className="intent-lens-card group relative flex min-h-80 flex-col overflow-hidden rounded-[2.6rem] p-6 transition hover:-translate-y-1"
+                className="intent-lens-card group relative flex min-h-[18rem] flex-col overflow-hidden rounded-[2rem] p-5 transition hover:-translate-y-1 sm:min-h-80 sm:rounded-[2.6rem] sm:p-6"
                 href={path.href}
                 key={path.title}
               >
@@ -492,14 +496,14 @@ export default function Home() {
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
                     {path.label}
                   </p>
-                  <h2 className="text-balance mt-5 text-3xl font-semibold tracking-[-0.06em] text-slate-950">
+                  <h2 className="text-balance mt-4 text-2xl font-semibold tracking-[-0.06em] text-slate-950 sm:mt-5 sm:text-3xl">
                     {path.title}
                   </h2>
-                  <p className="mt-5 rounded-2xl bg-white/70 p-4 text-sm leading-7 text-slate-600 shadow-sm backdrop-blur">
+                  <p className="mt-4 rounded-2xl bg-white/70 p-4 text-sm leading-7 text-slate-600 shadow-sm backdrop-blur sm:mt-5">
                     {path.query}
                   </p>
                 </div>
-                <div className="relative mt-auto pt-12">
+                <div className="relative mt-auto pt-9 sm:pt-12">
                   <p className="text-sm leading-7 text-slate-600">
                     {path.description}
                   </p>
@@ -520,11 +524,11 @@ export default function Home() {
           <StaggerReveal className="grid gap-4 md:grid-cols-3">
             {actionCards.map((card) => (
               <Link
-                className="action-card group rounded-[2.2rem] p-6 transition hover:-translate-y-1"
+                className="action-card group rounded-[1.85rem] p-5 transition hover:-translate-y-1 sm:rounded-[2.2rem] sm:p-6"
                 href={card.href}
                 key={card.title}
               >
-                <h2 className="text-2xl font-semibold tracking-[-0.05em] text-slate-950">
+                <h2 className="text-xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-2xl">
                   {card.title}
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-slate-600">{card.text}</p>
@@ -540,13 +544,13 @@ export default function Home() {
           description="Eddivom、IT Pass、Physics への公式リンクをまとめています。外部アプリであることを明示しながら、用途が一目で分かる入口にしています。"
           eyebrow="Apps Hub"
           headerAction={
-            <ButtonLink href="/apps" variant="secondary">
+            <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
               アプリ一覧へ
             </ButtonLink>
           }
           title="学習支援アプリへ迷わず移動する"
         >
-          <StaggerReveal className="grid gap-5 lg:grid-cols-3">
+          <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {homeApps.map((app) => (
               <AppCard app={app} featured key={app.href} />
             ))}
@@ -561,14 +565,14 @@ export default function Home() {
           <StaggerReveal className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {topicMapCards.map((cluster) => (
               <Link
-                className="seo-cluster-card group rounded-[2rem] p-6 transition hover:-translate-y-1"
+                className="seo-cluster-card group rounded-[1.8rem] p-5 transition hover:-translate-y-1 sm:rounded-[2rem] sm:p-6"
                 href={cluster.route}
                 key={cluster.primary}
               >
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
                   {cluster.label}
                 </p>
-                <h2 className="mt-4 text-2xl font-semibold tracking-[-0.05em] text-slate-950">
+                <h2 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-2xl">
                   {cluster.title}
                 </h2>
                 <p className="mt-4 text-sm leading-7 text-slate-600">
@@ -602,11 +606,11 @@ export default function Home() {
           title="迷いにくく、戻りやすい学びの設計"
         >
           <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="canva-board relative overflow-hidden rounded-[3rem] border border-white/80 p-6 shadow-[0_35px_130px_-90px_rgba(15,23,42,0.72)]">
+            <div className="canva-board relative overflow-hidden rounded-[2.2rem] border border-white/80 p-4 shadow-[0_35px_130px_-90px_rgba(15,23,42,0.72)] sm:rounded-[3rem] sm:p-6">
               <div className="grid gap-4 sm:grid-cols-2">
                 {designSystemNotes.map((note, index) => (
                   <article
-                    className="rounded-[2rem] border border-white/80 bg-white/80 p-5 backdrop-blur-xl"
+                    className="rounded-[1.55rem] border border-white/80 bg-white/80 p-4 backdrop-blur-xl sm:rounded-[2rem] sm:p-5"
                     key={note}
                   >
                     <p className="font-mono text-xs text-sky-700">
@@ -622,13 +626,13 @@ export default function Home() {
             <div className="grid gap-4">
               {psychologyCards.map((card, index) => (
                 <article
-                  className="psychology-card rounded-[2rem] p-6"
+                  className="psychology-card rounded-[1.75rem] p-5 sm:rounded-[2rem] sm:p-6"
                   key={card.title}
                 >
                   <p className="font-mono text-xs font-semibold text-sky-700">
                     0{index + 1}
                   </p>
-                  <h2 className="mt-4 text-2xl font-semibold tracking-[-0.05em] text-slate-950">
+                  <h2 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-2xl">
                     {card.title}
                   </h2>
                   <p className="mt-3 text-sm leading-7 text-slate-600">
@@ -647,11 +651,11 @@ export default function Home() {
         >
           <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
             <div className="lg:sticky lg:top-28 lg:self-start">
-              <div className="overflow-hidden rounded-[2.5rem] border border-white/15 bg-slate-950 p-7 text-white shadow-[0_30px_110px_-80px_rgba(15,23,42,0.95)]">
+              <div className="overflow-hidden rounded-[2rem] border border-white/15 bg-slate-950 p-6 text-white shadow-[0_30px_110px_-80px_rgba(15,23,42,0.95)] sm:rounded-[2.5rem] sm:p-7">
                 <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-200">
                   Learning Hub
                 </p>
-                <h2 className="text-balance mt-5 font-serif text-4xl font-semibold tracking-[-0.07em]">
+                <h2 className="text-balance mt-5 font-serif text-3xl font-semibold tracking-[-0.07em] sm:text-4xl">
                   読むほど、次に試す場所が見えてくる。
                 </h2>
                 <p className="mt-5 text-sm leading-7 text-slate-300">
@@ -673,7 +677,7 @@ export default function Home() {
             <StaggerReveal className="grid gap-4" step={120}>
               {learningFlow.map((item, index) => (
                 <article
-                  className="motion-step-card relative overflow-hidden rounded-[2.2rem] border border-slate-200 p-6 shadow-[0_22px_80px_-62px_rgba(15,23,42,0.75)] transition hover:-translate-y-1 hover:border-sky-200"
+                  className="motion-step-card relative overflow-hidden rounded-[1.85rem] border border-slate-200 p-5 shadow-[0_22px_80px_-62px_rgba(15,23,42,0.75)] transition hover:-translate-y-1 hover:border-sky-200 sm:rounded-[2.2rem] sm:p-6"
                   key={item.title}
                 >
                   <div className="flex flex-wrap items-start justify-between gap-5">
@@ -681,7 +685,7 @@ export default function Home() {
                       <p className="font-mono text-sm font-semibold text-sky-700">
                         0{index + 1} / {item.label}
                       </p>
-                      <h2 className="mt-4 text-2xl font-semibold tracking-[-0.05em] text-slate-950">
+                      <h2 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-2xl">
                         {item.title}
                       </h2>
                     </div>
@@ -749,13 +753,13 @@ export default function Home() {
           description="高校物理、教材制作、教育ICTの考え方を、実際に読んで使える形で整理しています。"
           eyebrow="Latest Articles"
           headerAction={
-            <ButtonLink href="/blog" variant="secondary">
+            <ButtonLink className="w-full sm:w-auto" href="/blog" variant="secondary">
               Blog一覧へ
             </ButtonLink>
           }
           title="最近の記事から学ぶ"
         >
-          <StaggerReveal className="grid gap-5 md:grid-cols-3">
+          <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {latestPosts.map((post) => (
               <ArticleCard key={post.slug} post={post} />
             ))}
@@ -763,26 +767,28 @@ export default function Home() {
         </Section>
 
         <Section className="pb-24">
-          <div className="final-cta overflow-hidden rounded-[2.9rem] p-1 shadow-[0_30px_110px_-80px_rgba(15,23,42,0.75)]">
-            <div className="grid gap-0 rounded-[2.65rem] bg-white/[0.86] backdrop-blur-xl lg:grid-cols-[0.9fr_1.1fr]">
-              <div className="relative overflow-hidden rounded-[2.65rem] bg-[radial-gradient(circle_at_20%_20%,rgba(125,211,252,0.42),transparent_35%),linear-gradient(145deg,#0f172a,#0f766e)] p-8 text-white sm:p-10">
+          <div className="final-cta overflow-hidden rounded-[2.2rem] p-1 shadow-[0_30px_110px_-80px_rgba(15,23,42,0.75)] sm:rounded-[2.9rem]">
+            <div className="grid gap-0 rounded-[2rem] bg-white/[0.86] backdrop-blur-xl sm:rounded-[2.65rem] lg:grid-cols-[0.9fr_1.1fr]">
+              <div className="relative overflow-hidden rounded-[2rem] bg-[radial-gradient(circle_at_20%_20%,rgba(125,211,252,0.42),transparent_35%),linear-gradient(145deg,#0f172a,#0f766e)] p-6 text-white sm:rounded-[2.65rem] sm:p-10">
                 <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-100">
                   Start Here
                 </p>
-                <h2 className="text-balance mt-4 font-serif text-4xl font-semibold tracking-[-0.06em]">
+                <h2 className="text-balance mt-4 font-serif text-3xl font-semibold tracking-[-0.06em] sm:text-4xl">
                   高校物理、教材制作、学習アプリをひとつの流れへ。
                 </h2>
               </div>
-              <div className="p-8 sm:p-10">
-                <p className="text-pretty text-base leading-8 text-slate-600">
+              <div className="p-6 sm:p-10">
+                <p className="text-pretty text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
                   森祐太の Yuta Eng は、物理を学ぶ人、教材を作る人、
                   学習アプリを探す人が同じ文脈で次へ進める場所です。
                   記事で考え方を読み、教材制作で形にし、必要なアプリへつなげる。
                   その流れを、落ち着いて選べる公式ハブとして育てています。
                 </p>
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <ButtonLink href="/about">制作思想を読む</ButtonLink>
-                  <ButtonLink href="/contact" variant="secondary">
+                <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
+                  <ButtonLink className="w-full sm:w-auto" href="/about">
+                    制作思想を読む
+                  </ButtonLink>
+                  <ButtonLink className="w-full sm:w-auto" href="/contact" variant="secondary">
                     相談する
                   </ButtonLink>
                 </div>

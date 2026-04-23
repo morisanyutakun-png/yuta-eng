@@ -23,7 +23,13 @@ export function HeroMotion({ children, className }: HeroMotionProps) {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (prefersReducedMotion) {
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+    const isCompactViewport = window.matchMedia("(max-width: 1023px)").matches;
+
+    if (prefersReducedMotion || isTouchDevice || isCompactViewport) {
+      stageElement.style.setProperty("--pointer-x", "0");
+      stageElement.style.setProperty("--pointer-y", "0");
+      stageElement.style.setProperty("--scroll-depth", "0");
       return;
     }
 

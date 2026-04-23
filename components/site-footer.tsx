@@ -7,7 +7,7 @@ import { footerSocialLinks, navItems, siteConfig } from "@/data/site";
 export function SiteFooter() {
   return (
     <footer className="border-t border-slate-200 bg-slate-950 text-white">
-      <Container className="py-14">
+      <Container className="py-12 sm:py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Link className="inline-flex items-center gap-3" href="/">
@@ -21,7 +21,7 @@ export function SiteFooter() {
                 </span>
               </span>
             </Link>
-            <p className="mt-5 max-w-sm text-sm leading-7 text-slate-300">
+            <p className="mt-5 max-w-sm text-sm leading-6 text-slate-300 sm:leading-7">
               教育、物理、LaTeX、教材制作、学習支援Webアプリをつなぐ公式サイトです。
               ブログと既存アプリへの導線を通じて、学びの設計を発信します。
             </p>
@@ -71,7 +71,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-slate-400 sm:mt-12 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {siteConfig.name}. All rights reserved.</p>
           <p>Built with Next.js, TypeScript, and Tailwind CSS.</p>
         </div>

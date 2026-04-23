@@ -29,7 +29,7 @@ export function ButtonLink({
 }: ButtonLinkProps) {
   const isExternal = external ?? href.startsWith("http");
   const sharedClassName = cn(
-    "inline-flex min-h-11 items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition duration-300",
+    "inline-flex min-h-12 items-center justify-center rounded-full px-4 py-2.5 text-[0.92rem] font-semibold leading-none transition duration-300 sm:px-5 sm:text-sm",
     variants[variant],
     className,
   );

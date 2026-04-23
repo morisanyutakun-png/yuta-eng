@@ -40,7 +40,9 @@ export function ScrollReveal({
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (prefersReducedMotion) {
+    const isCompactViewport = window.matchMedia("(max-width: 767px)").matches;
+
+    if (prefersReducedMotion || isCompactViewport) {
       return;
     }
 

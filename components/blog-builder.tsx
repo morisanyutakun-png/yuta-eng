@@ -112,7 +112,7 @@ ${body}`;
 
   return (
     <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
-      <div className="rounded-[2.5rem] border border-slate-200 bg-white p-6 shadow-[0_24px_90px_-70px_rgba(15,23,42,0.7)] sm:p-8">
+      <div className="rounded-[2rem] border border-slate-200 bg-white p-5 shadow-[0_24px_90px_-70px_rgba(15,23,42,0.7)] sm:rounded-[2.5rem] sm:p-8">
         <div className="grid gap-5">
           <Field label="タイトル">
             <input
@@ -122,14 +122,14 @@ ${body}`;
             />
           </Field>
           <Field label="URLスラッグ / ファイル名（英数字推奨）">
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <input
                 className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-sky-300 focus:bg-white"
                 onChange={(event) => setSlug(slugify(event.target.value))}
                 value={slug}
               />
               <button
-                className="shrink-0 rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+                className="shrink-0 rounded-2xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 sm:min-w-20"
                 onClick={() => setSlug(slugify(title))}
                 type="button"
               >
@@ -208,7 +208,7 @@ ${body}`;
         </div>
       </div>
 
-      <div className="rounded-[2.5rem] border border-slate-200 bg-slate-950 p-6 text-white shadow-[0_24px_90px_-70px_rgba(15,23,42,0.8)] sm:p-8">
+      <div className="rounded-[2rem] border border-slate-200 bg-slate-950 p-5 text-white shadow-[0_24px_90px_-70px_rgba(15,23,42,0.8)] sm:rounded-[2.5rem] sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-sky-200">
@@ -218,16 +218,16 @@ ${body}`;
               保存先: content/blog/{fileSlug}.mdx
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid w-full gap-2 sm:flex sm:w-auto sm:flex-wrap">
             <button
-              className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-slate-200"
+              className="min-h-11 rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-slate-200"
               onClick={copyMdx}
               type="button"
             >
               {copied ? "コピー済み" : "コピー"}
             </button>
             <button
-              className="rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
+              className="min-h-11 rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
               onClick={downloadMdx}
               type="button"
             >
@@ -235,7 +235,7 @@ ${body}`;
             </button>
           </div>
         </div>
-        <pre className="mt-6 max-h-[46rem] overflow-auto rounded-[1.75rem] border border-white/10 bg-black/35 p-5 text-xs leading-6 text-slate-200">
+        <pre className="mt-6 max-h-[32rem] overflow-auto rounded-[1.5rem] border border-white/10 bg-black/35 p-4 text-[0.72rem] leading-6 text-slate-200 sm:max-h-[46rem] sm:rounded-[1.75rem] sm:p-5 sm:text-xs">
           <code>{mdx}</code>
         </pre>
       </div>

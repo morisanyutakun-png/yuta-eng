@@ -53,11 +53,11 @@ export default function AboutPage() {
             <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-700">
               About
             </p>
-            <h1 className="mt-4 font-serif text-5xl font-semibold leading-tight tracking-[-0.08em] text-slate-950 sm:text-6xl">
+            <h1 className="mt-4 font-serif text-4xl font-semibold leading-tight tracking-[-0.08em] text-slate-950 sm:text-5xl lg:text-6xl">
               教育ICT・物理教材・LaTeX教材作成で、学びの体験を整える。
             </h1>
           </div>
-          <p className="text-lg leading-9 text-slate-600">
+          <p className="text-base leading-8 text-slate-600 sm:text-lg sm:leading-9">
             yuta-eng.com は、教育、物理、LaTeX、学習支援Webアプリを軸に、
             学習者が理解へ進みやすい環境を作るための公式サイトです。
             個人ブランドとしての信頼を蓄積しながら、ブログと既存アプリへの導線を育てていきます。
@@ -71,19 +71,19 @@ export default function AboutPage() {
         title="専門性の中心"
       >
         <div className="grid gap-5 md:grid-cols-3">
-          <article className="rounded-[2rem] border border-slate-200 bg-white p-6 md:col-span-2">
-            <h2 className="text-2xl font-semibold tracking-[-0.04em] text-slate-950">
+          <article className="rounded-[1.7rem] border border-slate-200 bg-white p-5 md:col-span-2 md:p-6 md:rounded-[2rem]">
+            <h2 className="text-xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-2xl">
               教育分野への関心
             </h2>
-            <p className="mt-4 text-base leading-8 text-slate-600">
+            <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
               学習は、単に情報を読むだけでは前に進みにくいものです。
               どの順で理解するか、どこで練習するか、どのタイミングで復習に戻るか。
               そうした学びの構造を、教材とWeb体験の両面から設計することに関心があります。
             </p>
           </article>
-          <article className="rounded-[2rem] border border-slate-200 bg-slate-950 p-6 text-white">
-            <h2 className="text-2xl font-semibold tracking-[-0.04em]">物理への関心</h2>
-            <p className="mt-4 text-base leading-8 text-slate-300">
+          <article className="rounded-[1.7rem] border border-slate-200 bg-slate-950 p-5 text-white sm:rounded-[2rem] sm:p-6">
+            <h2 className="text-xl font-semibold tracking-[-0.04em] sm:text-2xl">物理への関心</h2>
+            <p className="mt-4 text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
               物理を、公式暗記ではなく概念、現象、数式、演習のつながりとして捉え直すことを重視します。
             </p>
           </article>
@@ -98,7 +98,7 @@ export default function AboutPage() {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {skills.map((skill) => (
             <div
-              className="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm font-semibold text-slate-700"
+              className="rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-semibold text-slate-700 sm:px-5 sm:py-4"
               key={skill}
             >
               {skill}
@@ -114,8 +114,8 @@ export default function AboutPage() {
       >
         <div className="grid gap-5 md:grid-cols-2">
           {focusAreas.map((area) => (
-            <article className="rounded-[2rem] border border-slate-200 bg-white p-6" key={area.title}>
-              <h2 className="text-xl font-semibold tracking-[-0.04em] text-slate-950">
+            <article className="rounded-[1.7rem] border border-slate-200 bg-white p-5 sm:rounded-[2rem] sm:p-6" key={area.title}>
+              <h2 className="text-lg font-semibold tracking-[-0.04em] text-slate-950 sm:text-xl">
                 {area.title}
               </h2>
               <p className="mt-3 text-sm leading-7 text-slate-600">{area.description}</p>
@@ -131,8 +131,8 @@ export default function AboutPage() {
       >
         <div className="grid gap-5 md:grid-cols-3">
           {philosophy.map((item) => (
-            <article className="rounded-[2rem] border border-slate-200 bg-white p-6" key={item.title}>
-              <h2 className="text-xl font-semibold tracking-[-0.04em] text-slate-950">
+            <article className="rounded-[1.7rem] border border-slate-200 bg-white p-5 sm:rounded-[2rem] sm:p-6" key={item.title}>
+              <h2 className="text-lg font-semibold tracking-[-0.04em] text-slate-950 sm:text-xl">
                 {item.title}
               </h2>
               <p className="mt-4 text-sm leading-7 text-slate-600">{item.text}</p>
@@ -142,21 +142,23 @@ export default function AboutPage() {
       </Section>
 
       <Section className="pb-24">
-        <div className="rounded-[2.5rem] border border-slate-200 bg-gradient-to-br from-white via-sky-50 to-amber-50 p-8 sm:p-10">
+        <div className="rounded-[2rem] border border-slate-200 bg-gradient-to-br from-white via-sky-50 to-amber-50 p-6 sm:rounded-[2.5rem] sm:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-700">
             Vision
           </p>
-          <h2 className="mt-4 max-w-3xl font-serif text-4xl font-semibold tracking-[-0.06em] text-slate-950">
+          <h2 className="mt-4 max-w-3xl font-serif text-3xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-4xl">
             ブログ、教材、アプリが自然につながる学習基盤へ。
           </h2>
-          <p className="mt-5 max-w-3xl text-base leading-8 text-slate-600">
+          <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
             今後は、ブログで蓄積した知見を教材制作や既存アプリの改善へ接続し、
             yuta-eng.com 全体を教育・物理・学習支援のハブとして育てていきます。
             実績や制作物が増えても、情報が散らばらず、読者が必要な場所へ進める構造を保ちます。
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink href="/blog">記事を読む</ButtonLink>
-            <ButtonLink href="/apps" variant="secondary">
+          <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap">
+            <ButtonLink className="w-full sm:w-auto" href="/blog">
+              記事を読む
+            </ButtonLink>
+            <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
               アプリを見る
             </ButtonLink>
           </div>

@@ -20,6 +20,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans-jp), "Hiragino Sans", "Yu Gothic", sans-serif;
+  overflow-x: clip;
   text-rendering: optimizeLegibility;
 }
 
@@ -527,6 +528,100 @@ a {
   background: transparent;
   padding: 0;
   color: inherit;
+}
+
+@media (max-width: 1023px) {
+  .scroll-reveal {
+    filter: blur(8px);
+    transform: translate3d(0, var(--reveal-y), 0) scale(0.985);
+    transition-duration: 0.58s;
+  }
+
+  .motion-depth-1,
+  .motion-depth-2,
+  .motion-depth-3 {
+    transform: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .scroll-reveal,
+  .scroll-reveal.is-visible {
+    filter: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .home-aurora {
+    filter: blur(30px);
+    opacity: 0.56;
+    transform: scale(1.03);
+  }
+
+  .ambient-grid {
+    background-size: 32px 32px;
+    opacity: 0.4;
+  }
+
+  .liquid-glass,
+  .studio-tile,
+  .app-dock-card {
+    backdrop-filter: blur(14px);
+  }
+
+  .keyword-pill {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.66rem;
+  }
+
+  .studio-screen::before,
+  .canva-board::before {
+    background-size: 22px 22px;
+  }
+
+  .intent-lens-card::before,
+  .seo-cluster-card::before,
+  .action-card::before,
+  .visual-path-card::before,
+  .shine-card::before {
+    display: none;
+  }
+
+  .article-content {
+    font-size: 1rem;
+    line-height: 1.86;
+  }
+
+  .article-content h2 {
+    margin-top: 2.2rem;
+    font-size: 1.6rem;
+    line-height: 1.4;
+  }
+
+  .article-content h3 {
+    margin-top: 1.9rem;
+    font-size: 1.2rem;
+  }
+
+  .article-content p,
+  .article-content ul,
+  .article-content ol,
+  .article-content blockquote,
+  .article-content pre {
+    margin-top: 1.1rem;
+  }
+
+  .article-content blockquote {
+    padding: 0.9rem 1rem;
+  }
+
+  .article-content pre {
+    border-radius: 1rem;
+    padding: 1rem;
+    font-size: 0.84rem;
+    line-height: 1.7;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
