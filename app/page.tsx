@@ -26,6 +26,7 @@ import { focusAreas } from "@/data/focus-areas";
 import {
   designSystemNotes,
   homepageAnswers,
+  upcomingBlogThemes,
   visitorPaths,
 } from "@/data/home";
 import { seoClusters } from "@/data/seo";
@@ -41,8 +42,8 @@ import {
 
 const heroFocuses = [
   "高校物理を主力カテゴリに据える",
-  "教材制作は AI・LaTeX・Web で育てる",
-  "Apps は実践に進む公式導線として置く",
+  "AI・LaTeXで教材制作を支える",
+  "EddivomなどのWebアプリへつなぐ",
 ];
 
 const heroStats = [
@@ -56,7 +57,7 @@ const heroStats = [
   },
   {
     value: "Use",
-    label: "Apps を学びを進める実践導線として案内する",
+    label: "Eddivomなどの学習支援Webアプリへつなぐ",
   },
 ];
 
@@ -89,8 +90,8 @@ const learningFlow = [
       "生成AIを下書きや問題案に使い、LaTeXやWebで再利用しやすい教材へ整えます。",
   },
   {
-    label: "Practice Apps",
-    title: "実践導線として学習支援アプリへつなぐ",
+    label: "Eddivom / Apps",
+    title: "実践導線としてEddivomなどの学習支援アプリへつなぐ",
     description:
       "記事や教材で整理した内容を、必要なタイミングで Eddivom、IT Pass、Physics へつなげます。",
   },
@@ -127,7 +128,7 @@ const aboutHighlights = [
   {
     label: "Apps",
     title: "学習支援アプリを実践導線として運用する",
-    text: "Eddivom、IT Pass、Physics を、読んで終わりにしないための次の一歩として案内します。",
+    text: "Eddivomなどの学習支援Webアプリを、読んで終わりにしないための次の一歩として案内します。",
   },
 ];
 
@@ -136,8 +137,9 @@ const homeApps = apps.map((app) => {
     return {
       ...app,
       description:
-        "教育コンテンツや学習導線を整理したい人向けの外部アプリです。教材や学習環境の全体像を見たいときに使えます。",
-      status: "外部アプリ",
+        "Eddivomは、AIとLaTeXを活用して、小テスト・類題・解答PDFなどの教材作成を支援するWebアプリです。下書きから学習者に渡せる形へ整える流れをサポートします。",
+      audience: "塾講師・教材制作者・物理や数学のプリントを作りたい教育関係者",
+      status: "教材作成ツール",
     };
   }
 
@@ -184,15 +186,15 @@ const topicMapCopy: Record<
     ],
   },
   "教材作成AI 自動": {
-    title: "AIで教材制作を整える",
+    title: "AI教材作成をEddivomにつなぐ",
     summary:
-      "生成AIを下書きや問題案に使い、LaTeXやWebで更新しやすい教材へ仕上げます。",
-    themes: ["生成AI", "教材制作", "LaTeX", "問題案", "Web展開"],
+      "AI 教材作成の下書きから、小テスト作成、類題作成、解答PDFの準備までを、Eddivomなどの教材制作ツールへつながる流れで整理します。",
+    themes: ["AI 教材作成", "小テスト作成", "類題作成", "解答PDF", "Eddivom"],
     paths: [
-      "AIで授業プリントの下書きを作りたい",
-      "問題集をLaTeXで管理したい",
-      "教材制作の手戻りを減らしたい",
-      "AI任せにしない編集手順を知りたい",
+      "AIで小テストの下書きを作りたい",
+      "類題作成を効率化したい",
+      "解答PDFまで見据えて教材を整えたい",
+      "Eddivomで教材作成の流れを支えたい",
     ],
   },
   "GIGAスクール 教材作成": {
@@ -234,13 +236,13 @@ const topicMapCopy: Record<
   "LaTeX 教材作成": {
     title: "LaTeX教材を育てる",
     summary:
-      "数式を含む教材や問題集を、印刷物にもWebにも展開しやすい形で管理します。",
-    themes: ["LaTeX", "数式組版", "問題集", "MDX", "教材管理"],
+      "LaTeX 教材作成で数式プリントや問題集を再利用しやすく整え、印刷物からWeb展開まで扱いやすい教材資産として管理します。",
+    themes: ["LaTeX 教材作成", "数式プリント", "問題集", "再利用", "Web展開"],
     paths: [
-      "LaTeX教材をWebにも使いたい",
-      "問題集を再利用しやすくしたい",
-      "数式教材のテンプレートを整えたい",
-      "ブログと教材をつなげたい",
+      "LaTeX教材をWeb展開にも使いたい",
+      "数式プリントを再利用しやすくしたい",
+      "問題集を更新しやすい形で管理したい",
+      "ブログと教材制作をつなげたい",
     ],
   },
   "EdTech 個人ブランドサイト": {
@@ -365,15 +367,15 @@ export default function Home() {
         <Container className="grid min-h-[calc(100vh-3.75rem)] items-center gap-10 py-10 sm:min-h-[calc(100vh-4rem)] sm:gap-14 sm:py-16 lg:grid-cols-[0.94fr_1.06fr] lg:py-24">
           <div className="fade-up">
             <p className="liquid-glass inline-flex rounded-full px-4 py-2 text-sm font-semibold text-slate-700">
-              森祐太 | 教育開発 / 高校物理 / 教材制作
+              森祐太 | 高校物理 / AI教材作成 / LaTeX教材制作
             </p>
             <h1 className="text-balance mt-7 max-w-5xl font-serif text-[2.3rem] font-semibold leading-[1.06] tracking-[-0.085em] text-slate-950 sm:text-5xl sm:leading-[1.03] lg:text-7xl">
-              高校物理を中心に、教材制作と学習アプリをつなぐ。
+              高校物理とLaTeX教材制作を、AIとWebアプリで支える教育開発ハブ。
             </h1>
             <p className="text-pretty mt-6 max-w-2xl text-base leading-8 text-slate-600 sm:mt-7 sm:text-lg sm:leading-9">
-              森祐太が、高校物理の学び直しを主力に、AI と LaTeX を使った
-              教材制作の知見、学習支援アプリへの実践導線をまとめている公式ハブです。
-              学ぶ人も、作る人も、使う人も、最初の一歩を迷わず選べます。
+              Yuta Eng は、高校物理の理解を支える記事、AIとLaTeXを使った
+              教材制作の知見、Eddivomなどの学習支援Webアプリへの入口をまとめた公式ハブです。
+              学ぶ人も、教材を作る人も、次の一歩を迷わず選べます。
             </p>
             <div className="mt-7 flex flex-wrap gap-2">
               {heroFocuses.map((focus) => (
@@ -473,7 +475,7 @@ export default function Home() {
       <Container>
         <Section
           className="pt-16 sm:pt-20"
-          description="ヒーロー直下では、学ぶ・作る・使うの3入口だけを強く置きました。高校物理を主力に、教材制作は制作思想として、Apps は実践導線として整理しています。"
+          description="ヒーロー直下では、学ぶ・作る・使うの3入口だけを強く置きました。高校物理を主力に、教材制作はAIとLaTeXの制作思想として、Apps はEddivomなどへ進む実践導線として整理しています。"
           eyebrow="Start Here"
           id="home-entry-points"
           title="学ぶ / 作る / 使うの3入口から入る"
@@ -613,11 +615,11 @@ export default function Home() {
                   Visual Spotlight
                 </p>
                 <h3 className="mt-3 text-balance text-2xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-3xl">
-                  アプリ導線も、ブランドの一部として見せる
+                  Eddivomを、教材作成ツールへの入口として見せる
                 </h3>
                 <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
-                  Eddivom を含む学習支援アプリ群は、単なる外部リンク集ではなく、
-                  ブログや教材制作の流れから自然につながる実践の入口として見せています。
+                  Eddivom を含む学習支援Webアプリ群は、単なる外部リンク集ではなく、
+                  AIとLaTeXを使った教材制作の流れから自然につながる実践の入口として見せています。
                 </p>
 
                 <div className="mt-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
@@ -867,7 +869,7 @@ export default function Home() {
         </Section>
 
         <Section
-          description="高校物理、教材制作、教育ICTの考え方を、実際に読んで使える形で整理しています。"
+          description="AIとLaTeXで教材作成をラクにする方法、高校物理を公式暗記で終わらせない考え方、学習支援Webアプリの設計思想をブログで発信しています。"
           eyebrow="Latest Articles"
           headerAction={
             <ButtonLink className="w-full sm:w-auto" href="/blog" variant="secondary">
@@ -876,11 +878,51 @@ export default function Home() {
           }
           title="最近の記事から学ぶ"
         >
+          <div className="mb-6 rounded-[1.6rem] border border-sky-100 bg-sky-50/70 p-5 sm:mb-8 sm:rounded-[2rem] sm:p-6">
+            <p className="text-sm font-semibold text-slate-950">
+              これから増やしたい記事テーマ
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {upcomingBlogThemes.map((theme) => (
+                <span className="keyword-pill compact" key={theme}>
+                  {theme}
+                </span>
+              ))}
+            </div>
+          </div>
           <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {latestPosts.map((post) => (
               <ArticleCard homeFeatured key={post.slug} post={post} />
             ))}
           </StaggerReveal>
+        </Section>
+
+        <Section
+          description="今後、LaTeX数式変換、教材タイトル生成、小テスト構成メーカーなど、教材制作を助ける無料ツールも追加予定です。"
+          eyebrow="Tools"
+          headerAction={
+            <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
+              Apps Hubを見る
+            </ButtonLink>
+          }
+          title="準備中の無料ツール"
+        >
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {[
+              "LaTeX数式変換ツール",
+              "教材タイトル生成ツール",
+              "小テスト構成メーカー",
+              "物理プリント構成メーカー",
+              "問題文整形ツール",
+            ].map((tool) => (
+              <article
+                className="rounded-[1.5rem] border border-slate-200 bg-white/80 p-4 text-sm font-semibold leading-6 text-slate-800 shadow-[0_18px_60px_-52px_rgba(15,23,42,0.55)]"
+                key={tool}
+              >
+                {tool}
+              </article>
+            ))}
+          </div>
         </Section>
 
         <Section className="pb-24">
@@ -891,15 +933,15 @@ export default function Home() {
                   Start Here
                 </p>
                 <h2 className="text-balance mt-4 font-serif text-3xl font-semibold tracking-[-0.06em] sm:text-4xl">
-                  高校物理、教材制作、学習アプリをひとつの流れへ。
+                  高校物理、LaTeX教材制作、学習支援アプリをひとつの流れへ。
                 </h2>
                 <FinalCtaVisual className="mt-8 max-w-[22rem]" />
               </div>
               <div className="p-6 sm:p-10">
                 <p className="text-pretty text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
                   森祐太の Yuta Eng は、物理を学ぶ人、教材を作る人、
-                  学習アプリを探す人が同じ文脈で次へ進める場所です。
-                  記事で考え方を読み、教材制作で形にし、必要なアプリへつなげる。
+                  学習支援アプリを探す人が同じ文脈で次へ進める場所です。
+                  記事で考え方を読み、AIとLaTeXで教材制作を形にし、Eddivomなど必要なアプリへつなげる。
                   その流れを、落ち着いて選べる公式ハブとして育てています。
                 </p>
                 <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">

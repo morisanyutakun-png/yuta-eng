@@ -12,11 +12,11 @@ export type AppItem = {
 export const apps: AppItem[] = [
   {
     name: "Eddivom",
-    comparison: "教育コンテンツと学習導線をまとめて見たいとき。",
+    comparison: "AIとLaTeXで教材作成を進めたいとき。",
     description:
-      "教育コンテンツや学習支援の導線を整理するための外部アプリです。教材や学習環境の全体像を見たいときの入口として案内します。",
-    audience: "教材制作や学習環境を整理したい学習者・教育関係者",
-    category: "Education / Learning Support",
+      "Eddivomは、AIとLaTeXを活用して、小テスト・類題・解答PDFなどの教材作成を支援するWebアプリです。教材制作の下書きから、学習者に渡せる形へ整える流れをサポートします。",
+    audience: "塾講師・教材制作者・物理や数学のプリントを作りたい教育関係者",
+    category: "Education / Material Creation",
     href: "https://eddivom.yuta-eng.com",
     ctaLabel: "Eddivom を開く",
     status: "外部の既存アプリ",

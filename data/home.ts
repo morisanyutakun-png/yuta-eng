@@ -19,7 +19,8 @@ export const visitorPaths = [
     label: "Build",
     title: "作る",
     emphasis: "教材制作・LaTeX・AIを、制作思想としてひとつに扱う。",
-    query: "生成AIの下書きを、LaTeXやWebで使いやすい教材に整えたい。",
+    query:
+      "生成AIの下書きを、LaTeXやWebで使いやすい教材へ整え、Eddivomのような教材制作ツールへ自然につなげたい。",
     description:
       "AIで作って終わりにせず、問題案、解説、数式、更新しやすさまで含めて教材制作を考えます。",
     positioning: "制作思想",
@@ -34,10 +35,10 @@ export const visitorPaths = [
   {
     label: "Use",
     title: "使う",
-    emphasis: "Apps を、学習を実際に進めるための実践導線として置く。",
+    emphasis: "Eddivomなどの学習支援Webアプリを、実践導線として置く。",
     query: "学習や復習に使えるアプリへ、目的に合わせてすぐ移動したい。",
     description:
-      "Eddivom、IT Pass、Physics など、外部の学習支援アプリへの公式リンクをまとめています。",
+      "Eddivom、IT Pass、Physics など、外部の学習支援Webアプリへの公式リンクをまとめています。",
     positioning: "実践導線",
     points: [
       "目的に合うアプリへすぐ移動できる",
@@ -53,7 +54,7 @@ export const homepageAnswers = [
   {
     question: "Yuta Eng は何をするサイトですか？",
     answer:
-      "森祐太が取り組む高校物理、教材制作、学習アプリをひとつにまとめた教育開発ハブです。考え方を記事で整理し、必要な外部アプリや相談先へ進めるようにしています。",
+      "森祐太が取り組む高校物理、AIとLaTeXを使った教材制作、Eddivomなどの学習支援Webアプリをひとつにまとめた教育開発ハブです。考え方を記事で整理し、必要な外部アプリや相談先へ進めるようにしています。",
   },
   {
     question: "高校物理では何を大切にしていますか？",
@@ -70,6 +71,14 @@ export const homepageAnswers = [
     answer:
       "1人1台端末、AIドリル、学習支援Webアプリのような環境を、教材、演習、復習の導線へつなぐ視点で扱います。",
   },
+];
+
+export const upcomingBlogThemes = [
+  "AIとLaTeXで教材作成をラクにしたい話",
+  "LaTeXで数学・物理プリントを作るメリット",
+  "AIで小テストを作る方法",
+  "類題作成をAIで効率化するには？",
+  "高校物理のプリント作成で意識したいこと",
 ];
 
 export const designSystemNotes = [
