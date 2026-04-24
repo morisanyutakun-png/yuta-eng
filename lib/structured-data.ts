@@ -192,8 +192,12 @@ export function createArticleJsonLd(post: BlogPost) {
     "@type": "Article",
     headline: post.title,
     description: post.description,
+    url,
     datePublished: post.date,
     dateModified: post.date,
+    articleSection: post.category,
+    about: post.tags,
+    isAccessibleForFree: true,
     author: {
       "@type": "Person",
       name: siteConfig.author,
@@ -207,6 +211,11 @@ export function createArticleJsonLd(post: BlogPost) {
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": url,
+    },
+    isPartOf: {
+      "@type": "Blog",
+      name: `${siteConfig.name} Blog`,
+      url: new URL("/blog", siteConfig.url).toString(),
     },
     keywords: post.tags.join(", "),
     inLanguage: "ja",

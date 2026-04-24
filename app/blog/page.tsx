@@ -11,7 +11,7 @@ import { createPageMetadata } from "@/lib/metadata";
 export const metadata: Metadata = createPageMetadata({
   title: "高校物理・教材制作・学習アプリの記事一覧",
   description:
-    "高校物理の学び直し、LaTeXを使った教材作成、学習支援Webアプリ、教育ICTの考え方がわかるブログ記事一覧です。何が学べるか、次にどう進めるかが見える記事をまとめています。",
+    "高校物理の学び直し、物理教育、LaTeX教材作成、学習支援Webアプリを、一次情報と実践ベースで整理したブログ記事一覧です。何が学べて、次にどう進めるかが見える記事をまとめています。",
   keywords: [
     "高校物理 ブログ",
     "物理教材 作り方",
@@ -35,14 +35,14 @@ export default function BlogPage() {
           <div className="relative grid gap-10 lg:grid-cols-[1fr_0.44fr] lg:items-end">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-200">
-                Editorial Hub
+                Research & Practice
               </p>
               <h1 className="text-balance mt-4 font-serif text-4xl font-semibold leading-tight tracking-[-0.08em] sm:text-5xl lg:text-6xl">
-                高校物理・教材制作・学習アプリの記事をまとめる。
+                高校物理・教材制作・学習アプリの記事を、一次情報と実践から整理する。
               </h1>
               <p className="text-pretty mt-5 max-w-3xl text-base leading-8 text-slate-300 sm:mt-6 sm:text-lg sm:leading-9">
                 高校物理をどう学び直すか、教材をどう作るか、学習支援Webアプリをどう設計するか。
-                検索してきたテーマごとに、考え方と次の一歩が分かる記事を整理しています。
+                学習指導要領や研究知見、制作実践を踏まえながら、検索してきたテーマごとに次の一歩が見える記事を整理しています。
               </p>
             </div>
             <aside className="rounded-[1.7rem] border border-white/10 bg-white/[0.08] p-5 backdrop-blur sm:rounded-[2rem] sm:p-6">
@@ -64,7 +64,7 @@ export default function BlogPage() {
 
       <Section
         className="pt-8"
-        description="各記事は、検索で来た人が『どんな悩みに答える記事か』を判断しやすいように整理しています。"
+        description="各記事は、検索で来た人が『どんな悩みに答える記事か』と『どの根拠で整理しているか』を判断しやすいように整えています。"
         eyebrow="Topic Guide"
         title="知りたいことから記事を選ぶ"
       >
