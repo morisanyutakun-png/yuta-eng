@@ -1,28 +1,49 @@
 export const visitorPaths = [
   {
-    label: "High School Physics",
-    title: "高校物理を学び直したい",
+    label: "Learn",
+    title: "学ぶ",
+    emphasis: "高校物理を主力カテゴリとして、理解の土台から学び直す。",
     query: "力学や物理基礎で止まったところを、図・数式・演習の流れで整理したい。",
     description:
-      "公式を覚える前に、何が起きていて、どの式をどう使うのかを理解したい人向けの入口です。",
+      "公式暗記の前に、何が起きているか、どの式をどう使うかを理解したい人のための入口です。",
+    positioning: "主力カテゴリ",
+    points: [
+      "高校物理の記事から入りやすい",
+      "図・現象・数式・演習をつなぐ",
+      "つまずいた前提に戻りやすい",
+    ],
     href: "/blog/physics-material-creation",
     cta: "高校物理から読む",
   },
   {
-    label: "AI Material Studio",
-    title: "AIで教材を作りたい",
+    label: "Build",
+    title: "作る",
+    emphasis: "教材制作・LaTeX・AIを、制作思想としてひとつに扱う。",
     query: "生成AIの下書きを、LaTeXやWebで使いやすい教材に整えたい。",
     description:
       "AIで作って終わりにせず、問題案、解説、数式、更新しやすさまで含めて教材制作を考えます。",
+    positioning: "制作思想",
+    points: [
+      "AIの下書きを人が編集して仕上げる",
+      "LaTeX と Web に展開しやすい",
+      "再利用できる教材資産として育てる",
+    ],
     href: "/blog/latex-web-workflow",
     cta: "教材制作を読む",
   },
   {
-    label: "GIGA / EdTech",
-    title: "学習アプリを使いたい",
+    label: "Use",
+    title: "使う",
+    emphasis: "Apps を、学習を実際に進めるための実践導線として置く。",
     query: "学習や復習に使えるアプリへ、目的に合わせてすぐ移動したい。",
     description:
       "Eddivom、IT Pass、Physics など、外部の学習支援アプリへの公式リンクをまとめています。",
+    positioning: "実践導線",
+    points: [
+      "目的に合うアプリへすぐ移動できる",
+      "Eddivom / IT Pass / Physics を比較できる",
+      "記事や教材から実践へつながる",
+    ],
     href: "/apps",
     cta: "アプリを選ぶ",
   },
@@ -32,7 +53,7 @@ export const homepageAnswers = [
   {
     question: "Yuta Eng は何をするサイトですか？",
     answer:
-      "高校物理、教材制作、学習アプリをつなぐ、森祐太の教育開発ハブです。ブログで考え方を整理し、必要な外部アプリや相談先へ進めるようにしています。",
+      "森祐太が取り組む高校物理、教材制作、学習アプリをひとつにまとめた教育開発ハブです。考え方を記事で整理し、必要な外部アプリや相談先へ進めるようにしています。",
   },
   {
     question: "高校物理では何を大切にしていますか？",

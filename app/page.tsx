@@ -10,7 +10,6 @@ import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
 import { HeroMotion } from "@/components/hero-motion";
 import {
-  ActionCardVisual,
   DesignBoardVisual,
   FinalCtaVisual,
   FocusAreaGlyph,
@@ -41,23 +40,23 @@ import {
 } from "@/lib/structured-data";
 
 const heroFocuses = [
-  "高校物理の理解",
-  "AIとLaTeXの教材制作",
-  "学習支援アプリへの入口",
+  "高校物理を主力カテゴリに据える",
+  "教材制作は AI・LaTeX・Web で育てる",
+  "Apps は実践に進む公式導線として置く",
 ];
 
 const heroStats = [
   {
-    value: "Physics",
-    label: "高校物理を現象・図・数式・演習でつなぐ",
+    value: "Learn",
+    label: "高校物理を主力カテゴリとして、理解の順序から整理する",
   },
   {
-    value: "AI",
-    label: "生成AIとLaTeXで教材制作を整える",
+    value: "Build",
+    label: "教材制作・LaTeX・AI を制作思想として束ねる",
   },
   {
-    value: "Apps",
-    label: "必要な学習支援アプリへ案内する",
+    value: "Use",
+    label: "Apps を学びを進める実践導線として案内する",
   },
 ];
 
@@ -79,42 +78,21 @@ const psychologyCards = [
 const learningFlow = [
   {
     label: "Physics",
-    title: "高校物理の理解から始める",
+    title: "主力カテゴリの高校物理から始める",
     description:
       "力学や物理基礎で止まりやすいところを、現象、図、数式、演習の順にほどいていきます。",
   },
   {
-    label: "AI Materials",
-    title: "AI教材作成で学びを速く形にする",
+    label: "Materials Studio",
+    title: "制作思想として教材制作・LaTeX・AI を束ねる",
     description:
       "生成AIを下書きや問題案に使い、LaTeXやWebで再利用しやすい教材へ整えます。",
   },
   {
-    label: "EdTech Apps",
-    title: "学習支援Webアプリへ接続する",
+    label: "Practice Apps",
+    title: "実践導線として学習支援アプリへつなぐ",
     description:
       "記事や教材で整理した内容を、必要なタイミングで Eddivom、IT Pass、Physics へつなげます。",
-  },
-];
-
-const actionCards = [
-  {
-    title: "高校物理でつまずいている",
-    text: "力学・物理基礎・問題演習の考え方を、短い記事から確認できます。",
-    href: "/blog/physics-material-creation",
-    cta: "物理の記事から読む",
-  },
-  {
-    title: "教材作成をAIで効率化したい",
-    text: "生成AI、LaTeX、Webを組み合わせた教材制作の流れを整理できます。",
-    href: "/blog/latex-web-workflow",
-    cta: "教材制作を読む",
-  },
-  {
-    title: "学習支援アプリを見たい",
-    text: "目的に合う外部アプリへ、公式リンクからそのまま移動できます。",
-    href: "/apps",
-    cta: "アプリを選ぶ",
   },
 ];
 
@@ -134,14 +112,31 @@ const appSpotlightPoints = [
 ];
 
 const intentVisualVariants = ["physics", "materials", "apps"] as const;
-const actionVisualVariants = ["read", "build", "use"] as const;
+
+const aboutHighlights = [
+  {
+    label: "Physics",
+    title: "高校物理の学び直しを中心に据える",
+    text: "現象、図、数式、演習を切り離さず、止まった場所から理解をつなぎ直す記事と教材を作ります。",
+  },
+  {
+    label: "Materials",
+    title: "教材制作を AI・LaTeX・Web で育てる",
+    text: "生成AIの下書きをそのまま出さず、LaTeX や Web で再利用できる教材資産へ編集します。",
+  },
+  {
+    label: "Apps",
+    title: "学習支援アプリを実践導線として運用する",
+    text: "Eddivom、IT Pass、Physics を、読んで終わりにしないための次の一歩として案内します。",
+  },
+];
 
 const homeApps = apps.map((app) => {
   if (app.name === "Eddivom") {
     return {
       ...app,
       description:
-        "教育コンテンツや学習導線を整理し、必要なページへ進みやすくする学習支援アプリです。ここから公式アプリへ移動できます。",
+        "教育コンテンツや学習導線を整理したい人向けの外部アプリです。教材や学習環境の全体像を見たいときに使えます。",
       status: "外部アプリ",
     };
   }
@@ -150,7 +145,7 @@ const homeApps = apps.map((app) => {
     return {
       ...app,
       description:
-        "ITの基礎学習や試験対策を続けるための学習アプリです。基礎を確認したいときの入口として案内します。",
+        "ITの基礎学習や試験対策を進めたい人向けの外部アプリです。短く積み上げながら学びたいときの入口として案内します。",
       status: "外部アプリ",
     };
   }
@@ -159,7 +154,7 @@ const homeApps = apps.map((app) => {
     return {
       ...app,
       description:
-        "物理の概念理解や演習への接続を助ける学習アプリです。記事で整理した内容を、手を動かす学びへつなげます。",
+        "物理の概念理解と演習をつなげたい人向けの外部アプリです。記事で整理した内容を、手を動かす学びへつなげます。",
       status: "外部アプリ",
     };
   }
@@ -370,15 +365,15 @@ export default function Home() {
         <Container className="grid min-h-[calc(100vh-3.75rem)] items-center gap-10 py-10 sm:min-h-[calc(100vh-4rem)] sm:gap-14 sm:py-16 lg:grid-cols-[0.94fr_1.06fr] lg:py-24">
           <div className="fade-up">
             <p className="liquid-glass inline-flex rounded-full px-4 py-2 text-sm font-semibold text-slate-700">
-              森祐太の教育開発ハブ
+              森祐太 | 教育開発 / 高校物理 / 教材制作
             </p>
             <h1 className="text-balance mt-7 max-w-5xl font-serif text-[2.3rem] font-semibold leading-[1.06] tracking-[-0.085em] text-slate-950 sm:text-5xl sm:leading-[1.03] lg:text-7xl">
-              高校物理・教材制作・学習アプリをつなぐ、教育開発ハブ。
+              高校物理を中心に、教材制作と学習アプリをつなぐ。
             </h1>
             <p className="text-pretty mt-6 max-w-2xl text-base leading-8 text-slate-600 sm:mt-7 sm:text-lg sm:leading-9">
-              Yuta Eng は、高校物理の理解を支える記事、AIとLaTeXを使った
-              教材制作の知見、学習支援アプリへの入口をまとめた公式ハブです。
-              学びたい人も、教材を作りたい人も、目的に合わせて次の一歩を選べます。
+              森祐太が、高校物理の学び直しを主力に、AI と LaTeX を使った
+              教材制作の知見、学習支援アプリへの実践導線をまとめている公式ハブです。
+              学ぶ人も、作る人も、使う人も、最初の一歩を迷わず選べます。
             </p>
             <div className="mt-7 flex flex-wrap gap-2">
               {heroFocuses.map((focus) => (
@@ -388,18 +383,11 @@ export default function Home() {
               ))}
             </div>
             <div className="mt-8 grid gap-3 sm:mt-9 sm:flex sm:flex-wrap">
-              <ButtonLink className="w-full sm:w-auto" href="/blog/physics-material-creation">
-                高校物理から読む
+              <ButtonLink className="w-full sm:w-auto" href="#home-entry-points">
+                3つの入口を見る
               </ButtonLink>
-              <ButtonLink
-                className="w-full sm:w-auto"
-                href="/blog/latex-web-workflow"
-                variant="secondary"
-              >
-                教材制作を読む
-              </ButtonLink>
-              <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
-                学習アプリを選ぶ
+              <ButtonLink className="w-full sm:w-auto" href="/about" variant="secondary">
+                森祐太について
               </ButtonLink>
               <ButtonLink className="w-full sm:w-auto" href="/contact" variant="ghost">
                 相談する
@@ -484,14 +472,16 @@ export default function Home() {
 
       <Container>
         <Section
-          description="高校物理を学びたい人、教材を作りたい人、学習アプリを使いたい人が、自分に近い入口から進めるように整理しています。"
-          eyebrow="Purpose Guide"
-          title="目的に合わせて入口を選ぶ"
+          className="pt-16 sm:pt-20"
+          description="ヒーロー直下では、学ぶ・作る・使うの3入口だけを強く置きました。高校物理を主力に、教材制作は制作思想として、Apps は実践導線として整理しています。"
+          eyebrow="Start Here"
+          id="home-entry-points"
+          title="学ぶ / 作る / 使うの3入口から入る"
         >
-          <StaggerReveal className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <StaggerReveal className="grid gap-4 lg:grid-cols-3">
             {visitorPaths.map((path, index) => (
               <Link
-                className="intent-lens-card group relative flex min-h-[18rem] flex-col overflow-hidden rounded-[2rem] p-5 transition hover:-translate-y-1 sm:min-h-80 sm:rounded-[2.6rem] sm:p-6"
+                className="intent-lens-card group relative flex min-h-[24rem] flex-col overflow-hidden rounded-[2rem] p-5 transition hover:-translate-y-1 sm:rounded-[2.6rem] sm:p-6"
                 href={path.href}
                 key={path.title}
               >
@@ -499,17 +489,35 @@ export default function Home() {
                   <IntentVisual variant={intentVisualVariants[index]} />
                 </div>
                 <div className="relative">
-                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
-                    {path.label}
-                  </p>
-                  <h2 className="text-balance mt-4 text-2xl font-semibold tracking-[-0.06em] text-slate-950 sm:mt-5 sm:text-3xl">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
+                      {path.label}
+                    </p>
+                    <span className="rounded-full bg-white/80 px-3 py-1 text-[0.68rem] font-semibold tracking-[0.14em] text-slate-600">
+                      {path.positioning}
+                    </span>
+                  </div>
+                  <h2 className="text-balance mt-4 text-3xl font-semibold tracking-[-0.08em] text-slate-950 sm:mt-5 sm:text-[2.15rem]">
                     {path.title}
                   </h2>
+                  <p className="mt-4 text-base font-semibold leading-7 text-slate-900 sm:text-lg">
+                    {path.emphasis}
+                  </p>
                   <p className="mt-4 rounded-2xl bg-white/70 p-4 text-sm leading-7 text-slate-600 shadow-sm backdrop-blur sm:mt-5">
                     {path.query}
                   </p>
                 </div>
-                <div className="relative mt-auto pt-9 sm:pt-12">
+                <div className="relative mt-6 grid gap-2">
+                  {path.points.map((point) => (
+                    <div
+                      className="rounded-full border border-white/80 bg-white/72 px-3 py-2 text-xs font-semibold text-slate-600 shadow-[0_14px_40px_-34px_rgba(15,23,42,0.65)]"
+                      key={point}
+                    >
+                      {point}
+                    </div>
+                  ))}
+                </div>
+                <div className="relative mt-auto pt-8 sm:pt-10">
                   <p className="text-sm leading-7 text-slate-600">
                     {path.description}
                   </p>
@@ -523,30 +531,58 @@ export default function Home() {
         </Section>
 
         <Section
-          description="読む、作る、使うの3つに分けることで、初めて来た人でも今すぐできる行動を選びやすくしています。"
-          eyebrow="First Step"
-          title="読む・作る・使う。最初の一歩を選ぶ"
+          description="サイトの説明だけではなく、森祐太が何を軸に活動しているのかを短く分かるように整理しています。高校物理、教材制作、アプリ導線を一つの文脈で扱う個人の教育開発者です。"
+          eyebrow="About Yuta"
+          headerAction={
+            <ButtonLink className="w-full sm:w-auto" href="/about" variant="secondary">
+              About を読む
+            </ButtonLink>
+          }
+          title="森祐太は、学ぶ・作る・使うを同じ文脈で設計する人です。"
         >
-          <StaggerReveal className="grid gap-4 md:grid-cols-3">
-            {actionCards.map((card, index) => (
-              <Link
-                className="action-card group rounded-[1.85rem] p-5 transition hover:-translate-y-1 sm:rounded-[2.2rem] sm:p-6"
-                href={card.href}
-                key={card.title}
-              >
-                <div className="action-visual-shell mb-5 overflow-hidden rounded-[1.5rem] sm:mb-6 sm:rounded-[1.8rem]">
-                  <ActionCardVisual variant={actionVisualVariants[index]} />
-                </div>
-                <h2 className="text-xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-2xl">
-                  {card.title}
-                </h2>
-                <p className="mt-4 text-sm leading-7 text-slate-600">{card.text}</p>
-                <p className="mt-7 text-sm font-semibold text-slate-950">
-                  {card.cta} <span aria-hidden="true">→</span>
-                </p>
-              </Link>
-            ))}
-          </StaggerReveal>
+          <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_28px_90px_-70px_rgba(15,23,42,0.7)] sm:rounded-[2.5rem] sm:p-8">
+              <p className="font-mono text-sm font-semibold text-sky-700">Profile</p>
+              <h3 className="mt-4 text-balance text-3xl font-semibold tracking-[-0.07em] text-slate-950 sm:text-4xl">
+                高校物理の理解設計、AI・LaTeX を活かした教材制作、学習支援アプリ導線の設計を横断しています。
+              </h3>
+              <p className="mt-5 text-sm leading-8 text-slate-600 sm:text-base sm:leading-8">
+                物理の学び直しをどう支えるか、教材をどう再利用可能に作るか、アプリをどう学習の実践につなげるか。
+                森祐太は、この3つを別々に扱わず、ひとつの学習体験として設計しています。
+              </p>
+              <div className="mt-7 flex flex-wrap gap-2">
+                {["教育開発", "高校物理", "AI教材制作", "LaTeX", "Web Apps"].map((item) => (
+                  <span className="keyword-pill compact" key={item}>
+                    {item}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
+                <ButtonLink className="w-full sm:w-auto" href="/about">
+                  プロフィールを見る
+                </ButtonLink>
+                <ButtonLink className="w-full sm:w-auto" href="/contact" variant="secondary">
+                  相談する
+                </ButtonLink>
+              </div>
+            </div>
+            <div className="grid gap-4">
+              {aboutHighlights.map((item) => (
+                <article
+                  className="rounded-[1.8rem] border border-slate-200 bg-gradient-to-br from-white via-sky-50/70 to-amber-50/60 p-5 shadow-[0_20px_80px_-68px_rgba(15,23,42,0.7)] sm:rounded-[2.1rem] sm:p-6"
+                  key={item.title}
+                >
+                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
+                    {item.label}
+                  </p>
+                  <h3 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-2xl">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.text}</p>
+                </article>
+              ))}
+            </div>
+          </div>
         </Section>
 
         <Section
@@ -598,6 +634,27 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+
+          <div className="mb-6 grid gap-3 sm:mb-8 lg:grid-cols-3">
+            {homeApps.map((app) => (
+              <article
+                className="rounded-[1.5rem] border border-slate-200 bg-white/80 p-4 shadow-[0_18px_60px_-50px_rgba(15,23,42,0.55)] backdrop-blur-xl sm:rounded-[1.8rem] sm:p-5"
+                key={app.name}
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <h3 className="text-lg font-semibold tracking-[-0.04em] text-slate-950">
+                    {app.name}
+                  </h3>
+                  <span className="rounded-full bg-slate-950 px-3 py-1 text-[0.68rem] font-semibold text-white">
+                    {app.category.split(" / ")[0]}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm font-semibold leading-6 text-slate-800">
+                  {app.comparison}
+                </p>
+              </article>
+            ))}
           </div>
 
           <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">

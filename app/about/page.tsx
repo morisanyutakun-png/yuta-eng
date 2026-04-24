@@ -7,9 +7,9 @@ import { focusAreas } from "@/data/focus-areas";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "About | 教育・物理・LaTeX教材制作のプロフィール",
+  title: "About | 森祐太のプロフィールと制作思想",
   description:
-    "教育ICT、物理教材制作、LaTeX教材作成、学習支援Webアプリ開発に取り組む Yuta のプロフィール、制作思想、専門領域、今後のビジョンを紹介します。",
+    "森祐太のプロフィールページです。高校物理の学び直し、AI・LaTeX を活かした教材制作、学習支援Webアプリ導線の設計を横断する教育開発者としての制作思想と専門領域を紹介します。",
   keywords: [
     "教育 プロフィール",
     "物理教材制作",
@@ -44,6 +44,21 @@ const philosophy = [
   },
 ];
 
+const identityPillars = [
+  {
+    title: "高校物理の理解設計",
+    text: "現象、図、数式、演習を切り離さず、どこで止まるかを踏まえて学び直しの導線を作ります。",
+  },
+  {
+    title: "AI・LaTeX を使った教材制作",
+    text: "生成AIの下書きをそのまま出さず、LaTeX や Web で再利用できる教材資産として編集します。",
+  },
+  {
+    title: "学習支援アプリへの接続",
+    text: "記事や教材で理解した内容を、Eddivom、IT Pass、Physics のような実践の場へつなげます。",
+  },
+];
+
 export default function AboutPage() {
   return (
     <Container>
@@ -54,39 +69,73 @@ export default function AboutPage() {
               About
             </p>
             <h1 className="mt-4 font-serif text-4xl font-semibold leading-tight tracking-[-0.08em] text-slate-950 sm:text-5xl lg:text-6xl">
-              教育ICT・物理教材・LaTeX教材作成で、学びの体験を整える。
+              森祐太は、高校物理・教材制作・学習アプリを横断して学びの導線を設計する人です。
             </h1>
           </div>
           <p className="text-base leading-8 text-slate-600 sm:text-lg sm:leading-9">
-            yuta-eng.com は、教育、物理、LaTeX、学習支援Webアプリを軸に、
-            学習者が理解へ進みやすい環境を作るための公式サイトです。
-            個人ブランドとしての信頼を蓄積しながら、ブログと既存アプリへの導線を育てていきます。
+            高校物理をどう理解し直せるか、AI と LaTeX を使った教材をどう育てるか、
+            学習支援アプリをどう実践につなげるか。
+            森祐太は、この3つを別々に扱わず、ひとつの学習体験として設計する教育開発者です。
           </p>
+        </div>
+        <div className="mt-8 flex flex-wrap gap-2">
+          {["教育開発", "高校物理", "AI教材制作", "LaTeX", "Web Apps"].map((item) => (
+            <span
+              className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-[0_16px_45px_-38px_rgba(15,23,42,0.55)]"
+              key={item}
+            >
+              {item}
+            </span>
+          ))}
         </div>
       </Section>
 
       <Section
-        description="今後、出版実績、開発実績、制作物、登壇情報などを追加しやすいように、プロフィール情報をセクション化しています。"
+        description="サイト説明より一歩踏み込み、森祐太が何を担っているのかを3つの軸で整理しています。"
         eyebrow="Profile"
-        title="専門性の中心"
+        title="森祐太が担っていること"
       >
-        <div className="grid gap-5 md:grid-cols-3">
-          <article className="rounded-[1.7rem] border border-slate-200 bg-white p-5 md:col-span-2 md:p-6 md:rounded-[2rem]">
-            <h2 className="text-xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-2xl">
-              教育分野への関心
+        <div className="grid gap-5 lg:grid-cols-[1.02fr_0.98fr]">
+          <article className="rounded-[1.9rem] border border-slate-200 bg-white p-6 shadow-[0_28px_90px_-72px_rgba(15,23,42,0.7)] sm:rounded-[2.3rem] sm:p-8">
+            <h2 className="text-2xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-3xl">
+              教材と Web の両方から、学習者が前に進みやすい構造を作る。
             </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
-              学習は、単に情報を読むだけでは前に進みにくいものです。
-              どの順で理解するか、どこで練習するか、どのタイミングで復習に戻るか。
-              そうした学びの構造を、教材とWeb体験の両面から設計することに関心があります。
+            <p className="mt-5 text-sm leading-8 text-slate-600 sm:text-base sm:leading-8">
+              学習は、読むだけでは前に進みにくく、アプリだけでも続きにくいものです。
+              どの順で理解するか、どこで練習するか、どのタイミングで復習へ戻るか。
+              森祐太は、その順序を記事、教材、アプリ導線の3つから整えることを仕事の中心に置いています。
             </p>
+            <div className="mt-7 grid gap-3 sm:grid-cols-2">
+              {[
+                "高校物理の学び直しを主力テーマに扱う",
+                "AI と LaTeX を活かした教材制作を実践する",
+                "Web アプリを学習の摩擦を減らす道具として設計する",
+                "ブログとアプリを分断せず、ひとつの導線としてまとめる",
+              ].map((item) => (
+                <div
+                  className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-700"
+                  key={item}
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
           </article>
-          <article className="rounded-[1.7rem] border border-slate-200 bg-slate-950 p-5 text-white sm:rounded-[2rem] sm:p-6">
-            <h2 className="text-xl font-semibold tracking-[-0.04em] sm:text-2xl">物理への関心</h2>
-            <p className="mt-4 text-sm leading-7 text-slate-300 sm:text-base sm:leading-8">
-              物理を、公式暗記ではなく概念、現象、数式、演習のつながりとして捉え直すことを重視します。
-            </p>
-          </article>
+          <div className="grid gap-4">
+            {identityPillars.map((item) => (
+              <article
+                className="rounded-[1.7rem] border border-slate-200 bg-gradient-to-br from-white via-sky-50 to-amber-50 p-5 sm:rounded-[2rem] sm:p-6"
+                key={item.title}
+              >
+                <h2 className="text-xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-2xl">
+                  {item.title}
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
+                  {item.text}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
       </Section>
 

@@ -29,6 +29,9 @@ export function AppCard({ app, featured }: AppCardProps) {
         <h3 className="mt-8 text-2xl font-semibold tracking-[-0.06em] sm:mt-10 sm:text-3xl">
           {app.name}
         </h3>
+        <p className="mt-3 max-w-[18rem] text-sm leading-6 text-slate-300">
+          {app.comparison}
+        </p>
         {featured ? (
           <div className="app-visual-shell mt-6 overflow-hidden rounded-[1.3rem] border border-white/10 bg-white/10">
             <AppCardVisual name={app.name} />
@@ -42,7 +45,7 @@ export function AppCard({ app, featured }: AppCardProps) {
 
       <div className="mt-5 rounded-2xl bg-slate-50 p-4 sm:mt-6">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-          想定ユーザー
+          向いている人
         </p>
         <p className="mt-2 text-sm leading-6 text-slate-700">{app.audience}</p>
       </div>

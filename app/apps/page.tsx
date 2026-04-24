@@ -46,6 +46,27 @@ export default function AppsPage() {
         eyebrow="Official App Hub"
         title="アプリ一覧"
       >
+        <div className="mb-6 grid gap-3 sm:mb-8 lg:grid-cols-3">
+          {apps.map((app) => (
+            <article
+              className="rounded-[1.6rem] border border-slate-200 bg-white p-5 shadow-[0_20px_70px_-56px_rgba(15,23,42,0.62)] sm:rounded-[1.9rem]"
+              key={app.name}
+            >
+              <div className="flex items-center justify-between gap-4">
+                <h3 className="text-xl font-semibold tracking-[-0.04em] text-slate-950">
+                  {app.name}
+                </h3>
+                <span className="rounded-full bg-slate-950 px-3 py-1 text-[0.68rem] font-semibold text-white">
+                  {app.category.split(" / ")[0]}
+                </span>
+              </div>
+              <p className="mt-3 text-sm font-semibold leading-6 text-slate-800">
+                {app.comparison}
+              </p>
+            </article>
+          ))}
+        </div>
+
         <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {apps.map((app) => (
             <AppCard app={app} key={app.href} />
