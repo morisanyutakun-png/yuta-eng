@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
+import eddivomShowcase from "@/assets/home/eddivom-showcase.webp";
+import learningHubVisual from "@/assets/home/learning-hub-visual.webp";
 import { AppCard } from "@/components/app-card";
 import { ArticleCard } from "@/components/article-card";
 import { ButtonLink } from "@/components/button-link";
@@ -45,24 +48,6 @@ const heroStats = [
   {
     value: "Apps",
     label: "必要な学習支援アプリへ案内する",
-  },
-];
-
-const studioTiles = [
-  {
-    label: "Step 01",
-    title: "つまずきを言語化",
-    detail: "力学・物理基礎の苦手を小さな問いに分ける",
-  },
-  {
-    label: "Step 02",
-    title: "図解と数式へ変換",
-    detail: "現象、自由物体図、式、単位を同じ画面で見る",
-  },
-  {
-    label: "Step 03",
-    title: "AI教材で復習",
-    detail: "問題案、解説案、LaTeX化まで育てる",
   },
 ];
 
@@ -120,6 +105,21 @@ const actionCards = [
     text: "目的に合う外部アプリへ、公式リンクからそのまま移動できます。",
     href: "/apps",
     cta: "アプリを選ぶ",
+  },
+];
+
+const appSpotlightPoints = [
+  {
+    label: "Official",
+    text: "外部アプリであることを明示しながら、役割がすぐ伝わる見せ方にする",
+  },
+  {
+    label: "Mobile",
+    text: "スマホでも画像で雰囲気をつかんでから、迷わずアプリ一覧へ進める",
+  },
+  {
+    label: "Flow",
+    text: "記事で読んだ内容から、そのまま実際の学習アプリへ移動しやすくする",
   },
 ];
 
@@ -354,7 +354,7 @@ export default function Home() {
         <div className="hero-glow absolute left-[8%] top-20 -z-10 hidden h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle,rgba(125,211,252,0.42),rgba(56,189,248,0.16)_44%,transparent_70%)] blur-3xl sm:top-28 sm:block sm:h-[28rem] sm:w-[28rem]" />
         <div className="motion-depth-2 absolute right-[-12rem] top-10 -z-10 hidden h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(circle,rgba(253,186,116,0.38),rgba(250,204,21,0.12)_48%,transparent_70%)] blur-3xl lg:block" />
 
-        <Container className="grid min-h-[calc(100vh-3.75rem)] items-center gap-10 py-12 sm:min-h-[calc(100vh-4rem)] sm:gap-14 sm:py-16 lg:grid-cols-[0.94fr_1.06fr] lg:py-24">
+        <Container className="grid min-h-[calc(100vh-3.75rem)] items-center gap-10 py-10 sm:min-h-[calc(100vh-4rem)] sm:gap-14 sm:py-16 lg:grid-cols-[0.94fr_1.06fr] lg:py-24">
           <div className="fade-up">
             <p className="liquid-glass inline-flex rounded-full px-4 py-2 text-sm font-semibold text-slate-700">
               森祐太の教育開発ハブ
@@ -374,7 +374,7 @@ export default function Home() {
                 </span>
               ))}
             </div>
-            <div className="mt-9 grid gap-3 sm:flex sm:flex-wrap">
+            <div className="mt-8 grid gap-3 sm:mt-9 sm:flex sm:flex-wrap">
               <ButtonLink className="w-full sm:w-auto" href="/blog/physics-material-creation">
                 高校物理から読む
               </ButtonLink>
@@ -406,73 +406,62 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="fade-up fade-up-delay-2 relative">
+          <div className="order-first fade-up fade-up-delay-2 relative mx-auto w-full max-w-[42rem] lg:order-none lg:max-w-none">
             <div className="motion-depth-1 relative">
-              <div className="float-slow liquid-glass absolute -left-4 top-10 hidden rounded-[1.7rem] p-4 shadow-[0_25px_80px_-55px_rgba(14,165,233,0.75)] md:block">
-                <p className="font-mono text-xs text-slate-500">start point</p>
-                <p className="mt-1 text-sm font-semibold text-slate-950">
-                  高校物理の理解
-                </p>
-              </div>
-              <div className="studio-device rounded-[2.4rem] p-2.5 shadow-[0_45px_140px_-78px_rgba(15,23,42,0.72)] sm:rounded-[3.2rem] sm:p-3">
-                <div className="rounded-[2rem] bg-white p-3 sm:rounded-[2.75rem] sm:p-4">
-                  <div className="studio-screen relative overflow-hidden rounded-[1.75rem] p-4 sm:rounded-[2.35rem] sm:p-6">
-                    <div className="relative flex items-center justify-between gap-4">
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">
-                          Learning Studio
-                        </p>
-                        <p className="mt-2 text-2xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-3xl">
-                          Physics OS
-                        </p>
-                      </div>
-                      <span className="rounded-full bg-emerald-400/20 px-3 py-1 text-xs font-semibold text-emerald-800">
-                        clear path
-                      </span>
-                    </div>
+              <div className="hero-visual-orb absolute inset-x-[12%] top-[8%] -z-10 h-[62%] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.28),rgba(125,211,252,0.14)_44%,transparent_72%)] blur-3xl" />
+              <div className="hero-visual-orb hero-visual-orb-warm absolute bottom-[3%] right-[4%] -z-10 h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(253,186,116,0.26),rgba(251,191,36,0.14)_48%,transparent_74%)] blur-3xl sm:h-52 sm:w-52" />
 
-                    <div className="relative mt-8 grid gap-3">
-                      {studioTiles.map((tile, index) => (
-                        <div
-                          className="studio-tile grid gap-4 rounded-[1.45rem] p-3.5 sm:rounded-[1.65rem] sm:p-4 sm:grid-cols-[auto_1fr]"
-                          key={tile.title}
-                        >
-                          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 font-mono text-sm font-semibold text-white sm:h-12 sm:w-12">
-                            0{index + 1}
-                          </div>
-                          <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
-                              {tile.label}
-                            </p>
-                            <p className="mt-1 text-lg font-semibold tracking-[-0.04em] text-slate-950">
-                              {tile.title}
-                            </p>
-                            <p className="mt-2 text-xs leading-5 text-slate-600">
-                              {tile.detail}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="relative mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                      {homeApps.map((app) => (
-                        <a
-                          className="app-dock-card rounded-[1.35rem] p-4 transition hover:-translate-y-1"
-                          href={app.href}
-                          key={app.href}
-                          rel="noreferrer noopener"
-                          target="_blank"
-                        >
-                          <p className="font-semibold text-slate-950">{app.name}</p>
-                          <p className="mt-3 text-xs leading-5 text-slate-500">
-                            {app.category}
-                          </p>
-                        </a>
-                      ))}
-                    </div>
-                  </div>
+              <div className="hero-image-frame relative overflow-hidden rounded-[2rem] p-2.5 sm:rounded-[2.8rem] sm:p-3">
+                <div className="hero-image-mask relative aspect-[5/6] overflow-hidden rounded-[1.55rem] sm:aspect-[4/3] sm:rounded-[2.15rem] lg:aspect-[11/10]">
+                  <Image
+                    alt="高校物理、教材制作、学習アプリが一つのハブでつながる学習ビジュアル"
+                    className="h-full w-full object-cover object-center"
+                    placeholder="blur"
+                    priority
+                    quality={82}
+                    sizes="(max-width: 640px) 92vw, (max-width: 1024px) 88vw, 48vw"
+                    src={learningHubVisual}
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.18)_100%)]" />
                 </div>
+
+                <div className="hero-floating-card hero-floating-card-top hidden sm:block">
+                  <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-sky-700">
+                    Physics
+                  </p>
+                  <p className="mt-2 text-sm font-semibold leading-6 text-slate-950">
+                    図・数式・演習を、ひとつの流れで理解する
+                  </p>
+                </div>
+
+                <div className="hero-floating-card hero-floating-card-bottom">
+                  <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-amber-600">
+                    Materials
+                  </p>
+                  <p className="mt-2 text-sm font-semibold leading-6 text-slate-950">
+                    AI・LaTeX・Webをつないで、教材を育てる
+                  </p>
+                </div>
+
+                <div className="hero-image-caption absolute inset-x-3 bottom-3 rounded-[1.4rem] px-4 py-3 sm:inset-x-auto sm:left-4 sm:bottom-4 sm:max-w-[15rem] sm:rounded-[1.5rem] sm:px-4 sm:py-3.5">
+                  <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
+                    Learning Hub
+                  </p>
+                  <p className="mt-1.5 text-sm font-semibold leading-6 text-slate-950">
+                    記事、教材、アプリがひとつの画面でつながる
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+                {["Blog", "Materials", "Apps"].map((item) => (
+                  <div
+                    className="hero-mini-dock rounded-[1.1rem] px-3 py-3 text-center text-xs font-semibold text-slate-700 sm:rounded-[1.4rem] sm:px-4"
+                    key={item}
+                  >
+                    {item}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -550,6 +539,47 @@ export default function Home() {
           }
           title="学習支援アプリへ迷わず移動する"
         >
+          <div className="showcase-spotlight mb-6 overflow-hidden rounded-[2rem] p-3 sm:mb-8 sm:rounded-[2.75rem] sm:p-4">
+            <div className="grid gap-6 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
+              <div className="relative overflow-hidden rounded-[1.65rem] sm:rounded-[2.1rem]">
+                <Image
+                  alt="Eddivom の世界観を示すアプリビジュアル"
+                  className="h-full w-full object-cover object-center"
+                  placeholder="blur"
+                  quality={80}
+                  sizes="(max-width: 1024px) 100vw, 52vw"
+                  src={eddivomShowcase}
+                />
+              </div>
+
+              <div className="px-2 pb-2 sm:px-3 lg:pr-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">
+                  Visual Spotlight
+                </p>
+                <h3 className="mt-3 text-balance text-2xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-3xl">
+                  アプリ導線も、ブランドの一部として見せる
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
+                  Eddivom を含む学習支援アプリ群は、単なる外部リンク集ではなく、
+                  ブログや教材制作の流れから自然につながる実践の入口として見せています。
+                </p>
+
+                <div className="mt-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                  {appSpotlightPoints.map((point) => (
+                    <article className="showcase-point rounded-[1.35rem] p-4" key={point.label}>
+                      <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-sky-700">
+                        {point.label}
+                      </p>
+                      <p className="mt-2 text-sm font-semibold leading-6 text-slate-900">
+                        {point.text}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
           <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {homeApps.map((app) => (
               <AppCard app={app} featured key={app.href} />
