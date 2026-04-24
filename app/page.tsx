@@ -10,10 +10,14 @@ import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
 import { HeroMotion } from "@/components/hero-motion";
 import {
+  ActionCardVisual,
+  DesignBoardVisual,
+  FinalCtaVisual,
   FocusAreaGlyph,
   HeroMeshOverlay,
   IntentVisual,
   LearningFlowDiagram,
+  TopicClusterVisual,
 } from "@/components/home-visuals";
 import { JsonLd } from "@/components/json-ld";
 import { Section } from "@/components/section";
@@ -130,6 +134,7 @@ const appSpotlightPoints = [
 ];
 
 const intentVisualVariants = ["physics", "materials", "apps"] as const;
+const actionVisualVariants = ["read", "build", "use"] as const;
 
 const homeApps = apps.map((app) => {
   if (app.name === "Eddivom") {
@@ -523,12 +528,15 @@ export default function Home() {
           title="読む・作る・使う。最初の一歩を選ぶ"
         >
           <StaggerReveal className="grid gap-4 md:grid-cols-3">
-            {actionCards.map((card) => (
+            {actionCards.map((card, index) => (
               <Link
                 className="action-card group rounded-[1.85rem] p-5 transition hover:-translate-y-1 sm:rounded-[2.2rem] sm:p-6"
                 href={card.href}
                 key={card.title}
               >
+                <div className="action-visual-shell mb-5 overflow-hidden rounded-[1.5rem] sm:mb-6 sm:rounded-[1.8rem]">
+                  <ActionCardVisual variant={actionVisualVariants[index]} />
+                </div>
                 <h2 className="text-xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-2xl">
                   {card.title}
                 </h2>
@@ -605,12 +613,15 @@ export default function Home() {
           title="学びと制作のテーマを地図のようにたどる"
         >
           <StaggerReveal className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {topicMapCards.map((cluster) => (
+            {topicMapCards.map((cluster, index) => (
               <Link
                 className="seo-cluster-card group rounded-[1.8rem] p-5 transition hover:-translate-y-1 sm:rounded-[2rem] sm:p-6"
                 href={cluster.route}
                 key={cluster.primary}
               >
+                <div className="topic-visual-shell mb-5 overflow-hidden rounded-[1.5rem] sm:mb-6 sm:rounded-[1.8rem]">
+                  <TopicClusterVisual index={index} />
+                </div>
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
                   {cluster.label}
                 </p>
@@ -649,6 +660,9 @@ export default function Home() {
         >
           <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="canva-board relative overflow-hidden rounded-[2.2rem] border border-white/80 p-4 shadow-[0_35px_130px_-90px_rgba(15,23,42,0.72)] sm:rounded-[3rem] sm:p-6">
+              <div className="design-board-shell mb-4 overflow-hidden rounded-[1.75rem] border border-white/80 bg-white/72 p-2 backdrop-blur-xl sm:mb-5 sm:rounded-[2.15rem]">
+                <DesignBoardVisual />
+              </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 {designSystemNotes.map((note, index) => (
                   <article
@@ -807,7 +821,7 @@ export default function Home() {
         >
           <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {latestPosts.map((post) => (
-              <ArticleCard key={post.slug} post={post} />
+              <ArticleCard homeFeatured key={post.slug} post={post} />
             ))}
           </StaggerReveal>
         </Section>
@@ -822,6 +836,7 @@ export default function Home() {
                 <h2 className="text-balance mt-4 font-serif text-3xl font-semibold tracking-[-0.06em] sm:text-4xl">
                   高校物理、教材制作、学習アプリをひとつの流れへ。
                 </h2>
+                <FinalCtaVisual className="mt-8 max-w-[22rem]" />
               </div>
               <div className="p-6 sm:p-10">
                 <p className="text-pretty text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">

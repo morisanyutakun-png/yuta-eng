@@ -104,7 +104,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {post.searchIntent ? (
               <div className="mt-6 rounded-2xl bg-sky-50 p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
-                  読む前の整理
+                  このページが答えること
                 </p>
                 <p className="mt-2 text-sm leading-7 text-slate-700">
                   {post.searchIntent}
@@ -112,14 +112,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
             ) : null}
             {post.keyPoints ? (
-              <div className="mt-5 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-                {post.keyPoints.map((point) => (
-                  <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4" key={point}>
-                    <p className="text-sm font-semibold leading-7 text-slate-800">{point}</p>
-                  </div>
-                ))}
+              <div className="mt-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+                  この記事でわかること
+                </p>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+                  {post.keyPoints.map((point) => (
+                    <div
+                      className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
+                      key={point}
+                    >
+                      <p className="text-sm font-semibold leading-7 text-slate-800">{point}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             ) : null}
+            <div className="mt-5 rounded-2xl border border-slate-200 bg-white p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+                記事の要約
+              </p>
+              <p className="mt-2 text-sm leading-7 text-slate-700">
+                {post.description}
+              </p>
+            </div>
           </div>
         </header>
 
@@ -134,7 +150,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             次に読む
           </h2>
           <p className="mt-3 text-sm leading-7 text-slate-600">
-            関連記事やCTAを後から差し込めるよう、記事末尾の導線を独立したセクションにしています。
+            このテーマに近い記事や、学習アプリへの入口を続けて見られるようにしています。
           </p>
           <div className="mt-6 grid gap-3 sm:flex sm:flex-wrap">
             <ButtonLink className="w-full sm:w-auto" href="/blog" variant="secondary">

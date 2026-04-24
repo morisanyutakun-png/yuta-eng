@@ -1,5 +1,6 @@
 import type { AppItem } from "@/data/apps";
 
+import { AppCardVisual } from "@/components/home-visuals";
 import { ButtonLink } from "@/components/button-link";
 import { cn } from "@/lib/utils";
 
@@ -28,6 +29,11 @@ export function AppCard({ app, featured }: AppCardProps) {
         <h3 className="mt-8 text-2xl font-semibold tracking-[-0.06em] sm:mt-10 sm:text-3xl">
           {app.name}
         </h3>
+        {featured ? (
+          <div className="app-visual-shell mt-6 overflow-hidden rounded-[1.3rem] border border-white/10 bg-white/10">
+            <AppCardVisual name={app.name} />
+          </div>
+        ) : null}
       </div>
 
       <p className="mt-4 flex-1 px-1 text-sm leading-7 text-slate-600 sm:mt-5 sm:text-base sm:leading-8">

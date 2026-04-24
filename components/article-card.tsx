@@ -1,14 +1,18 @@
 import Link from "next/link";
 
+import { ArticleTeaserVisual } from "@/components/home-visuals";
 import type { BlogPostMeta } from "@/lib/blog";
 
 type ArticleCardProps = {
   post: BlogPostMeta;
+  homeFeatured?: boolean;
 };
 
-export function ArticleCard({ post }: ArticleCardProps) {
+export function ArticleCard({ post, homeFeatured = false }: ArticleCardProps) {
   return (
-    <article className="group shine-card h-full rounded-[1.8rem] border border-slate-200 bg-white p-4 shadow-[0_18px_70px_-55px_rgba(15,23,42,0.55)] transition hover:-translate-y-1 hover:border-slate-300 sm:rounded-[2rem]">
+    <article
+      className="group article-card shine-card h-full rounded-[1.8rem] border border-slate-200 bg-white p-4 shadow-[0_18px_70px_-55px_rgba(15,23,42,0.55)] transition hover:-translate-y-1 hover:border-slate-300 sm:rounded-[2rem]"
+    >
       <Link className="block h-full" href={`/blog/${post.slug}`}>
         <div className="rounded-[1.45rem] bg-[radial-gradient(circle_at_20%_20%,rgba(14,165,233,0.28),transparent_34%),linear-gradient(135deg,#0f172a,#1e293b_48%,#0369a1)] p-4 text-white sm:rounded-[1.6rem] sm:p-5">
           <div className="flex items-center justify-between gap-4">
@@ -17,6 +21,11 @@ export function ArticleCard({ post }: ArticleCardProps) {
             </span>
             <span className="font-mono text-xs text-sky-100">{post.readingTime}</span>
           </div>
+          {homeFeatured ? (
+            <div className="article-visual-shell mt-5 overflow-hidden rounded-[1.25rem] border border-white/10 bg-white/10">
+              <ArticleTeaserVisual category={post.category} />
+            </div>
+          ) : null}
           <p className="mt-8 text-xs font-semibold uppercase tracking-[0.24em] text-sky-100 sm:mt-10">
             Editorial Note
           </p>

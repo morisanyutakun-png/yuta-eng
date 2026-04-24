@@ -9,15 +9,15 @@ import { getAllPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Blog | 物理教材・LaTeX教材作成・教育ICTの記事",
+  title: "高校物理・教材制作・学習アプリの記事一覧",
   description:
-    "物理教材制作、LaTeX教材作成、教育ICT、学習支援Webアプリ開発、Web制作に関する yuta-eng.com のブログ記事一覧です。",
+    "高校物理の学び直し、LaTeXを使った教材作成、学習支援Webアプリ、教育ICTの考え方がわかるブログ記事一覧です。何が学べるか、次にどう進めるかが見える記事をまとめています。",
   keywords: [
-    "物理教材 ブログ",
-    "LaTeX教材作成 ブログ",
+    "高校物理 ブログ",
+    "物理教材 作り方",
+    "LaTeX 教材作成",
+    "学習支援Webアプリ 設計",
     "教育ICT 記事",
-    "学習支援Webアプリ",
-    "教材制作 ノウハウ",
   ],
   path: "/blog",
 });
@@ -38,15 +38,15 @@ export default function BlogPage() {
                 Editorial Hub
               </p>
               <h1 className="text-balance mt-4 font-serif text-4xl font-semibold leading-tight tracking-[-0.08em] sm:text-5xl lg:text-6xl">
-                物理教材・LaTeX教材作成・教育ICTの記事をまとめる。
+                高校物理・教材制作・学習アプリの記事をまとめる。
               </h1>
               <p className="text-pretty mt-5 max-w-3xl text-base leading-8 text-slate-300 sm:mt-6 sm:text-lg sm:leading-9">
-                学習支援Webアプリ、教育ICT、物理教材、LaTeX教材作成を中心に、
-                読者が次の行動へ進める記事を蓄積します。
+                高校物理をどう学び直すか、教材をどう作るか、学習支援Webアプリをどう設計するか。
+                検索してきたテーマごとに、考え方と次の一歩が分かる記事を整理しています。
               </p>
             </div>
             <aside className="rounded-[1.7rem] border border-white/10 bg-white/[0.08] p-5 backdrop-blur sm:rounded-[2rem] sm:p-6">
-              <p className="text-sm font-semibold text-white">Categories</p>
+              <p className="text-sm font-semibold text-white">主なテーマ</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {categories.map((category) => (
                   <span
@@ -64,9 +64,9 @@ export default function BlogPage() {
 
       <Section
         className="pt-8"
-        description="各記事は、読者が解決したい課題に対応するように整理しています。"
+        description="各記事は、検索で来た人が『どんな悩みに答える記事か』を判断しやすいように整理しています。"
         eyebrow="Topic Guide"
-        title="記事テーマ"
+        title="知りたいことから記事を選ぶ"
       >
         <StaggerReveal className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {seoClusters.map((cluster) => (
@@ -83,7 +83,12 @@ export default function BlogPage() {
         </StaggerReveal>
       </Section>
 
-      <Section className="pt-8" eyebrow="Articles" title="記事一覧">
+      <Section
+        className="pt-8"
+        description="一覧から読んでも、記事詳細に入ってからでも、何が分かる記事かを把握しやすいようにしています。"
+        eyebrow="Articles"
+        title="記事一覧"
+      >
         {posts.length > 0 ? (
           <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {posts.map((post) => (
