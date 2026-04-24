@@ -206,6 +206,38 @@ a {
   box-shadow: 0 30px 90px -56px rgba(14, 165, 233, 0.28);
 }
 
+.hero-mesh-svg {
+  mix-blend-mode: screen;
+  opacity: 0.78;
+  pointer-events: none;
+}
+
+.hero-mesh-path {
+  stroke-dasharray: 18 18;
+  animation: mesh-flow 12s linear infinite;
+}
+
+.hero-mesh-path-delay {
+  animation-delay: -5s;
+}
+
+.hero-mesh-soft {
+  stroke-dasharray: 10 14;
+  animation: mesh-flow 18s linear infinite reverse;
+}
+
+.hero-mesh-node {
+  animation: mesh-node-pulse 4.2s ease-in-out infinite;
+}
+
+.hero-mesh-node:nth-of-type(2n) {
+  animation-delay: -1.4s;
+}
+
+.hero-mesh-node:nth-of-type(3n) {
+  animation-delay: -2.1s;
+}
+
 .hero-visual-orb {
   animation: ambient-shift 14s ease-in-out infinite alternate;
   pointer-events: none;
@@ -250,6 +282,39 @@ a {
   border: 1px solid rgba(255, 255, 255, 0.9);
   box-shadow: 0 20px 50px -42px rgba(15, 23, 42, 0.48);
   backdrop-filter: blur(14px);
+}
+
+.intent-visual-shell {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.72), rgba(240, 249, 255, 0.58)),
+    radial-gradient(circle at 0% 0%, rgba(125, 211, 252, 0.22), transparent 42%);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.84);
+}
+
+.intent-visual-svg {
+  display: block;
+  height: auto;
+  transform: scale(1);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+}
+
+.intent-lens-card:hover .intent-visual-svg {
+  transform: scale(1.03);
+}
+
+.intent-visual-line {
+  stroke-dasharray: 14 10;
+  animation: line-drift 8s linear infinite;
+}
+
+.intent-visual-line-delay {
+  animation-delay: -3s;
+}
+
+.intent-visual-line-warm {
+  animation-duration: 10s;
 }
 
 .studio-screen {
@@ -358,6 +423,59 @@ a {
     radial-gradient(circle at 10% 0%, rgba(125, 211, 252, 0.16), transparent 40%);
   border: 1px solid rgba(226, 232, 240, 0.88);
   box-shadow: 0 18px 44px -38px rgba(15, 23, 42, 0.38);
+}
+
+.flow-diagram-svg {
+  overflow: visible;
+}
+
+.flow-diagram-track {
+  stroke-dasharray: 18 16;
+  animation: line-drift 9s linear infinite;
+}
+
+.flow-diagram-track-delay {
+  animation-delay: -4s;
+}
+
+.flow-node {
+  animation: mesh-node-pulse 4.6s ease-in-out infinite;
+}
+
+.flow-node:nth-of-type(2) {
+  animation-delay: -1.3s;
+}
+
+.flow-node:nth-of-type(3) {
+  animation-delay: -2.2s;
+}
+
+.flow-card {
+  animation: float-y-soft 6.4s ease-in-out infinite;
+}
+
+.flow-card-delay {
+  animation-delay: -2.4s;
+}
+
+.focus-glyph-shell {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.focus-glyph-svg {
+  display: block;
+  height: 4rem;
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+  width: 4rem;
+}
+
+.group:hover .focus-glyph-svg {
+  filter: drop-shadow(0 18px 24px rgba(125, 211, 252, 0.24));
+  transform: translateY(-2px) scale(1.04);
 }
 
 .visual-path-card {
@@ -508,6 +626,17 @@ a {
   }
 }
 
+@keyframes float-y-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -517,6 +646,33 @@ a {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes line-drift {
+  to {
+    stroke-dashoffset: -96;
+  }
+}
+
+@keyframes mesh-flow {
+  to {
+    stroke-dashoffset: -180;
+  }
+}
+
+@keyframes mesh-node-pulse {
+  0%,
+  100% {
+    opacity: 0.78;
+    transform: scale(1);
+    transform-origin: center;
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+    transform-origin: center;
   }
 }
 
@@ -643,6 +799,10 @@ a {
     opacity: 0.55;
   }
 
+  .hero-mesh-svg {
+    opacity: 0.64;
+  }
+
   .ambient-grid {
     background-size: 32px 32px;
     opacity: 0.4;
@@ -687,6 +847,12 @@ a {
 
   .hero-mini-dock {
     box-shadow: 0 14px 36px -30px rgba(15, 23, 42, 0.3);
+  }
+
+  .flow-card,
+  .focus-glyph-svg,
+  .intent-visual-svg {
+    transform: none !important;
   }
 
   .studio-screen::before,
@@ -758,6 +924,16 @@ a {
   .motion-depth-2,
   .motion-depth-3 {
     transform: none;
+  }
+
+  .hero-mesh-path,
+  .hero-mesh-soft,
+  .intent-visual-line,
+  .flow-diagram-track,
+  .hero-mesh-node,
+  .flow-node,
+  .flow-card {
+    animation: none !important;
   }
 
   *,

@@ -9,6 +9,12 @@ import { ArticleCard } from "@/components/article-card";
 import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
 import { HeroMotion } from "@/components/hero-motion";
+import {
+  FocusAreaGlyph,
+  HeroMeshOverlay,
+  IntentVisual,
+  LearningFlowDiagram,
+} from "@/components/home-visuals";
 import { JsonLd } from "@/components/json-ld";
 import { Section } from "@/components/section";
 import { StaggerReveal } from "@/components/stagger-reveal";
@@ -122,6 +128,8 @@ const appSpotlightPoints = [
     text: "記事で読んだ内容から、そのまま実際の学習アプリへ移動しやすくする",
   },
 ];
+
+const intentVisualVariants = ["physics", "materials", "apps"] as const;
 
 const homeApps = apps.map((app) => {
   if (app.name === "Eddivom") {
@@ -422,6 +430,7 @@ export default function Home() {
                     sizes="(max-width: 640px) 92vw, (max-width: 1024px) 88vw, 48vw"
                     src={learningHubVisual}
                   />
+                  <HeroMeshOverlay />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.18)_100%)]" />
                 </div>
 
@@ -475,12 +484,15 @@ export default function Home() {
           title="目的に合わせて入口を選ぶ"
         >
           <StaggerReveal className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {visitorPaths.map((path) => (
+            {visitorPaths.map((path, index) => (
               <Link
                 className="intent-lens-card group relative flex min-h-[18rem] flex-col overflow-hidden rounded-[2rem] p-5 transition hover:-translate-y-1 sm:min-h-80 sm:rounded-[2.6rem] sm:p-6"
                 href={path.href}
                 key={path.title}
               >
+                <div className="intent-visual-shell mb-5 overflow-hidden rounded-[1.45rem] sm:mb-6 sm:rounded-[1.8rem]">
+                  <IntentVisual variant={intentVisualVariants[index]} />
+                </div>
                 <div className="relative">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
                     {path.label}
@@ -692,7 +704,8 @@ export default function Home() {
                   ホームページを固定の名刺ではなく、記事、教材、アプリが
                   自然につながる学習ハブとして設計しています。
                 </p>
-                <div className="mt-8 grid grid-cols-3 gap-2">
+                <LearningFlowDiagram className="mt-7" />
+                <div className="mt-7 grid grid-cols-3 gap-2">
                   {["Blog", "AI", "Apps"].map((item) => (
                     <div
                       className="rounded-2xl border border-white/10 bg-white/[0.08] p-3 text-center text-xs font-semibold text-slate-200"
@@ -743,6 +756,9 @@ export default function Home() {
                 className="group rounded-[1.75rem] border border-slate-200 bg-white p-5 transition hover:-translate-y-1 hover:bg-slate-950 hover:text-white"
                 key={area.title}
               >
+                <div className="focus-glyph-shell mb-4">
+                  <FocusAreaGlyph title={area.title} />
+                </div>
                 <p className="font-mono text-xs text-sky-700 group-hover:text-sky-200">
                   0{index + 1}
                 </p>
