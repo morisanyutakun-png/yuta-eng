@@ -157,7 +157,7 @@ export default function RootLayout({
         <JsonLd data={createOrganizationJsonLd()} />
         <JsonLd data={createPersonJsonLd()} />
         <SiteHeader />
-        <main className="flex-1">{children}</main>
+        <main id="main" className="flex-1">{children}</main>
         <SiteFooter />
       </body>
     </html>
