@@ -6,16 +6,20 @@ import { getAllPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "高校物理 解説ブログと教材作成AIの実践ノート - Solvora",
+  title: "理系教育・EdTech・AI教材作成の実践ノート｜Solvora ブログ",
   description:
-    "高校物理を公式暗記から理解で解くための解説、AI × LaTeX で教材を作るワークフロー、学習支援アプリの設計まで、図と表でわかりやすく整理した実用ブログ。受験生・教員・教材制作者のための長期記事を継続更新中。",
+    "Solvora ブログは、理系人材育成のための EdTech・教育DX・AI 教材作成の実践ノート。高校物理を理解で解く読み方、AI × LaTeX による教材作成ワークフロー、GIGA スクール構想以降の学習支援アプリ設計まで、教員・教材制作者・受験生・社会人に向けて長期記事を継続更新しています。",
   keywords: [
-    "高校物理 ブログ",
-    "高校物理 わかりやすい",
-    "物理 解説",
+    "理系人材育成 ブログ",
+    "EdTech ブログ",
+    "GIGAスクール 後",
+    "教育DX",
+    "AI 教材作成",
     "教材作成 AI",
     "LaTeX 教材作成",
-    "学習支援 Webアプリ",
+    "学習支援 アプリ",
+    "高校物理 ブログ",
+    "STEM教育",
   ],
   path: "/blog",
 });
@@ -38,16 +42,16 @@ export default function BlogPage() {
       <section className="relative overflow-hidden bg-white">
         <Container className="px-6">
           <div className="py-16 sm:py-20 lg:py-24">
-            <p className="text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
-              Blog · Solvora
+            <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.78rem]">
+              Insights · 理系人材育成 EdTech
             </p>
             <h1 className="mt-4 text-balance text-[2rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3.2rem]">
-              高校物理と教材作成の、
+              理系教育と EdTech の、
               <br className="hidden sm:block" />
-              実践ノート。
+              実装ノート。
             </h1>
             <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
-              公式暗記で止まらないための物理の読み方、AI と LaTeX で教材を作るコツ、学習アプリの設計思想を、1 記事ですぐ使える形にまとめています。
+              高校物理を理解で解く読み方、AI × LaTeX で教材を作るワークフロー、GIGA スクール構想後の学習支援アプリ設計、学習科学のエビデンス。理系人材育成の現場で使える形に、1 記事ずつまとめています。
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-2">
               <span className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">

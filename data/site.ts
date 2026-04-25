@@ -9,10 +9,10 @@ export const itPassUrl = "https://itpass.yuta-eng.com";
 export const siteConfig = {
   name: "Solvora",
   shortName: "Solvora",
-  brandTagline: "Science Learning Hub",
-  title: "高校物理オンライン塾と教材作成AIをまとめる学習ハブ - Solvora",
+  brandTagline: "STEM Learning Hub for Japan",
+  title: "理系人材育成のEdTechハブ｜AI教材・学習アプリ・物理塾を集約 - Solvora",
   description:
-    "高校物理を理解で解くための解説記事、AI×LaTeXによる教材作成、物理専門オンライン塾「物理の森」までをまとめた理系学習ハブ Solvora（ソルヴォラ）の公式サイト。",
+    "Solvora（ソルヴォラ）は、AI教材作成 Eddivom・学習支援アプリ Physics／IT Pass・物理専門オンライン塾「物理の森」を集約した理系人材育成 EdTech ハブ。GIGAスクール構想後の高校・大学・社会人の理系学習をつなぐ教材設計とサービス公式入口、深く学べる解説ブログをまとめています。",
   url: siteUrl,
   physicsSchoolUrl,
   eddivomUrl,
@@ -23,7 +23,7 @@ export const siteConfig = {
   brand: {
     hub: {
       name: "Solvora",
-      role: "Science Learning Hub",
+      role: "STEM Learning Hub｜理系人材育成EdTech",
     },
     physicsSchool: {
       name: "物理の森",
@@ -33,17 +33,26 @@ export const siteConfig = {
     },
   },
   keywords: [
-    "Solvora",
-    "ソルヴォラ",
-    "理系 学習",
-    "高校物理",
-    "物理の森",
-    "物理 オンライン塾",
-    "高校物理 個別指導",
+    "理系人材育成",
+    "理系 教育",
+    "STEM教育",
+    "EdTech",
+    "EdTech 日本",
+    "GIGAスクール",
+    "GIGAスクール構想",
+    "教育DX",
+    "AI 教材作成",
     "教材作成 AI",
     "LaTeX 教材作成",
+    "学習支援アプリ",
     "学習デザイン",
-    "EdTech",
+    "Eddivom",
+    "Physics アプリ",
+    "IT Pass",
+    "物理の森",
+    "高校物理 オンライン塾",
+    "Solvora",
+    "ソルヴォラ",
   ],
 };
 

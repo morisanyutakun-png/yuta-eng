@@ -8,15 +8,19 @@ import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "理系学習ハブ Solvora の運営方針と事業構成、運営者プロフィール",
+  title: "理系人材育成EdTechハブ Solvora の運営方針と事業構成｜森 祐太",
   description:
-    "高校物理オンライン専門塾「物理の森」、AI×LaTeX教材作成、学習支援アプリをまとめる理系学習ハブ Solvora（ソルヴォラ）の運営方針、事業構成、運営者 森 祐太のプロフィールと制作思想を紹介します。",
+    "Solvora（ソルヴォラ）は、AI 教材作成 Eddivom・物理専門オンライン塾「物理の森」・学習支援アプリ Physics／IT Pass を集約した理系人材育成 EdTech ハブ。GIGAスクール構想後の教育DXに向けた運営方針、4 サービスの事業構成、運営者 森 祐太のプロフィールと制作思想を紹介します。",
   keywords: [
     "Solvora とは",
-    "理系 学習ハブ",
-    "物理の森 運営",
+    "理系人材育成 EdTech",
     "EdTech 運営者",
+    "教育DX 個人事業",
+    "STEM教育 日本",
+    "物理の森 運営",
+    "Eddivom 運営",
     "教材制作 ポートフォリオ",
+    "森 祐太",
   ],
   path: "/about",
 });
@@ -89,16 +93,16 @@ export default function AboutPage() {
             </ol>
           </nav>
           <div className="py-10 sm:py-16 lg:py-20">
-            <p className="text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
-              About · Solvora
+            <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.78rem]">
+              About · 理系人材育成 EdTech ハブ
             </p>
             <h1 className="mt-4 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3.1rem]">
-              理系の学びと教育の入口を、
+              理系人材を育てる学びを、
               <br className="hidden sm:block" />
-              ひとつの学習ハブに。
+              EdTech で再設計する。
             </h1>
             <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
-              Solvora（ソルヴォラ）は、{siteConfig.author}が運営する理系学習ハブブランドです。物理専門オンライン塾「物理の森」を直営し、Eddivom や IT Pass といった教材作成・学習アプリの公式入口も集約しています。
+              Solvora（ソルヴォラ）は、{siteConfig.author}が運営する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。AI 教材作成「Eddivom」、物理専門オンライン塾「物理の森」、学習アプリ「Physics」「IT Pass」の 4 つを公式入口として集約し、GIGA スクール構想以降の高校・大学・社会人の理系教育を、教材・AI・アプリの動線で一気通貫につなぎ直します。
             </p>
           </div>
         </Container>

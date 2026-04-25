@@ -17,17 +17,22 @@ import {
 } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "高校物理オンライン塾と教材作成AIをまとめる学習ハブ - Solvora",
+  title: "理系人材育成のEdTechハブ｜AI教材・学習アプリ・物理塾を集約 - Solvora",
   description:
-    "高校物理を「公式暗記」ではなく理解で解くための解説、AI×LaTeXで教材を効率化するワークフロー、物理専門オンライン塾「物理の森」をまとめた理系学習ハブ。受験生から教員までを対象に、図と表でわかりやすく整理しています。",
+    "Solvora は、AI 教材作成「Eddivom」・物理専門オンライン塾「物理の森」・学習アプリ「Physics」「IT Pass」を集約した理系人材育成のEdTechハブ。GIGAスクール構想後の高校・大学・社会人の学びを、AI教材作成と学習支援アプリでつなぎ、現場で使える形に整理しています。教育DX・STEM教育・LaTeX教材作成を実装する公式入口。",
   keywords: [
-    "高校物理 オンライン塾",
-    "高校物理 専門塾",
-    "物理 個別指導",
+    "理系人材育成",
+    "EdTech 日本",
+    "GIGAスクール",
+    "教育DX",
+    "STEM教育",
+    "AI 教材作成",
     "教材作成 AI",
     "LaTeX 教材作成",
-    "理系 学習 サイト",
+    "学習支援アプリ",
+    "Eddivom",
     "物理の森",
+    "高校物理 オンライン塾",
     "Solvora",
   ],
   path: "/",
@@ -35,26 +40,30 @@ export const metadata: Metadata = createPageMetadata({
 
 const subjects = [
   {
-    label: "Physics",
-    title: "現象を、図と式でつなぐ。",
-    href: "/blog/physics-material-creation",
-    accent: "#2563eb",
-  },
-  {
-    label: "Materials",
-    title: "教材を、AIと書く。",
-    href: "/blog/latex-web-workflow",
+    label: "AI Materials",
+    title: "AI 教材作成 Eddivom",
+    sub: "AIで下書き → LaTeX で組版 → PDF 配布までワンストップ。",
+    href: "/apps#eddivom",
     accent: "#1d4ed8",
   },
   {
-    label: "Design",
-    title: "使われる仕組みを設計する。",
-    href: "/blog/education-technology-learning-design",
+    label: "Physics School",
+    title: "物理専門オンライン塾「物理の森」",
+    sub: "高校物理に完全特化したカリキュラムを Solvora が直営。",
+    href: "/apps#physics-school",
+    accent: "#0b1d4a",
+  },
+  {
+    label: "Learning Apps",
+    title: "学習アプリ Physics・IT Pass",
+    sub: "高校物理 / IT パスポートをスマホで毎日 5〜10 分積み上げ。",
+    href: "/apps",
     accent: "#0284c7",
   },
   {
-    label: "All",
-    title: "すべての記事を見る。",
+    label: "Insights",
+    title: "理系教育・教材設計の解説ブログ",
+    sub: "GIGA・EdTech・学習科学を、現場で使える形に整理。",
     href: "/blog",
     accent: "#0ea5e9",
   },
@@ -378,32 +387,30 @@ export default function Home() {
         <Container className="px-6">
           <div className="grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-32">
             <div>
-              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
-                Science Learning Hub · Solvora
+              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.78rem]">
+                STEM Learning Hub · 理系人材育成 EdTech
               </p>
               <h1 className="mt-4 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3.2rem]">
-                高校物理を、理解で解く。
+                理系人材を、育てる。
                 <br />
-                教材づくりは、AIで軽く。
+                学びを設計する EdTech ハブ。
               </h1>
               <p className="mt-6 max-w-xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
-                高校物理オンライン塾「物理の森」と、AI × LaTeX による教材作成、学習設計の実装ノートを 1 か所に。受験生から教員まで、現場で使える形で整理した理系学習ハブです。
+                AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、物理専門オンライン塾 <strong className="font-bold text-[#0b1d4a]">物理の森</strong>、学習アプリ <strong className="font-bold text-[#0b1d4a]">Physics・IT Pass</strong>。GIGA スクール構想以降の理系教育を、教材設計・AI・アプリで一気通貫につなぎ直します。
               </p>
               <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <Link
-                  href="/blog"
+                  href="/apps"
                   className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#0b1d4a] px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a]"
                 >
-                  記事を読む
+                  サービスを見る
                 </Link>
-                <a
-                  href={siteConfig.physicsSchoolUrl}
-                  target="_blank"
-                  rel="noreferrer noopener"
+                <Link
+                  href="/blog"
                   className="inline-flex min-h-12 items-center justify-center rounded-full px-2 text-[0.96rem] font-semibold text-[#1d4ed8] transition hover:text-[#0b1d4a]"
                 >
-                  物理の森（物理塾）を見る <span aria-hidden="true" className="ml-1">→</span>
-                </a>
+                  解説ブログを読む <span aria-hidden="true" className="ml-1">→</span>
+                </Link>
               </div>
             </div>
 
@@ -420,11 +427,14 @@ export default function Home() {
       <section className="bg-[#f8fafc]">
         <Container className="px-6 py-16 sm:py-24">
           <div className="max-w-2xl">
-            <h2 className="text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              テーマから、はじめる。
+            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">
+              4 services × 1 hub
+            </p>
+            <h2 className="mt-2 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+              理系人材育成を、4 つの公式入口で。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569] sm:text-base">
-              関心のある分野から、深く読み込める記事へ。
+              AI 教材作成・物理塾・学習アプリ・解説ブログ。Solvora が公式に運営／パートナー連携する 4 サービスで、教育現場と学習者をつなぎます。
             </p>
           </div>
           <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -439,14 +449,17 @@ export default function Home() {
                   </div>
                   <div className="flex flex-1 flex-col gap-2 p-5">
                     <span
-                      className="text-[0.72rem] font-semibold uppercase tracking-[0.18em]"
+                      className="text-[0.7rem] font-semibold uppercase tracking-[0.18em]"
                       style={{ color: subject.accent }}
                     >
                       {subject.label}
                     </span>
-                    <p className="font-bold leading-[1.55] text-[#0b1d4a]">{subject.title}</p>
-                    <span className="mt-auto pt-3 text-[0.85rem] font-semibold text-[#1d4ed8] opacity-0 transition group-hover:opacity-100">
-                      読む →
+                    <p className="text-[0.98rem] font-bold leading-[1.5] text-[#0b1d4a]">
+                      {subject.title}
+                    </p>
+                    <p className="text-[0.84rem] leading-[1.85] text-[#475569]">{subject.sub}</p>
+                    <span className="mt-auto pt-2 text-[0.85rem] font-semibold text-[#1d4ed8] opacity-0 transition group-hover:opacity-100">
+                      詳しく見る →
                     </span>
                   </div>
                 </Link>
@@ -489,32 +502,68 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* FEATURED: Material making */}
+      {/* FEATURED: Eddivom — AI教材作成 */}
       <section className="bg-[#f8fafc]">
         <Container className="px-6 py-20 sm:py-28">
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="order-2 overflow-hidden rounded-[28px] ring-1 ring-[rgba(15,29,74,0.08)] lg:order-1">
-              <MaterialVisual />
+            <div className="order-2 overflow-hidden rounded-[28px] bg-gradient-to-br from-[#eef4ff] via-[#fff7ed] to-[#fef3c7] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_30px_70px_-50px_rgba(15,29,74,0.4)] lg:order-1">
+              <img
+                src="/eddivom-hero.webp"
+                alt="Eddivom — AI で問題下書きを作り、LaTeX に整形して PDF・Web 配布まで一気通貫"
+                width={1536}
+                height={1024}
+                loading="lazy"
+                decoding="async"
+                className="block h-auto w-full"
+              />
             </div>
             <div className="order-1 lg:order-2">
-              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
-                Materials
+              <p className="inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">
+                <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#f59e0b]" />
+                AI Materials · 教材作成 AI
               </p>
               <h2 className="mt-3 text-balance text-[2rem] font-extrabold leading-[1.2] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.6rem]">
-                教材づくりを、
-                <br />
-                もっと軽やかに。
+                <span className="bg-gradient-to-r from-[#1e3a8a] via-[#1d4ed8] to-[#f59e0b] bg-clip-text text-transparent">
+                  Eddivom
+                </span>
+                ｜
+                <br className="hidden sm:block" />
+                教材づくりを、AI で一気通貫に。
               </h2>
               <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
-                AI に任せる工程と、自分で書く工程を分ける。
-                LaTeX と Web を組み合わせて、毎年のつくり直しを資産に変えていく考え方を紹介します。
+                AI で問題の下書きを作り、そのまま LaTeX で整形、PDF・Web で配布まで。<strong className="font-bold text-[#0b1d4a]">教材作成 AI「Eddivom」</strong> は、塾講師・高校教員・教材制作者の問題プリント・小テスト・解答集の作業時間を圧縮します。GIGA スクール後の教材 DX を実装する Solvora の主力サービスです。
               </p>
-              <Link
-                href="/blog/latex-web-workflow"
-                className="mt-9 inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
-              >
-                ワークフローを読む <span aria-hidden="true" className="ml-1.5">→</span>
-              </Link>
+              <ul className="mt-6 grid gap-2 text-[0.92rem] leading-[1.85] text-[#334155]">
+                {[
+                  "AI 下書き → LaTeX 整形 → PDF 出力までワンストップ",
+                  "物理・数学の数式組版（amsmath / physics 系）に最適化",
+                  "1問の元データから類題と解答 PDF を派生生成",
+                ].map((feat) => (
+                  <li key={feat} className="flex gap-2.5">
+                    <span
+                      aria-hidden="true"
+                      className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#f59e0b]"
+                    />
+                    <span>{feat}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <a
+                  href={siteConfig.eddivomUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#0b1d4a] px-6 text-[0.96rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a]"
+                >
+                  Eddivom を開く <span aria-hidden="true">↗</span>
+                </a>
+                <Link
+                  href="/apps#eddivom"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-6 text-[0.96rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
+                >
+                  詳しく見る
+                </Link>
+              </div>
             </div>
           </div>
         </Container>
@@ -594,11 +643,10 @@ export default function Home() {
               className="mx-auto h-auto w-[160px] sm:w-[200px]"
             />
             <h2 className="mt-10 text-balance text-[1.6rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-              Solvora は、理系の学びの起点になりたい。
+              理系の学びを、社会につなぐ EdTech プラットフォームに。
             </h2>
             <p className="mt-6 text-[1rem] leading-[2] text-[#334155]">
-              物理・数学・情報を中心に、深く考えるための記事を書いています。
-              専門サービスとして、高校物理のオンライン塾「物理の森」も運営しています。
+              Solvora は、物理・数学・情報の解説ブログ、AI 教材作成 Eddivom、学習アプリ Physics・IT Pass、物理専門オンライン塾「物理の森」を集約する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。GIGA スクール後の高校・大学・社会人の学びをひとつの動線で支援します。
             </p>
             <Link
               href="/about"
