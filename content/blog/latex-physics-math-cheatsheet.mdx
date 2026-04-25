@@ -1,0 +1,238 @@
+---
+title: "LaTeX 数式 物理 完全チートシート｜高校・大学物理でよく使う記法 50選【コピペで使える】"
+description: "LaTeX 数式 物理の記法を、力学・電磁気・熱力学・波動・量子の分野別に50項目まとめたチートシート。ベクトル・偏微分・積分・添字・ギリシャ文字の書き方を、KaTeX レンダリング結果とコピペ可能なソース付きで解説。教材作成 AI×LaTeX で高校教員・塾講師・大学生の作業時間を短縮。"
+date: "2026-04-29"
+tags:
+  - LaTeX 数式 物理
+  - LaTeX 物理 記号 一覧
+  - LaTeX ベクトル 表記
+  - LaTeX 偏微分 書き方
+  - 教材作成 LaTeX
+category: "LaTeX"
+slug: "latex-physics-math-cheatsheet"
+draft: false
+searchIntent: "高校・大学物理の教材を LaTeX で書くときに、ベクトル・偏微分・添字付き記号などをすぐ引ける一覧表を探している教員・塾講師・大学院生・教材制作者向け。"
+keyPoints:
+  - "LaTeX 数式 物理の記法を分野別（力学・電磁気・熱・波動・量子）50項目で網羅"
+  - "ベクトル・偏微分・積分・添字・ギリシャ文字の書き方をコピペで即利用"
+  - "KaTeX レンダリング済みの実例で、組版結果を見ながら選べる"
+  - "AI×LaTeX 教材作成ワークフローへの接続方法もまとめている"
+---
+
+「**LaTeX 数式 物理** で `\vec{F}` と `\bm{F}` のどちらを使う？」「偏微分の書き方は `\partial` だけ？」── 教材作成のたびに調べ直していると、1問で5分以上消えます。本記事は **高校・大学物理で頻出する50項目** を、KaTeX でレンダリングした結果とコピペできるソースの両方で並べた **LaTeX 数式 物理 完全チートシート** です。ブックマークしておけば、教材PDFや小テストの作成スピードが目に見えて変わります。
+
+<KeyPoints
+  title="この記事の結論"
+  items={[
+    "LaTeX 数式 物理の記法は『分野別の頻出50項目』を覚えれば9割カバーできる",
+    "ベクトルは \\vec{} と \\bm{} の使い分けで意図が伝わる",
+    "偏微分・全微分・常微分は \\partial / d / \\dfrac の組み合わせで明示する",
+    "AI×LaTeX のワークフロー（下書き→整形→PDF）に直結する書き方をまとめている",
+  ]}
+/>
+
+<Toc
+  items={[
+    { id: "h2-basics", label: "LaTeX 数式 物理｜まず押さえる基本記法10選" },
+    { id: "h2-vectors", label: "LaTeX ベクトル 表記｜\\vec, \\bm, 内積・外積" },
+    { id: "h2-calculus", label: "LaTeX 偏微分 書き方｜微分・偏微分・全微分・積分" },
+    { id: "h2-mechanics", label: "力学で頻出のLaTeX記法（運動方程式・エネルギー）" },
+    { id: "h2-em", label: "電磁気で頻出のLaTeX記法（Maxwell 方程式まで）" },
+    { id: "h2-thermo-wave", label: "熱・波動で頻出のLaTeX記法" },
+    { id: "h2-quantum", label: "量子・近代物理で頻出のLaTeX記法" },
+    { id: "h2-greek", label: "ギリシャ文字・特殊記号 早見表" },
+    { id: "h2-workflow", label: "AI×LaTeX で教材作成を高速化するワークフロー" },
+    { id: "h2-faq", label: "よくある質問（FAQ）" },
+  ]}
+/>
+
+## <span id="h2-basics">LaTeX 数式 物理｜まず押さえる基本記法10選</span>
+
+**LaTeX 数式 物理** で最も登場頻度が高い10項目を最初に置きます。これだけで定期テスト〜共通テスト相当の問題は8割書けます。
+
+| 用途 | LaTeX ソース | レンダリング |
+| --- | --- | --- |
+| インライン数式 | `$v=v_0+at$` | $v=v_0+at$ |
+| ブロック数式 | `$$E=mc^2$$` | $E=mc^2$ |
+| 添字（下） | `v_0`、`v_{0}` | $v_0,\ v_{0}$ |
+| 添字（上） | `v^2`、`v^{2x}` | $v^2,\ v^{2x}$ |
+| 分数（小） | `\tfrac{1}{2}` | $\tfrac{1}{2}$ |
+| 分数（大） | `\dfrac{1}{2}` | $\dfrac{1}{2}$ |
+| 平方根 | `\sqrt{2gh}` | $\sqrt{2gh}$ |
+| n乗根 | `\sqrt[3]{V}` | $\sqrt[3]{V}$ |
+| 不等号（≤, ≥） | `\leq, \geq` | $\leq,\ \geq$ |
+| 概ね等しい | `\approx, \sim` | $\approx,\ \sim$ |
+
+<Callout variant="tip" title="\\tfrac と \\dfrac の使い分け">
+**$\tfrac{1}{2}$（tfrac）** は本文中の小さい分数、**$\dfrac{1}{2}$（dfrac）** はブロック式での大きな分数。物理の式で「$\tfrac{1}{2}m v^2$」のように書くと組版が美しくなります。
+</Callout>
+
+## <span id="h2-vectors">LaTeX ベクトル 表記｜\\vec, \\bm, 内積・外積</span>
+
+**LaTeX ベクトル 表記** には2系統あります。教科書のベクトルは矢印付き、入試・大学レベルは太字が主流です。
+
+| 用途 | LaTeX ソース | レンダリング | 用途別の使い分け |
+| --- | --- | --- | --- |
+| 矢印つき | `\vec{F}` | $\vec{F}$ | 高校教材の標準 |
+| 太字（要 bm パッケージ） | `\bm{F}` | $\bm{F}$（KaTeX未対応の場合あり） | 大学・入試解答 |
+| 単位ベクトル | `\hat{x}` | $\hat{x}$ | 座標方向 |
+| 内積 | `\vec{A}\cdot\vec{B}` | $\vec{A}\cdot\vec{B}$ | スカラー積 |
+| 外積 | `\vec{A}\times\vec{B}` | $\vec{A}\times\vec{B}$ | ベクトル積 |
+| 大きさ | `\|\vec{F}\|` | $\|\vec{F}\|$ | ノルム |
+| 成分表示 | `(F_x, F_y, F_z)` | $(F_x, F_y, F_z)$ | 直交成分 |
+| ナブラ | `\nabla` | $\nabla$ | 勾配・発散・回転 |
+
+<Callout variant="note" title="bm パッケージの代替">
+KaTeX や Web では `\bm` が使えないことがあります。その場合は `\boldsymbol{F}` で代用：`\boldsymbol{F}` → $\boldsymbol{F}$。Overleaf 等の通常 LaTeX なら `\usepackage{bm}` で `\bm` が使えます。
+</Callout>
+
+## <span id="h2-calculus">LaTeX 偏微分 書き方｜微分・偏微分・全微分・積分</span>
+
+**LaTeX 偏微分 書き方** は分子・分母をきちんと並べると、組版品質が一気に上がります。
+
+| 用途 | LaTeX ソース | レンダリング |
+| --- | --- | --- |
+| 常微分（一階） | `\dfrac{dx}{dt}` | $\dfrac{dx}{dt}$ |
+| 常微分（二階） | `\dfrac{d^2 x}{dt^2}` | $\dfrac{d^2 x}{dt^2}$ |
+| 偏微分（一階） | `\dfrac{\partial f}{\partial x}` | $\dfrac{\partial f}{\partial x}$ |
+| 偏微分（二階） | `\dfrac{\partial^2 f}{\partial x^2}` | $\dfrac{\partial^2 f}{\partial x^2}$ |
+| 混合偏微分 | `\dfrac{\partial^2 f}{\partial x\,\partial y}` | $\dfrac{\partial^2 f}{\partial x\,\partial y}$ |
+| 全微分 | `df = \dfrac{\partial f}{\partial x}dx + \dfrac{\partial f}{\partial y}dy` | $df = \tfrac{\partial f}{\partial x}dx + \tfrac{\partial f}{\partial y}dy$ |
+| 不定積分 | `\int f(x)\,dx` | $\int f(x)\,dx$ |
+| 定積分 | `\int_0^T v\,dt` | $\int_0^T v\,dt$ |
+| 重積分 | `\iint_S \vec{E}\cdot d\vec{S}` | $\iint_S \vec{E}\cdot d\vec{S}$ |
+| 線積分（閉曲線） | `\oint \vec{B}\cdot d\vec{\ell}` | $\oint \vec{B}\cdot d\vec{\ell}$ |
+| 極限 | `\lim_{t\to 0}` | $\lim_{t\to 0}$ |
+
+<Callout variant="tip" title="\\,（薄いスペース）の活用">
+積分の `dx` の前には `\,`（薄いスペース）を入れると `\int f(x)\,dx` のように見やすくなります。物理の論文・教材ではほぼ必須の習慣です。
+</Callout>
+
+## <span id="h2-mechanics">力学で頻出のLaTeX記法（運動方程式・エネルギー）</span>
+
+| 内容 | LaTeX ソース | レンダリング |
+| --- | --- | --- |
+| 運動方程式 | `\vec{F} = m\vec{a}` | $\vec{F} = m\vec{a}$ |
+| 等加速度（速度） | `v = v_0 + at` | $v = v_0 + at$ |
+| 等加速度（変位） | `x = v_0 t + \tfrac{1}{2}at^2` | $x = v_0 t + \tfrac{1}{2}at^2$ |
+| 円運動（向心力） | `F = \dfrac{mv^2}{r} = mr\omega^2` | $F = \dfrac{mv^2}{r} = mr\omega^2$ |
+| 単振動（周期） | `T = 2\pi\sqrt{\dfrac{m}{k}}` | $T = 2\pi\sqrt{\dfrac{m}{k}}$ |
+| 運動エネルギー | `K = \tfrac{1}{2}mv^2` | $K = \tfrac{1}{2}mv^2$ |
+| 位置エネルギー（重力） | `U = mgh` | $U = mgh$ |
+| 仕事 | `W = \vec{F}\cdot\vec{r}` | $W = \vec{F}\cdot\vec{r}$ |
+| 角運動量 | `\vec{L} = \vec{r}\times\vec{p}` | $\vec{L} = \vec{r}\times\vec{p}$ |
+| 万有引力 | `F = G\dfrac{Mm}{r^2}` | $F = G\dfrac{Mm}{r^2}$ |
+
+## <span id="h2-em">電磁気で頻出のLaTeX記法（Maxwell 方程式まで）</span>
+
+| 内容 | LaTeX ソース | レンダリング |
+| --- | --- | --- |
+| クーロンの法則 | `F = k\dfrac{q_1 q_2}{r^2}` | $F = k\dfrac{q_1 q_2}{r^2}$ |
+| 電場 | `\vec{E} = \dfrac{\vec{F}}{q}` | $\vec{E} = \dfrac{\vec{F}}{q}$ |
+| 電位 | `V = \dfrac{kQ}{r}` | $V = \dfrac{kQ}{r}$ |
+| ローレンツ力 | `\vec{F} = q\vec{v}\times\vec{B}` | $\vec{F} = q\vec{v}\times\vec{B}$ |
+| ガウスの法則 | `\oint \vec{E}\cdot d\vec{S} = \dfrac{Q}{\varepsilon_0}` | $\oint \vec{E}\cdot d\vec{S} = \dfrac{Q}{\varepsilon_0}$ |
+| ファラデーの法則 | `\oint \vec{E}\cdot d\vec{\ell} = -\dfrac{d\Phi_B}{dt}` | $\oint \vec{E}\cdot d\vec{\ell} = -\dfrac{d\Phi_B}{dt}$ |
+| アンペール・マクスウェル | `\oint \vec{B}\cdot d\vec{\ell} = \mu_0 I + \mu_0\varepsilon_0\dfrac{d\Phi_E}{dt}` | $\oint \vec{B}\cdot d\vec{\ell} = \mu_0 I + \mu_0\varepsilon_0\tfrac{d\Phi_E}{dt}$ |
+| 磁束密度の発散 | `\nabla\cdot\vec{B} = 0` | $\nabla\cdot\vec{B} = 0$ |
+
+## <span id="h2-thermo-wave">熱・波動で頻出のLaTeX記法</span>
+
+| 内容 | LaTeX ソース | レンダリング |
+| --- | --- | --- |
+| 理想気体の状態方程式 | `pV = nRT` | $pV = nRT$ |
+| 熱力学第一法則 | `\Delta U = Q - W` | $\Delta U = Q - W$ |
+| 効率 | `\eta = 1 - \dfrac{T_2}{T_1}` | $\eta = 1 - \dfrac{T_2}{T_1}$ |
+| 波の基本式 | `v = f\lambda` | $v = f\lambda$ |
+| 正弦波 | `y = A\sin(\omega t - kx)` | $y = A\sin(\omega t - kx)$ |
+| ドップラー効果 | `f' = f\,\dfrac{V \pm v_0}{V \mp v_s}` | $f' = f\,\dfrac{V \pm v_0}{V \mp v_s}$ |
+| ヤングの実験 | `\Delta x = \dfrac{L\lambda}{d}` | $\Delta x = \dfrac{L\lambda}{d}$ |
+
+## <span id="h2-quantum">量子・近代物理で頻出のLaTeX記法</span>
+
+| 内容 | LaTeX ソース | レンダリング |
+| --- | --- | --- |
+| 光子のエネルギー | `E = h\nu = \dfrac{hc}{\lambda}` | $E = h\nu = \dfrac{hc}{\lambda}$ |
+| ド・ブロイ波長 | `\lambda = \dfrac{h}{p}` | $\lambda = \dfrac{h}{p}$ |
+| 不確定性原理 | `\Delta x\,\Delta p \geq \dfrac{\hbar}{2}` | $\Delta x\,\Delta p \geq \dfrac{\hbar}{2}$ |
+| シュレーディンガー方程式 | `i\hbar\dfrac{\partial \psi}{\partial t} = \hat{H}\psi` | $i\hbar\dfrac{\partial \psi}{\partial t} = \hat{H}\psi$ |
+| 確率密度 | `P = |\psi|^2` | $P = |\psi|^2$ |
+| 質量エネルギー等価 | `E = mc^2` | $E = mc^2$ |
+| ローレンツ因子 | `\gamma = \dfrac{1}{\sqrt{1 - v^2/c^2}}` | $\gamma = \dfrac{1}{\sqrt{1 - v^2/c^2}}$ |
+
+## <span id="h2-greek">ギリシャ文字・特殊記号 早見表</span>
+
+| 文字 | 小文字 | 大文字 | 物理での代表用途 |
+| --- | --- | --- | --- |
+| アルファ | `\alpha` $\alpha$ | `A` $A$ | 角度・係数 |
+| ベータ | `\beta` $\beta$ | `B` $B$ | 速度比 v/c |
+| ガンマ | `\gamma` $\gamma$ | `\Gamma` $\Gamma$ | ローレンツ因子 |
+| デルタ | `\delta` $\delta$ | `\Delta` $\Delta$ | 微小・差分 |
+| イプシロン | `\varepsilon` $\varepsilon$ | `E` $E$ | 誘電率 |
+| シータ | `\theta` $\theta$ | `\Theta` $\Theta$ | 角度 |
+| ラムダ | `\lambda` $\lambda$ | `\Lambda` $\Lambda$ | 波長・固有値 |
+| ミュー | `\mu` $\mu$ | `M` $M$ | 摩擦係数・透磁率 |
+| ニュー | `\nu` $\nu$ | `N` $N$ | 振動数 |
+| パイ | `\pi` $\pi$ | `\Pi` $\Pi$ | 円周率 |
+| ロー | `\rho` $\rho$ | `P` $P$ | 密度・電荷密度 |
+| シグマ | `\sigma` $\sigma$ | `\Sigma` $\Sigma$ | 表面電荷密度・総和 |
+| ファイ | `\varphi` $\varphi$ | `\Phi` $\Phi$ | 位相・磁束 |
+| プサイ | `\psi` $\psi$ | `\Psi` $\Psi$ | 波動関数 |
+| オメガ | `\omega` $\omega$ | `\Omega` $\Omega$ | 角振動数・抵抗 |
+| エイチバー | `\hbar` $\hbar$ | — | 換算プランク定数 |
+
+## <span id="h2-workflow">AI×LaTeX で教材作成を高速化するワークフロー</span>
+
+本チートシートは **AI×LaTeX 教材作成** ワークフローと組み合わせると最大効果を発揮します。
+
+<GraphIllustration
+  variant="workflow"
+  caption="教材作成ワークフロー：AI下書き → LaTeX整形 → PDF/Web展開"
+/>
+
+| ステップ | やること | 本記事の使い方 |
+| --- | --- | --- |
+| ① 下書き | ChatGPT/Claude に問題文と解答を生成させる | 数式は ASCII で出させて、後段で LaTeX 化 |
+| ② 整形 | 数式を本記事のチートシートに沿って LaTeX に書き起こす | コピペで該当行を貼る |
+| ③ 展開 | LaTeX → PDF（Overleaf/TeX Live）または Web（KaTeX/MathJax） | 同じソースが両方で使える |
+
+<CtaCard
+  eyebrow="LUMORA · 教材作成"
+  title="教材作成 AI×LaTeX のワークフロー全体は別記事で詳説"
+  body="本記事は『記法集』に特化していますが、AI で下書き→LaTeX で整形→PDF/Web で配布の全体像は『AIとLaTeXで教材作成を自動化』にまとめています。あわせてどうぞ。"
+  primary={{ label: "AIとLaTeXで教材作成を自動化を読む", href: "/blog/latex-web-workflow" }}
+  secondary={{ label: "ブログ一覧へ", href: "/blog" }}
+/>
+
+## <span id="h2-faq">よくある質問（FAQ）</span>
+
+<Faq
+  items={[
+    {
+      q: "LaTeX 数式 物理で \\vec{} と \\bm{} はどちらが正しいですか？",
+      a: "どちらも正しく、用途で使い分けます。高校の教科書・高校生向け教材は矢印つき \\vec{F} が標準。大学の解答・物理の論文では太字 \\bm{F}（または \\boldsymbol{F}）が主流です。同じ教材内では統一してください。",
+    },
+    {
+      q: "\\dfrac と \\frac はどう違いますか？",
+      a: "\\frac は文脈に応じてサイズが決まる（インラインで小さく、ブロックで大きく）。\\dfrac は常に大きく（display）、\\tfrac は常に小さく（text）。物理の式では『分数を強調したいなら \\dfrac、本文に溶け込ませたいなら \\tfrac』が読みやすいです。",
+    },
+    {
+      q: "KaTeX と LaTeX 本体で書ける記法は同じですか？",
+      a: "ほぼ同じですが、KaTeX は LaTeX の全機能ではありません。\\bm（要 bm パッケージ）など一部のマクロは未対応のことがあるので、\\boldsymbol などで代用します。Web で表示するなら最初から KaTeX 対応の記法に絞るのが安全です。",
+    },
+    {
+      q: "Overleaf で物理の教材を書くおすすめのテンプレートはありますか？",
+      a: "標準クラス article + amsmath, amssymb, physics, bm の4パッケージで大半の物理教材が書けます。physics パッケージを使うと \\dv{}{} で常微分、\\pdv{}{} で偏微分が短く書けて便利です。",
+    },
+    {
+      q: "AI に LaTeX を直接生成させる場合のコツは？",
+      a: "プロンプトで『LaTeX で出力。数式は $...$ または $$...$$ で囲み、ベクトルは \\vec{}、分数は \\dfrac{} を使用』と明示すると揺らぎが減ります。出力後はチートシートで記法を統一し、Overleaf でビルドエラーがないか確認します。",
+    },
+  ]}
+/>
+
+### 関連記事・参考文献
+
+- 教材作成ワークフロー：[AIとLaTeXで教材作成を自動化｜下書き→整形→展開を1日30分に](/blog/latex-web-workflow)
+- 物理の前提：[等加速度運動の公式 完全ガイド](/blog/equations-of-uniform-acceleration) ／ [円運動の向心力](/blog/circular-motion-centripetal-force) ／ [単振動](/blog/simple-harmonic-motion-energy) ／ [ドップラー効果](/blog/doppler-effect-formula)
+- [KaTeX 公式ドキュメント Supported Functions](https://katex.org/docs/supported.html)

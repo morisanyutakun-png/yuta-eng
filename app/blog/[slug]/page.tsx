@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
 
 import { ArticleCard } from "@/components/article-card";
 import { ButtonLink } from "@/components/button-link";
@@ -221,7 +223,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="article-content mt-7 sm:mt-8">
           <MDXRemote
             components={mdxComponents}
-            options={{ mdxOptions: { useDynamicImport: false }, blockJS: false }}
+            options={{
+              mdxOptions: {
+                useDynamicImport: false,
+                remarkPlugins: [remarkMath],
+                rehypePlugins: [[rehypeKatex, { strict: "ignore" }]],
+              },
+              blockJS: false,
+            }}
             source={post.content}
           />
         </div>
