@@ -1,35 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
-import eddivomShowcase from "@/assets/home/eddivom-showcase.webp";
-import learningHubVisual from "@/assets/home/learning-hub-visual.webp";
-import { AppCard } from "@/components/app-card";
-import { ArticleCard } from "@/components/article-card";
 import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
-import { HeroMotion } from "@/components/hero-motion";
-import {
-  DesignBoardVisual,
-  FinalCtaVisual,
-  FocusAreaGlyph,
-  HeroMeshOverlay,
-  IntentVisual,
-  LearningFlowDiagram,
-  TopicClusterVisual,
-} from "@/components/home-visuals";
 import { JsonLd } from "@/components/json-ld";
-import { Section } from "@/components/section";
-import { StaggerReveal } from "@/components/stagger-reveal";
-import { apps } from "@/data/apps";
-import { focusAreas } from "@/data/focus-areas";
-import {
-  designSystemNotes,
-  homepageAnswers,
-  upcomingBlogThemes,
-  visitorPaths,
-} from "@/data/home";
-import { seoClusters } from "@/data/seo";
 import { siteConfig } from "@/data/site";
 import { getLatestPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
@@ -40,293 +14,125 @@ import {
   createItemListJsonLd,
 } from "@/lib/structured-data";
 
-const heroFocuses = [
-  "高校物理を主力カテゴリに据える",
-  "AI・LaTeXで教材制作を支える",
-  "EddivomなどのWebアプリへつなぐ",
-];
-
-const heroStats = [
-  {
-    value: "Learn",
-    label: "高校物理を主力カテゴリとして、理解の順序から整理する",
-  },
-  {
-    value: "Build",
-    label: "教材制作・LaTeX・AI を制作思想として束ねる",
-  },
-  {
-    value: "Use",
-    label: "Eddivomなどの学習支援Webアプリへつなぐ",
-  },
-];
-
-const psychologyCards = [
-  {
-    title: "目的が見える",
-    text: "高校物理、教材制作、学習アプリの入口を分け、今いる場所から選びやすくします。",
-  },
-  {
-    title: "小さく進める",
-    text: "読む、理解する、演習する、アプリへ進む流れを短い単位に分けます。",
-  },
-  {
-    title: "戻れるから続く",
-    text: "つまずいた前提知識へ戻れる導線を置き、学び直しを続けやすくします。",
-  },
-];
-
-const learningFlow = [
+const visitorPaths = [
   {
     label: "Physics",
-    title: "主力カテゴリの高校物理から始める",
+    badge: "高校生・受験生向け",
+    title: "高校物理を「理解」で乗り越える",
     description:
-      "力学や物理基礎で止まりやすいところを、現象、図、数式、演習の順にほどいていきます。",
-  },
-  {
-    label: "Materials Studio",
-    title: "制作思想として教材制作・LaTeX・AI を束ねる",
-    description:
-      "生成AIを下書きや問題案に使い、LaTeXやWebで再利用しやすい教材へ整えます。",
-  },
-  {
-    label: "Eddivom / Apps",
-    title: "実践導線としてEddivomなどの学習支援アプリへつなぐ",
-    description:
-      "記事や教材で整理した内容を、必要なタイミングで Eddivom、IT Pass、Physics へつなげます。",
-  },
-];
-
-const appSpotlightPoints = [
-  {
-    label: "Official",
-    text: "外部アプリであることを明示しながら、役割がすぐ伝わる見せ方にする",
-  },
-  {
-    label: "Mobile",
-    text: "スマホでも画像で雰囲気をつかんでから、迷わずアプリ一覧へ進める",
-  },
-  {
-    label: "Flow",
-    text: "記事で読んだ内容から、そのまま実際の学習アプリへ移動しやすくする",
-  },
-];
-
-const intentVisualVariants = ["physics", "materials", "apps"] as const;
-
-const aboutHighlights = [
-  {
-    label: "Physics",
-    title: "高校物理の学び直しを中心に据える",
-    text: "現象、図、数式、演習を切り離さず、止まった場所から理解をつなぎ直す記事と教材を作ります。",
+      "公式の暗記で止まらないために、現象 → 図 → 式の順で物理を読む方法を、図と表でわかりやすく解説。",
+    benefits: [
+      "力学のつまずきを「変化を読む力」で解消",
+      "微積を使わずに加速度の意味を理解",
+      "テスト直前と通年学習の両方に使える",
+    ],
+    href: "/blog/physics-material-creation",
+    cta: "物理の記事を読む",
   },
   {
     label: "Materials",
-    title: "教材制作を AI・LaTeX・Web で育てる",
-    text: "生成AIの下書きをそのまま出さず、LaTeX や Web で再利用できる教材資産へ編集します。",
+    badge: "先生・塾講師・教材制作者向け",
+    title: "教材作成を AI でラクに続ける",
+    description:
+      "生成AI下書き → LaTeX整形 → PDF/Web展開のワークフローを、コピペ可能なテンプレ付きで紹介。",
+    benefits: [
+      "毎年作り直しが消える「資産化」設計",
+      "AI に任せていい仕事/ダメな仕事の整理",
+      "小テスト・類題・解答PDFを一気通貫で",
+    ],
+    href: "/blog/latex-web-workflow",
+    cta: "教材作成AIの記事を読む",
   },
   {
-    label: "Apps",
-    title: "学習支援アプリを実践導線として運用する",
-    text: "Eddivomなどの学習支援Webアプリを、読んで終わりにしないための次の一歩として案内します。",
+    label: "EdTech",
+    badge: "学校ICT・プロダクト担当向け",
+    title: "「使われる」学習アプリを設計する",
+    description:
+      "GIGAスクール後の教室で、紙・PDF・アプリを分断させずに学習動線を設計する考え方をまとめました。",
+    benefits: [
+      "機能を増やさず動線で勝負する設計指針",
+      "学習ループ「読む → 解く → 戻る → 続ける」",
+      "自社アプリを評価できるチェックリスト付き",
+    ],
+    href: "/blog/education-technology-learning-design",
+    cta: "学習アプリ設計の記事を読む",
   },
 ];
 
-const homeApps = apps.map((app) => {
-  if (app.name === "Eddivom") {
-    return {
-      ...app,
-      description:
-        "Eddivomは、AIとLaTeXを活用して、小テスト・類題・解答PDFなどの教材作成を支援するWebアプリです。下書きから学習者に渡せる形へ整える流れをサポートします。",
-      audience: "塾講師・教材制作者・物理や数学のプリントを作りたい教育関係者",
-      status: "教材作成ツール",
-    };
-  }
-
-  if (app.name === "IT Pass") {
-    return {
-      ...app,
-      description:
-        "ITの基礎学習や試験対策を進めたい人向けの外部アプリです。短く積み上げながら学びたいときの入口として案内します。",
-      status: "外部アプリ",
-    };
-  }
-
-  if (app.name === "Physics") {
-    return {
-      ...app,
-      description:
-        "物理の概念理解と演習をつなげたい人向けの外部アプリです。記事で整理した内容を、手を動かす学びへつなげます。",
-      status: "外部アプリ",
-    };
-  }
-
-  return app;
-});
-
-const topicMapCopy: Record<
-  string,
+const problems = [
   {
-    title: string;
-    summary: string;
-    themes: string[];
-    paths: string[];
-  }
-> = {
-  "高校物理 塾": {
-    title: "高校物理を理解し直す",
-    summary:
-      "力学や物理基礎で止まったところを、概念、図、数式、演習のつながりから学び直します。",
-    themes: ["概念理解", "図解", "問題演習", "物理基礎", "学び直し"],
-    paths: [
-      "力学の考え方を整理したい",
-      "公式暗記から抜け出したい",
-      "定期テスト前に物理基礎を復習したい",
-      "物理をどこから戻ればよいか知りたい",
-    ],
+    icon: "📐",
+    pain: "公式は覚えたのに、ちょっと条件が変わると解けない",
+    answer: "物理を「式の暗記」ではなく「変化の読み取り」として学び直すための記事を用意しています。",
+    href: "/blog/physics-material-creation",
   },
-  "教材作成AI 自動": {
-    title: "AI教材作成をEddivomにつなぐ",
-    summary:
-      "AI 教材作成の下書きから、小テスト作成、類題作成、解答PDFの準備までを、Eddivomなどの教材制作ツールへつながる流れで整理します。",
-    themes: ["AI 教材作成", "小テスト作成", "類題作成", "解答PDF", "Eddivom"],
-    paths: [
-      "AIで小テストの下書きを作りたい",
-      "類題作成を効率化したい",
-      "解答PDFまで見据えて教材を整えたい",
-      "Eddivomで教材作成の流れを支えたい",
-    ],
+  {
+    icon: "🤖",
+    pain: "AIに教材を作らせたいのに、結局自分で書き直している",
+    answer: "AI・LaTeX・Web の役割分担と、5ステップの教材作成ワークフローでラクに続けられます。",
+    href: "/blog/latex-web-workflow",
   },
-  "GIGAスクール 教材作成": {
-    title: "デジタル教材を学習導線につなぐ",
-    summary:
-      "GIGAスクール後の環境で、教材、演習、復習、アプリをどうつなぐかを整理します。",
-    themes: ["GIGAスクール", "教育DX", "AIドリル", "個別最適な学び", "学習導線"],
-    paths: [
-      "端末前提の教材をどう設計するか知りたい",
-      "AIドリルと教材の役割を分けたい",
-      "学習支援Webアプリの考え方を知りたい",
-      "教育ICTを授業や自学へつなげたい",
-    ],
+  {
+    icon: "📱",
+    pain: "学習アプリを導入したのに、生徒が続けて使ってくれない",
+    answer: "「機能の足し算」ではなく「動線設計」でアプリを設計し直す考え方を、図解で解説します。",
+    href: "/blog/education-technology-learning-design",
   },
-  "学習支援Webアプリ": {
-    title: "学習支援Webアプリを考える",
-    summary:
-      "アプリを機能一覧としてではなく、学ぶ順序、復習、記録を支える道具として設計します。",
-    themes: ["教育ICT", "復習導線", "演習", "学習ログ", "Webアプリ"],
-    paths: [
-      "学習アプリに必要な入口を整理したい",
-      "教材とWebアプリを連携したい",
-      "復習しやすい画面構成を考えたい",
-      "小さく始める教育アプリを作りたい",
-    ],
+];
+
+const trustPoints = [
+  {
+    title: "一次情報ベース",
+    body: "学習指導要領、物理教育研究、教育ICT政策など、原典をたどって書いています。",
   },
-  "物理 教材制作": {
-    title: "物理教材を作る",
-    summary:
-      "物理教材を、答えの説明だけでなく思考の順序が残るコンテンツとして組み立てます。",
-    themes: ["物理教材", "力学", "図解", "解説", "演習設計"],
-    paths: [
-      "物理の解説をわかりやすくしたい",
-      "図と数式を同じ流れで見せたい",
-      "演習につながる教材を作りたい",
-      "つまずきやすい前提を補いたい",
-    ],
+  {
+    title: "実践とつながる",
+    body: "Eddivom など実際に動いている学習アプリの設計と、ブログの内容が地続きです。",
   },
-  "LaTeX 教材作成": {
-    title: "LaTeX教材を育てる",
-    summary:
-      "LaTeX 教材作成で数式プリントや問題集を再利用しやすく整え、印刷物からWeb展開まで扱いやすい教材資産として管理します。",
-    themes: ["LaTeX 教材作成", "数式プリント", "問題集", "再利用", "Web展開"],
-    paths: [
-      "LaTeX教材をWeb展開にも使いたい",
-      "数式プリントを再利用しやすくしたい",
-      "問題集を更新しやすい形で管理したい",
-      "ブログと教材制作をつなげたい",
-    ],
+  {
+    title: "図と表で速く読める",
+    body: "ステップ図・比較表・チェックリストで、忙しい先生や受験生でも要点だけつかめます。",
   },
-  "EdTech 個人ブランドサイト": {
-    title: "制作思想と実装をひとつにまとめる",
-    summary:
-      "教育、物理、教材制作、アプリ開発を横断する活動を、公式ハブとして見つけやすく整理します。",
-    themes: ["個人ブランド", "教育ブログ", "アプリ紹介", "制作思想", "公式ハブ"],
-    paths: [
-      "森祐太の活動全体を知りたい",
-      "教材制作とアプリ開発の考え方を読みたい",
-      "ブログとアプリの入口をまとめて見たい",
-      "相談前に専門領域を確認したい",
-    ],
+];
+
+const faqItems = [
+  {
+    question: "Lumora はどんな人のためのサイトですか？",
+    answer:
+      "高校物理でつまずいた高校生・受験生、AIで教材を作りたい先生や塾講師、学習支援アプリを設計する EdTech 担当者の3層を想定しています。それぞれの入口から記事へ進めます。",
   },
-};
-
-const topicMapCards = seoClusters.map((cluster) => ({
-  ...cluster,
-  ...(topicMapCopy[cluster.primary] ?? {
-    title: cluster.label,
-    summary: cluster.intent,
-    themes: cluster.supporting.slice(0, 5),
-    paths: cluster.longTail,
-  }),
-}));
-
-const homeFocusAreas = focusAreas.map((area) => {
-  if (area.title === "Education / GIGA") {
-    return {
-      ...area,
-      description:
-        "GIGAスクールや教育DXの環境で、教材、演習、復習が自然につながる学びを設計します。",
-    };
-  }
-
-  if (area.title === "Physics") {
-    return {
-      ...area,
-      description:
-        "高校物理を、公式暗記ではなく現象・図・数式・演習の関係から理解できるように整理します。",
-    };
-  }
-
-  if (area.title === "LaTeX") {
-    return {
-      ...area,
-      description:
-        "数式教材や問題集を、きれいに組むだけでなく、再利用しやすい制作資産として整えます。",
-    };
-  }
-
-  if (area.title === "AI Material Creation") {
-    return {
-      ...area,
-      description:
-        "生成AIを下書きや問題案に活かし、人が理解しやすい順序と説明密度へ編集します。",
-    };
-  }
-
-  if (area.title === "EdTech / Web Apps") {
-    return {
-      ...area,
-      description:
-        "学習の入口、演習、復習、記録を支えるWebアプリを作り、教材と実践をつなげます。",
-    };
-  }
-
-  return area;
-});
+  {
+    question: "記事は無料で読めますか？",
+    answer:
+      "すべての記事は無料で公開しています。一次情報リンクや図解も含めて全文をそのまま読めます。",
+  },
+  {
+    question: "個別の相談やお仕事依頼はできますか？",
+    answer:
+      "教材設計、AI教材作成、学習Webアプリの企画相談などはお問い合わせから受け付けています。まずは気軽にメールしてください。",
+  },
+  {
+    question: "Eddivom は Lumora と同じ運営ですか？",
+    answer:
+      "Eddivom は Lumora が公式に紹介している学習支援Webアプリで、AIとLaTeXによる教材作成を体験できます。アプリ一覧から開けます。",
+  },
+];
 
 export const metadata: Metadata = createPageMetadata({
-  title: "高校物理の塾・教材作成AI・EdTech学習支援 | Yuta Eng",
+  title: "Lumora｜高校物理 × 教材作成AI × EdTech 学習スタジオ",
   description:
-    "高校物理の塾を探す人、教材作成AIを自動化したい人、GIGAスクールや教育DXに合う学習支援Webアプリを知りたい人のためのEdTech学習スタジオです。",
+    "高校物理を理解で乗り越えたい人、教材作成をAIでラクに続けたい先生、学習支援アプリを設計したい EdTech 担当者へ。Lumora は、読む・解く・つなぐを一本の動線でまとめた EdTech 学習スタジオです。",
   keywords: [
-    "高校物理 塾",
-    "高校物理 オンライン塾",
-    "物理基礎 定期テスト対策",
-    "教材作成AI 自動",
+    "高校物理 わかりやすい",
+    "高校物理 苦手克服",
+    "教材作成AI",
     "AI教材作成",
-    "生成AI 教材作成",
+    "LaTeX 教材作成",
+    "学習支援Webアプリ",
     "GIGAスクール 教材作成",
-    "EdTech 学習支援",
-    "教育DX 学習支援Webアプリ",
+    "EdTech",
+    "個別最適な学び",
+    "Lumora",
   ],
   path: "/",
 });
@@ -338,15 +144,7 @@ export default function Home() {
     createEducationalServiceJsonLd(),
     createHomeFaqJsonLd(),
     createItemListJsonLd(
-      "yuta-eng.com から移動できる学習支援アプリ",
-      homeApps.map((app) => ({
-        name: app.name,
-        description: app.description,
-        url: app.href,
-      })),
-    ),
-    createItemListJsonLd(
-      "yuta-eng.com の最新ブログ記事",
+      "Lumora の最新ブログ記事",
       latestPosts.map((post) => ({
         name: post.title,
         description: post.description,
@@ -358,604 +156,300 @@ export default function Home() {
   return (
     <>
       <JsonLd data={homeJsonLd} />
-      <HeroMotion className="home-hero relative isolate overflow-hidden">
-        <div className="ambient-grid absolute inset-0 -z-30" />
-        <div className="home-aurora absolute inset-0 -z-20" />
-        <div className="hero-glow absolute left-[8%] top-20 -z-10 hidden h-[22rem] w-[22rem] rounded-full bg-[radial-gradient(circle,rgba(125,211,252,0.42),rgba(56,189,248,0.16)_44%,transparent_70%)] blur-3xl sm:top-28 sm:block sm:h-[28rem] sm:w-[28rem]" />
-        <div className="motion-depth-2 absolute right-[-12rem] top-10 -z-10 hidden h-[38rem] w-[38rem] rounded-full bg-[radial-gradient(circle,rgba(253,186,116,0.38),rgba(250,204,21,0.12)_48%,transparent_70%)] blur-3xl lg:block" />
 
-        <Container className="grid min-h-[calc(100vh-3.75rem)] items-center gap-10 py-10 sm:min-h-[calc(100vh-4rem)] sm:gap-14 sm:py-16 lg:grid-cols-[0.94fr_1.06fr] lg:py-24">
-          <div className="fade-up">
-            <p className="liquid-glass inline-flex rounded-full px-4 py-2 text-sm font-semibold text-slate-700">
-              森祐太 | 高校物理 / AI教材作成 / LaTeX教材制作
+      <Container className="px-4 sm:px-6">
+        {/* HERO */}
+        <section className="pt-6 pb-10 sm:pt-12 sm:pb-16 lg:pt-20 lg:pb-20">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="inline-flex items-center gap-1.5 rounded-full bg-sky-100 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.2em] text-sky-800">
+              <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-amber-400" />
+              Lumora EdTech Studio
             </p>
-            <h1 className="text-balance mt-7 max-w-5xl font-serif text-[2.3rem] font-semibold leading-[1.06] tracking-[-0.085em] text-slate-950 sm:text-5xl sm:leading-[1.03] lg:text-7xl">
-              高校物理とLaTeX教材制作を、AIとWebアプリで支える教育開発ハブ。
+            <h1 className="mt-4 text-balance font-serif text-[1.95rem] font-bold leading-[1.4] tracking-[-0.02em] text-slate-950 sm:mt-6 sm:text-[2.6rem] sm:leading-[1.32] lg:text-[3.1rem] lg:leading-[1.25]">
+              高校物理を「理解」で乗り越え、<br className="hidden sm:block" />
+              教材作成をAIで「ラク」に続ける。
             </h1>
-            <p className="text-pretty mt-6 max-w-2xl text-base leading-8 text-slate-600 sm:mt-7 sm:text-lg sm:leading-9">
-              Yuta Eng は、高校物理の理解を支える記事、AIとLaTeXを使った
-              教材制作の知見、Eddivomなどの学習支援Webアプリへの入口をまとめた公式ハブです。
-              学ぶ人も、教材を作る人も、次の一歩を迷わず選べます。
+            <p className="mx-auto mt-5 max-w-2xl text-pretty text-[0.98rem] leading-[1.95] text-slate-600 sm:mt-6 sm:text-[1.05rem] sm:leading-[2]">
+              Lumora は、高校物理の理解、AI・LaTeX による教材作成、学習支援アプリの設計を、図と表でわかりやすく整理する EdTech スタジオです。読んで → 解いて → つなぐ。学びと教材制作を一本の動線でつなげます。
             </p>
-            <div className="mt-7 flex flex-wrap gap-2">
-              {heroFocuses.map((focus) => (
-                <span className="keyword-pill" key={focus}>
-                  {focus}
-                </span>
-              ))}
-            </div>
-            <div className="mt-8 grid gap-3 sm:mt-9 sm:flex sm:flex-wrap">
-              <ButtonLink className="w-full sm:w-auto" href="#home-entry-points">
-                3つの入口を見る
+            <div className="mx-auto mt-7 flex max-w-md flex-col gap-2.5 sm:mt-8 sm:flex-row sm:justify-center">
+              <ButtonLink className="w-full sm:w-auto" href="/blog">
+                ブログを読む
               </ButtonLink>
-              <ButtonLink className="w-full sm:w-auto" href="/about" variant="secondary">
-                森祐太について
-              </ButtonLink>
-              <ButtonLink className="w-full sm:w-auto" href="/contact" variant="ghost">
-                相談する
+              <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
+                アプリを見る
               </ButtonLink>
             </div>
-            <div className="mt-10 grid gap-3 sm:grid-cols-3">
-              {heroStats.map((item) => (
-                <div className="liquid-glass rounded-[1.4rem] p-4" key={item.value}>
-                  <p className="font-mono text-sm font-semibold text-sky-700">
-                    {item.value}
+            <div className="mx-auto mt-7 grid max-w-2xl grid-cols-3 gap-2 text-center sm:mt-8 sm:gap-3">
+              {[
+                { num: "3", label: "テーマ別の入口" },
+                { num: "100%", label: "無料で全文公開" },
+                { num: "Mobile", label: "モバイル最適化" },
+              ].map((item) => (
+                <div
+                  className="rounded-xl border border-slate-200 bg-white px-2 py-3 sm:rounded-2xl sm:px-3 sm:py-4"
+                  key={item.label}
+                >
+                  <p className="font-mono text-[0.95rem] font-bold text-sky-800 sm:text-base">
+                    {item.num}
                   </p>
-                  <p className="mt-2 text-xs leading-5 text-slate-600">
+                  <p className="mt-1 text-[0.7rem] leading-[1.4] text-slate-500 sm:text-xs">
                     {item.label}
                   </p>
                 </div>
               ))}
             </div>
           </div>
+        </section>
 
-          <div className="order-first fade-up fade-up-delay-2 relative mx-auto w-full max-w-[42rem] lg:order-none lg:max-w-none">
-            <div className="motion-depth-1 relative">
-              <div className="hero-visual-orb absolute inset-x-[12%] top-[8%] -z-10 h-[62%] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.28),rgba(125,211,252,0.14)_44%,transparent_72%)] blur-3xl" />
-              <div className="hero-visual-orb hero-visual-orb-warm absolute bottom-[3%] right-[4%] -z-10 h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(253,186,116,0.26),rgba(251,191,36,0.14)_48%,transparent_74%)] blur-3xl sm:h-52 sm:w-52" />
-
-              <div className="hero-image-frame relative overflow-hidden rounded-[2rem] p-2.5 sm:rounded-[2.8rem] sm:p-3">
-                <div className="hero-image-mask relative aspect-[5/6] overflow-hidden rounded-[1.55rem] sm:aspect-[4/3] sm:rounded-[2.15rem] lg:aspect-[11/10]">
-                  <Image
-                    alt="高校物理、教材制作、学習アプリが一つのハブでつながる学習ビジュアル"
-                    className="h-full w-full object-cover object-center"
-                    placeholder="blur"
-                    priority
-                    quality={82}
-                    sizes="(max-width: 640px) 92vw, (max-width: 1024px) 88vw, 48vw"
-                    src={learningHubVisual}
-                  />
-                  <HeroMeshOverlay />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.18)_100%)]" />
-                </div>
-
-                <div className="hero-floating-card hero-floating-card-top hidden sm:block">
-                  <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-sky-700">
-                    Physics
-                  </p>
-                  <p className="mt-2 text-sm font-semibold leading-6 text-slate-950">
-                    図・数式・演習を、ひとつの流れで理解する
-                  </p>
-                </div>
-
-                <div className="hero-floating-card hero-floating-card-bottom">
-                  <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-amber-600">
-                    Materials
-                  </p>
-                  <p className="mt-2 text-sm font-semibold leading-6 text-slate-950">
-                    AI・LaTeX・Webをつないで、教材を育てる
-                  </p>
-                </div>
-
-                <div className="hero-image-caption absolute inset-x-3 bottom-3 rounded-[1.4rem] px-4 py-3 sm:inset-x-auto sm:left-4 sm:bottom-4 sm:max-w-[15rem] sm:rounded-[1.5rem] sm:px-4 sm:py-3.5">
-                  <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-slate-500">
-                    Learning Hub
-                  </p>
-                  <p className="mt-1.5 text-sm font-semibold leading-6 text-slate-950">
-                    記事、教材、アプリがひとつの画面でつながる
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
-                {["Blog", "Materials", "Apps"].map((item) => (
-                  <div
-                    className="hero-mini-dock rounded-[1.1rem] px-3 py-3 text-center text-xs font-semibold text-slate-700 sm:rounded-[1.4rem] sm:px-4"
-                    key={item}
-                  >
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
+        {/* PROBLEM SECTION */}
+        <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_22px_70px_-60px_rgba(15,23,42,0.5)] sm:rounded-[1.6rem] sm:p-8 lg:p-10">
+          <div className="mb-6 sm:mb-8 sm:text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
+              こんな悩みはありませんか？
+            </p>
+            <h2 className="mt-2 text-balance font-serif text-[1.5rem] font-bold leading-[1.45] tracking-[-0.02em] text-slate-950 sm:text-[1.85rem] sm:leading-[1.4]">
+              よくあるつまずきと、Lumora での解決方法
+            </h2>
           </div>
-        </Container>
-      </HeroMotion>
+          <ul className="grid gap-3 sm:gap-4 lg:grid-cols-3">
+            {problems.map((problem) => (
+              <li key={problem.pain}>
+                <Link
+                  className="flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:-translate-y-0.5 hover:border-sky-200 hover:bg-white sm:p-5"
+                  href={problem.href}
+                >
+                  <div className="flex items-start gap-2">
+                    <span aria-hidden="true" className="text-2xl">
+                      {problem.icon}
+                    </span>
+                    <p className="text-[0.95rem] font-bold leading-[1.65] text-slate-950">
+                      {problem.pain}
+                    </p>
+                  </div>
+                  <p className="mt-3 text-[0.88rem] leading-[1.85] text-slate-600">
+                    {problem.answer}
+                  </p>
+                  <p className="mt-3 inline-flex items-center gap-1 text-[0.82rem] font-bold text-sky-700">
+                    解決方法を見る <span aria-hidden="true">→</span>
+                  </p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-      <Container>
-        <Section
-          className="pt-16 sm:pt-20"
-          description="ヒーロー直下では、学ぶ・作る・使うの3入口だけを強く置きました。高校物理を主力に、教材制作はAIとLaTeXの制作思想として、Apps はEddivomなどへ進む実践導線として整理しています。"
-          eyebrow="Start Here"
-          id="home-entry-points"
-          title="学ぶ / 作る / 使うの3入口から入る"
-        >
-          <StaggerReveal className="grid gap-4 lg:grid-cols-3">
-            {visitorPaths.map((path, index) => (
+        {/* MAIN PATHS */}
+        <section className="mt-12 sm:mt-16 lg:mt-20" id="paths">
+          <div className="mx-auto max-w-3xl sm:text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
+              3つの入口から始める
+            </p>
+            <h2 className="mt-2 text-balance font-serif text-[1.55rem] font-bold leading-[1.42] tracking-[-0.02em] text-slate-950 sm:text-[2rem] sm:leading-[1.36]">
+              あなたの目的に近い入口から、<br className="hidden sm:block" />
+              そのまま読み始められます。
+            </h2>
+          </div>
+          <div className="mt-6 grid gap-4 sm:mt-8 sm:gap-5 lg:grid-cols-3">
+            {visitorPaths.map((path) => (
               <Link
-                className="intent-lens-card group relative flex min-h-[24rem] flex-col overflow-hidden rounded-[2rem] p-5 transition hover:-translate-y-1 sm:rounded-[2.6rem] sm:p-6"
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_55px_-48px_rgba(15,23,42,0.5)] transition hover:-translate-y-1 hover:border-sky-200 sm:rounded-[1.4rem]"
                 href={path.href}
                 key={path.title}
               >
-                <div className="intent-visual-shell mb-5 overflow-hidden rounded-[1.45rem] sm:mb-6 sm:rounded-[1.8rem]">
-                  <IntentVisual variant={intentVisualVariants[index]} />
+                <div className="flex items-center justify-between gap-2 border-b border-slate-100 bg-gradient-to-br from-slate-50 to-sky-50/60 px-4 py-3 sm:px-5">
+                  <span className="font-mono text-[0.7rem] font-bold uppercase tracking-[0.2em] text-sky-800">
+                    {path.label}
+                  </span>
+                  <span className="rounded-full bg-white px-2.5 py-1 text-[0.65rem] font-semibold text-slate-600 ring-1 ring-inset ring-slate-200">
+                    {path.badge}
+                  </span>
                 </div>
-                <div className="relative">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
-                      {path.label}
-                    </p>
-                    <span className="rounded-full bg-white/80 px-3 py-1 text-[0.68rem] font-semibold tracking-[0.14em] text-slate-600">
-                      {path.positioning}
-                    </span>
-                  </div>
-                  <h2 className="text-balance mt-4 text-3xl font-semibold tracking-[-0.08em] text-slate-950 sm:mt-5 sm:text-[2.15rem]">
+                <div className="flex flex-1 flex-col p-4 sm:p-5">
+                  <h3 className="text-[1.1rem] font-bold leading-[1.5] tracking-[-0.01em] text-slate-950 transition group-hover:text-sky-800 sm:text-[1.2rem]">
                     {path.title}
-                  </h2>
-                  <p className="mt-4 text-base font-semibold leading-7 text-slate-900 sm:text-lg">
-                    {path.emphasis}
-                  </p>
-                  <p className="mt-4 rounded-2xl bg-white/70 p-4 text-sm leading-7 text-slate-600 shadow-sm backdrop-blur sm:mt-5">
-                    {path.query}
-                  </p>
-                </div>
-                <div className="relative mt-6 grid gap-2">
-                  {path.points.map((point) => (
-                    <div
-                      className="rounded-full border border-white/80 bg-white/72 px-3 py-2 text-xs font-semibold text-slate-600 shadow-[0_14px_40px_-34px_rgba(15,23,42,0.65)]"
-                      key={point}
-                    >
-                      {point}
-                    </div>
-                  ))}
-                </div>
-                <div className="relative mt-auto pt-8 sm:pt-10">
-                  <p className="text-sm leading-7 text-slate-600">
+                  </h3>
+                  <p className="mt-3 text-[0.9rem] leading-[1.85] text-slate-600">
                     {path.description}
                   </p>
-                  <p className="mt-6 text-sm font-semibold text-slate-950">
+                  <ul className="mt-4 grid gap-1.5">
+                    {path.benefits.map((benefit) => (
+                      <li
+                        className="flex gap-1.5 text-[0.85rem] leading-[1.65] text-slate-700"
+                        key={benefit}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-sky-100 text-[0.6rem] font-bold text-sky-800"
+                        >
+                          ✓
+                        </span>
+                        <span>{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-5 inline-flex items-center gap-1 text-[0.85rem] font-bold text-sky-800">
                     {path.cta} <span aria-hidden="true">→</span>
                   </p>
                 </div>
               </Link>
             ))}
-          </StaggerReveal>
-        </Section>
+          </div>
+        </section>
 
-        <Section
-          description="サイトの説明だけではなく、森祐太が何を軸に活動しているのかを短く分かるように整理しています。高校物理、教材制作、アプリ導線を一つの文脈で扱う個人の教育開発者です。"
-          eyebrow="About Yuta"
-          headerAction={
-            <ButtonLink className="w-full sm:w-auto" href="/about" variant="secondary">
-              About を読む
-            </ButtonLink>
-          }
-          title="森祐太は、学ぶ・作る・使うを同じ文脈で設計する人です。"
-        >
-          <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_28px_90px_-70px_rgba(15,23,42,0.7)] sm:rounded-[2.5rem] sm:p-8">
-              <p className="font-mono text-sm font-semibold text-sky-700">Profile</p>
-              <h3 className="mt-4 text-balance text-3xl font-semibold tracking-[-0.07em] text-slate-950 sm:text-4xl">
-                高校物理の理解設計、AI・LaTeX を活かした教材制作、学習支援アプリ導線の設計を横断しています。
-              </h3>
-              <p className="mt-5 text-sm leading-8 text-slate-600 sm:text-base sm:leading-8">
-                物理の学び直しをどう支えるか、教材をどう再利用可能に作るか、アプリをどう学習の実践につなげるか。
-                森祐太は、この3つを別々に扱わず、ひとつの学習体験として設計しています。
+        {/* TRUST */}
+        <section className="mt-12 rounded-3xl bg-gradient-to-br from-sky-50 via-white to-amber-50 p-5 sm:mt-16 sm:rounded-[1.6rem] sm:p-8 lg:mt-20 lg:p-10">
+          <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr] lg:gap-10 lg:items-center">
+            <div>
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
+                Lumora が大切にしていること
               </p>
-              <div className="mt-7 flex flex-wrap gap-2">
-                {["教育開発", "高校物理", "AI教材制作", "LaTeX", "Web Apps"].map((item) => (
-                  <span className="keyword-pill compact" key={item}>
-                    {item}
-                  </span>
-                ))}
-              </div>
-              <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
-                <ButtonLink className="w-full sm:w-auto" href="/about">
-                  プロフィールを見る
-                </ButtonLink>
-                <ButtonLink className="w-full sm:w-auto" href="/contact" variant="secondary">
-                  相談する
-                </ButtonLink>
-              </div>
+              <h2 className="mt-2 text-balance font-serif text-[1.5rem] font-bold leading-[1.42] tracking-[-0.02em] text-slate-950 sm:text-[1.9rem] sm:leading-[1.36]">
+                図と表で速く読めて、一次情報で確かめられる。
+              </h2>
+              <p className="mt-3 text-[0.95rem] leading-[1.95] text-slate-600 sm:text-base sm:leading-[2]">
+                抽象的な理念ではなく、すぐ使える形へ落とし込むこと。教材設計、AIプロンプト、アプリの動線まで、現場で動くレベルで言語化することを大切にしています。
+              </p>
             </div>
-            <div className="grid gap-4">
-              {aboutHighlights.map((item) => (
-                <article
-                  className="rounded-[1.8rem] border border-slate-200 bg-gradient-to-br from-white via-sky-50/70 to-amber-50/60 p-5 shadow-[0_20px_80px_-68px_rgba(15,23,42,0.7)] sm:rounded-[2.1rem] sm:p-6"
-                  key={item.title}
+            <div className="grid gap-3">
+              {trustPoints.map((point, index) => (
+                <div
+                  className="rounded-2xl border border-white/80 bg-white/80 p-4 shadow-[0_14px_45px_-40px_rgba(15,23,42,0.4)] backdrop-blur sm:p-5"
+                  key={point.title}
                 >
-                  <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
-                    {item.label}
-                  </p>
-                  <h3 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-2xl">
-                    {item.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{item.text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </Section>
-
-        <Section
-          description="Eddivom、IT Pass、Physics への公式リンクをまとめています。外部アプリであることを明示しながら、用途が一目で分かる入口にしています。"
-          eyebrow="Apps Hub"
-          headerAction={
-            <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
-              アプリ一覧へ
-            </ButtonLink>
-          }
-          title="学習支援アプリへ迷わず移動する"
-        >
-          <div className="showcase-spotlight mb-6 overflow-hidden rounded-[2rem] p-3 sm:mb-8 sm:rounded-[2.75rem] sm:p-4">
-            <div className="grid gap-6 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
-              <div className="relative overflow-hidden rounded-[1.65rem] sm:rounded-[2.1rem]">
-                <Image
-                  alt="Eddivom の世界観を示すアプリビジュアル"
-                  className="h-full w-full object-cover object-center"
-                  placeholder="blur"
-                  quality={80}
-                  sizes="(max-width: 1024px) 100vw, 52vw"
-                  src={eddivomShowcase}
-                />
-              </div>
-
-              <div className="px-2 pb-2 sm:px-3 lg:pr-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">
-                  Visual Spotlight
-                </p>
-                <h3 className="mt-3 text-balance text-2xl font-semibold tracking-[-0.06em] text-slate-950 sm:text-3xl">
-                  Eddivomを、教材作成ツールへの入口として見せる
-                </h3>
-                <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
-                  Eddivom を含む学習支援Webアプリ群は、単なる外部リンク集ではなく、
-                  AIとLaTeXを使った教材制作の流れから自然につながる実践の入口として見せています。
-                </p>
-
-                <div className="mt-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-                  {appSpotlightPoints.map((point) => (
-                    <article className="showcase-point rounded-[1.35rem] p-4" key={point.label}>
-                      <p className="font-mono text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-sky-700">
-                        {point.label}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold leading-6 text-slate-900">
-                        {point.text}
-                      </p>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mb-6 grid gap-3 sm:mb-8 lg:grid-cols-3">
-            {homeApps.map((app) => (
-              <article
-                className="rounded-[1.5rem] border border-slate-200 bg-white/80 p-4 shadow-[0_18px_60px_-50px_rgba(15,23,42,0.55)] backdrop-blur-xl sm:rounded-[1.8rem] sm:p-5"
-                key={app.name}
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <h3 className="text-lg font-semibold tracking-[-0.04em] text-slate-950">
-                    {app.name}
-                  </h3>
-                  <span className="rounded-full bg-slate-950 px-3 py-1 text-[0.68rem] font-semibold text-white">
-                    {app.category.split(" / ")[0]}
-                  </span>
-                </div>
-                <p className="mt-3 text-sm font-semibold leading-6 text-slate-800">
-                  {app.comparison}
-                </p>
-              </article>
-            ))}
-          </div>
-
-          <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {homeApps.map((app) => (
-              <AppCard app={app} featured key={app.href} />
-            ))}
-          </StaggerReveal>
-        </Section>
-
-        <Section
-          description="高校物理、AI教材制作、LaTeX、教育ICT、Webアプリを別々の話題にせず、必要な記事やサービスへたどれる地図としてまとめています。"
-          eyebrow="Learning Map"
-          title="学びと制作のテーマを地図のようにたどる"
-        >
-          <StaggerReveal className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {topicMapCards.map((cluster, index) => (
-              <Link
-                className="seo-cluster-card group rounded-[1.8rem] p-5 transition hover:-translate-y-1 sm:rounded-[2rem] sm:p-6"
-                href={cluster.route}
-                key={cluster.primary}
-              >
-                <div className="topic-visual-shell mb-5 overflow-hidden rounded-[1.5rem] sm:mb-6 sm:rounded-[1.8rem]">
-                  <TopicClusterVisual index={index} />
-                </div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-sky-700">
-                  {cluster.label}
-                </p>
-                <h2 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-2xl">
-                  {cluster.title}
-                </h2>
-                <p className="mt-4 text-sm leading-7 text-slate-600">
-                  {cluster.summary}
-                </p>
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {cluster.themes.map((word) => (
-                    <span className="keyword-pill compact" key={word}>
-                      {word}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-5 border-t border-sky-100 pt-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
-                    よくある入口
-                  </p>
-                  <ul className="mt-3 space-y-2 text-xs leading-5 text-slate-500">
-                    {cluster.paths.map((word) => (
-                      <li key={word}>{word}</li>
-                    ))}
-                  </ul>
-                </div>
-              </Link>
-            ))}
-          </StaggerReveal>
-        </Section>
-
-        <Section
-          description="見た目の装飾だけではなく、目的を選びやすくし、必要な前提へ戻れることを学びやすさの中心に置いています。"
-          eyebrow="Learning Design"
-          title="迷いにくく、戻りやすい学びの設計"
-        >
-          <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="canva-board relative overflow-hidden rounded-[2.2rem] border border-white/80 p-4 shadow-[0_35px_130px_-90px_rgba(15,23,42,0.72)] sm:rounded-[3rem] sm:p-6">
-              <div className="design-board-shell mb-4 overflow-hidden rounded-[1.75rem] border border-white/80 bg-white/72 p-2 backdrop-blur-xl sm:mb-5 sm:rounded-[2.15rem]">
-                <DesignBoardVisual />
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {designSystemNotes.map((note, index) => (
-                  <article
-                    className="rounded-[1.55rem] border border-white/80 bg-white/80 p-4 backdrop-blur-xl sm:rounded-[2rem] sm:p-5"
-                    key={note}
-                  >
-                    <p className="font-mono text-xs text-sky-700">
-                      design / 0{index + 1}
-                    </p>
-                    <p className="mt-5 text-base font-semibold leading-7 tracking-[-0.03em] text-slate-950">
-                      {note}
-                    </p>
-                  </article>
-                ))}
-              </div>
-            </div>
-            <div className="grid gap-4">
-              {psychologyCards.map((card, index) => (
-                <article
-                  className="psychology-card rounded-[1.75rem] p-5 sm:rounded-[2rem] sm:p-6"
-                  key={card.title}
-                >
-                  <p className="font-mono text-xs font-semibold text-sky-700">
+                  <p className="font-mono text-[0.72rem] font-bold text-sky-800">
                     0{index + 1}
                   </p>
-                  <h2 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-2xl">
-                    {card.title}
-                  </h2>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">
-                    {card.text}
+                  <h3 className="mt-2 text-[1rem] font-bold tracking-[-0.01em] text-slate-950 sm:text-[1.05rem]">
+                    {point.title}
+                  </h3>
+                  <p className="mt-2 text-[0.88rem] leading-[1.85] text-slate-600">
+                    {point.body}
                   </p>
-                </article>
+                </div>
               ))}
             </div>
           </div>
-        </Section>
+        </section>
 
-        <Section
-          description="記事で考え方を読み、教材制作で形にし、必要に応じてアプリへ進む。サイト全体をその一本の流れとして見せています。"
-          eyebrow="Learning Flow"
-          title="記事から教材、アプリまでを一本の流れにする"
-        >
-          <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-            <div className="lg:sticky lg:top-28 lg:self-start">
-              <div className="overflow-hidden rounded-[2rem] border border-white/15 bg-slate-950 p-6 text-white shadow-[0_30px_110px_-80px_rgba(15,23,42,0.95)] sm:rounded-[2.5rem] sm:p-7">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-200">
-                  Learning Hub
-                </p>
-                <h2 className="text-balance mt-5 font-serif text-3xl font-semibold tracking-[-0.07em] sm:text-4xl">
-                  読むほど、次に試す場所が見えてくる。
-                </h2>
-                <p className="mt-5 text-sm leading-7 text-slate-300">
-                  ホームページを固定の名刺ではなく、記事、教材、アプリが
-                  自然につながる学習ハブとして設計しています。
-                </p>
-                <LearningFlowDiagram className="mt-7" />
-                <div className="mt-7 grid grid-cols-3 gap-2">
-                  {["Blog", "AI", "Apps"].map((item) => (
-                    <div
-                      className="rounded-2xl border border-white/10 bg-white/[0.08] p-3 text-center text-xs font-semibold text-slate-200"
-                      key={item}
-                    >
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </div>
+        {/* LATEST ARTICLES */}
+        <section className="mt-12 sm:mt-16 lg:mt-20">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
+                Latest Articles
+              </p>
+              <h2 className="mt-2 font-serif text-[1.5rem] font-bold leading-[1.42] tracking-[-0.02em] text-slate-950 sm:text-[1.85rem]">
+                最新の記事
+              </h2>
             </div>
-            <StaggerReveal className="grid gap-4" step={120}>
-              {learningFlow.map((item, index) => (
-                <article
-                  className="motion-step-card relative overflow-hidden rounded-[1.85rem] border border-slate-200 p-5 shadow-[0_22px_80px_-62px_rgba(15,23,42,0.75)] transition hover:-translate-y-1 hover:border-sky-200 sm:rounded-[2.2rem] sm:p-6"
-                  key={item.title}
+            <ButtonLink className="hidden sm:inline-flex" href="/blog" variant="secondary">
+              ブログ一覧へ
+            </ButtonLink>
+          </div>
+          <ul className="mt-6 grid gap-4 sm:gap-5 lg:grid-cols-3">
+            {latestPosts.map((post) => (
+              <li key={post.slug}>
+                <Link
+                  className="group block h-full rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_14px_45px_-40px_rgba(15,23,42,0.4)] transition hover:-translate-y-1 hover:border-sky-200 sm:rounded-[1.4rem] sm:p-5"
+                  href={`/blog/${post.slug}`}
                 >
-                  <div className="flex flex-wrap items-start justify-between gap-5">
-                    <div>
-                      <p className="font-mono text-sm font-semibold text-sky-700">
-                        0{index + 1} / {item.label}
-                      </p>
-                      <h2 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-2xl">
-                        {item.title}
-                      </h2>
-                    </div>
-                    <span className="rounded-full bg-slate-950 px-3 py-1 text-xs font-semibold text-white">
-                      step
+                  <div className="flex flex-wrap items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                    <span className="rounded-full bg-sky-100 px-2.5 py-1 text-sky-800">
+                      {post.category}
                     </span>
+                    <time className="text-slate-500" dateTime={post.date}>
+                      {post.formattedDate}
+                    </time>
                   </div>
-                  <p className="mt-5 text-sm leading-7 text-slate-600">
-                    {item.description}
+                  <h3 className="mt-3 text-[1.05rem] font-bold leading-[1.55] tracking-[-0.01em] text-slate-950 transition group-hover:text-sky-800 sm:text-[1.15rem]">
+                    {post.title}
+                  </h3>
+                  <p className="mt-3 text-[0.88rem] leading-[1.85] text-slate-600">
+                    {post.description}
                   </p>
-                </article>
-              ))}
-            </StaggerReveal>
-          </div>
-        </Section>
-
-        <Section
-          description="教育、物理、LaTeX、AI教材制作、EdTech/Webアプリを横断し、学ぶ人と作る人の両方を支える領域として整理しています。"
-          eyebrow="Focus Areas"
-          title="取り組んでいる領域"
-        >
-          <StaggerReveal className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {homeFocusAreas.map((area, index) => (
-              <article
-                className="group rounded-[1.75rem] border border-slate-200 bg-white p-5 transition hover:-translate-y-1 hover:bg-slate-950 hover:text-white"
-                key={area.title}
-              >
-                <div className="focus-glyph-shell mb-4">
-                  <FocusAreaGlyph title={area.title} />
-                </div>
-                <p className="font-mono text-xs text-sky-700 group-hover:text-sky-200">
-                  0{index + 1}
-                </p>
-                <h2 className="mt-5 text-lg font-semibold tracking-[-0.04em]">
-                  {area.title}
-                </h2>
-                <p className="mt-3 text-sm leading-7 text-slate-600 transition group-hover:text-slate-300">
-                  {area.description}
-                </p>
-              </article>
+                  <p className="mt-4 inline-flex items-center gap-1 text-[0.82rem] font-bold text-sky-800">
+                    続きを読む <span aria-hidden="true">→</span>
+                  </p>
+                </Link>
+              </li>
             ))}
-          </StaggerReveal>
-        </Section>
+          </ul>
+          <div className="mt-6 flex justify-center sm:hidden">
+            <ButtonLink href="/blog" variant="secondary">
+              ブログ一覧へ
+            </ButtonLink>
+          </div>
+        </section>
 
-        <Section
-          description="初めて来た人が確認したいことを短くまとめました。詳しく知りたい場合は、関連する記事やアプリ一覧へ進めます。"
-          eyebrow="FAQ"
-          title="よくある疑問に短く答える"
-        >
-          <StaggerReveal className="grid gap-4 md:grid-cols-2">
-            {homepageAnswers.map((item) => (
-              <article
-                className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_22px_80px_-65px_rgba(15,23,42,0.6)]"
+        {/* FAQ */}
+        <section className="mt-12 sm:mt-16 lg:mt-20">
+          <div className="mx-auto max-w-3xl sm:text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
+              FAQ
+            </p>
+            <h2 className="mt-2 font-serif text-[1.5rem] font-bold leading-[1.42] tracking-[-0.02em] text-slate-950 sm:text-[1.85rem]">
+              よくある質問
+            </h2>
+          </div>
+          <ul className="mx-auto mt-6 grid max-w-3xl gap-3 sm:mt-8">
+            {faqItems.map((item) => (
+              <li
+                className="rounded-2xl border border-slate-200 bg-white p-4 sm:rounded-[1.2rem] sm:p-5"
                 key={item.question}
               >
-                <h2 className="text-xl font-semibold tracking-[-0.04em] text-slate-950">
+                <p className="flex gap-2 text-[0.95rem] font-bold leading-[1.55] text-slate-950">
+                  <span
+                    aria-hidden="true"
+                    className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-gradient-to-br from-sky-400 to-sky-700 text-[0.65rem] font-bold text-white"
+                  >
+                    Q
+                  </span>
                   {item.question}
-                </h2>
-                <p className="mt-4 text-sm leading-8 text-slate-600">
+                </p>
+                <p className="mt-3 flex gap-2 text-[0.9rem] leading-[1.85] text-slate-600">
+                  <span
+                    aria-hidden="true"
+                    className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-amber-100 text-[0.65rem] font-bold text-amber-700"
+                  >
+                    A
+                  </span>
                   {item.answer}
                 </p>
-              </article>
+              </li>
             ))}
-          </StaggerReveal>
-        </Section>
+          </ul>
+        </section>
 
-        <Section
-          description="AIとLaTeXで教材作成をラクにする方法、高校物理を公式暗記で終わらせない考え方、学習支援Webアプリの設計思想をブログで発信しています。"
-          eyebrow="Latest Articles"
-          headerAction={
-            <ButtonLink className="w-full sm:w-auto" href="/blog" variant="secondary">
-              Blog一覧へ
-            </ButtonLink>
-          }
-          title="最近の記事から学ぶ"
-        >
-          <div className="mb-6 rounded-[1.6rem] border border-sky-100 bg-sky-50/70 p-5 sm:mb-8 sm:rounded-[2rem] sm:p-6">
-            <p className="text-sm font-semibold text-slate-950">
-              これから増やしたい記事テーマ
+        {/* FINAL CTA */}
+        <section className="my-12 overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-slate-900 to-sky-900 p-6 text-white shadow-[0_30px_90px_-70px_rgba(15,23,42,0.9)] sm:my-16 sm:rounded-[1.6rem] sm:p-10 lg:my-20 lg:p-14">
+          <div className="mx-auto max-w-2xl sm:text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-300">
+              Start with Lumora
             </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {upcomingBlogThemes.map((theme) => (
-                <span className="keyword-pill compact" key={theme}>
-                  {theme}
-                </span>
-              ))}
-            </div>
-          </div>
-          <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {latestPosts.map((post) => (
-              <ArticleCard homeFeatured key={post.slug} post={post} />
-            ))}
-          </StaggerReveal>
-        </Section>
-
-        <Section
-          description="今後、LaTeX数式変換、教材タイトル生成、小テスト構成メーカーなど、教材制作を助ける無料ツールも追加予定です。"
-          eyebrow="Tools"
-          headerAction={
-            <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
-              Apps Hubを見る
-            </ButtonLink>
-          }
-          title="準備中の無料ツール"
-        >
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {[
-              "LaTeX数式変換ツール",
-              "教材タイトル生成ツール",
-              "小テスト構成メーカー",
-              "物理プリント構成メーカー",
-              "問題文整形ツール",
-            ].map((tool) => (
-              <article
-                className="rounded-[1.5rem] border border-slate-200 bg-white/80 p-4 text-sm font-semibold leading-6 text-slate-800 shadow-[0_18px_60px_-52px_rgba(15,23,42,0.55)]"
-                key={tool}
+            <h2 className="mt-3 text-balance font-serif text-[1.7rem] font-bold leading-[1.4] tracking-[-0.02em] sm:text-[2.1rem] sm:leading-[1.32]">
+              読んで → 解いて → つなぐ。<br className="hidden sm:block" />
+              学びの動線、ここから始めませんか？
+            </h2>
+            <p className="mt-4 text-[0.95rem] leading-[1.95] text-slate-300 sm:mt-5 sm:text-base sm:leading-[2]">
+              Lumora は、高校物理から教材作成AI、学習支援アプリまでを一本の動線でつなげる EdTech スタジオです。すべて無料で公開しているので、まずは気になる入口から開いてください。
+            </p>
+            <div className="mx-auto mt-7 flex max-w-md flex-col gap-2.5 sm:mt-8 sm:flex-row sm:justify-center">
+              <Link
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-amber-300 px-6 py-3 text-[0.95rem] font-bold text-slate-950 transition hover:-translate-y-0.5 hover:bg-amber-200"
+                href="/blog"
               >
-                {tool}
-              </article>
-            ))}
-          </div>
-        </Section>
-
-        <Section className="pb-24">
-          <div className="final-cta overflow-hidden rounded-[2.2rem] p-1 shadow-[0_30px_110px_-80px_rgba(15,23,42,0.75)] sm:rounded-[2.9rem]">
-            <div className="grid gap-0 rounded-[2rem] bg-white/[0.86] backdrop-blur-xl sm:rounded-[2.65rem] lg:grid-cols-[0.9fr_1.1fr]">
-              <div className="relative overflow-hidden rounded-[2rem] bg-[radial-gradient(circle_at_20%_20%,rgba(125,211,252,0.42),transparent_35%),linear-gradient(145deg,#0f172a,#0f766e)] p-6 text-white sm:rounded-[2.65rem] sm:p-10">
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-100">
-                  Start Here
-                </p>
-                <h2 className="text-balance mt-4 font-serif text-3xl font-semibold tracking-[-0.06em] sm:text-4xl">
-                  高校物理、LaTeX教材制作、学習支援アプリをひとつの流れへ。
-                </h2>
-                <FinalCtaVisual className="mt-8 max-w-[22rem]" />
-              </div>
-              <div className="p-6 sm:p-10">
-                <p className="text-pretty text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
-                  森祐太の Yuta Eng は、物理を学ぶ人、教材を作る人、
-                  学習支援アプリを探す人が同じ文脈で次へ進める場所です。
-                  記事で考え方を読み、AIとLaTeXで教材制作を形にし、Eddivomなど必要なアプリへつなげる。
-                  その流れを、落ち着いて選べる公式ハブとして育てています。
-                </p>
-                <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
-                  <ButtonLink className="w-full sm:w-auto" href="/about">
-                    制作思想を読む
-                  </ButtonLink>
-                  <ButtonLink className="w-full sm:w-auto" href="/contact" variant="secondary">
-                    相談する
-                  </ButtonLink>
-                </div>
-              </div>
+                ブログを読む →
+              </Link>
+              <Link
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/30 bg-white/10 px-6 py-3 text-[0.95rem] font-bold text-white backdrop-blur transition hover:-translate-y-0.5 hover:bg-white/20"
+                href="/contact"
+              >
+                相談する
+              </Link>
             </div>
           </div>
-        </Section>
+        </section>
       </Container>
     </>
   );

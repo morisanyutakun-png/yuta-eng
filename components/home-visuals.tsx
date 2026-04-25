@@ -655,7 +655,10 @@ export function ArticleTeaserVisual({
   className?: string;
 }) {
   const isPhysics = category.toLowerCase().includes("physics");
-  const isAi = category.toLowerCase().includes("ai") || category.toLowerCase().includes("latex");
+  const isAi =
+    category.toLowerCase().includes("ai") ||
+    category.toLowerCase().includes("latex") ||
+    category.toLowerCase().includes("material");
 
   if (isPhysics) {
     return (

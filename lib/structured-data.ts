@@ -1,5 +1,5 @@
 import { siteConfig } from "@/data/site";
-import { homepageAnswers } from "@/data/home";
+import { homeFaq } from "@/data/home";
 import type { BlogPost } from "@/lib/blog";
 
 type ItemListItem = {
@@ -58,7 +58,7 @@ export function createPersonJsonLd() {
     },
     knowsAbout: [
       "高校物理",
-      "高校物理の塾",
+      "物理 苦手克服",
       "教育ICT",
       "教育DX",
       "GIGAスクール",
@@ -69,7 +69,7 @@ export function createPersonJsonLd() {
       "LaTeX教材作成",
       "教材制作",
       "学習支援Webアプリ",
-      "Web制作",
+      "個別最適な学び",
     ],
   };
 }
@@ -84,7 +84,7 @@ export function createHomePageJsonLd() {
     inLanguage: "ja",
     about: [
       "高校物理",
-      "高校物理の塾",
+      "高校物理 わかりやすい",
       "教材作成AI",
       "生成AI教材作成",
       "教育DX",
@@ -94,7 +94,7 @@ export function createHomePageJsonLd() {
       "物理教材",
       "LaTeX教材作成",
       "学習支援Webアプリ",
-      "教材制作",
+      "個別最適な学び",
     ],
     isPartOf: {
       "@type": "WebSite",
@@ -108,16 +108,16 @@ export function createEducationalServiceJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "高校物理学習支援・AI教材作成スタジオ",
+    name: "Lumora EdTech 学習スタジオ",
     url: siteConfig.url,
     description:
-      "高校物理の概念理解、AI教材作成、LaTeX教材制作、教育DX、学習支援WebアプリをつなぐEdTech学習支援。",
+      "高校物理の概念理解、AI・LaTeX による教材作成、学習支援Webアプリ設計をひとつの動線でつなぐ EdTech 学習スタジオ。",
     serviceType: [
-      "高校物理学習支援",
-      "AI教材作成",
-      "LaTeX教材作成",
+      "高校物理 学習支援",
+      "教材作成AI",
+      "LaTeX 教材作成",
       "学習支援Webアプリ設計",
-      "教育DXコンテンツ設計",
+      "教育DX コンテンツ設計",
     ],
     provider: {
       "@type": "Organization",
@@ -145,7 +145,7 @@ export function createHomeFaqJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: homepageAnswers.map((item) => ({
+    mainEntity: homeFaq.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: {

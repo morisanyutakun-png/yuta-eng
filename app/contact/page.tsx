@@ -2,98 +2,138 @@ import type { Metadata } from "next";
 
 import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
-import { Section } from "@/components/section";
 import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Contact | 教材制作・学習支援Webアプリの相談",
+  title: "相談する｜Lumora お問い合わせ",
   description:
-    "物理教材制作、LaTeX教材作成、教育ICT、学習支援Webアプリ開発、Webサイト設計に関する相談・連絡のための yuta-eng.com お問い合わせページです。",
+    "Lumora への相談・お問い合わせはこちらから。教材設計、AI教材作成、学習支援Webアプリの企画やサイト相談などをメールで受け付けています。",
   keywords: [
-    "教材制作 相談",
-    "LaTeX教材作成 相談",
-    "物理教材制作",
-    "学習支援Webアプリ開発",
-    "教育ICT Webサイト",
+    "Lumora 相談",
+    "教材作成 相談",
+    "AI教材 制作 依頼",
+    "学習支援Webアプリ 開発",
   ],
   path: "/contact",
 });
 
+const topics = [
+  "高校物理の教材・授業設計の相談",
+  "AIとLaTeXを使った教材制作の導入",
+  "学習支援Webアプリの企画/UI 相談",
+  "教育系メディア・ブログ運用の相談",
+  "EdTech 領域での協業・寄稿のご依頼",
+];
+
+const flow = [
+  {
+    label: "01",
+    title: "メールで概要を送る",
+    body: "テーマ、ご希望の範囲、目安スケジュールを教えてください。1営業日以内に返信します。",
+  },
+  {
+    label: "02",
+    title: "オンライン or テキストで擦り合わせ",
+    body: "30分の通話 or 非同期テキストで、ゴールと制約を整理します。NDA が必要な場合はお知らせください。",
+  },
+  {
+    label: "03",
+    title: "見積もり/方針提案 → 開始",
+    body: "範囲・進め方・概算費用を文書でお渡しし、合意の上で着手します。",
+  },
+];
+
 export default function ContactPage() {
   return (
-    <Container>
-      <Section className="pb-12">
-        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-700">
-              Contact
-            </p>
-            <h1 className="mt-4 font-serif text-4xl font-semibold leading-tight tracking-[-0.08em] text-slate-950 sm:text-5xl lg:text-6xl">
-              物理教材制作・LaTeX教材作成・学習支援Webアプリの相談窓口。
-            </h1>
-          </div>
-          <p className="text-base leading-8 text-slate-600 sm:text-lg sm:leading-9">
-            現時点ではシンプルな連絡導線として用意しています。
-            将来的にメールフォーム、外部フォーム、SNS、予約導線などへ接続しやすいよう、
-            セクションを分けた構成にしています。
+    <Container className="px-4 sm:px-6">
+      <header className="mx-auto mt-6 max-w-3xl text-center sm:mt-12">
+        <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
+          Contact
+        </p>
+        <h1 className="mt-3 text-balance font-serif text-[1.85rem] font-bold leading-[1.42] tracking-[-0.02em] text-slate-950 sm:text-[2.4rem] sm:leading-[1.32]">
+          まずは、気になっていることを<br className="hidden sm:block" />
+          一行送ってください。
+        </h1>
+        <p className="mt-4 text-pretty text-[0.95rem] leading-[1.95] text-slate-600 sm:text-[1.05rem] sm:leading-[2]">
+          Lumora は教材設計・AI教材制作・学習Webアプリの相談を受け付けています。「ここから話せばよい」ではなく、現状の困りごとをそのまま書いていただければ大丈夫です。
+        </p>
+      </header>
+
+      <section className="mx-auto mt-8 grid max-w-4xl gap-4 sm:mt-10 lg:grid-cols-[1.05fr_0.95fr]">
+        <article className="rounded-3xl border border-slate-200 bg-white p-5 sm:rounded-[1.6rem] sm:p-7">
+          <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
+            メールで相談する
           </p>
-        </div>
-      </Section>
-
-      <Section className="pt-8 pb-24">
-        <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-          <aside className="rounded-[2rem] border border-slate-200 bg-slate-950 p-6 text-white sm:rounded-[2.5rem] sm:p-10">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-200">
-              Available Topics
-            </p>
-            <h2 className="mt-4 text-2xl font-semibold tracking-[-0.05em] sm:text-3xl">
-              相談しやすい内容
-            </h2>
-            <ul className="mt-6 space-y-4 text-sm leading-7 text-slate-300">
-              <li>教材制作やLaTeXを使った資料づくり</li>
-              <li>物理学習コンテンツの構成や改善</li>
-              <li>学習支援Webアプリやブランドサイトの設計</li>
-              <li>ブログ、情報設計を含むWeb運用</li>
-            </ul>
-          </aside>
-
-          <div className="rounded-[2rem] border border-slate-200 bg-white p-6 sm:rounded-[2.5rem] sm:p-10">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-700">
-              Message
-            </p>
-            <h2 className="mt-4 text-2xl font-semibold tracking-[-0.05em] text-slate-950 sm:text-3xl">
-              連絡先
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
-              まずはメールでの相談を想定しています。フォーム送信機能を追加する場合は、
-              このページに Server Action、外部フォーム、またはメール送信サービスを接続できます。
-            </p>
-            <div className="mt-7 rounded-2xl bg-slate-50 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                Email
-              </p>
-              <a
-                className="mt-2 inline-block break-all text-base font-semibold text-slate-950 underline decoration-slate-300 transition hover:decoration-sky-500 sm:text-lg"
-                href={`mailto:${siteConfig.email}`}
-              >
-                {siteConfig.email}
-              </a>
-              <p className="mt-3 text-sm leading-6 text-slate-500">
-                実運用のメールアドレスに変更する場合は `data/site.ts` を編集してください。
-              </p>
-            </div>
-            <div className="mt-7 grid gap-3 sm:flex sm:flex-wrap">
-              <ButtonLink className="w-full sm:w-auto" external href={`mailto:${siteConfig.email}`}>
-                メールで相談する
-              </ButtonLink>
-              <ButtonLink className="w-full sm:w-auto" href="/about" variant="secondary">
-                Aboutを読む
-              </ButtonLink>
-            </div>
+          <h2 className="mt-2 font-serif text-[1.35rem] font-bold leading-[1.45] tracking-[-0.01em] text-slate-950 sm:text-[1.55rem]">
+            連絡先
+          </h2>
+          <a
+            className="mt-4 inline-block break-all rounded-xl bg-slate-50 px-3 py-2.5 text-[0.95rem] font-bold text-slate-950 underline decoration-sky-300 decoration-2 underline-offset-4 transition hover:bg-sky-50 hover:decoration-sky-600 sm:text-[1.05rem]"
+            href={`mailto:${siteConfig.email}`}
+          >
+            {siteConfig.email}
+          </a>
+          <p className="mt-3 text-[0.86rem] leading-[1.85] text-slate-600">
+            初回返信は1営業日以内を目安にしています。土日祝は翌営業日になることがあります。
+          </p>
+          <div className="mt-5 flex flex-col gap-2.5 sm:flex-row">
+            <ButtonLink
+              className="w-full sm:w-auto"
+              external
+              href={`mailto:${siteConfig.email}`}
+            >
+              メールを開く
+            </ButtonLink>
+            <ButtonLink className="w-full sm:w-auto" href="/about" variant="secondary">
+              Lumora について
+            </ButtonLink>
           </div>
-        </div>
-      </Section>
+        </article>
+
+        <aside className="rounded-3xl bg-gradient-to-br from-slate-950 to-sky-900 p-5 text-white sm:rounded-[1.6rem] sm:p-7">
+          <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-300">
+            相談しやすいテーマ
+          </p>
+          <ul className="mt-4 grid gap-2.5 text-[0.9rem] leading-[1.65]">
+            {topics.map((topic) => (
+              <li className="flex items-start gap-2 text-slate-100" key={topic}>
+                <span aria-hidden="true" className="mt-0.5 text-amber-300">
+                  ●
+                </span>
+                <span>{topic}</span>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </section>
+
+      <section className="mx-auto my-12 max-w-4xl sm:my-16">
+        <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700 sm:text-center">
+          進め方
+        </p>
+        <h2 className="mt-2 font-serif text-[1.4rem] font-bold leading-[1.42] tracking-[-0.02em] text-slate-950 sm:text-center sm:text-[1.7rem]">
+          相談から開始までの流れ
+        </h2>
+        <ul className="mt-6 grid gap-3 sm:gap-4 lg:grid-cols-3">
+          {flow.map((item) => (
+            <li
+              className="rounded-2xl border border-slate-200 bg-white p-4 sm:rounded-[1.4rem] sm:p-5"
+              key={item.title}
+            >
+              <p className="font-mono text-[0.78rem] font-bold text-sky-800">
+                {item.label}
+              </p>
+              <h3 className="mt-3 text-[1rem] font-bold tracking-[-0.01em] text-slate-950">
+                {item.title}
+              </h3>
+              <p className="mt-2 text-[0.88rem] leading-[1.85] text-slate-600">
+                {item.body}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
     </Container>
   );
 }

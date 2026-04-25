@@ -1,106 +1,151 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
-import { ArticleCard } from "@/components/article-card";
 import { Container } from "@/components/container";
-import { Section } from "@/components/section";
-import { StaggerReveal } from "@/components/stagger-reveal";
-import { seoClusters } from "@/data/seo";
 import { getAllPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "高校物理・教材制作・学習アプリの記事一覧",
+  title: "ブログ｜高校物理・教材作成AI・学習アプリの読み物",
   description:
-    "高校物理の学び直し、物理教育、LaTeX教材作成、学習支援Webアプリを、一次情報と実践ベースで整理したブログ記事一覧です。何が学べて、次にどう進めるかが見える記事をまとめています。",
+    "Lumora のブログでは、高校物理を理解で乗り越える方法、AIとLaTeXで教材を作るコツ、学習支援Webアプリの考え方を、図と表でわかりやすく整理しています。",
   keywords: [
     "高校物理 ブログ",
-    "物理教材 作り方",
+    "物理 わかりやすい",
+    "教材作成AI",
     "LaTeX 教材作成",
-    "学習支援Webアプリ 設計",
-    "教育ICT 記事",
+    "学習支援Webアプリ",
   ],
   path: "/blog",
 });
+
+const categoryStyles: Record<string, { bg: string; text: string; ring: string }> = {
+  Physics: {
+    bg: "bg-sky-50",
+    text: "text-sky-800",
+    ring: "ring-sky-200",
+  },
+  Materials: {
+    bg: "bg-amber-50",
+    text: "text-amber-800",
+    ring: "ring-amber-200",
+  },
+  LaTeX: {
+    bg: "bg-amber-50",
+    text: "text-amber-800",
+    ring: "ring-amber-200",
+  },
+  Education: {
+    bg: "bg-emerald-50",
+    text: "text-emerald-800",
+    ring: "ring-emerald-200",
+  },
+};
+
+const defaultCategoryStyle = {
+  bg: "bg-slate-100",
+  text: "text-slate-700",
+  ring: "ring-slate-200",
+};
 
 export default function BlogPage() {
   const posts = getAllPosts();
   const categories = Array.from(new Set(posts.map((post) => post.category)));
 
   return (
-    <Container>
-      <Section className="pb-10">
-        <div className="relative overflow-hidden rounded-[2.2rem] border border-slate-200 bg-slate-950 p-6 text-white shadow-[0_35px_120px_-85px_rgba(15,23,42,0.95)] sm:rounded-[3rem] sm:p-10 lg:p-12">
-          <div className="absolute right-[-10rem] top-[-10rem] hidden h-96 w-96 rounded-full bg-sky-400/30 blur-3xl sm:block" />
-          <div className="absolute bottom-[-12rem] left-[-8rem] hidden h-96 w-96 rounded-full bg-amber-300/20 blur-3xl sm:block" />
-          <div className="relative grid gap-10 lg:grid-cols-[1fr_0.44fr] lg:items-end">
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-200">
-                Research & Practice
-              </p>
-              <h1 className="text-balance mt-4 font-serif text-4xl font-semibold leading-tight tracking-[-0.08em] sm:text-5xl lg:text-6xl">
-                高校物理・教材制作・学習アプリの記事を、一次情報と実践から整理する。
-              </h1>
-              <p className="text-pretty mt-5 max-w-3xl text-base leading-8 text-slate-300 sm:mt-6 sm:text-lg sm:leading-9">
-                高校物理をどう学び直すか、教材をどう作るか、学習支援Webアプリをどう設計するか。
-                学習指導要領や研究知見、制作実践を踏まえながら、検索してきたテーマごとに次の一歩が見える記事を整理しています。
-              </p>
-            </div>
-            <aside className="rounded-[1.7rem] border border-white/10 bg-white/[0.08] p-5 backdrop-blur sm:rounded-[2rem] sm:p-6">
-              <p className="text-sm font-semibold text-white">主なテーマ</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <span
-                    className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-slate-200"
-                    key={category}
-                  >
-                    {category}
-                  </span>
-                ))}
-              </div>
-            </aside>
-          </div>
-        </div>
-      </Section>
+    <Container className="px-4 sm:px-6">
+      <header className="mx-auto mt-6 max-w-3xl text-center sm:mt-10">
+        <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
+          Lumora Blog
+        </p>
+        <h1 className="mt-3 text-balance font-serif text-[1.85rem] font-bold leading-[1.4] tracking-[-0.02em] text-slate-950 sm:text-[2.4rem] sm:leading-[1.32]">
+          高校物理と教材作成を、図と表でわかりやすく。
+        </h1>
+        <p className="mt-4 text-pretty text-[0.95rem] leading-[1.95] text-slate-600 sm:text-base sm:leading-[2]">
+          公式の暗記で止まらないための物理の読み方、AIで教材を作るときのコツ、学習支援アプリの考え方を、検索でたどり着いた1記事ですぐ使える形にまとめています。
+        </p>
+      </header>
 
-      <Section
-        className="pt-8"
-        description="各記事は、検索で来た人が『どんな悩みに答える記事か』と『どの根拠で整理しているか』を判断しやすいように整えています。"
-        eyebrow="Topic Guide"
-        title="知りたいことから記事を選ぶ"
-      >
-        <StaggerReveal className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {seoClusters.map((cluster) => (
-            <article className="rounded-[1.7rem] border border-slate-200 bg-white p-4 sm:rounded-[2rem] sm:p-5" key={cluster.primary}>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sky-700">
-                {cluster.label}
-              </p>
-              <h2 className="mt-3 text-lg font-semibold tracking-[-0.04em] text-slate-950 sm:text-xl">
-                {cluster.primary}
-              </h2>
-              <p className="mt-3 text-sm leading-7 text-slate-600">{cluster.intent}</p>
-            </article>
-          ))}
-        </StaggerReveal>
-      </Section>
+      <div className="mx-auto mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-1.5 sm:mt-8">
+        <span className="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-slate-500">
+          カテゴリ
+        </span>
+        {categories.map((category) => {
+          const style = categoryStyles[category] ?? defaultCategoryStyle;
+          return (
+            <span
+              className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ring-1 ring-inset ${style.bg} ${style.text} ${style.ring}`}
+              key={category}
+            >
+              {category}
+            </span>
+          );
+        })}
+      </div>
 
-      <Section
-        className="pt-8"
-        description="一覧から読んでも、記事詳細に入ってからでも、何が分かる記事かを把握しやすいようにしています。"
-        eyebrow="Articles"
-        title="記事一覧"
-      >
+      <section className="mx-auto mt-8 max-w-3xl pb-16 sm:mt-10 sm:pb-24">
         {posts.length > 0 ? (
-          <StaggerReveal className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-              <ArticleCard key={post.slug} post={post} />
-            ))}
-          </StaggerReveal>
+          <ul className="grid gap-4 sm:gap-5">
+            {posts.map((post) => {
+              const style = categoryStyles[post.category] ?? defaultCategoryStyle;
+              return (
+                <li key={post.slug}>
+                  <Link
+                    className="group block rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_14px_45px_-40px_rgba(15,23,42,0.5)] transition hover:-translate-y-0.5 hover:border-sky-200 hover:shadow-[0_22px_60px_-44px_rgba(14,165,233,0.5)] sm:rounded-[1.4rem] sm:p-6"
+                    href={`/blog/${post.slug}`}
+                  >
+                    <div className="flex flex-wrap items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                      <span
+                        className={`inline-flex items-center rounded-full px-2.5 py-1 text-[0.7rem] ring-1 ring-inset ${style.bg} ${style.text} ${style.ring}`}
+                      >
+                        {post.category}
+                      </span>
+                      <time className="text-slate-500" dateTime={post.date}>
+                        {post.formattedDate}
+                      </time>
+                      <span className="text-slate-400">·</span>
+                      <span>{post.readingTime}</span>
+                    </div>
+                    <h2 className="mt-3 text-[1.1rem] font-bold leading-[1.55] tracking-[-0.01em] text-slate-950 transition group-hover:text-sky-800 sm:text-[1.3rem] sm:leading-[1.5]">
+                      {post.title}
+                    </h2>
+                    <p className="mt-3 text-[0.92rem] leading-[1.85] text-slate-600 sm:text-[0.95rem]">
+                      {post.description}
+                    </p>
+                    {post.keyPoints && post.keyPoints.length > 0 ? (
+                      <div className="mt-4 rounded-xl bg-slate-50 px-3.5 py-3">
+                        <p className="text-[0.68rem] font-bold uppercase tracking-[0.18em] text-slate-500">
+                          記事のポイント
+                        </p>
+                        <ul className="mt-1.5 grid gap-1">
+                          {post.keyPoints.slice(0, 2).map((point) => (
+                            <li
+                              className="flex gap-1.5 text-[0.84rem] leading-[1.7] text-slate-700"
+                              key={point}
+                            >
+                              <span aria-hidden="true" className="text-amber-500">
+                                ●
+                              </span>
+                              <span>{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                    <p className="mt-4 inline-flex items-center gap-1 text-[0.85rem] font-bold text-sky-800">
+                      続きを読む <span aria-hidden="true">→</span>
+                    </p>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         ) : (
-          <div className="rounded-[1.7rem] border border-slate-200 bg-white p-6 text-slate-600 sm:rounded-[2rem] sm:p-8">
-            まだ公開記事はありません。`content/blog` に記事を追加すると一覧に表示されます。
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center text-slate-600">
+            まだ公開記事はありません。
           </div>
         )}
-      </Section>
+      </section>
     </Container>
   );
 }

@@ -7,7 +7,7 @@ import { Section } from "@/components/section";
 export const metadata: Metadata = {
   title: "Article Studio",
   description:
-    "yuta-eng.com の運用者向けに、MDXブログ記事を生成するための非公開導線ツールです。",
+    "Lumora の運用者向けに、MDXブログ記事を生成するための非公開導線ツールです。",
   alternates: {
     canonical: "/studio",
   },

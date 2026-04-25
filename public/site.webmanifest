@@ -1,11 +1,11 @@
 {
-  "name": "Yuta Eng",
-  "short_name": "Yuta Eng",
-  "description": "物理教材、LaTeX教材作成、教育ICT、学習支援Webアプリの公式ハブ。",
+  "name": "Lumora",
+  "short_name": "Lumora",
+  "description": "高校物理 × AI教材作成 × EdTech。Lumora は学びと教材制作を一つの動線でつなぐ EdTech スタジオです。",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fbfaf7",
-  "theme_color": "#0f172a",
+  "theme_color": "#0b1220",
   "icons": [
     {
       "src": "/favicon.svg",
