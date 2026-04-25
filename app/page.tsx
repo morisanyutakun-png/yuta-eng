@@ -30,18 +30,18 @@ type VisitorPath = {
 const visitorPaths: VisitorPath[] = [
   {
     no: "01",
-    label: "Lumora Physics",
-    badge: "高校生・受験生向け｜物理専門塾【公式サイト】",
-    title: "高校物理を「理解」で乗り越える、物理専門塾へ。",
+    label: "物理の森",
+    badge: "Lumora の物理専門塾事業【公式サイト】",
+    title: "高校物理を「理解」で乗り越える、物理の森。",
     description:
-      "Lumora Physics は、高校物理に特化したオンライン専門塾です。公式暗記ではなく、現象 → 図 → 式の順で読み解く力を、個別カリキュラムで育てます。受講相談は専門塾サイトから受付中。",
+      "Lumora が運営する高校物理専門のオンライン塾「物理の森」。公式暗記ではなく、現象 → 図 → 式の順で読み解く力を、個別カリキュラムで育てます。受講相談は物理の森の公式サイトから受付中。",
     benefits: [
       "物理基礎・物理の通年指導と定期テスト対策",
       "共通テスト／国公立二次／私大入試まで対応",
       "つまずいた前提単元へ戻れる個別カリキュラム",
     ],
     href: "https://physics.yuta-eng.com",
-    cta: "物理専門塾サイトを開く",
+    cta: "物理の森（物理塾）を開く",
     external: true,
     primary: true,
   },
@@ -51,7 +51,7 @@ const visitorPaths: VisitorPath[] = [
     badge: "先生・塾講師・教材制作者向け",
     title: "教材作成を AI でラクに続ける",
     description:
-      "生成AI下書き → LaTeX整形 → PDF/Web展開のワークフローを、コピペ可能なテンプレ付きで紹介。Eddivom（外部公式アプリ）への入口にもなります。",
+      "生成AI下書き → LaTeX整形 → PDF/Web展開のワークフローを、コピペ可能なテンプレ付きで紹介。Eddivom（教材作成アプリ）への入口にもなります。",
     benefits: [
       "毎年作り直しが消える「資産化」設計",
       "AI に任せていい仕事 / ダメな仕事の整理",
@@ -79,10 +79,10 @@ const visitorPaths: VisitorPath[] = [
 
 const problems = [
   {
-    badge: "高校物理 専門塾",
+    badge: "物理の森（物理専門塾）",
     pain: "公式は覚えたのに、ちょっと条件が変わると解けない",
     answer:
-      "物理専門塾「Lumora Physics」では、現象 → 図 → 式の順で読み解く力を個別カリキュラムで育てます。受講相談は専門塾サイトから。",
+      "Lumora が運営する物理専門塾「物理の森」では、現象 → 図 → 式の順で読み解く力を個別カリキュラムで育てます。受講相談は物理の森の公式サイトから。",
     href: "https://physics.yuta-eng.com",
     external: true,
   },
@@ -121,42 +121,42 @@ const trustPoints = [
 
 const faqItems = [
   {
-    question: "yuta-eng.com（Lumora）はどんなサイトですか？",
+    question: "Lumora と「物理の森」の関係は？",
     answer:
-      "yuta-eng.com は、Lumora が運営する学習ハブ（権威ページ）です。物理専門塾「Lumora Physics（physics.yuta-eng.com）」、教材作成アプリ Eddivom、IT Pass などの公式入口を1つにまとめています。",
+      "Lumora（ルモラ）は、yuta-eng.com で運営する学習ハブのブランド名です。「物理の森」は、Lumora が運営する事業のひとつで、高校物理に特化したオンライン専門塾の名称・サービスサイト（physics.yuta-eng.com）です。Lumora＝親ブランド、物理の森＝物理専門塾事業、という関係になります。",
   },
   {
-    question: "物理専門塾の受講申し込みはどこからしますか？",
+    question: "yuta-eng.com（Lumora）ではどんなことができますか？",
     answer:
-      "物理専門塾「Lumora Physics」の公式サイトは https://physics.yuta-eng.com です。受講相談・申し込み・カリキュラム詳細は専門塾サイトから直接アクセスしてください。当ハブからは各セクションのボタンで遷移できます。",
+      "Lumora の学習ハブとして、ブログ記事の発信と、各事業（物理の森・Eddivom・IT Pass など）の公式入口を集約しています。記事で考え方を学び、必要なサービスへ直接アクセスできます。",
   },
   {
-    question: "ブログの記事は無料で読めますか？",
+    question: "物理塾の受講申し込みはどこからしますか？",
     answer:
-      "yuta-eng.com で公開している記事はすべて無料で全文を読めます。一次情報リンクや図解も含めて公開しています。",
+      "物理専門塾「物理の森」の公式サイトは https://physics.yuta-eng.com です。受講相談・申し込み・カリキュラム詳細は物理の森のサイトから直接アクセスしてください。Lumora の各ページからボタンで遷移できます。",
   },
   {
-    question: "Eddivom や IT Pass は Lumora の運営ですか？",
+    question: "Eddivom や IT Pass は Lumora の事業ですか？",
     answer:
-      "Eddivom は Lumora が公式に提携・紹介する教材作成アプリ、IT Pass は外部の学習アプリです。yuta-eng.com を学習ハブとして、それぞれの公式サイトへ案内しています。",
+      "Eddivom は Lumora が公式に紹介・提携する教材作成アプリ、IT Pass は外部の学習アプリです。Lumora は学習ハブとして、これらのサービスの公式入口を案内する役割を担っています。",
   },
 ];
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Lumora｜高校物理 × 教材作成AI × EdTech 学習スタジオ",
+  title: "Lumora｜物理の森・教材作成AIをまとめる学習ハブ",
   description:
-    "高校物理を理解で乗り越えたい人、教材作成をAIでラクに続けたい先生、学習支援アプリを設計したい EdTech 担当者へ。Lumora は、読む・解く・つなぐを一本の動線でまとめた EdTech 学習スタジオです。",
+    "Lumora（ルモラ）は、物理専門塾「物理の森」、教材作成アプリ Eddivom、学習アプリ IT Pass などの公式入口を1つにまとめる学習ハブです。記事で考え方を学び、各サービスへそのまま進めます。",
   keywords: [
-    "高校物理 わかりやすい",
-    "高校物理 苦手克服",
+    "Lumora",
+    "学習ハブ",
+    "物理の森",
+    "高校物理 専門塾",
     "教材作成AI",
     "AI教材作成",
     "LaTeX 教材作成",
     "学習支援Webアプリ",
-    "GIGAスクール 教材作成",
     "EdTech",
     "個別最適な学び",
-    "Lumora",
   ],
   path: "/",
 });
@@ -209,7 +209,7 @@ function HeroIllustration() {
         fontWeight="700"
         letterSpacing="0.3em"
       >
-        LUMORA EDTECH STUDIO · EST 2026
+        LUMORA · LEARNING HUB
       </text>
       <circle cx="424" cy="31" r="6" fill="#c89211" />
       {/* Title block */}
@@ -222,17 +222,17 @@ function HeroIllustration() {
         fontWeight="700"
         letterSpacing="0.3em"
       >
-        FOR LEARNERS · TEACHERS · EDTECH
+        EDUCATION · PHYSICS · MATERIALS AI
       </text>
       <line x1="40" y1="104" x2="120" y2="104" stroke="#c89211" strokeWidth="2" />
       <text x="40" y="138" fill="#1a1a1a" fontFamily="serif" fontSize="26" fontWeight="700">
-        高校物理を「理解」で
+        物理塾も、教材AIも。
       </text>
       <text x="40" y="170" fill="#1a1a1a" fontFamily="serif" fontSize="26" fontWeight="700">
-        乗り越え、教材作成を
+        Lumora は学びの
       </text>
       <text x="40" y="202" fill="#1a1a1a" fontFamily="serif" fontSize="26" fontWeight="700">
-        AIで「ラク」に続ける。
+        入口を集める学習ハブ。
       </text>
       {/* Diagram: physics graph */}
       <g transform="translate(40 230)">
@@ -338,7 +338,7 @@ function HeroIllustration() {
           fill="#1f3a6b"
           letterSpacing="0.2em"
         >
-          OFFICIAL
+          LEARNING
         </text>
         <text
           textAnchor="middle"
@@ -358,7 +358,7 @@ function HeroIllustration() {
           fill="#6b4a09"
           letterSpacing="0.16em"
         >
-          STUDIO
+          HUB
         </text>
       </g>
     </svg>
@@ -393,11 +393,11 @@ export default function Home() {
             <div>
               <p className="lumora-kicker">LUMORA · LEARNING HUB</p>
               <h1 className="lumora-display mt-5 text-balance text-[1.85rem] leading-[1.55] sm:mt-7 sm:text-[2.5rem] sm:leading-[1.45] lg:text-[3rem] lg:leading-[1.4]">
-                <span className="lumora-marker">物理専門塾</span> も、教材作成AI も。<br className="hidden sm:block" />
-                学びと教育のすべての入口を、ここに。
+                <span className="lumora-marker">Lumora</span> は、学びと教育の<br className="hidden sm:block" />
+                入口をまとめる学習ハブ。
               </h1>
               <p className="lumora-lead mt-6 max-w-xl text-pretty text-[0.98rem] sm:mt-7 sm:text-[1.05rem]">
-                yuta-eng.com（Lumora）は、物理専門塾「Lumora Physics」、教材作成AI、学習支援アプリの公式入口をひとつにまとめた学習ハブです。記事で考え方を学び、各サービスへそのまま進めます。
+                Lumora（ルモラ）は、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass などの公式入口を集約する学習ハブブランドです。ブログで考え方を発信し、各事業へそのまま進めます。
               </p>
               <div className="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:flex-row">
                 <a
@@ -407,7 +407,7 @@ export default function Home() {
                   target="_blank"
                 >
                   <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
-                  物理専門塾サイトを開く
+                  物理の森（物理塾）を開く
                   <span aria-hidden="true" className="text-[#f5d68a]">↗</span>
                 </a>
                 <ButtonLink className="w-full sm:w-auto" href="/blog" variant="secondary">
@@ -416,8 +416,8 @@ export default function Home() {
               </div>
               <div className="mt-9 grid grid-cols-3 gap-0 border-y border-[var(--line)] py-5 sm:mt-12 sm:gap-6 sm:py-6">
                 {[
-                  { num: "1", unit: "塾", label: "物理専門塾の公式" },
-                  { num: "3", unit: "アプリ", label: "公式入口を集約" },
+                  { num: "1", unit: "ハブ", label: "Lumora が運営" },
+                  { num: "3", unit: "事業", label: "公式入口を集約" },
                   { num: "100", unit: "%", label: "記事は無料公開" },
                 ].map((item, i) => (
                   <div
@@ -446,7 +446,7 @@ export default function Home() {
               </div>
               <div className="absolute -bottom-3 left-4 inline-flex items-center gap-2 rounded-sm bg-[var(--accent-deep)] px-3 py-1.5 text-[0.7rem] font-bold tracking-[0.18em] text-white shadow-[0_18px_30px_-22px_rgba(15,23,42,0.5)] sm:-bottom-4 sm:left-6 sm:text-[0.78rem]">
                 <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
-                EST.&nbsp;2026 · OFFICIAL HUB
+                LUMORA · LEARNING HUB
               </div>
             </div>
           </div>
@@ -721,14 +721,14 @@ export default function Home() {
             <div>
               <p className="inline-flex items-center gap-2 font-serif text-[0.74rem] font-bold tracking-[0.24em] text-[#f5d68a]">
                 <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
-                LUMORA PHYSICS · 物理専門塾【公式サイト】
+                LUMORA × 物理の森｜物理専門塾【公式サイト】
               </p>
               <h2 className="lumora-display mt-4 text-balance text-[1.55rem] leading-[1.5] text-white sm:text-[2.1rem] sm:leading-[1.45]">
-                高校物理に特化した、<br className="hidden sm:block" />
-                オンライン専門塾の公式サイトはこちら。
+                Lumora が運営する物理専門塾、<br className="hidden sm:block" />
+                「物理の森」の公式サイトはこちら。
               </h2>
               <p className="mt-5 font-serif text-[0.95rem] leading-[2.05] text-[#d6d3c8] sm:text-[1rem]">
-                yuta-eng.com（学習ハブ）から、物理専門塾「Lumora Physics」の公式サイトへ直接移動できます。受講相談・カリキュラム詳細・お申し込みは専門塾サイトから。
+                Lumora（学習ハブ）から、物理専門塾事業「物理の森」の公式サイトへ直接移動できます。受講相談・カリキュラム詳細・お申し込みは物理の森のサイトから。
               </p>
               <ul className="mt-6 grid gap-2.5 border-t border-white/15 pt-5 sm:grid-cols-2">
                 {[
@@ -756,14 +756,14 @@ export default function Home() {
                   rel="noreferrer noopener"
                   target="_blank"
                 >
-                  物理専門塾サイトを開く
+                  物理の森（物理塾）を開く
                   <span aria-hidden="true">↗</span>
                 </a>
                 <Link
                   className="inline-flex min-h-12 items-center justify-center rounded-sm border border-white/35 bg-transparent px-6 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:border-white"
                   href="/blog/physics-material-creation"
                 >
-                  指導方針を読む（記事）
+                  指導方針を読む（Lumora ブログ）
                 </Link>
               </div>
             </div>
@@ -909,14 +909,14 @@ export default function Home() {
           />
           <div className="relative px-6 py-12 text-center sm:px-12 sm:py-16">
             <p className="font-serif text-[0.78rem] font-bold tracking-[0.28em] text-[#f5d68a]">
-              YUTA-ENG.COM · LEARNING HUB
+              LUMORA · LEARNING HUB
             </p>
             <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-[1.65rem] font-bold leading-[1.55] text-white sm:text-[2.1rem] sm:leading-[1.45]">
-              すべての入口を、ひとつのハブで。<br className="hidden sm:block" />
-              次の一歩を、ここから選んでください。
+              事業ごとの入口を、ひとつのハブで。<br className="hidden sm:block" />
+              次の一歩を、Lumora から選んでください。
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-[0.93rem] leading-[2] text-[#d6d3c8] sm:text-[1rem]">
-              yuta-eng.com は、物理専門塾「Lumora Physics」と、教材作成アプリ Eddivom、学習支援アプリへの公式入口を集約した学習ハブです。
+              Lumora は、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass の公式入口を集約する学習ハブです。
             </p>
             <div className="mt-7 flex flex-col items-center justify-center gap-2.5 sm:mt-9 sm:flex-row">
               <a
@@ -925,14 +925,14 @@ export default function Home() {
                 rel="noreferrer noopener"
                 target="_blank"
               >
-                物理専門塾サイトを開く
+                物理の森（物理塾）を開く
                 <span aria-hidden="true">↗</span>
               </a>
               <Link
                 className="inline-flex min-h-12 items-center justify-center rounded-sm border border-white/35 bg-transparent px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:border-white"
                 href="/apps"
               >
-                アプリ一覧を見る
+                事業一覧を見る
               </Link>
             </div>
           </div>

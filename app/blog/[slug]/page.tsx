@@ -200,10 +200,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <div>
               <p className="inline-flex items-center gap-1.5 font-serif text-[0.7rem] font-bold tracking-[0.22em] text-[#f5d68a]">
                 <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
-                LUMORA PHYSICS · 物理専門塾
+                LUMORA × 物理の森｜物理専門塾事業
               </p>
               <p className="mt-2 font-serif text-[1.02rem] font-bold leading-[1.6] text-white sm:text-[1.1rem]">
-                高校物理の受講相談は、専門塾サイトから。
+                高校物理の受講相談は、Lumora が運営する「物理の森」から。
               </p>
             </div>
             <a
@@ -212,7 +212,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               rel="noreferrer noopener"
               target="_blank"
             >
-              物理専門塾サイトを開く
+              物理の森（物理塾）を開く
               <span aria-hidden="true">↗</span>
             </a>
           </aside>
@@ -236,10 +236,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         >
           <p className="lumora-eyebrow">NEXT STEP · 学習ハブの動線</p>
           <p className="lumora-display mt-3 text-[1.1rem] leading-[1.6] sm:text-[1.22rem]">
-            読んだあとの行き先を、ハブから選べます。
+            読んだあとの行き先を、Lumora から選べます。
           </p>
           <p className="mt-3 text-[0.92rem] leading-[2] text-[var(--ink-soft)]">
-            yuta-eng.com（学習ハブ）から、物理専門塾の公式サイトや教材作成AI、学習支援アプリへ直接遷移できます。
+            Lumora（学習ハブ）から、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass へ直接遷移できます。
           </p>
           <div className="mt-5 grid gap-2.5 sm:flex sm:flex-wrap">
             <a
@@ -249,11 +249,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               target="_blank"
             >
               <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
-              物理専門塾サイトを開く
+              物理の森（物理塾）を開く
               <span aria-hidden="true" className="text-[#f5d68a]">↗</span>
             </a>
             <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
-              アプリ一覧
+              事業一覧
             </ButtonLink>
             <ButtonLink className="w-full sm:w-auto" href="/blog" variant="ghost">
               ブログ一覧へ

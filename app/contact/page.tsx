@@ -6,14 +6,15 @@ import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "相談する｜Lumora お問い合わせ",
+  title: "相談する｜Lumora お問い合わせ窓口",
   description:
-    "Lumora への相談・お問い合わせはこちらから。教材設計、AI教材作成、学習支援Webアプリの企画やサイト相談などをメールで受け付けています。",
+    "Lumora（学習ハブ）への相談・お問い合わせ窓口。教材設計、AI教材作成、学習支援アプリ企画などを受け付けます。物理塾「物理の森」への受講相談は物理の森サイトから。",
   keywords: [
     "Lumora 相談",
     "教材作成 相談",
     "AI教材 制作 依頼",
     "学習支援Webアプリ 開発",
+    "物理の森 受講相談",
   ],
   path: "/contact",
 });
@@ -54,10 +55,39 @@ export default function ContactPage() {
           <span className="lumora-marker">一行</span>送ってください。
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-pretty font-serif text-[0.95rem] leading-[2.1] text-[var(--ink-soft)] sm:text-[1rem]">
-          Lumora は教材設計・AI教材制作・学習Webアプリの相談を受け付けています。「ここから話せばよい」ではなく、現状の困りごとをそのまま書いていただければ大丈夫です。
+          Lumora（学習ハブ）は、教材設計・AI教材制作・学習Webアプリ企画の相談窓口です。物理塾「物理の森」への受講相談は、物理の森の公式サイトから直接お申し込みください。
         </p>
         <div className="lumora-rule" />
       </header>
+
+      <aside
+        className="mx-auto mb-8 flex max-w-4xl flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6"
+        style={{
+          background:
+            "radial-gradient(circle at 95% 10%, rgba(200,146,17,0.18), transparent 45%), linear-gradient(135deg, #0f1c3a 0%, #1f3a6b 100%)",
+          border: "1px solid #1a2a4d",
+          borderRadius: "4px",
+        }}
+      >
+        <div>
+          <p className="inline-flex items-center gap-1.5 font-serif text-[0.7rem] font-bold tracking-[0.22em] text-[#f5d68a]">
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
+            物理塾の受講相談はこちら
+          </p>
+          <p className="mt-2 font-serif text-[1rem] font-bold leading-[1.6] text-white sm:text-[1.08rem]">
+            高校物理の受講相談は、Lumora 運営の「物理の森」から。
+          </p>
+        </div>
+        <a
+          className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-sm bg-[var(--accent-warm)] px-5 py-3 font-serif text-[0.9rem] font-bold tracking-[0.06em] text-[#1a1a1a] transition hover:-translate-y-0.5 hover:bg-[#dca424]"
+          href={siteConfig.physicsSchoolUrl}
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          物理の森（物理塾）を開く
+          <span aria-hidden="true">↗</span>
+        </a>
+      </aside>
 
       <section className="mx-auto grid max-w-4xl gap-4 lg:grid-cols-[1.05fr_0.95fr]">
         <article

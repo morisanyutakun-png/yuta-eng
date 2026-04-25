@@ -12,15 +12,15 @@ export type AppItem = {
 
 export const apps: AppItem[] = [
   {
-    name: "Lumora Physics（物理専門塾）",
+    name: "物理の森",
     comparison: "高校物理を「理解」で乗り越えたい高校生・受験生へ。",
     description:
-      "Lumora Physics は、高校物理に特化したオンライン専門塾の公式サイトです。公式暗記ではなく、現象 → 図 → 式 の順で読み解く力を、個別カリキュラムで育てます。物理基礎・物理の通年指導、定期テスト対策、共通テスト・国公立二次・私大入試まで対応。yuta-eng.com（学習ハブ）から直接サイトへ移動できます。",
+      "物理の森は、Lumora が運営する高校物理専門のオンライン塾です。公式暗記ではなく、現象 → 図 → 式 の順で読み解く力を、個別カリキュラムで育てます。物理基礎・物理の通年指導、定期テスト対策、共通テスト・国公立二次・私大入試まで対応。受講相談は専門塾サイトから。",
     audience: "高校物理でつまずいている高校生・受験生・浪人生／物理を理解で解けるようになりたい方",
     category: "高校物理 専門塾",
     href: "https://physics.yuta-eng.com",
-    ctaLabel: "物理専門塾サイトを開く",
-    status: "Lumora 直営",
+    ctaLabel: "物理の森（物理塾）を開く",
+    status: "Lumora 運営",
     featured: true,
   },
   {

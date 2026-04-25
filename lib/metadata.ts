@@ -28,7 +28,7 @@ export function createPageMetadata({
     description,
     keywords: mergedKeywords,
     alternates: {
-      canonical: canonicalPath,
+      canonical: url,
     },
     openGraph: {
       title,
@@ -42,6 +42,10 @@ export function createPageMetadata({
       card: "summary_large_image",
       title,
       description,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }

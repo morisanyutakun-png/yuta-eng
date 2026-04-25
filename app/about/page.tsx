@@ -6,15 +6,15 @@ import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Lumora とは｜運営者プロフィールと制作思想",
+  title: "Lumora とは｜学習ハブの運営方針と事業構成",
   description:
-    "Lumora（ルモラ）は、高校物理を理解で乗り越え、AI・LaTeX で教材作成をラクに続け、学習支援Webアプリを動線で設計する EdTech スタジオです。運営者と制作思想を紹介します。",
+    "Lumora（ルモラ）は、物理専門塾「物理の森」の運営、教材作成AIや学習支援アプリの紹介をひとつにまとめる学習ハブブランドです。運営者と各事業の関係、制作思想を紹介します。",
   keywords: [
     "Lumora",
+    "学習ハブ",
+    "物理の森",
     "EdTech プロフィール",
     "教材制作 ポートフォリオ",
-    "AI教材制作",
-    "学習支援Webアプリ開発",
   ],
   path: "/about",
 });
@@ -60,7 +60,7 @@ const story = [
   {
     year: "Now",
     title: "Lumora として動線を一本にまとめる",
-    body: "ブログ・教材・学習アプリを分断せず、ひとつの学びの動線として運用する EdTech スタジオを運営中。",
+    body: "親ブランド Lumora の下に、物理専門塾「物理の森」を直営事業として置き、教材作成AIや学習アプリも公式入口で接続。すべてを一本の動線で運営しています。",
   },
 ];
 
@@ -71,14 +71,59 @@ export default function AboutPage() {
       <header className="mx-auto mt-8 max-w-3xl text-center sm:mt-14">
         <p className="lumora-kicker">ABOUT LUMORA</p>
         <h1 className="lumora-display mt-5 text-balance text-[1.7rem] leading-[1.55] sm:text-[2.4rem] sm:leading-[1.45]">
-          高校物理 × 教材作成AI × EdTech を、<br className="hidden sm:block" />
-          ひとつの<span className="lumora-marker">動線</span>でつなぐ。
+          Lumora は、学びと教育の<br className="hidden sm:block" />
+          入口をまとめる<span className="lumora-marker">学習ハブブランド</span>。
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-pretty font-serif text-[0.95rem] leading-[2.1] text-[var(--ink-soft)] sm:text-[1rem]">
-          Lumora（ルモラ）は、{siteConfig.author}が運営する EdTech 学習スタジオです。物理を理解で乗り越えるための記事、AI と LaTeX で教材作成をラクに続けるためのワークフロー、学習支援Webアプリを動線で設計する考え方を、ひとつのサイトでまとめて発信しています。
+          Lumora（ルモラ）は、{siteConfig.author}が運営する学習ハブブランドです。Lumora の中で、物理専門塾「物理の森」を直営事業として運営し、Eddivom や IT Pass といった教材作成・学習アプリの公式入口も集約しています。
         </p>
         <div className="lumora-rule" />
       </header>
+
+      {/* BRAND STRUCTURE */}
+      <section className="mt-10 sm:mt-14">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="lumora-eyebrow">BRAND STRUCTURE</p>
+          <h2 className="lumora-display mt-3 text-[1.4rem] leading-[1.55] sm:text-[1.9rem]">
+            Lumora と各事業の関係
+          </h2>
+        </div>
+        <ul className="mx-auto mt-7 grid max-w-4xl gap-3 sm:grid-cols-3">
+          <li className="rounded-sm border border-[var(--line)] bg-white p-5">
+            <p className="font-serif text-[0.7rem] font-bold tracking-[0.2em] text-[var(--accent-deep)]">
+              親ブランド
+            </p>
+            <p className="mt-2 font-serif text-[1.05rem] font-bold text-[var(--ink)]">
+              Lumora
+            </p>
+            <p className="mt-1 text-[0.82rem] leading-[1.85] text-[var(--ink-soft)]">
+              yuta-eng.com で運営する学習ハブブランド。記事と公式入口を集約。
+            </p>
+          </li>
+          <li className="rounded-sm border-2 border-[var(--accent-deep)] bg-white p-5">
+            <p className="font-serif text-[0.7rem] font-bold tracking-[0.2em] text-[var(--accent-warm)]">
+              直営事業 / 物理専門塾
+            </p>
+            <p className="mt-2 font-serif text-[1.05rem] font-bold text-[var(--ink)]">
+              物理の森
+            </p>
+            <p className="mt-1 text-[0.82rem] leading-[1.85] text-[var(--ink-soft)]">
+              Lumora が運営する高校物理オンライン専門塾（physics.yuta-eng.com）。
+            </p>
+          </li>
+          <li className="rounded-sm border border-[var(--line)] bg-white p-5">
+            <p className="font-serif text-[0.7rem] font-bold tracking-[0.2em] text-[var(--accent-deep)]">
+              提携・紹介
+            </p>
+            <p className="mt-2 font-serif text-[1.05rem] font-bold text-[var(--ink)]">
+              Eddivom · IT Pass
+            </p>
+            <p className="mt-1 text-[0.82rem] leading-[1.85] text-[var(--ink-soft)]">
+              Lumora が公式に紹介する教材作成・IT 学習の外部パートナー。
+            </p>
+          </li>
+        </ul>
+      </section>
 
       {/* PHILOSOPHY */}
       <section className="mt-10 sm:mt-16">
@@ -214,15 +259,17 @@ export default function AboutPage() {
             ひとつの学習動線へ。
           </h2>
           <p className="mt-5 font-serif text-[0.95rem] leading-[2.05] text-[#d6d3c8]">
-            Lumora はこれから、記事と教材とアプリの境界をさらに薄くしていきます。読む・解く・つなぐが地続きの学習体験を作り続けます。
+            Lumora はこれから、物理の森と記事・教材アプリの境界をさらに薄くしていきます。読む・解く・つなぐが地続きの学習体験を作り続けます。
           </p>
           <div className="mt-7 flex flex-col gap-2.5 sm:flex-row sm:justify-center">
-            <Link
-              className="inline-flex min-h-12 items-center justify-center rounded-sm bg-[var(--accent-warm)] px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-[#1a1a1a] transition hover:-translate-y-0.5 hover:bg-[#dca424]"
-              href="/blog"
+            <a
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[var(--accent-warm)] px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-[#1a1a1a] transition hover:-translate-y-0.5 hover:bg-[#dca424]"
+              href={siteConfig.physicsSchoolUrl}
+              rel="noreferrer noopener"
+              target="_blank"
             >
-              ブログを読む →
-            </Link>
+              物理の森（物理塾）を開く ↗
+            </a>
             <Link
               className="inline-flex min-h-12 items-center justify-center rounded-sm border border-white/35 bg-transparent px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:border-white"
               href="/contact"

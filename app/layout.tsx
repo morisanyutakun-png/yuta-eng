@@ -4,6 +4,7 @@ import {
   Shippori_Mincho,
   Zen_Kaku_Gothic_New,
 } from "next/font/google";
+import Script from "next/script";
 
 import { JsonLd } from "@/components/json-ld";
 import { ScrollProgress } from "@/components/scroll-progress";
@@ -17,6 +18,9 @@ import {
 } from "@/lib/structured-data";
 
 import "./globals.css";
+
+const GA_MEASUREMENT_ID =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-WT6BZVH9YJ";
 
 const zenKaku = Zen_Kaku_Gothic_New({
   variable: "--font-sans-jp",
@@ -48,7 +52,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://yuta-eng.com"),
+  metadataBase: new URL(siteConfig.url),
   applicationName: siteConfig.name,
   title: {
     default: siteConfig.title,
@@ -61,9 +65,9 @@ export const metadata: Metadata = {
   publisher: siteConfig.name,
   category: "education",
   classification:
-    "高校物理、AI教材作成、教育DX、GIGAスクール、LaTeX教材作成、学習支援Webアプリ開発",
+    "学習ハブ、高校物理 専門塾、AI教材作成、教材制作、EdTech、LaTeX 教材作成、学習支援Webアプリ",
   alternates: {
-    canonical: "/",
+    canonical: siteConfig.url,
   },
   icons: {
     icon: [
@@ -105,7 +109,17 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
   },
+  verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
+    : undefined,
 };
 
 export default function RootLayout({
@@ -119,6 +133,22 @@ export default function RootLayout({
       className={`${zenKaku.variable} ${shipporiMincho.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {GA_MEASUREMENT_ID ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}', { send_page_view: true });
+              `}
+            </Script>
+          </>
+        ) : null}
         <ScrollProgress />
         <JsonLd data={createWebsiteJsonLd()} />
         <JsonLd data={createOrganizationJsonLd()} />

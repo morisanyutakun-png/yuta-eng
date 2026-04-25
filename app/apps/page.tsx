@@ -7,16 +7,17 @@ import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "公式アプリ・サービス一覧｜Lumora 学習ハブ",
+  title: "事業一覧｜Lumora の運営事業と公式サービス",
   description:
-    "yuta-eng.com（Lumora）が公式に集約する物理専門塾・教材作成AI・学習アプリの一覧。Lumora Physics（physics.yuta-eng.com）、Eddivom、IT Pass の各公式入口へ直接アクセスできます。",
+    "Lumora（ルモラ）は学習ハブとして、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass などの公式入口を集約しています。各事業の公式サイトへ直接アクセスできます。",
   keywords: [
-    "物理専門塾",
-    "Lumora Physics",
-    "学習支援Webアプリ",
-    "教材作成AI アプリ",
+    "Lumora 事業",
+    "物理の森",
+    "高校物理 専門塾",
     "Eddivom",
     "IT Pass",
+    "教材作成AI",
+    "学習ハブ",
   ],
   path: "/apps",
 });
@@ -25,13 +26,13 @@ export default function AppsPage() {
   return (
     <Container className="px-4 sm:px-6">
       <header className="mx-auto mt-8 max-w-3xl text-center sm:mt-14">
-        <p className="lumora-kicker">OFFICIAL APPS &amp; SERVICES</p>
+        <p className="lumora-kicker">LUMORA · BUSINESSES &amp; SERVICES</p>
         <h1 className="lumora-display mt-5 text-balance text-[1.7rem] leading-[1.55] sm:text-[2.4rem] sm:leading-[1.45]">
-          物理専門塾も、教材作成AIも。<br className="hidden sm:block" />
-          すべての<span className="lumora-marker">公式入口</span>を、ここに。
+          物理の森（物理塾）も、<br className="hidden sm:block" />
+          教材作成AIも。<span className="lumora-marker">公式入口</span>を、ここに。
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-pretty font-serif text-[0.95rem] leading-[2.1] text-[var(--ink-soft)] sm:text-[1rem]">
-          yuta-eng.com（Lumora）は学習ハブとして、物理専門塾「Lumora Physics」、教材作成アプリ Eddivom、学習アプリ IT Pass の公式入口を集約しています。各サービスへは下記カードから直接遷移できます。
+          Lumora（ルモラ）は学習ハブとして、運営事業の物理専門塾「物理の森」と、提携・紹介する教材作成アプリ Eddivom、IT 学習アプリ IT Pass の公式入口を集約しています。各サービスへは下記カードから直接遷移できます。
         </p>
         <div className="lumora-rule" />
       </header>
@@ -65,7 +66,7 @@ export default function AppsPage() {
                 <span
                   className={`font-mono text-[0.78rem] font-bold tracking-[0.16em] ${isFeatured ? "text-[var(--accent-deep)]" : "text-[var(--accent-warm)]"}`}
                 >
-                  {isFeatured ? "FEATURED · 物理専門塾" : `APP · 0${idx + 1}`}
+                  {isFeatured ? "FEATURED · 物理専門塾" : `BUSINESS · 0${idx + 1}`}
                 </span>
                 <span
                   className={`rounded-sm px-2.5 py-1 font-serif text-[0.7rem] font-bold tracking-[0.12em] ${isFeatured ? "bg-[var(--accent-deep)] text-white" : "bg-[#fbf3df] text-[var(--accent-warm)]"}`}
@@ -138,45 +139,45 @@ export default function AppsPage() {
           borderRadius: "4px",
         }}
       >
-        <p className="lumora-eyebrow">HUB STRUCTURE</p>
+        <p className="lumora-eyebrow">BRAND STRUCTURE</p>
         <h2 className="lumora-display mt-3 text-[1.3rem] leading-[1.55] sm:text-[1.7rem]">
-          yuta-eng.com は、学習ハブ（権威ページ）です。
+          Lumora（学習ハブ）の中に、各事業があります。
         </h2>
         <p className="mt-4 text-[0.92rem] leading-[2] text-[var(--ink-soft)]">
-          ブログ記事で考え方を学び、各サービスの公式サイトへ移動して実際に学習・教材作成・受講相談ができます。
+          Lumora は親ブランド（学習ハブ）、「物理の森」は Lumora が運営する物理専門塾事業、Eddivom や IT Pass は提携・紹介するサービスです。
         </p>
         <ul className="mt-5 grid gap-3 sm:grid-cols-3">
           <li className="rounded-sm border border-[var(--line)] bg-white p-4">
             <p className="font-serif text-[0.72rem] font-bold tracking-[0.18em] text-[var(--accent-deep)]">
-              HUB
+              親ブランド / HUB
             </p>
             <p className="mt-2 font-serif text-[0.95rem] font-bold text-[var(--ink)]">
-              yuta-eng.com
+              Lumora（yuta-eng.com）
             </p>
             <p className="mt-1 text-[0.82rem] leading-[1.85] text-[var(--ink-soft)]">
-              記事と公式入口を集約する学習ハブ
+              記事と各事業の入口を集約する学習ハブ
             </p>
           </li>
           <li className="rounded-sm border border-[var(--accent-deep)] bg-white p-4">
             <p className="font-serif text-[0.72rem] font-bold tracking-[0.18em] text-[var(--accent-warm)]">
-              専門塾
+              運営事業 / 物理専門塾
             </p>
             <p className="mt-2 font-serif text-[0.95rem] font-bold text-[var(--ink)]">
-              physics.yuta-eng.com
+              物理の森（physics.yuta-eng.com）
             </p>
             <p className="mt-1 text-[0.82rem] leading-[1.85] text-[var(--ink-soft)]">
-              高校物理に特化したオンライン専門塾
+              Lumora が運営する高校物理オンライン専門塾
             </p>
           </li>
           <li className="rounded-sm border border-[var(--line)] bg-white p-4">
             <p className="font-serif text-[0.72rem] font-bold tracking-[0.18em] text-[var(--accent-deep)]">
-              アプリ
+              提携・紹介
             </p>
             <p className="mt-2 font-serif text-[0.95rem] font-bold text-[var(--ink)]">
-              eddivom · itpass
+              Eddivom · IT Pass
             </p>
             <p className="mt-1 text-[0.82rem] leading-[1.85] text-[var(--ink-soft)]">
-              教材作成AI・IT 学習の外部公式アプリ
+              教材作成AI・IT 学習の公式パートナーアプリ
             </p>
           </li>
         </ul>
@@ -187,7 +188,7 @@ export default function AppsPage() {
             rel="noreferrer noopener"
             target="_blank"
           >
-            物理専門塾サイトを開く
+            物理の森（物理塾）を開く
             <span aria-hidden="true">↗</span>
           </a>
           <ButtonLink className="w-full sm:w-auto" href="/blog" variant="secondary">

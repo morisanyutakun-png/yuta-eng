@@ -18,6 +18,7 @@ export function createWebsiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: siteConfig.name,
+    alternateName: "Lumora 学習ハブ",
     url: siteConfig.url,
     description: siteConfig.description,
     inLanguage: "ja",
@@ -25,6 +26,14 @@ export function createWebsiteJsonLd() {
       "@type": "Organization",
       name: siteConfig.name,
       url: siteConfig.url,
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${siteConfig.url}/blog?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
     },
   };
 }
@@ -34,21 +43,30 @@ export function createOrganizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: siteConfig.name,
+    alternateName: ["ルモラ", "Lumora 学習ハブ"],
     url: siteConfig.url,
     description: siteConfig.description,
     email: siteConfig.email,
+    logo: new URL("/favicon.svg", siteConfig.url).toString(),
     founder: {
       "@type": "Person",
       name: siteConfig.author,
       url: siteConfig.url,
     },
+    sameAs: [siteConfig.physicsSchoolUrl, siteConfig.eddivomUrl, siteConfig.itPassUrl],
     subOrganization: [
       {
         "@type": "EducationalOrganization",
-        name: "Lumora Physics（物理専門塾）",
+        name: "物理の森",
+        alternateName: "高校物理 専門塾 物理の森",
         url: siteConfig.physicsSchoolUrl,
+        parentOrganization: {
+          "@type": "Organization",
+          name: siteConfig.name,
+          url: siteConfig.url,
+        },
         description:
-          "高校物理に特化したオンライン専門塾。物理基礎・物理の通年指導、定期テスト対策、共通テスト・国公立二次・私大入試対応。",
+          "Lumora が運営する高校物理に特化したオンライン専門塾。物理基礎・物理の通年指導、定期テスト対策、共通テスト・国公立二次・私大入試対応。",
       },
     ],
   };
@@ -117,16 +135,16 @@ export function createEducationalServiceJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "Lumora EdTech 学習スタジオ",
+    name: "Lumora 学習ハブ",
     url: siteConfig.url,
     description:
-      "高校物理の概念理解、AI・LaTeX による教材作成、学習支援Webアプリ設計をひとつの動線でつなぐ EdTech 学習スタジオ。",
+      "Lumora（ルモラ）が運営する学習ハブ。物理専門塾「物理の森」、教材作成AI、学習支援アプリの公式入口を集約し、ブログで学びを発信する。",
     serviceType: [
-      "高校物理 学習支援",
-      "教材作成AI",
+      "学習ハブ運営",
+      "高校物理 専門塾（物理の森）",
+      "教材作成AI 紹介",
       "LaTeX 教材作成",
-      "学習支援Webアプリ設計",
-      "教育DX コンテンツ設計",
+      "学習支援Webアプリ 紹介",
     ],
     provider: {
       "@type": "Organization",

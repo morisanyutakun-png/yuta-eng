@@ -1,13 +1,17 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = "https://yuta-eng.com";
+import { siteConfig } from "@/data/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-    },
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/studio", "/api/"],
+      },
+    ],
+    sitemap: `${siteConfig.url}/sitemap.xml`,
+    host: siteConfig.url,
   };
 }

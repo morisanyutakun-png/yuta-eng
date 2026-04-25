@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 
+import { siteConfig } from "@/data/site";
 import { getAllPosts } from "@/lib/blog";
 
-const SITE_URL = "https://yuta-eng.com";
+const SITE_URL = siteConfig.url;
 
 const staticRoutes = [
   {

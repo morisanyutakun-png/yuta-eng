@@ -27,10 +27,10 @@ export function SiteFooter() {
         <Container className="flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:py-8">
           <div>
             <p className="font-serif text-[0.7rem] font-bold tracking-[0.24em] text-[#f5d68a]">
-              LUMORA PHYSICS · 物理専門塾
+              LUMORA × 物理の森｜物理専門塾事業
             </p>
             <p className="mt-1.5 font-serif text-[1rem] font-bold leading-[1.6] text-white sm:text-[1.08rem]">
-              高校物理の受講相談は、専門塾の公式サイトから。
+              高校物理の受講相談は、Lumora が運営する「物理の森」から。
             </p>
           </div>
           <a
@@ -39,7 +39,7 @@ export function SiteFooter() {
             rel="noreferrer noopener"
             target="_blank"
           >
-            物理専門塾サイトを開く
+            物理の森（物理塾）を開く
             <span aria-hidden="true">↗</span>
           </a>
         </Container>
@@ -71,7 +71,7 @@ export function SiteFooter() {
               </span>
             </Link>
             <p className="mt-5 max-w-sm font-serif text-[0.9rem] leading-[2] text-slate-300">
-              yuta-eng.com は、物理専門塾「Lumora Physics」、教材作成AI、学習支援アプリの公式入口を集約する学習ハブです。すべての記事は無料で公開しています。
+              Lumora（ルモラ）は、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass などの公式入口を集約する学習ハブブランドです。すべての記事は無料で公開しています。
             </p>
           </div>
 

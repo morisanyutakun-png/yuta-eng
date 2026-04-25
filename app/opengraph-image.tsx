@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "Lumora — 高校物理と教材作成AIをつなぐEdTechスタジオ";
+  "Lumora — 物理の森（物理塾）や教材作成AIをまとめる学習ハブ";
 
 export const size = {
   width: 1200,
@@ -67,21 +67,21 @@ export default function Image() {
                 width: 18,
               }}
             />
-            LUMORA
+            LUMORA · LEARNING HUB
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <div
               style={{
                 color: "#0b1220",
                 display: "flex",
-                fontSize: 76,
+                fontSize: 72,
                 fontWeight: 800,
-                letterSpacing: "-0.06em",
-                lineHeight: 1.02,
-                maxWidth: 960,
+                letterSpacing: "-0.04em",
+                lineHeight: 1.05,
+                maxWidth: 980,
               }}
             >
-              高校物理を「理解」で乗り越える。
+              物理塾も、教材作成AIも。
             </div>
             <div
               style={{
@@ -89,15 +89,15 @@ export default function Image() {
                 display: "flex",
                 fontSize: 32,
                 fontWeight: 600,
-                letterSpacing: "-0.02em",
-                maxWidth: 960,
+                letterSpacing: "-0.01em",
+                maxWidth: 980,
               }}
             >
-              読んで → 解いて → つなぐ。教材作成AIまで揃った EdTech スタジオ Lumora。
+              Lumora は、物理の森や教材作成AIをまとめる学習ハブブランド。
             </div>
           </div>
           <div style={{ display: "flex", gap: 16 }}>
-            {["高校物理", "教材作成AI", "学習アプリ"].map((item) => (
+            {["物理の森（物理塾）", "教材作成AI", "学習アプリ"].map((item) => (
               <div
                 key={item}
                 style={{
