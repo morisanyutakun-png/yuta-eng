@@ -102,10 +102,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       />
 
       {/* HERO */}
-      <section className="bg-white">
-        <Container className="px-6">
-          <nav aria-label="パンくずリスト" className="pt-8 text-[0.78rem] text-[#94a3b8] sm:pt-10">
-            <ol className="flex flex-wrap items-center gap-2">
+      <section className="relative bg-white">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-[#eef4ff] via-white to-transparent"
+        />
+        <Container className="relative px-4 sm:px-6">
+          <nav aria-label="パンくずリスト" className="pt-6 text-[0.74rem] text-[#94a3b8] sm:pt-10 sm:text-[0.78rem]">
+            <ol className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <li>
                 <Link className="transition hover:text-[#1d4ed8]" href="/">
                   ホーム
@@ -122,26 +126,31 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </ol>
           </nav>
 
-          <div className="mx-auto max-w-4xl py-10 sm:py-14">
-            <div className="flex flex-wrap items-center gap-3 text-[0.74rem] font-semibold uppercase tracking-[0.18em]">
-              <span style={{ color: accent }}>{post.category}</span>
-              <time className="text-[#94a3b8]" dateTime={post.date}>
+          <div className="mx-auto max-w-4xl py-7 sm:py-12 lg:py-14">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] sm:text-[0.74rem] sm:tracking-[0.18em]">
+              <span
+                className="inline-flex items-center rounded-full px-2.5 py-1 text-white"
+                style={{ background: accent }}
+              >
+                {post.category}
+              </span>
+              <time className="text-[#64748b]" dateTime={post.date}>
                 {post.formattedDate}
               </time>
               <span className="text-[#cbd5e1]">·</span>
-              <span className="text-[#94a3b8]">{post.readingTime}</span>
+              <span className="text-[#64748b]">{post.readingTime}</span>
             </div>
-            <h1 className="mt-5 text-balance text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.4rem] sm:leading-[1.25] lg:text-[2.8rem]">
+            <h1 className="mt-4 text-balance text-[clamp(1.55rem,1.05rem+2.5vw,2.6rem)] font-extrabold leading-[1.28] tracking-[-0.012em] text-[#0b1d4a]">
               {post.title}
             </h1>
-            <p className="mt-6 text-pretty text-[0.98rem] leading-[1.95] text-[#475569] sm:text-[1.05rem]">
+            <p className="mt-5 text-pretty text-[clamp(0.95rem,0.9rem+0.4vw,1.06rem)] leading-[1.9] text-[#475569]">
               {post.description}
             </p>
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-1.5 sm:mt-6 sm:gap-2">
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center rounded-full bg-[#f1f5f9] px-3 py-1 text-[0.74rem] font-medium text-[#475569] ring-1 ring-[rgba(15,29,74,0.06)]"
+                  className="inline-flex items-center rounded-full bg-[#f1f5f9] px-2.5 py-1 text-[0.72rem] font-medium text-[#475569] ring-1 ring-[rgba(15,29,74,0.06)] sm:text-[0.74rem]"
                 >
                   #{tag}
                 </span>
@@ -149,7 +158,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
 
             {/* Hero thumbnail */}
-            <div className="relative mt-10 aspect-[1200/630] w-full overflow-hidden rounded-[28px] bg-[#f1f5f9] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_40px_80px_-50px_rgba(15,29,74,0.35)]">
+            <div className="relative mt-7 aspect-[1200/630] w-full overflow-hidden rounded-[18px] bg-[#f1f5f9] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_24px_50px_-36px_rgba(15,29,74,0.35)] sm:mt-10 sm:rounded-[28px] sm:shadow-[0_40px_80px_-50px_rgba(15,29,74,0.35)]">
               <Image
                 src={`/blog/${post.slug}/opengraph-image`}
                 alt={post.title}
@@ -165,7 +174,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* ARTICLE BODY */}
       <section className="bg-[#f8fafc]">
-        <Container className="px-6 py-16 sm:py-20">
+        <Container className="px-4 py-10 sm:px-6 sm:py-16 lg:py-20">
           <article className="mx-auto max-w-3xl">
             {post.searchIntent ? (
               <div

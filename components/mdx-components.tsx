@@ -1154,25 +1154,9 @@ export const mdxComponents = {
     />
   ),
   table: (props: ComponentPropsWithoutRef<"table">) => (
-    <div className="my-7 overflow-x-auto rounded-[18px] ring-1 ring-[rgba(15,29,74,0.08)]">
-      <table className="w-full border-collapse text-[0.92rem] leading-[1.7]" {...props} />
+    <div className="article-table-scroll">
+      <table {...props} />
     </div>
-  ),
-  thead: (props: ComponentPropsWithoutRef<"thead">) => (
-    <thead className="bg-[#f1f5f9] text-[#0b1d4a]" {...props} />
-  ),
-  tbody: (props: ComponentPropsWithoutRef<"tbody">) => (
-    <tbody className="divide-y divide-[rgba(15,29,74,0.06)] bg-white" {...props} />
-  ),
-  tr: (props: ComponentPropsWithoutRef<"tr">) => <tr {...props} />,
-  th: (props: ComponentPropsWithoutRef<"th">) => (
-    <th
-      className="px-4 py-3 text-left text-[0.78rem] font-semibold uppercase tracking-[0.08em] text-[#0b1d4a]"
-      {...props}
-    />
-  ),
-  td: (props: ComponentPropsWithoutRef<"td">) => (
-    <td className="px-4 py-3 align-top text-[#334155]" {...props} />
   ),
   img: ({ src, alt, width, height, ...rest }: ComponentPropsWithoutRef<"img">) => {
     if (!src || typeof src !== "string") return null;
