@@ -13,6 +13,22 @@ const categoryAccent: Record<string, { fg: string; bg: string }> = {
 
 const defaultAccent = { fg: "#0b1d4a", bg: "#e0e7ff" };
 
+// Tiny 8x4 PNG placeholders that match each category's OG image dominant color.
+// They paint instantly while the optimized AVIF/WebP loads, eliminating the
+// "white flash" that hurts perceived performance and CLS.
+const blurByCategory: Record<string, string> = {
+  Physics:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAAEUlEQVR4nGOQs+rCihioJwEAd68cQYRlhkoAAAAASUVORK5CYII=",
+  Materials:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAAEUlEQVR4nGNgzlyIFTFQTwIAfj4hofgf1LwAAAAASUVORK5CYII=",
+  LaTeX:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAAEUlEQVR4nGNgzlyIFTFQTwIAfj4hofgf1LwAAAAASUVORK5CYII=",
+  Education:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAAEUlEQVR4nGPgF9fCihioJwEA8RMKAVkTHEUAAAAASUVORK5CYII=",
+};
+const defaultBlur =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAAEUlEQVR4nGPgl/XCihioJwEA2qIOwUHUx5kAAAAASUVORK5CYII=";
+
 type Variant = "featured" | "default";
 
 type ArticleCardProps = {
@@ -29,6 +45,7 @@ export function ArticleCard({
   imageSizes,
 }: ArticleCardProps) {
   const accent = categoryAccent[post.category] ?? defaultAccent;
+  const blurDataURL = blurByCategory[post.category] ?? defaultBlur;
   const href = `/blog/${post.slug}`;
 
   if (variant === "featured") {
@@ -45,7 +62,10 @@ export function ArticleCard({
         />
         <meta itemProp="datePublished" content={post.date} />
         <meta itemProp="description" content={post.description} />
-        <div className="relative aspect-[1200/630] overflow-hidden bg-[#f1f5f9] lg:aspect-auto lg:h-full lg:min-h-[320px]">
+        <div
+          className="relative aspect-[1200/630] overflow-hidden lg:aspect-auto lg:h-full lg:min-h-[320px]"
+          style={{ backgroundColor: accent.bg }}
+        >
           <Image
             src={`/blog/${post.slug}/opengraph-image`}
             alt={post.title}
@@ -53,6 +73,9 @@ export function ArticleCard({
             sizes={imageSizes ?? "(min-width: 1024px) 60vw, 100vw"}
             className="object-cover transition duration-700 group-hover:scale-[1.04]"
             preload={preload}
+            placeholder="blur"
+            blurDataURL={blurDataURL}
+            quality={preload ? 75 : 70}
             itemProp="image"
           />
           <div
@@ -128,7 +151,10 @@ export function ArticleCard({
       />
       <meta itemProp="datePublished" content={post.date} />
       <meta itemProp="description" content={post.description} />
-      <div className="relative aspect-[1200/630] overflow-hidden bg-[#f1f5f9]">
+      <div
+        className="relative aspect-[1200/630] overflow-hidden"
+        style={{ backgroundColor: accent.bg }}
+      >
         <Image
           src={`/blog/${post.slug}/opengraph-image`}
           alt={post.title}
@@ -136,6 +162,9 @@ export function ArticleCard({
           sizes={imageSizes ?? "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"}
           className="object-cover transition duration-700 group-hover:scale-[1.05]"
           preload={preload}
+          placeholder="blur"
+          blurDataURL={blurDataURL}
+          quality={70}
           itemProp="image"
         />
         <div

@@ -9,6 +9,8 @@ import { siteConfig } from "@/data/site";
 export const alt = "Solvora ブログ記事サムネイル";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+export const dynamic = "force-static";
+export const revalidate = false;
 
 export function generateStaticParams() {
   return getPostSlugs().map((slug) => ({ slug }));

@@ -571,9 +571,9 @@ export default function Home() {
             </Link>
           </div>
           <ul className="mt-10 grid gap-5 sm:gap-6 lg:grid-cols-3">
-            {latestPosts.map((post) => (
+            {latestPosts.map((post, idx) => (
               <li key={post.slug} className="h-full">
-                <ArticleCard post={post} />
+                <ArticleCard post={post} preload={idx === 0} />
               </li>
             ))}
           </ul>

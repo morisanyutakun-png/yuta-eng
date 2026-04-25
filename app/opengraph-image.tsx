@@ -12,6 +12,8 @@ export const size = {
 };
 
 export const contentType = "image/png";
+export const dynamic = "force-static";
+export const revalidate = false;
 
 export default async function Image() {
   const [notoRegular, notoBold] = await Promise.all([
