@@ -150,18 +150,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
 
             {/* Title */}
-            <h1 className="mt-3 text-balance text-[clamp(1.32rem,0.95rem+2.1vw,2.5rem)] font-extrabold leading-[1.32] tracking-[-0.01em] text-[#0b1d4a] sm:mt-4 sm:leading-[1.28]">
+            <h1 className="mt-3 text-balance text-[clamp(1.32rem,0.95rem+2.1vw,2.5rem)] font-extrabold leading-[1.55] tracking-[-0.005em] text-[#0b1d4a] sm:mt-4 sm:leading-[1.32]">
               {post.title}
             </h1>
 
             {/* Description in a structured panel for legibility */}
-            <div className="relative mt-5 rounded-[16px] bg-[#f8fbff] p-4 ring-1 ring-[rgba(15,29,74,0.08)] sm:mt-7 sm:rounded-[20px] sm:p-5">
+            <div className="relative mt-5 rounded-[16px] bg-[#f8fbff] p-5 ring-1 ring-[rgba(15,29,74,0.08)] sm:mt-7 sm:rounded-[20px] sm:p-5">
               <span
                 aria-hidden="true"
                 className="absolute left-0 top-3 h-[calc(100%-1.5rem)] w-[3px] rounded-r-full"
                 style={{ background: accent }}
               />
-              <p className="pl-3 text-pretty text-[clamp(0.88rem,0.84rem+0.3vw,1rem)] leading-[1.85] text-[#334155] sm:pl-4 sm:leading-[1.9]">
+              <p className="pl-3 text-pretty text-[clamp(0.88rem,0.84rem+0.3vw,1rem)] leading-[2.1] tracking-[0.02em] text-[#334155] sm:pl-4 sm:leading-[1.95]">
                 {post.description}
               </p>
             </div>
@@ -212,7 +212,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 >
                   この記事はこんな方へ
                 </p>
-                <p className="mt-2 text-[clamp(0.88rem,0.84rem+0.3vw,0.96rem)] leading-[1.85] text-[#334155] sm:mt-3 sm:leading-[1.95]">
+                <p className="mt-2 text-[clamp(0.88rem,0.84rem+0.3vw,0.96rem)] leading-[2.1] tracking-[0.02em] text-[#334155] sm:mt-3 sm:leading-[1.95]">
                   {post.searchIntent}
                 </p>
               </div>
@@ -235,11 +235,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     この記事でわかること
                   </p>
                 </div>
-                <ul className="mt-4 grid gap-3 sm:mt-5 sm:gap-3.5">
+                <ul className="mt-4 grid gap-4 sm:mt-5 sm:gap-3.5">
                   {post.keyPoints.map((point) => (
                     <li
                       key={point}
-                      className="flex gap-2.5 text-[clamp(0.88rem,0.85rem+0.25vw,0.94rem)] leading-[1.8] text-[#0b1d4a] sm:gap-3 sm:leading-[1.85]"
+                      className="flex gap-2.5 text-[clamp(0.88rem,0.85rem+0.25vw,0.94rem)] leading-[2.05] tracking-[0.02em] text-[#0b1d4a] sm:gap-3 sm:leading-[1.85]"
                     >
                       <span
                         aria-hidden="true"

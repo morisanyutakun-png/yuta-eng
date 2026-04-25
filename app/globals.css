@@ -2635,21 +2635,25 @@ a {
 /* Mobile: tighten article body rhythm for better scanability */
 @media (max-width: 640px) {
   .article-content {
-    line-height: 1.85;
+    line-height: 2.1;
+    letter-spacing: 0.025em;
   }
 
   .article-content > p {
-    margin-top: 1rem;
+    margin-top: 1.25rem;
+    line-height: 2.1;
   }
 
   .article-content > p:first-of-type {
-    line-height: 1.8;
+    line-height: 2;
+    padding: 1.2rem 1.15rem;
   }
 
   .article-content h2 {
-    margin-top: 2.2rem;
-    margin-bottom: 0.9rem;
+    margin-top: 2.4rem;
+    margin-bottom: 1rem;
     padding-bottom: 0.7rem;
+    line-height: 1.5;
   }
 
   .article-content h2::before {
@@ -2659,9 +2663,14 @@ a {
   }
 
   .article-content h3 {
-    margin-top: 1.7rem;
-    margin-bottom: 0.7rem;
+    margin-top: 1.85rem;
+    margin-bottom: 0.75rem;
     padding-left: 0.7rem;
+    line-height: 1.6;
+  }
+
+  .article-content h4 {
+    line-height: 1.6;
   }
 
   .article-content ul,
@@ -2669,8 +2678,17 @@ a {
     padding-left: 0;
   }
 
+  .article-content ul > li,
+  .article-content ol > li {
+    line-height: 2.05;
+  }
+
   .article-content ul > li {
     padding-left: 1.1rem;
+  }
+
+  .article-content ul > li::before {
+    top: 1.05em;
   }
 
   .article-content ol > li {
@@ -2678,7 +2696,15 @@ a {
   }
 
   .article-content li + li {
-    margin-top: 0.35rem;
+    margin-top: 0.55rem;
+  }
+
+  .article-content blockquote {
+    line-height: 2.05;
+  }
+
+  .article-content tbody td {
+    line-height: 2;
   }
 
   .lumora-callout,
@@ -2690,6 +2716,31 @@ a {
   .lumora-comparison {
     margin-left: -0.25rem;
     margin-right: -0.25rem;
+  }
+
+  .lumora-callout {
+    line-height: 2.05;
+  }
+
+  .lumora-keypoints-list li {
+    line-height: 2.05;
+  }
+
+  .lumora-comparison-value {
+    line-height: 2;
+  }
+
+  .lumora-step-body {
+    line-height: 2.05;
+  }
+
+  .lumora-faqitem-q,
+  .lumora-faqitem-a {
+    line-height: 2.05;
+  }
+
+  .lumora-cta-card-body {
+    line-height: 2;
   }
 
   .article-table-scroll {
