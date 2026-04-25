@@ -584,11 +584,13 @@ export default function Home() {
       <section className="bg-white">
         <Container className="px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-3xl text-center">
-            <Image
+            <img
               alt="Solvora"
               src="/brand/solvora-mark.svg"
               width={360}
               height={360}
+              loading="lazy"
+              decoding="async"
               className="mx-auto h-auto w-[160px] sm:w-[200px]"
             />
             <h2 className="mt-10 text-balance text-[1.6rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">

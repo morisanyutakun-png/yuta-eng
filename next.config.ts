@@ -8,6 +8,37 @@ const nextConfig: NextConfig = {
     // optimizer cold starts and keeps CDN caches warm for SEO.
     minimumCacheTTL: 60 * 60 * 24 * 365,
   },
+  // Long-cache the pre-built static OG card variants and brand SVGs that
+  // never change between builds. immutable means CDNs/browsers will skip
+  // revalidation entirely until the next deploy.
+  async headers() {
+    return [
+      {
+        source: "/og/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/brand/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/fonts/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/eddivom-hero.webp",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

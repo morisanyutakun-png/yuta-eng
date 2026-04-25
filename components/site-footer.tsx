@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/container";
@@ -18,11 +17,13 @@ export function SiteFooter() {
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <Link className="inline-flex items-center gap-3" href="/">
-              <Image
+              <img
                 alt="Solvora"
                 src="/brand/solvora-mark.svg"
                 width={120}
                 height={120}
+                loading="lazy"
+                decoding="async"
                 className="h-10 w-10"
               />
               <span>

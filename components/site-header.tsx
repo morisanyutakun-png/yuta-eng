@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -27,12 +26,14 @@ function isHighlight(item: NavItem): boolean {
 
 function SolvoraLogo() {
   return (
-    <Image
+    // SVG served directly — no /_next/image overhead (vector is already optimal).
+    <img
       alt="Solvora"
       src="/brand/solvora-mark.svg"
       width={120}
       height={120}
-      preload
+      decoding="async"
+      fetchPriority="high"
       className="h-9 w-9 sm:h-10 sm:w-10"
     />
   );

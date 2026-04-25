@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import type { BlogPostMeta } from "@/lib/blog";
@@ -13,22 +12,6 @@ const categoryAccent: Record<string, { fg: string; bg: string }> = {
 
 const defaultAccent = { fg: "#0b1d4a", bg: "#e0e7ff" };
 
-// Tiny 8x4 PNG placeholders that match each category's OG image dominant color.
-// They paint instantly while the optimized AVIF/WebP loads, eliminating the
-// "white flash" that hurts perceived performance and CLS.
-const blurByCategory: Record<string, string> = {
-  Physics:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAAEUlEQVR4nGOQs+rCihioJwEAd68cQYRlhkoAAAAASUVORK5CYII=",
-  Materials:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAAEUlEQVR4nGNgzlyIFTFQTwIAfj4hofgf1LwAAAAASUVORK5CYII=",
-  LaTeX:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAAEUlEQVR4nGNgzlyIFTFQTwIAfj4hofgf1LwAAAAASUVORK5CYII=",
-  Education:
-    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAAEUlEQVR4nGPgF9fCihioJwEA8RMKAVkTHEUAAAAASUVORK5CYII=",
-};
-const defaultBlur =
-  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAAEUlEQVR4nGPgl/XCihioJwEA2qIOwUHUx5kAAAAASUVORK5CYII=";
-
 type Variant = "featured" | "default";
 
 type ArticleCardProps = {
@@ -38,14 +21,59 @@ type ArticleCardProps = {
   imageSizes?: string;
 };
 
+type CardImageProps = {
+  slug: string;
+  title: string;
+  preload?: boolean;
+  variant: Variant;
+};
+
+/**
+ * Plain <picture> with statically pre-built AVIF/WebP/PNG variants from
+ * /public/og/. Bypasses /_next/image entirely — no optimizer cold start, no
+ * runtime conversion, served straight from CDN with the build's Cache-Control.
+ */
+function CardImage({ slug, title, preload, variant }: CardImageProps) {
+  const fileBase = `/og/${slug}`;
+  const sizes =
+    variant === "featured"
+      ? "(min-width: 1024px) 60vw, 100vw"
+      : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw";
+
+  return (
+    <picture>
+      <source
+        type="image/avif"
+        srcSet={`${fileBase}-640.avif 640w, ${fileBase}-1200.avif 1200w`}
+        sizes={sizes}
+      />
+      <source
+        type="image/webp"
+        srcSet={`${fileBase}-640.webp 640w, ${fileBase}-1200.webp 1200w`}
+        sizes={sizes}
+      />
+      <img
+        src={`${fileBase}.png`}
+        alt={title}
+        width={1200}
+        height={630}
+        loading={preload ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={preload ? "high" : "auto"}
+        itemProp="image"
+        className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.05]"
+      />
+    </picture>
+  );
+}
+
 export function ArticleCard({
   post,
   variant = "default",
   preload = false,
-  imageSizes,
+  imageSizes: _imageSizes,
 }: ArticleCardProps) {
   const accent = categoryAccent[post.category] ?? defaultAccent;
-  const blurDataURL = blurByCategory[post.category] ?? defaultBlur;
   const href = `/blog/${post.slug}`;
 
   if (variant === "featured") {
@@ -66,17 +94,11 @@ export function ArticleCard({
           className="relative aspect-[1200/630] overflow-hidden lg:aspect-auto lg:h-full lg:min-h-[320px]"
           style={{ backgroundColor: accent.bg }}
         >
-          <Image
-            src={`/blog/${post.slug}/opengraph-image`}
-            alt={post.title}
-            fill
-            sizes={imageSizes ?? "(min-width: 1024px) 60vw, 100vw"}
-            className="object-cover transition duration-700 group-hover:scale-[1.04]"
+          <CardImage
+            slug={post.slug}
+            title={post.title}
             preload={preload}
-            placeholder="blur"
-            blurDataURL={blurDataURL}
-            quality={preload ? 75 : 70}
-            itemProp="image"
+            variant="featured"
           />
           <div
             aria-hidden="true"
@@ -155,17 +177,11 @@ export function ArticleCard({
         className="relative aspect-[1200/630] overflow-hidden"
         style={{ backgroundColor: accent.bg }}
       >
-        <Image
-          src={`/blog/${post.slug}/opengraph-image`}
-          alt={post.title}
-          fill
-          sizes={imageSizes ?? "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"}
-          className="object-cover transition duration-700 group-hover:scale-[1.05]"
+        <CardImage
+          slug={post.slug}
+          title={post.title}
           preload={preload}
-          placeholder="blur"
-          blurDataURL={blurDataURL}
-          quality={70}
-          itemProp="image"
+          variant="default"
         />
         <div
           aria-hidden="true"

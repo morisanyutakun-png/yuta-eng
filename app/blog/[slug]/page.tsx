@@ -182,16 +182,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
             ) : null}
 
-            {/* Hero thumbnail */}
+            {/* Hero thumbnail — served as static AVIF/WebP from /public/og/ */}
             <div className="relative mt-6 aspect-[1200/630] w-full overflow-hidden rounded-[16px] bg-[#f1f5f9] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_18px_38px_-28px_rgba(15,29,74,0.4)] sm:mt-10 sm:rounded-[28px] sm:shadow-[0_40px_80px_-50px_rgba(15,29,74,0.35)]">
-              <Image
-                src={`/blog/${post.slug}/opengraph-image`}
-                alt={post.title}
-                fill
-                sizes="(min-width: 1024px) 896px, 100vw"
-                className="object-cover"
-                preload
-              />
+              <picture>
+                <source
+                  type="image/avif"
+                  srcSet={`/og/${post.slug}-640.avif 640w, /og/${post.slug}-1200.avif 1200w`}
+                  sizes="(min-width: 1024px) 896px, 100vw"
+                />
+                <source
+                  type="image/webp"
+                  srcSet={`/og/${post.slug}-640.webp 640w, /og/${post.slug}-1200.webp 1200w`}
+                  sizes="(min-width: 1024px) 896px, 100vw"
+                />
+                <img
+                  src={`/og/${post.slug}.png`}
+                  alt={post.title}
+                  width={1200}
+                  height={630}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </picture>
             </div>
           </div>
         </Container>
