@@ -66,7 +66,7 @@ export function SiteHeader() {
             <SolvoraLogo />
             <span className="flex min-w-0 flex-col leading-none">
               <span className="truncate text-[1.25rem] font-extrabold tracking-[0.04em] text-[#0b1d4a] sm:text-[1.4rem]">
-                LUMOR<span className="relative">A<span aria-hidden="true" className="absolute -right-1 top-0 h-1 w-1 rounded-full bg-[#38bdf8]" /></span>
+                SOLVOR<span className="relative">A<span aria-hidden="true" className="absolute -right-1 top-0 h-1 w-1 rounded-full bg-[#38bdf8]" /></span>
               </span>
               <span className="mt-1 hidden text-[0.62rem] font-semibold tracking-[0.32em] text-[#1d4ed8] sm:block">
                 SCIENCE LEARNING HUB
