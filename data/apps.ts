@@ -156,7 +156,7 @@ export const apps: AppItem[] = [
   {
     name: "Eddivom",
     slug: "eddivom",
-    image: "/eddivom-hero.png",
+    image: "/eddivom-hero.webp",
     imageWidth: 1536,
     imageHeight: 1024,
     comparison: "LaTeX 教材作成｜AI下書きから組版・PDF出力までワンストップ。",
