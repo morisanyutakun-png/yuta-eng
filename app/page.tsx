@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
-import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
+import { homeFaq } from "@/data/home";
 import { siteConfig } from "@/data/site";
 import { getLatestPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
@@ -14,353 +15,295 @@ import {
   createItemListJsonLd,
 } from "@/lib/structured-data";
 
-type VisitorPath = {
-  no: string;
-  label: string;
-  badge: string;
-  title: string;
-  description: string;
-  benefits: string[];
-  href: string;
-  cta: string;
-  external?: boolean;
-  primary?: boolean;
-};
-
-const visitorPaths: VisitorPath[] = [
-  {
-    no: "01",
-    label: "物理の森",
-    badge: "Lumora の物理専門塾事業【公式サイト】",
-    title: "高校物理を「理解」で乗り越える、物理の森。",
-    description:
-      "Lumora が運営する高校物理専門のオンライン塾「物理の森」。公式暗記ではなく、現象 → 図 → 式の順で読み解く力を、個別カリキュラムで育てます。受講相談は物理の森の公式サイトから受付中。",
-    benefits: [
-      "物理基礎・物理の通年指導と定期テスト対策",
-      "共通テスト／国公立二次／私大入試まで対応",
-      "つまずいた前提単元へ戻れる個別カリキュラム",
-    ],
-    href: "https://physics.yuta-eng.com",
-    cta: "物理の森（物理塾）を開く",
-    external: true,
-    primary: true,
-  },
-  {
-    no: "02",
-    label: "Materials AI",
-    badge: "先生・塾講師・教材制作者向け",
-    title: "教材作成を AI でラクに続ける",
-    description:
-      "生成AI下書き → LaTeX整形 → PDF/Web展開のワークフローを、コピペ可能なテンプレ付きで紹介。Eddivom（教材作成アプリ）への入口にもなります。",
-    benefits: [
-      "毎年作り直しが消える「資産化」設計",
-      "AI に任せていい仕事 / ダメな仕事の整理",
-      "小テスト・類題・解答PDFを一気通貫で",
-    ],
-    href: "/blog/latex-web-workflow",
-    cta: "教材作成AIの記事を読む",
-  },
-  {
-    no: "03",
-    label: "EdTech Design",
-    badge: "学校ICT・EdTechプロダクト担当向け",
-    title: "「使われる」学習アプリを設計する",
-    description:
-      "GIGAスクール後の教室で、紙・PDF・アプリを分断させずに学習動線を設計する考え方をまとめました。",
-    benefits: [
-      "機能を増やさず動線で勝負する設計指針",
-      "学習ループ「読む → 解く → 戻る → 続ける」",
-      "自社アプリを評価できるチェックリスト付き",
-    ],
-    href: "/blog/education-technology-learning-design",
-    cta: "学習アプリ設計の記事を読む",
-  },
-];
-
-const problems = [
-  {
-    badge: "物理の森（物理専門塾）",
-    pain: "公式は覚えたのに、ちょっと条件が変わると解けない",
-    answer:
-      "Lumora が運営する物理専門塾「物理の森」では、現象 → 図 → 式の順で読み解く力を個別カリキュラムで育てます。受講相談は物理の森の公式サイトから。",
-    href: "https://physics.yuta-eng.com",
-    external: true,
-  },
-  {
-    badge: "教材制作",
-    pain: "AIに教材を作らせたいのに、結局自分で書き直している",
-    answer:
-      "AI・LaTeX・Web の役割分担と、5ステップの教材作成ワークフローでラクに続けられます。",
-    href: "/blog/latex-web-workflow",
-    external: false,
-  },
-  {
-    badge: "学習設計",
-    pain: "学習アプリを導入したのに、生徒が続けて使ってくれない",
-    answer:
-      "「機能の足し算」ではなく「動線設計」でアプリを設計し直す考え方を、図解で解説します。",
-    href: "/blog/education-technology-learning-design",
-    external: false,
-  },
-];
-
-const trustPoints = [
-  {
-    title: "一次情報ベース",
-    body: "学習指導要領、物理教育研究、教育ICT政策など、原典をたどって書いています。",
-  },
-  {
-    title: "実践とつながる",
-    body: "Eddivom など実際に動いている学習アプリの設計と、ブログの内容が地続きです。",
-  },
-  {
-    title: "図と表で速く読める",
-    body: "ステップ図・比較表・チェックリストで、忙しい先生や受験生でも要点だけつかめます。",
-  },
-];
-
-const faqItems = [
-  {
-    question: "Lumora と「物理の森」の関係は？",
-    answer:
-      "Lumora（ルモラ）は、yuta-eng.com で運営する学習ハブのブランド名です。「物理の森」は、Lumora が運営する事業のひとつで、高校物理に特化したオンライン専門塾の名称・サービスサイト（physics.yuta-eng.com）です。Lumora＝親ブランド、物理の森＝物理専門塾事業、という関係になります。",
-  },
-  {
-    question: "yuta-eng.com（Lumora）ではどんなことができますか？",
-    answer:
-      "Lumora の学習ハブとして、ブログ記事の発信と、各事業（物理の森・Eddivom・IT Pass など）の公式入口を集約しています。記事で考え方を学び、必要なサービスへ直接アクセスできます。",
-  },
-  {
-    question: "物理塾の受講申し込みはどこからしますか？",
-    answer:
-      "物理専門塾「物理の森」の公式サイトは https://physics.yuta-eng.com です。受講相談・申し込み・カリキュラム詳細は物理の森のサイトから直接アクセスしてください。Lumora の各ページからボタンで遷移できます。",
-  },
-  {
-    question: "Eddivom や IT Pass は Lumora の事業ですか？",
-    answer:
-      "Eddivom は Lumora が公式に紹介・提携する教材作成アプリ、IT Pass は外部の学習アプリです。Lumora は学習ハブとして、これらのサービスの公式入口を案内する役割を担っています。",
-  },
-];
-
 export const metadata: Metadata = createPageMetadata({
-  title: "Lumora｜物理の森・教材作成AIをまとめる学習ハブ",
+  title: "Lumora｜理系の学びを、もう一段深く。",
   description:
-    "Lumora（ルモラ）は、物理専門塾「物理の森」、教材作成アプリ Eddivom、学習アプリ IT Pass などの公式入口を1つにまとめる学習ハブです。記事で考え方を学び、各サービスへそのまま進めます。",
+    "Lumora（ルモラ）は、物理・数学・情報・教材設計など、理系の学びを深めるための記事と専門サービスをまとめるサイトです。",
   keywords: [
     "Lumora",
-    "学習ハブ",
+    "ルモラ",
+    "理系 学習",
+    "高校物理",
     "物理の森",
-    "高校物理 専門塾",
-    "教材作成AI",
-    "AI教材作成",
-    "LaTeX 教材作成",
-    "学習支援Webアプリ",
-    "EdTech",
-    "個別最適な学び",
+    "教材作成",
+    "学習デザイン",
   ],
   path: "/",
 });
 
-function HeroIllustration() {
+const subjects = [
+  {
+    label: "Physics",
+    title: "現象を、図と式でつなぐ。",
+    href: "/blog/physics-material-creation",
+    accent: "#2563eb",
+  },
+  {
+    label: "Materials",
+    title: "教材を、AIと書く。",
+    href: "/blog/latex-web-workflow",
+    accent: "#1d4ed8",
+  },
+  {
+    label: "Design",
+    title: "使われる仕組みを設計する。",
+    href: "/blog/education-technology-learning-design",
+    accent: "#0284c7",
+  },
+  {
+    label: "All",
+    title: "すべての記事を見る。",
+    href: "/blog",
+    accent: "#0ea5e9",
+  },
+];
+
+const faqItems = homeFaq;
+
+function HeroVisual() {
   return (
     <svg
       aria-hidden="true"
+      viewBox="0 0 640 520"
       className="block h-full w-full"
-      viewBox="0 0 460 380"
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <linearGradient id="hero-paper" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0" stopColor="#fdfaf2" />
-          <stop offset="1" stopColor="#f4ecda" />
+        <linearGradient id="hero-bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stopColor="#f8fbff" />
+          <stop offset="1" stopColor="#eef4ff" />
         </linearGradient>
-        <linearGradient id="hero-deep" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stopColor="#1f3a6b" />
-          <stop offset="1" stopColor="#0f1c3a" />
+        <linearGradient id="hero-bar1" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0" stopColor="#1e3a8a" />
+          <stop offset="1" stopColor="#3b82f6" />
         </linearGradient>
-        <pattern id="hero-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-          <path d="M20 0 L0 0 0 20" stroke="rgba(15,23,42,0.06)" strokeWidth="0.5" fill="none" />
-        </pattern>
-        <marker
-          id="hero-arrow-warm"
-          markerWidth="14"
-          markerHeight="14"
-          refX="11"
-          refY="7"
-          orient="auto"
-          markerUnits="userSpaceOnUse"
-        >
-          <path d="M2 2 L12 7 L2 12 z" fill="#c89211" />
-        </marker>
+        <linearGradient id="hero-bar2" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0" stopColor="#2563eb" />
+          <stop offset="1" stopColor="#60a5fa" />
+        </linearGradient>
+        <linearGradient id="hero-bar3" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0" stopColor="#3b82f6" />
+          <stop offset="1" stopColor="#7dd3fc" />
+        </linearGradient>
+        <radialGradient id="hero-glow" cx="0.7" cy="0.25" r="0.7">
+          <stop offset="0" stopColor="#bae6fd" stopOpacity="0.55" />
+          <stop offset="1" stopColor="#bae6fd" stopOpacity="0" />
+        </radialGradient>
       </defs>
-      {/* Background paper */}
-      <rect x="14" y="14" width="432" height="352" rx="6" fill="url(#hero-paper)" stroke="#d8cfb8" />
-      <rect x="14" y="14" width="432" height="352" rx="6" fill="url(#hero-grid)" />
-      {/* Top ribbon */}
-      <rect x="14" y="14" width="432" height="34" fill="#0f1c3a" rx="6 6 0 0" />
-      <rect x="14" y="14" width="432" height="34" fill="#0f1c3a" />
-      <rect x="14" y="48" width="432" height="3" fill="#c89211" />
-      <text
-        x="36"
-        y="36"
-        fill="#f5d68a"
-        fontFamily="serif"
-        fontSize="13"
-        fontWeight="700"
-        letterSpacing="0.3em"
-      >
-        LUMORA · LEARNING HUB
-      </text>
-      <circle cx="424" cy="31" r="6" fill="#c89211" />
-      {/* Title block */}
-      <text
-        x="40"
-        y="92"
-        fill="#1f3a6b"
-        fontFamily="serif"
-        fontSize="11"
-        fontWeight="700"
-        letterSpacing="0.3em"
-      >
-        EDUCATION · PHYSICS · MATERIALS AI
-      </text>
-      <line x1="40" y1="104" x2="120" y2="104" stroke="#c89211" strokeWidth="2" />
-      <text x="40" y="138" fill="#1a1a1a" fontFamily="serif" fontSize="26" fontWeight="700">
-        物理塾も、教材AIも。
-      </text>
-      <text x="40" y="170" fill="#1a1a1a" fontFamily="serif" fontSize="26" fontWeight="700">
-        Lumora は学びの
-      </text>
-      <text x="40" y="202" fill="#1a1a1a" fontFamily="serif" fontSize="26" fontWeight="700">
-        入口を集める学習ハブ。
-      </text>
-      {/* Diagram: physics graph */}
-      <g transform="translate(40 230)">
-        <rect width="170" height="118" rx="4" fill="#ffffff" stroke="#d8cfb8" />
-        <text x="12" y="22" fill="#1f3a6b" fontFamily="serif" fontSize="10" fontWeight="700">
-          PHYSICS · v–t
-        </text>
-        <line x1="12" y1="98" x2="158" y2="98" stroke="#1a1a1a" strokeWidth="1.3" />
-        <line x1="12" y1="34" x2="12" y2="98" stroke="#1a1a1a" strokeWidth="1.3" />
-        <path d="M12 96 Q60 90 100 60 T158 28" stroke="#1f3a6b" strokeWidth="2.4" fill="none" />
-        <path d="M12 96 Q60 90 100 60 T158 28 L158 98 L12 98 Z" fill="rgba(31,111,235,0.12)" />
-        <circle cx="100" cy="60" r="3.5" fill="#c89211" />
-        <text x="106" y="56" fill="#1a1a1a" fontFamily="serif" fontSize="9" fontWeight="600">
-          傾き=速さ
-        </text>
-        <text x="58" y="92" fill="#1f3a6b" fontFamily="serif" fontSize="9" fontWeight="600">
-          面積=距離
-        </text>
-      </g>
-      {/* Diagram: material workflow */}
-      <g transform="translate(228 230)">
-        <rect width="178" height="118" rx="4" fill="url(#hero-deep)" />
-        <text
-          x="12"
-          y="22"
-          fill="#f5d68a"
-          fontFamily="serif"
-          fontSize="10"
-          fontWeight="700"
-          letterSpacing="0.16em"
-        >
-          MATERIAL FLOW
-        </text>
-        {[
-          { x: 14, label: "AI" },
-          { x: 70, label: "LaTeX" },
-          { x: 130, label: "Web" },
-        ].map((node) => (
-          <g key={node.label}>
-            <rect
-              x={node.x}
-              y="46"
-              width="38"
-              height="38"
-              rx="4"
-              fill="#ffffff"
-              stroke="#c89211"
-              strokeWidth="1.2"
-            />
-            <text
-              x={node.x + 19}
-              y="69"
-              textAnchor="middle"
-              fontFamily="serif"
-              fontSize="10"
-              fontWeight="700"
-              fill="#1a1a1a"
-            >
-              {node.label}
-            </text>
-          </g>
+      <rect width="640" height="520" fill="url(#hero-bg)" />
+      <rect width="640" height="520" fill="url(#hero-glow)" />
+
+      {/* soft grid */}
+      <g stroke="rgba(15,29,74,0.06)" strokeWidth="1">
+        {Array.from({ length: 12 }).map((_, i) => (
+          <line key={`v${i}`} x1={i * 56 + 32} y1="40" x2={i * 56 + 32} y2="480" />
         ))}
-        <line
-          x1="52"
-          y1="65"
-          x2="70"
-          y2="65"
-          stroke="#c89211"
-          strokeWidth="2"
-          markerEnd="url(#hero-arrow-warm)"
-        />
-        <line
-          x1="108"
-          y1="65"
-          x2="126"
-          y2="65"
-          stroke="#c89211"
-          strokeWidth="2"
-          markerEnd="url(#hero-arrow-warm)"
-        />
-        <text
-          x="89"
-          y="105"
-          textAnchor="middle"
-          fill="#d6d3c8"
-          fontFamily="serif"
-          fontSize="9"
-          letterSpacing="0.1em"
-        >
-          下書き → 整える → 届ける
+        {Array.from({ length: 9 }).map((_, i) => (
+          <line key={`h${i}`} x1="32" y1={i * 52 + 60} x2="608" y2={i * 52 + 60} />
+        ))}
+      </g>
+
+      {/* axes */}
+      <g stroke="#0b1d4a" strokeWidth="2.5" strokeLinecap="round">
+        <line x1="120" y1="430" x2="540" y2="430" />
+        <line x1="120" y1="430" x2="120" y2="100" />
+      </g>
+      <polygon points="120,86 110,108 130,108" fill="#0b1d4a" />
+      <polygon points="556,430 534,420 534,440" fill="#0b1d4a" />
+
+      {/* bar chart */}
+      <rect x="180" y="320" width="44" height="110" rx="3" fill="url(#hero-bar1)" />
+      <rect x="246" y="260" width="44" height="170" rx="3" fill="url(#hero-bar2)" />
+      <rect x="312" y="200" width="44" height="230" rx="3" fill="url(#hero-bar3)" />
+      <rect x="378" y="150" width="44" height="280" rx="3" fill="url(#hero-bar3)" opacity="0.85" />
+
+      {/* orbit curve */}
+      <path
+        d="M 60 470 Q 30 280 220 160 Q 460 30 600 130"
+        fill="none"
+        stroke="#1d4ed8"
+        strokeWidth="3"
+        strokeLinecap="round"
+        opacity="0.85"
+      />
+      <circle cx="600" cy="130" r="11" fill="#38bdf8" />
+      <circle cx="60" cy="470" r="9" fill="#1d4ed8" />
+
+      {/* small annotation node */}
+      <circle cx="312" cy="200" r="5" fill="#0b1d4a" />
+      <circle cx="312" cy="200" r="11" fill="none" stroke="#0b1d4a" strokeWidth="1.5" opacity="0.4" />
+    </svg>
+  );
+}
+
+function PhysicsVisual() {
+  return (
+    <svg viewBox="0 0 720 480" className="block h-full w-full" aria-hidden="true">
+      <defs>
+        <linearGradient id="phy-bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stopColor="#0b1d4a" />
+          <stop offset="1" stopColor="#1e3a8a" />
+        </linearGradient>
+        <radialGradient id="phy-glow" cx="0.8" cy="0.2" r="0.8">
+          <stop offset="0" stopColor="#38bdf8" stopOpacity="0.5" />
+          <stop offset="1" stopColor="#38bdf8" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect width="720" height="480" fill="url(#phy-bg)" />
+      <rect width="720" height="480" fill="url(#phy-glow)" />
+
+      {/* v-t graph */}
+      <g stroke="rgba(255,255,255,0.16)" strokeWidth="1">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <line key={`vv${i}`} x1={i * 64 + 40} y1="60" x2={i * 64 + 40} y2="430" />
+        ))}
+        {Array.from({ length: 7 }).map((_, i) => (
+          <line key={`hh${i}`} x1="40" y1={i * 56 + 80} x2="680" y2={i * 56 + 80} />
+        ))}
+      </g>
+      <g stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round">
+        <line x1="80" y1="400" x2="660" y2="400" />
+        <line x1="80" y1="400" x2="80" y2="80" />
+      </g>
+      <text x="92" y="100" fill="#bae6fd" fontSize="13" fontFamily="system-ui" letterSpacing="2">
+        v
+      </text>
+      <text x="640" y="420" fill="#bae6fd" fontSize="13" fontFamily="system-ui" letterSpacing="2">
+        t
+      </text>
+      <path
+        d="M 80 380 Q 240 360 360 280 T 660 100"
+        fill="none"
+        stroke="#7dd3fc"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M 80 380 Q 240 360 360 280 T 660 100 L 660 400 L 80 400 Z"
+        fill="rgba(56,189,248,0.18)"
+      />
+      <circle cx="360" cy="280" r="6" fill="#fbbf24" />
+      <circle cx="360" cy="280" r="14" fill="none" stroke="#fbbf24" strokeWidth="1.5" opacity="0.5" />
+    </svg>
+  );
+}
+
+function MaterialVisual() {
+  return (
+    <svg viewBox="0 0 720 480" className="block h-full w-full" aria-hidden="true">
+      <defs>
+        <linearGradient id="mat-bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stopColor="#f0f9ff" />
+          <stop offset="1" stopColor="#e0f2fe" />
+        </linearGradient>
+      </defs>
+      <rect width="720" height="480" fill="url(#mat-bg)" />
+
+      {/* three stacked sheets */}
+      <g>
+        <rect x="120" y="110" width="320" height="200" rx="14" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />
+        <rect x="140" y="135" width="200" height="8" rx="3" fill="#bfdbfe" />
+        <rect x="140" y="155" width="260" height="6" rx="3" fill="#e2e8f0" />
+        <rect x="140" y="170" width="240" height="6" rx="3" fill="#e2e8f0" />
+        <rect x="140" y="185" width="180" height="6" rx="3" fill="#e2e8f0" />
+        <rect x="140" y="220" width="120" height="40" rx="6" fill="#dbeafe" />
+        <rect x="280" y="220" width="120" height="40" rx="6" fill="#bae6fd" />
+      </g>
+      <g transform="translate(180 60)">
+        <rect width="320" height="200" rx="14" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />
+        <rect x="20" y="25" width="200" height="8" rx="3" fill="#3b82f6" />
+        <rect x="20" y="45" width="260" height="6" rx="3" fill="#e2e8f0" />
+        <rect x="20" y="60" width="240" height="6" rx="3" fill="#e2e8f0" />
+      </g>
+      <g transform="translate(260 30)">
+        <rect width="380" height="240" rx="16" fill="#ffffff" stroke="#94a3b8" strokeWidth="1.5" />
+        <rect x="22" y="28" width="180" height="10" rx="3" fill="#0b1d4a" />
+        <rect x="22" y="50" width="320" height="6" rx="3" fill="#cbd5e1" />
+        <rect x="22" y="65" width="280" height="6" rx="3" fill="#cbd5e1" />
+        <rect x="22" y="80" width="240" height="6" rx="3" fill="#cbd5e1" />
+        <rect x="22" y="115" width="100" height="80" rx="6" fill="#dbeafe" />
+        <rect x="135" y="115" width="100" height="80" rx="6" fill="#bae6fd" />
+        <rect x="248" y="115" width="100" height="80" rx="6" fill="#7dd3fc" />
+      </g>
+
+      {/* AI chip */}
+      <g transform="translate(80 350)">
+        <rect width="160" height="64" rx="32" fill="#0b1d4a" />
+        <text x="80" y="40" textAnchor="middle" fill="#bae6fd" fontFamily="system-ui" fontSize="18" fontWeight="700" letterSpacing="3">
+          AI · LaTeX
         </text>
       </g>
-      {/* Bottom seal */}
-      <g transform="translate(360 88)">
-        <circle r="34" fill="#fbf6e8" stroke="#c89211" strokeWidth="2" />
-        <circle r="29" fill="none" stroke="#c89211" strokeWidth="0.8" strokeDasharray="2 3" />
-        <text
-          textAnchor="middle"
-          y="-6"
-          fontFamily="serif"
-          fontSize="8"
-          fontWeight="700"
-          fill="#1f3a6b"
-          letterSpacing="0.2em"
-        >
-          LEARNING
-        </text>
-        <text
-          textAnchor="middle"
-          y="6"
-          fontFamily="serif"
-          fontSize="11"
-          fontWeight="700"
-          fill="#1a1a1a"
-        >
-          LUMORA
-        </text>
-        <text
-          textAnchor="middle"
-          y="20"
-          fontFamily="serif"
-          fontSize="7"
-          fill="#6b4a09"
-          letterSpacing="0.16em"
-        >
-          HUB
-        </text>
+    </svg>
+  );
+}
+
+function DesignVisual() {
+  return (
+    <svg viewBox="0 0 720 480" className="block h-full w-full" aria-hidden="true">
+      <defs>
+        <linearGradient id="ds-bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stopColor="#fafaf9" />
+          <stop offset="1" stopColor="#f1f5f9" />
+        </linearGradient>
+      </defs>
+      <rect width="720" height="480" fill="url(#ds-bg)" />
+
+      {/* circle nodes connected */}
+      {[
+        { cx: 140, cy: 240, label: "読む" },
+        { cx: 320, cy: 140, label: "解く" },
+        { cx: 320, cy: 340, label: "戻る" },
+        { cx: 540, cy: 240, label: "続ける" },
+      ].map((n, i) => (
+        <g key={i}>
+          <circle cx={n.cx} cy={n.cy} r="56" fill="#ffffff" stroke="#0b1d4a" strokeWidth="2" />
+          <text x={n.cx} y={n.cy + 6} textAnchor="middle" fontFamily="system-ui" fontSize="20" fontWeight="700" fill="#0b1d4a">
+            {n.label}
+          </text>
+        </g>
+      ))}
+      <g stroke="#1d4ed8" strokeWidth="2" fill="none">
+        <path d="M 196 240 Q 240 180 264 160" />
+        <path d="M 196 240 Q 240 300 264 320" />
+        <path d="M 376 140 Q 460 180 484 220" />
+        <path d="M 376 340 Q 460 300 484 260" />
       </g>
+      {/* dotted loop */}
+      <path
+        d="M 540 200 Q 600 100 480 80 Q 360 60 320 96"
+        fill="none"
+        stroke="#38bdf8"
+        strokeWidth="2"
+        strokeDasharray="6 6"
+      />
+    </svg>
+  );
+}
+
+function SubjectIcon({ accent, label }: { accent: string; label: string }) {
+  return (
+    <svg viewBox="0 0 200 200" className="block h-full w-full" aria-hidden="true">
+      <defs>
+        <radialGradient id={`sg-${label}`} cx="0.3" cy="0.3" r="0.8">
+          <stop offset="0" stopColor={accent} stopOpacity="0.18" />
+          <stop offset="1" stopColor={accent} stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect width="200" height="200" rx="20" fill="#f8fafc" />
+      <rect width="200" height="200" rx="20" fill={`url(#sg-${label})`} />
+      <g transform="translate(36 40)" stroke={accent} strokeWidth="2.4" fill="none" strokeLinecap="round">
+        <line x1="14" y1="120" x2="120" y2="120" />
+        <line x1="14" y1="120" x2="14" y2="14" />
+        <polygon points="14,8 6,22 22,22" fill={accent} />
+        <polygon points="128,120 116,112 116,128" fill={accent} />
+      </g>
+      <g transform="translate(36 40)">
+        <rect x="34" y="80" width="14" height="36" fill={accent} opacity="0.55" />
+        <rect x="56" y="62" width="14" height="54" fill={accent} opacity="0.75" />
+        <rect x="78" y="44" width="14" height="72" fill={accent} />
+      </g>
+      <circle cx="146" cy="62" r="7" fill={accent} />
+      <path d="M 30 170 Q 100 130 170 158" stroke={accent} strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.6" />
     </svg>
   );
 }
@@ -372,7 +315,7 @@ export default function Home() {
     createEducationalServiceJsonLd(),
     createHomeFaqJsonLd(),
     createItemListJsonLd(
-      "Lumora の最新ブログ記事",
+      "Lumora の最新記事",
       latestPosts.map((post) => ({
         name: post.title,
         description: post.description,
@@ -385,559 +328,327 @@ export default function Home() {
     <>
       <JsonLd data={homeJsonLd} />
 
-      {/* HERO with paper feel */}
-      <section className="lumora-mesh relative overflow-hidden border-b border-[var(--line)]">
-        <div className="lumora-grid-bg pointer-events-none absolute inset-0 opacity-40" />
-        <Container className="relative px-4 sm:px-6">
-          <div className="grid items-center gap-8 py-10 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-20">
+      {/* HERO */}
+      <section className="relative overflow-hidden bg-white">
+        <Container className="px-6">
+          <div className="grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-32">
             <div>
-              <p className="lumora-kicker">LUMORA · LEARNING HUB</p>
-              <h1 className="lumora-display mt-5 text-balance text-[1.85rem] leading-[1.55] sm:mt-7 sm:text-[2.5rem] sm:leading-[1.45] lg:text-[3rem] lg:leading-[1.4]">
-                <span className="lumora-marker">Lumora</span> は、学びと教育の<br className="hidden sm:block" />
-                入口をまとめる学習ハブ。
+              <h1 className="text-balance text-[2.2rem] font-extrabold leading-[1.2] tracking-[-0.01em] text-[#0b1d4a] sm:text-[3rem] sm:leading-[1.1] lg:text-[3.6rem]">
+                理系の学びを、
+                <br />
+                もう一段深く。
               </h1>
-              <p className="lumora-lead mt-6 max-w-xl text-pretty text-[0.98rem] sm:mt-7 sm:text-[1.05rem]">
-                Lumora（ルモラ）は、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass などの公式入口を集約する学習ハブブランドです。ブログで考え方を発信し、各事業へそのまま進めます。
+              <p className="mt-6 max-w-xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
+                物理・数学・情報、そして教材づくりまで。
+                <br className="hidden sm:block" />
+                理系を専門に、日々の学びを深める記事と専門サービスをひとつに。
               </p>
-              <div className="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:flex-row">
-                <a
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[var(--accent-deep)] px-6 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white shadow-[0_14px_30px_-18px_rgba(15,23,42,0.65)] transition hover:-translate-y-0.5 hover:bg-[#16305c]"
-                  href={siteConfig.physicsSchoolUrl}
-                  rel="noreferrer noopener"
-                  target="_blank"
+              <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+                <Link
+                  href="/blog"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#0b1d4a] px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a]"
                 >
-                  <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
-                  物理の森（物理塾）を開く
-                  <span aria-hidden="true" className="text-[#f5d68a]">↗</span>
+                  記事を読む
+                </Link>
+                <a
+                  href={siteConfig.physicsSchoolUrl}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full px-2 text-[0.96rem] font-semibold text-[#1d4ed8] transition hover:text-[#0b1d4a]"
+                >
+                  物理の森（物理塾）を見る <span aria-hidden="true" className="ml-1">→</span>
                 </a>
-                <ButtonLink className="w-full sm:w-auto" href="/blog" variant="secondary">
-                  ブログを読む
-                </ButtonLink>
-              </div>
-              <div className="mt-9 grid grid-cols-3 gap-0 border-y border-[var(--line)] py-5 sm:mt-12 sm:gap-6 sm:py-6">
-                {[
-                  { num: "1", unit: "ハブ", label: "Lumora が運営" },
-                  { num: "3", unit: "事業", label: "公式入口を集約" },
-                  { num: "100", unit: "%", label: "記事は無料公開" },
-                ].map((item, i) => (
-                  <div
-                    className={`lumora-stat px-2 text-center sm:text-left ${i > 0 ? "border-l border-[var(--line)]" : ""}`}
-                    key={item.label}
-                  >
-                    <p className="lumora-stat-num">
-                      {item.num}
-                      <span className="ml-0.5 text-[0.95rem] font-bold text-[var(--accent-warm)]">
-                        {item.unit}
-                      </span>
-                    </p>
-                    <p className="lumora-stat-label mt-1.5">{item.label}</p>
-                  </div>
-                ))}
               </div>
             </div>
 
             <div className="relative">
-              <div
-                aria-hidden="true"
-                className="absolute -left-3 -top-3 h-full w-full rounded-md border border-[var(--accent-warm)] sm:-left-4 sm:-top-4"
-              />
-              <div className="relative overflow-hidden rounded-md border border-[var(--line)] bg-white shadow-[0_30px_70px_-50px_rgba(15,23,42,0.4)]">
-                <HeroIllustration />
-              </div>
-              <div className="absolute -bottom-3 left-4 inline-flex items-center gap-2 rounded-sm bg-[var(--accent-deep)] px-3 py-1.5 text-[0.7rem] font-bold tracking-[0.18em] text-white shadow-[0_18px_30px_-22px_rgba(15,23,42,0.5)] sm:-bottom-4 sm:left-6 sm:text-[0.78rem]">
-                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
-                LUMORA · LEARNING HUB
+              <div className="overflow-hidden rounded-[28px] bg-white shadow-[0_40px_80px_-50px_rgba(15,29,74,0.35)] ring-1 ring-[rgba(15,29,74,0.08)]">
+                <HeroVisual />
               </div>
             </div>
           </div>
         </Container>
       </section>
 
-      <Container className="px-4 sm:px-6">
-        {/* PROBLEMS */}
-        <section className="pt-12 sm:pt-20 lg:pt-24">
-          <div className="text-center">
-            <p className="lumora-eyebrow">CONCERNS WE ANSWER</p>
-            <h2 className="lumora-display mt-3 text-balance text-[1.5rem] leading-[1.55] sm:text-[2rem]">
-              こんな悩みは、ありませんか。
+      {/* SUBJECT GRID */}
+      <section className="bg-[#f8fafc]">
+        <Container className="px-6 py-16 sm:py-24">
+          <div className="max-w-2xl">
+            <h2 className="text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+              テーマから、はじめる。
             </h2>
-            <div className="lumora-rule" />
-          </div>
-          <ul className="mt-8 grid gap-4 sm:gap-5 lg:grid-cols-3">
-            {problems.map((problem, idx) => {
-              const cardClass =
-                "group relative flex h-full flex-col bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-[0_24px_50px_-40px_rgba(15,23,42,0.45)] sm:p-6";
-              const cardStyle = {
-                border: "1px solid var(--line)",
-                borderTop: "3px solid var(--accent-deep)",
-                borderRadius: "4px",
-              };
-              const inner = (
-                <>
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="font-mono text-[0.78rem] font-bold tracking-[0.16em] text-[var(--accent-warm)]">
-                      0{idx + 1}
-                    </span>
-                    <span className="rounded-sm bg-[#faf6ec] px-2 py-1 font-serif text-[0.7rem] font-bold tracking-[0.14em] text-[var(--accent-deep)]">
-                      {problem.badge}
-                    </span>
-                  </div>
-                  <p className="mt-4 font-serif text-[1.02rem] font-bold leading-[1.7] text-[var(--ink)] sm:text-[1.08rem]">
-                    「{problem.pain}」
-                  </p>
-                  <p className="mt-3 border-t border-dotted border-[var(--line)] pt-3 text-[0.88rem] leading-[2] text-[var(--ink-soft)]">
-                    {problem.answer}
-                  </p>
-                  <p className="mt-5 inline-flex items-center gap-1 font-serif text-[0.85rem] font-bold tracking-[0.06em] text-[var(--accent-deep)]">
-                    {problem.external ? "物理専門塾サイトを開く" : "解決方法を見る"}
-                    <span aria-hidden="true">{problem.external ? "↗" : "→"}</span>
-                  </p>
-                </>
-              );
-
-              return (
-                <li key={problem.pain}>
-                  {problem.external ? (
-                    <a
-                      className={cardClass}
-                      href={problem.href}
-                      rel="noreferrer noopener"
-                      target="_blank"
-                      style={cardStyle}
-                    >
-                      {inner}
-                    </a>
-                  ) : (
-                    <Link className={cardClass} href={problem.href} style={cardStyle}>
-                      {inner}
-                    </Link>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-
-        {/* PATHS */}
-        <section className="mt-16 sm:mt-24" id="paths">
-          <div className="text-center">
-            <p className="lumora-eyebrow">START HERE</p>
-            <h2 className="lumora-display mt-3 text-balance text-[1.5rem] leading-[1.55] sm:text-[2rem]">
-              3つの入口から、読みはじめる。
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-[0.95rem] leading-[2] text-[var(--ink-soft)] sm:text-base">
-              読者の目的に合わせて、最初の1記事を選べます。どこから読んでも、最後はひとつの学びの動線につながります。
+            <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569] sm:text-base">
+              関心のある分野から、深く読み込める記事へ。
             </p>
-            <div className="lumora-rule" />
           </div>
-
-          <ol className="mt-8 grid gap-5 sm:gap-6 lg:grid-cols-3">
-            {visitorPaths.map((path) => {
-              const cardClass = path.primary
-                ? "group relative flex h-full flex-col overflow-hidden bg-white transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-44px_rgba(15,23,42,0.5)]"
-                : "group relative flex h-full flex-col overflow-hidden bg-white transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-44px_rgba(15,23,42,0.45)]";
-              const cardStyle = path.primary
-                ? {
-                    border: "2px solid var(--accent-deep)",
-                    borderRadius: "4px",
-                    boxShadow: "0 18px 50px -36px rgba(15,23,42,0.4)",
-                  }
-                : { border: "1px solid var(--line)", borderRadius: "4px" };
-
-              const headerStyle = path.primary
-                ? {
-                    background:
-                      "linear-gradient(135deg, #0f1c3a 0%, #1f3a6b 100%)",
-                    borderBottom: "1px solid #1a2a4d",
-                  }
-                : {
-                    background:
-                      "linear-gradient(135deg, #f6f1e2 0%, #fbf9f4 100%)",
-                    borderBottom: "1px solid var(--line)",
-                  };
-
-              const inner = (
-                <>
-                  <div
-                    className="relative flex items-center justify-between overflow-hidden px-4 py-3 sm:px-5"
-                    style={headerStyle}
-                  >
-                    <div>
-                      {path.primary ? (
-                        <p className="inline-flex items-center gap-1.5 font-serif text-[0.7rem] font-bold tracking-[0.22em] text-[#f5d68a]">
-                          <span
-                            aria-hidden="true"
-                            className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]"
-                          />
-                          OFFICIAL · 物理専門塾
-                        </p>
-                      ) : (
-                        <p className="font-serif text-[0.74rem] font-bold tracking-[0.22em] text-[var(--accent-deep)]">
-                          {path.label}
-                        </p>
-                      )}
-                      <p
-                        className={`mt-0.5 text-[0.7rem] ${path.primary ? "text-[#d6d3c8]" : "text-[var(--ink-soft)]"}`}
-                      >
-                        {path.badge}
-                      </p>
-                    </div>
-                    <span
-                      className={`font-serif text-[2.4rem] font-bold leading-none ${path.primary ? "text-[#f5d68a]" : "text-[var(--accent-warm)]"}`}
-                      aria-hidden="true"
-                    >
-                      {path.no}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-1 flex-col p-5 sm:p-6">
-                    <h3 className="font-serif text-[1.12rem] font-bold leading-[1.6] text-[var(--ink)] sm:text-[1.22rem]">
-                      {path.title}
-                    </h3>
-                    <p className="mt-3 text-[0.9rem] leading-[2] text-[var(--ink-soft)]">
-                      {path.description}
-                    </p>
-                    <ul className="mt-5 grid gap-2.5 border-t border-dotted border-[var(--line)] pt-4">
-                      {path.benefits.map((benefit) => (
-                        <li
-                          className="flex gap-2 text-[0.86rem] leading-[1.85] text-[var(--ink)]"
-                          key={benefit}
-                        >
-                          <span
-                            aria-hidden="true"
-                            className="mt-[0.55em] h-[0.45em] w-[0.45em] shrink-0 rotate-45 bg-[var(--accent-deep)]"
-                          />
-                          <span>{benefit}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    {path.primary ? (
-                      <span className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-sm bg-[var(--accent-deep)] px-4 py-3 pt-3 font-serif text-[0.88rem] font-bold tracking-[0.06em] text-white transition group-hover:bg-[#16305c]">
-                        {path.cta}
-                        <span aria-hidden="true" className="text-[#f5d68a]">↗</span>
-                      </span>
-                    ) : (
-                      <p className="mt-auto inline-flex items-center gap-1 pt-6 font-serif text-[0.88rem] font-bold tracking-[0.04em] text-[var(--accent-deep)]">
-                        {path.cta} <span aria-hidden="true">→</span>
-                      </p>
-                    )}
-                  </div>
-                </>
-              );
-
-              return (
-                <li key={path.title}>
-                  {path.external ? (
-                    <a
-                      className={cardClass}
-                      href={path.href}
-                      rel="noreferrer noopener"
-                      target="_blank"
-                      style={cardStyle}
-                    >
-                      {inner}
-                    </a>
-                  ) : (
-                    <Link className={cardClass} href={path.href} style={cardStyle}>
-                      {inner}
-                    </Link>
-                  )}
-                </li>
-              );
-            })}
-          </ol>
-        </section>
-
-        {/* TRUST PANEL */}
-        <section
-          className="relative mt-16 overflow-hidden sm:mt-24"
-          style={{
-            background:
-              "linear-gradient(135deg, #fbf6e8 0%, #fbf9f4 60%, #ffffff 100%)",
-            border: "1px solid var(--line)",
-            borderRadius: "4px",
-          }}
-        >
-          <div
-            aria-hidden="true"
-            className="lumora-grid-bg absolute inset-0 opacity-40"
-          />
-          <div className="relative grid gap-6 p-5 sm:p-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12 lg:p-12">
-            <div>
-              <p className="lumora-eyebrow">OUR STANDARD</p>
-              <h2 className="lumora-display mt-3 text-balance text-[1.45rem] leading-[1.55] sm:text-[1.95rem]">
-                図と表で速く読めて、<br />
-                一次情報で確かめられる。
-              </h2>
-              <p className="mt-5 text-[0.95rem] leading-[2.05] text-[var(--ink-soft)] sm:text-[1rem]">
-                抽象的な理念ではなく、現場ですぐ使える形へ落とし込むこと。教材設計、AIプロンプト、アプリの動線まで、現場で動くレベルで言語化することを大切にしています。
-              </p>
-            </div>
-            <ol className="grid gap-4 sm:grid-cols-1">
-              {trustPoints.map((point, idx) => (
-                <li
-                  className="flex gap-4 bg-white/85 p-4 backdrop-blur sm:p-5"
-                  key={point.title}
-                  style={{
-                    border: "1px solid var(--line)",
-                    borderRadius: "3px",
-                  }}
-                >
-                  <span
-                    aria-hidden="true"
-                    className="grid h-12 w-12 shrink-0 place-items-center rounded-sm bg-[var(--accent-deep)] font-serif text-[1.1rem] font-bold text-white"
-                  >
-                    {String(idx + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <h3 className="font-serif text-[1.02rem] font-bold leading-[1.55] text-[var(--ink)] sm:text-[1.08rem]">
-                      {point.title}
-                    </h3>
-                    <p className="mt-1.5 text-[0.88rem] leading-[1.95] text-[var(--ink-soft)]">
-                      {point.body}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        {/* PHYSICS SCHOOL BANNER */}
-        <section
-          className="relative mt-16 overflow-hidden sm:mt-24"
-          style={{
-            background:
-              "radial-gradient(circle at 90% 10%, rgba(200,146,17,0.22), transparent 42%), linear-gradient(135deg, #0f1c3a 0%, #1f3a6b 65%, #2c4d80 100%)",
-            border: "1px solid #1a2a4d",
-            borderRadius: "4px",
-          }}
-        >
-          <div
-            aria-hidden="true"
-            className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[var(--accent-warm)] to-transparent"
-          />
-          <div className="relative grid gap-8 p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:p-14">
-            <div>
-              <p className="inline-flex items-center gap-2 font-serif text-[0.74rem] font-bold tracking-[0.24em] text-[#f5d68a]">
-                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
-                LUMORA × 物理の森｜物理専門塾【公式サイト】
-              </p>
-              <h2 className="lumora-display mt-4 text-balance text-[1.55rem] leading-[1.5] text-white sm:text-[2.1rem] sm:leading-[1.45]">
-                Lumora が運営する物理専門塾、<br className="hidden sm:block" />
-                「物理の森」の公式サイトはこちら。
-              </h2>
-              <p className="mt-5 font-serif text-[0.95rem] leading-[2.05] text-[#d6d3c8] sm:text-[1rem]">
-                Lumora（学習ハブ）から、物理専門塾事業「物理の森」の公式サイトへ直接移動できます。受講相談・カリキュラム詳細・お申し込みは物理の森のサイトから。
-              </p>
-              <ul className="mt-6 grid gap-2.5 border-t border-white/15 pt-5 sm:grid-cols-2">
-                {[
-                  "物理基礎・物理の通年指導",
-                  "定期テスト／推薦・総合型対策",
-                  "共通テスト・国公立二次対策",
-                  "個別カリキュラムで前提に戻れる",
-                ].map((item) => (
-                  <li
-                    className="flex gap-2 font-serif text-[0.86rem] leading-[1.85] text-[#e8e6dd]"
-                    key={item}
-                  >
-                    <span
-                      aria-hidden="true"
-                      className="mt-[0.55em] h-[0.45em] w-[0.45em] shrink-0 rotate-45 bg-[var(--accent-warm)]"
-                    />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-7 flex flex-col gap-2.5 sm:flex-row">
-                <a
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[var(--accent-warm)] px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-[#1a1a1a] transition hover:-translate-y-0.5 hover:bg-[#dca424]"
-                  href={siteConfig.physicsSchoolUrl}
-                  rel="noreferrer noopener"
-                  target="_blank"
-                >
-                  物理の森（物理塾）を開く
-                  <span aria-hidden="true">↗</span>
-                </a>
+          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {subjects.map((subject) => (
+              <li key={subject.label}>
                 <Link
-                  className="inline-flex min-h-12 items-center justify-center rounded-sm border border-white/35 bg-transparent px-6 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:border-white"
-                  href="/blog/physics-material-creation"
+                  href={subject.href}
+                  className="group flex h-full flex-col overflow-hidden rounded-[22px] bg-white ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-32px_rgba(15,29,74,0.4)]"
                 >
-                  指導方針を読む（Lumora ブログ）
-                </Link>
-              </div>
-            </div>
-
-            <div
-              aria-hidden="true"
-              className="relative hidden overflow-hidden rounded-sm border border-white/20 bg-white/[0.04] p-6 lg:block"
-            >
-              <p className="font-serif text-[0.7rem] font-bold tracking-[0.24em] text-[#f5d68a]">
-                CURRICULUM SAMPLE
-              </p>
-              <ol className="mt-5 grid gap-4">
-                {[
-                  { step: "01", label: "現象を観察する", body: "実験動画／図／日常例で「何が変化しているか」を言語化" },
-                  { step: "02", label: "図とグラフで読む", body: "傾き・面積・変化率の見方を、まず数式なしで定着" },
-                  { step: "03", label: "式は最後に要約", body: "覚える対象ではなく、関係を短く書いた“まとめ”として導入" },
-                ].map((s) => (
-                  <li className="grid grid-cols-[2.4rem_1fr] gap-3" key={s.step}>
-                    <span className="grid h-8 w-8 place-items-center rounded-sm bg-[var(--accent-warm)] font-serif text-[0.85rem] font-bold text-[#1a1a1a]">
-                      {s.step}
-                    </span>
-                    <div>
-                      <p className="font-serif text-[0.95rem] font-bold text-white">{s.label}</p>
-                      <p className="mt-1 font-serif text-[0.78rem] leading-[1.85] text-[#cbc8bc]">
-                        {s.body}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </div>
-        </section>
-
-        {/* LATEST */}
-        <section className="mt-16 sm:mt-24">
-          <div className="flex flex-wrap items-end justify-between gap-3 border-b border-[var(--line)] pb-4">
-            <div>
-              <p className="lumora-eyebrow">LATEST ARTICLES</p>
-              <h2 className="lumora-display mt-2 text-[1.4rem] leading-[1.45] sm:text-[1.85rem]">
-                最新の記事
-              </h2>
-            </div>
-            <ButtonLink className="hidden sm:inline-flex" href="/blog" variant="secondary">
-              ブログ一覧へ →
-            </ButtonLink>
-          </div>
-          <ul className="mt-6 grid gap-4 sm:gap-5 lg:grid-cols-3">
-            {latestPosts.map((post) => (
-              <li key={post.slug}>
-                <Link
-                  className="group block h-full bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-[0_24px_50px_-40px_rgba(15,23,42,0.45)] sm:p-6"
-                  href={`/blog/${post.slug}`}
-                  style={{
-                    border: "1px solid var(--line)",
-                    borderTop: "3px solid var(--accent-deep)",
-                    borderRadius: "4px",
-                  }}
-                >
-                  <div className="flex flex-wrap items-center gap-2 font-serif text-[0.72rem] font-bold tracking-[0.16em] text-[var(--ink-soft)]">
-                    <span className="rounded-sm bg-[#faf6ec] px-2 py-1 text-[var(--accent-deep)]">
-                      {post.category}
-                    </span>
-                    <time className="text-[var(--ink-soft)]" dateTime={post.date}>
-                      {post.formattedDate}
-                    </time>
+                  <div className="aspect-square overflow-hidden">
+                    <SubjectIcon accent={subject.accent} label={subject.label} />
                   </div>
-                  <h3 className="mt-4 font-serif text-[1.05rem] font-bold leading-[1.65] text-[var(--ink)] transition group-hover:text-[var(--accent-deep)] sm:text-[1.15rem]">
-                    {post.title}
-                  </h3>
-                  <p className="mt-3 border-t border-dotted border-[var(--line)] pt-3 text-[0.88rem] leading-[2] text-[var(--ink-soft)]">
-                    {post.description}
-                  </p>
-                  <p className="mt-5 inline-flex items-center gap-1 font-serif text-[0.84rem] font-bold tracking-[0.04em] text-[var(--accent-deep)]">
-                    続きを読む <span aria-hidden="true">→</span>
-                  </p>
+                  <div className="flex flex-1 flex-col gap-2 p-5">
+                    <span
+                      className="text-[0.72rem] font-semibold uppercase tracking-[0.18em]"
+                      style={{ color: subject.accent }}
+                    >
+                      {subject.label}
+                    </span>
+                    <p className="font-bold leading-[1.55] text-[#0b1d4a]">{subject.title}</p>
+                    <span className="mt-auto pt-3 text-[0.85rem] font-semibold text-[#1d4ed8] opacity-0 transition group-hover:opacity-100">
+                      読む →
+                    </span>
+                  </div>
                 </Link>
               </li>
             ))}
           </ul>
-          <div className="mt-6 flex justify-center sm:hidden">
-            <ButtonLink href="/blog" variant="secondary">
-              ブログ一覧へ →
-            </ButtonLink>
-          </div>
-        </section>
+        </Container>
+      </section>
 
-        {/* FAQ */}
-        <section className="mt-16 sm:mt-24">
-          <div className="text-center">
-            <p className="lumora-eyebrow">FAQ</p>
-            <h2 className="lumora-display mt-3 text-[1.5rem] leading-[1.55] sm:text-[2rem]">
-              よくある質問
-            </h2>
-            <div className="lumora-rule" />
-          </div>
-          <ul className="mx-auto mt-6 grid max-w-3xl gap-3">
-            {faqItems.map((item) => (
-              <li
-                className="bg-white p-4 sm:p-5"
-                key={item.question}
-                style={{
-                  border: "1px solid var(--line)",
-                  borderRadius: "3px",
-                }}
-              >
-                <p className="flex items-start gap-2.5 font-serif text-[0.98rem] font-bold leading-[1.65] text-[var(--ink)]">
-                  <span
-                    aria-hidden="true"
-                    className="grid h-6 w-6 shrink-0 place-items-center rounded-sm bg-[var(--accent-deep)] font-serif text-[0.78rem] font-bold text-white"
-                  >
-                    Q
-                  </span>
-                  {item.question}
-                </p>
-                <p className="mt-3 flex items-start gap-2.5 border-t border-dotted border-[var(--line)] pt-3 text-[0.9rem] leading-[2] text-[var(--ink-soft)]">
-                  <span
-                    aria-hidden="true"
-                    className="grid h-6 w-6 shrink-0 place-items-center rounded-sm bg-[var(--accent-warm)] font-serif text-[0.78rem] font-bold text-white"
-                  >
-                    A
-                  </span>
-                  {item.answer}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* FINAL CTA */}
-        <section
-          className="relative my-16 overflow-hidden sm:my-24"
-          style={{
-            background:
-              "radial-gradient(circle at 92% 8%, rgba(200,146,17,0.18), transparent 40%), linear-gradient(135deg, #0f1c3a 0%, #1f3a6b 100%)",
-            border: "1px solid #1a2a4d",
-            borderRadius: "4px",
-          }}
-        >
-          <div
-            aria-hidden="true"
-            className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[var(--accent-warm)] to-transparent"
-          />
-          <div className="relative px-6 py-12 text-center sm:px-12 sm:py-16">
-            <p className="font-serif text-[0.78rem] font-bold tracking-[0.28em] text-[#f5d68a]">
-              LUMORA · LEARNING HUB
-            </p>
-            <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-[1.65rem] font-bold leading-[1.55] text-white sm:text-[2.1rem] sm:leading-[1.45]">
-              事業ごとの入口を、ひとつのハブで。<br className="hidden sm:block" />
-              次の一歩を、Lumora から選んでください。
-            </h2>
-            <p className="mx-auto mt-5 max-w-xl text-[0.93rem] leading-[2] text-[#d6d3c8] sm:text-[1rem]">
-              Lumora は、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass の公式入口を集約する学習ハブです。
-            </p>
-            <div className="mt-7 flex flex-col items-center justify-center gap-2.5 sm:mt-9 sm:flex-row">
+      {/* FEATURED: Physics School */}
+      <section className="bg-white">
+        <Container className="px-6 py-20 sm:py-28">
+          <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
+            <div>
+              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+                Physics
+              </p>
+              <h2 className="mt-3 text-balance text-[2rem] font-extrabold leading-[1.2] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.6rem]">
+                物理に特化した、
+                <br />
+                オンライン専門塾。
+              </h2>
+              <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
+                公式を覚えるのではなく、現象を読み解く。
+                高校物理だけに集中したカリキュラムで、つまずきの前提から丁寧に積み直します。
+              </p>
               <a
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[var(--accent-warm)] px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-[#1a1a1a] transition hover:-translate-y-0.5 hover:bg-[#dca424]"
                 href={siteConfig.physicsSchoolUrl}
-                rel="noreferrer noopener"
                 target="_blank"
+                rel="noreferrer noopener"
+                className="mt-9 inline-flex min-h-12 items-center justify-center rounded-full bg-[#0b1d4a] px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a]"
               >
-                物理の森（物理塾）を開く
-                <span aria-hidden="true">↗</span>
+                物理の森を見る <span aria-hidden="true" className="ml-1.5">↗</span>
               </a>
+            </div>
+            <div className="overflow-hidden rounded-[28px] shadow-[0_40px_80px_-50px_rgba(11,29,74,0.55)]">
+              <PhysicsVisual />
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* FEATURED: Material making */}
+      <section className="bg-[#f8fafc]">
+        <Container className="px-6 py-20 sm:py-28">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="order-2 overflow-hidden rounded-[28px] ring-1 ring-[rgba(15,29,74,0.08)] lg:order-1">
+              <MaterialVisual />
+            </div>
+            <div className="order-1 lg:order-2">
+              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+                Materials
+              </p>
+              <h2 className="mt-3 text-balance text-[2rem] font-extrabold leading-[1.2] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.6rem]">
+                教材づくりを、
+                <br />
+                もっと軽やかに。
+              </h2>
+              <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
+                AI に任せる工程と、自分で書く工程を分ける。
+                LaTeX と Web を組み合わせて、毎年のつくり直しを資産に変えていく考え方を紹介します。
+              </p>
               <Link
-                className="inline-flex min-h-12 items-center justify-center rounded-sm border border-white/35 bg-transparent px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:border-white"
-                href="/apps"
+                href="/blog/latex-web-workflow"
+                className="mt-9 inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
               >
-                事業一覧を見る
+                ワークフローを読む <span aria-hidden="true" className="ml-1.5">→</span>
               </Link>
             </div>
           </div>
-        </section>
-      </Container>
+        </Container>
+      </section>
+
+      {/* FEATURED: Learning design */}
+      <section className="bg-white">
+        <Container className="px-6 py-20 sm:py-28">
+          <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
+            <div>
+              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+                Learning Design
+              </p>
+              <h2 className="mt-3 text-balance text-[2rem] font-extrabold leading-[1.2] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.6rem]">
+                使われる学びを、
+                <br />
+                設計する。
+              </h2>
+              <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
+                機能を増やすのではなく、動線を整える。
+                「読む・解く・戻る・続ける」のループから、教室で実際に使われる学習体験を考えます。
+              </p>
+              <Link
+                href="/blog/education-technology-learning-design"
+                className="mt-9 inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
+              >
+                考え方を読む <span aria-hidden="true" className="ml-1.5">→</span>
+              </Link>
+            </div>
+            <div className="overflow-hidden rounded-[28px] ring-1 ring-[rgba(15,29,74,0.08)]">
+              <DesignVisual />
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* LATEST */}
+      <section className="bg-[#f8fafc]">
+        <Container className="px-6 py-20 sm:py-28">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 className="text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+                新しい記事
+              </h2>
+              <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
+                最近書いたものから。
+              </p>
+            </div>
+            <Link
+              href="/blog"
+              className="inline-flex items-center text-[0.95rem] font-semibold text-[#1d4ed8] hover:text-[#0b1d4a]"
+            >
+              すべて見る <span aria-hidden="true" className="ml-1">→</span>
+            </Link>
+          </div>
+          <ul className="mt-10 grid gap-6 lg:grid-cols-3">
+            {latestPosts.map((post) => (
+              <li key={post.slug}>
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="group flex h-full flex-col overflow-hidden rounded-[22px] bg-white ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-32px_rgba(15,29,74,0.4)]"
+                >
+                  <div
+                    className="h-40 w-full"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #dbeafe 0%, #e0f2fe 60%, #f0f9ff 100%)",
+                    }}
+                  >
+                    <svg viewBox="0 0 400 200" className="h-full w-full" aria-hidden="true">
+                      <g stroke="#1d4ed8" strokeWidth="1.5" fill="none" opacity="0.45">
+                        <path d="M 0 160 Q 80 120 200 100 T 400 60" />
+                        <path d="M 0 180 Q 80 150 200 130 T 400 100" strokeDasharray="6 6" />
+                      </g>
+                      <circle cx="200" cy="100" r="6" fill="#1d4ed8" />
+                      <circle cx="320" cy="80" r="4" fill="#38bdf8" />
+                    </svg>
+                  </div>
+                  <div className="flex flex-1 flex-col gap-3 p-6">
+                    <div className="flex items-center gap-3 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-[#1d4ed8]">
+                      <span>{post.category}</span>
+                      <time className="text-[#94a3b8]" dateTime={post.date}>
+                        {post.formattedDate}
+                      </time>
+                    </div>
+                    <h3 className="text-[1.05rem] font-bold leading-[1.55] text-[#0b1d4a] transition group-hover:text-[#1d4ed8]">
+                      {post.title}
+                    </h3>
+                    <p className="text-[0.88rem] leading-[1.85] text-[#475569]">
+                      {post.description}
+                    </p>
+                    <span className="mt-auto pt-3 text-[0.85rem] font-semibold text-[#1d4ed8]">
+                      読む →
+                    </span>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Container>
+      </section>
+
+      {/* ABOUT */}
+      <section className="bg-white">
+        <Container className="px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-3xl text-center">
+            <Image
+              alt="Lumora"
+              src="/brand/lumora-logo.png"
+              width={1672}
+              height={941}
+              className="mx-auto h-auto w-[280px] sm:w-[360px]"
+            />
+            <h2 className="mt-10 text-balance text-[1.6rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
+              Lumora は、理系の学びの起点になりたい。
+            </h2>
+            <p className="mt-6 text-[1rem] leading-[2] text-[#334155]">
+              物理・数学・情報を中心に、深く考えるための記事を書いています。
+              専門サービスとして、高校物理のオンライン塾「物理の森」も運営しています。
+            </p>
+            <Link
+              href="/about"
+              className="mt-8 inline-flex items-center text-[0.95rem] font-semibold text-[#1d4ed8] hover:text-[#0b1d4a]"
+            >
+              About を読む <span aria-hidden="true" className="ml-1">→</span>
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* FAQ */}
+      <section className="bg-[#f8fafc]">
+        <Container className="px-6 py-20 sm:py-24">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="text-center text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
+              よくある質問
+            </h2>
+            <ul className="mt-10 grid gap-3">
+              {faqItems.map((item) => (
+                <li
+                  key={item.question}
+                  className="rounded-[18px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)]"
+                >
+                  <p className="text-[1rem] font-bold leading-[1.65] text-[#0b1d4a]">
+                    {item.question}
+                  </p>
+                  <p className="mt-3 text-[0.92rem] leading-[1.95] text-[#475569]">
+                    {item.answer}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Container>
+      </section>
+
+      {/* FINAL CTA */}
+      <section className="bg-white">
+        <Container className="px-6 py-20 sm:py-28">
+          <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+            <h2 className="text-balance text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.4rem]">
+              次の一歩を、選んでください。
+            </h2>
+            <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+              <Link
+                href="/blog"
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#0b1d4a] px-7 text-[0.96rem] font-semibold text-white transition hover:bg-[#1e3a8a]"
+              >
+                記事を読む
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-7 text-[0.96rem] font-semibold text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
+              >
+                相談する
+              </Link>
+            </div>
+          </div>
+        </Container>
+      </section>
     </>
   );
 }

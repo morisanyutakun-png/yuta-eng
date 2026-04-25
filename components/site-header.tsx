@@ -1,11 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import { Container } from "@/components/container";
-import { navItems, siteConfig } from "@/data/site";
+import { navItems } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 type NavItem = (typeof navItems)[number];
@@ -26,24 +27,14 @@ function isHighlight(item: NavItem): boolean {
 
 function LumoraLogo() {
   return (
-    <span
-      aria-hidden="true"
-      className="relative grid size-9 shrink-0 place-items-center rounded-sm bg-[#0f1c3a] text-white sm:size-10"
-      style={{
-        boxShadow:
-          "inset 0 0 0 1px rgba(200,146,17,0.4), 0 8px 24px -16px rgba(15,23,42,0.4)",
-      }}
-    >
-      <svg
-        className="h-5 w-5 sm:h-[1.35rem] sm:w-[1.35rem]"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="M5 4h2.6v12.4H17V19H5V4Z" fill="#f8fafc" />
-        <circle cx="17.5" cy="6" r="2.4" fill="#c89211" />
-      </svg>
-    </span>
+    <Image
+      alt="Lumora"
+      src="/brand/lumora-mark.svg"
+      width={120}
+      height={120}
+      priority
+      className="h-9 w-9 sm:h-10 sm:w-10"
+    />
   );
 }
 
@@ -62,11 +53,8 @@ export function SiteHeader() {
 
   return (
     <header
-      className="sticky top-0 z-50 bg-[#fbf9f4]/95 backdrop-blur-xl"
-      style={{
-        borderBottom: "1px solid var(--line)",
-        boxShadow: "0 1px 0 rgba(200,146,17,0.25)",
-      }}
+      className="sticky top-0 z-50 bg-white/85 backdrop-blur-xl"
+      style={{ borderBottom: "1px solid rgba(15,29,74,0.08)" }}
     >
       <Container className="relative py-2 sm:py-3">
         <div className="flex min-h-13 items-center justify-between gap-3 sm:min-h-16 sm:gap-5">
@@ -77,11 +65,11 @@ export function SiteHeader() {
           >
             <LumoraLogo />
             <span className="flex min-w-0 flex-col leading-none">
-              <span className="truncate font-serif text-[1.18rem] font-bold tracking-[0.05em] text-[var(--ink)] sm:text-[1.3rem]">
-                {siteConfig.name}
+              <span className="truncate text-[1.25rem] font-extrabold tracking-[0.04em] text-[#0b1d4a] sm:text-[1.4rem]">
+                LUMOR<span className="relative">A<span aria-hidden="true" className="absolute -right-1 top-0 h-1 w-1 rounded-full bg-[#38bdf8]" /></span>
               </span>
-              <span className="mt-1 hidden font-serif text-[0.7rem] font-bold tracking-[0.18em] text-[var(--accent-deep)] sm:block">
-                {siteConfig.brandTagline}
+              <span className="mt-1 hidden text-[0.62rem] font-semibold tracking-[0.32em] text-[#1d4ed8] sm:block">
+                SCIENCE LEARNING HUB
               </span>
             </span>
           </Link>
@@ -97,19 +85,13 @@ export function SiteHeader() {
                   return (
                     <li className="ml-2" key={item.href}>
                       <a
-                        className="inline-flex min-h-10 items-center gap-1.5 rounded-sm bg-[var(--accent-deep)] px-4 py-2 font-serif text-[0.86rem] font-bold tracking-[0.08em] text-white transition hover:bg-[#16305c]"
+                        className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-[#0b1d4a] px-4 py-1.5 text-[0.84rem] font-semibold tracking-[0.04em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
                         href={item.href}
                         rel="noreferrer noopener"
                         target="_blank"
                       >
-                        <span
-                          aria-hidden="true"
-                          className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]"
-                        />
                         {item.label}
-                        <span aria-hidden="true" className="ml-0.5 text-[0.78rem] text-[#f5d68a]">
-                          ↗
-                        </span>
+                        <span aria-hidden="true" className="text-[0.7rem]">↗</span>
                       </a>
                     </li>
                   );
@@ -119,15 +101,13 @@ export function SiteHeader() {
                   return (
                     <li key={item.href}>
                       <a
-                        className="inline-flex min-h-10 items-center px-3.5 py-2 font-serif text-[0.88rem] font-bold tracking-[0.06em] text-[var(--ink-soft)] transition hover:text-[var(--ink)]"
+                        className="inline-flex min-h-10 items-center px-3.5 py-2 text-[0.86rem] font-medium tracking-[0.02em] text-[#475569] transition hover:text-[#0b1d4a]"
                         href={item.href}
                         rel="noreferrer noopener"
                         target="_blank"
                       >
                         {item.label}
-                        <span aria-hidden="true" className="ml-1 text-[0.7rem]">
-                          ↗
-                        </span>
+                        <span aria-hidden="true" className="ml-1 text-[0.7rem]">↗</span>
                       </a>
                     </li>
                   );
@@ -137,10 +117,8 @@ export function SiteHeader() {
                   <li key={item.href}>
                     <Link
                       className={cn(
-                        "relative inline-flex min-h-10 items-center px-3.5 py-2 font-serif text-[0.88rem] font-bold tracking-[0.06em] transition",
-                        isCurrent
-                          ? "text-[var(--accent-deep)]"
-                          : "text-[var(--ink-soft)] hover:text-[var(--ink)]",
+                        "relative inline-flex min-h-10 items-center px-3.5 py-2 text-[0.86rem] font-medium tracking-[0.02em] transition",
+                        isCurrent ? "text-[#0b1d4a]" : "text-[#475569] hover:text-[#0b1d4a]",
                       )}
                       href={item.href}
                     >
@@ -148,7 +126,7 @@ export function SiteHeader() {
                       {isCurrent ? (
                         <span
                           aria-hidden="true"
-                          className="absolute inset-x-3.5 -bottom-0.5 h-0.5 bg-[var(--accent-warm)]"
+                          className="absolute inset-x-3.5 -bottom-0.5 h-0.5 bg-[#0b1d4a]"
                         />
                       ) : null}
                     </Link>

@@ -18,7 +18,7 @@ export function createWebsiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: siteConfig.name,
-    alternateName: "Lumora 学習ハブ",
+    alternateName: ["ルモラ", "Lumora Science Learning Hub"],
     url: siteConfig.url,
     description: siteConfig.description,
     inLanguage: "ja",
@@ -43,11 +43,11 @@ export function createOrganizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: siteConfig.name,
-    alternateName: ["ルモラ", "Lumora 学習ハブ"],
+    alternateName: ["ルモラ", "Lumora Science Learning Hub"],
     url: siteConfig.url,
     description: siteConfig.description,
     email: siteConfig.email,
-    logo: new URL("/favicon.svg", siteConfig.url).toString(),
+    logo: new URL("/brand/lumora-logo.png", siteConfig.url).toString(),
     founder: {
       "@type": "Person",
       name: siteConfig.author,
@@ -58,7 +58,6 @@ export function createOrganizationJsonLd() {
       {
         "@type": "EducationalOrganization",
         name: "物理の森",
-        alternateName: "高校物理 専門塾 物理の森",
         url: siteConfig.physicsSchoolUrl,
         parentOrganization: {
           "@type": "Organization",
@@ -66,7 +65,7 @@ export function createOrganizationJsonLd() {
           url: siteConfig.url,
         },
         description:
-          "Lumora が運営する高校物理に特化したオンライン専門塾。物理基礎・物理の通年指導、定期テスト対策、共通テスト・国公立二次・私大入試対応。",
+          "Lumora が運営する、高校物理に特化したオンライン専門塾。",
       },
     ],
   };
@@ -85,18 +84,12 @@ export function createPersonJsonLd() {
     },
     knowsAbout: [
       "高校物理",
-      "物理 苦手克服",
-      "教育ICT",
-      "教育DX",
-      "GIGAスクール",
+      "数学",
+      "情報",
+      "教材作成",
+      "LaTeX",
+      "学習デザイン",
       "EdTech",
-      "教材作成AI",
-      "生成AI教材作成",
-      "物理教材",
-      "LaTeX教材作成",
-      "教材制作",
-      "学習支援Webアプリ",
-      "個別最適な学び",
     ],
   };
 }
@@ -111,17 +104,12 @@ export function createHomePageJsonLd() {
     inLanguage: "ja",
     about: [
       "高校物理",
-      "高校物理 わかりやすい",
-      "教材作成AI",
-      "生成AI教材作成",
-      "教育DX",
-      "GIGAスクール",
+      "数学",
+      "情報",
+      "教材作成",
+      "LaTeX",
+      "学習デザイン",
       "EdTech",
-      "教育ICT",
-      "物理教材",
-      "LaTeX教材作成",
-      "学習支援Webアプリ",
-      "個別最適な学び",
     ],
     isPartOf: {
       "@type": "WebSite",
@@ -135,17 +123,11 @@ export function createEducationalServiceJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "Lumora 学習ハブ",
+    name: "Lumora",
     url: siteConfig.url,
     description:
-      "Lumora（ルモラ）が運営する学習ハブ。物理専門塾「物理の森」、教材作成AI、学習支援アプリの公式入口を集約し、ブログで学びを発信する。",
-    serviceType: [
-      "学習ハブ運営",
-      "高校物理 専門塾（物理の森）",
-      "教材作成AI 紹介",
-      "LaTeX 教材作成",
-      "学習支援Webアプリ 紹介",
-    ],
+      "理系の学びを深めるための記事と専門サービスをまとめるサイト。",
+    serviceType: ["記事の発信", "高校物理 専門塾（物理の森）", "教材作成の支援"],
     provider: {
       "@type": "Organization",
       name: siteConfig.name,
@@ -156,14 +138,8 @@ export function createEducationalServiceJsonLd() {
       name: "Japan",
     },
     audience: [
-      {
-        "@type": "EducationalAudience",
-        educationalRole: "student",
-      },
-      {
-        "@type": "EducationalAudience",
-        educationalRole: "teacher",
-      },
+      { "@type": "EducationalAudience", educationalRole: "student" },
+      { "@type": "EducationalAudience", educationalRole: "teacher" },
     ],
   };
 }

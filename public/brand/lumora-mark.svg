@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Lumora">
+  <defs>
+    <linearGradient id="lumora-bar-1" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#1f3a8a"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="lumora-bar-2" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="lumora-bar-3" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#3b82f6"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <!-- L letterform (dark navy) -->
+  <path d="M28 16h22v62h44v22H28V16Z" fill="#0b1d4a"/>
+  <!-- vertical axis arrow (top) -->
+  <path d="M39 12 L33 22 L45 22 Z" fill="#0b1d4a"/>
+  <line x1="39" y1="22" x2="39" y2="14" stroke="#0b1d4a" stroke-width="2"/>
+  <!-- horizontal axis arrow (right) -->
+  <path d="M104 89 L94 83 L94 95 Z" fill="#0b1d4a"/>
+  <!-- bars inside the L -->
+  <rect x="55" y="60" width="8" height="18" rx="1" fill="url(#lumora-bar-1)"/>
+  <rect x="66" y="50" width="8" height="28" rx="1" fill="url(#lumora-bar-2)"/>
+  <rect x="77" y="38" width="8" height="40" rx="1" fill="url(#lumora-bar-3)"/>
+  <!-- orbit curve -->
+  <path d="M22 96 Q 6 60 40 32 Q 78 8 102 22" fill="none" stroke="#1d4ed8" stroke-width="2.4" stroke-linecap="round"/>
+  <!-- orbit dots -->
+  <circle cx="100" cy="22" r="5.5" fill="#38bdf8"/>
+  <circle cx="22" cy="96" r="4.5" fill="#1d4ed8"/>
+</svg>
