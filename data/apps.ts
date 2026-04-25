@@ -34,6 +34,11 @@ export type AppItem = {
   highlights: { title: string; body: string }[];
   /** スラグ（ページ内アンカー / 内部リンク用） */
   slug: string;
+  /** ヒーロー画像パス（/public 配下、紹介ビジュアルに使用） */
+  image?: string;
+  /** 画像の自然サイズ（CLS抑制用） */
+  imageWidth?: number;
+  imageHeight?: number;
 };
 
 export const apps: AppItem[] = [
@@ -151,6 +156,9 @@ export const apps: AppItem[] = [
   {
     name: "Eddivom",
     slug: "eddivom",
+    image: "/eddivom-hero.png",
+    imageWidth: 1536,
+    imageHeight: 1024,
     comparison: "LaTeX 教材作成｜AI下書きから組版・PDF出力までワンストップ。",
     description:
       "Eddivom は、LaTeX で物理・数学の教材作成を効率化する Web アプリです。生成 AI で問題の下書きを作り、LaTeX に流し込み、小テスト・類題・解答 PDF までをワンストップで出力できます。LaTeX 教材作成の手間を大幅に短縮し、教員・塾講師・教材制作者が毎週繰り返す問題プリント作成の作業時間を圧縮します。Solvora が公式に紹介する教材作成 AI です。",

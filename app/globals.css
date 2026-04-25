@@ -2458,6 +2458,20 @@ a {
   pointer-events: none;
 }
 
+.lumora-cta-card-image {
+  margin: -0.3rem -0.3rem 1rem;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #eef4ff 0%, #fff7ed 60%, #fef3c7 100%);
+  box-shadow: 0 14px 32px -28px rgba(15, 29, 74, 0.45);
+}
+
+.lumora-cta-card-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .lumora-cta-card-eyebrow {
   display: inline-block;
   font-size: 0.7rem;

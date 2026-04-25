@@ -190,13 +190,35 @@ type CtaCardProps = {
   eyebrow?: string;
   title: string;
   body: string;
+  image?: string;
+  imageAlt?: string;
   primary?: { label: string; href: string };
   secondary?: { label: string; href: string };
 };
 
-function CtaCard({ eyebrow = "Solvora", title, body, primary, secondary }: CtaCardProps) {
+function CtaCard({
+  eyebrow = "Solvora",
+  title,
+  body,
+  image,
+  imageAlt,
+  primary,
+  secondary,
+}: CtaCardProps) {
   return (
     <aside className="lumora-cta-card">
+      {image ? (
+        <div className="lumora-cta-card-image">
+          <Image
+            src={image}
+            alt={imageAlt ?? title}
+            width={1536}
+            height={1024}
+            sizes="(min-width: 768px) 640px, 100vw"
+            className="h-auto w-full"
+          />
+        </div>
+      ) : null}
       <span className="lumora-cta-card-eyebrow">{eyebrow}</span>
       <p className="lumora-cta-card-title">{renderWithMath(title)}</p>
       <p className="lumora-cta-card-body">{renderWithMath(body)}</p>

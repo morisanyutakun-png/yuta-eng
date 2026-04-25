@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/container";
@@ -184,7 +185,19 @@ export default function AppsPage() {
                 <h2 className="mt-2 text-balance text-[1.5rem] font-extrabold leading-[1.3] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
                   {app.name}｜{app.primaryKeyword}
                 </h2>
-                <p className="mt-4 max-w-3xl text-[0.96rem] font-semibold leading-[1.75] text-[#0b1d4a]">
+                {app.image ? (
+                  <div className="relative mt-5 overflow-hidden rounded-[18px] bg-gradient-to-br from-[#eef4ff] via-[#fff7ed] to-[#fef3c7] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_24px_60px_-40px_rgba(15,29,74,0.4)] sm:mt-6 sm:rounded-[24px]">
+                    <Image
+                      src={app.image}
+                      alt={`${app.name} — ${app.primaryKeyword}`}
+                      width={app.imageWidth ?? 1536}
+                      height={app.imageHeight ?? 1024}
+                      sizes="(min-width: 1024px) 768px, 100vw"
+                      className="h-auto w-full"
+                    />
+                  </div>
+                ) : null}
+                <p className="mt-4 max-w-3xl text-[0.96rem] font-semibold leading-[1.75] text-[#0b1d4a] sm:mt-5">
                   {app.comparison}
                 </p>
                 <p className="mt-3 max-w-3xl text-[0.92rem] leading-[1.95] text-[#475569]">
