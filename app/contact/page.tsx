@@ -8,25 +8,30 @@ import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createFaqJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "高校物理塾の受講相談・教材制作の問い合わせ窓口 - Solvora",
+  title: "理系人材育成・EdTech 導入のご相談窓口｜Solvora お問い合わせ",
   description:
-    "高校物理オンライン塾「物理の森」の受講相談、AI×LaTeXによる教材制作、学習支援Webアプリ企画の問い合わせ窓口。メールで概要を送れば1営業日以内に返信します。受講相談は初回無料。",
+    "Solvora は、AI 教材作成・学習支援アプリ・物理専門塾を集約した理系人材育成 EdTech ハブ。教育DX／GIGA スクール構想後の教材設計、AI×LaTeX 教材制作、学習アプリ企画、物理の森の受講相談まで一括で受け付けています。1営業日以内に返信、受講相談は初回無料。",
   keywords: [
-    "高校物理 塾 相談",
+    "理系人材育成 相談",
+    "EdTech 導入相談",
+    "教育DX コンサル",
+    "AI 教材作成 依頼",
+    "LaTeX 教材作成 依頼",
+    "学習支援アプリ 企画",
+    "GIGAスクール 後 教材",
     "物理の森 受講相談",
-    "教材作成 依頼",
-    "AI 教材制作",
-    "学習支援 Webアプリ 開発",
+    "STEM教育 協業",
   ],
   path: "/contact",
 });
 
 const topics = [
-  "高校物理の受講相談（物理の森）",
-  "AI と LaTeX を使った教材制作の導入",
-  "学習支援 Web アプリの企画・UI 相談",
-  "教育系メディア・ブログ運用の相談",
-  "EdTech 領域での協業・寄稿のご依頼",
+  "理系人材育成 / EdTech 導入のご相談（学校・塾・企業）",
+  "AI × LaTeX を使った教材制作・教育DX の導入",
+  "学習支援 Web アプリの企画・UI / プロダクト相談",
+  "GIGAスクール構想後の教材設計・運用ご相談",
+  "教育系メディア・ブログ運用、寄稿・登壇のご依頼",
+  "物理専門オンライン塾「物理の森」の受講相談（初回無料）",
 ];
 
 const flow = [
@@ -89,16 +94,16 @@ export default function ContactPage() {
             </ol>
           </nav>
           <div className="py-10 sm:py-16 lg:py-20">
-            <p className="text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
-              Contact · Solvora
+            <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.78rem]">
+              Contact · 理系人材育成 EdTech
             </p>
             <h1 className="mt-4 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3.1rem]">
-              高校物理の受講相談、
+              理系人材育成・EdTech 導入の
               <br className="hidden sm:block" />
-              教材制作のご依頼はこちら。
+              ご相談はこちら。
             </h1>
             <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
-              高校物理オンライン塾「物理の森」の受講相談、教材設計、AI 教材制作、学習支援 Web アプリ企画のお問い合わせ窓口です。受講相談は初回無料、まずは気になっていることを一行送ってください。
+              Solvora は、AI 教材作成「Eddivom」・物理専門塾「物理の森」・学習アプリを集約した <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。教育DX／GIGA スクール構想後の教材設計、AI 教材制作、学習支援アプリ企画、寄稿・登壇のご依頼まで、ここから一括で受け付けています。受講相談は初回無料です。
             </p>
           </div>
         </Container>

@@ -43,9 +43,14 @@ export function createOrganizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: siteConfig.name,
-    alternateName: ["ソルヴォラ", "Solvora Science Learning Hub"],
+    alternateName: [
+      "ソルヴォラ",
+      "Solvora STEM Learning Hub",
+      "理系人材育成 EdTech ハブ Solvora",
+    ],
     url: siteConfig.url,
     description: siteConfig.description,
+    slogan: "理系人材を育てる、学びを設計する EdTech ハブ。",
     email: siteConfig.email,
     logo: new URL("/brand/solvora-mark.svg", siteConfig.url).toString(),
     founder: {
@@ -53,6 +58,19 @@ export function createOrganizationJsonLd() {
       name: siteConfig.author,
       url: siteConfig.url,
     },
+    knowsAbout: [
+      "理系人材育成",
+      "STEM教育",
+      "EdTech",
+      "GIGAスクール構想",
+      "教育DX",
+      "AI教材作成",
+      "LaTeX教材作成",
+      "学習支援アプリ",
+      "高校物理",
+      "学習科学",
+    ],
+    areaServed: { "@type": "Country", name: "Japan" },
     sameAs: [siteConfig.physicsSchoolUrl, siteConfig.eddivomUrl, siteConfig.itPassUrl],
     subOrganization: [
       {

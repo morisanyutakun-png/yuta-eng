@@ -335,29 +335,89 @@ function DesignVisual() {
 }
 
 function SubjectIcon({ accent, label }: { accent: string; label: string }) {
+  // ID-safe key for SVG defs (label may contain spaces).
+  const id = label.replace(/[^A-Za-z0-9]/g, "");
+  // Per-service light gradient palettes (no dark fills) so cards feel bright.
+  const palettes: Record<string, { from: string; via: string; to: string }> = {
+    "AI Materials": { from: "#eef4ff", via: "#fff7ed", to: "#fef3c7" },
+    "Physics School": { from: "#eff6ff", via: "#dbeafe", to: "#bae6fd" },
+    "Learning Apps": { from: "#ecfeff", via: "#e0f2fe", to: "#dbeafe" },
+    Insights: { from: "#f0fdfa", via: "#ecfeff", to: "#eef4ff" },
+  };
+  const palette = palettes[label] ?? { from: "#eef4ff", via: "#f8fbff", to: "#dbeafe" };
+
   return (
     <svg viewBox="0 0 200 200" className="block h-full w-full" aria-hidden="true">
       <defs>
-        <radialGradient id={`sg-${label}`} cx="0.3" cy="0.3" r="0.8">
-          <stop offset="0" stopColor={accent} stopOpacity="0.18" />
-          <stop offset="1" stopColor={accent} stopOpacity="0" />
+        <linearGradient id={`bg-${id}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor={palette.from} />
+          <stop offset="0.55" stopColor={palette.via} />
+          <stop offset="1" stopColor={palette.to} />
+        </linearGradient>
+        <radialGradient id={`glow-${id}`} cx="0.78" cy="0.18" r="0.7">
+          <stop offset="0" stopColor="#ffffff" stopOpacity="0.9" />
+          <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect width="200" height="200" rx="20" fill="#f8fafc" />
-      <rect width="200" height="200" rx="20" fill={`url(#sg-${label})`} />
-      <g transform="translate(36 40)" stroke={accent} strokeWidth="2.4" fill="none" strokeLinecap="round">
-        <line x1="14" y1="120" x2="120" y2="120" />
-        <line x1="14" y1="120" x2="14" y2="14" />
-        <polygon points="14,8 6,22 22,22" fill={accent} />
-        <polygon points="128,120 116,112 116,128" fill={accent} />
-      </g>
-      <g transform="translate(36 40)">
-        <rect x="34" y="80" width="14" height="36" fill={accent} opacity="0.55" />
-        <rect x="56" y="62" width="14" height="54" fill={accent} opacity="0.75" />
-        <rect x="78" y="44" width="14" height="72" fill={accent} />
-      </g>
-      <circle cx="146" cy="62" r="7" fill={accent} />
-      <path d="M 30 170 Q 100 130 170 158" stroke={accent} strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.6" />
+      <rect width="200" height="200" rx="22" fill={`url(#bg-${id})`} />
+      <rect width="200" height="200" rx="22" fill={`url(#glow-${id})`} />
+
+      {label === "AI Materials" ? (
+        // Doc + AI sparkle — Eddivom motif
+        <g>
+          <rect x="48" y="44" width="92" height="116" rx="10" fill="#ffffff" stroke={accent} strokeWidth="2" />
+          <rect x="62" y="64" width="56" height="6" rx="3" fill={accent} opacity="0.85" />
+          <rect x="62" y="80" width="64" height="6" rx="3" fill={accent} opacity="0.55" />
+          <rect x="62" y="96" width="44" height="6" rx="3" fill={accent} opacity="0.4" />
+          <rect x="62" y="118" width="64" height="22" rx="6" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.6" />
+          <text x="94" y="134" textAnchor="middle" fontSize="11" fontWeight="800" fill="#92400e">PDF</text>
+          <g transform="translate(140 38)">
+            <path d="M 12 0 L 14 10 L 24 12 L 14 14 L 12 24 L 10 14 L 0 12 L 10 10 Z" fill="#f59e0b" />
+          </g>
+          <g transform="translate(36 152)">
+            <path d="M 7 0 L 9 6 L 14 7 L 9 8 L 7 14 L 5 8 L 0 7 L 5 6 Z" fill={accent} opacity="0.7" />
+          </g>
+        </g>
+      ) : label === "Physics School" ? (
+        // Wave + atom orbit — physics motif
+        <g fill="none" strokeLinecap="round">
+          <path d="M 30 130 Q 60 90 90 130 T 150 130 T 210 130" stroke={accent} strokeWidth="3" />
+          <path d="M 30 100 Q 60 60 90 100 T 150 100 T 210 100" stroke={accent} strokeWidth="2.4" opacity="0.55" />
+          <ellipse cx="100" cy="100" rx="48" ry="20" stroke={accent} strokeWidth="2" opacity="0.45" />
+          <ellipse cx="100" cy="100" rx="48" ry="20" stroke={accent} strokeWidth="2" opacity="0.45" transform="rotate(60 100 100)" />
+          <ellipse cx="100" cy="100" rx="48" ry="20" stroke={accent} strokeWidth="2" opacity="0.45" transform="rotate(-60 100 100)" />
+          <circle cx="100" cy="100" r="9" fill={accent} />
+        </g>
+      ) : label === "Learning Apps" ? (
+        // Phone + bar chart — apps motif
+        <g>
+          <rect x="64" y="34" width="72" height="132" rx="14" fill="#ffffff" stroke={accent} strokeWidth="2" />
+          <rect x="64" y="34" width="72" height="22" rx="14 14 0 0" fill={accent} opacity="0.12" />
+          <circle cx="100" cy="46" r="2.5" fill={accent} opacity="0.7" />
+          <rect x="78" y="120" width="10" height="32" rx="3" fill={accent} opacity="0.5" />
+          <rect x="94" y="100" width="10" height="52" rx="3" fill={accent} opacity="0.75" />
+          <rect x="110" y="80" width="10" height="72" rx="3" fill={accent} />
+          <path d="M 78 90 L 94 78 L 110 64 L 122 56" stroke={accent} strokeWidth="2.2" fill="none" strokeLinecap="round" />
+          <circle cx="122" cy="56" r="3.5" fill="#f59e0b" />
+        </g>
+      ) : (
+        // Insights — open book + lines
+        <g>
+          <path d="M 30 64 Q 100 48 170 64 L 170 156 Q 100 140 30 156 Z" fill="#ffffff" stroke={accent} strokeWidth="2" />
+          <line x1="100" y1="56" x2="100" y2="148" stroke={accent} strokeWidth="2" opacity="0.4" />
+          <g stroke={accent} strokeWidth="2" strokeLinecap="round">
+            <line x1="46" y1="80" x2="86" y2="76" opacity="0.85" />
+            <line x1="46" y1="96" x2="92" y2="92" opacity="0.6" />
+            <line x1="46" y1="112" x2="80" y2="108" opacity="0.45" />
+            <line x1="114" y1="80" x2="154" y2="84" opacity="0.85" />
+            <line x1="114" y1="96" x2="158" y2="100" opacity="0.6" />
+            <line x1="114" y1="112" x2="148" y2="116" opacity="0.45" />
+          </g>
+          <g transform="translate(150 36)">
+            <path d="M 9 0 L 11 7 L 18 9 L 11 11 L 9 18 L 7 11 L 0 9 L 7 7 Z" fill={accent} opacity="0.7" />
+          </g>
+        </g>
+      )}
     </svg>
   );
 }

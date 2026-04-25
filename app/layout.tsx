@@ -135,6 +135,17 @@ export default function RootLayout({
       lang="ja"
       className={`${zenKaku.variable} ${shipporiMincho.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
+      <head>
+        {/* Preconnect to third-party origins so the GA & gtag handshake
+            (DNS+TLS) overlaps with HTML parsing instead of blocking later. */}
+        {GA_MEASUREMENT_ID ? (
+          <>
+            <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
+            <link rel="preconnect" href="https://www.google-analytics.com" crossOrigin="" />
+            <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+          </>
+        ) : null}
+      </head>
       <body className="flex min-h-full flex-col">
         {GA_MEASUREMENT_ID ? (
           <>
