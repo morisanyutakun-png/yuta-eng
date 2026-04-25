@@ -32,7 +32,7 @@ function SolvoraLogo() {
       src="/brand/solvora-mark.svg"
       width={120}
       height={120}
-      priority
+      preload
       className="h-9 w-9 sm:h-10 sm:w-10"
     />
   );

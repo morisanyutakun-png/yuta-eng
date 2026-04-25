@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+
 import { ImageResponse } from "next/og";
 
 export const alt =
@@ -10,7 +13,12 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default function Image() {
+export default async function Image() {
+  const [notoRegular, notoBold] = await Promise.all([
+    readFile(join(process.cwd(), "public/fonts/NotoSansJP-Regular.ttf")),
+    readFile(join(process.cwd(), "public/fonts/NotoSansJP-Bold.ttf")),
+  ]);
+
   return new ImageResponse(
     (
       <div
@@ -20,7 +28,7 @@ export default function Image() {
             "linear-gradient(135deg, #fff7ed 0%, #e0f2fe 48%, #ecfdf5 100%)",
           color: "#0b1220",
           display: "flex",
-          fontFamily: "Arial",
+          fontFamily: '"Noto Sans JP", system-ui, sans-serif',
           height: "100%",
           justifyContent: "center",
           padding: "58px",
@@ -118,6 +126,12 @@ export default function Image() {
         </div>
       </div>
     ),
-    size,
+    {
+      ...size,
+      fonts: [
+        { name: "Noto Sans JP", data: notoRegular, style: "normal", weight: 400 },
+        { name: "Noto Sans JP", data: notoBold, style: "normal", weight: 700 },
+      ],
+    },
   );
 }

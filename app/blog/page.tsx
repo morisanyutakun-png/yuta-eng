@@ -97,8 +97,7 @@ export default function BlogPage() {
                   fill
                   sizes="(min-width: 1024px) 60vw, 100vw"
                   className="object-cover transition duration-700 group-hover:scale-[1.03]"
-                  priority
-                  unoptimized
+                  preload
                 />
               </div>
               <div className="flex flex-col justify-between gap-6 p-8 sm:p-10">
@@ -159,7 +158,6 @@ export default function BlogPage() {
                         fill
                         sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                         className="object-cover transition duration-700 group-hover:scale-[1.04]"
-                        unoptimized
                       />
                     </div>
                     <div className="flex flex-1 flex-col gap-3 p-6">

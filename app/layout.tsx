@@ -1,9 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Geist_Mono,
-  Shippori_Mincho,
-  Zen_Kaku_Gothic_New,
-} from "next/font/google";
+import { Geist_Mono, Shippori_Mincho } from "next/font/google";
+import localFont from "next/font/local";
 import Script from "next/script";
 
 import { JsonLd } from "@/components/json-ld";
@@ -23,11 +20,15 @@ import "./globals.css";
 const GA_MEASUREMENT_ID =
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-WT6BZVH9YJ";
 
-const zenKaku = Zen_Kaku_Gothic_New({
+const zenKaku = localFont({
   variable: "--font-sans-jp",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  src: [
+    { path: "../public/fonts/NotoSansJP-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/NotoSansJP-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../public/fonts/NotoSansJP-Bold.woff2", weight: "700", style: "normal" },
+  ],
   display: "swap",
+  fallback: ["Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "sans-serif"],
 });
 
 const shipporiMincho = Shippori_Mincho({
@@ -40,6 +41,7 @@ const shipporiMincho = Shippori_Mincho({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const viewport: Viewport = {

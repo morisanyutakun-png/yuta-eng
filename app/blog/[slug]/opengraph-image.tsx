@@ -1,3 +1,6 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+
 import { ImageResponse } from "next/og";
 
 import { getPostBySlug, getPostSlugs } from "@/lib/blog";
@@ -37,6 +40,11 @@ export default async function Image({ params }: { params: Promise<Params> }) {
   const displayTitle = title.length > 60 ? title.slice(0, 58) + "…" : title;
   const displayDesc = description.length > 100 ? description.slice(0, 98) + "…" : description;
 
+  const [notoRegular, notoBold] = await Promise.all([
+    readFile(join(process.cwd(), "public/fonts/NotoSansJP-Regular.ttf")),
+    readFile(join(process.cwd(), "public/fonts/NotoSansJP-Bold.ttf")),
+  ]);
+
   return new ImageResponse(
     (
       <div
@@ -46,7 +54,7 @@ export default async function Image({ params }: { params: Promise<Params> }) {
           display: "flex",
           background: accent.bg,
           color: "#ffffff",
-          fontFamily: "system-ui, -apple-system, sans-serif",
+          fontFamily: '"Noto Sans JP", system-ui, sans-serif',
           padding: "56px",
           position: "relative",
         }}
@@ -165,6 +173,12 @@ export default async function Image({ params }: { params: Promise<Params> }) {
         </div>
       </div>
     ),
-    { ...size },
+    {
+      ...size,
+      fonts: [
+        { name: "Noto Sans JP", data: notoRegular, style: "normal", weight: 400 },
+        { name: "Noto Sans JP", data: notoBold, style: "normal", weight: 700 },
+      ],
+    },
   );
 }

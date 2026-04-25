@@ -622,10 +622,10 @@ export default function Home() {
           <div className="mx-auto max-w-3xl text-center">
             <Image
               alt="Solvora"
-              src="/brand/lumora-logo.png"
-              width={1672}
-              height={941}
-              className="mx-auto h-auto w-[280px] sm:w-[360px]"
+              src="/brand/solvora-mark.svg"
+              width={360}
+              height={360}
+              className="mx-auto h-auto w-[160px] sm:w-[200px]"
             />
             <h2 className="mt-10 text-balance text-[1.6rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
               Solvora は、理系の学びの起点になりたい。

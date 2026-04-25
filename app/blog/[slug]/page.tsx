@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeKatex from "rehype-katex";
+import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
 import { Container } from "@/components/container";
@@ -155,8 +156,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 fill
                 sizes="(min-width: 1024px) 896px, 100vw"
                 className="object-cover"
-                priority
-                unoptimized
+                preload
               />
             </div>
           </div>
@@ -245,7 +245,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 options={{
                   mdxOptions: {
                     useDynamicImport: false,
-                    remarkPlugins: [remarkMath],
+                    remarkPlugins: [remarkGfm, remarkMath],
                     rehypePlugins: [[rehypeKatex, { strict: "ignore" }]],
                   },
                   blockJS: false,
@@ -328,7 +328,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                           fill
                           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
                           className="object-cover transition duration-700 group-hover:scale-[1.04]"
-                          unoptimized
                         />
                       </div>
                       <div className="flex flex-1 flex-col gap-3 p-6">
