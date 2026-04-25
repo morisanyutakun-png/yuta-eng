@@ -20,16 +20,20 @@ function LumoraLogo() {
   return (
     <span
       aria-hidden="true"
-      className="grid size-9 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-slate-950 to-sky-900 text-white shadow-lg shadow-slate-900/20 sm:size-10"
+      className="relative grid size-9 shrink-0 place-items-center rounded-sm bg-[#0f1c3a] text-white sm:size-10"
+      style={{
+        boxShadow:
+          "inset 0 0 0 1px rgba(200,146,17,0.4), 0 8px 24px -16px rgba(15,23,42,0.4)",
+      }}
     >
       <svg
-        className="h-5 w-5 sm:h-[1.4rem] sm:w-[1.4rem]"
+        className="h-5 w-5 sm:h-[1.35rem] sm:w-[1.35rem]"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path d="M5 4h2.6v12.4H17V19H5V4Z" fill="#f8fafc" />
-        <circle cx="17.5" cy="6" r="2.4" fill="#fbbf24" />
+        <circle cx="17.5" cy="6" r="2.4" fill="#c89211" />
       </svg>
     </span>
   );
@@ -49,7 +53,13 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl">
+    <header
+      className="sticky top-0 z-50 bg-[#fbf9f4]/95 backdrop-blur-xl"
+      style={{
+        borderBottom: "1px solid var(--line)",
+        boxShadow: "0 1px 0 rgba(200,146,17,0.25)",
+      }}
+    >
       <Container className="relative py-2 sm:py-3">
         <div className="flex min-h-13 items-center justify-between gap-3 sm:min-h-16 sm:gap-5">
           <Link
@@ -59,10 +69,10 @@ export function SiteHeader() {
           >
             <LumoraLogo />
             <span className="flex min-w-0 flex-col leading-none">
-              <span className="truncate font-serif text-[1.05rem] font-bold tracking-[-0.01em] text-slate-950 sm:text-[1.15rem]">
+              <span className="truncate font-serif text-[1.18rem] font-bold tracking-[0.05em] text-[var(--ink)] sm:text-[1.3rem]">
                 {siteConfig.name}
               </span>
-              <span className="mt-1 hidden text-[0.7rem] font-medium text-slate-500 sm:block">
+              <span className="mt-1 hidden font-serif text-[0.7rem] font-bold tracking-[0.2em] text-[var(--accent-deep)] sm:block">
                 {siteConfig.brandTagline}
               </span>
             </span>
@@ -77,14 +87,20 @@ export function SiteHeader() {
                   <li key={item.href}>
                     <Link
                       className={cn(
-                        "inline-flex min-h-10 items-center rounded-full px-3.5 py-2 text-[0.88rem] font-semibold transition",
+                        "relative inline-flex min-h-10 items-center px-3.5 py-2 font-serif text-[0.88rem] font-bold tracking-[0.06em] transition",
                         isCurrent
-                          ? "bg-slate-950 text-white"
-                          : "hover:bg-slate-100 hover:text-slate-950",
+                          ? "text-[var(--accent-deep)]"
+                          : "text-[var(--ink-soft)] hover:text-[var(--ink)]",
                       )}
                       href={item.href}
                     >
                       {item.label}
+                      {isCurrent ? (
+                        <span
+                          aria-hidden="true"
+                          className="absolute inset-x-3.5 -bottom-0.5 h-0.5 bg-[var(--accent-warm)]"
+                        />
+                      ) : null}
                     </Link>
                   </li>
                 );
@@ -96,7 +112,7 @@ export function SiteHeader() {
             aria-controls="mobile-global-navigation"
             aria-expanded={isMenuOpen}
             aria-label="メニューを開閉"
-            className="inline-flex min-h-10 items-center rounded-full border border-slate-200 bg-white px-3.5 text-[0.82rem] font-bold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 md:hidden"
+            className="inline-flex min-h-10 items-center rounded-sm border border-[var(--line)] bg-white px-3.5 font-serif text-[0.82rem] font-bold tracking-[0.1em] text-[var(--ink)] transition hover:border-[var(--accent-deep)] md:hidden"
             onClick={handleToggleMenu}
             type="button"
           >
@@ -114,8 +130,9 @@ export function SiteHeader() {
         >
           <nav
             aria-label="Mobile global navigation"
-            className="rounded-3xl border border-slate-200 bg-white/97 p-2 shadow-[0_26px_65px_-45px_rgba(15,23,42,0.65)] backdrop-blur"
+            className="rounded-sm border border-[var(--line)] bg-white p-2 shadow-[0_26px_65px_-45px_rgba(15,23,42,0.5)]"
             id="mobile-global-navigation"
+            style={{ borderTop: "3px solid var(--accent-deep)" }}
           >
             <ul className="grid gap-1">
               {navItems.map((item) => {
@@ -125,16 +142,19 @@ export function SiteHeader() {
                   <li key={item.href}>
                     <Link
                       className={cn(
-                        "flex min-h-12 items-center justify-between rounded-2xl px-4 py-2.5 text-[0.92rem] font-bold transition",
+                        "flex min-h-12 items-center justify-between rounded-sm px-4 py-2.5 font-serif text-[0.95rem] font-bold tracking-[0.06em] transition",
                         isCurrent
-                          ? "bg-slate-950 text-white"
-                          : "text-slate-700 hover:bg-slate-100 hover:text-slate-950",
+                          ? "bg-[#faf6ec] text-[var(--accent-deep)]"
+                          : "text-[var(--ink)] hover:bg-[#faf6ec]",
                       )}
                       href={item.href}
                       onClick={handleCloseMenu}
                     >
                       <span>{item.label}</span>
-                      <span aria-hidden="true" className={isCurrent ? "text-amber-300" : "text-slate-400"}>
+                      <span
+                        aria-hidden="true"
+                        className={isCurrent ? "text-[var(--accent-warm)]" : "text-[var(--ink-soft)]"}
+                      >
                         →
                       </span>
                     </Link>

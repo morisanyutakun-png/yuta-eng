@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
+import {
+  Geist_Mono,
+  Shippori_Mincho,
+  Zen_Kaku_Gothic_New,
+} from "next/font/google";
 
 import { JsonLd } from "@/components/json-ld";
 import { ScrollProgress } from "@/components/scroll-progress";
@@ -14,17 +18,17 @@ import {
 
 import "./globals.css";
 
-const notoSans = Noto_Sans_JP({
+const zenKaku = Zen_Kaku_Gothic_New({
   variable: "--font-sans-jp",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
   display: "swap",
 });
 
-const notoSerif = Noto_Serif_JP({
+const shipporiMincho = Shippori_Mincho({
   variable: "--font-serif-jp",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -112,7 +116,7 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${notoSans.variable} ${notoSerif.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
+      className={`${zenKaku.variable} ${shipporiMincho.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <ScrollProgress />

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
-import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
 import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
@@ -68,42 +68,45 @@ export default function AboutPage() {
   return (
     <Container className="px-4 sm:px-6">
       {/* HERO */}
-      <header className="mx-auto mt-6 max-w-3xl text-center sm:mt-12">
-        <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
-          About Lumora
-        </p>
-        <h1 className="mt-3 text-balance font-serif text-[1.85rem] font-bold leading-[1.42] tracking-[-0.02em] text-slate-950 sm:text-[2.4rem] sm:leading-[1.32]">
+      <header className="mx-auto mt-8 max-w-3xl text-center sm:mt-14">
+        <p className="lumora-kicker">ABOUT LUMORA</p>
+        <h1 className="lumora-display mt-5 text-balance text-[1.7rem] leading-[1.55] sm:text-[2.4rem] sm:leading-[1.45]">
           高校物理 × 教材作成AI × EdTech を、<br className="hidden sm:block" />
-          ひとつの動線でつなぐスタジオ。
+          ひとつの<span className="lumora-marker">動線</span>でつなぐ。
         </h1>
-        <p className="mt-4 text-pretty text-[0.95rem] leading-[1.95] text-slate-600 sm:text-[1.05rem] sm:leading-[2]">
+        <p className="mx-auto mt-5 max-w-2xl text-pretty font-serif text-[0.95rem] leading-[2.1] text-[var(--ink-soft)] sm:text-[1rem]">
           Lumora（ルモラ）は、{siteConfig.author}が運営する EdTech 学習スタジオです。物理を理解で乗り越えるための記事、AI と LaTeX で教材作成をラクに続けるためのワークフロー、学習支援Webアプリを動線で設計する考え方を、ひとつのサイトでまとめて発信しています。
         </p>
+        <div className="lumora-rule" />
       </header>
 
       {/* PHILOSOPHY */}
       <section className="mt-10 sm:mt-16">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
-            制作思想
-          </p>
-          <h2 className="mt-2 font-serif text-[1.5rem] font-bold leading-[1.42] tracking-[-0.02em] text-slate-950 sm:text-[1.9rem]">
+          <p className="lumora-eyebrow">PHILOSOPHY</p>
+          <h2 className="lumora-display mt-3 text-[1.4rem] leading-[1.55] sm:text-[1.9rem]">
             Lumora が大切にしている3つの軸
           </h2>
         </div>
-        <ul className="mt-6 grid gap-3 sm:mt-8 sm:gap-4 lg:grid-cols-3">
+        <ul className="mt-8 grid gap-4 sm:gap-5 lg:grid-cols-3">
           {philosophy.map((item) => (
             <li
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_18px_55px_-50px_rgba(15,23,42,0.45)] sm:rounded-[1.4rem] sm:p-6"
+              className="bg-white p-5 sm:p-7"
               key={item.title}
+              style={{
+                border: "1px solid var(--line)",
+                borderTop: "3px solid var(--accent-deep)",
+                borderRadius: "4px",
+                boxShadow: "0 14px 40px -36px rgba(15,23,42,0.4)",
+              }}
             >
-              <p className="font-mono text-[0.78rem] font-bold text-sky-800">
+              <p className="font-serif text-[1.6rem] font-bold leading-none text-[var(--accent-warm)]">
                 {item.label}
               </p>
-              <h3 className="mt-3 text-[1.05rem] font-bold leading-[1.5] tracking-[-0.01em] text-slate-950 sm:text-[1.15rem]">
+              <h3 className="mt-4 font-serif text-[1.08rem] font-bold leading-[1.55] text-[var(--ink)] sm:text-[1.18rem]">
                 {item.title}
               </h3>
-              <p className="mt-3 text-[0.9rem] leading-[1.85] text-slate-600">
+              <p className="mt-3 border-t border-dotted border-[var(--line)] pt-3 text-[0.9rem] leading-[2] text-[var(--ink-soft)]">
                 {item.text}
               </p>
             </li>
@@ -112,55 +115,75 @@ export default function AboutPage() {
       </section>
 
       {/* STORY */}
-      <section className="mt-12 rounded-3xl bg-gradient-to-br from-sky-50 via-white to-amber-50 p-5 sm:mt-16 sm:rounded-[1.6rem] sm:p-8 lg:p-10">
+      <section
+        className="mt-12 p-5 sm:mt-16 sm:p-10"
+        style={{
+          background:
+            "linear-gradient(135deg, #fbf6e8 0%, #fbf9f4 60%, #ffffff 100%)",
+          border: "1px solid var(--line)",
+          borderRadius: "4px",
+        }}
+      >
         <div className="mx-auto max-w-3xl">
-          <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
-            Story
-          </p>
-          <h2 className="mt-2 font-serif text-[1.5rem] font-bold leading-[1.42] tracking-[-0.02em] text-slate-950 sm:text-[1.9rem]">
+          <p className="lumora-eyebrow">STORY</p>
+          <h2 className="lumora-display mt-3 text-[1.4rem] leading-[1.55] sm:text-[1.9rem]">
             Lumora が生まれた背景
           </h2>
-          <ul className="mt-6 grid gap-3">
-            {story.map((item) => (
+          <ol className="mt-7 grid gap-4">
+            {story.map((item, idx) => (
               <li
-                className="rounded-2xl border border-white/80 bg-white/90 p-4 shadow-[0_14px_40px_-36px_rgba(15,23,42,0.45)] sm:p-5"
+                className="grid grid-cols-[2.6rem_1fr] gap-4 bg-white p-5"
                 key={item.title}
+                style={{
+                  border: "1px solid var(--line)",
+                  borderRadius: "3px",
+                }}
               >
-                <p className="font-mono text-[0.72rem] font-bold uppercase tracking-[0.18em] text-amber-700">
-                  {item.year}
-                </p>
-                <h3 className="mt-2 text-[1rem] font-bold tracking-[-0.01em] text-slate-950 sm:text-[1.05rem]">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-[0.9rem] leading-[1.85] text-slate-600">
-                  {item.body}
-                </p>
+                <span
+                  aria-hidden="true"
+                  className="grid h-10 w-10 place-items-center rounded-sm bg-[var(--accent-deep)] font-serif text-[1rem] font-bold text-white"
+                >
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <p className="font-serif text-[0.78rem] font-bold tracking-[0.22em] text-[var(--accent-warm)]">
+                    {item.year}
+                  </p>
+                  <h3 className="mt-1.5 font-serif text-[1.02rem] font-bold leading-[1.55] text-[var(--ink)] sm:text-[1.08rem]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-[0.9rem] leading-[2] text-[var(--ink-soft)]">
+                    {item.body}
+                  </p>
+                </div>
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
       </section>
 
       {/* SKILLS */}
       <section className="mt-12 sm:mt-16">
         <div className="mx-auto max-w-3xl">
-          <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
-            Skills
-          </p>
-          <h2 className="mt-2 font-serif text-[1.5rem] font-bold leading-[1.42] tracking-[-0.02em] text-slate-950 sm:text-[1.9rem]">
+          <p className="lumora-eyebrow">SKILLS</p>
+          <h2 className="lumora-display mt-3 text-[1.4rem] leading-[1.55] sm:text-[1.9rem]">
             扱う領域
           </h2>
         </div>
-        <ul className="mx-auto mt-6 grid max-w-3xl gap-2.5 sm:mt-8 sm:grid-cols-2">
+        <ul className="mx-auto mt-7 grid max-w-3xl gap-2.5 sm:grid-cols-2">
           {skills.map((skill) => (
             <li
-              className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-3.5 sm:p-4"
+              className="flex items-start gap-3 bg-white p-4"
               key={skill.label}
+              style={{
+                border: "1px solid var(--line)",
+                borderRadius: "3px",
+              }}
             >
-              <span className="grid h-7 shrink-0 place-items-center rounded-full bg-sky-100 px-2 text-[0.7rem] font-bold uppercase tracking-[0.14em] text-sky-800">
+              <span className="grid h-7 shrink-0 place-items-center rounded-sm bg-[var(--accent-deep)] px-2.5 font-serif text-[0.7rem] font-bold uppercase tracking-[0.16em] text-white">
                 {skill.label}
               </span>
-              <p className="text-[0.88rem] leading-[1.7] text-slate-700">
+              <p className="text-[0.9rem] leading-[1.85] text-[var(--ink)]">
                 {skill.text}
               </p>
             </li>
@@ -169,25 +192,43 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="my-12 overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 to-sky-900 p-6 text-white sm:my-16 sm:rounded-[1.6rem] sm:p-10">
+      <section
+        className="relative my-12 overflow-hidden p-8 text-white sm:my-16 sm:p-12"
+        style={{
+          background:
+            "radial-gradient(circle at 92% 8%, rgba(200,146,17,0.18), transparent 40%), linear-gradient(135deg, #0f1c3a 0%, #1f3a6b 100%)",
+          border: "1px solid #1a2a4d",
+          borderRadius: "4px",
+        }}
+      >
+        <div
+          aria-hidden="true"
+          className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[var(--accent-warm)] to-transparent"
+        />
         <div className="mx-auto max-w-2xl sm:text-center">
-          <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-300">
-            Vision
+          <p className="font-serif text-[0.78rem] font-bold tracking-[0.28em] text-[#f5d68a]">
+            VISION
           </p>
-          <h2 className="mt-3 font-serif text-[1.5rem] font-bold leading-[1.42] tracking-[-0.02em] sm:text-[1.95rem]">
+          <h2 className="mt-4 font-serif text-[1.5rem] font-bold leading-[1.5] sm:text-[1.95rem]">
             ブログ・教材・アプリを<br className="hidden sm:block" />
             ひとつの学習動線へ。
           </h2>
-          <p className="mt-4 text-[0.95rem] leading-[1.95] text-slate-300">
+          <p className="mt-5 font-serif text-[0.95rem] leading-[2.05] text-[#d6d3c8]">
             Lumora はこれから、記事と教材とアプリの境界をさらに薄くしていきます。読む・解く・つなぐが地続きの学習体験を作り続けます。
           </p>
-          <div className="mt-6 flex flex-col gap-2.5 sm:flex-row sm:justify-center">
-            <ButtonLink className="w-full sm:w-auto" href="/blog">
-              ブログを読む
-            </ButtonLink>
-            <ButtonLink className="w-full sm:w-auto" href="/contact" variant="secondary">
+          <div className="mt-7 flex flex-col gap-2.5 sm:flex-row sm:justify-center">
+            <Link
+              className="inline-flex min-h-12 items-center justify-center rounded-sm bg-[var(--accent-warm)] px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-[#1a1a1a] transition hover:-translate-y-0.5 hover:bg-[#dca424]"
+              href="/blog"
+            >
+              ブログを読む →
+            </Link>
+            <Link
+              className="inline-flex min-h-12 items-center justify-center rounded-sm border border-white/35 bg-transparent px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:border-white"
+              href="/contact"
+            >
               相談する
-            </ButtonLink>
+            </Link>
           </div>
         </div>
       </section>
