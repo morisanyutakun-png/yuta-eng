@@ -269,22 +269,20 @@ export default function AboutPage() {
                 ひとつの学習動線へ。
               </h2>
               <p className="mt-5 text-[0.95rem] leading-[1.95] text-white/85">
-                Solvora はこれから、物理の森と記事・教材アプリの境界をさらに薄くしていきます。読む・解く・つなぐが地続きの学習体験を作り続けます。
+                Solvora はこれから、ブログで読み、教材で確かめ、アプリで使う——記事・教材・アプリの境界をさらに薄くしていきます。読む・解く・つなぐが地続きの学習体験を作り続けます。
               </p>
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                <a
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:-translate-y-0.5 hover:bg-[#bae6fd]"
-                  href={siteConfig.physicsSchoolUrl}
-                  rel="noreferrer noopener"
-                  target="_blank"
-                >
-                  物理の森を開く <span aria-hidden="true">↗</span>
-                </a>
                 <Link
-                  href="/contact"
+                  href="/blog"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:-translate-y-0.5 hover:bg-[#bae6fd]"
+                >
+                  ブログを読む <span aria-hidden="true">→</span>
+                </Link>
+                <Link
+                  href="/apps"
                   className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/40 px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-white transition hover:bg-white hover:text-[#0b1d4a]"
                 >
-                  相談する
+                  アプリを見る
                 </Link>
               </div>
             </div>
