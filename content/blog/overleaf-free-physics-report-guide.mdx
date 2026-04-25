@@ -1,0 +1,273 @@
+---
+title: "Overleaf 無料 使い方 完全ガイド｜物理レポートを書く5ステップ【LaTeX 図表・参考文献】"
+description: "Overleaf 無料 使い方 を、物理レポートを実例にして登録 → テンプレ選び → LaTeX 数式・図表 → BibTeX 参考文献 → PDF ビルドの5ステップで解説。Overleaf 物理 レポートで詰まりやすいポイントと、LaTeX 図表 入れ方の最短手順を、教員・大学生・大学院生向けにまとめます。"
+date: "2026-05-05"
+tags:
+  - Overleaf 無料 使い方
+  - Overleaf 物理 レポート
+  - LaTeX 図表 入れ方
+  - BibTeX 参考文献
+  - LaTeX 始め方
+category: "LaTeX"
+slug: "overleaf-free-physics-report-guide"
+draft: false
+searchIntent: "Overleaf を無料で使い始めて物理レポート（実験レポート・卒論）を書きたい大学生・大学院生・教員向け。LaTeX の基本〜図表挿入〜参考文献までを最短で押さえたい人。"
+keyPoints:
+  - "Overleaf 無料 使い方 を物理レポートを例に5ステップで体得できる"
+  - "Overleaf 物理 レポートで頻出の数式・図表・参考文献を一発で書ける"
+  - "LaTeX 図表 入れ方（graphicx, subfigure）と BibTeX 参考文献の手順がわかる"
+  - "Overleaf 無料プランの制限と、有料に切り替える判断基準がはっきりする"
+---
+
+「**Overleaf 無料 使い方** を最短で覚えて物理レポートを書きたい」── 大学1年〜大学院生から最も多い相談です。Overleaf はオンラインで動く LaTeX エディタで、**インストール不要・PC性能不問・共同編集可** という強みがあります。本記事では Overleaf 物理 レポートを書く5ステップを、図表挿入と参考文献まで含めて1ページで完結させます。
+
+<KeyPoints
+  title="この記事の結論"
+  items={[
+    "Overleaf 無料 使い方 は『登録 → テンプレ → 数式 → 図表 → 参考文献 → ビルド』の5ステップ",
+    "物理レポートでは article クラス + amsmath + graphicx + bm + biblatex の5パッケージで足りる",
+    "LaTeX 図表 入れ方 は \\includegraphics と figure 環境の組み合わせで完結",
+    "BibTeX 参考文献は .bib ファイルに DOI から自動取得が最短",
+  ]}
+/>
+
+<Toc
+  items={[
+    { id: "h2-signup", label: "Step 1｜Overleaf 無料 登録とプロジェクト作成" },
+    { id: "h2-template", label: "Step 2｜物理レポート向けテンプレートと最低限のパッケージ" },
+    { id: "h2-math", label: "Step 3｜LaTeX 数式の書き方（物理頻出パターン）" },
+    { id: "h2-figures", label: "Step 4｜LaTeX 図表 入れ方｜画像と表を綺麗に挿入" },
+    { id: "h2-bibliography", label: "Step 5｜BibTeX 参考文献を半自動で揃える" },
+    { id: "h2-build", label: "PDF ビルドと共有・共同編集" },
+    { id: "h2-limits", label: "Overleaf 無料プランの制限と有料化判断" },
+    { id: "h2-faq", label: "よくある質問（FAQ）" },
+  ]}
+/>
+
+## <span id="h2-signup">Step 1｜Overleaf 無料 登録とプロジェクト作成</span>
+
+**Overleaf 無料 使い方** の最初の一歩は、登録 → 新規プロジェクト作成です。
+
+| 操作 | 手順 |
+| --- | --- |
+| アカウント作成 | overleaf.com → Register（Google / GitHub 連携可） |
+| 新規プロジェクト | ダッシュボード「New Project」→ Blank Project（または Templates） |
+| 言語設定 | プロジェクト設定で Compiler を pdfLaTeX か XeLaTeX に（日本語は LuaLaTeX 推奨） |
+| 日本語対応 | `\usepackage{luatexja}`（LuaLaTeX 使用時）または `documentclass{ltjsarticle}` |
+
+<Callout variant="tip" title="日本語レポートを書く最短設定">
+LuaLaTeX + ltjsarticle が最短。ltjsarticle はクラスファイル自体が日本語に対応しているので、追加パッケージなしで日本語が綺麗に出ます。
+</Callout>
+
+## <span id="h2-template">Step 2｜物理レポート向けテンプレートと最低限のパッケージ</span>
+
+**Overleaf 物理 レポート** に必要なパッケージは5つだけです。これでレポートの9割が書けます。
+
+```latex
+\documentclass[a4paper,11pt]{ltjsarticle}
+\usepackage{amsmath, amssymb}  % 数式
+\usepackage{bm}                 % 太字ベクトル \bm{F}
+\usepackage{graphicx}           % 図の挿入
+\usepackage[backend=biber]{biblatex}  % 参考文献
+\addbibresource{references.bib}
+
+\title{力学レポート：単振動の周期測定}
+\author{森 祐太}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{目的}
+ばね振り子の周期を測定し、$T = 2\pi\sqrt{m/k}$ の関係式が成り立つかを検証する。
+
+\section{原理}
+復元力 $F = -kx$ から運動方程式 $ma = -kx$ が得られ、$\omega^2 = k/m$ より周期は
+\begin{equation}
+T = 2\pi\sqrt{\frac{m}{k}}.
+\end{equation}
+
+\section{実験方法}
+\section{結果}
+\section{考察}
+\section{参考文献}
+\printbibliography
+\end{document}
+```
+
+<Callout variant="info" title="このテンプレが最短である理由">
+- ltjsarticle で日本語の組版が綺麗<br />
+- amsmath で物理の数式が標準的に書ける<br />
+- bm でベクトルが太字に<br />
+- graphicx で実験データの図を貼れる<br />
+- biblatex で参考文献が自動整形
+</Callout>
+
+## <span id="h2-math">Step 3｜LaTeX 数式の書き方（物理頻出パターン）</span>
+
+物理レポートで頻出する数式パターンを早見表で。詳細は[LaTeX 数式 物理 完全チートシート](/blog/latex-physics-math-cheatsheet)に50項目まとめています。
+
+| 用途 | コード | 出力 |
+| --- | --- | --- |
+| 番号付き数式 | `\begin{equation} F = ma \end{equation}` | $F = ma$（番号付き） |
+| 連立 | `\begin{align} a &= b \\ c &= d \end{align}` | 2行揃え |
+| ベクトル | `\bm{F} = m\bm{a}` | $\boldsymbol{F} = m\boldsymbol{a}$ |
+| 偏微分 | `\frac{\partial f}{\partial x}` | $\dfrac{\partial f}{\partial x}$ |
+| 積分 | `\int_0^T v\,dt` | $\int_0^T v\,dt$ |
+
+<Callout variant="tip" title="番号付き数式の参照">
+`\label{eq:newton}` を equation 環境内に置き、本文で `\eqref{eq:newton}` と書くと「式(1)」のように自動参照されます。レポートで多用すると章番号が変わっても自動追従。
+</Callout>
+
+## <span id="h2-figures">Step 4｜LaTeX 図表 入れ方｜画像と表を綺麗に挿入</span>
+
+**LaTeX 図表 入れ方** は graphicx パッケージで完結します。
+
+### 画像（実験データのグラフなど）
+
+```latex
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{figures/period-vs-mass.png}
+  \caption{ばね振り子の周期 $T$ と質量 $m$ の関係。点は実験値、実線は理論値 $T=2\pi\sqrt{m/k}$。}
+  \label{fig:period}
+\end{figure}
+```
+
+| オプション | 効果 |
+| --- | --- |
+| `[h]` | この場所に表示（here） |
+| `[t]` | ページの上部 |
+| `[b]` | ページの下部 |
+| `width=0.8\linewidth` | 行幅の80% |
+| `\caption{...}` | キャプション |
+| `\label{fig:...}` | 参照用ラベル |
+
+### 表
+
+```latex
+\begin{table}[h]
+  \centering
+  \caption{測定結果}
+  \begin{tabular}{ccc}
+    \hline
+    質量 $m$ [kg] & 周期 $T$ [s] & 理論値 \\
+    \hline
+    0.1 & 0.45 & 0.44 \\
+    0.2 & 0.63 & 0.63 \\
+    0.3 & 0.77 & 0.77 \\
+    \hline
+  \end{tabular}
+  \label{tab:measurements}
+\end{table}
+```
+
+<Callout variant="warn" title="Overleafに画像をアップロードする方法">
+左上「Upload」ボタンで画像ファイルをプロジェクトにアップロード → `figures/` フォルダに整理 → `\includegraphics{figures/xxx.png}` で参照。PNG・JPG・PDF・SVG が使えます。
+</Callout>
+
+## <span id="h2-bibliography">Step 5｜BibTeX 参考文献を半自動で揃える</span>
+
+**BibTeX 参考文献** は、`references.bib` という別ファイルに引用情報をまとめて、本文から `\cite{...}` で呼び出します。
+
+### references.bib の例
+
+```bibtex
+@article{Roediger2006,
+  author = {Roediger, Henry L. and Karpicke, Jeffrey D.},
+  title = {Test-Enhanced Learning},
+  journal = {Psychological Science},
+  volume = {17},
+  number = {3},
+  pages = {249--255},
+  year = {2006},
+  doi = {10.1111/j.1467-9280.2006.01693.x}
+}
+
+@book{Goldstein2002,
+  author = {Goldstein, Herbert and Poole, Charles and Safko, John},
+  title = {Classical Mechanics},
+  edition = {3rd},
+  publisher = {Addison-Wesley},
+  year = {2002}
+}
+```
+
+### 本文での引用
+
+```latex
+本実験は Roediger ら~\cite{Roediger2006} の手法を物理学習に応用したものである。
+古典力学の理論的背景は Goldstein~\cite{Goldstein2002} を参照。
+```
+
+<Callout variant="tip" title="DOI から .bib エントリを自動取得する">
+DOI を [doi2bib.org](https://www.doi2bib.org/) や [Crossref](https://search.crossref.org/) に入れると、BibTeX 形式で吐き出してくれます。これを `references.bib` にコピペするだけ。手書きする時代は終わりました。
+</Callout>
+
+## <span id="h2-build">PDF ビルドと共有・共同編集</span>
+
+| 操作 | 方法 |
+| --- | --- |
+| ビルド | 右上「Recompile」ボタンまたは Ctrl+Enter |
+| 共有 | 右上「Share」→ メールアドレス入力（無料は1人まで共同編集可） |
+| 履歴 | 「History」タブ（無料は24時間まで） |
+| ダウンロード | 「Download PDF」または「Source」（.zip） |
+
+## <span id="h2-limits">Overleaf 無料プランの制限と有料化判断</span>
+
+| 項目 | 無料 | Personal ($21/月) | Standard ($42/月) |
+| --- | --- | --- | --- |
+| プロジェクト数 | 無制限 | 無制限 | 無制限 |
+| コラボレーター | 1人 | 10人 | 10人 |
+| 履歴保持 | 24時間 | 1年 | 無制限 |
+| Git 統合 | × | ◯ | ◯ |
+| Dropbox 統合 | × | ◯ | ◯ |
+| ビルド時間上限 | 1分 | 4分 | 4分 |
+
+<Callout variant="note" title="有料に切り替える判断基準">
+- 個人で物理レポートを書く程度なら **無料で十分**<br />
+- 研究室・チームで複数人共同編集なら **Personal**<br />
+- 卒論・修論・大規模プロジェクトで Git 連携・履歴を厳密に取りたいなら **Standard**
+</Callout>
+
+<CtaCard
+  eyebrow="LUMORA · LaTeX"
+  title="Overleaf を使いこなしたら、教材作成の自動化へ"
+  body="Overleaf で LaTeX を書けるようになったら、AI で問題下書きを生成して LaTeX で組版する一連のワークフローへ進めます。物理の数式記法は『LaTeX 数式 物理 完全チートシート』、ツール選定は『教材作成 ツール 比較 2026』を参照。"
+  primary={{ label: "LaTeX 数式 物理 完全チートシート", href: "/blog/latex-physics-math-cheatsheet" }}
+  secondary={{ label: "教材作成 ツール 比較 2026", href: "/blog/teaching-material-tools-comparison-2026" }}
+/>
+
+## <span id="h2-faq">よくある質問（FAQ）</span>
+
+<Faq
+  items={[
+    {
+      q: "Overleaf 無料 使い方 で日本語が文字化けします。どうすれば？",
+      a: "Compiler を LuaLaTeX に設定し、ドキュメントクラスを ltjsarticle にしてください。pdfLaTeX のままだと日本語は通りません。プロジェクト設定（左の歯車）から変更できます。",
+    },
+    {
+      q: "Overleaf 物理 レポート で実験データのグラフはどう貼ればいいですか？",
+      a: "Excel・Python（matplotlib）で作った PNG/PDF を Overleaf にアップロードし、\\includegraphics{figures/xxx.png} で貼ります。PDF で貼るとベクター画像になり、拡大しても綺麗です。matplotlib なら savefig('xxx.pdf') が推奨。",
+    },
+    {
+      q: "LaTeX 図表 入れ方 で図がずれて配置されます。",
+      a: "[h] や [t] は『この付近に置いてほしい』というヒントで強制ではありません。強制するなら [H]（要 float パッケージ）。ただし [H] を多用すると組版が崩れるので、基本は LaTeX に任せて [tb] あたりが推奨です。",
+    },
+    {
+      q: "BibTeX 参考文献 がビルドされません。",
+      a: "biblatex を使う場合、Compiler が biber に対応している必要があります（pdfLaTeX のままで biber を呼ぶ設定）。または旧来の \\bibliographystyle と \\bibliography を使う BibTeX 方式でも可。最初は biblatex+biber が推奨。",
+    },
+    {
+      q: "Overleaf 無料 で共同編集が1人までだと足りません。",
+      a: "招待リンクなら閲覧は何人でも可能ですが、編集は1人まで。チームで編集するなら Personal プランへ。または Git 連携で各自ローカル編集→PR運用も可（要有料）。",
+    },
+  ]}
+/>
+
+### 関連記事・参考文献
+
+- LaTeX 記法：[LaTeX 数式 物理 完全チートシート｜高校・大学物理でよく使う記法 50選](/blog/latex-physics-math-cheatsheet)
+- ツール選定：[教材作成 ツール 比較 2026｜AI×LaTeXで問題プリントを自動化する4選](/blog/teaching-material-tools-comparison-2026)
+- ワークフロー全体：[AIとLaTeXで教材作成を自動化｜下書き→整形→展開を1日30分に](/blog/latex-web-workflow)
+- [Overleaf 公式ドキュメント](https://www.overleaf.com/learn)
