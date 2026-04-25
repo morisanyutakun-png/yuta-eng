@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Container } from "@/components/container";
+import { JsonLd } from "@/components/json-ld";
 import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
+import { createBreadcrumbJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
   title: "理系学習ハブ Solvora の運営方針と事業構成、運営者プロフィール",
@@ -65,12 +67,28 @@ const story = [
 ];
 
 export default function AboutPage() {
+  const breadcrumb = createBreadcrumbJsonLd([
+    { name: "ホーム", path: "/" },
+    { name: "About", path: "/about" },
+  ]);
   return (
     <>
+      <JsonLd data={breadcrumb} />
       {/* HERO */}
       <section className="bg-white">
-        <Container className="px-6">
-          <div className="py-16 sm:py-20 lg:py-24">
+        <Container className="px-5 sm:px-6">
+          <nav aria-label="パンくずリスト" className="pt-7 text-[0.78rem] text-[#94a3b8] sm:pt-9">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link className="transition hover:text-[#1d4ed8]" href="/">
+                  ホーム
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-[#cbd5e1]">/</li>
+              <li className="text-[#475569]">About</li>
+            </ol>
+          </nav>
+          <div className="py-10 sm:py-16 lg:py-20">
             <p className="text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
               About · Solvora
             </p>

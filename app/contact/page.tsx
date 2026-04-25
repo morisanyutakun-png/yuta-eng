@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Container } from "@/components/container";
+import { JsonLd } from "@/components/json-ld";
 import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
+import { createBreadcrumbJsonLd, createFaqJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
   title: "高校物理塾の受講相談・教材制作の問い合わせ窓口 - Solvora",
@@ -45,13 +47,48 @@ const flow = [
   },
 ];
 
+const contactFaq = [
+  {
+    question: "高校物理オンライン塾「物理の森」の受講相談は無料ですか？",
+    answer:
+      "はい、初回受講相談は無料です。受講前提でなくても構いません。現状の物理の偏差値・志望校・残り時間を伺い、最初の3ヶ月の学習プラン案を提示します。",
+  },
+  {
+    question: "返信はどれくらいで届きますか？",
+    answer:
+      "初回返信は1営業日以内が目安です。土日祝に送付された場合は翌営業日になることがあります。",
+  },
+  {
+    question: "教材制作・AI×LaTeX 教材の依頼はできますか？",
+    answer:
+      "はい、AI と LaTeX を使った教材制作の導入支援、テンプレート設計、運用フロー構築まで対応します。テーマ・規模・希望スケジュールをメールでお知らせください。",
+  },
+];
+
 export default function ContactPage() {
+  const breadcrumb = createBreadcrumbJsonLd([
+    { name: "ホーム", path: "/" },
+    { name: "相談・お問い合わせ", path: "/contact" },
+  ]);
+  const faqJsonLd = createFaqJsonLd(contactFaq);
   return (
     <>
+      <JsonLd data={[breadcrumb, faqJsonLd]} />
       {/* HERO */}
       <section className="bg-white">
-        <Container className="px-6">
-          <div className="py-16 sm:py-20 lg:py-24">
+        <Container className="px-5 sm:px-6">
+          <nav aria-label="パンくずリスト" className="pt-7 text-[0.78rem] text-[#94a3b8] sm:pt-9">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link className="transition hover:text-[#1d4ed8]" href="/">
+                  ホーム
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-[#cbd5e1]">/</li>
+              <li className="text-[#475569]">相談・お問い合わせ</li>
+            </ol>
+          </nav>
+          <div className="py-10 sm:py-16 lg:py-20">
             <p className="text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
               Contact · Solvora
             </p>

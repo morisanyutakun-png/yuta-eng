@@ -47,7 +47,7 @@ export function createOrganizationJsonLd() {
     url: siteConfig.url,
     description: siteConfig.description,
     email: siteConfig.email,
-    logo: new URL("/brand/lumora-logo.png", siteConfig.url).toString(),
+    logo: new URL("/brand/solvora-mark.svg", siteConfig.url).toString(),
     founder: {
       "@type": "Person",
       name: siteConfig.author,
@@ -58,6 +58,7 @@ export function createOrganizationJsonLd() {
       {
         "@type": "EducationalOrganization",
         name: "物理の森",
+        alternateName: ["物理の森 オンライン物理塾", "Solvora 物理塾"],
         url: siteConfig.physicsSchoolUrl,
         parentOrganization: {
           "@type": "Organization",
@@ -65,7 +66,37 @@ export function createOrganizationJsonLd() {
           url: siteConfig.url,
         },
         description:
-          "Solvora が運営する、高校物理に特化したオンライン専門塾。",
+          "Solvora が運営する物理専門塾オンライン。高校物理（力学・電磁気・波動・熱・原子）を理解で解くための個別カリキュラムを提供する高校物理オンライン塾。",
+      },
+      {
+        "@type": "SoftwareApplication",
+        name: "Physics",
+        alternateName: ["高校物理アプリ Physics", "Solvora Physics"],
+        url: siteConfig.physicsSchoolUrl,
+        applicationCategory: "EducationalApplication",
+        operatingSystem: "Web",
+        description:
+          "Solvora が提供する高校物理アプリ。力学・電磁気・波動・熱・原子の各単元を概念解説 → 例題 → 演習の3ステップでスマホから学べる高校物理学習アプリ。",
+      },
+      {
+        "@type": "SoftwareApplication",
+        name: "Eddivom",
+        alternateName: ["Eddivom LaTeX教材作成", "LaTeX 教材作成 ツール Eddivom"],
+        url: siteConfig.eddivomUrl,
+        applicationCategory: "EducationalApplication",
+        operatingSystem: "Web",
+        description:
+          "Solvora が公式紹介する LaTeX 教材作成 Web アプリ。AI で問題下書き → LaTeX 整形 → PDF 出力までをワンストップで処理し、教員・塾講師の問題プリント作成を効率化。",
+      },
+      {
+        "@type": "SoftwareApplication",
+        name: "IT Pass",
+        alternateName: ["ITパスポート アプリ IT Pass", "ITパスポート 学習アプリ"],
+        url: siteConfig.itPassUrl,
+        applicationCategory: "EducationalApplication",
+        operatingSystem: "Web",
+        description:
+          "Solvora が公式紹介する ITパスポート アプリ。過去問演習・分野別解説・苦手単元復習をスマホから 5〜10 分のスキマ時間で積み上げられる IT パスポート対策学習アプリ。",
       },
     ],
   };
@@ -170,6 +201,80 @@ export function createItemListJsonLd(name: string, items: ItemListItem[]) {
       url: item.url,
       name: item.name,
       description: item.description,
+    })),
+  };
+}
+
+export type ServiceSchemaInput = {
+  name: string;
+  alternateName?: string[];
+  description: string;
+  url: string;
+  appCategory?: string;
+  audience?: string;
+  inLanguage?: string;
+};
+
+export function createSoftwareAppJsonLd(input: ServiceSchemaInput) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: input.name,
+    alternateName: input.alternateName,
+    description: input.description,
+    url: input.url,
+    applicationCategory: input.appCategory ?? "EducationalApplication",
+    operatingSystem: "Web",
+    inLanguage: input.inLanguage ?? "ja",
+    isAccessibleForFree: true,
+    audience: input.audience
+      ? { "@type": "EducationalAudience", educationalRole: input.audience }
+      : undefined,
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "JPY",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+  };
+}
+
+export function createEducationalOrganizationJsonLd(input: ServiceSchemaInput) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    name: input.name,
+    alternateName: input.alternateName,
+    description: input.description,
+    url: input.url,
+    inLanguage: input.inLanguage ?? "ja",
+    parentOrganization: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    areaServed: { "@type": "Country", name: "Japan" },
+    audience: input.audience
+      ? { "@type": "EducationalAudience", educationalRole: input.audience }
+      : undefined,
+  };
+}
+
+export function createFaqJsonLd(items: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
     })),
   };
 }
