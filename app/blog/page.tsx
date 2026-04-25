@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/container";
@@ -19,146 +20,177 @@ export const metadata: Metadata = createPageMetadata({
   path: "/blog",
 });
 
-const categoryStyles: Record<string, { bg: string; text: string; ring: string }> = {
-  Physics: {
-    bg: "bg-[#eef2fb]",
-    text: "text-[#1f3a6b]",
-    ring: "ring-[#c8d2e8]",
-  },
-  Materials: {
-    bg: "bg-[#fbf3df]",
-    text: "text-[#6b4a09]",
-    ring: "ring-[#e8d5a8]",
-  },
-  LaTeX: {
-    bg: "bg-[#fbf3df]",
-    text: "text-[#6b4a09]",
-    ring: "ring-[#e8d5a8]",
-  },
-  Education: {
-    bg: "bg-[#eef4eb]",
-    text: "text-[#2f4d18]",
-    ring: "ring-[#c8d8be]",
-  },
-};
-
-const defaultCategoryStyle = {
-  bg: "bg-[#f5f1e8]",
-  text: "text-[#4a4a4a]",
-  ring: "ring-[#d8cfb8]",
+const categoryAccent: Record<string, string> = {
+  Physics: "#1d4ed8",
+  Materials: "#0369a1",
+  LaTeX: "#0284c7",
+  Education: "#0d9488",
 };
 
 export default function BlogPage() {
   const posts = getAllPosts();
+  const [featuredPost, ...restPosts] = posts;
   const categories = Array.from(new Set(posts.map((post) => post.category)));
 
   return (
-    <Container className="px-4 sm:px-6">
-      <header className="mx-auto mt-8 max-w-3xl text-center sm:mt-14">
-        <p className="lumora-kicker">LUMORA · BLOG</p>
-        <h1 className="lumora-display mt-5 text-balance text-[1.7rem] leading-[1.55] sm:text-[2.4rem] sm:leading-[1.45]">
-          高校物理と教材作成を、<br className="hidden sm:block" />
-          <span className="lumora-marker">図と表でわかりやすく</span>。
-        </h1>
-        <p className="mx-auto mt-5 max-w-2xl text-pretty font-serif text-[0.95rem] leading-[2.1] text-[var(--ink-soft)] sm:text-[1rem]">
-          公式の暗記で止まらないための物理の読み方、AIで教材を作るときのコツ、学習支援アプリの考え方を、検索でたどり着いた1記事ですぐ使える形にまとめています。
-        </p>
-        <div className="lumora-rule" />
-      </header>
+    <>
+      {/* HERO */}
+      <section className="relative overflow-hidden bg-white">
+        <Container className="px-6">
+          <div className="py-16 sm:py-20 lg:py-24">
+            <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+              LUMORA · BLOG
+            </p>
+            <h1 className="mt-4 text-balance text-[2.2rem] font-extrabold leading-[1.2] tracking-[-0.01em] text-[#0b1d4a] sm:text-[3rem] sm:leading-[1.1] lg:text-[3.4rem]">
+              高校物理と教材作成を、
+              <br className="hidden sm:block" />
+              図と表でわかりやすく。
+            </h1>
+            <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
+              公式の暗記で止まらないための物理の読み方、AIで教材を作るときのコツ、学習支援アプリの考え方を、検索でたどり着いた1記事ですぐ使える形にまとめています。
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-2">
+              <span className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">
+                Categories
+              </span>
+              {categories.map((category) => {
+                const accent = categoryAccent[category] ?? "#1d4ed8";
+                return (
+                  <span
+                    key={category}
+                    className="inline-flex items-center rounded-full px-3 py-1 text-[0.78rem] font-semibold ring-1"
+                    style={{ color: accent, borderColor: accent, boxShadow: `inset 0 0 0 1px ${accent}33` }}
+                  >
+                    {category}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        </Container>
+      </section>
 
-      <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-1.5">
-        <span className="font-serif text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[var(--ink-soft)]">
-          カテゴリ
-        </span>
-        {categories.map((category) => {
-          const style = categoryStyles[category] ?? defaultCategoryStyle;
-          return (
-            <span
-              className={`inline-flex items-center rounded-sm px-3 py-1 font-serif text-xs font-bold tracking-[0.08em] ring-1 ring-inset ${style.bg} ${style.text} ${style.ring}`}
-              key={category}
+      {/* FEATURED */}
+      {featuredPost ? (
+        <section className="bg-[#f8fafc]">
+          <Container className="px-6 py-16 sm:py-20">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+                  Featured
+                </p>
+                <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+                  最新の記事
+                </h2>
+              </div>
+            </div>
+
+            <Link
+              href={`/blog/${featuredPost.slug}`}
+              className="group mt-10 grid overflow-hidden rounded-[28px] bg-white ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_40px_80px_-50px_rgba(15,29,74,0.35)] transition hover:-translate-y-1 hover:shadow-[0_44px_90px_-50px_rgba(15,29,74,0.45)] lg:grid-cols-[1.1fr_0.9fr]"
             >
-              {category}
-            </span>
-          );
-        })}
-      </div>
+              <div className="relative aspect-[1200/630] overflow-hidden bg-[#f1f5f9] lg:aspect-auto">
+                <Image
+                  src={`/blog/${featuredPost.slug}/opengraph-image`}
+                  alt={featuredPost.title}
+                  fill
+                  sizes="(min-width: 1024px) 60vw, 100vw"
+                  className="object-cover transition duration-700 group-hover:scale-[1.03]"
+                  priority
+                  unoptimized
+                />
+              </div>
+              <div className="flex flex-col justify-between gap-6 p-8 sm:p-10">
+                <div>
+                  <div className="flex flex-wrap items-center gap-3 text-[0.74rem] font-semibold uppercase tracking-[0.16em]">
+                    <span style={{ color: categoryAccent[featuredPost.category] ?? "#1d4ed8" }}>
+                      {featuredPost.category}
+                    </span>
+                    <time className="text-[#94a3b8]" dateTime={featuredPost.date}>
+                      {featuredPost.formattedDate}
+                    </time>
+                    <span className="text-[#cbd5e1]">·</span>
+                    <span className="text-[#94a3b8]">{featuredPost.readingTime}</span>
+                  </div>
+                  <h3 className="mt-5 text-balance text-[1.4rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] transition group-hover:text-[#1d4ed8] sm:text-[1.7rem] sm:leading-[1.35]">
+                    {featuredPost.title}
+                  </h3>
+                  <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569] sm:text-[1rem]">
+                    {featuredPost.description}
+                  </p>
+                </div>
+                <span className="inline-flex items-center text-[0.95rem] font-semibold text-[#1d4ed8] transition group-hover:text-[#0b1d4a]">
+                  続きを読む <span aria-hidden="true" className="ml-1.5">→</span>
+                </span>
+              </div>
+            </Link>
+          </Container>
+        </section>
+      ) : null}
 
-      <section className="mx-auto mt-8 max-w-3xl pb-16 sm:mt-10 sm:pb-24">
-        {posts.length > 0 ? (
-          <ul className="grid gap-4 sm:gap-5">
-            {posts.map((post) => {
-              const style = categoryStyles[post.category] ?? defaultCategoryStyle;
-              return (
+      {/* ALL ARTICLES */}
+      <section className="bg-white">
+        <Container className="px-6 py-20 sm:py-28">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+                All Articles
+              </p>
+              <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+                すべての記事
+              </h2>
+            </div>
+            <p className="text-[0.9rem] text-[#475569]">{posts.length} 本公開中</p>
+          </div>
+
+          {restPosts.length > 0 ? (
+            <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {restPosts.map((post) => (
                 <li key={post.slug}>
                   <Link
-                    className="group block bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-[0_24px_50px_-40px_rgba(15,23,42,0.4)] sm:p-7"
                     href={`/blog/${post.slug}`}
-                    style={{
-                      border: "1px solid var(--line)",
-                      borderTop: "3px solid var(--accent-deep)",
-                      borderRadius: "4px",
-                    }}
+                    className="group flex h-full flex-col overflow-hidden rounded-[22px] bg-white ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-32px_rgba(15,29,74,0.4)]"
                   >
-                    <div className="flex flex-wrap items-center gap-2 font-serif text-[0.74rem] font-bold tracking-[0.16em] text-[var(--ink-soft)]">
-                      <span
-                        className={`inline-flex items-center rounded-sm px-2.5 py-1 ring-1 ring-inset ${style.bg} ${style.text} ${style.ring}`}
-                      >
-                        {post.category}
-                      </span>
-                      <time className="text-[var(--ink-soft)]" dateTime={post.date}>
-                        {post.formattedDate}
-                      </time>
-                      <span className="text-[var(--ink-soft)] opacity-50">·</span>
-                      <span>{post.readingTime}</span>
+                    <div className="relative aspect-[1200/630] overflow-hidden bg-[#f1f5f9]">
+                      <Image
+                        src={`/blog/${post.slug}/opengraph-image`}
+                        alt={post.title}
+                        fill
+                        sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                        className="object-cover transition duration-700 group-hover:scale-[1.04]"
+                        unoptimized
+                      />
                     </div>
-                    <h2 className="mt-4 font-serif text-[1.1rem] font-bold leading-[1.65] text-[var(--ink)] transition group-hover:text-[var(--accent-deep)] sm:text-[1.3rem]">
-                      {post.title}
-                    </h2>
-                    <p className="mt-3 border-t border-dotted border-[var(--line)] pt-3 text-[0.92rem] leading-[2.05] text-[var(--ink-soft)] sm:text-[0.95rem]">
-                      {post.description}
-                    </p>
-                    {post.keyPoints && post.keyPoints.length > 0 ? (
-                      <div
-                        className="mt-4 px-4 py-3"
-                        style={{
-                          background: "#faf6ec",
-                          border: "1px solid var(--line)",
-                          borderRadius: "3px",
-                        }}
-                      >
-                        <p className="font-serif text-[0.72rem] font-bold tracking-[0.18em] text-[var(--accent-deep)]">
-                          記事のポイント
-                        </p>
-                        <ul className="mt-2 grid gap-1.5">
-                          {post.keyPoints.slice(0, 2).map((point) => (
-                            <li
-                              className="flex gap-2 text-[0.85rem] leading-[1.85] text-[var(--ink)]"
-                              key={point}
-                            >
-                              <span
-                                aria-hidden="true"
-                                className="mt-[0.55em] h-[0.4em] w-[0.4em] shrink-0 rotate-45 bg-[var(--accent-warm)]"
-                              />
-                              <span>{point}</span>
-                            </li>
-                          ))}
-                        </ul>
+                    <div className="flex flex-1 flex-col gap-3 p-6">
+                      <div className="flex items-center gap-3 text-[0.74rem] font-semibold uppercase tracking-[0.16em]">
+                        <span style={{ color: categoryAccent[post.category] ?? "#1d4ed8" }}>
+                          {post.category}
+                        </span>
+                        <time className="text-[#94a3b8]" dateTime={post.date}>
+                          {post.formattedDate}
+                        </time>
                       </div>
-                    ) : null}
-                    <p className="mt-5 inline-flex items-center gap-1 font-serif text-[0.86rem] font-bold tracking-[0.06em] text-[var(--accent-deep)]">
-                      続きを読む <span aria-hidden="true">→</span>
-                    </p>
+                      <h3 className="text-[1.05rem] font-bold leading-[1.55] text-[#0b1d4a] transition group-hover:text-[#1d4ed8]">
+                        {post.title}
+                      </h3>
+                      <p className="line-clamp-3 text-[0.88rem] leading-[1.85] text-[#475569]">
+                        {post.description}
+                      </p>
+                      <span className="mt-auto pt-3 text-[0.85rem] font-semibold text-[#1d4ed8] opacity-0 transition group-hover:opacity-100">
+                        続きを読む →
+                      </span>
+                    </div>
                   </Link>
                 </li>
-              );
-            })}
-          </ul>
-        ) : (
-          <div className="rounded-2xl border border-slate-200 bg-white p-6 text-center text-slate-600">
-            まだ公開記事はありません。
-          </div>
-        )}
+              ))}
+            </ul>
+          ) : (
+            <div className="mt-12 rounded-[22px] bg-[#f8fafc] p-8 text-center text-[#475569] ring-1 ring-[rgba(15,29,74,0.06)]">
+              まだ公開記事はありません。
+            </div>
+          )}
+        </Container>
       </section>
-    </Container>
+    </>
   );
 }

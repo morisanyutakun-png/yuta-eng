@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 
-import { ArticleCard } from "@/components/article-card";
-import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
 import { mdxComponents } from "@/components/mdx-components";
@@ -39,13 +38,35 @@ export async function generateMetadata({
     });
   }
 
-  return createPageMetadata({
+  const base = createPageMetadata({
     title: post.title,
     description: post.description,
     keywords: [post.category, ...post.tags],
     path: `/blog/${post.slug}`,
     type: "article",
   });
+
+  const ogImageUrl = `/blog/${post.slug}/opengraph-image`;
+
+  return {
+    ...base,
+    openGraph: {
+      ...base.openGraph,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      ...base.twitter,
+      card: "summary_large_image",
+      images: [ogImageUrl],
+    },
+  };
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
@@ -58,8 +79,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   const relatedPosts = getRelatedPosts(post.slug, 3);
 
+  const categoryAccent: Record<string, string> = {
+    Physics: "#1d4ed8",
+    Materials: "#0369a1",
+    LaTeX: "#0284c7",
+    Education: "#0d9488",
+  };
+  const accent = categoryAccent[post.category] ?? "#1d4ed8";
+
   return (
-    <Container className="px-4 sm:px-6">
+    <>
       <JsonLd
         data={[
           createArticleJsonLd(post),
@@ -71,223 +100,259 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         ]}
       />
 
-      <nav
-        aria-label="パンくずリスト"
-        className="mx-auto mt-5 max-w-3xl text-xs leading-5 text-slate-500 sm:mt-6"
-      >
-        <ol className="flex flex-wrap items-center gap-1.5">
-          <li>
-            <Link className="hover:text-sky-700" href="/">
-              ホーム
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li>
-            <Link className="hover:text-sky-700" href="/blog">
-              ブログ
-            </Link>
-          </li>
-          <li aria-hidden="true">/</li>
-          <li className="truncate text-slate-700">{post.category}</li>
-        </ol>
-      </nav>
+      {/* HERO */}
+      <section className="bg-white">
+        <Container className="px-6">
+          <nav aria-label="パンくずリスト" className="pt-8 text-[0.78rem] text-[#94a3b8] sm:pt-10">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link className="transition hover:text-[#1d4ed8]" href="/">
+                  ホーム
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-[#cbd5e1]">/</li>
+              <li>
+                <Link className="transition hover:text-[#1d4ed8]" href="/blog">
+                  ブログ
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-[#cbd5e1]">/</li>
+              <li className="truncate text-[#475569]">{post.category}</li>
+            </ol>
+          </nav>
 
-      <article className="mx-auto max-w-3xl pb-8 pt-4 sm:pt-6 lg:pt-8">
-        <header
-          className="bg-white p-5 sm:p-8"
-          style={{
-            border: "1px solid var(--line)",
-            borderTop: "4px solid var(--accent-deep)",
-            borderRadius: "4px",
-            boxShadow: "0 18px 50px -44px rgba(15, 23, 42, 0.4)",
-          }}
-        >
-          <div className="flex flex-wrap items-center gap-2.5 font-serif text-[0.74rem] font-bold tracking-[0.16em] text-[var(--ink-soft)]">
-            <span className="rounded-sm bg-[#eef2fb] px-2.5 py-1 text-[var(--accent-deep)]">
-              {post.category}
-            </span>
-            <time className="text-[var(--ink-soft)]" dateTime={post.date}>
-              {post.formattedDate} 公開
-            </time>
-            <span className="text-[var(--ink-soft)] opacity-50">·</span>
-            <span>{post.readingTime}</span>
+          <div className="mx-auto max-w-4xl py-10 sm:py-14">
+            <div className="flex flex-wrap items-center gap-3 text-[0.74rem] font-semibold uppercase tracking-[0.18em]">
+              <span style={{ color: accent }}>{post.category}</span>
+              <time className="text-[#94a3b8]" dateTime={post.date}>
+                {post.formattedDate}
+              </time>
+              <span className="text-[#cbd5e1]">·</span>
+              <span className="text-[#94a3b8]">{post.readingTime}</span>
+            </div>
+            <h1 className="mt-5 text-balance text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.4rem] sm:leading-[1.25] lg:text-[2.8rem]">
+              {post.title}
+            </h1>
+            <p className="mt-6 text-pretty text-[0.98rem] leading-[1.95] text-[#475569] sm:text-[1.05rem]">
+              {post.description}
+            </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center rounded-full bg-[#f1f5f9] px-3 py-1 text-[0.74rem] font-medium text-[#475569] ring-1 ring-[rgba(15,29,74,0.06)]"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+
+            {/* Hero thumbnail */}
+            <div className="relative mt-10 aspect-[1200/630] w-full overflow-hidden rounded-[28px] bg-[#f1f5f9] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_40px_80px_-50px_rgba(15,29,74,0.35)]">
+              <Image
+                src={`/blog/${post.slug}/opengraph-image`}
+                alt={post.title}
+                fill
+                sizes="(min-width: 1024px) 896px, 100vw"
+                className="object-cover"
+                priority
+                unoptimized
+              />
+            </div>
           </div>
-          <h1 className="lumora-display mt-5 text-balance text-[1.55rem] leading-[1.55] sm:mt-6 sm:text-[2rem] sm:leading-[1.5] lg:text-[2.3rem]">
-            {post.title}
-          </h1>
-          <p className="mt-5 text-pretty font-serif text-[0.96rem] leading-[2.1] text-[var(--ink-soft)] sm:text-[1.02rem]">
-            {post.description}
-          </p>
-          <div className="mt-5 flex flex-wrap gap-1.5 border-t border-dotted border-[var(--line)] pt-4">
-            {post.tags.map((tag) => (
-              <span
-                className="rounded-sm border border-[var(--line)] bg-[#faf6ec] px-2.5 py-1 font-serif text-[0.72rem] font-medium text-[var(--ink-soft)]"
-                key={tag}
+        </Container>
+      </section>
+
+      {/* ARTICLE BODY */}
+      <section className="bg-[#f8fafc]">
+        <Container className="px-6 py-16 sm:py-20">
+          <article className="mx-auto max-w-3xl">
+            {post.searchIntent ? (
+              <div
+                className="rounded-[22px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)] sm:p-7"
+                style={{ borderLeft: `4px solid ${accent}` }}
               >
-                #{tag}
-              </span>
-            ))}
-          </div>
-        </header>
+                <p
+                  className="text-[0.74rem] font-semibold uppercase tracking-[0.2em]"
+                  style={{ color: accent }}
+                >
+                  この記事はこんな方へ
+                </p>
+                <p className="mt-3 text-[0.95rem] leading-[1.95] text-[#334155]">
+                  {post.searchIntent}
+                </p>
+              </div>
+            ) : null}
 
-        {post.searchIntent ? (
-          <div
-            className="mt-5 p-5"
-            style={{
-              border: "1px solid var(--line)",
-              borderLeft: "4px solid var(--accent-warm)",
-              background: "#fbf6e8",
-              borderRadius: "3px",
-            }}
-          >
-            <p className="font-serif text-[0.78rem] font-bold tracking-[0.18em] text-[var(--accent-warm)]">
-              この記事はこんな方へ
-            </p>
-            <p className="mt-2 font-serif text-[0.94rem] leading-[2.05] text-[#3a2c0a]">
-              {post.searchIntent}
-            </p>
-          </div>
-        ) : null}
+            {post.keyPoints && post.keyPoints.length > 0 ? (
+              <section className="mt-6 rounded-[22px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)] sm:p-8">
+                <p
+                  className="text-[0.74rem] font-semibold uppercase tracking-[0.2em]"
+                  style={{ color: accent }}
+                >
+                  この記事でわかること
+                </p>
+                <ul className="mt-5 grid gap-3.5">
+                  {post.keyPoints.map((point) => (
+                    <li
+                      key={point}
+                      className="flex gap-3 text-[0.94rem] leading-[1.85] text-[#0b1d4a]"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="mt-[0.35em] grid h-[1.1rem] w-[1.1rem] shrink-0 place-items-center rounded-full text-[0.65rem] font-bold text-white"
+                        style={{ background: accent }}
+                      >
+                        ✓
+                      </span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
 
-        {post.keyPoints && post.keyPoints.length > 0 ? (
-          <section
-            className="mt-5 p-5"
-            style={{
-              border: "1px solid var(--line)",
-              borderTop: "3px solid var(--accent-deep)",
-              background: "#fbf9f4",
-              borderRadius: "3px",
-            }}
-          >
-            <p className="flex items-center gap-2 font-serif text-[0.92rem] font-bold tracking-[0.16em] text-[var(--accent-deep)]">
-              <span
-                aria-hidden="true"
-                className="h-[1.2rem] w-[0.9rem]"
+            {post.category === "Physics" ? (
+              <aside className="mt-6 flex flex-col gap-4 overflow-hidden rounded-[22px] p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7"
                 style={{
                   background:
-                    "linear-gradient(180deg, var(--accent-deep) 60%, var(--accent-warm) 60%)",
+                    "radial-gradient(circle at 95% 10%, rgba(56,189,248,0.22), transparent 50%), linear-gradient(135deg, #0b1d4a 0%, #1e3a8a 100%)",
                 }}
-              />
-              この記事でわかること
-            </p>
-            <ul className="mt-4 grid gap-3">
-              {post.keyPoints.map((point) => (
-                <li
-                  className="flex gap-2.5 text-[0.93rem] leading-[1.95] text-[var(--ink)]"
-                  key={point}
+              >
+                <div>
+                  <p className="inline-flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#bae6fd]">
+                    <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" />
+                    Lumora × 物理の森｜物理専門塾
+                  </p>
+                  <p className="mt-3 text-[1.05rem] font-bold leading-[1.6] text-white sm:text-[1.15rem]">
+                    高校物理の受講相談は、物理の森から。
+                  </p>
+                </div>
+                <a
+                  className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-6 text-[0.9rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:-translate-y-0.5 hover:bg-[#bae6fd]"
+                  href={siteConfig.physicsSchoolUrl}
+                  rel="noreferrer noopener"
+                  target="_blank"
                 >
-                  <span
-                    aria-hidden="true"
-                    className="mt-[0.18rem] grid h-[1.25rem] w-[1.25rem] shrink-0 place-items-center rounded-sm bg-[var(--accent-deep)] text-[0.7rem] font-bold text-white"
-                  >
-                    ✓
-                  </span>
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-        ) : null}
+                  物理の森を開く <span aria-hidden="true">↗</span>
+                </a>
+              </aside>
+            ) : null}
 
-        {post.category === "Physics" ? (
-          <aside
-            className="mt-5 flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6"
-            style={{
-              background:
-                "radial-gradient(circle at 95% 10%, rgba(200,146,17,0.18), transparent 45%), linear-gradient(135deg, #0f1c3a 0%, #1f3a6b 100%)",
-              border: "1px solid #1a2a4d",
-              borderRadius: "4px",
-            }}
-          >
-            <div>
-              <p className="inline-flex items-center gap-1.5 font-serif text-[0.7rem] font-bold tracking-[0.22em] text-[#f5d68a]">
-                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
-                LUMORA × 物理の森｜物理専門塾事業
-              </p>
-              <p className="mt-2 font-serif text-[1.02rem] font-bold leading-[1.6] text-white sm:text-[1.1rem]">
-                高校物理の受講相談は、Lumora が運営する「物理の森」から。
-              </p>
+            <div className="article-content mt-10">
+              <MDXRemote
+                components={mdxComponents}
+                options={{
+                  mdxOptions: {
+                    useDynamicImport: false,
+                    remarkPlugins: [remarkMath],
+                    rehypePlugins: [[rehypeKatex, { strict: "ignore" }]],
+                  },
+                  blockJS: false,
+                }}
+                source={post.content}
+              />
             </div>
-            <a
-              className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-sm bg-[var(--accent-warm)] px-5 py-3 font-serif text-[0.9rem] font-bold tracking-[0.06em] text-[#1a1a1a] transition hover:-translate-y-0.5 hover:bg-[#dca424]"
-              href={siteConfig.physicsSchoolUrl}
-              rel="noreferrer noopener"
-              target="_blank"
-            >
-              物理の森（物理塾）を開く
-              <span aria-hidden="true">↗</span>
-            </a>
-          </aside>
-        ) : null}
 
-        <div className="article-content mt-7 sm:mt-8">
-          <MDXRemote
-            components={mdxComponents}
-            options={{
-              mdxOptions: {
-                useDynamicImport: false,
-                remarkPlugins: [remarkMath],
-                rehypePlugins: [[rehypeKatex, { strict: "ignore" }]],
-              },
-              blockJS: false,
-            }}
-            source={post.content}
-          />
-        </div>
+            {/* Next step CTA */}
+            <aside className="mt-14 rounded-[28px] bg-white p-7 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_28px_60px_-40px_rgba(15,29,74,0.4)] sm:p-9">
+              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+                Next Step
+              </p>
+              <p className="mt-3 text-[1.2rem] font-extrabold leading-[1.5] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.4rem]">
+                読んだあとの行き先を、Lumora から選ぶ。
+              </p>
+              <p className="mt-3 text-[0.92rem] leading-[1.95] text-[#475569]">
+                Lumora（学習ハブ）から、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass へ直接遷移できます。
+              </p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <a
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#0b1d4a] px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a]"
+                  href={siteConfig.physicsSchoolUrl}
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  物理の森を開く <span aria-hidden="true">↗</span>
+                </a>
+                <Link
+                  href="/apps"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
+                >
+                  事業一覧へ
+                </Link>
+                <Link
+                  href="/blog"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full px-4 text-[0.95rem] font-semibold text-[#1d4ed8] transition hover:text-[#0b1d4a]"
+                >
+                  ブログ一覧へ <span aria-hidden="true" className="ml-1">→</span>
+                </Link>
+              </div>
+            </aside>
+          </article>
+        </Container>
+      </section>
 
-        <aside
-          className="mt-10 bg-white p-5 sm:p-7"
-          style={{
-            border: "1px solid var(--line)",
-            borderLeft: "4px solid var(--accent-deep)",
-            borderRadius: "3px",
-          }}
-        >
-          <p className="lumora-eyebrow">NEXT STEP · 学習ハブの動線</p>
-          <p className="lumora-display mt-3 text-[1.1rem] leading-[1.6] sm:text-[1.22rem]">
-            読んだあとの行き先を、Lumora から選べます。
-          </p>
-          <p className="mt-3 text-[0.92rem] leading-[2] text-[var(--ink-soft)]">
-            Lumora（学習ハブ）から、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass へ直接遷移できます。
-          </p>
-          <div className="mt-5 grid gap-2.5 sm:flex sm:flex-wrap">
-            <a
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[var(--accent-deep)] px-6 py-3 font-serif text-[0.92rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:bg-[#16305c]"
-              href={siteConfig.physicsSchoolUrl}
-              rel="noreferrer noopener"
-              target="_blank"
-            >
-              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
-              物理の森（物理塾）を開く
-              <span aria-hidden="true" className="text-[#f5d68a]">↗</span>
-            </a>
-            <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
-              事業一覧
-            </ButtonLink>
-            <ButtonLink className="w-full sm:w-auto" href="/blog" variant="ghost">
-              ブログ一覧へ
-            </ButtonLink>
-          </div>
-        </aside>
-      </article>
-
+      {/* RELATED */}
       {relatedPosts.length > 0 ? (
-        <section className="mx-auto max-w-5xl pb-20 sm:pb-24">
-          <div className="mb-6 text-center sm:text-left">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-sky-700">
-              Related Articles
-            </p>
-            <h2 className="mt-2 text-xl font-bold tracking-[-0.02em] text-slate-950 sm:text-2xl">
-              関連記事
-            </h2>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {relatedPosts.map((relatedPost) => (
-              <ArticleCard key={relatedPost.slug} post={relatedPost} />
-            ))}
-          </div>
+        <section className="bg-white">
+          <Container className="px-6 py-20 sm:py-24">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+                  Related Articles
+                </p>
+                <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
+                  関連記事
+                </h2>
+              </div>
+              <Link
+                href="/blog"
+                className="hidden text-[0.95rem] font-semibold text-[#1d4ed8] hover:text-[#0b1d4a] sm:inline-flex"
+              >
+                すべて見る <span aria-hidden="true" className="ml-1">→</span>
+              </Link>
+            </div>
+            <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedPosts.map((relatedPost) => {
+                const rAccent = categoryAccent[relatedPost.category] ?? "#1d4ed8";
+                return (
+                  <li key={relatedPost.slug}>
+                    <Link
+                      href={`/blog/${relatedPost.slug}`}
+                      className="group flex h-full flex-col overflow-hidden rounded-[22px] bg-white ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-32px_rgba(15,29,74,0.4)]"
+                    >
+                      <div className="relative aspect-[1200/630] overflow-hidden bg-[#f1f5f9]">
+                        <Image
+                          src={`/blog/${relatedPost.slug}/opengraph-image`}
+                          alt={relatedPost.title}
+                          fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                          className="object-cover transition duration-700 group-hover:scale-[1.04]"
+                          unoptimized
+                        />
+                      </div>
+                      <div className="flex flex-1 flex-col gap-3 p-6">
+                        <div className="flex items-center gap-3 text-[0.74rem] font-semibold uppercase tracking-[0.16em]">
+                          <span style={{ color: rAccent }}>{relatedPost.category}</span>
+                          <time className="text-[#94a3b8]" dateTime={relatedPost.date}>
+                            {relatedPost.formattedDate}
+                          </time>
+                        </div>
+                        <h3 className="text-[1.05rem] font-bold leading-[1.55] text-[#0b1d4a] transition group-hover:text-[#1d4ed8]">
+                          {relatedPost.title}
+                        </h3>
+                        <p className="line-clamp-3 text-[0.88rem] leading-[1.85] text-[#475569]">
+                          {relatedPost.description}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </Container>
         </section>
       ) : null}
-    </Container>
+    </>
   );
 }

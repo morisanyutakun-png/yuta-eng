@@ -245,37 +245,80 @@ function DesignVisual() {
           <stop offset="0" stopColor="#fafaf9" />
           <stop offset="1" stopColor="#f1f5f9" />
         </linearGradient>
+        <marker
+          id="ds-arrow"
+          markerWidth="14"
+          markerHeight="14"
+          refX="11"
+          refY="7"
+          orient="auto"
+          markerUnits="userSpaceOnUse"
+        >
+          <path d="M2 2 L12 7 L2 12 z" fill="#1d4ed8" />
+        </marker>
+        <marker
+          id="ds-arrow-warm"
+          markerWidth="14"
+          markerHeight="14"
+          refX="11"
+          refY="7"
+          orient="auto"
+          markerUnits="userSpaceOnUse"
+        >
+          <path d="M2 2 L12 7 L2 12 z" fill="#38bdf8" />
+        </marker>
       </defs>
       <rect width="720" height="480" fill="url(#ds-bg)" />
 
-      {/* circle nodes connected */}
-      {[
-        { cx: 140, cy: 240, label: "読む" },
-        { cx: 320, cy: 140, label: "解く" },
-        { cx: 320, cy: 340, label: "戻る" },
-        { cx: 540, cy: 240, label: "続ける" },
-      ].map((n, i) => (
-        <g key={i}>
-          <circle cx={n.cx} cy={n.cy} r="56" fill="#ffffff" stroke="#0b1d4a" strokeWidth="2" />
-          <text x={n.cx} y={n.cy + 6} textAnchor="middle" fontFamily="system-ui" fontSize="20" fontWeight="700" fill="#0b1d4a">
-            {n.label}
-          </text>
-        </g>
-      ))}
-      <g stroke="#1d4ed8" strokeWidth="2" fill="none">
-        <path d="M 196 240 Q 240 180 264 160" />
-        <path d="M 196 240 Q 240 300 264 320" />
-        <path d="M 376 140 Q 460 180 484 220" />
-        <path d="M 376 340 Q 460 300 484 260" />
+      {/* Eyebrow label */}
+      <text x="360" y="56" textAnchor="middle" fontFamily="system-ui" fontSize="13" fontWeight="700" fill="#1d4ed8" letterSpacing="6">
+        LEARNING LOOP
+      </text>
+
+      {/* Forward arrows: 読む → 解く → 続ける → 戻る → 読む */}
+      <g stroke="#1d4ed8" strokeWidth="2.4" fill="none" strokeLinecap="round">
+        {/* 読む → 解く */}
+        <path d="M 188 218 Q 232 168 268 148" markerEnd="url(#ds-arrow)" />
+        {/* 解く → 続ける */}
+        <path d="M 376 152 Q 460 184 488 218" markerEnd="url(#ds-arrow)" />
+        {/* 続ける → 戻る */}
+        <path d="M 488 268 Q 460 308 376 332" markerEnd="url(#ds-arrow)" />
+        {/* 戻る → 読む */}
+        <path d="M 268 332 Q 232 308 188 268" markerEnd="url(#ds-arrow)" />
       </g>
-      {/* dotted loop */}
+
+      {/* Reinforcement arrow (back-loop) — clearly inside the diagram */}
       <path
-        d="M 540 200 Q 600 100 480 80 Q 360 60 320 96"
+        d="M 488 234 Q 540 184 488 144"
         fill="none"
         stroke="#38bdf8"
         strokeWidth="2"
-        strokeDasharray="6 6"
+        strokeDasharray="6 5"
+        markerEnd="url(#ds-arrow-warm)"
       />
+
+      {/* Circle nodes */}
+      {[
+        { cx: 140, cy: 240, label: "読む", sub: "READ" },
+        { cx: 320, cy: 140, label: "解く", sub: "SOLVE" },
+        { cx: 320, cy: 340, label: "戻る", sub: "BACK" },
+        { cx: 540, cy: 240, label: "続ける", sub: "CONTINUE" },
+      ].map((n) => (
+        <g key={n.label}>
+          <circle cx={n.cx} cy={n.cy} r="56" fill="#ffffff" stroke="#0b1d4a" strokeWidth="2" />
+          <text x={n.cx} y={n.cy - 2} textAnchor="middle" fontFamily="system-ui" fontSize="20" fontWeight="700" fill="#0b1d4a">
+            {n.label}
+          </text>
+          <text x={n.cx} y={n.cy + 22} textAnchor="middle" fontFamily="system-ui" fontSize="10" fontWeight="700" fill="#1d4ed8" letterSpacing="3">
+            {n.sub}
+          </text>
+        </g>
+      ))}
+
+      {/* Center label */}
+      <text x="340" y="246" textAnchor="middle" fontFamily="system-ui" fontSize="12" fontWeight="700" fill="#94a3b8" letterSpacing="4">
+        FEEDBACK
+      </text>
     </svg>
   );
 }
