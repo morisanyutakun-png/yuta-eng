@@ -32,15 +32,4 @@ export const apps: AppItem[] = [
     ctaLabel: "IT Pass を開く",
     status: "外部アプリ",
   },
-  {
-    name: "Physics",
-    comparison: "物理の概念理解と演習を行き来したい人へ。",
-    description:
-      "Physics は、高校物理の概念解説と演習をひとつの画面で行き来できる学習アプリです。Lumora の記事で整理した考え方を、実際に問題で確かめるための実践導線として案内しています。",
-    audience: "物理を学ぶ高校生・受験生・物理教材を扱う教員",
-    category: "Physics / Study Tools",
-    href: "https://physics.yuta-eng.com",
-    ctaLabel: "Physics を開く",
-    status: "外部アプリ",
-  },
 ];

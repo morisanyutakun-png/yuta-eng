@@ -18,17 +18,17 @@ const visitorPaths = [
   {
     no: "01",
     label: "Physics",
-    badge: "高校生・受験生向け",
-    title: "高校物理を「理解」で乗り越える",
+    badge: "高校生・受験生向け｜物理専門塾",
+    title: "高校物理に特化した、Lumora の物理専門塾",
     description:
-      "公式の暗記で止まらないために、現象 → 図 → 式の順で物理を読む方法を、図と表でわかりやすく解説。",
+      "Lumora は高校物理を専門に扱うオンライン塾です。公式暗記ではなく、現象 → 図 → 式の順で読み解く力を、個別カリキュラムで育てます。",
     benefits: [
-      "力学のつまずきを「変化を読む力」で解消",
-      "微積を使わずに加速度の意味を理解",
-      "テスト直前と通年学習の両方に使える",
+      "物理基礎・物理の通年指導と定期テスト対策",
+      "共通テスト／国公立二次／私大入試まで対応",
+      "つまずいた前提単元へ戻れる個別カリキュラム",
     ],
     href: "/blog/physics-material-creation",
-    cta: "物理の記事を読む",
+    cta: "物理塾の指導方針を読む",
   },
   {
     no: "02",
@@ -64,10 +64,10 @@ const visitorPaths = [
 
 const problems = [
   {
-    badge: "高校物理",
+    badge: "高校物理 専門塾",
     pain: "公式は覚えたのに、ちょっと条件が変わると解けない",
     answer:
-      "物理を「式の暗記」ではなく「変化の読み取り」として学び直すための記事を用意しています。",
+      "Lumora の物理専門塾では、現象 → 図 → 式の順で読み解く力を個別カリキュラムで育てます。",
     href: "/blog/physics-material-creation",
   },
   {
@@ -163,6 +163,17 @@ function HeroIllustration() {
         <pattern id="hero-grid" width="20" height="20" patternUnits="userSpaceOnUse">
           <path d="M20 0 L0 0 0 20" stroke="rgba(15,23,42,0.06)" strokeWidth="0.5" fill="none" />
         </pattern>
+        <marker
+          id="hero-arrow-warm"
+          markerWidth="14"
+          markerHeight="14"
+          refX="11"
+          refY="7"
+          orient="auto"
+          markerUnits="userSpaceOnUse"
+        >
+          <path d="M2 2 L12 7 L2 12 z" fill="#c89211" />
+        </marker>
       </defs>
       {/* Background paper */}
       <rect x="14" y="14" width="432" height="352" rx="6" fill="url(#hero-paper)" stroke="#d8cfb8" />
@@ -266,10 +277,24 @@ function HeroIllustration() {
             </text>
           </g>
         ))}
-        <path d="M52 65 L70 65" stroke="#c89211" strokeWidth="2" />
-        <path d="M108 65 L130 65" stroke="#c89211" strokeWidth="2" />
-        <path d="M68 64 L72 65 L68 66" fill="none" stroke="#c89211" strokeWidth="1.5" />
-        <path d="M126 64 L130 65 L126 66" fill="none" stroke="#c89211" strokeWidth="1.5" />
+        <line
+          x1="52"
+          y1="65"
+          x2="70"
+          y2="65"
+          stroke="#c89211"
+          strokeWidth="2"
+          markerEnd="url(#hero-arrow-warm)"
+        />
+        <line
+          x1="108"
+          y1="65"
+          x2="126"
+          y2="65"
+          stroke="#c89211"
+          strokeWidth="2"
+          markerEnd="url(#hero-arrow-warm)"
+        />
         <text
           x="89"
           y="105"
