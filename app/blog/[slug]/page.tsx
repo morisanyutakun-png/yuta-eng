@@ -11,6 +11,7 @@ import "katex/dist/katex.min.css";
 
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
+import { ArticleCard } from "@/components/article-card";
 import { mdxComponents, renderWithMath } from "@/components/mdx-components";
 import { siteConfig } from "@/data/site";
 import { getPostBySlug, getPostSlugs, getRelatedPosts } from "@/lib/blog";
@@ -107,10 +108,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <section className="relative bg-white">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-[#eef4ff] via-white to-transparent"
+          className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-[#eef4ff] via-white to-transparent sm:h-80"
         />
         <Container className="relative px-4 sm:px-6">
-          <nav aria-label="パンくずリスト" className="pt-6 text-[0.74rem] text-[#94a3b8] sm:pt-10 sm:text-[0.78rem]">
+          <nav
+            aria-label="パンくずリスト"
+            className="pt-4 text-[0.72rem] text-[#94a3b8] sm:pt-10 sm:text-[0.78rem]"
+          >
             <ol className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <li>
                 <Link className="transition hover:text-[#1d4ed8]" href="/">
@@ -128,39 +132,58 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </ol>
           </nav>
 
-          <div className="mx-auto max-w-4xl py-7 sm:py-12 lg:py-14">
-            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] sm:text-[0.74rem] sm:tracking-[0.18em]">
+          <div className="mx-auto max-w-4xl pb-8 pt-5 sm:py-12 lg:py-14">
+            {/* Meta row: category pill + date + reading time */}
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] sm:gap-x-3 sm:text-[0.74rem] sm:tracking-[0.18em]">
               <span
-                className="inline-flex items-center rounded-full px-2.5 py-1 text-white"
+                className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-white shadow-[0_6px_14px_-8px_rgba(15,29,74,0.6)]"
                 style={{ background: accent }}
               >
+                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-white/80 sm:h-1.5 sm:w-1.5" />
                 {post.category}
               </span>
               <time className="text-[#64748b]" dateTime={post.date}>
                 {post.formattedDate}
               </time>
-              <span className="text-[#cbd5e1]">·</span>
+              <span aria-hidden="true" className="text-[#cbd5e1]">·</span>
               <span className="text-[#64748b]">{post.readingTime}</span>
             </div>
-            <h1 className="mt-4 text-balance text-[clamp(1.55rem,1.05rem+2.5vw,2.6rem)] font-extrabold leading-[1.28] tracking-[-0.012em] text-[#0b1d4a]">
+
+            {/* Title */}
+            <h1 className="mt-3 text-balance text-[clamp(1.32rem,0.95rem+2.1vw,2.5rem)] font-extrabold leading-[1.32] tracking-[-0.01em] text-[#0b1d4a] sm:mt-4 sm:leading-[1.28]">
               {post.title}
             </h1>
-            <p className="mt-5 text-pretty text-[clamp(0.95rem,0.9rem+0.4vw,1.06rem)] leading-[1.9] text-[#475569]">
-              {post.description}
-            </p>
-            <div className="mt-5 flex flex-wrap gap-1.5 sm:mt-6 sm:gap-2">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="inline-flex items-center rounded-full bg-[#f1f5f9] px-2.5 py-1 text-[0.72rem] font-medium text-[#475569] ring-1 ring-[rgba(15,29,74,0.06)] sm:text-[0.74rem]"
-                >
-                  #{tag}
-                </span>
-              ))}
+
+            {/* Description in a structured panel for legibility */}
+            <div className="relative mt-5 rounded-[16px] bg-[#f8fbff] p-4 ring-1 ring-[rgba(15,29,74,0.08)] sm:mt-7 sm:rounded-[20px] sm:p-5">
+              <span
+                aria-hidden="true"
+                className="absolute left-0 top-3 h-[calc(100%-1.5rem)] w-[3px] rounded-r-full"
+                style={{ background: accent }}
+              />
+              <p className="pl-3 text-pretty text-[clamp(0.88rem,0.84rem+0.3vw,1rem)] leading-[1.85] text-[#334155] sm:pl-4 sm:leading-[1.9]">
+                {post.description}
+              </p>
             </div>
 
+            {/* Tags: horizontal scroll on small screens, wraps on tablet+ */}
+            {post.tags.length > 0 ? (
+              <div className="-mx-4 mt-5 sm:mx-0 sm:mt-6">
+                <ul className="scrollbar-none flex gap-1.5 overflow-x-auto px-4 pb-1 sm:flex-wrap sm:gap-2 sm:overflow-visible sm:px-0 sm:pb-0">
+                  {post.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="shrink-0 rounded-full bg-[#f1f5f9] px-2.5 py-1 text-[0.7rem] font-medium text-[#475569] ring-1 ring-[rgba(15,29,74,0.06)] sm:text-[0.74rem]"
+                    >
+                      #{tag}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
             {/* Hero thumbnail */}
-            <div className="relative mt-7 aspect-[1200/630] w-full overflow-hidden rounded-[18px] bg-[#f1f5f9] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_24px_50px_-36px_rgba(15,29,74,0.35)] sm:mt-10 sm:rounded-[28px] sm:shadow-[0_40px_80px_-50px_rgba(15,29,74,0.35)]">
+            <div className="relative mt-6 aspect-[1200/630] w-full overflow-hidden rounded-[16px] bg-[#f1f5f9] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_18px_38px_-28px_rgba(15,29,74,0.4)] sm:mt-10 sm:rounded-[28px] sm:shadow-[0_40px_80px_-50px_rgba(15,29,74,0.35)]">
               <Image
                 src={`/blog/${post.slug}/opengraph-image`}
                 alt={post.title}
@@ -176,46 +199,53 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* ARTICLE BODY */}
       <section className="bg-[#f8fafc]">
-        <Container className="px-4 py-10 sm:px-6 sm:py-16 lg:py-20">
+        <Container className="px-4 py-8 sm:px-6 sm:py-16 lg:py-20">
           <article className="mx-auto max-w-3xl">
             {post.searchIntent ? (
               <div
-                className="rounded-[22px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)] sm:p-7"
+                className="rounded-[16px] bg-white p-4 ring-1 ring-[rgba(15,29,74,0.06)] sm:rounded-[22px] sm:p-7"
                 style={{ borderLeft: `4px solid ${accent}` }}
               >
                 <p
-                  className="text-[0.74rem] font-semibold uppercase tracking-[0.2em]"
+                  className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] sm:text-[0.74rem] sm:tracking-[0.2em]"
                   style={{ color: accent }}
                 >
                   この記事はこんな方へ
                 </p>
-                <p className="mt-3 text-[0.95rem] leading-[1.95] text-[#334155]">
+                <p className="mt-2 text-[clamp(0.88rem,0.84rem+0.3vw,0.96rem)] leading-[1.85] text-[#334155] sm:mt-3 sm:leading-[1.95]">
                   {post.searchIntent}
                 </p>
               </div>
             ) : null}
 
             {post.keyPoints && post.keyPoints.length > 0 ? (
-              <section className="mt-6 rounded-[22px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)] sm:p-8">
-                <p
-                  className="text-[0.74rem] font-semibold uppercase tracking-[0.2em]"
-                  style={{ color: accent }}
-                >
-                  この記事でわかること
-                </p>
-                <ul className="mt-5 grid gap-3.5">
+              <section className="mt-5 rounded-[16px] bg-white p-4 ring-1 ring-[rgba(15,29,74,0.06)] sm:mt-6 sm:rounded-[22px] sm:p-8">
+                <div className="flex items-center gap-2 sm:gap-2.5">
+                  <span
+                    aria-hidden="true"
+                    className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[0.7rem] font-bold text-white"
+                    style={{ background: accent }}
+                  >
+                    ✓
+                  </span>
+                  <p
+                    className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] sm:text-[0.74rem] sm:tracking-[0.2em]"
+                    style={{ color: accent }}
+                  >
+                    この記事でわかること
+                  </p>
+                </div>
+                <ul className="mt-4 grid gap-3 sm:mt-5 sm:gap-3.5">
                   {post.keyPoints.map((point) => (
                     <li
                       key={point}
-                      className="flex gap-3 text-[0.94rem] leading-[1.85] text-[#0b1d4a]"
+                      className="flex gap-2.5 text-[clamp(0.88rem,0.85rem+0.25vw,0.94rem)] leading-[1.8] text-[#0b1d4a] sm:gap-3 sm:leading-[1.85]"
                     >
                       <span
                         aria-hidden="true"
-                        className="mt-[0.35em] grid h-[1.1rem] w-[1.1rem] shrink-0 place-items-center rounded-full text-[0.65rem] font-bold text-white"
+                        className="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-full"
                         style={{ background: accent }}
-                      >
-                        ✓
-                      </span>
+                      />
                       <span>{renderWithMath(point)}</span>
                     </li>
                   ))}
@@ -224,23 +254,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             ) : null}
 
             {post.category === "Physics" ? (
-              <aside className="mt-6 flex flex-col gap-4 overflow-hidden rounded-[22px] p-6 sm:flex-row sm:items-center sm:justify-between sm:p-7"
+              <aside
+                className="mt-5 flex flex-col gap-3 overflow-hidden rounded-[16px] p-4 sm:mt-6 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:rounded-[22px] sm:p-7"
                 style={{
                   background:
                     "radial-gradient(circle at 95% 10%, rgba(56,189,248,0.22), transparent 50%), linear-gradient(135deg, #0b1d4a 0%, #1e3a8a 100%)",
                 }}
               >
                 <div>
-                  <p className="inline-flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#bae6fd]">
+                  <p className="inline-flex items-center gap-2 text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-[#bae6fd] sm:text-[0.7rem] sm:tracking-[0.22em]">
                     <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" />
                     Solvora × 物理の森｜物理専門塾
                   </p>
-                  <p className="mt-3 text-[1.05rem] font-bold leading-[1.6] text-white sm:text-[1.15rem]">
+                  <p className="mt-2 text-[clamp(0.96rem,0.9rem+0.4vw,1.15rem)] font-bold leading-[1.55] text-white sm:mt-3">
                     高校物理の受講相談は、物理の森から。
                   </p>
                 </div>
                 <a
-                  className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-6 text-[0.9rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:-translate-y-0.5 hover:bg-[#bae6fd]"
+                  className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-[0.86rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:-translate-y-0.5 hover:bg-[#bae6fd] sm:min-h-12 sm:px-6 sm:text-[0.9rem]"
                   href={siteConfig.physicsSchoolUrl}
                   rel="noreferrer noopener"
                   target="_blank"
@@ -250,7 +281,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </aside>
             ) : null}
 
-            <div className="article-content mt-10">
+            <div className="article-content mt-8 sm:mt-10">
               <MDXRemote
                 components={mdxComponents}
                 options={{
@@ -266,19 +297,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
 
             {/* Next step CTA */}
-            <aside className="mt-14 rounded-[28px] bg-white p-7 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_28px_60px_-40px_rgba(15,29,74,0.4)] sm:p-9">
-              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+            <aside className="mt-10 rounded-[18px] bg-white p-5 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_18px_42px_-32px_rgba(15,29,74,0.4)] sm:mt-14 sm:rounded-[28px] sm:p-9">
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#1d4ed8] sm:text-[0.74rem] sm:tracking-[0.24em]">
                 Next Step
               </p>
-              <p className="mt-3 text-[1.2rem] font-extrabold leading-[1.5] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.4rem]">
+              <p className="mt-2 text-[clamp(1.05rem,0.95rem+0.5vw,1.4rem)] font-extrabold leading-[1.45] tracking-[-0.005em] text-[#0b1d4a] sm:mt-3 sm:leading-[1.5]">
                 読んだあとの行き先を、Solvora から選ぶ。
               </p>
-              <p className="mt-3 text-[0.92rem] leading-[1.95] text-[#475569]">
+              <p className="mt-2 text-[clamp(0.86rem,0.83rem+0.2vw,0.94rem)] leading-[1.85] text-[#475569] sm:mt-3 sm:leading-[1.95]">
                 Solvora（学習ハブ）から、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass へ直接遷移できます。
               </p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <div className="mt-5 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:flex-wrap sm:gap-3">
                 <a
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#0b1d4a] px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a]"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#0b1d4a] px-6 text-[0.9rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a] sm:min-h-12 sm:px-7 sm:text-[0.95rem]"
                   href={siteConfig.physicsSchoolUrl}
                   rel="noreferrer noopener"
                   target="_blank"
@@ -287,13 +318,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </a>
                 <Link
                   href="/apps"
-                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
+                  className="inline-flex min-h-11 items-center justify-center rounded-full border border-[#0b1d4a] px-6 text-[0.9rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white sm:min-h-12 sm:px-7 sm:text-[0.95rem]"
                 >
                   事業一覧へ
                 </Link>
                 <Link
                   href="/blog"
-                  className="inline-flex min-h-12 items-center justify-center rounded-full px-4 text-[0.95rem] font-semibold text-[#1d4ed8] transition hover:text-[#0b1d4a]"
+                  className="inline-flex min-h-11 items-center justify-center rounded-full px-4 text-[0.9rem] font-semibold text-[#1d4ed8] transition hover:text-[#0b1d4a] sm:min-h-12 sm:text-[0.95rem]"
                 >
                   ブログ一覧へ <span aria-hidden="true" className="ml-1">→</span>
                 </Link>
@@ -306,13 +337,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       {/* RELATED */}
       {relatedPosts.length > 0 ? (
         <section className="bg-white">
-          <Container className="px-6 py-20 sm:py-24">
+          <Container className="px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">
                   Related Articles
                 </p>
-                <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
+                <h2 className="mt-2 text-[clamp(1.4rem,1rem+1.8vw,2rem)] font-extrabold leading-[1.32] tracking-[-0.005em] text-[#0b1d4a] sm:mt-3">
                   関連記事
                 </h2>
               </div>
@@ -323,42 +354,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 すべて見る <span aria-hidden="true" className="ml-1">→</span>
               </Link>
             </div>
-            <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedPosts.map((relatedPost) => {
-                const rAccent = categoryAccent[relatedPost.category] ?? "#1d4ed8";
-                return (
-                  <li key={relatedPost.slug}>
-                    <Link
-                      href={`/blog/${relatedPost.slug}`}
-                      className="group flex h-full flex-col overflow-hidden rounded-[22px] bg-white ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-32px_rgba(15,29,74,0.4)]"
-                    >
-                      <div className="relative aspect-[1200/630] overflow-hidden bg-[#f1f5f9]">
-                        <Image
-                          src={`/blog/${relatedPost.slug}/opengraph-image`}
-                          alt={relatedPost.title}
-                          fill
-                          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                          className="object-cover transition duration-700 group-hover:scale-[1.04]"
-                        />
-                      </div>
-                      <div className="flex flex-1 flex-col gap-3 p-6">
-                        <div className="flex items-center gap-3 text-[0.74rem] font-semibold uppercase tracking-[0.16em]">
-                          <span style={{ color: rAccent }}>{relatedPost.category}</span>
-                          <time className="text-[#94a3b8]" dateTime={relatedPost.date}>
-                            {relatedPost.formattedDate}
-                          </time>
-                        </div>
-                        <h3 className="text-[1.05rem] font-bold leading-[1.55] text-[#0b1d4a] transition group-hover:text-[#1d4ed8]">
-                          {relatedPost.title}
-                        </h3>
-                        <p className="line-clamp-3 text-[0.88rem] leading-[1.85] text-[#475569]">
-                          {relatedPost.description}
-                        </p>
-                      </div>
-                    </Link>
-                  </li>
-                );
-              })}
+            <ul className="mt-8 grid gap-5 sm:mt-10 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
+              {relatedPosts.map((relatedPost) => (
+                <li key={relatedPost.slug} className="h-full">
+                  <ArticleCard post={relatedPost} />
+                </li>
+              ))}
             </ul>
           </Container>
         </section>

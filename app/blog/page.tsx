@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 
+import { ArticleCard } from "@/components/article-card";
 import { Container } from "@/components/container";
 import { getAllPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
@@ -74,69 +73,33 @@ export default function BlogPage() {
       {/* FEATURED */}
       {featuredPost ? (
         <section className="bg-[#f8fafc]">
-          <Container className="px-6 py-16 sm:py-20">
+          <Container className="px-4 py-12 sm:px-6 sm:py-20">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">
                   Featured
                 </p>
-                <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+                <h2 className="mt-2 text-[clamp(1.4rem,1rem+2vw,2.2rem)] font-extrabold leading-[1.32] tracking-[-0.005em] text-[#0b1d4a] sm:mt-3">
                   最新の記事
                 </h2>
               </div>
             </div>
-
-            <Link
-              href={`/blog/${featuredPost.slug}`}
-              className="group mt-10 grid overflow-hidden rounded-[28px] bg-white ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_40px_80px_-50px_rgba(15,29,74,0.35)] transition hover:-translate-y-1 hover:shadow-[0_44px_90px_-50px_rgba(15,29,74,0.45)] lg:grid-cols-[1.1fr_0.9fr]"
-            >
-              <div className="relative aspect-[1200/630] overflow-hidden bg-[#f1f5f9] lg:aspect-auto">
-                <Image
-                  src={`/blog/${featuredPost.slug}/opengraph-image`}
-                  alt={featuredPost.title}
-                  fill
-                  sizes="(min-width: 1024px) 60vw, 100vw"
-                  className="object-cover transition duration-700 group-hover:scale-[1.03]"
-                  preload
-                />
-              </div>
-              <div className="flex flex-col justify-between gap-6 p-8 sm:p-10">
-                <div>
-                  <div className="flex flex-wrap items-center gap-3 text-[0.74rem] font-semibold uppercase tracking-[0.16em]">
-                    <span style={{ color: categoryAccent[featuredPost.category] ?? "#1d4ed8" }}>
-                      {featuredPost.category}
-                    </span>
-                    <time className="text-[#94a3b8]" dateTime={featuredPost.date}>
-                      {featuredPost.formattedDate}
-                    </time>
-                    <span className="text-[#cbd5e1]">·</span>
-                    <span className="text-[#94a3b8]">{featuredPost.readingTime}</span>
-                  </div>
-                  <h3 className="mt-5 text-balance text-[1.4rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] transition group-hover:text-[#1d4ed8] sm:text-[1.7rem] sm:leading-[1.35]">
-                    {featuredPost.title}
-                  </h3>
-                  <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569] sm:text-[1rem]">
-                    {featuredPost.description}
-                  </p>
-                </div>
-                <span className="inline-flex items-center text-[0.95rem] font-semibold text-[#1d4ed8] transition group-hover:text-[#0b1d4a]">
-                  続きを読む <span aria-hidden="true" className="ml-1.5">→</span>
-                </span>
-              </div>
-            </Link>
+            <div className="mt-8 sm:mt-10">
+              <ArticleCard post={featuredPost} variant="featured" preload />
+            </div>
           </Container>
         </section>
       ) : null}
 
       {/* ALL ARTICLES */}
       <section className="bg-white">
-        <Container className="px-6 py-20 sm:py-28">
+        <Container className="px-4 py-14 sm:px-6 sm:py-24 lg:py-28">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">
                 All Articles
               </p>
-              <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+              <h2 className="mt-2 text-[clamp(1.4rem,1rem+2vw,2.2rem)] font-extrabold leading-[1.32] tracking-[-0.005em] text-[#0b1d4a] sm:mt-3">
                 すべての記事
               </h2>
             </div>
@@ -144,42 +107,10 @@ export default function BlogPage() {
           </div>
 
           {restPosts.length > 0 ? (
-            <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-10 grid gap-5 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
               {restPosts.map((post) => (
-                <li key={post.slug}>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="group flex h-full flex-col overflow-hidden rounded-[22px] bg-white ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-32px_rgba(15,29,74,0.4)]"
-                  >
-                    <div className="relative aspect-[1200/630] overflow-hidden bg-[#f1f5f9]">
-                      <Image
-                        src={`/blog/${post.slug}/opengraph-image`}
-                        alt={post.title}
-                        fill
-                        sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                        className="object-cover transition duration-700 group-hover:scale-[1.04]"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col gap-3 p-6">
-                      <div className="flex items-center gap-3 text-[0.74rem] font-semibold uppercase tracking-[0.16em]">
-                        <span style={{ color: categoryAccent[post.category] ?? "#1d4ed8" }}>
-                          {post.category}
-                        </span>
-                        <time className="text-[#94a3b8]" dateTime={post.date}>
-                          {post.formattedDate}
-                        </time>
-                      </div>
-                      <h3 className="text-[1.05rem] font-bold leading-[1.55] text-[#0b1d4a] transition group-hover:text-[#1d4ed8]">
-                        {post.title}
-                      </h3>
-                      <p className="line-clamp-3 text-[0.88rem] leading-[1.85] text-[#475569]">
-                        {post.description}
-                      </p>
-                      <span className="mt-auto pt-3 text-[0.85rem] font-semibold text-[#1d4ed8] opacity-0 transition group-hover:opacity-100">
-                        続きを読む →
-                      </span>
-                    </div>
-                  </Link>
+                <li key={post.slug} className="h-full">
+                  <ArticleCard post={post} />
                 </li>
               ))}
             </ul>

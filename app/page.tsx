@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { ArticleCard } from "@/components/article-card";
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
 import { homeFaq } from "@/data/home";
@@ -569,47 +570,10 @@ export default function Home() {
               すべて見る <span aria-hidden="true" className="ml-1">→</span>
             </Link>
           </div>
-          <ul className="mt-10 grid gap-6 lg:grid-cols-3">
+          <ul className="mt-10 grid gap-5 sm:gap-6 lg:grid-cols-3">
             {latestPosts.map((post) => (
-              <li key={post.slug}>
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="group flex h-full flex-col overflow-hidden rounded-[22px] bg-white ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-32px_rgba(15,29,74,0.4)]"
-                >
-                  <div
-                    className="h-40 w-full"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #dbeafe 0%, #e0f2fe 60%, #f0f9ff 100%)",
-                    }}
-                  >
-                    <svg viewBox="0 0 400 200" className="h-full w-full" aria-hidden="true">
-                      <g stroke="#1d4ed8" strokeWidth="1.5" fill="none" opacity="0.45">
-                        <path d="M 0 160 Q 80 120 200 100 T 400 60" />
-                        <path d="M 0 180 Q 80 150 200 130 T 400 100" strokeDasharray="6 6" />
-                      </g>
-                      <circle cx="200" cy="100" r="6" fill="#1d4ed8" />
-                      <circle cx="320" cy="80" r="4" fill="#38bdf8" />
-                    </svg>
-                  </div>
-                  <div className="flex flex-1 flex-col gap-3 p-6">
-                    <div className="flex items-center gap-3 text-[0.74rem] font-semibold uppercase tracking-[0.16em] text-[#1d4ed8]">
-                      <span>{post.category}</span>
-                      <time className="text-[#94a3b8]" dateTime={post.date}>
-                        {post.formattedDate}
-                      </time>
-                    </div>
-                    <h3 className="text-[1.05rem] font-bold leading-[1.55] text-[#0b1d4a] transition group-hover:text-[#1d4ed8]">
-                      {post.title}
-                    </h3>
-                    <p className="text-[0.88rem] leading-[1.85] text-[#475569]">
-                      {post.description}
-                    </p>
-                    <span className="mt-auto pt-3 text-[0.85rem] font-semibold text-[#1d4ed8]">
-                      読む →
-                    </span>
-                  </div>
-                </Link>
+              <li key={post.slug} className="h-full">
+                <ArticleCard post={post} />
               </li>
             ))}
           </ul>

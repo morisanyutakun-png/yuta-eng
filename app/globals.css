@@ -2622,3 +2622,80 @@ a {
   border-radius: 4px;
 }
 
+/* Hide scrollbar for horizontally-scrolling tag rows / chips */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile: tighten article body rhythm for better scanability */
+@media (max-width: 640px) {
+  .article-content {
+    line-height: 1.85;
+  }
+
+  .article-content > p {
+    margin-top: 1rem;
+  }
+
+  .article-content > p:first-of-type {
+    line-height: 1.8;
+  }
+
+  .article-content h2 {
+    margin-top: 2.2rem;
+    margin-bottom: 0.9rem;
+    padding-bottom: 0.7rem;
+  }
+
+  .article-content h2::before {
+    margin-right: 0.5rem;
+    font-size: 0.72rem;
+    vertical-align: 0.32em;
+  }
+
+  .article-content h3 {
+    margin-top: 1.7rem;
+    margin-bottom: 0.7rem;
+    padding-left: 0.7rem;
+  }
+
+  .article-content ul,
+  .article-content ol {
+    padding-left: 0;
+  }
+
+  .article-content ul > li {
+    padding-left: 1.1rem;
+  }
+
+  .article-content ol > li {
+    padding-left: 1.85rem;
+  }
+
+  .article-content li + li {
+    margin-top: 0.35rem;
+  }
+
+  .lumora-callout,
+  .lumora-keypoints,
+  .lumora-faqitem,
+  .lumora-toc,
+  .lumora-figure,
+  .lumora-cta-card,
+  .lumora-comparison {
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+  }
+
+  .article-table-scroll {
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+    border-radius: 12px;
+  }
+}
+
