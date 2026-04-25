@@ -16,17 +16,18 @@ import {
 } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Lumora｜理系の学びを、もう一段深く。",
+  title: "高校物理オンライン塾と教材作成AIをまとめる学習ハブ - Solvora",
   description:
-    "Lumora（ルモラ）は、物理・数学・情報・教材設計など、理系の学びを深めるための記事と専門サービスをまとめるサイトです。",
+    "高校物理を「公式暗記」ではなく理解で解くための解説、AI×LaTeXで教材を効率化するワークフロー、物理専門オンライン塾「物理の森」をまとめた理系学習ハブ。受験生から教員までを対象に、図と表でわかりやすく整理しています。",
   keywords: [
-    "Lumora",
-    "ルモラ",
-    "理系 学習",
-    "高校物理",
+    "高校物理 オンライン塾",
+    "高校物理 専門塾",
+    "物理 個別指導",
+    "教材作成 AI",
+    "LaTeX 教材作成",
+    "理系 学習 サイト",
     "物理の森",
-    "教材作成",
-    "学習デザイン",
+    "Solvora",
   ],
   path: "/",
 });
@@ -358,7 +359,7 @@ export default function Home() {
     createEducationalServiceJsonLd(),
     createHomeFaqJsonLd(),
     createItemListJsonLd(
-      "Lumora の最新記事",
+      "Solvora の最新記事",
       latestPosts.map((post) => ({
         name: post.title,
         description: post.description,
@@ -376,15 +377,16 @@ export default function Home() {
         <Container className="px-6">
           <div className="grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-32">
             <div>
-              <h1 className="text-balance text-[2.2rem] font-extrabold leading-[1.2] tracking-[-0.01em] text-[#0b1d4a] sm:text-[3rem] sm:leading-[1.1] lg:text-[3.6rem]">
-                理系の学びを、
+              <p className="text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+                Science Learning Hub · Solvora
+              </p>
+              <h1 className="mt-4 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3.2rem]">
+                高校物理を、理解で解く。
                 <br />
-                もう一段深く。
+                教材づくりは、AIで軽く。
               </h1>
               <p className="mt-6 max-w-xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
-                物理・数学・情報、そして教材づくりまで。
-                <br className="hidden sm:block" />
-                理系を専門に、日々の学びを深める記事と専門サービスをひとつに。
+                高校物理オンライン塾「物理の森」と、AI × LaTeX による教材作成、学習設計の実装ノートを 1 か所に。受験生から教員まで、現場で使える形で整理した理系学習ハブです。
               </p>
               <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <Link
@@ -619,14 +621,14 @@ export default function Home() {
         <Container className="px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-3xl text-center">
             <Image
-              alt="Lumora"
+              alt="Solvora"
               src="/brand/lumora-logo.png"
               width={1672}
               height={941}
               className="mx-auto h-auto w-[280px] sm:w-[360px]"
             />
             <h2 className="mt-10 text-balance text-[1.6rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-              Lumora は、理系の学びの起点になりたい。
+              Solvora は、理系の学びの起点になりたい。
             </h2>
             <p className="mt-6 text-[1rem] leading-[2] text-[#334155]">
               物理・数学・情報を中心に、深く考えるための記事を書いています。

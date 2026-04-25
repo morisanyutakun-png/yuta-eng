@@ -19,15 +19,15 @@ export function SiteFooter() {
           <div>
             <Link className="inline-flex items-center gap-3" href="/">
               <Image
-                alt="Lumora"
-                src="/brand/lumora-mark.svg"
+                alt="Solvora"
+                src="/brand/solvora-mark.svg"
                 width={120}
                 height={120}
                 className="h-10 w-10"
               />
               <span>
                 <span className="block text-[1.2rem] font-extrabold tracking-[0.04em] text-[#0b1d4a]">
-                  LUMORA
+                  SOLVORA
                 </span>
                 <span className="mt-0.5 block text-[0.66rem] font-semibold tracking-[0.28em] text-[#1d4ed8]">
                   SCIENCE LEARNING HUB

@@ -25,11 +25,11 @@ function isHighlight(item: NavItem): boolean {
   return Boolean((item as { highlight?: boolean }).highlight);
 }
 
-function LumoraLogo() {
+function SolvoraLogo() {
   return (
     <Image
-      alt="Lumora"
-      src="/brand/lumora-mark.svg"
+      alt="Solvora"
+      src="/brand/solvora-mark.svg"
       width={120}
       height={120}
       priority
@@ -63,7 +63,7 @@ export function SiteHeader() {
             href="/"
             onClick={handleCloseMenu}
           >
-            <LumoraLogo />
+            <SolvoraLogo />
             <span className="flex min-w-0 flex-col leading-none">
               <span className="truncate text-[1.25rem] font-extrabold tracking-[0.04em] text-[#0b1d4a] sm:text-[1.4rem]">
                 LUMOR<span className="relative">A<span aria-hidden="true" className="absolute -right-1 top-0 h-1 w-1 rounded-full bg-[#38bdf8]" /></span>

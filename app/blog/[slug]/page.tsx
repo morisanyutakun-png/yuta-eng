@@ -222,7 +222,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <div>
                   <p className="inline-flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#bae6fd]">
                     <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" />
-                    Lumora × 物理の森｜物理専門塾
+                    Solvora × 物理の森｜物理専門塾
                   </p>
                   <p className="mt-3 text-[1.05rem] font-bold leading-[1.6] text-white sm:text-[1.15rem]">
                     高校物理の受講相談は、物理の森から。
@@ -260,10 +260,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 Next Step
               </p>
               <p className="mt-3 text-[1.2rem] font-extrabold leading-[1.5] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.4rem]">
-                読んだあとの行き先を、Lumora から選ぶ。
+                読んだあとの行き先を、Solvora から選ぶ。
               </p>
               <p className="mt-3 text-[0.92rem] leading-[1.95] text-[#475569]">
-                Lumora（学習ハブ）から、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass へ直接遷移できます。
+                Solvora（学習ハブ）から、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass へ直接遷移できます。
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a

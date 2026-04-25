@@ -7,15 +7,16 @@ import { getAllPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "ブログ｜高校物理・教材作成AI・学習アプリの読み物",
+  title: "高校物理 解説ブログと教材作成AIの実践ノート - Solvora",
   description:
-    "Lumora のブログでは、高校物理を理解で乗り越える方法、AIとLaTeXで教材を作るコツ、学習支援Webアプリの考え方を、図と表でわかりやすく整理しています。",
+    "高校物理を公式暗記から理解で解くための解説、AI × LaTeX で教材を作るワークフロー、学習支援アプリの設計まで、図と表でわかりやすく整理した実用ブログ。受験生・教員・教材制作者のための長期記事を継続更新中。",
   keywords: [
     "高校物理 ブログ",
-    "物理 わかりやすい",
-    "教材作成AI",
+    "高校物理 わかりやすい",
+    "物理 解説",
+    "教材作成 AI",
     "LaTeX 教材作成",
-    "学習支援Webアプリ",
+    "学習支援 Webアプリ",
   ],
   path: "/blog",
 });
@@ -38,16 +39,16 @@ export default function BlogPage() {
       <section className="relative overflow-hidden bg-white">
         <Container className="px-6">
           <div className="py-16 sm:py-20 lg:py-24">
-            <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
-              LUMORA · BLOG
+            <p className="text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+              Blog · Solvora
             </p>
-            <h1 className="mt-4 text-balance text-[2.2rem] font-extrabold leading-[1.2] tracking-[-0.01em] text-[#0b1d4a] sm:text-[3rem] sm:leading-[1.1] lg:text-[3.4rem]">
-              高校物理と教材作成を、
+            <h1 className="mt-4 text-balance text-[2rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3.2rem]">
+              高校物理と教材作成の、
               <br className="hidden sm:block" />
-              図と表でわかりやすく。
+              実践ノート。
             </h1>
             <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
-              公式の暗記で止まらないための物理の読み方、AIで教材を作るときのコツ、学習支援アプリの考え方を、検索でたどり着いた1記事ですぐ使える形にまとめています。
+              公式暗記で止まらないための物理の読み方、AI と LaTeX で教材を作るコツ、学習アプリの設計思想を、1 記事ですぐ使える形にまとめています。
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-2">
               <span className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#94a3b8]">

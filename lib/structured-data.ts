@@ -18,7 +18,7 @@ export function createWebsiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: siteConfig.name,
-    alternateName: ["ルモラ", "Lumora Science Learning Hub"],
+    alternateName: ["ソルヴォラ", "Solvora Science Learning Hub"],
     url: siteConfig.url,
     description: siteConfig.description,
     inLanguage: "ja",
@@ -43,7 +43,7 @@ export function createOrganizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: siteConfig.name,
-    alternateName: ["ルモラ", "Lumora Science Learning Hub"],
+    alternateName: ["ソルヴォラ", "Solvora Science Learning Hub"],
     url: siteConfig.url,
     description: siteConfig.description,
     email: siteConfig.email,
@@ -65,7 +65,7 @@ export function createOrganizationJsonLd() {
           url: siteConfig.url,
         },
         description:
-          "Lumora が運営する、高校物理に特化したオンライン専門塾。",
+          "Solvora が運営する、高校物理に特化したオンライン専門塾。",
       },
     ],
   };
@@ -123,7 +123,7 @@ export function createEducationalServiceJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "Lumora",
+    name: "Solvora",
     url: siteConfig.url,
     description:
       "理系の学びを深めるための記事と専門サービスをまとめるサイト。",

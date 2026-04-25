@@ -160,7 +160,7 @@ type CtaCardProps = {
   secondary?: { label: string; href: string };
 };
 
-function CtaCard({ eyebrow = "Lumora", title, body, primary, secondary }: CtaCardProps) {
+function CtaCard({ eyebrow = "Solvora", title, body, primary, secondary }: CtaCardProps) {
   return (
     <aside className="lumora-cta-card">
       <span className="lumora-cta-card-eyebrow">{eyebrow}</span>

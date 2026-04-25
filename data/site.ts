@@ -7,12 +7,12 @@ export const eddivomUrl = "https://eddivom.yuta-eng.com";
 export const itPassUrl = "https://itpass.yuta-eng.com";
 
 export const siteConfig = {
-  name: "Lumora",
-  shortName: "Lumora",
+  name: "Solvora",
+  shortName: "Solvora",
   brandTagline: "Science Learning Hub",
-  title: "Lumora｜理系の学びを、もう一段深く。",
+  title: "高校物理オンライン塾と教材作成AIをまとめる学習ハブ - Solvora",
   description:
-    "Lumora（ルモラ）は、物理・数学・情報・教材設計など、理系の学びを深めるための記事と専門サービスをまとめるサイトです。",
+    "高校物理を理解で解くための解説記事、AI×LaTeXによる教材作成、物理専門オンライン塾「物理の森」までをまとめた理系学習ハブ Solvora（ソルヴォラ）の公式サイト。",
   url: siteUrl,
   physicsSchoolUrl,
   eddivomUrl,
@@ -22,19 +22,19 @@ export const siteConfig = {
   locale: "ja_JP",
   brand: {
     hub: {
-      name: "Lumora",
+      name: "Solvora",
       role: "Science Learning Hub",
     },
     physicsSchool: {
       name: "物理の森",
       tagline: "高校物理 専門塾",
       url: physicsSchoolUrl,
-      role: "Lumora が運営する高校物理のオンライン専門塾",
+      role: "Solvora が運営する高校物理のオンライン専門塾",
     },
   },
   keywords: [
-    "Lumora",
-    "ルモラ",
+    "Solvora",
+    "ソルヴォラ",
     "理系 学習",
     "高校物理",
     "物理の森",

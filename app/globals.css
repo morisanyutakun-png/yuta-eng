@@ -87,7 +87,7 @@ a {
   text-underline-offset: 0.18em;
 }
 
-/* ── Lumora trust-style decorative primitives ── */
+/* ── Solvora trust-style decorative primitives ── */
 .lumora-kicker {
   display: inline-flex;
   align-items: center;
@@ -1389,7 +1389,7 @@ a {
   background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
 }
 
-/* Lumora MDX building blocks */
+/* Solvora MDX building blocks */
 .lumora-callout {
   --lumora-callout-tint: #f1f4fb;
   --lumora-callout-accent: var(--accent-deep);

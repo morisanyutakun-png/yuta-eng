@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 import { getPostBySlug, getPostSlugs } from "@/lib/blog";
 import { siteConfig } from "@/data/site";
 
-export const alt = "Lumora ブログ記事サムネイル";
+export const alt = "Solvora ブログ記事サムネイル";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -26,9 +26,9 @@ export default async function Image({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
-  const title = post?.title ?? "Lumora ブログ";
+  const title = post?.title ?? "Solvora ブログ";
   const description = post?.description ?? siteConfig.description;
-  const category = post?.category ?? "Lumora";
+  const category = post?.category ?? "Solvora";
   const accent = categoryAccent[category] ?? defaultAccent;
   const date = post?.formattedDate ?? "";
   const reading = post?.readingTime ?? "";
@@ -90,7 +90,7 @@ export default async function Image({ params }: { params: Promise<Params> }) {
           {/* Top: brand + category */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-              {/* Lumora L mark */}
+              {/* Solvora L mark */}
               <svg width="56" height="56" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
                 <rect width="120" height="120" rx="22" fill="#ffffff" />
                 <path d="M28 14h22v64h44v22H28V14Z" fill="#0b1d4a" />
@@ -102,7 +102,7 @@ export default async function Image({ params }: { params: Promise<Params> }) {
                 <circle cx="106" cy="22" r="6" fill="#38bdf8" />
               </svg>
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={{ fontSize: "26px", fontWeight: 800, letterSpacing: "0.04em" }}>LUMORA</span>
+                <span style={{ fontSize: "26px", fontWeight: 800, letterSpacing: "0.04em" }}>SOLVORA</span>
                 <span style={{ fontSize: "12px", color: "#bae6fd", letterSpacing: "0.22em", fontWeight: 700 }}>
                   SCIENCE LEARNING HUB
                 </span>

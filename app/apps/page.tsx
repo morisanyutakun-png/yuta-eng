@@ -1,204 +1,230 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
-import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
 import { apps } from "@/data/apps";
 import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "事業一覧｜Lumora の運営事業と公式サービス",
+  title: "高校物理塾・教材作成AI・IT学習アプリの公式サービス一覧 - Solvora",
   description:
-    "Lumora（ルモラ）は学習ハブとして、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass などの公式入口を集約しています。各事業の公式サイトへ直接アクセスできます。",
+    "高校物理オンライン専門塾「物理の森」、AI×LaTeXで教材を自動化する Eddivom、IT 基礎学習アプリ IT Pass を一覧で比較。Solvora が運営・公式紹介する各サービスの公式入口へ直接アクセスできます。",
   keywords: [
-    "Lumora 事業",
-    "物理の森",
-    "高校物理 専門塾",
+    "高校物理 塾",
+    "高校物理 オンライン塾",
+    "教材作成 AI",
     "Eddivom",
     "IT Pass",
-    "教材作成AI",
-    "学習ハブ",
+    "理系 学習アプリ",
   ],
   path: "/apps",
 });
 
 export default function AppsPage() {
-  return (
-    <Container className="px-4 sm:px-6">
-      <header className="mx-auto mt-8 max-w-3xl text-center sm:mt-14">
-        <p className="lumora-kicker">LUMORA · BUSINESSES &amp; SERVICES</p>
-        <h1 className="lumora-display mt-5 text-balance text-[1.7rem] leading-[1.55] sm:text-[2.4rem] sm:leading-[1.45]">
-          物理の森（物理塾）も、<br className="hidden sm:block" />
-          教材作成AIも。<span className="lumora-marker">公式入口</span>を、ここに。
-        </h1>
-        <p className="mx-auto mt-5 max-w-2xl text-pretty font-serif text-[0.95rem] leading-[2.1] text-[var(--ink-soft)] sm:text-[1rem]">
-          Lumora（ルモラ）は学習ハブとして、運営事業の物理専門塾「物理の森」と、提携・紹介する教材作成アプリ Eddivom、IT 学習アプリ IT Pass の公式入口を集約しています。各サービスへは下記カードから直接遷移できます。
-        </p>
-        <div className="lumora-rule" />
-      </header>
+  const featuredApp = apps.find((a) => a.featured);
+  const otherApps = apps.filter((a) => !a.featured);
 
-      <ul className="mx-auto grid max-w-5xl gap-4 sm:gap-5 lg:grid-cols-3">
-        {apps.map((app, idx) => {
-          const isFeatured = Boolean(app.featured);
-          return (
-            <li
-              className={`bg-white p-5 sm:p-6 ${isFeatured ? "lg:col-span-3" : ""}`}
-              key={app.name}
-              style={
-                isFeatured
-                  ? {
-                      border: "2px solid var(--accent-deep)",
-                      borderRadius: "4px",
-                      boxShadow:
-                        "0 22px 50px -38px rgba(15,23,42,0.45), inset 0 0 0 1px rgba(200,146,17,0.18)",
-                      background:
-                        "linear-gradient(135deg, #ffffff 0%, #fbf9f4 100%)",
-                    }
-                  : {
-                      border: "1px solid var(--line)",
-                      borderTop: "3px solid var(--accent-deep)",
-                      borderRadius: "4px",
-                      boxShadow: "0 14px 40px -36px rgba(15,23,42,0.4)",
-                    }
-              }
+  return (
+    <>
+      {/* HERO */}
+      <section className="bg-white">
+        <Container className="px-6">
+          <div className="py-16 sm:py-20 lg:py-24">
+            <p className="text-[0.78rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+              Services · Solvora
+            </p>
+            <h1 className="mt-4 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3.1rem]">
+              高校物理の塾も、教材作成 AI も。
+              <br className="hidden sm:block" />
+              理系の学びを支える公式サービス。
+            </h1>
+            <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
+              Solvora が運営する高校物理専門オンライン塾「物理の森」と、提携・紹介する教材作成 AI Eddivom、IT 学習アプリ IT Pass。受験生・教員・社会人それぞれに合った入口を、ここから直接ひらけます。
+            </p>
+          </div>
+        </Container>
+      </section>
+
+      {/* FEATURED: Physics School */}
+      {featuredApp ? (
+        <section className="bg-[#f8fafc]">
+          <Container className="px-6 py-16 sm:py-20">
+            <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+              Featured · 直営事業
+            </p>
+            <div
+              className="mt-6 grid items-center gap-10 overflow-hidden rounded-[28px] p-8 ring-1 ring-[rgba(15,29,74,0.08)] sm:p-12 lg:grid-cols-[1fr_1fr] lg:gap-14"
+              style={{
+                background:
+                  "radial-gradient(circle at 95% 10%, rgba(56,189,248,0.22), transparent 50%), linear-gradient(135deg, #0b1d4a 0%, #1e3a8a 100%)",
+                color: "#ffffff",
+              }}
             >
-              <div className="flex items-start justify-between gap-2">
-                <span
-                  className={`font-mono text-[0.78rem] font-bold tracking-[0.16em] ${isFeatured ? "text-[var(--accent-deep)]" : "text-[var(--accent-warm)]"}`}
+              <div>
+                <p className="text-[0.74rem] font-semibold uppercase tracking-[0.22em] text-[#bae6fd]">
+                  {featuredApp.category} · {featuredApp.status}
+                </p>
+                <h2 className="mt-4 text-balance text-[2rem] font-extrabold leading-[1.2] tracking-[-0.005em] sm:text-[2.6rem]">
+                  {featuredApp.name}
+                </h2>
+                <p className="mt-4 text-[1rem] leading-[1.85] text-white/85 sm:text-[1.05rem]">
+                  {featuredApp.comparison}
+                </p>
+                <p className="mt-5 text-[0.92rem] leading-[1.95] text-white/75">
+                  {featuredApp.description}
+                </p>
+                <a
+                  href={featuredApp.href}
+                  rel="noreferrer noopener"
+                  target="_blank"
+                  className="mt-9 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:-translate-y-0.5 hover:bg-[#bae6fd]"
                 >
-                  {isFeatured ? "FEATURED · 物理専門塾" : `BUSINESS · 0${idx + 1}`}
-                </span>
-                <span
-                  className={`rounded-sm px-2.5 py-1 font-serif text-[0.7rem] font-bold tracking-[0.12em] ${isFeatured ? "bg-[var(--accent-deep)] text-white" : "bg-[#fbf3df] text-[var(--accent-warm)]"}`}
-                >
-                  {app.status}
-                </span>
+                  {featuredApp.ctaLabel}
+                  <span aria-hidden="true">↗</span>
+                </a>
               </div>
-              <h2
-                className={`mt-3 font-serif font-bold tracking-[0.02em] text-[var(--ink)] ${isFeatured ? "text-[1.65rem] sm:text-[2.05rem]" : "text-[1.45rem] sm:text-[1.6rem]"}`}
-              >
-                {app.name}
-              </h2>
-              <p className="mt-1 font-serif text-[0.74rem] font-bold tracking-[0.18em] text-[var(--accent-deep)]">
-                {app.category}
-              </p>
-              <p
-                className="mt-4 font-serif text-[0.96rem] font-bold leading-[1.85] text-[var(--ink)]"
-                style={{
-                  paddingLeft: "0.85rem",
-                  borderLeft: "3px solid var(--accent-warm)",
-                }}
-              >
-                {app.comparison}
-              </p>
-              <p className="mt-3 border-t border-dotted border-[var(--line)] pt-3 text-[0.88rem] leading-[2] text-[var(--ink-soft)]">
-                {app.description}
-              </p>
-              <div
-                className="mt-4 px-4 py-3"
-                style={{
-                  background: "#faf6ec",
-                  borderRadius: "3px",
-                  border: "1px solid var(--line)",
-                }}
-              >
-                <p className="font-serif text-[0.72rem] font-bold tracking-[0.18em] text-[var(--accent-deep)]">
+              <div className="rounded-[22px] bg-white/10 p-6 ring-1 ring-white/15 backdrop-blur-sm sm:p-7">
+                <p className="text-[0.74rem] font-semibold uppercase tracking-[0.22em] text-[#bae6fd]">
                   向いている人
                 </p>
-                <p className="mt-1.5 text-[0.86rem] leading-[1.85] text-[var(--ink)]">
-                  {app.audience}
+                <p className="mt-3 text-[0.95rem] leading-[1.85] text-white">
+                  {featuredApp.audience}
                 </p>
               </div>
-              {isFeatured ? (
+            </div>
+          </Container>
+        </section>
+      ) : null}
+
+      {/* OTHER SERVICES */}
+      <section className="bg-white">
+        <Container className="px-6 py-20 sm:py-24">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+                Partner Services
+              </p>
+              <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+                公式紹介する学習アプリ
+              </h2>
+            </div>
+          </div>
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2">
+            {otherApps.map((app) => (
+              <li key={app.name}>
                 <a
-                  className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-sm bg-[var(--accent-deep)] px-6 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:bg-[#16305c]"
                   href={app.href}
                   rel="noreferrer noopener"
                   target="_blank"
+                  className="group flex h-full flex-col rounded-[22px] bg-white p-7 ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-32px_rgba(15,29,74,0.4)] sm:p-8"
                 >
-                  <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
-                  {app.ctaLabel}
-                  <span aria-hidden="true" className="text-[#f5d68a]">↗</span>
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-[0.74rem] font-semibold uppercase tracking-[0.18em] text-[#1d4ed8]">
+                      {app.category}
+                    </p>
+                    <span className="rounded-full bg-[#f1f5f9] px-3 py-1 text-[0.72rem] font-semibold text-[#475569]">
+                      {app.status}
+                    </span>
+                  </div>
+                  <h3 className="mt-4 text-[1.6rem] font-extrabold tracking-[-0.005em] text-[#0b1d4a] transition group-hover:text-[#1d4ed8]">
+                    {app.name}
+                  </h3>
+                  <p className="mt-3 text-[0.96rem] font-semibold leading-[1.7] text-[#0b1d4a]">
+                    {app.comparison}
+                  </p>
+                  <p className="mt-3 text-[0.9rem] leading-[1.95] text-[#475569]">
+                    {app.description}
+                  </p>
+                  <div className="mt-5 rounded-[14px] bg-[#f8fafc] p-4 ring-1 ring-[rgba(15,29,74,0.06)]">
+                    <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#1d4ed8]">
+                      向いている人
+                    </p>
+                    <p className="mt-2 text-[0.88rem] leading-[1.85] text-[#334155]">
+                      {app.audience}
+                    </p>
+                  </div>
+                  <span className="mt-auto pt-6 text-[0.95rem] font-semibold text-[#1d4ed8] transition group-hover:text-[#0b1d4a]">
+                    {app.ctaLabel} <span aria-hidden="true">↗</span>
+                  </span>
                 </a>
-              ) : (
-                <ButtonLink className="mt-5 w-full" external href={app.href}>
-                  {app.ctaLabel} ↗
-                </ButtonLink>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-
-      <section
-        className="mx-auto my-12 max-w-4xl p-5 sm:my-16 sm:p-10"
-        style={{
-          background:
-            "linear-gradient(135deg, #fbf6e8 0%, #fbf9f4 60%, #ffffff 100%)",
-          border: "1px solid var(--line)",
-          borderRadius: "4px",
-        }}
-      >
-        <p className="lumora-eyebrow">BRAND STRUCTURE</p>
-        <h2 className="lumora-display mt-3 text-[1.3rem] leading-[1.55] sm:text-[1.7rem]">
-          Lumora（学習ハブ）の中に、各事業があります。
-        </h2>
-        <p className="mt-4 text-[0.92rem] leading-[2] text-[var(--ink-soft)]">
-          Lumora は親ブランド（学習ハブ）、「物理の森」は Lumora が運営する物理専門塾事業、Eddivom や IT Pass は提携・紹介するサービスです。
-        </p>
-        <ul className="mt-5 grid gap-3 sm:grid-cols-3">
-          <li className="rounded-sm border border-[var(--line)] bg-white p-4">
-            <p className="font-serif text-[0.72rem] font-bold tracking-[0.18em] text-[var(--accent-deep)]">
-              親ブランド / HUB
-            </p>
-            <p className="mt-2 font-serif text-[0.95rem] font-bold text-[var(--ink)]">
-              Lumora（yuta-eng.com）
-            </p>
-            <p className="mt-1 text-[0.82rem] leading-[1.85] text-[var(--ink-soft)]">
-              記事と各事業の入口を集約する学習ハブ
-            </p>
-          </li>
-          <li className="rounded-sm border border-[var(--accent-deep)] bg-white p-4">
-            <p className="font-serif text-[0.72rem] font-bold tracking-[0.18em] text-[var(--accent-warm)]">
-              運営事業 / 物理専門塾
-            </p>
-            <p className="mt-2 font-serif text-[0.95rem] font-bold text-[var(--ink)]">
-              物理の森（physics.yuta-eng.com）
-            </p>
-            <p className="mt-1 text-[0.82rem] leading-[1.85] text-[var(--ink-soft)]">
-              Lumora が運営する高校物理オンライン専門塾
-            </p>
-          </li>
-          <li className="rounded-sm border border-[var(--line)] bg-white p-4">
-            <p className="font-serif text-[0.72rem] font-bold tracking-[0.18em] text-[var(--accent-deep)]">
-              提携・紹介
-            </p>
-            <p className="mt-2 font-serif text-[0.95rem] font-bold text-[var(--ink)]">
-              Eddivom · IT Pass
-            </p>
-            <p className="mt-1 text-[0.82rem] leading-[1.85] text-[var(--ink-soft)]">
-              教材作成AI・IT 学習の公式パートナーアプリ
-            </p>
-          </li>
-        </ul>
-        <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
-          <a
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[var(--accent-deep)] px-6 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:bg-[#16305c]"
-            href={siteConfig.physicsSchoolUrl}
-            rel="noreferrer noopener"
-            target="_blank"
-          >
-            物理の森（物理塾）を開く
-            <span aria-hidden="true">↗</span>
-          </a>
-          <ButtonLink className="w-full sm:w-auto" href="/blog" variant="secondary">
-            ブログを読む
-          </ButtonLink>
-          <ButtonLink className="w-full sm:w-auto" href="/about" variant="ghost">
-            Lumora について
-          </ButtonLink>
-        </div>
+              </li>
+            ))}
+          </ul>
+        </Container>
       </section>
-    </Container>
+
+      {/* BRAND STRUCTURE */}
+      <section className="bg-[#f8fafc]">
+        <Container className="px-6 py-20 sm:py-24">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+              Brand Structure
+            </p>
+            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+              Solvora と各事業の関係
+            </h2>
+            <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569]">
+              Solvora は学習ハブの親ブランド。物理の森は Solvora が運営する直営の物理専門塾、Eddivom と IT Pass は提携・紹介する公式パートナーアプリです。
+            </p>
+          </div>
+          <ul className="mx-auto mt-10 grid max-w-5xl gap-5 sm:grid-cols-3">
+            <li className="rounded-[22px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#1d4ed8]">
+                親ブランド
+              </p>
+              <p className="mt-3 text-[1.15rem] font-extrabold text-[#0b1d4a]">
+                Solvora
+              </p>
+              <p className="mt-2 text-[0.85rem] leading-[1.85] text-[#475569]">
+                yuta-eng.com で運営する学習ハブ。記事と各サービスの公式入口を集約します。
+              </p>
+            </li>
+            <li className="rounded-[22px] bg-[#0b1d4a] p-6 text-white">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#bae6fd]">
+                直営 / 物理専門塾
+              </p>
+              <p className="mt-3 text-[1.15rem] font-extrabold">物理の森</p>
+              <p className="mt-2 text-[0.85rem] leading-[1.85] text-white/80">
+                Solvora が運営する高校物理オンライン専門塾。
+              </p>
+            </li>
+            <li className="rounded-[22px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-[#1d4ed8]">
+                提携・紹介
+              </p>
+              <p className="mt-3 text-[1.15rem] font-extrabold text-[#0b1d4a]">
+                Eddivom · IT Pass
+              </p>
+              <p className="mt-2 text-[0.85rem] leading-[1.85] text-[#475569]">
+                教材作成 AI と IT 学習の公式パートナーアプリ。
+              </p>
+            </li>
+          </ul>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <a
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#0b1d4a] px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a]"
+              href={siteConfig.physicsSchoolUrl}
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              物理の森を開く <span aria-hidden="true">↗</span>
+            </a>
+            <Link
+              href="/blog"
+              className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
+            >
+              ブログを読む
+            </Link>
+            <Link
+              href="/about"
+              className="inline-flex min-h-12 items-center justify-center rounded-full px-4 text-[0.95rem] font-semibold text-[#1d4ed8] transition hover:text-[#0b1d4a]"
+            >
+              Solvora について <span aria-hidden="true" className="ml-1">→</span>
+            </Link>
+          </div>
+        </Container>
+      </section>
+    </>
   );
 }

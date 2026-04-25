@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "Lumora — 物理の森（物理塾）や教材作成AIをまとめる学習ハブ";
+  "Solvora — 物理の森（物理塾）や教材作成AIをまとめる学習ハブ";
 
 export const size = {
   width: 1200,
@@ -67,7 +67,7 @@ export default function Image() {
                 width: 18,
               }}
             />
-            LUMORA · LEARNING HUB
+            SOLVORA · LEARNING HUB
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <div
@@ -93,7 +93,7 @@ export default function Image() {
                 maxWidth: 980,
               }}
             >
-              Lumora は、物理の森や教材作成AIをまとめる学習ハブブランド。
+              Solvora は、物理の森や教材作成AIをまとめる学習ハブブランド。
             </div>
           </div>
           <div style={{ display: "flex", gap: 16 }}>
