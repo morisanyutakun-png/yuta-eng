@@ -8,6 +8,7 @@ import { ButtonLink } from "@/components/button-link";
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
 import { mdxComponents } from "@/components/mdx-components";
+import { siteConfig } from "@/data/site";
 import { getPostBySlug, getPostSlugs, getRelatedPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
 import { createArticleJsonLd, createBreadcrumbJsonLd } from "@/lib/structured-data";
@@ -186,6 +187,37 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </section>
         ) : null}
 
+        {post.category === "Physics" ? (
+          <aside
+            className="mt-5 flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6"
+            style={{
+              background:
+                "radial-gradient(circle at 95% 10%, rgba(200,146,17,0.18), transparent 45%), linear-gradient(135deg, #0f1c3a 0%, #1f3a6b 100%)",
+              border: "1px solid #1a2a4d",
+              borderRadius: "4px",
+            }}
+          >
+            <div>
+              <p className="inline-flex items-center gap-1.5 font-serif text-[0.7rem] font-bold tracking-[0.22em] text-[#f5d68a]">
+                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
+                LUMORA PHYSICS · 物理専門塾
+              </p>
+              <p className="mt-2 font-serif text-[1.02rem] font-bold leading-[1.6] text-white sm:text-[1.1rem]">
+                高校物理の受講相談は、専門塾サイトから。
+              </p>
+            </div>
+            <a
+              className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-sm bg-[var(--accent-warm)] px-5 py-3 font-serif text-[0.9rem] font-bold tracking-[0.06em] text-[#1a1a1a] transition hover:-translate-y-0.5 hover:bg-[#dca424]"
+              href={siteConfig.physicsSchoolUrl}
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              物理専門塾サイトを開く
+              <span aria-hidden="true">↗</span>
+            </a>
+          </aside>
+        ) : null}
+
         <div className="article-content mt-7 sm:mt-8">
           <MDXRemote
             components={mdxComponents}
@@ -202,19 +234,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             borderRadius: "3px",
           }}
         >
-          <p className="lumora-eyebrow">NEXT STEP</p>
+          <p className="lumora-eyebrow">NEXT STEP · 学習ハブの動線</p>
           <p className="lumora-display mt-3 text-[1.1rem] leading-[1.6] sm:text-[1.22rem]">
-            読んだあとは、教材作成や学習アプリへ進めます。
+            読んだあとの行き先を、ハブから選べます。
           </p>
           <p className="mt-3 text-[0.92rem] leading-[2] text-[var(--ink-soft)]">
-            Lumora では、ブログ記事で学んだ考え方を、教材作成AIや学習支援アプリへつなげられます。気になるテーマがあれば気軽に相談してください。
+            yuta-eng.com（学習ハブ）から、物理専門塾の公式サイトや教材作成AI、学習支援アプリへ直接遷移できます。
           </p>
           <div className="mt-5 grid gap-2.5 sm:flex sm:flex-wrap">
-            <ButtonLink className="w-full sm:w-auto" href="/apps">
-              アプリを見る
-            </ButtonLink>
-            <ButtonLink className="w-full sm:w-auto" href="/contact" variant="secondary">
-              相談する
+            <a
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[var(--accent-deep)] px-6 py-3 font-serif text-[0.92rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:bg-[#16305c]"
+              href={siteConfig.physicsSchoolUrl}
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
+              物理専門塾サイトを開く
+              <span aria-hidden="true" className="text-[#f5d68a]">↗</span>
+            </a>
+            <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
+              アプリ一覧
             </ButtonLink>
             <ButtonLink className="w-full sm:w-auto" href="/blog" variant="ghost">
               ブログ一覧へ

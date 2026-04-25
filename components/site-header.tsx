@@ -8,12 +8,20 @@ import { Container } from "@/components/container";
 import { navItems, siteConfig } from "@/data/site";
 import { cn } from "@/lib/utils";
 
-function isActivePath(pathname: string, href: string) {
-  if (href === "/") {
-    return pathname === "/";
-  }
+type NavItem = (typeof navItems)[number];
 
+function isActivePath(pathname: string, href: string) {
+  if (href.startsWith("http")) return false;
+  if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function isExternal(item: NavItem): boolean {
+  return Boolean((item as { external?: boolean }).external);
+}
+
+function isHighlight(item: NavItem): boolean {
+  return Boolean((item as { highlight?: boolean }).highlight);
 }
 
 function LumoraLogo() {
@@ -72,16 +80,58 @@ export function SiteHeader() {
               <span className="truncate font-serif text-[1.18rem] font-bold tracking-[0.05em] text-[var(--ink)] sm:text-[1.3rem]">
                 {siteConfig.name}
               </span>
-              <span className="mt-1 hidden font-serif text-[0.7rem] font-bold tracking-[0.2em] text-[var(--accent-deep)] sm:block">
+              <span className="mt-1 hidden font-serif text-[0.7rem] font-bold tracking-[0.18em] text-[var(--accent-deep)] sm:block">
                 {siteConfig.brandTagline}
               </span>
             </span>
           </Link>
 
           <nav aria-label="Global navigation" className="hidden md:block">
-            <ul className="flex flex-wrap items-center justify-end gap-1 text-sm font-medium text-slate-600">
+            <ul className="flex flex-wrap items-center justify-end gap-1">
               {navItems.map((item) => {
+                const external = isExternal(item);
+                const highlight = isHighlight(item);
                 const isCurrent = isActivePath(pathname, item.href);
+
+                if (external && highlight) {
+                  return (
+                    <li className="ml-2" key={item.href}>
+                      <a
+                        className="inline-flex min-h-10 items-center gap-1.5 rounded-sm bg-[var(--accent-deep)] px-4 py-2 font-serif text-[0.86rem] font-bold tracking-[0.08em] text-white transition hover:bg-[#16305c]"
+                        href={item.href}
+                        rel="noreferrer noopener"
+                        target="_blank"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]"
+                        />
+                        {item.label}
+                        <span aria-hidden="true" className="ml-0.5 text-[0.78rem] text-[#f5d68a]">
+                          ↗
+                        </span>
+                      </a>
+                    </li>
+                  );
+                }
+
+                if (external) {
+                  return (
+                    <li key={item.href}>
+                      <a
+                        className="inline-flex min-h-10 items-center px-3.5 py-2 font-serif text-[0.88rem] font-bold tracking-[0.06em] text-[var(--ink-soft)] transition hover:text-[var(--ink)]"
+                        href={item.href}
+                        rel="noreferrer noopener"
+                        target="_blank"
+                      >
+                        {item.label}
+                        <span aria-hidden="true" className="ml-1 text-[0.7rem]">
+                          ↗
+                        </span>
+                      </a>
+                    </li>
+                  );
+                }
 
                 return (
                   <li key={item.href}>
@@ -136,7 +186,56 @@ export function SiteHeader() {
           >
             <ul className="grid gap-1">
               {navItems.map((item) => {
+                const external = isExternal(item);
+                const highlight = isHighlight(item);
                 const isCurrent = isActivePath(pathname, item.href);
+
+                const sharedRow = (
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="font-serif text-[0.95rem] font-bold tracking-[0.06em]">
+                      {item.label}
+                    </span>
+                    {external ? (
+                      <span className="font-serif text-[0.68rem] tracking-[0.14em] text-[var(--ink-soft)]">
+                        外部サイトへ移動
+                      </span>
+                    ) : null}
+                  </span>
+                );
+
+                if (external && highlight) {
+                  return (
+                    <li key={item.href}>
+                      <a
+                        className="flex min-h-12 items-center gap-3 rounded-sm bg-[var(--accent-deep)] px-4 py-2.5 text-white transition hover:bg-[#16305c]"
+                        href={item.href}
+                        rel="noreferrer noopener"
+                        target="_blank"
+                        onClick={handleCloseMenu}
+                      >
+                        {sharedRow}
+                        <span aria-hidden="true" className="text-[#f5d68a]">↗</span>
+                      </a>
+                    </li>
+                  );
+                }
+
+                if (external) {
+                  return (
+                    <li key={item.href}>
+                      <a
+                        className="flex min-h-12 items-center gap-3 rounded-sm px-4 py-2.5 text-[var(--ink)] transition hover:bg-[#faf6ec]"
+                        href={item.href}
+                        rel="noreferrer noopener"
+                        target="_blank"
+                        onClick={handleCloseMenu}
+                      >
+                        {sharedRow}
+                        <span aria-hidden="true" className="text-[var(--ink-soft)]">↗</span>
+                      </a>
+                    </li>
+                  );
+                }
 
                 return (
                   <li key={item.href}>

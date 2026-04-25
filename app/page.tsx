@@ -14,32 +14,47 @@ import {
   createItemListJsonLd,
 } from "@/lib/structured-data";
 
-const visitorPaths = [
+type VisitorPath = {
+  no: string;
+  label: string;
+  badge: string;
+  title: string;
+  description: string;
+  benefits: string[];
+  href: string;
+  cta: string;
+  external?: boolean;
+  primary?: boolean;
+};
+
+const visitorPaths: VisitorPath[] = [
   {
     no: "01",
-    label: "Physics",
-    badge: "高校生・受験生向け｜物理専門塾",
-    title: "高校物理に特化した、Lumora の物理専門塾",
+    label: "Lumora Physics",
+    badge: "高校生・受験生向け｜物理専門塾【公式サイト】",
+    title: "高校物理を「理解」で乗り越える、物理専門塾へ。",
     description:
-      "Lumora は高校物理を専門に扱うオンライン塾です。公式暗記ではなく、現象 → 図 → 式の順で読み解く力を、個別カリキュラムで育てます。",
+      "Lumora Physics は、高校物理に特化したオンライン専門塾です。公式暗記ではなく、現象 → 図 → 式の順で読み解く力を、個別カリキュラムで育てます。受講相談は専門塾サイトから受付中。",
     benefits: [
       "物理基礎・物理の通年指導と定期テスト対策",
       "共通テスト／国公立二次／私大入試まで対応",
       "つまずいた前提単元へ戻れる個別カリキュラム",
     ],
-    href: "/blog/physics-material-creation",
-    cta: "物理塾の指導方針を読む",
+    href: "https://physics.yuta-eng.com",
+    cta: "物理専門塾サイトを開く",
+    external: true,
+    primary: true,
   },
   {
     no: "02",
-    label: "Materials",
+    label: "Materials AI",
     badge: "先生・塾講師・教材制作者向け",
     title: "教材作成を AI でラクに続ける",
     description:
-      "生成AI下書き → LaTeX整形 → PDF/Web展開のワークフローを、コピペ可能なテンプレ付きで紹介。",
+      "生成AI下書き → LaTeX整形 → PDF/Web展開のワークフローを、コピペ可能なテンプレ付きで紹介。Eddivom（外部公式アプリ）への入口にもなります。",
     benefits: [
       "毎年作り直しが消える「資産化」設計",
-      "AI に任せていい仕事/ダメな仕事の整理",
+      "AI に任せていい仕事 / ダメな仕事の整理",
       "小テスト・類題・解答PDFを一気通貫で",
     ],
     href: "/blog/latex-web-workflow",
@@ -47,8 +62,8 @@ const visitorPaths = [
   },
   {
     no: "03",
-    label: "EdTech",
-    badge: "学校ICT・プロダクト担当向け",
+    label: "EdTech Design",
+    badge: "学校ICT・EdTechプロダクト担当向け",
     title: "「使われる」学習アプリを設計する",
     description:
       "GIGAスクール後の教室で、紙・PDF・アプリを分断させずに学習動線を設計する考え方をまとめました。",
@@ -67,8 +82,9 @@ const problems = [
     badge: "高校物理 専門塾",
     pain: "公式は覚えたのに、ちょっと条件が変わると解けない",
     answer:
-      "Lumora の物理専門塾では、現象 → 図 → 式の順で読み解く力を個別カリキュラムで育てます。",
-    href: "/blog/physics-material-creation",
+      "物理専門塾「Lumora Physics」では、現象 → 図 → 式の順で読み解く力を個別カリキュラムで育てます。受講相談は専門塾サイトから。",
+    href: "https://physics.yuta-eng.com",
+    external: true,
   },
   {
     badge: "教材制作",
@@ -76,6 +92,7 @@ const problems = [
     answer:
       "AI・LaTeX・Web の役割分担と、5ステップの教材作成ワークフローでラクに続けられます。",
     href: "/blog/latex-web-workflow",
+    external: false,
   },
   {
     badge: "学習設計",
@@ -83,6 +100,7 @@ const problems = [
     answer:
       "「機能の足し算」ではなく「動線設計」でアプリを設計し直す考え方を、図解で解説します。",
     href: "/blog/education-technology-learning-design",
+    external: false,
   },
 ];
 
@@ -103,24 +121,24 @@ const trustPoints = [
 
 const faqItems = [
   {
-    question: "Lumora はどんな人のためのサイトですか？",
+    question: "yuta-eng.com（Lumora）はどんなサイトですか？",
     answer:
-      "高校物理でつまずいた高校生・受験生、AIで教材を作りたい先生や塾講師、学習支援アプリを設計する EdTech 担当者の3層を想定しています。それぞれの入口から記事へ進めます。",
+      "yuta-eng.com は、Lumora が運営する学習ハブ（権威ページ）です。物理専門塾「Lumora Physics（physics.yuta-eng.com）」、教材作成アプリ Eddivom、IT Pass などの公式入口を1つにまとめています。",
   },
   {
-    question: "記事は無料で読めますか？",
+    question: "物理専門塾の受講申し込みはどこからしますか？",
     answer:
-      "すべての記事は無料で公開しています。一次情報リンクや図解も含めて全文をそのまま読めます。",
+      "物理専門塾「Lumora Physics」の公式サイトは https://physics.yuta-eng.com です。受講相談・申し込み・カリキュラム詳細は専門塾サイトから直接アクセスしてください。当ハブからは各セクションのボタンで遷移できます。",
   },
   {
-    question: "個別の相談やお仕事依頼はできますか？",
+    question: "ブログの記事は無料で読めますか？",
     answer:
-      "教材設計、AI教材作成、学習Webアプリの企画相談などはお問い合わせから受け付けています。まずは気軽にメールしてください。",
+      "yuta-eng.com で公開している記事はすべて無料で全文を読めます。一次情報リンクや図解も含めて公開しています。",
   },
   {
-    question: "Eddivom は Lumora と同じ運営ですか？",
+    question: "Eddivom や IT Pass は Lumora の運営ですか？",
     answer:
-      "Eddivom は Lumora が公式に紹介している学習支援Webアプリで、AIとLaTeXによる教材作成を体験できます。アプリ一覧から開けます。",
+      "Eddivom は Lumora が公式に提携・紹介する教材作成アプリ、IT Pass は外部の学習アプリです。yuta-eng.com を学習ハブとして、それぞれの公式サイトへ案内しています。",
   },
 ];
 
@@ -373,27 +391,34 @@ export default function Home() {
         <Container className="relative px-4 sm:px-6">
           <div className="grid items-center gap-8 py-10 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-20">
             <div>
-              <p className="lumora-kicker">LUMORA · EdTech Studio</p>
+              <p className="lumora-kicker">LUMORA · LEARNING HUB</p>
               <h1 className="lumora-display mt-5 text-balance text-[1.85rem] leading-[1.55] sm:mt-7 sm:text-[2.5rem] sm:leading-[1.45] lg:text-[3rem] lg:leading-[1.4]">
-                高校物理を「<span className="lumora-marker">理解</span>」で乗り越え、<br className="hidden sm:block" />
-                教材作成をAIで「<span className="lumora-marker">ラク</span>」に続ける。
+                <span className="lumora-marker">物理専門塾</span> も、教材作成AI も。<br className="hidden sm:block" />
+                学びと教育のすべての入口を、ここに。
               </h1>
               <p className="lumora-lead mt-6 max-w-xl text-pretty text-[0.98rem] sm:mt-7 sm:text-[1.05rem]">
-                Lumora は、物理の理解、AI と LaTeX による教材作成、学習支援アプリの設計を、図と表でわかりやすく整理する EdTech 学習スタジオです。読んで、解いて、つなぐ。
+                yuta-eng.com（Lumora）は、物理専門塾「Lumora Physics」、教材作成AI、学習支援アプリの公式入口をひとつにまとめた学習ハブです。記事で考え方を学び、各サービスへそのまま進めます。
               </p>
               <div className="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:flex-row">
-                <ButtonLink className="w-full sm:w-auto" href="/blog">
+                <a
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[var(--accent-deep)] px-6 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white shadow-[0_14px_30px_-18px_rgba(15,23,42,0.65)] transition hover:-translate-y-0.5 hover:bg-[#16305c]"
+                  href={siteConfig.physicsSchoolUrl}
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
+                  物理専門塾サイトを開く
+                  <span aria-hidden="true" className="text-[#f5d68a]">↗</span>
+                </a>
+                <ButtonLink className="w-full sm:w-auto" href="/blog" variant="secondary">
                   ブログを読む
-                </ButtonLink>
-                <ButtonLink className="w-full sm:w-auto" href="/apps" variant="secondary">
-                  アプリを見る
                 </ButtonLink>
               </div>
               <div className="mt-9 grid grid-cols-3 gap-0 border-y border-[var(--line)] py-5 sm:mt-12 sm:gap-6 sm:py-6">
                 {[
-                  { num: "3", unit: "テーマ", label: "目的別の入口" },
-                  { num: "100", unit: "%", label: "全文無料公開" },
-                  { num: "1st", unit: "", label: "一次情報ベース" },
+                  { num: "1", unit: "塾", label: "物理専門塾の公式" },
+                  { num: "3", unit: "アプリ", label: "公式入口を集約" },
+                  { num: "100", unit: "%", label: "記事は無料公開" },
                 ].map((item, i) => (
                   <div
                     className={`lumora-stat px-2 text-center sm:text-left ${i > 0 ? "border-l border-[var(--line)]" : ""}`}
@@ -439,17 +464,16 @@ export default function Home() {
             <div className="lumora-rule" />
           </div>
           <ul className="mt-8 grid gap-4 sm:gap-5 lg:grid-cols-3">
-            {problems.map((problem, idx) => (
-              <li key={problem.pain}>
-                <Link
-                  className="group relative flex h-full flex-col bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-[0_24px_50px_-40px_rgba(15,23,42,0.45)] sm:p-6"
-                  href={problem.href}
-                  style={{
-                    border: "1px solid var(--line)",
-                    borderTop: "3px solid var(--accent-deep)",
-                    borderRadius: "4px",
-                  }}
-                >
+            {problems.map((problem, idx) => {
+              const cardClass =
+                "group relative flex h-full flex-col bg-white p-5 transition hover:-translate-y-0.5 hover:shadow-[0_24px_50px_-40px_rgba(15,23,42,0.45)] sm:p-6";
+              const cardStyle = {
+                border: "1px solid var(--line)",
+                borderTop: "3px solid var(--accent-deep)",
+                borderRadius: "4px",
+              };
+              const inner = (
+                <>
                   <div className="flex items-start justify-between gap-3">
                     <span className="font-mono text-[0.78rem] font-bold tracking-[0.16em] text-[var(--accent-warm)]">
                       0{idx + 1}
@@ -465,11 +489,32 @@ export default function Home() {
                     {problem.answer}
                   </p>
                   <p className="mt-5 inline-flex items-center gap-1 font-serif text-[0.85rem] font-bold tracking-[0.06em] text-[var(--accent-deep)]">
-                    解決方法を見る <span aria-hidden="true">→</span>
+                    {problem.external ? "物理専門塾サイトを開く" : "解決方法を見る"}
+                    <span aria-hidden="true">{problem.external ? "↗" : "→"}</span>
                   </p>
-                </Link>
-              </li>
-            ))}
+                </>
+              );
+
+              return (
+                <li key={problem.pain}>
+                  {problem.external ? (
+                    <a
+                      className={cardClass}
+                      href={problem.href}
+                      rel="noreferrer noopener"
+                      target="_blank"
+                      style={cardStyle}
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    <Link className={cardClass} href={problem.href} style={cardStyle}>
+                      {inner}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </section>
 
@@ -487,34 +532,58 @@ export default function Home() {
           </div>
 
           <ol className="mt-8 grid gap-5 sm:gap-6 lg:grid-cols-3">
-            {visitorPaths.map((path) => (
-              <li key={path.title}>
-                <Link
-                  className="group relative flex h-full flex-col overflow-hidden bg-white transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-44px_rgba(15,23,42,0.45)]"
-                  href={path.href}
-                  style={{
-                    border: "1px solid var(--line)",
+            {visitorPaths.map((path) => {
+              const cardClass = path.primary
+                ? "group relative flex h-full flex-col overflow-hidden bg-white transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-44px_rgba(15,23,42,0.5)]"
+                : "group relative flex h-full flex-col overflow-hidden bg-white transition hover:-translate-y-1 hover:shadow-[0_30px_60px_-44px_rgba(15,23,42,0.45)]";
+              const cardStyle = path.primary
+                ? {
+                    border: "2px solid var(--accent-deep)",
                     borderRadius: "4px",
-                  }}
-                >
+                    boxShadow: "0 18px 50px -36px rgba(15,23,42,0.4)",
+                  }
+                : { border: "1px solid var(--line)", borderRadius: "4px" };
+
+              const headerStyle = path.primary
+                ? {
+                    background:
+                      "linear-gradient(135deg, #0f1c3a 0%, #1f3a6b 100%)",
+                    borderBottom: "1px solid #1a2a4d",
+                  }
+                : {
+                    background:
+                      "linear-gradient(135deg, #f6f1e2 0%, #fbf9f4 100%)",
+                    borderBottom: "1px solid var(--line)",
+                  };
+
+              const inner = (
+                <>
                   <div
                     className="relative flex items-center justify-between overflow-hidden px-4 py-3 sm:px-5"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #f6f1e2 0%, #fbf9f4 100%)",
-                      borderBottom: "1px solid var(--line)",
-                    }}
+                    style={headerStyle}
                   >
                     <div>
-                      <p className="font-serif text-[0.74rem] font-bold tracking-[0.22em] text-[var(--accent-deep)]">
-                        {path.label}
-                      </p>
-                      <p className="mt-0.5 text-[0.7rem] text-[var(--ink-soft)]">
+                      {path.primary ? (
+                        <p className="inline-flex items-center gap-1.5 font-serif text-[0.7rem] font-bold tracking-[0.22em] text-[#f5d68a]">
+                          <span
+                            aria-hidden="true"
+                            className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]"
+                          />
+                          OFFICIAL · 物理専門塾
+                        </p>
+                      ) : (
+                        <p className="font-serif text-[0.74rem] font-bold tracking-[0.22em] text-[var(--accent-deep)]">
+                          {path.label}
+                        </p>
+                      )}
+                      <p
+                        className={`mt-0.5 text-[0.7rem] ${path.primary ? "text-[#d6d3c8]" : "text-[var(--ink-soft)]"}`}
+                      >
                         {path.badge}
                       </p>
                     </div>
                     <span
-                      className="font-serif text-[2.4rem] font-bold leading-none text-[var(--accent-warm)]"
+                      className={`font-serif text-[2.4rem] font-bold leading-none ${path.primary ? "text-[#f5d68a]" : "text-[var(--accent-warm)]"}`}
                       aria-hidden="true"
                     >
                       {path.no}
@@ -542,13 +611,40 @@ export default function Home() {
                         </li>
                       ))}
                     </ul>
-                    <p className="mt-auto inline-flex items-center gap-1 pt-6 font-serif text-[0.88rem] font-bold tracking-[0.04em] text-[var(--accent-deep)]">
-                      {path.cta} <span aria-hidden="true">→</span>
-                    </p>
+                    {path.primary ? (
+                      <span className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-sm bg-[var(--accent-deep)] px-4 py-3 pt-3 font-serif text-[0.88rem] font-bold tracking-[0.06em] text-white transition group-hover:bg-[#16305c]">
+                        {path.cta}
+                        <span aria-hidden="true" className="text-[#f5d68a]">↗</span>
+                      </span>
+                    ) : (
+                      <p className="mt-auto inline-flex items-center gap-1 pt-6 font-serif text-[0.88rem] font-bold tracking-[0.04em] text-[var(--accent-deep)]">
+                        {path.cta} <span aria-hidden="true">→</span>
+                      </p>
+                    )}
                   </div>
-                </Link>
-              </li>
-            ))}
+                </>
+              );
+
+              return (
+                <li key={path.title}>
+                  {path.external ? (
+                    <a
+                      className={cardClass}
+                      href={path.href}
+                      rel="noreferrer noopener"
+                      target="_blank"
+                      style={cardStyle}
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    <Link className={cardClass} href={path.href} style={cardStyle}>
+                      {inner}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
           </ol>
         </section>
 
@@ -604,6 +700,101 @@ export default function Home() {
                 </li>
               ))}
             </ol>
+          </div>
+        </section>
+
+        {/* PHYSICS SCHOOL BANNER */}
+        <section
+          className="relative mt-16 overflow-hidden sm:mt-24"
+          style={{
+            background:
+              "radial-gradient(circle at 90% 10%, rgba(200,146,17,0.22), transparent 42%), linear-gradient(135deg, #0f1c3a 0%, #1f3a6b 65%, #2c4d80 100%)",
+            border: "1px solid #1a2a4d",
+            borderRadius: "4px",
+          }}
+        >
+          <div
+            aria-hidden="true"
+            className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-[var(--accent-warm)] to-transparent"
+          />
+          <div className="relative grid gap-8 p-6 sm:p-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:p-14">
+            <div>
+              <p className="inline-flex items-center gap-2 font-serif text-[0.74rem] font-bold tracking-[0.24em] text-[#f5d68a]">
+                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[var(--accent-warm)]" />
+                LUMORA PHYSICS · 物理専門塾【公式サイト】
+              </p>
+              <h2 className="lumora-display mt-4 text-balance text-[1.55rem] leading-[1.5] text-white sm:text-[2.1rem] sm:leading-[1.45]">
+                高校物理に特化した、<br className="hidden sm:block" />
+                オンライン専門塾の公式サイトはこちら。
+              </h2>
+              <p className="mt-5 font-serif text-[0.95rem] leading-[2.05] text-[#d6d3c8] sm:text-[1rem]">
+                yuta-eng.com（学習ハブ）から、物理専門塾「Lumora Physics」の公式サイトへ直接移動できます。受講相談・カリキュラム詳細・お申し込みは専門塾サイトから。
+              </p>
+              <ul className="mt-6 grid gap-2.5 border-t border-white/15 pt-5 sm:grid-cols-2">
+                {[
+                  "物理基礎・物理の通年指導",
+                  "定期テスト／推薦・総合型対策",
+                  "共通テスト・国公立二次対策",
+                  "個別カリキュラムで前提に戻れる",
+                ].map((item) => (
+                  <li
+                    className="flex gap-2 font-serif text-[0.86rem] leading-[1.85] text-[#e8e6dd]"
+                    key={item}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="mt-[0.55em] h-[0.45em] w-[0.45em] shrink-0 rotate-45 bg-[var(--accent-warm)]"
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-7 flex flex-col gap-2.5 sm:flex-row">
+                <a
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[var(--accent-warm)] px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-[#1a1a1a] transition hover:-translate-y-0.5 hover:bg-[#dca424]"
+                  href={siteConfig.physicsSchoolUrl}
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  物理専門塾サイトを開く
+                  <span aria-hidden="true">↗</span>
+                </a>
+                <Link
+                  className="inline-flex min-h-12 items-center justify-center rounded-sm border border-white/35 bg-transparent px-6 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:border-white"
+                  href="/blog/physics-material-creation"
+                >
+                  指導方針を読む（記事）
+                </Link>
+              </div>
+            </div>
+
+            <div
+              aria-hidden="true"
+              className="relative hidden overflow-hidden rounded-sm border border-white/20 bg-white/[0.04] p-6 lg:block"
+            >
+              <p className="font-serif text-[0.7rem] font-bold tracking-[0.24em] text-[#f5d68a]">
+                CURRICULUM SAMPLE
+              </p>
+              <ol className="mt-5 grid gap-4">
+                {[
+                  { step: "01", label: "現象を観察する", body: "実験動画／図／日常例で「何が変化しているか」を言語化" },
+                  { step: "02", label: "図とグラフで読む", body: "傾き・面積・変化率の見方を、まず数式なしで定着" },
+                  { step: "03", label: "式は最後に要約", body: "覚える対象ではなく、関係を短く書いた“まとめ”として導入" },
+                ].map((s) => (
+                  <li className="grid grid-cols-[2.4rem_1fr] gap-3" key={s.step}>
+                    <span className="grid h-8 w-8 place-items-center rounded-sm bg-[var(--accent-warm)] font-serif text-[0.85rem] font-bold text-[#1a1a1a]">
+                      {s.step}
+                    </span>
+                    <div>
+                      <p className="font-serif text-[0.95rem] font-bold text-white">{s.label}</p>
+                      <p className="mt-1 font-serif text-[0.78rem] leading-[1.85] text-[#cbc8bc]">
+                        {s.body}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
         </section>
 
@@ -718,27 +909,30 @@ export default function Home() {
           />
           <div className="relative px-6 py-12 text-center sm:px-12 sm:py-16">
             <p className="font-serif text-[0.78rem] font-bold tracking-[0.28em] text-[#f5d68a]">
-              START WITH LUMORA
+              YUTA-ENG.COM · LEARNING HUB
             </p>
             <h2 className="mx-auto mt-4 max-w-2xl text-balance font-serif text-[1.65rem] font-bold leading-[1.55] text-white sm:text-[2.1rem] sm:leading-[1.45]">
-              読んで、解いて、つなぐ。<br className="hidden sm:block" />
-              学びの動線、ここから始めませんか。
+              すべての入口を、ひとつのハブで。<br className="hidden sm:block" />
+              次の一歩を、ここから選んでください。
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-[0.93rem] leading-[2] text-[#d6d3c8] sm:text-[1rem]">
-              Lumora は、高校物理から教材作成AI、学習支援アプリまでを一本の動線でつなげる EdTech スタジオです。すべて無料で公開しているので、気になる入口から開いてください。
+              yuta-eng.com は、物理専門塾「Lumora Physics」と、教材作成アプリ Eddivom、学習支援アプリへの公式入口を集約した学習ハブです。
             </p>
             <div className="mt-7 flex flex-col items-center justify-center gap-2.5 sm:mt-9 sm:flex-row">
-              <Link
-                className="inline-flex min-h-12 items-center justify-center rounded-sm bg-[var(--accent-warm)] px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-[#1a1a1a] transition hover:-translate-y-0.5 hover:bg-[#dca424]"
-                href="/blog"
+              <a
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[var(--accent-warm)] px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-[#1a1a1a] transition hover:-translate-y-0.5 hover:bg-[#dca424]"
+                href={siteConfig.physicsSchoolUrl}
+                rel="noreferrer noopener"
+                target="_blank"
               >
-                ブログを読む →
-              </Link>
+                物理専門塾サイトを開く
+                <span aria-hidden="true">↗</span>
+              </a>
               <Link
                 className="inline-flex min-h-12 items-center justify-center rounded-sm border border-white/35 bg-transparent px-7 py-3 font-serif text-[0.95rem] font-bold tracking-[0.06em] text-white transition hover:-translate-y-0.5 hover:border-white"
-                href="/contact"
+                href="/apps"
               >
-                相談する
+                アプリ一覧を見る
               </Link>
             </div>
           </div>

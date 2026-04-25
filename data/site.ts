@@ -2,14 +2,21 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://yuta-eng.com";
 const contactEmail =
   process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "contact@yuta-eng.com";
 
+export const physicsSchoolUrl = "https://physics.yuta-eng.com";
+export const eddivomUrl = "https://eddivom.yuta-eng.com";
+export const itPassUrl = "https://itpass.yuta-eng.com";
+
 export const siteConfig = {
   name: "Lumora",
   shortName: "Lumora",
-  brandTagline: "物理専門塾 × 教材作成AI × EdTech",
-  title: "Lumora｜高校物理の専門塾と教材作成AIのEdTechスタジオ",
+  brandTagline: "Learning Hub｜物理専門塾 × 教材作成AI × EdTech",
+  title: "Lumora｜物理専門塾と教材作成AIをつなぐ学習ハブ",
   description:
-    "Lumora（ルモラ）は、高校物理に特化した専門塾と、AI・LaTeX を活かした教材作成、学習支援アプリの設計を一本の動線でつなぐ EdTech スタジオです。物理を「理解」で乗り越え、教材作成を「ラク」に続けるための場所。",
+    "yuta-eng.com（Lumora）は、高校物理の専門塾、AI・LaTeX による教材作成、学習支援アプリへの公式入口をひとつにまとめた学習ハブです。記事で考え方を学び、Lumora Physics（物理専門塾）や Eddivom など各サービスへそのまま進めます。",
   url: siteUrl,
+  physicsSchoolUrl,
+  eddivomUrl,
+  itPassUrl,
   author: "森 祐太",
   email: contactEmail,
   locale: "ja_JP",
@@ -25,6 +32,7 @@ export const siteConfig = {
     "二次試験 物理 対策",
     "力学 苦手 高校生",
     "電磁気 苦手 克服",
+    "Lumora Physics",
     "教材作成AI",
     "AI教材作成",
     "生成AI 教材作成",
@@ -39,6 +47,7 @@ export const siteConfig = {
     "AIドリル",
     "個別最適な学び",
     "学習支援Webアプリ",
+    "学習ハブ",
     "Lumora",
   ],
 };
@@ -46,7 +55,13 @@ export const siteConfig = {
 export const navItems = [
   { label: "ホーム", href: "/" },
   { label: "ブログ", href: "/blog" },
-  { label: "アプリ", href: "/apps" },
+  {
+    label: "物理専門塾",
+    href: physicsSchoolUrl,
+    external: true,
+    highlight: true,
+  },
+  { label: "アプリ一覧", href: "/apps" },
   { label: "プロフィール", href: "/about" },
   { label: "相談", href: "/contact" },
 ];

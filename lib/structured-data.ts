@@ -42,6 +42,15 @@ export function createOrganizationJsonLd() {
       name: siteConfig.author,
       url: siteConfig.url,
     },
+    subOrganization: [
+      {
+        "@type": "EducationalOrganization",
+        name: "Lumora Physics（物理専門塾）",
+        url: siteConfig.physicsSchoolUrl,
+        description:
+          "高校物理に特化したオンライン専門塾。物理基礎・物理の通年指導、定期テスト対策、共通テスト・国公立二次・私大入試対応。",
+      },
+    ],
   };
 }
 
