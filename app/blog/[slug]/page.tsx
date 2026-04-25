@@ -161,7 +161,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 className="absolute left-0 top-3 h-[calc(100%-1.5rem)] w-[3px] rounded-r-full"
                 style={{ background: accent }}
               />
-              <p className="pl-3 text-pretty text-[clamp(0.88rem,0.84rem+0.3vw,1rem)] leading-[2.1] tracking-[0.02em] text-[#334155] sm:pl-4 sm:leading-[1.95]">
+              <p className="pl-3 text-pretty text-[clamp(0.96rem,0.92rem+0.3vw,1.05rem)] leading-[2.1] tracking-[0.02em] text-[#334155] sm:pl-4 sm:leading-[1.95]">
                 {post.description}
               </p>
             </div>
@@ -212,7 +212,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 >
                   この記事はこんな方へ
                 </p>
-                <p className="mt-2 text-[clamp(0.88rem,0.84rem+0.3vw,0.96rem)] leading-[2.1] tracking-[0.02em] text-[#334155] sm:mt-3 sm:leading-[1.95]">
+                <p className="mt-2 text-[clamp(0.95rem,0.9rem+0.3vw,0.98rem)] leading-[2.1] tracking-[0.02em] text-[#334155] sm:mt-3 sm:leading-[1.95]">
                   {post.searchIntent}
                 </p>
               </div>
@@ -239,7 +239,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   {post.keyPoints.map((point) => (
                     <li
                       key={point}
-                      className="flex gap-2.5 text-[clamp(0.88rem,0.85rem+0.25vw,0.94rem)] leading-[2.05] tracking-[0.02em] text-[#0b1d4a] sm:gap-3 sm:leading-[1.85]"
+                      className="flex gap-2.5 text-[clamp(0.96rem,0.92rem+0.25vw,0.98rem)] leading-[2.05] tracking-[0.02em] text-[#0b1d4a] sm:gap-3 sm:leading-[1.85]"
                     >
                       <span
                         aria-hidden="true"

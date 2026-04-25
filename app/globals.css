@@ -1130,7 +1130,7 @@ a {
 
 .article-content {
   color: #334155;
-  font-size: clamp(0.95rem, 0.92rem + 0.2vw, 1.02rem);
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.05rem);
   line-height: 1.95;
   word-break: break-word;
   overflow-wrap: anywhere;
@@ -1147,7 +1147,7 @@ a {
   border-left: 4px solid #1d4ed8;
   background: linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
   border-radius: 0 16px 16px 0;
-  font-size: clamp(0.98rem, 0.94rem + 0.25vw, 1.06rem);
+  font-size: clamp(1.02rem, 0.98rem + 0.25vw, 1.1rem);
   font-weight: 500;
   line-height: 1.9;
   color: #0b1d4a;
@@ -1416,7 +1416,7 @@ a {
   min-width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
-  font-size: clamp(0.86rem, 0.82rem + 0.3vw, 0.94rem);
+  font-size: clamp(0.92rem, 0.88rem + 0.3vw, 0.98rem);
   background: #ffffff;
 }
 
@@ -1431,7 +1431,7 @@ a {
   font-weight: 800;
   text-align: left;
   letter-spacing: 0.04em;
-  font-size: clamp(0.82rem, 0.78rem + 0.2vw, 0.92rem);
+  font-size: clamp(0.88rem, 0.84rem + 0.2vw, 0.96rem);
   color: #0b1d4a;
   border-bottom: 2px solid rgba(29, 78, 216, 0.25);
   white-space: nowrap;
@@ -2268,7 +2268,7 @@ a {
 /* Lists: tighter on mobile */
 .article-content ul > li,
 .article-content ol > li {
-  font-size: clamp(0.94rem, 0.9rem + 0.25vw, 1rem);
+  font-size: clamp(1rem, 0.96rem + 0.25vw, 1.05rem);
   line-height: 1.9;
 }
 
@@ -2313,7 +2313,7 @@ a {
 }
 
 .lumora-comparison-value {
-  font-size: clamp(0.92rem, 0.88rem + 0.2vw, 1rem);
+  font-size: clamp(0.98rem, 0.94rem + 0.2vw, 1.05rem);
   color: #1f2937;
   line-height: 1.85;
 }
@@ -2369,7 +2369,7 @@ a {
 }
 
 .lumora-keypoints-list li {
-  font-size: clamp(0.92rem, 0.88rem + 0.25vw, 1rem);
+  font-size: clamp(0.98rem, 0.94rem + 0.25vw, 1.05rem);
   line-height: 1.85;
 }
 
@@ -2404,7 +2404,7 @@ a {
 }
 
 .lumora-step-body {
-  font-size: clamp(0.9rem, 0.86rem + 0.25vw, 0.96rem);
+  font-size: clamp(0.96rem, 0.92rem + 0.25vw, 1rem);
 }
 
 /* FAQ items: mobile-friendly accordion-feel cards */
@@ -2425,7 +2425,7 @@ a {
 
 .lumora-faqitem-q,
 .lumora-faqitem-a {
-  font-size: clamp(0.93rem, 0.89rem + 0.25vw, 1rem);
+  font-size: clamp(0.99rem, 0.95rem + 0.25vw, 1.05rem);
 }
 
 /* CTA card */
@@ -2478,7 +2478,7 @@ a {
 
 .lumora-cta-card-body {
   margin-top: 0.6rem;
-  font-size: clamp(0.92rem, 0.88rem + 0.25vw, 0.98rem);
+  font-size: clamp(0.98rem, 0.94rem + 0.25vw, 1.02rem);
   line-height: 1.85;
   color: rgba(255, 255, 255, 0.85);
 }
