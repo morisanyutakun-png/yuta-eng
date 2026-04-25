@@ -1,5 +1,38 @@
+import katex from "katex";
 import Image from "next/image";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
+
+function renderWithMath(text: string): ReactNode {
+  if (!text || !text.includes("$")) return text;
+  const parts: ReactNode[] = [];
+  const regex = /\$\$([\s\S]+?)\$\$|\$([^$\n]+?)\$/g;
+  let lastIndex = 0;
+  let key = 0;
+  let match: RegExpExecArray | null;
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    const isDisplay = match[1] !== undefined;
+    const expr = (match[1] ?? match[2] ?? "").trim();
+    const html = katex.renderToString(expr, {
+      throwOnError: false,
+      output: "html",
+      displayMode: isDisplay,
+      strict: "ignore",
+    });
+    parts.push(
+      <span
+        key={`m-${key++}`}
+        className={isDisplay ? "katex-display-inline" : undefined}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />,
+    );
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+  return parts.length ? parts : text;
+}
 
 type CalloutVariant = "info" | "tip" | "warn" | "note";
 
@@ -31,7 +64,7 @@ function Callout({ variant = "info", title, label, children }: CalloutProps) {
   return (
     <aside className={`lumora-callout ${variantClass}`.trim()}>
       <span className="lumora-callout-label">{label ?? defaultLabel}</span>
-      {title ? <p className="lumora-callout-title">{title}</p> : null}
+      {title ? <p className="lumora-callout-title">{renderWithMath(title)}</p> : null}
       {children}
     </aside>
   );
@@ -49,7 +82,7 @@ function KeyPoints({ title = "この記事でわかること", items = [] }: Key
       <p className="lumora-keypoints-title">{title}</p>
       <ul className="lumora-keypoints-list">
         {items.map((item) => (
-          <li key={item}>{item}</li>
+          <li key={item}>{renderWithMath(item)}</li>
         ))}
       </ul>
     </section>
@@ -73,8 +106,8 @@ function StepBlock({ steps = [] }: StepBlockProps) {
         <li className="lumora-step" key={step.title}>
           <span className="lumora-step-number">{String(index + 1).padStart(2, "0")}</span>
           <div>
-            <p className="lumora-step-title">{step.title}</p>
-            <p className="lumora-step-body">{step.body}</p>
+            <p className="lumora-step-title">{renderWithMath(step.title)}</p>
+            <p className="lumora-step-body">{renderWithMath(step.body)}</p>
           </div>
         </li>
       ))}
@@ -98,10 +131,10 @@ function Comparison({ rows = [] }: ComparisonProps) {
       {rows.map((row) => (
         <div className="lumora-comparison-row" key={row.label}>
           <div className="lumora-comparison-cell">
-            <p className="lumora-comparison-label">{row.label}</p>
+            <p className="lumora-comparison-label">{renderWithMath(row.label)}</p>
           </div>
           <div className="lumora-comparison-cell">
-            <p className="lumora-comparison-value">{row.value}</p>
+            <p className="lumora-comparison-value">{renderWithMath(row.value)}</p>
           </div>
         </div>
       ))}
@@ -124,8 +157,8 @@ function Faq({ items = [] }: FaqProps) {
     <div>
       {items.map((item) => (
         <div className="lumora-faqitem" key={item.q}>
-          <p className="lumora-faqitem-q">{item.q}</p>
-          <p className="lumora-faqitem-a">{item.a}</p>
+          <p className="lumora-faqitem-q">{renderWithMath(item.q)}</p>
+          <p className="lumora-faqitem-a">{renderWithMath(item.a)}</p>
         </div>
       ))}
     </div>
@@ -165,8 +198,8 @@ function CtaCard({ eyebrow = "Solvora", title, body, primary, secondary }: CtaCa
   return (
     <aside className="lumora-cta-card">
       <span className="lumora-cta-card-eyebrow">{eyebrow}</span>
-      <p className="lumora-cta-card-title">{title}</p>
-      <p className="lumora-cta-card-body">{body}</p>
+      <p className="lumora-cta-card-title">{renderWithMath(title)}</p>
+      <p className="lumora-cta-card-body">{renderWithMath(body)}</p>
       {primary || secondary ? (
         <div className="lumora-cta-card-actions">
           {primary ? <a href={primary.href}>{primary.label}</a> : null}
@@ -186,7 +219,9 @@ function Figure({ caption, children }: FigureProps) {
   return (
     <figure className="lumora-figure">
       {children}
-      {caption ? <figcaption className="lumora-figure-caption">{caption}</figcaption> : null}
+      {caption ? (
+        <figcaption className="lumora-figure-caption">{renderWithMath(caption)}</figcaption>
+      ) : null}
     </figure>
   );
 }
