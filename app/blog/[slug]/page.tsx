@@ -7,9 +7,11 @@ import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
+import "katex/dist/katex.min.css";
+
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
-import { mdxComponents } from "@/components/mdx-components";
+import { mdxComponents, renderWithMath } from "@/components/mdx-components";
 import { siteConfig } from "@/data/site";
 import { getPostBySlug, getPostSlugs, getRelatedPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
@@ -214,7 +216,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                       >
                         ✓
                       </span>
-                      <span>{point}</span>
+                      <span>{renderWithMath(point)}</span>
                     </li>
                   ))}
                 </ul>

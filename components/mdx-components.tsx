@@ -2,7 +2,7 @@ import katex from "katex";
 import Image from "next/image";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
-function renderWithMath(text: string): ReactNode {
+export function renderWithMath(text: string): ReactNode {
   if (!text || !text.includes("$")) return text;
   const parts: ReactNode[] = [];
   const regex = /\$\$([\s\S]+?)\$\$|\$([^$\n]+?)\$/g;

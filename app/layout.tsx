@@ -14,7 +14,6 @@ import {
   createWebsiteJsonLd,
 } from "@/lib/structured-data";
 
-import "katex/dist/katex.min.css";
 import "./globals.css";
 
 const GA_MEASUREMENT_ID =
