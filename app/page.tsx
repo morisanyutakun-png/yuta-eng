@@ -444,26 +444,131 @@ export default function Home() {
 
       {/* HERO */}
       <section className="relative overflow-hidden bg-white">
-        <Container className="px-6">
+        {/* Decorative gradient orbs — pure CSS, no extra payload */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-32 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(56,189,248,0.45),transparent)] blur-2xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-32 top-40 h-96 w-96 rounded-full bg-[radial-gradient(closest-side,rgba(245,158,11,0.25),transparent)] blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-[linear-gradient(90deg,transparent,#1d4ed8,transparent)] opacity-50"
+        />
+        <Container className="relative px-6">
           <div className="grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-32">
             <div>
-              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.78rem]">
+              <p className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#eef4ff] via-white to-[#fef3c7] px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#1d4ed8] ring-1 ring-[rgba(15,29,74,0.08)] sm:text-[0.74rem] sm:tracking-[0.24em]">
+                <span aria-hidden="true" className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#38bdf8] opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#38bdf8]" />
+                </span>
                 STEM Learning Hub · 理系人材育成 EdTech
               </p>
-              <h1 className="mt-4 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3.2rem]">
-                理系人材を、育てる。
-                <br />
-                学びを設計する EdTech ハブ。
+              <h1 className="mt-5 text-balance text-[2.2rem] font-extrabold leading-[1.18] tracking-[-0.012em] text-[#0b1d4a] sm:text-[3rem] sm:leading-[1.14] lg:text-[3.6rem]">
+                <span className="block">理系人材を、</span>
+                <span className="block bg-gradient-to-r from-[#0b1d4a] via-[#1d4ed8] to-[#0ea5e9] bg-clip-text text-transparent">
+                  育てる。
+                </span>
+                <span className="mt-2 block text-[1.6rem] font-extrabold leading-[1.25] text-[#0b1d4a] sm:mt-3 sm:text-[2.1rem] lg:text-[2.5rem]">
+                  学びを設計する <span className="relative inline-block">
+                    <span className="relative z-10">EdTech ハブ</span>
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-x-0 bottom-1 -z-0 h-2 bg-gradient-to-r from-[#fef3c7] to-[#bae6fd] sm:bottom-2 sm:h-3"
+                    />
+                  </span>。
+                </span>
               </h1>
               <p className="mt-6 max-w-xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
                 AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、物理専門オンライン塾 <strong className="font-bold text-[#0b1d4a]">物理の森</strong>、学習アプリ <strong className="font-bold text-[#0b1d4a]">Physics・IT Pass</strong>。GIGA スクール構想以降の理系教育を、教材設計・AI・アプリで一気通貫につなぎ直します。
               </p>
+
+              {/* Visual coverage badges — each pairs an icon with a short label */}
+              <ul className="mt-7 grid grid-cols-2 gap-2.5 sm:max-w-md sm:gap-3">
+                {[
+                  {
+                    label: "GIGA・教育DX",
+                    bg: "from-[#eef4ff] to-[#dbeafe]",
+                    fg: "#1e3a8a",
+                    icon: (
+                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
+                        <rect x="3" y="5" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="1.8" />
+                        <path d="M2 19h20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                        <circle cx="12" cy="11" r="2" fill="currentColor" />
+                        <path d="M8 11h2M14 11h2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    label: "AI 教材作成",
+                    bg: "from-[#fef3c7] to-[#fed7aa]",
+                    fg: "#7c2d12",
+                    icon: (
+                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
+                        <path d="M12 3l1.7 4.3L18 9l-4.3 1.7L12 15l-1.7-4.3L6 9l4.3-1.7L12 3z" fill="currentColor" />
+                        <circle cx="18" cy="18" r="2" fill="currentColor" opacity="0.6" />
+                        <circle cx="6" cy="18" r="1.4" fill="currentColor" opacity="0.4" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    label: "学習アプリ",
+                    bg: "from-[#e0f2fe] to-[#bae6fd]",
+                    fg: "#0c4a6e",
+                    icon: (
+                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
+                        <rect x="7" y="2.5" width="10" height="19" rx="2" stroke="currentColor" strokeWidth="1.8" />
+                        <path d="M11 19h2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                        <path d="M9 7h6M9 10h4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                        <path d="M9 14l2-1.5 2 1 2-2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    ),
+                  },
+                  {
+                    label: "学習科学ベース",
+                    bg: "from-[#d1fae5] to-[#a7f3d0]",
+                    fg: "#064e3b",
+                    icon: (
+                      <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" aria-hidden="true">
+                        <path d="M12 3a4 4 0 014 4v1a5 5 0 11-8 0V7a4 4 0 014-4z" stroke="currentColor" strokeWidth="1.7" />
+                        <path d="M9 18h6M10 21h4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+                        <circle cx="12" cy="9" r="1.2" fill="currentColor" />
+                      </svg>
+                    ),
+                  },
+                ].map((badge) => (
+                  <li
+                    key={badge.label}
+                    className={`inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-br ${badge.bg} px-3 py-2.5 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_8px_18px_-12px_rgba(15,29,74,0.25)]`}
+                    style={{ color: badge.fg }}
+                  >
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/80 ring-1 ring-white/60 shadow-[0_2px_6px_-2px_rgba(15,29,74,0.2)]">
+                      {badge.icon}
+                    </span>
+                    <span className="text-[0.82rem] font-bold leading-[1.3] tracking-[-0.005em] sm:text-[0.88rem]">
+                      {badge.label}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+
               <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <Link
                   href="/apps"
-                  className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#0b1d4a] px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a]"
+                  className="group/cta relative inline-flex min-h-12 items-center justify-center overflow-hidden rounded-full px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-white shadow-[0_14px_30px_-12px_rgba(15,29,74,0.6)] transition hover:-translate-y-px hover:shadow-[0_20px_40px_-12px_rgba(29,78,216,0.65)]"
                 >
-                  サービスを見る
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-[linear-gradient(135deg,#0b1d4a_0%,#1e3a8a_55%,#1d4ed8_100%)]"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="absolute -inset-x-1 -inset-y-1 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(186,230,253,0.45)_50%,transparent_70%)] transition duration-700 group-hover/cta:translate-x-full"
+                  />
+                  <span className="relative">サービスを見る →</span>
                 </Link>
                 <Link
                   href="/blog"
@@ -479,6 +584,153 @@ export default function Home() {
                 <HeroVisual />
               </div>
             </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* CREDENTIALS / KPI STRIP — dark gradient breaks the rhythm */}
+      <section
+        aria-labelledby="kpi-heading"
+        className="relative overflow-hidden text-white"
+        style={{
+          background:
+            "radial-gradient(circle at 90% 10%, rgba(56,189,248,0.28), transparent 50%), radial-gradient(circle at 10% 80%, rgba(245,158,11,0.18), transparent 55%), linear-gradient(135deg, #0b1d4a 0%, #1e3a8a 60%, #1d4ed8 100%)",
+        }}
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.7) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.7) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+        />
+        <Container className="relative px-6 py-16 sm:py-24">
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-16">
+            <div>
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#bae6fd] sm:text-[0.76rem]">
+                Solvora at a glance · 数字で見るハブ
+              </p>
+              <h2
+                id="kpi-heading"
+                className="mt-3 text-balance text-[1.85rem] font-extrabold leading-[1.22] tracking-[-0.005em] sm:text-[2.4rem]"
+              >
+                <span className="bg-gradient-to-r from-white via-[#bae6fd] to-white bg-clip-text text-transparent">
+                  理系人材を育てる
+                </span>
+                <br />
+                4 つの公式入口、1 つのハブ。
+              </h2>
+              <p className="mt-5 max-w-md text-[0.98rem] leading-[1.95] text-white/80">
+                AI 教材作成・物理塾・学習アプリ・解説ブログを、Solvora が <strong className="font-bold text-white">理系人材育成 EdTech ハブ</strong> として束ねています。記事は無料、サービスは目的別に切り替え可能。
+              </p>
+            </div>
+
+            <ul className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+              {[
+                {
+                  value: "4",
+                  unit: "公式入口",
+                  label: "AI教材・塾・アプリ・ブログ",
+                  visual: (
+                    <svg viewBox="0 0 64 32" className="h-6 w-12" fill="none" aria-hidden="true">
+                      <circle cx="8" cy="16" r="6" fill="#bae6fd" opacity="0.95" />
+                      <circle cx="24" cy="16" r="6" fill="#fef3c7" opacity="0.9" />
+                      <circle cx="40" cy="16" r="6" fill="#bbf7d0" opacity="0.9" />
+                      <circle cx="56" cy="16" r="6" fill="#e9d5ff" opacity="0.9" />
+                    </svg>
+                  ),
+                },
+                {
+                  value: `${latestPosts.length > 0 ? "16" : "0"}+`,
+                  unit: "本",
+                  label: "深掘り解説記事",
+                  visual: (
+                    <svg viewBox="0 0 60 32" className="h-6 w-12" fill="none" aria-hidden="true">
+                      <rect x="4" y="6" width="14" height="22" rx="2" fill="#bae6fd" opacity="0.85" />
+                      <rect x="22" y="2" width="14" height="26" rx="2" fill="#fef3c7" />
+                      <rect x="40" y="10" width="14" height="18" rx="2" fill="#bbf7d0" opacity="0.85" />
+                      <line x1="0" y1="30" x2="60" y2="30" stroke="#bae6fd" strokeWidth="1" opacity="0.5" />
+                    </svg>
+                  ),
+                },
+                {
+                  value: "3",
+                  unit: "領域",
+                  label: "物理・数学・情報",
+                  visual: (
+                    <svg viewBox="0 0 64 32" className="h-6 w-12" fill="none" aria-hidden="true">
+                      <text x="6" y="22" fontSize="14" fontWeight="800" fill="#bae6fd">π</text>
+                      <text x="22" y="22" fontSize="14" fontWeight="800" fill="#fef3c7">∑</text>
+                      <text x="40" y="22" fontSize="13" fontWeight="800" fill="#bbf7d0">{"</>"}</text>
+                    </svg>
+                  ),
+                },
+                {
+                  value: "1",
+                  unit: "ハブ",
+                  label: "理系人材育成EdTech",
+                  visual: (
+                    <svg viewBox="0 0 64 32" className="h-6 w-12" fill="none" aria-hidden="true">
+                      <circle cx="32" cy="16" r="6" fill="#fef3c7" />
+                      <circle cx="8" cy="16" r="3.5" fill="#bae6fd" />
+                      <circle cx="56" cy="16" r="3.5" fill="#bae6fd" />
+                      <circle cx="32" cy="4" r="3" fill="#bbf7d0" />
+                      <circle cx="32" cy="28" r="3" fill="#bbf7d0" />
+                      <line x1="11" y1="16" x2="26" y2="16" stroke="#bae6fd" strokeWidth="1.5" opacity="0.7" />
+                      <line x1="38" y1="16" x2="53" y2="16" stroke="#bae6fd" strokeWidth="1.5" opacity="0.7" />
+                      <line x1="32" y1="7" x2="32" y2="10" stroke="#bbf7d0" strokeWidth="1.5" opacity="0.7" />
+                      <line x1="32" y1="22" x2="32" y2="25" stroke="#bbf7d0" strokeWidth="1.5" opacity="0.7" />
+                    </svg>
+                  ),
+                },
+              ].map((kpi) => (
+                <li
+                  key={kpi.label}
+                  className="relative overflow-hidden rounded-[20px] bg-white/[0.06] p-4 ring-1 ring-white/15 backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-white/[0.1] sm:p-5"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-[radial-gradient(closest-side,rgba(186,230,253,0.4),transparent)]"
+                  />
+                  <div className="flex items-end justify-between gap-2">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-[2.4rem] font-extrabold leading-none tracking-[-0.02em] text-white tabular-nums sm:text-[3rem]">
+                        {kpi.value}
+                      </span>
+                      <span className="text-[0.78rem] font-semibold text-[#bae6fd] sm:text-[0.84rem]">
+                        {kpi.unit}
+                      </span>
+                    </div>
+                    <div className="opacity-90">{kpi.visual}</div>
+                  </div>
+                  <p className="mt-2 text-[0.78rem] leading-[1.6] text-white/75 sm:text-[0.84rem]">
+                    {kpi.label}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Coverage stripe */}
+          <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-white/10 pt-6 text-[0.78rem] text-white/70 sm:gap-x-7 sm:text-[0.84rem]">
+            <span className="font-semibold text-[#bae6fd]">対応領域</span>
+            {[
+              "高校物理",
+              "高校数学",
+              "情報I",
+              "ITパスポート",
+              "AI教材作成",
+              "教育DX",
+              "GIGAスクール 後",
+              "学習アプリ設計",
+            ].map((tag) => (
+              <span key={tag} className="inline-flex items-center gap-1.5">
+                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#38bdf8]" />
+                {tag}
+              </span>
+            ))}
           </div>
         </Container>
       </section>
@@ -689,31 +941,103 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ABOUT */}
-      <section className="bg-white">
-        <Container className="px-6 py-20 sm:py-28">
-          <div className="mx-auto max-w-3xl text-center">
-            <img
-              alt="Solvora"
-              src="/brand/solvora-mark.svg"
-              width={360}
-              height={360}
-              loading="lazy"
-              decoding="async"
-              className="mx-auto h-auto w-[160px] sm:w-[200px]"
-            />
-            <h2 className="mt-10 text-balance text-[1.6rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-              理系の学びを、社会につなぐ EdTech プラットフォームに。
-            </h2>
-            <p className="mt-6 text-[1rem] leading-[2] text-[#334155]">
-              Solvora は、物理・数学・情報の解説ブログ、AI 教材作成 Eddivom、学習アプリ Physics・IT Pass、物理専門オンライン塾「物理の森」を集約する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。GIGA スクール後の高校・大学・社会人の学びをひとつの動線で支援します。
+      {/* ABOUT — Manifesto */}
+      <section className="relative overflow-hidden bg-white">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(15,29,74,0.2),transparent)]"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-40 top-20 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgba(56,189,248,0.18),transparent)] blur-2xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-40 bottom-10 h-96 w-96 rounded-full bg-[radial-gradient(closest-side,rgba(245,158,11,0.14),transparent)] blur-3xl"
+        />
+        <Container className="relative px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-4xl">
+            <p className="text-center text-[0.74rem] font-semibold uppercase tracking-[0.28em] text-[#1d4ed8] sm:text-[0.78rem]">
+              Manifesto · 私たちが信じていること
             </p>
-            <Link
-              href="/about"
-              className="mt-8 inline-flex items-center text-[0.95rem] font-semibold text-[#1d4ed8] hover:text-[#0b1d4a]"
-            >
-              About を読む <span aria-hidden="true" className="ml-1">→</span>
-            </Link>
+
+            {/* Display-size pull quote */}
+            <blockquote className="relative mt-6 sm:mt-8">
+              <span
+                aria-hidden="true"
+                className="absolute -left-2 -top-4 select-none text-[5rem] font-extrabold leading-none text-[#dbeafe] sm:-left-4 sm:-top-8 sm:text-[8rem]"
+              >
+                “
+              </span>
+              <p className="relative text-balance text-center text-[1.7rem] font-extrabold leading-[1.42] tracking-[-0.012em] text-[#0b1d4a] sm:text-[2.4rem] sm:leading-[1.32] lg:text-[2.9rem]">
+                理系の学びを、
+                <br className="hidden sm:block" />
+                <span className="bg-gradient-to-r from-[#1e3a8a] via-[#1d4ed8] to-[#0ea5e9] bg-clip-text text-transparent">
+                  社会につなぐ EdTech
+                </span>
+                に。
+              </p>
+            </blockquote>
+            <p className="mx-auto mt-8 max-w-2xl text-pretty text-center text-[1.02rem] leading-[2] text-[#334155]">
+              Solvora は、物理・数学・情報の解説ブログ、AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、学習アプリ <strong className="font-bold text-[#0b1d4a]">Physics・IT Pass</strong>、物理専門オンライン塾 <strong className="font-bold text-[#0b1d4a]">物理の森</strong> を集約する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。GIGA スクール構想後の高校・大学・社会人の学びをひとつの動線でつなぎます。
+            </p>
+
+            {/* Three pillars — short value props */}
+            <ul className="mt-12 grid gap-4 sm:mt-14 sm:grid-cols-3 sm:gap-5">
+              {[
+                {
+                  no: "01",
+                  title: "理解で解く。",
+                  body: "公式暗記ではなく、現象を読み解く順序を設計する。",
+                  accent: "#1d4ed8",
+                },
+                {
+                  no: "02",
+                  title: "AI で軽く。",
+                  body: "AI × LaTeX で、教材作成を毎週の負担から解放する。",
+                  accent: "#f59e0b",
+                },
+                {
+                  no: "03",
+                  title: "動線でつなぐ。",
+                  body: "ブログ → 教材 → アプリ → 塾。学びを止めない動線を組む。",
+                  accent: "#0ea5e9",
+                },
+              ].map((pillar) => (
+                <li
+                  key={pillar.no}
+                  className="relative overflow-hidden rounded-[20px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.08)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-32px_rgba(15,29,74,0.4)] sm:p-7"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-[3px]"
+                    style={{ background: `linear-gradient(90deg, ${pillar.accent}, transparent 80%)` }}
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="block text-[0.72rem] font-extrabold tracking-[0.22em]"
+                    style={{ color: pillar.accent }}
+                  >
+                    {pillar.no}
+                  </span>
+                  <p className="mt-2 text-[1.18rem] font-extrabold leading-[1.45] tracking-[-0.005em] text-[#0b1d4a]">
+                    {pillar.title}
+                  </p>
+                  <p className="mt-2 text-[0.92rem] leading-[1.95] text-[#475569]">
+                    {pillar.body}
+                  </p>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-12 flex justify-center">
+              <Link
+                href="/about"
+                className="inline-flex items-center text-[0.95rem] font-semibold text-[#1d4ed8] hover:text-[#0b1d4a]"
+              >
+                Solvora の運営方針と事業構成を読む <span aria-hidden="true" className="ml-1">→</span>
+              </Link>
+            </div>
           </div>
         </Container>
       </section>
