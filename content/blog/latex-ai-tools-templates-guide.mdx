@@ -1,0 +1,420 @@
+---
+title: "LaTeX 使い方｜数式・表・図・類題をAIで一発生成する完全ガイド【2026年・Eddivom活用】"
+description: "LaTeX 使い方を、数式変換・表作成・図作成・類題生成・PDF教材化まで一気通貫でまとめた完全ガイド。自然言語 → LaTeX を AI に任せる Eddivom の使い方と、コピペで動くテンプレ・プロンプト集を、教材作成・物理問題作成の現場目線で解説します。"
+date: "2026-04-26"
+tags:
+  - LaTeX 使い方
+  - LaTeX 数式 変換
+  - LaTeX 表 作成
+  - LaTeX 図 作成
+  - 類題生成 AI
+  - Markdown LaTeX 変換
+  - 教材作成 AI
+  - 数式 きれいに 書く
+  - PDF 教材 作成
+  - Eddivom
+category: "LaTeX"
+slug: "latex-ai-tools-templates-guide"
+draft: false
+searchIntent: "LaTeX の使い方を最短で身につけたい教員・塾講師・教材制作者・大学生向け。数式・表・図・類題・PDFまでをAIに任せて短時間で仕上げたい人。Eddivom の機能と、自然言語からLaTeXへ変換するワークフローを、コピペできるテンプレ付きで知りたい人。"
+keyPoints:
+  - "LaTeX 使い方は『数式・表・図・類題・PDF化』の5機能でほぼすべて足りる"
+  - "自然言語 → LaTeX は Eddivom に任せると、覚える記法が9割減る"
+  - "1問の元データから類題・解答PDFまでを派生生成するテンプレを公開"
+  - "Markdown → LaTeX → PDF のワークフローはコピペで再現できる"
+---
+
+「**LaTeX 使い方** を覚えるのに何ヶ月もかけたくない」「**数式 きれいに 書く** ためだけに、コマンドを毎回検索している」── 教材作成や受験勉強の現場で、LaTeX のシンタックスが最大の足かせになっている人は多いはず。本記事は、**LaTeX 使い方の全体像**を「数式・表・図・類題・PDF」の5機能に分解し、それぞれを **AI（教材作成 AI Eddivom）に任せる方法**まで、**コピペで使えるプロンプト・テンプレ付き**でまとめた完全ガイドです。
+
+<KeyPoints
+  title="この記事の結論"
+  items={[
+    "LaTeX 使い方は『数式・表・図・類題・PDF化』の5機能を押さえれば9割カバーできる",
+    "自然言語 → LaTeX は Eddivom が一発変換、Markdown LaTeX 変換も同じ画面でできる",
+    "1問の元データから類題・解答 PDF まで派生生成できるプロンプトを公開",
+    "教員・塾講師なら、毎週の小テスト準備が30分→5分まで短縮できる",
+  ]}
+/>
+
+<Toc
+  items={[
+    { id: "h2-overview", label: "LaTeX 使い方の全体像｜5機能で考える" },
+    { id: "h2-equation", label: "①LaTeX 数式 変換｜自然言語からきれいな数式へ" },
+    { id: "h2-table", label: "②LaTeX 表 作成｜縦横揃った表を3秒で" },
+    { id: "h2-figure", label: "③LaTeX 図 作成｜TikZ・グラフ・回路図" },
+    { id: "h2-similar", label: "④類題生成 AI｜1問から派生問題を量産" },
+    { id: "h2-pdf", label: "⑤PDF 教材 作成｜Markdown → LaTeX → PDF" },
+    { id: "h2-templates", label: "コピペで使えるEddivomプロンプト・テンプレ集" },
+    { id: "h2-eddivom", label: "Eddivom が他のLaTeXツールより強い理由" },
+    { id: "h2-faq", label: "よくある質問（FAQ）" },
+  ]}
+/>
+
+## <span id="h2-overview">LaTeX 使い方の全体像｜5機能で考える</span>
+
+**LaTeX 使い方** を「コマンドの暗記」と捉えると一生終わりません。代わりに、教材作成や論文執筆で本当に使う場面を **5機能** に絞ると、覚える量が一気に減ります。
+
+| 機能 | 典型的な用途 | 覚える記法の量 | AI で代替できるか |
+| --- | --- | --- | --- |
+| **数式変換** | $E=mc^2$、$\dfrac{\partial f}{\partial x}$ など | 多い（100〜200記法） | ◎（自然言語→LaTeX） |
+| **表作成** | 比較表・成績表・物性値表 | 中（10〜20記法） | ◎（Markdown→LaTeX） |
+| **図作成** | グラフ・回路図・幾何図 | 多い（TikZ は別言語級） | ○（テンプレ＋AI補正） |
+| **類題生成** | 元の1問 → バリエーション3〜10問 | LaTeX 知識ゼロでOK | ◎（生成AIの本領） |
+| **PDF化** | 配布プリント・解答冊子 | 環境構築の知識 | ◎（クラウドで完結） |
+
+<Callout variant="tip" title="ひとことでいうと">
+**5機能ごとに「人がやる作業」と「AIに任せる作業」を分けるだけ**で、LaTeX 使い方の学習コストは10分の1になります。本記事では、5機能それぞれを Eddivom（教材作成 AI）に任せる手順をまとめていきます。
+</Callout>
+
+### Eddivom はこの5機能を1画面で完結する
+
+<CtaCard
+  eyebrow="本記事の主役ツール"
+  title="Eddivom — LaTeX教材作成を AI で一気に進める Web アプリ"
+  body="自然言語 → LaTeX、Markdown → LaTeX、1問 → 類題・解答 PDF までを1画面で。教員・塾講師・教材制作者の毎週の作業時間を圧縮するために設計されています。"
+  image="/eddivom-hero.webp"
+  imageAlt="Eddivom — LaTeX 教材作成 Web アプリ"
+  primary={{ label: "Eddivom を開く", href: "https://eddivom.yuta-eng.com" }}
+  secondary={{ label: "アプリ一覧へ", href: "/apps" }}
+/>
+
+## <span id="h2-equation">①LaTeX 数式 変換｜自然言語からきれいな数式へ</span>
+
+**LaTeX 数式 変換** は、LaTeX 使い方の中で最も詰まりやすいポイント。記号・添字・分数・ベクトル・偏微分・積分まで、覚えるコマンドが多すぎるからです。Eddivom では、**自然言語をそのまま入力するだけで、KaTeX/LaTeX 両対応の数式が出力**されます。
+
+### 自然言語 → LaTeX の変換例（ミニツール感覚で確認）
+
+| 自然言語入力 | Eddivom 出力（LaTeX ソース） | レンダリング |
+| --- | --- | --- |
+| 「2分の1 m v の2乗」 | `\tfrac{1}{2}mv^2` | $\tfrac{1}{2}mv^2$ |
+| 「f イコール m a」 | `\vec{F} = m\vec{a}` | $\vec{F} = m\vec{a}$ |
+| 「f の x による偏微分」 | `\dfrac{\partial f}{\partial x}` | $\dfrac{\partial f}{\partial x}$ |
+| 「シュレディンガー方程式」 | `i\hbar\dfrac{\partial \psi}{\partial t} = \hat{H}\psi` | $i\hbar\dfrac{\partial \psi}{\partial t} = \hat{H}\psi$ |
+| 「閉曲線上の磁場の線積分」 | `\oint \vec{B}\cdot d\vec{\ell} = \mu_0 I` | $\oint \vec{B}\cdot d\vec{\ell} = \mu_0 I$ |
+| 「ローレンツ因子 v 分の c」 | `\gamma = \dfrac{1}{\sqrt{1 - v^2/c^2}}` | $\gamma = \dfrac{1}{\sqrt{1 - v^2/c^2}}$ |
+
+<Callout variant="tip" title="Eddivom が記法の揺れを吸収する">
+「内積」と書いても「ドット積」と書いても、Eddivom は `\cdot` に正規化します。`\bm`／`\boldsymbol`／`\vec` の使い分けも、用途（高校／大学／論文）を指定するだけで自動で揃えてくれます。
+</Callout>
+
+### 数式をきれいに書く3つのコツ
+
+LaTeX 出力を Eddivom 任せにしても、**「読みやすい数式の判断軸」だけは自分で持っておく** と仕上がりが安定します。
+
+<StepBlock
+  steps={[
+    {
+      title: "コツ1｜分数は \\dfrac で大きく、本文に溶かすときは \\tfrac",
+      body: "プリントの中央に出す式は \\dfrac、本文中の小さい分数は \\tfrac。Eddivom は『プリント用 / 本文用』を選ぶだけで自動切り替えします。",
+    },
+    {
+      title: "コツ2｜ベクトルは教材レベルで使い分ける",
+      body: "高校教材は \\vec{F}、大学・入試解答は \\bm{F}（または \\boldsymbol{F}）。同じ教材内では必ず統一する。Eddivom は『対象学年』入力で自動切替。",
+    },
+    {
+      title: "コツ3｜積分の dx 前に \\, を入れる",
+      body: "\\int f(x)\\,dx のように薄いスペースを入れると、組版品質が一気に上がります。Eddivom はデフォルトで挿入済み。",
+    },
+  ]}
+/>
+
+<Callout variant="note" title="関連：もっと詳しい記法集が必要なら">
+本記事は概要レベルにとどめています。**力学・電磁気・熱・波動・量子の50項目チートシート**が必要なら、姉妹記事 [LaTeX 数式 物理 完全チートシート](/blog/latex-physics-math-cheatsheet) を併読してください。
+</Callout>
+
+## <span id="h2-table">②LaTeX 表 作成｜縦横揃った表を3秒で</span>
+
+**LaTeX 表 作成** は、`tabular` 環境のセル区切り `&` と改行 `\\` を毎回打ち間違えるストレスポイント。Eddivom では、**Markdown のパイプ表記をそのまま貼り付けるだけで、LaTeX の `tabular` または `booktabs` 表に変換**されます。
+
+### Markdown → LaTeX 表の変換例
+
+入力（Markdown）：
+
+```text
+| 単元 | 公式 | 重要度 |
+| --- | --- | --- |
+| 等加速度運動 | v = v_0 + at | ★★★ |
+| 円運動 | F = mv²/r | ★★★ |
+| 単振動 | T = 2π√(m/k) | ★★ |
+```
+
+Eddivom 出力（LaTeX）：
+
+```latex
+\begin{tabular}{lll}
+\toprule
+単元 & 公式 & 重要度 \\
+\midrule
+等加速度運動 & $v = v_0 + at$ & ★★★ \\
+円運動 & $F = \dfrac{mv^2}{r}$ & ★★★ \\
+単振動 & $T = 2\pi\sqrt{\dfrac{m}{k}}$ & ★★ \\
+\bottomrule
+\end{tabular}
+```
+
+<Callout variant="tip" title="自動で行われている処理">
+- 列指定 `lll` を中身から推定（数値列なら `r`、テキスト列なら `l`）<br />
+- セル内の数式部分を自動で `$...$` で囲む<br />
+- `booktabs` の `\toprule / \midrule / \bottomrule` を挿入<br />
+- 上付き／下付きの自動補正（`v_0` は `v_{0}` に正規化）
+</Callout>
+
+### 物理・化学でよく使う表テンプレ3種
+
+<Comparison
+  rows={[
+    { label: "比較表（教材レビュー・公式比較）", value: "tabular + booktabs。3〜5列、5〜15行が読みやすさの上限" },
+    { label: "物性値表（密度・比熱・抵抗率）", value: "siunitx パッケージで単位を自動整形。S列で小数点揃え" },
+    { label: "成績表（テスト集計・誤答分析）", value: "longtable で複数ページ対応。pgfplotstable で CSV 直読み" },
+  ]}
+/>
+
+## <span id="h2-figure">③LaTeX 図 作成｜TikZ・グラフ・回路図</span>
+
+**LaTeX 図 作成** は、TikZ／PGFPlots／circuitikz など、それぞれが独自のミニ言語。手書きでマスターするのはコスパが悪い領域です。Eddivom では、**用途別テンプレートを選ぶ → パラメータを埋める → SVG/PDF プレビュー**の3ステップで仕上がります。
+
+### Eddivom が内蔵する図テンプレート
+
+| カテゴリ | テンプレート例 | 入力で指定するもの |
+| --- | --- | --- |
+| 力学グラフ | v-tグラフ／x-tグラフ | $v_0$、$a$、$t$ の終点 |
+| 円運動・振動 | 等速円運動＋向心力／単振動の射影 | 半径・角速度・初期位相 |
+| 波動 | 正弦波／ドップラー効果 | 振幅・波長・観測者位置 |
+| 電磁気 | 電場ベクトル／磁場ループ／回路図 | 電荷符号・電流方向 |
+| 数学 | 関数グラフ／極座標 | 数式（自然言語可）・xy範囲 |
+| 幾何 | 三角形／円／ベクトル合成 | 頂点座標・角度 |
+
+<Callout variant="info" title="図作成は『ゼロから書かない』が鉄則">
+TikZ コードをゼロから書くのは、たとえ慣れていても10分単位の作業になります。Eddivom はテンプレに乗せる方式なので、**1図あたり30秒〜1分**。手書きで書いた図を Eddivom にアップロードして整形させることもできます。
+</Callout>
+
+### v-tグラフの図示（記事内ミニ例）
+
+<GraphIllustration
+  variant="vt-graph"
+  caption="等加速度運動の v-t グラフ。傾き = 加速度 a、面積 = 変位 x = v₀t + ½at²"
+/>
+
+このような図を Eddivom で作るときは、**「初速 5 m/s、加速度 2 m/s²、5秒後の v-tグラフ」**と日本語で指定するだけで、上記レベルの TikZ 図が生成されます。
+
+## <span id="h2-similar">④類題生成 AI｜1問から派生問題を量産</span>
+
+**類題生成 AI** は、教員・塾講師にとって最も時短効果が大きい機能です。1問の元データから、**設定を変えた派生問題を3〜10問、解答付きで生成**できます。Eddivom は LaTeX で出力するため、そのまま PDF 化してプリント配布できます。
+
+### 元の1問 → 類題3問の派生例
+
+**元の問題（物理）：**
+
+```text
+質量 2 kg の物体が、初速 5 m/s で水平面上を進み、
+摩擦係数 0.2 の床で減速して停止した。
+止まるまでの距離を求めよ。
+```
+
+**Eddivom の類題出力（要約）：**
+
+| 類題 | 変えた設定 | 確認したい概念 |
+| --- | --- | --- |
+| 類題1 | 質量 → 3 kg、初速 → 6 m/s | 質量と運動エネルギーの関係 |
+| 類題2 | 床面 → 斜面（角度 30°） | 摩擦＋重力成分の合成 |
+| 類題3 | 物体 → 運動中に外力（一定） | 運動方程式と仕事 |
+
+<Callout variant="tip" title="類題生成のポイント">
+**「数値だけ変える」ではなく「概念は同じで設定だけ変える」**のが Eddivom の流儀。生徒が表面パターンに頼って解けないよう、文脈を入れ替えた問題を返してきます。
+</Callout>
+
+### 物理問題作成・数学問題作成での使い分け
+
+<StepBlock
+  steps={[
+    {
+      title: "Step 1｜元問題は『1問だけ』Eddivom に渡す",
+      body: "10問入れると派生の質が落ちます。1問に集中させると、概念の捉え方が安定します。",
+    },
+    {
+      title: "Step 2｜出力数は3〜5問が黄金比",
+      body: "10問以上だと類似度が上がり、生徒が『同じ問題ばかり』と感じます。3〜5問で多様性が確保できます。",
+    },
+    {
+      title: "Step 3｜解答PDFは別ファイルで生成",
+      body: "問題冊子と解答冊子をEddivomで別PDF出力。番号は自動同期。差し替えがあっても番号がズレません。",
+    },
+  ]}
+/>
+
+## <span id="h2-pdf">⑤PDF 教材 作成｜Markdown → LaTeX → PDF</span>
+
+**PDF 教材 作成** はLaTeXの最終アウトプットです。手元に TeX Live をインストールしなくても、Eddivom は **Markdown → LaTeX → PDF** をブラウザ内で完結させます。
+
+### ワークフロー全体図
+
+<GraphIllustration
+  variant="workflow"
+  caption="教材作成のワークフロー：AI下書き → LaTeX整形 → PDF/Web展開。Eddivom はこの3ステップを1画面で完結します。"
+/>
+
+### Markdown LaTeX 変換が必要になる典型シーン
+
+| シーン | 典型的な作業 | Eddivom の役割 |
+| --- | --- | --- |
+| 授業後の解説プリントを作る | 板書 Markdown を清書 → 配布PDF | Markdown → LaTeX → PDF を一発 |
+| 既存の Word 教材を LaTeX 化 | 数式・表・図を作り直す | 自然言語入力で全部リビルド |
+| Web記事と紙プリントを両立 | MDX用と PDF用を別々に管理 | 同じソースから両方を出力 |
+| 解答冊子を別途作成 | 問題と解答の番号合わせが面倒 | 問題／解答を別PDFで自動同期 |
+
+<Callout variant="warn" title="ローカル LaTeX 環境構築が苦しいなら">
+TeX Live を毎年インストールし直すのが面倒、Overleaf の月額が積み上がる、共同編集で版管理が崩れる── これらは **クラウド完結の Eddivom で全部解決** します。ブラウザだけで PDF が出ます。
+</Callout>
+
+## <span id="h2-templates">コピペで使えるEddivomプロンプト・テンプレ集</span>
+
+ここから先は **そのまま Eddivom に貼って動くテンプレ集** です。`{}` を置換して使ってください。
+
+### テンプレA｜自然言語 → LaTeX 数式 変換
+
+```text
+以下の物理／数学の式を LaTeX で出力してください。
+
+# 入力
+{2分の1 m v の2乗 + m g h イコール 一定}
+
+# 出力条件
+- 対象: {高校 / 大学 / 論文}
+- ベクトル表記: {\\vec / \\bm / \\boldsymbol}
+- 分数: {\\dfrac / \\tfrac}
+- 必ずインライン $...$ または ブロック $$...$$ で囲む
+```
+
+### テンプレB｜Markdown 表 → LaTeX `tabular` 変換
+
+```text
+以下の Markdown 表を、booktabs 付きの LaTeX tabular に変換してください。
+数値列は r 揃え、文字列列は l 揃えにし、セル内の数式は自動で $...$ で囲んでください。
+
+# Markdown
+{ここに | 区切りの表を貼る}
+
+# 出力条件
+- パッケージ: booktabs, siunitx
+- キャプション: {上 / 下 / なし}
+- ラベル: tab:{slug}
+```
+
+### テンプレC｜物理問題作成（小テスト・類題）
+
+```text
+あなたは高校物理の教材編集者です。以下の条件で問題を作成してください。
+
+# 元問題（任意）
+{元の問題があれば貼る。なければ空欄}
+
+# 対象
+- 学年: {高1 / 高2 / 受験生}
+- 単元: {等加速度運動 / 円運動 / 単振動 / 電磁誘導 …}
+- 想定レベル: {基礎 / 標準 / 応用}
+
+# 構成
+- 問題数: 5問（うち1問は概念確認、3問目で典型題、5問目で応用）
+- 各問: 設問・選択肢（4択）・解説（200字以内）の順
+- LaTeX で出力（amsmath, physics, bm 利用可）
+
+# 制約
+- 公式の暗記を促す表現は避ける
+- 「なぜそう考えるか」を解説に必ず含める
+- 数値は整数または分数、SI単位を明記
+```
+
+### テンプレD｜1問 → 類題3問の派生
+
+```text
+以下の問題と同じ概念を確認できる類題を3問作成してください。
+ただし、設定（物体・条件・数値・文脈）を変えること。
+
+# 元の問題
+{ここに元問題を貼る}
+
+# 出力
+- 各問: 設問・解説の順、LaTeX 形式
+- 解説冒頭で「元の問題と何が同じで、何が違うか」を1文添える
+- 解答 PDF 用と問題 PDF 用に分けて出力
+```
+
+### テンプレE｜PDF 教材化（プリント＋解答）
+
+```text
+以下の Markdown 教材を、A4 縦のプリントPDFと解答冊子PDFに分けて出力してください。
+
+# 入力 Markdown
+{授業ノート Markdown を貼る}
+
+# 出力条件
+- 用紙: A4縦、本文 11pt
+- フォント: 明朝（IPAex 明朝）
+- ヘッダ: {学校名 / 日付 / 単元名}
+- フッタ: ページ番号
+- 数式: physics, amsmath, bm
+- 図: 自動で TikZ にリビルド
+```
+
+## <span id="h2-eddivom">Eddivom が他のLaTeXツールより強い理由</span>
+
+LaTeX 教材作成のツールはいくつかあります。Overleaf（汎用LaTeXエディタ）、Word + 数式エディタ、ChatGPT 単体などです。Eddivom は、**「教材作成のワークフロー特化」** が他と決定的に違うポイント。
+
+| ツール | 強み | 弱み | Eddivom と比べた印象 |
+| --- | --- | --- | --- |
+| **Overleaf** | LaTeX 全機能、共同編集 | プロンプト→LaTeX変換は別ツール | 汎用すぎて教材ワークフローには遠回り |
+| **Word + 数式** | 直感的、教員に普及 | LaTeX出力できない、組版品質が低い | 数式・図の質では Eddivom 圧勝 |
+| **ChatGPT 単体** | 自然言語対応 | LaTeX→PDFは別環境必要 | Eddivom はPDFまで一気通貫 |
+| **Eddivom** | 自然言語/Markdown→LaTeX→PDF を1画面 | 教材特化なので汎用LaTeXには不向き | **教員・塾講師にはこれ一択** |
+
+<Callout variant="tip" title="使い分けの推奨">
+**論文を書く → Overleaf**、**授業プリントを毎週作る → Eddivom**。役割が違うので併用が最強です。共通の LaTeX ソースは Eddivom で生成し、深い編集が必要なときだけ Overleaf に持ち込む流れが効率的です。
+</Callout>
+
+## <span id="h2-faq">よくある質問（FAQ）</span>
+
+<Faq
+  items={[
+    {
+      q: "LaTeX 使い方を一から学ぶのに何時間かかりますか？",
+      a: "従来は20〜40時間が相場でしたが、Eddivom を使えば『5機能ごとの判断軸』だけ覚えれば済むので、実用レベルまで2〜3時間で到達できます。記法の暗記は不要です。",
+    },
+    {
+      q: "Markdown LaTeX 変換は精度が高いですか？",
+      a: "Eddivom の Markdown → LaTeX 変換は、表・数式・コードブロック・脚注まで対応しています。Pandoc 単体では難しい『数式の自動 $...$ 補完』『表の booktabs 化』『TikZ 図への変換』まで含めて自動処理されます。",
+    },
+    {
+      q: "数式を きれいに書く ためのコツは？",
+      a: "①分数は \\dfrac/\\tfrac の使い分け、②ベクトルは教材レベルで揃える、③積分の dx 前に \\, を入れる、の3つです。Eddivom は対象（高校/大学/論文）を指定するだけで自動で揃えてくれます。",
+    },
+    {
+      q: "類題生成 AI は他にもありますが、Eddivom は何が違いますか？",
+      a: "汎用 AI は『数値だけ変えた類題』を出しがちですが、Eddivom は概念は同じで文脈を入れ替えた類題を返します。表面パターンに頼る生徒の取りこぼしを減らせる設計です。",
+    },
+    {
+      q: "PDF 教材 作成 にローカル LaTeX 環境は必要ですか？",
+      a: "不要です。Eddivom はクラウド完結で、PDF 出力もブラウザだけで動きます。TeX Live のインストールやパッケージ管理は一切不要です。",
+    },
+    {
+      q: "物理問題作成・数学問題作成で著作権はどうなりますか？",
+      a: "Eddivom が生成した問題の権利は利用者に帰属します（規約参照）。ただし、既存の入試問題をそのまま入力した場合の派生問題は元問題の著作権の影響を受けるため、元問題は『下敷き』として扱い、出題形式・文脈は十分に変えてください。",
+    },
+  ]}
+/>
+
+### 関連記事
+
+- ワークフロー全体像：[AIとLaTeXで教材作成を自動化｜下書き→整形→展開を1日30分に](/blog/latex-web-workflow)
+- 記法集：[LaTeX 数式 物理 完全チートシート 50選](/blog/latex-physics-math-cheatsheet)
+- 物理特化：[ChatGPT 物理 問題 プロンプト集](/blog/chatgpt-physics-problem-prompts) ／ [物理教材の作り方](/blog/physics-material-creation)
+- Overleaf：[Overleaf で物理レポートを無料で作る](/blog/overleaf-free-physics-report-guide)
+
+<CtaCard
+  eyebrow="今日から始める"
+  title="Eddivom — LaTeX 教材作成を 5機能まとめて自動化"
+  body="自然言語 → LaTeX、Markdown → LaTeX、1問 → 類題・解答 PDF まで1画面で。無料プランで小テストレベルなら本格運用できます。"
+  image="/eddivom-hero.webp"
+  imageAlt="Eddivom — LaTeX 教材作成 Web アプリ"
+  primary={{ label: "Eddivom を開く", href: "https://eddivom.yuta-eng.com" }}
+  secondary={{ label: "アプリ一覧へ", href: "/apps" }}
+/>

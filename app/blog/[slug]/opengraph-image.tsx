@@ -19,46 +19,70 @@ export function generateStaticParams() {
 type AccentTheme = {
   bg: string;
   glow: string;
+  /** Secondary radial glow color used in the top-right corner (different hue from `glow` for chromatic depth). */
+  secondaryGlow: string;
+  /** Tertiary radial glow used in the bottom-left for a three-color composition. */
+  tertiaryGlow: string;
   accent: string;
   accentSoft: string;
+  /** Pop / contrast color used for sparkle dots — chosen complementary to `accent`. */
+  pop: string;
   chip: string;
   chipText: string;
   motif: "physics" | "materials" | "latex" | "education" | "default";
 };
 
+// Each gradient mixes 4–5 distinct hues so the thumbnails read as vivid
+// multi-color compositions instead of monochromatic blue/amber washes.
 const categoryAccent: Record<string, AccentTheme> = {
   Physics: {
-    bg: "linear-gradient(135deg, #02061b 0%, #0b1d4a 35%, #1e3a8a 75%, #1d4ed8 100%)",
-    glow: "rgba(56,189,248,0.65)",
+    // midnight → indigo → violet → fuchsia → cyan (clear hue rotation, not just blue shades)
+    bg: "linear-gradient(135deg, #020617 0%, #1e1b4b 20%, #4338ca 42%, #c026d3 68%, #38bdf8 100%)",
+    glow: "rgba(56,189,248,0.7)",
+    secondaryGlow: "rgba(192,38,211,0.55)",
+    tertiaryGlow: "rgba(167,139,250,0.45)",
     accent: "#38bdf8",
     accentSoft: "#bae6fd",
+    pop: "#f472b6",
     chip: "#bae6fd",
     chipText: "#0b1d4a",
     motif: "physics",
   },
   Materials: {
-    bg: "linear-gradient(135deg, #0c0a09 0%, #1c1917 35%, #92400e 75%, #f59e0b 100%)",
-    glow: "rgba(251,191,36,0.65)",
+    // dark espresso → mahogany → amber → coral → tangerine
+    bg: "linear-gradient(135deg, #1a0a01 0%, #4a1d05 22%, #92400e 48%, #f59e0b 76%, #fb923c 100%)",
+    glow: "rgba(251,191,36,0.7)",
+    secondaryGlow: "rgba(251,113,133,0.5)",
+    tertiaryGlow: "rgba(125,211,252,0.3)",
     accent: "#fbbf24",
     accentSoft: "#fef3c7",
+    pop: "#fb7185",
     chip: "#fef3c7",
     chipText: "#7c2d12",
     motif: "materials",
   },
   LaTeX: {
-    bg: "linear-gradient(135deg, #020617 0%, #0c4a6e 40%, #0369a1 75%, #0ea5e9 100%)",
-    glow: "rgba(125,211,252,0.65)",
-    accent: "#7dd3fc",
-    accentSoft: "#e0f2fe",
-    chip: "#e0f2fe",
-    chipText: "#0c4a6e",
+    // navy → indigo → violet → magenta → cyan (AI / sci-fi feel)
+    bg: "linear-gradient(135deg, #020617 0%, #1e1b4b 20%, #4c1d95 42%, #be185d 70%, #06b6d4 100%)",
+    glow: "rgba(167,139,250,0.7)",
+    secondaryGlow: "rgba(244,114,182,0.55)",
+    tertiaryGlow: "rgba(34,211,238,0.5)",
+    accent: "#c4b5fd",
+    accentSoft: "#ede9fe",
+    pop: "#22d3ee",
+    chip: "#ede9fe",
+    chipText: "#3b0764",
     motif: "latex",
   },
   Education: {
-    bg: "linear-gradient(135deg, #022c22 0%, #064e3b 40%, #0f766e 75%, #14b8a6 100%)",
-    glow: "rgba(94,234,212,0.65)",
+    // dark forest → teal → emerald → lime with a warm yellow pop
+    bg: "linear-gradient(135deg, #022c22 0%, #064e3b 22%, #0f766e 48%, #10b981 75%, #84cc16 100%)",
+    glow: "rgba(94,234,212,0.7)",
+    secondaryGlow: "rgba(253,224,71,0.5)",
+    tertiaryGlow: "rgba(244,114,182,0.3)",
     accent: "#5eead4",
     accentSoft: "#ccfbf1",
+    pop: "#fde047",
     chip: "#d1fae5",
     chipText: "#064e3b",
     motif: "education",
@@ -66,10 +90,13 @@ const categoryAccent: Record<string, AccentTheme> = {
 };
 
 const defaultAccent: AccentTheme = {
-  bg: "linear-gradient(135deg, #02061b 0%, #0f172a 50%, #334155 100%)",
-  glow: "rgba(186,230,253,0.5)",
+  bg: "linear-gradient(135deg, #02061b 0%, #1e1b4b 35%, #5b21b6 70%, #06b6d4 100%)",
+  glow: "rgba(186,230,253,0.55)",
+  secondaryGlow: "rgba(244,114,182,0.45)",
+  tertiaryGlow: "rgba(94,234,212,0.4)",
   accent: "#7dd3fc",
   accentSoft: "#e2e8f0",
+  pop: "#f472b6",
   chip: "#e2e8f0",
   chipText: "#0f172a",
   motif: "default",
@@ -85,6 +112,9 @@ function getDiagramKey(slug: string): string {
   if (slug.includes("electromagnetism")) return "field";
   if (slug.includes("uniform-acceleration") || slug.includes("equations-of")) return "vtgraph";
   if (slug.includes("chatgpt") || slug.includes("prompt")) return "prompt";
+  // AI × LaTeX tool-set article: a richer diagram showing the 5-feature toolkit
+  // (math, table, figure, similar problems, PDF) radiating from an AI core.
+  if (slug.includes("ai-tools") || slug.includes("templates-guide")) return "aitoolset";
   if (slug.includes("latex") || slug.includes("overleaf")) return "latex";
   if (slug.includes("retrieval-practice") || slug.includes("learning-design")) return "memory";
   if (slug.includes("personalized-learning")) return "paths";
@@ -341,6 +371,106 @@ function ArticleDiagram({ slug, theme }: { slug: string; theme: AccentTheme }) {
         <path d="M 90 140 l 6 16 l 16 6 l -16 6 l -6 16 l -6 -16 l -16 -6 l 16 -6 z" fill={soft} opacity="0.9" />
         <path d="M 600 580 l 5 14 l 14 5 l -14 5 l -5 14 l -5 -14 l -14 -5 l 14 -5 z" fill={soft} opacity="0.8" />
         <path d="M 660 130 l 4 10 l 10 4 l -10 4 l -4 10 l -4 -10 l -10 -4 l 10 -4 z" fill={soft} opacity="0.7" />
+      </svg>
+    );
+  }
+
+  if (key === "aitoolset") {
+    // AI core in the middle, with 5 tool satellites: math (∫), table, chart,
+    // problem doc (類題), PDF. Connecting lines + sparkle accents.
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.2" strokeDasharray="2 8" />
+        <circle cx={cx} cy={cy} r="240" stroke={stroke} strokeWidth="1.6" fill="none" opacity="0.32" strokeDasharray="4 8" />
+
+        {/* Connection rays from center to each satellite */}
+        {[
+          { x: cx, y: 130 },        // top — math
+          { x: 600, y: 240 },       // top-right — table
+          { x: 600, y: 480 },       // bottom-right — chart
+          { x: cx, y: 600 },        // bottom — problem doc
+          { x: 120, y: 360 },       // left — PDF
+        ].map((s, i) => (
+          <line
+            key={`ray-${i}`}
+            x1={cx}
+            y1={cy}
+            x2={s.x}
+            y2={s.y}
+            stroke={stroke}
+            strokeWidth="2"
+            opacity="0.45"
+            strokeDasharray="5 6"
+          />
+        ))}
+
+        {/* Center AI core: glowing nucleus + 8-point sparkle */}
+        <circle cx={cx} cy={cy} r="100" fill={stroke} opacity="0.25" />
+        <circle cx={cx} cy={cy} r="74" fill={soft} opacity="0.95" />
+        <circle cx={cx} cy={cy} r="74" stroke={stroke} strokeWidth="3" fill="none" opacity="0.7" />
+        <path
+          d={`M ${cx} ${cy - 44} l 12 28 l 28 12 l -28 12 l -12 28 l -12 -28 l -28 -12 l 28 -12 z`}
+          fill={stroke}
+        />
+        <circle cx={cx + 30} cy={cy + 30} r="5" fill={stroke} opacity="0.7" />
+        <circle cx={cx - 26} cy={cy - 28} r="3" fill={stroke} opacity="0.6" />
+
+        {/* Satellite 1 (top): math integral ∫ */}
+        <g>
+          <circle cx={cx} cy="130" r="46" fill={soft} opacity="0.9" stroke={stroke} strokeWidth="3" />
+          <path
+            d={`M ${cx + 8} 100 Q ${cx + 16} 116 ${cx + 4} 130 Q ${cx - 8} 144 ${cx} 160`}
+            stroke={stroke}
+            strokeWidth="5"
+            fill="none"
+            strokeLinecap="round"
+          />
+        </g>
+
+        {/* Satellite 2 (top-right): mini table */}
+        <g>
+          <circle cx="600" cy="240" r="46" fill={soft} opacity="0.9" stroke={stroke} strokeWidth="3" />
+          <rect x="572" y="218" width="56" height="44" rx="3" stroke={stroke} strokeWidth="2.4" fill="none" />
+          <line x1="572" y1="232" x2="628" y2="232" stroke={stroke} strokeWidth="2" />
+          <line x1="600" y1="218" x2="600" y2="262" stroke={stroke} strokeWidth="2" opacity="0.7" />
+          <line x1="572" y1="247" x2="628" y2="247" stroke={stroke} strokeWidth="1.6" opacity="0.55" />
+        </g>
+
+        {/* Satellite 3 (bottom-right): bar chart / figure */}
+        <g>
+          <circle cx="600" cy="480" r="46" fill={soft} opacity="0.9" stroke={stroke} strokeWidth="3" />
+          <line x1="574" y1="504" x2="626" y2="504" stroke={stroke} strokeWidth="2.4" />
+          <rect x="578" y="488" width="8" height="16" fill={stroke} />
+          <rect x="592" y="478" width="8" height="26" fill={stroke} opacity="0.85" />
+          <rect x="606" y="468" width="8" height="36" fill={stroke} opacity="0.7" />
+          <rect x="620" y="460" width="6" height="44" fill={stroke} opacity="0.55" />
+        </g>
+
+        {/* Satellite 4 (bottom): problem doc with stacked variation lines — 類題 */}
+        <g>
+          <circle cx={cx} cy="600" r="46" fill={soft} opacity="0.9" stroke={stroke} strokeWidth="3" />
+          <rect x={cx - 18} y="576" width="36" height="48" rx="3" stroke={stroke} strokeWidth="2.4" fill="none" />
+          <line x1={cx - 12} y1="586" x2={cx + 12} y2="586" stroke={stroke} strokeWidth="2.2" />
+          <line x1={cx - 12} y1="596" x2={cx + 8} y2="596" stroke={stroke} strokeWidth="2.2" opacity="0.8" />
+          <line x1={cx - 12} y1="606" x2={cx + 6} y2="606" stroke={stroke} strokeWidth="2.2" opacity="0.6" />
+          <line x1={cx - 12} y1="616" x2={cx + 4} y2="616" stroke={stroke} strokeWidth="2.2" opacity="0.4" />
+        </g>
+
+        {/* Satellite 5 (left): PDF doc — page silhouette with folded corner */}
+        <g>
+          <circle cx="120" cy="360" r="46" fill={soft} opacity="0.9" stroke={stroke} strokeWidth="3" />
+          <path d="M 102 334 L 132 334 L 142 344 L 142 388 L 102 388 Z" stroke={stroke} strokeWidth="2.6" fill="none" strokeLinejoin="round" />
+          <path d="M 132 334 L 132 344 L 142 344" stroke={stroke} strokeWidth="2.2" fill="none" />
+          <line x1="108" y1="354" x2="136" y2="354" stroke={stroke} strokeWidth="2.2" />
+          <line x1="108" y1="364" x2="132" y2="364" stroke={stroke} strokeWidth="2.2" opacity="0.75" />
+          <line x1="108" y1="374" x2="128" y2="374" stroke={stroke} strokeWidth="2.2" opacity="0.55" />
+        </g>
+
+        {/* Outer sparkles */}
+        <path d="M 70 90 l 7 16 l 16 7 l -16 7 l -7 16 l -7 -16 l -16 -7 l 16 -7 z" fill={soft} opacity="0.85" />
+        <path d="M 660 90 l 5 12 l 12 5 l -12 5 l -5 12 l -5 -12 l -12 -5 l 12 -5 z" fill={soft} opacity="0.7" />
+        <path d="M 70 640 l 5 12 l 12 5 l -12 5 l -5 12 l -5 -12 l -12 -5 l 12 -5 z" fill={soft} opacity="0.7" />
+        <path d="M 660 640 l 7 16 l 16 7 l -16 7 l -7 16 l -7 -16 l -16 -7 l 16 -7 z" fill={soft} opacity="0.85" />
       </svg>
     );
   }
@@ -812,20 +942,60 @@ export default async function Image({ params }: { params: Promise<Params> }) {
           }}
         />
 
-        {/* Layer 4: top-right secondary glow */}
+        {/* Layer 4: top-right secondary glow (per-theme hue, complements primary glow) */}
         <div
           style={{
             position: "absolute",
-            top: -180,
+            top: -200,
             right: -180,
-            width: 540,
-            height: 540,
+            width: 600,
+            height: 600,
             borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(186,230,253,0.18), transparent 70%)",
+            background: `radial-gradient(circle, ${theme.secondaryGlow}, transparent 68%)`,
             display: "flex",
           }}
         />
+        {/* Layer 4b: bottom-left tertiary glow (third hue → multi-color composition) */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: -200,
+            left: -160,
+            width: 560,
+            height: 560,
+            borderRadius: "50%",
+            background: `radial-gradient(circle, ${theme.tertiaryGlow}, transparent 70%)`,
+            display: "flex",
+          }}
+        />
+
+        {/* Layer 4c: pop sparkles in the contrast hue — tiny, scattered, low-density */}
+        {[
+          { top: 110, left: 160, size: 10, color: theme.pop, opacity: 0.85 },
+          { top: 78, right: 220, size: 7, color: theme.accentSoft, opacity: 0.7 },
+          { bottom: 200, right: 130, size: 9, color: theme.pop, opacity: 0.75 },
+          { bottom: 130, left: 200, size: 6, color: theme.accentSoft, opacity: 0.6 },
+          { top: 240, left: 90, size: 5, color: theme.pop, opacity: 0.5 },
+          { bottom: 260, right: 250, size: 5, color: theme.accentSoft, opacity: 0.55 },
+        ].map((s, i) => (
+          <div
+            key={`pop-${i}`}
+            style={{
+              position: "absolute",
+              ...(s.top !== undefined ? { top: s.top } : {}),
+              ...(s.bottom !== undefined ? { bottom: s.bottom } : {}),
+              ...(s.left !== undefined ? { left: s.left } : {}),
+              ...(s.right !== undefined ? { right: s.right } : {}),
+              width: s.size,
+              height: s.size,
+              borderRadius: "50%",
+              background: s.color,
+              opacity: s.opacity,
+              boxShadow: `0 0 ${s.size * 2}px ${s.color}`,
+              display: "flex",
+            }}
+          />
+        ))}
 
         {/* Layer 5: top accent gradient line */}
         <div
