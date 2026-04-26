@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
 import "katex/dist/katex.min.css";
+import "@/app/article.css";
 
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono, Shippori_Mincho } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import Script from "next/script";
 
@@ -30,16 +30,11 @@ const zenKaku = localFont({
   fallback: ["Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "sans-serif"],
 });
 
-// Shippori Mincho is a CJK font: next/font/google emits ~100 @font-face rules
-// per weight (unicode-range subsets). 4 weights → ~400 @font-face rules =
-// 378KB of CSS on every page. We drop to a single weight (700) used by article
-// headings and serif accents, falling back to OS mincho for other weights.
-const shipporiMincho = Shippori_Mincho({
-  variable: "--font-serif-jp",
-  subsets: ["latin"],
-  weight: ["700"],
-  display: "swap",
-});
+// Shippori Mincho was dropped entirely — `next/font/google` emits ~125
+// `unicode-range` @font-face declarations per weight for CJK fonts, costing
+// ~96KB of render-blocking CSS on every page. We rely on the OS Mincho
+// fallback chain (Hiragino Mincho ProN / Yu Mincho / serif) instead, which
+// is visually almost identical on JP devices and adds zero network cost.
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -139,7 +134,7 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${zenKaku.variable} ${shipporiMincho.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
+      className={`${zenKaku.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
       <head>
         {/* Preconnect to third-party origins so the GA & gtag handshake
