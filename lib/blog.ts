@@ -13,6 +13,8 @@ export type BlogFrontmatter = {
   category: string;
   slug: string;
   draft?: boolean;
+  /** Pin this post as the top "Featured" article on /blog and HOME, ignoring date order. */
+  featured?: boolean;
   coverImage?: string;
   keyPoints?: string[];
   searchIntent?: string;
@@ -70,6 +72,7 @@ function assertFrontmatter(data: Record<string, unknown>, fileName: string): Blo
     category,
     slug,
     draft: typeof data.draft === "boolean" ? data.draft : false,
+    featured: typeof data.featured === "boolean" ? data.featured : false,
     coverImage: typeof data.coverImage === "string" ? data.coverImage : undefined,
     keyPoints: isStringArray(data.keyPoints) ? data.keyPoints : undefined,
     searchIntent: typeof data.searchIntent === "string" ? data.searchIntent : undefined,
@@ -127,7 +130,12 @@ export function getAllPosts({
   return getBlogFileNames()
     .map(readPost)
     .filter((post) => includeDrafts || !post.draft)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort((a, b) => {
+      // Pinned `featured: true` posts come first, then by date (newest first).
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
 }
 
 export function getLatestPosts(limit = 3) {

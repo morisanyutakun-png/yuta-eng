@@ -137,11 +137,16 @@ export function ArticleCard({
   const href = `/blog/${post.slug}`;
 
   if (variant === "featured") {
+    const isPinned = Boolean(post.featured);
     return (
       <article
         itemScope
         itemType="https://schema.org/BlogPosting"
-        className="group relative grid overflow-hidden rounded-[24px] bg-white ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_30px_70px_-50px_rgba(15,29,74,0.4)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_46px_92px_-50px_rgba(15,29,74,0.5)] sm:rounded-[28px] lg:grid-cols-[1.1fr_0.9fr]"
+        className={`group relative grid overflow-hidden rounded-[24px] bg-white transition duration-500 hover:-translate-y-1 sm:rounded-[28px] lg:grid-cols-[1.1fr_0.9fr] ${
+          isPinned
+            ? "ring-2 ring-[#1d4ed8]/30 shadow-[0_36px_84px_-46px_rgba(29,78,216,0.55)] hover:shadow-[0_52px_104px_-46px_rgba(29,78,216,0.65)]"
+            : "ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_30px_70px_-50px_rgba(15,29,74,0.4)] hover:shadow-[0_46px_92px_-50px_rgba(15,29,74,0.5)]"
+        }`}
       >
         <Link
           href={href}
@@ -167,6 +172,20 @@ export function ArticleCard({
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-[#0b1d4a]/20 via-transparent to-transparent opacity-50 transition duration-500 group-hover:opacity-30"
           />
+          {isPinned ? (
+            <span
+              className="absolute right-4 top-4 z-20 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#0ea5e9] px-3 py-1.5 text-[0.7rem] font-extrabold uppercase tracking-[0.16em] text-white shadow-[0_8px_22px_-8px_rgba(29,78,216,0.7)] sm:right-5 sm:top-5 sm:text-[0.74rem]"
+              aria-label="特集記事"
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M12 2l2.6 6.4 6.9.5-5.2 4.5 1.6 6.7L12 16.8 6.1 20.1l1.6-6.7L2.5 8.9l6.9-.5L12 2z"
+                  fill="currentColor"
+                />
+              </svg>
+              Featured
+            </span>
+          ) : null}
         </div>
         <div className="flex flex-col justify-between gap-6 p-6 sm:gap-7 sm:p-9 lg:p-10">
           <div>
