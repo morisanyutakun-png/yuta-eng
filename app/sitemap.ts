@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { siteConfig } from "@/data/site";
-import { getAllPosts } from "@/lib/blog";
+import { getAllCategories, getAllPosts, getAllTags } from "@/lib/blog";
 
 const SITE_URL = siteConfig.url;
 
@@ -54,5 +54,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...pages, ...blogRoutes];
+  const categoryRoutes: MetadataRoute.Sitemap = getAllCategories().map(
+    ({ category }) => ({
+      url: `${SITE_URL}/blog/category/${category}`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.65,
+    }),
+  );
+
+  const tagRoutes: MetadataRoute.Sitemap = getAllTags().map(({ tag }) => ({
+    url: `${SITE_URL}/blog/tag/${encodeURIComponent(tag)}`,
+    lastModified,
+    changeFrequency: "weekly",
+    priority: 0.55,
+  }));
+
+  return [...pages, ...blogRoutes, ...categoryRoutes, ...tagRoutes];
 }

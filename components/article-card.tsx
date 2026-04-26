@@ -90,6 +90,7 @@ function AuthorByline({
       itemScope
       itemType="https://schema.org/Person"
     >
+      <meta itemProp="url" content={`${siteConfig.url}/about`} />
       <span
         aria-hidden="true"
         className={`grid shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#38bdf8] font-bold tracking-tight text-white shadow-[0_4px_10px_-4px_rgba(29,78,216,0.55)] ${avatarSize}`}
@@ -108,6 +109,19 @@ function AuthorByline({
         </time>
       </div>
     </div>
+  );
+}
+
+/** Hidden Publisher microdata block — required for Google BlogPosting rich result. */
+function PublisherMeta() {
+  return (
+    <span itemProp="publisher" itemScope itemType="https://schema.org/Organization" style={{ display: "none" }}>
+      <meta itemProp="name" content={siteConfig.name} />
+      <meta itemProp="url" content={siteConfig.url} />
+      <span itemProp="logo" itemScope itemType="https://schema.org/ImageObject">
+        <meta itemProp="url" content={`${siteConfig.url}/brand/solvora-mark.svg`} />
+      </span>
+    </span>
   );
 }
 
@@ -133,7 +147,10 @@ export function ArticleCard({
           className="absolute inset-0 z-10 rounded-[inherit] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1d4ed8]"
         />
         <meta itemProp="datePublished" content={post.date} />
+        <meta itemProp="dateModified" content={post.date} />
         <meta itemProp="description" content={post.description} />
+        <meta itemProp="mainEntityOfPage" content={`${siteConfig.url}/blog/${post.slug}`} />
+        <PublisherMeta />
         <div
           className="relative aspect-[16/10] overflow-hidden lg:aspect-auto lg:h-full lg:min-h-[340px]"
           style={{ backgroundColor: accent.bg }}

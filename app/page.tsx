@@ -1097,15 +1097,19 @@ export default function Home() {
         <Container className="relative px-6 py-20 sm:py-28">
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="order-2 overflow-hidden rounded-[28px] bg-gradient-to-br from-[#eef4ff] via-[#fff7ed] to-[#fef3c7] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_30px_70px_-50px_rgba(15,29,74,0.4)] lg:order-1">
-              <img
-                src="/eddivom-hero.webp"
-                alt="Eddivom — AI で問題下書きを作り、LaTeX に整形して PDF・Web 配布まで一気通貫"
-                width={1536}
-                height={1024}
-                loading="lazy"
-                decoding="async"
-                className="block h-auto w-full"
-              />
+              <picture>
+                <source type="image/avif" srcSet="/eddivom-hero.avif" />
+                <source type="image/webp" srcSet="/eddivom-hero.webp" />
+                <img
+                  src="/eddivom-hero.webp"
+                  alt="Eddivom — AI で問題下書きを作り、LaTeX に整形して PDF・Web 配布まで一気通貫"
+                  width={1536}
+                  height={1024}
+                  loading="lazy"
+                  decoding="async"
+                  className="block h-auto w-full"
+                />
+              </picture>
             </div>
             <div className="order-1 lg:order-2">
               <p className="inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">

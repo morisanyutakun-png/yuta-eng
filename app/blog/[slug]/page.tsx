@@ -348,9 +348,130 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </Container>
       </section>
 
+      {/* RELATED SERVICES — internal linking to service pages by category */}
+      <section className="bg-white">
+        <Container className="px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+          <div className="mx-auto max-w-3xl">
+            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">
+              Related Services · Solvora から探す
+            </p>
+            <h2 className="mt-2 text-[clamp(1.3rem,1rem+1.4vw,1.7rem)] font-extrabold leading-[1.32] tracking-[-0.005em] text-[#0b1d4a] sm:mt-3">
+              この記事のテーマに関連する Solvora の公式サービス
+            </h2>
+            <ul className="mt-8 grid gap-4 sm:grid-cols-2 sm:gap-5">
+              {(post.category === "Physics"
+                ? [
+                    {
+                      label: "Physics School",
+                      title: "物理の森｜物理専門オンライン塾",
+                      body: "高校物理に完全特化したオンライン個別指導。理解で解く設計思想を Solvora が直営。",
+                      href: siteConfig.physicsSchoolUrl,
+                      external: true,
+                      accent: "#0b1d4a",
+                    },
+                    {
+                      label: "Learning App",
+                      title: "Solvora Physics｜高校物理アプリ",
+                      body: "単元別の概念解説 → 例題 → 演習をスマホで毎日 5〜10 分積み上げる自学アプリ。",
+                      href: "/apps#physics",
+                      external: false,
+                      accent: "#0284c7",
+                    },
+                  ]
+                : post.category === "Materials" || post.category === "LaTeX"
+                ? [
+                    {
+                      label: "AI Materials",
+                      title: "Eddivom｜AI 教材作成 Web アプリ",
+                      body: "AI で問題下書き → LaTeX 整形 → PDF / Web 配布までワンストップ。教員・塾講師の業務時間を圧縮。",
+                      href: siteConfig.eddivomUrl,
+                      external: true,
+                      accent: "#1d4ed8",
+                    },
+                    {
+                      label: "Service Hub",
+                      title: "Solvora の公式サービス一覧",
+                      body: "AI 教材・物理塾・学習アプリの 4 サービスを比較できる公式入口。",
+                      href: "/apps",
+                      external: false,
+                      accent: "#0ea5e9",
+                    },
+                  ]
+                : [
+                    {
+                      label: "Service Hub",
+                      title: "Solvora の公式サービス一覧",
+                      body: "AI 教材作成 Eddivom、物理の森、学習アプリ Solvora Physics・IT Pass の 4 つの公式入口。",
+                      href: "/apps",
+                      external: false,
+                      accent: "#1d4ed8",
+                    },
+                    {
+                      label: "AI Materials",
+                      title: "Eddivom｜教材作成 AI",
+                      body: "学習設計を実装に落とし込む AI × LaTeX の教材作成プラットフォーム。",
+                      href: siteConfig.eddivomUrl,
+                      external: true,
+                      accent: "#0284c7",
+                    },
+                  ]
+              ).map((svc) => (
+                <li key={svc.title}>
+                  {svc.external ? (
+                    <a
+                      href={svc.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="group flex h-full flex-col gap-2 rounded-[18px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.08)] transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_18px_40px_-22px_rgba(15,29,74,0.4)] sm:p-6"
+                    >
+                      <span
+                        className="text-[0.7rem] font-bold uppercase tracking-[0.18em]"
+                        style={{ color: svc.accent }}
+                      >
+                        {svc.label}
+                      </span>
+                      <p className="text-[1.02rem] font-extrabold leading-[1.45] tracking-[-0.005em] text-[#0b1d4a] transition group-hover:text-[#1d4ed8]">
+                        {svc.title}
+                      </p>
+                      <p className="text-[0.88rem] leading-[1.85] text-[#475569]">
+                        {svc.body}
+                      </p>
+                      <span className="mt-auto pt-2 text-[0.84rem] font-semibold text-[#1d4ed8] transition group-hover:gap-2">
+                        サービスを開く <span aria-hidden="true">↗</span>
+                      </span>
+                    </a>
+                  ) : (
+                    <Link
+                      href={svc.href}
+                      className="group flex h-full flex-col gap-2 rounded-[18px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.08)] transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_18px_40px_-22px_rgba(15,29,74,0.4)] sm:p-6"
+                    >
+                      <span
+                        className="text-[0.7rem] font-bold uppercase tracking-[0.18em]"
+                        style={{ color: svc.accent }}
+                      >
+                        {svc.label}
+                      </span>
+                      <p className="text-[1.02rem] font-extrabold leading-[1.45] tracking-[-0.005em] text-[#0b1d4a] transition group-hover:text-[#1d4ed8]">
+                        {svc.title}
+                      </p>
+                      <p className="text-[0.88rem] leading-[1.85] text-[#475569]">
+                        {svc.body}
+                      </p>
+                      <span className="mt-auto pt-2 text-[0.84rem] font-semibold text-[#1d4ed8]">
+                        詳しく見る <span aria-hidden="true">→</span>
+                      </span>
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Container>
+      </section>
+
       {/* RELATED */}
       {relatedPosts.length > 0 ? (
-        <section className="bg-white">
+        <section className="bg-[#f8fafc]">
           <Container className="px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
             <div className="flex items-end justify-between gap-4">
               <div>

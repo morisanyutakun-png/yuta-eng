@@ -13,12 +13,14 @@ type BreadcrumbItem = {
   path: string;
 };
 
+const LOGO_URL = new URL("/brand/solvora-mark.svg", siteConfig.url).toString();
+
 export function createWebsiteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: siteConfig.name,
-    alternateName: ["ソルヴォラ", "Solvora Science Learning Hub"],
+    alternateName: ["ソルヴォラ", "Solvora STEM Learning Hub"],
     url: siteConfig.url,
     description: siteConfig.description,
     inLanguage: "ja",
@@ -26,6 +28,10 @@ export function createWebsiteJsonLd() {
       "@type": "Organization",
       name: siteConfig.name,
       url: siteConfig.url,
+      logo: {
+        "@type": "ImageObject",
+        url: LOGO_URL,
+      },
     },
     potentialAction: {
       "@type": "SearchAction",
@@ -125,7 +131,11 @@ export function createPersonJsonLd() {
     "@context": "https://schema.org",
     "@type": "Person",
     name: siteConfig.author,
-    url: siteConfig.url,
+    url: new URL("/about", siteConfig.url).toString(),
+    image: LOGO_URL,
+    jobTitle: "Solvora 運営者・理系教育 EdTech 設計者",
+    description:
+      "理系人材育成 EdTech ハブ Solvora の運営者。高校物理オンライン塾「物理の森」を直営し、AI 教材作成 Eddivom や学習支援アプリの設計・運用を行う。",
     worksFor: {
       "@type": "Organization",
       name: siteConfig.name,
@@ -139,6 +149,13 @@ export function createPersonJsonLd() {
       "LaTeX",
       "学習デザイン",
       "EdTech",
+      "理系人材育成",
+      "STEM教育",
+    ],
+    sameAs: [
+      siteConfig.physicsSchoolUrl,
+      siteConfig.eddivomUrl,
+      siteConfig.itPassUrl,
     ],
   };
 }
@@ -312,10 +329,13 @@ export function createBreadcrumbJsonLd(items: BreadcrumbItem[]) {
 
 export function createArticleJsonLd(post: BlogPost) {
   const url = new URL(`/blog/${post.slug}`, siteConfig.url).toString();
+  const imageUrl1200 = new URL(`/og/${post.slug}-1200.webp`, siteConfig.url).toString();
+  const imageUrl640 = new URL(`/og/${post.slug}-640.webp`, siteConfig.url).toString();
+  const imagePng = new URL(`/og/${post.slug}.png`, siteConfig.url).toString();
 
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: post.title,
     description: post.description,
     url,
@@ -323,16 +343,40 @@ export function createArticleJsonLd(post: BlogPost) {
     dateModified: post.date,
     articleSection: post.category,
     about: post.tags,
+    image: [
+      {
+        "@type": "ImageObject",
+        url: imageUrl1200,
+        width: 1200,
+        height: 630,
+      },
+      {
+        "@type": "ImageObject",
+        url: imageUrl640,
+        width: 640,
+        height: 336,
+      },
+      {
+        "@type": "ImageObject",
+        url: imagePng,
+        width: 1200,
+        height: 630,
+      },
+    ],
     isAccessibleForFree: true,
     author: {
       "@type": "Person",
       name: siteConfig.author,
-      url: siteConfig.url,
+      url: new URL("/about", siteConfig.url).toString(),
     },
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,
       url: siteConfig.url,
+      logo: {
+        "@type": "ImageObject",
+        url: LOGO_URL,
+      },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
@@ -345,5 +389,37 @@ export function createArticleJsonLd(post: BlogPost) {
     },
     keywords: post.tags.join(", "),
     inLanguage: "ja",
+  };
+}
+
+/** CollectionPage schema for blog index, tag, category landing pages. */
+export function createCollectionPageJsonLd(input: {
+  name: string;
+  description: string;
+  path: string;
+  itemCount?: number;
+}) {
+  const url = new URL(input.path, siteConfig.url).toString();
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: input.name,
+    description: input.description,
+    url,
+    inLanguage: "ja",
+    isPartOf: {
+      "@type": "WebSite",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+      logo: { "@type": "ImageObject", url: LOGO_URL },
+    },
+    ...(typeof input.itemCount === "number"
+      ? { numberOfItems: input.itemCount }
+      : {}),
   };
 }

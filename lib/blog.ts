@@ -147,6 +147,43 @@ export function getPostSlugs() {
   return getAllPosts().map((post) => post.slug);
 }
 
+/** Slugify a tag/category for URL safety. Keeps Japanese (URL-encoded by Next). */
+export function slugifyTag(tag: string): string {
+  return tag.trim();
+}
+
+/** Returns all unique tags with their post counts, sorted desc by count. */
+export function getAllTags(): { tag: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const post of getAllPosts()) {
+    for (const tag of post.tags) {
+      counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
+  }
+  return Array.from(counts.entries())
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+}
+
+/** Returns all unique categories with their post counts, sorted desc by count. */
+export function getAllCategories(): { category: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const post of getAllPosts()) {
+    counts.set(post.category, (counts.get(post.category) ?? 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([category, count]) => ({ category, count }))
+    .sort((a, b) => b.count - a.count || a.category.localeCompare(b.category));
+}
+
+export function getPostsByTag(tag: string): BlogPostMeta[] {
+  return getAllPosts().filter((post) => post.tags.includes(tag));
+}
+
+export function getPostsByCategory(category: string): BlogPostMeta[] {
+  return getAllPosts().filter((post) => post.category === category);
+}
+
 export function getRelatedPosts(currentSlug: string, limit = 3) {
   const currentPost = getPostBySlug(currentSlug);
 
