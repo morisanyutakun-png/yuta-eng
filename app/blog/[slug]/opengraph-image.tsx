@@ -77,7 +77,465 @@ const defaultAccent: AccentTheme = {
 
 type Params = { slug: string };
 
-/** Centered, poster-style hero artwork (huge — dominates the canvas). */
+/** Map a slug to a per-article diagram key based on content keywords. */
+function getDiagramKey(slug: string): string {
+  if (slug.includes("simple-harmonic-motion") || slug.includes("pendulum")) return "pendulum";
+  if (slug.includes("circular-motion") || slug.includes("centripetal")) return "orbit";
+  if (slug.includes("doppler")) return "doppler";
+  if (slug.includes("electromagnetism")) return "field";
+  if (slug.includes("uniform-acceleration") || slug.includes("equations-of")) return "vtgraph";
+  if (slug.includes("chatgpt") || slug.includes("prompt")) return "prompt";
+  if (slug.includes("latex") || slug.includes("overleaf")) return "latex";
+  if (slug.includes("retrieval-practice") || slug.includes("learning-design")) return "memory";
+  if (slug.includes("personalized-learning")) return "paths";
+  if (slug.includes("common-test")) return "exam";
+  if (slug.includes("teaching-material") || slug.includes("tools-comparison")) return "tools";
+  if (slug.includes("physics-material-creation")) return "book";
+  return theme_motif_default(slug);
+}
+function theme_motif_default(_slug: string) {
+  return "default";
+}
+
+/** Article-specific diagram, dispatched by slug. */
+function ArticleDiagram({ slug, theme }: { slug: string; theme: AccentTheme }) {
+  const key = getDiagramKey(slug);
+  // Fallback to category motif when no slug-specific diagram is defined.
+  if (key === "default") return <PosterArtwork theme={theme} />;
+
+  const stroke = theme.accent;
+  const soft = theme.accentSoft;
+  const W = 720;
+  const H = 720;
+  const cx = 360;
+  const cy = 360;
+
+  if (key === "pendulum") {
+    // Spring oscillator + pendulum + sine wave (simple harmonic motion)
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.2" strokeDasharray="2 8" />
+        {/* Top mounting bar */}
+        <line x1="120" y1="80" x2="600" y2="80" stroke={stroke} strokeWidth="3" strokeLinecap="round" />
+        <line x1="120" y1="60" x2="120" y2="100" stroke={stroke} strokeWidth="2" />
+        <line x1="600" y1="60" x2="600" y2="100" stroke={stroke} strokeWidth="2" />
+        {/* Pendulum (left) — string + bob */}
+        <line x1="240" y1="80" x2="200" y2="380" stroke={stroke} strokeWidth="2.4" strokeLinecap="round" />
+        <line x1="240" y1="80" x2="280" y2="380" stroke={stroke} strokeWidth="1.6" strokeLinecap="round" opacity="0.4" strokeDasharray="3 5" />
+        <circle cx="200" cy="380" r="32" fill={soft} stroke={stroke} strokeWidth="3" />
+        <circle cx="200" cy="380" r="14" fill={stroke} />
+        {/* Arc trace */}
+        <path d="M 200 380 Q 240 410 280 380" stroke={stroke} strokeWidth="1.8" fill="none" opacity="0.55" strokeDasharray="2 6" />
+        <path d="M 215 380 a 25 25 0 0 1 50 0" stroke={stroke} strokeWidth="1.5" fill="none" opacity="0.7" />
+        {/* Spring (right) — coil + mass */}
+        <line x1="500" y1="80" x2="500" y2="120" stroke={stroke} strokeWidth="2.4" />
+        <path d="M 500 120 L 470 140 L 530 160 L 470 180 L 530 200 L 470 220 L 530 240 L 470 260 L 530 280 L 500 300" stroke={stroke} strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <line x1="500" y1="300" x2="500" y2="340" stroke={stroke} strokeWidth="2.4" />
+        <rect x="450" y="340" width="100" height="70" rx="8" fill={soft} stroke={stroke} strokeWidth="3" />
+        <line x1="475" y1="370" x2="525" y2="370" stroke={stroke} strokeWidth="2" opacity="0.7" />
+        <line x1="475" y1="386" x2="525" y2="386" stroke={stroke} strokeWidth="2" opacity="0.5" />
+        {/* Velocity arrows */}
+        <path d="M 410 375 L 440 375 M 432 369 L 440 375 L 432 381" stroke={stroke} strokeWidth="2.4" fill="none" strokeLinecap="round" />
+        <path d="M 590 375 L 560 375 M 568 369 L 560 375 L 568 381" stroke={stroke} strokeWidth="2.4" fill="none" strokeLinecap="round" />
+        {/* Sine wave at bottom — represents x(t) */}
+        <path d="M 60 580 Q 105 530 150 580 T 240 580 T 330 580 T 420 580 T 510 580 T 600 580 T 690 580" stroke={stroke} strokeWidth="3" fill="none" opacity="0.85" strokeLinecap="round" />
+        <path d="M 60 580 Q 105 530 150 580 T 240 580 T 330 580 T 420 580 T 510 580 T 600 580 T 690 580" stroke={soft} strokeWidth="1.2" fill="none" opacity="0.5" strokeLinecap="round" />
+        {/* Time axis */}
+        <line x1="60" y1="640" x2="690" y2="640" stroke={stroke} strokeWidth="1.5" opacity="0.4" />
+        <circle cx="150" cy="580" r="5" fill={soft} />
+        <circle cx="330" cy="580" r="5" fill={soft} />
+        <circle cx="510" cy="580" r="5" fill={soft} />
+      </svg>
+    );
+  }
+
+  if (key === "orbit") {
+    // Circular motion + centripetal force vector + velocity tangent
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        {/* Outer rings */}
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.18" strokeDasharray="2 8" />
+        <circle cx={cx} cy={cy} r="240" stroke={stroke} strokeWidth="2" fill="none" opacity="0.55" strokeDasharray="6 6" />
+        {/* Main orbit circle */}
+        <circle cx={cx} cy={cy} r="200" stroke={stroke} strokeWidth="3" fill="none" opacity="0.95" />
+        {/* Glow center */}
+        <circle cx={cx} cy={cy} r="48" fill={stroke} opacity="0.3" />
+        <circle cx={cx} cy={cy} r="28" fill={soft} opacity="0.95" />
+        <circle cx={cx} cy={cy} r="14" fill={stroke} />
+        {/* Object on orbit (top-right) */}
+        <circle cx="500" cy="220" r="22" fill={soft} stroke={stroke} strokeWidth="3" />
+        <circle cx="500" cy="220" r="9" fill={stroke} />
+        {/* Centripetal force vector (object → center) */}
+        <line x1="500" y1="220" x2={cx + 16} y2={cy - 8} stroke={stroke} strokeWidth="3.4" strokeLinecap="round" />
+        <path d={`M ${cx + 16} ${cy - 8} L ${cx + 30} ${cy - 18} L ${cx + 24} ${cy + 4} Z`} fill={stroke} />
+        {/* Velocity vector (tangent) */}
+        <line x1="500" y1="220" x2="640" y2="280" stroke={soft} strokeWidth="3.4" strokeLinecap="round" />
+        <path d="M 640 280 L 632 268 L 628 290 Z" fill={soft} />
+        {/* r label line (radius) */}
+        <line x1={cx} y1={cy} x2="500" y2="220" stroke={stroke} strokeWidth="1.6" opacity="0.4" strokeDasharray="4 6" />
+        {/* Other orbiting objects */}
+        <circle cx="160" cy="360" r="14" fill={soft} opacity="0.85" />
+        <circle cx="360" cy="560" r="12" fill={soft} opacity="0.75" />
+        <circle cx="220" cy="500" r="9" fill={soft} opacity="0.65" />
+        {/* Decorative angular ticks */}
+        {Array.from({ length: 12 }).map((_, i) => {
+          const a = (i * Math.PI) / 6;
+          const x1 = cx + 200 * Math.cos(a);
+          const y1 = cy + 200 * Math.sin(a);
+          const x2 = cx + 220 * Math.cos(a);
+          const y2 = cy + 220 * Math.sin(a);
+          return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={stroke} strokeWidth="2" opacity="0.5" />;
+        })}
+      </svg>
+    );
+  }
+
+  if (key === "doppler") {
+    // Moving sound source + concentric wavefronts compressed forward
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.2" strokeDasharray="2 8" />
+        {/* Source position trail (left → right) */}
+        <line x1="100" y1={cy} x2="620" y2={cy} stroke={stroke} strokeWidth="1.5" opacity="0.4" strokeDasharray="3 6" />
+        {/* Wavefronts — circles emitted at past positions, expanded over time.
+            Each earlier emission is larger and centered further left. Compression in front of source. */}
+        {[
+          { x: 200, r: 220, op: 0.18 },
+          { x: 240, r: 180, op: 0.28 },
+          { x: 280, r: 150, op: 0.4 },
+          { x: 320, r: 120, op: 0.55 },
+          { x: 360, r: 90, op: 0.7 },
+          { x: 400, r: 60, op: 0.85 },
+        ].map((w, i) => (
+          <circle key={i} cx={w.x} cy={cy} r={w.r} stroke={stroke} strokeWidth="2.2" fill="none" opacity={w.op} />
+        ))}
+        {/* Source (moving right) */}
+        <circle cx="440" cy={cy} r="26" fill={soft} stroke={stroke} strokeWidth="3" />
+        <path d="M 432 350 L 432 370 L 442 360 Z M 444 350 L 444 370 L 454 360 Z" fill={stroke} />
+        {/* Velocity arrow */}
+        <line x1="475" y1={cy} x2="540" y2={cy} stroke={stroke} strokeWidth="3" strokeLinecap="round" />
+        <path d="M 540 360 L 528 352 L 528 368 Z" fill={stroke} />
+        {/* Observer on right (compressed waves) */}
+        <g>
+          <circle cx="640" cy={cy} r="20" fill={stroke} opacity="0.85" />
+          <circle cx="640" cy={cy} r="10" fill={soft} />
+          <line x1="630" y1="328" x2="650" y2="328" stroke={soft} strokeWidth="2" strokeLinecap="round" />
+          <line x1="635" y1="318" x2="645" y2="318" stroke={soft} strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+        </g>
+        {/* Frequency indicator — high freq sine top-right */}
+        <path d="M 540 200 Q 555 180 570 200 T 600 200 T 630 200 T 660 200 T 690 200" stroke={stroke} strokeWidth="2.2" fill="none" opacity="0.7" />
+        {/* Frequency indicator — low freq sine bottom-left */}
+        <path d="M 60 540 Q 95 510 130 540 T 200 540 T 270 540" stroke={stroke} strokeWidth="2.2" fill="none" opacity="0.5" />
+      </svg>
+    );
+  }
+
+  if (key === "field") {
+    // E-field + B-field grid with arrows (electromagnetism)
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.18" strokeDasharray="2 8" />
+        {/* Charge in center */}
+        <circle cx={cx} cy={cy} r="42" fill={soft} stroke={stroke} strokeWidth="3" />
+        <circle cx={cx} cy={cy} r="42" fill="none" stroke={stroke} strokeWidth="1" opacity="0.5" strokeDasharray="3 4" />
+        {/* Plus sign */}
+        <line x1={cx - 16} y1={cy} x2={cx + 16} y2={cy} stroke={stroke} strokeWidth="4" strokeLinecap="round" />
+        <line x1={cx} y1={cy - 16} x2={cx} y2={cy + 16} stroke={stroke} strokeWidth="4" strokeLinecap="round" />
+        {/* Radial E-field lines (8 directions) */}
+        {Array.from({ length: 8 }).map((_, i) => {
+          const a = (i * Math.PI) / 4;
+          const x1 = cx + 60 * Math.cos(a);
+          const y1 = cy + 60 * Math.sin(a);
+          const x2 = cx + 280 * Math.cos(a);
+          const y2 = cy + 280 * Math.sin(a);
+          const ax = cx + 270 * Math.cos(a);
+          const ay = cy + 270 * Math.sin(a);
+          return (
+            <g key={i}>
+              <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={stroke} strokeWidth="2.6" opacity="0.85" strokeLinecap="round" />
+              <circle cx={ax} cy={ay} r="6" fill={stroke} />
+            </g>
+          );
+        })}
+        {/* B-field (concentric loops representing magnetic field) */}
+        <circle cx={cx} cy={cy} r="180" stroke={soft} strokeWidth="2" fill="none" opacity="0.55" strokeDasharray="6 6" />
+        <circle cx={cx} cy={cy} r="240" stroke={soft} strokeWidth="2" fill="none" opacity="0.4" strokeDasharray="6 6" />
+        {/* Curl indicators (B field circulation) */}
+        <path d="M 540 360 a 12 12 0 1 1 0.1 0" stroke={soft} strokeWidth="2.4" fill="none" strokeLinecap="round" />
+        <path d="M 180 360 a 12 12 0 1 0 -0.1 0" stroke={soft} strokeWidth="2.4" fill="none" strokeLinecap="round" />
+        <path d="M 360 180 a 12 12 0 1 1 0.1 0" stroke={soft} strokeWidth="2.4" fill="none" strokeLinecap="round" />
+        <path d="M 360 540 a 12 12 0 1 0 -0.1 0" stroke={soft} strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  if (key === "vtgraph") {
+    // v-t graph: axes, slope line, area under curve
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.18" strokeDasharray="2 8" />
+        {/* Grid */}
+        {Array.from({ length: 9 }).map((_, i) => (
+          <line key={`g${i}`} x1={120 + i * 60} y1="160" x2={120 + i * 60} y2="600" stroke={stroke} strokeWidth="1" opacity="0.18" />
+        ))}
+        {Array.from({ length: 8 }).map((_, i) => (
+          <line key={`gh${i}`} x1="120" y1={160 + i * 60} x2="640" y2={160 + i * 60} stroke={stroke} strokeWidth="1" opacity="0.18" />
+        ))}
+        {/* Axes */}
+        <line x1="120" y1="600" x2="640" y2="600" stroke={stroke} strokeWidth="3" strokeLinecap="round" />
+        <line x1="120" y1="600" x2="120" y2="140" stroke={stroke} strokeWidth="3" strokeLinecap="round" />
+        {/* Arrow heads */}
+        <path d="M 640 600 L 624 592 L 624 608 Z" fill={stroke} />
+        <path d="M 120 140 L 112 156 L 128 156 Z" fill={stroke} />
+        {/* v-t slope (linearly increasing v) */}
+        <path d="M 120 540 L 600 220" stroke={stroke} strokeWidth="4" strokeLinecap="round" />
+        {/* Area under curve = displacement (filled trapezoid) */}
+        <path d="M 120 540 L 600 220 L 600 600 L 120 600 Z" fill={stroke} opacity="0.25" />
+        <path d="M 120 540 L 600 220 L 600 600 L 120 600 Z" stroke={stroke} strokeWidth="1.5" fill="none" opacity="0.4" strokeDasharray="3 5" />
+        {/* v0 marker */}
+        <circle cx="120" cy="540" r="8" fill={soft} stroke={stroke} strokeWidth="2" />
+        {/* v marker at t */}
+        <circle cx="600" cy="220" r="9" fill={soft} stroke={stroke} strokeWidth="3" />
+        {/* Reference dashed line down */}
+        <line x1="600" y1="220" x2="600" y2="600" stroke={stroke} strokeWidth="1.5" opacity="0.4" strokeDasharray="3 5" />
+        <line x1="120" y1="220" x2="600" y2="220" stroke={stroke} strokeWidth="1.5" opacity="0.4" strokeDasharray="3 5" />
+        {/* Decorative ticks */}
+        <circle cx="120" cy="600" r="4" fill={stroke} />
+        <circle cx="600" cy="600" r="5" fill={soft} />
+      </svg>
+    );
+  }
+
+  if (key === "prompt") {
+    // AI prompt → answer flow with sparkles
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.18" strokeDasharray="2 8" />
+        {/* Prompt box (left) */}
+        <rect x="100" y="220" width="220" height="280" rx="16" fill={soft} opacity="0.4" stroke={stroke} strokeWidth="2.4" />
+        <line x1="120" y1="260" x2="280" y2="260" stroke={stroke} strokeWidth="2.6" opacity="0.85" />
+        <line x1="120" y1="290" x2="260" y2="290" stroke={stroke} strokeWidth="2.6" opacity="0.65" />
+        <line x1="120" y1="320" x2="240" y2="320" stroke={stroke} strokeWidth="2.6" opacity="0.5" />
+        <rect x="120" y="350" width="180" height="40" rx="6" fill={stroke} opacity="0.45" />
+        <line x1="138" y1="370" x2="240" y2="370" stroke={soft} strokeWidth="2.4" />
+        {/* AI processing core (center) */}
+        <circle cx={cx} cy={cy} r="80" fill={soft} opacity="0.25" />
+        <circle cx={cx} cy={cy} r="56" fill={soft} stroke={stroke} strokeWidth="3" />
+        <path d={`M ${cx} ${cy - 28} l 8 18 l 18 8 l -18 8 l -8 18 l -8 -18 l -18 -8 l 18 -8 z`} fill={stroke} />
+        <circle cx={cx + 22} cy={cy + 22} r="5" fill={stroke} opacity="0.7" />
+        {/* Output box (right) */}
+        <rect x="400" y="200" width="220" height="320" rx="16" fill={soft} opacity="0.55" stroke={stroke} strokeWidth="2.4" />
+        <line x1="420" y1="240" x2="600" y2="240" stroke={stroke} strokeWidth="2.6" />
+        <line x1="420" y1="270" x2="580" y2="270" stroke={stroke} strokeWidth="2.6" opacity="0.8" />
+        <line x1="420" y1="300" x2="560" y2="300" stroke={stroke} strokeWidth="2.6" opacity="0.65" />
+        <rect x="420" y="330" width="180" height="60" rx="8" fill={stroke} opacity="0.45" />
+        <line x1="438" y1="350" x2="540" y2="350" stroke={soft} strokeWidth="2.6" />
+        <line x1="438" y1="370" x2="500" y2="370" stroke={soft} strokeWidth="2.6" opacity="0.7" />
+        <line x1="420" y1="420" x2="560" y2="420" stroke={stroke} strokeWidth="2" opacity="0.55" />
+        <line x1="420" y1="448" x2="540" y2="448" stroke={stroke} strokeWidth="2" opacity="0.4" />
+        <line x1="420" y1="476" x2="500" y2="476" stroke={stroke} strokeWidth="2" opacity="0.3" />
+        {/* Flow arrow */}
+        <line x1="320" y1={cy} x2="400" y2={cy} stroke={stroke} strokeWidth="3" strokeLinecap="round" strokeDasharray="6 4" />
+        <path d={`M 400 ${cy} L 388 ${cy - 8} L 388 ${cy + 8} Z`} fill={stroke} />
+        {/* Sparkles */}
+        <path d="M 90 140 l 6 16 l 16 6 l -16 6 l -6 16 l -6 -16 l -16 -6 l 16 -6 z" fill={soft} opacity="0.9" />
+        <path d="M 600 580 l 5 14 l 14 5 l -14 5 l -5 14 l -5 -14 l -14 -5 l 14 -5 z" fill={soft} opacity="0.8" />
+        <path d="M 660 130 l 4 10 l 10 4 l -10 4 l -4 10 l -4 -10 l -10 -4 l 10 -4 z" fill={soft} opacity="0.7" />
+      </svg>
+    );
+  }
+
+  if (key === "latex") {
+    // LaTeX braces + integral + Σ symbol + flow arrow → PDF doc
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.2" strokeDasharray="2 8" />
+        {/* Big left brace */}
+        <path d="M 200 120 Q 100 120 100 280 Q 100 340 60 360 Q 100 380 100 440 Q 100 600 200 600" stroke={soft} strokeWidth="6" fill="none" strokeLinecap="round" opacity="0.85" />
+        {/* Big right brace */}
+        <path d="M 400 120 Q 500 120 500 280 Q 500 340 540 360 Q 500 380 500 440 Q 500 600 400 600" stroke={soft} strokeWidth="6" fill="none" strokeLinecap="round" opacity="0.85" />
+        {/* Inner integral */}
+        <path d="M 240 200 Q 280 240 270 360 Q 260 480 320 540" stroke={stroke} strokeWidth="5" fill="none" strokeLinecap="round" />
+        {/* Sigma triangle */}
+        <path d="M 340 280 L 410 280 L 360 360 L 410 440 L 340 440" stroke={stroke} strokeWidth="4" fill="none" strokeLinejoin="round" opacity="0.7" />
+        <circle cx={cx} cy={cy} r="8" fill={stroke} opacity="0.8" />
+        {/* PDF doc on right */}
+        <rect x="580" y="240" width="100" height="140" rx="8" fill={soft} stroke={stroke} strokeWidth="2.4" />
+        <line x1="595" y1="270" x2="665" y2="270" stroke={stroke} strokeWidth="2" />
+        <line x1="595" y1="290" x2="660" y2="290" stroke={stroke} strokeWidth="2" opacity="0.7" />
+        <line x1="595" y1="310" x2="650" y2="310" stroke={stroke} strokeWidth="2" opacity="0.5" />
+        <rect x="595" y="335" width="60" height="22" rx="3" fill={stroke} opacity="0.7" />
+        {/* Arrow latex → pdf */}
+        <line x1="540" y1="310" x2="580" y2="310" stroke={stroke} strokeWidth="3" strokeLinecap="round" />
+        <path d={`M 580 310 L 568 302 L 568 318 Z`} fill={stroke} />
+      </svg>
+    );
+  }
+
+  if (key === "memory") {
+    // Forgetting curve + retrieval boost (memory science)
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.18" strokeDasharray="2 8" />
+        {/* Grid */}
+        {Array.from({ length: 7 }).map((_, i) => (
+          <line key={i} x1="120" y1={200 + i * 70} x2="640" y2={200 + i * 70} stroke={stroke} strokeWidth="1" opacity="0.15" />
+        ))}
+        {/* Axes */}
+        <line x1="120" y1="600" x2="640" y2="600" stroke={stroke} strokeWidth="3" strokeLinecap="round" />
+        <line x1="120" y1="600" x2="120" y2="180" stroke={stroke} strokeWidth="3" strokeLinecap="round" />
+        <path d="M 640 600 L 624 592 L 624 608 Z" fill={stroke} />
+        <path d="M 120 180 L 112 196 L 128 196 Z" fill={stroke} />
+        {/* Forgetting curve (decaying exponential) — drops fast */}
+        <path d="M 120 220 Q 200 380 280 480 Q 360 540 440 565 T 600 580" stroke={stroke} strokeWidth="2.4" fill="none" opacity="0.5" strokeDasharray="6 6" />
+        {/* Retrieval-boosted curve — saw-tooth recovery */}
+        <path d="M 120 220 Q 180 320 240 380 L 280 280 Q 320 340 360 380 L 400 280 Q 440 350 480 400 L 520 320 Q 560 380 600 420" stroke={stroke} strokeWidth="4" fill="none" strokeLinecap="round" />
+        {/* Recall events */}
+        <circle cx="280" cy="280" r="11" fill={soft} stroke={stroke} strokeWidth="3" />
+        <circle cx="400" cy="280" r="11" fill={soft} stroke={stroke} strokeWidth="3" />
+        <circle cx="520" cy="320" r="11" fill={soft} stroke={stroke} strokeWidth="3" />
+        {/* Brain-ish circle (top-right) */}
+        <circle cx="600" cy="220" r="44" fill={soft} opacity="0.4" stroke={stroke} strokeWidth="2.4" />
+        <path d="M 580 200 Q 600 180 620 200 M 580 220 Q 600 200 620 220 M 580 240 Q 600 220 620 240" stroke={stroke} strokeWidth="1.8" fill="none" />
+      </svg>
+    );
+  }
+
+  if (key === "paths") {
+    // Personalized paths — multiple branching paths converging to goal
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.2" strokeDasharray="2 8" />
+        {/* Start nodes (left) */}
+        {[
+          { x: 100, y: 200 },
+          { x: 100, y: 360 },
+          { x: 100, y: 520 },
+        ].map((n, i) => (
+          <g key={i}>
+            <circle cx={n.x} cy={n.y} r="22" fill={soft} stroke={stroke} strokeWidth="3" />
+            <circle cx={n.x} cy={n.y} r="9" fill={stroke} />
+          </g>
+        ))}
+        {/* Path curves to goal (right) */}
+        <path d="M 122 200 Q 280 220 380 320 Q 480 380 590 360" stroke={stroke} strokeWidth="3" fill="none" strokeLinecap="round" strokeDasharray="6 4" />
+        <path d="M 122 360 Q 260 320 380 360 Q 480 380 590 360" stroke={stroke} strokeWidth="3" fill="none" strokeLinecap="round" strokeDasharray="6 4" />
+        <path d="M 122 520 Q 260 480 380 400 Q 480 380 590 360" stroke={stroke} strokeWidth="3" fill="none" strokeLinecap="round" strokeDasharray="6 4" />
+        {/* Intermediate nodes */}
+        <circle cx="280" cy="240" r="14" fill={soft} stroke={stroke} strokeWidth="2.4" />
+        <circle cx="280" cy="380" r="14" fill={soft} stroke={stroke} strokeWidth="2.4" />
+        <circle cx="280" cy="500" r="14" fill={soft} stroke={stroke} strokeWidth="2.4" />
+        <circle cx="420" cy="320" r="14" fill={soft} stroke={stroke} strokeWidth="2.4" />
+        <circle cx="420" cy="400" r="14" fill={soft} stroke={stroke} strokeWidth="2.4" />
+        {/* Goal (right, big star) */}
+        <circle cx="600" cy="360" r="56" fill={stroke} opacity="0.3" />
+        <circle cx="600" cy="360" r="36" fill={soft} stroke={stroke} strokeWidth="3.5" />
+        <path d="M 600 332 l 8 18 l 18 5 l -14 12 l 4 18 l -16 -10 l -16 10 l 4 -18 l -14 -12 l 18 -5 z" fill={stroke} />
+      </svg>
+    );
+  }
+
+  if (key === "exam") {
+    // Exam strategy — timeline + score curve rising
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.18" strokeDasharray="2 8" />
+        {/* Calendar grid */}
+        <rect x="120" y="180" width="500" height="240" rx="14" fill={soft} opacity="0.18" stroke={stroke} strokeWidth="2.4" />
+        {Array.from({ length: 5 }).map((_, c) =>
+          Array.from({ length: 3 }).map((__, r) => {
+            const x = 140 + c * 95;
+            const y = 200 + r * 70;
+            return (
+              <rect
+                key={`${c}-${r}`}
+                x={x}
+                y={y}
+                width="80"
+                height="55"
+                rx="4"
+                fill={r === 2 && c >= 3 ? stroke : "none"}
+                stroke={stroke}
+                strokeWidth="1.6"
+                opacity={r === 2 && c >= 3 ? 0.7 : 0.5}
+              />
+            );
+          }),
+        )}
+        {/* Score-rise curve below */}
+        <line x1="120" y1="600" x2="640" y2="600" stroke={stroke} strokeWidth="2.5" />
+        <path d="M 120 580 Q 220 560 320 540 T 520 480 T 640 440" stroke={stroke} strokeWidth="4" fill="none" strokeLinecap="round" />
+        <circle cx="120" cy="580" r="6" fill={soft} stroke={stroke} strokeWidth="2" />
+        <circle cx="320" cy="540" r="7" fill={soft} stroke={stroke} strokeWidth="2.4" />
+        <circle cx="520" cy="480" r="8" fill={soft} stroke={stroke} strokeWidth="2.6" />
+        <circle cx="640" cy="440" r="14" fill={stroke} stroke={soft} strokeWidth="3" />
+        {/* Trophy/star at top of curve */}
+        <path d="M 640 410 l 6 14 l 14 4 l -10 10 l 4 14 l -14 -8 l -14 8 l 4 -14 l -10 -10 l 14 -4 z" fill={soft} />
+      </svg>
+    );
+  }
+
+  if (key === "tools") {
+    // Tool comparison — 4 tool cards in grid with comparison checkmarks
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.18" strokeDasharray="2 8" />
+        {[
+          { x: 120, y: 180 },
+          { x: 380, y: 180 },
+          { x: 120, y: 400 },
+          { x: 380, y: 400 },
+        ].map((c, i) => (
+          <g key={i}>
+            <rect x={c.x} y={c.y} width="220" height="180" rx="14" fill={soft} opacity={0.2 + i * 0.1} stroke={stroke} strokeWidth="2.4" />
+            {/* Header bar */}
+            <rect x={c.x + 16} y={c.y + 18} width="80" height="12" rx="3" fill={stroke} opacity="0.7" />
+            {/* Body lines */}
+            <line x1={c.x + 16} y1={c.y + 60} x2={c.x + 180} y2={c.y + 60} stroke={stroke} strokeWidth="2.4" opacity="0.6" />
+            <line x1={c.x + 16} y1={c.y + 88} x2={c.x + 160} y2={c.y + 88} stroke={stroke} strokeWidth="2.4" opacity="0.4" />
+            <line x1={c.x + 16} y1={c.y + 116} x2={c.x + 140} y2={c.y + 116} stroke={stroke} strokeWidth="2.4" opacity="0.3" />
+            {/* Check */}
+            <circle cx={c.x + 192} cy={c.y + 152} r="14" fill={i === 0 ? stroke : "none"} stroke={stroke} strokeWidth="2.6" />
+            {i === 0 && <path d={`M ${c.x + 184} ${c.y + 152} L ${c.x + 190} ${c.y + 158} L ${c.x + 200} ${c.y + 146}`} stroke={soft} strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />}
+          </g>
+        ))}
+        {/* Comparison arrow */}
+        <path d="M 350 290 L 360 290 M 360 290 L 370 290" stroke={stroke} strokeWidth="3" />
+      </svg>
+    );
+  }
+
+  if (key === "book") {
+    // Open book + physics formula
+    return (
+      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" style={{ display: "flex" }}>
+        <circle cx={cx} cy={cy} r="320" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.18" strokeDasharray="2 8" />
+        {/* Open book pages */}
+        <path d="M 120 220 Q 240 200 360 220 L 360 540 Q 240 520 120 540 Z" fill={soft} opacity="0.5" stroke={stroke} strokeWidth="3" />
+        <path d="M 360 220 Q 480 200 600 220 L 600 540 Q 480 520 360 540 Z" fill={soft} opacity="0.4" stroke={stroke} strokeWidth="3" />
+        {/* Book spine */}
+        <line x1={cx} y1="220" x2={cx} y2="540" stroke={stroke} strokeWidth="2" opacity="0.5" />
+        {/* Left page lines */}
+        <line x1="160" y1="270" x2="320" y2="262" stroke={stroke} strokeWidth="2.4" opacity="0.85" />
+        <line x1="160" y1="300" x2="320" y2="294" stroke={stroke} strokeWidth="2.4" opacity="0.65" />
+        <line x1="160" y1="330" x2="300" y2="324" stroke={stroke} strokeWidth="2.4" opacity="0.5" />
+        {/* Right page formula box */}
+        <rect x="400" y="270" width="160" height="80" rx="8" fill={stroke} opacity="0.4" />
+        <line x1="420" y1="296" x2="500" y2="296" stroke={soft} strokeWidth="2.6" />
+        <line x1="420" y1="320" x2="540" y2="320" stroke={soft} strokeWidth="2.6" opacity="0.85" />
+        <line x1="400" y1="380" x2="540" y2="378" stroke={stroke} strokeWidth="2.4" opacity="0.6" />
+        <line x1="400" y1="410" x2="520" y2="408" stroke={stroke} strokeWidth="2.4" opacity="0.45" />
+        {/* Floating sparkle */}
+        <path d="M 600 160 l 6 14 l 14 6 l -14 6 l -6 14 l -6 -14 l -14 -6 l 14 -6 z" fill={soft} opacity="0.85" />
+        <circle cx="120" cy="600" r="4" fill={stroke} opacity="0.6" />
+      </svg>
+    );
+  }
+
+  return <PosterArtwork theme={theme} />;
+}
+
+/** Centered, poster-style hero artwork (fallback when slug has no specific diagram). */
 function PosterArtwork({ theme }: { theme: AccentTheme }) {
   const stroke = theme.accent;
   const soft = theme.accentSoft;
@@ -453,7 +911,7 @@ export default async function Image({ params }: { params: Promise<Params> }) {
           }}
         />
 
-        {/* CENTER: huge poster artwork (dominates the canvas) */}
+        {/* CENTER: article-specific diagram (dispatched by slug) */}
         <div
           style={{
             position: "absolute",
@@ -465,7 +923,7 @@ export default async function Image({ params }: { params: Promise<Params> }) {
             justifyContent: "center",
           }}
         >
-          <PosterArtwork theme={theme} />
+          <ArticleDiagram slug={slug} theme={theme} />
         </div>
 
         {/* TOP-LEFT: tiny brand mark + Solvora wordmark */}
