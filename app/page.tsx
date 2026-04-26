@@ -442,62 +442,23 @@ export default function Home() {
     <>
       <JsonLd data={homeJsonLd} />
 
-      {/* HERO — cosmic / dark cinematic */}
+      {/* HERO — cosmic gradient (lightweight: no SVG, no multi-radial bg) */}
       <section
         className="relative overflow-hidden text-white"
         style={{
           background:
-            "radial-gradient(ellipse at 20% 0%, rgba(29,78,216,0.5), transparent 55%), radial-gradient(ellipse at 90% 35%, rgba(14,165,233,0.32), transparent 55%), radial-gradient(ellipse at 50% 110%, rgba(245,158,11,0.18), transparent 55%), linear-gradient(180deg, #02061b 0%, #050b2c 40%, #0b1d4a 100%)",
+            "linear-gradient(180deg, #02061b 0%, #050b2c 40%, #0b1d4a 100%)",
         }}
       >
-        {/* Equation overlay (top-left) — gives the "physics cosmos" vibe */}
-        <svg
-          aria-hidden="true"
-          className="pointer-events-none absolute -left-4 top-6 hidden h-[420px] w-[420px] opacity-[0.18] lg:block"
-          viewBox="0 0 420 420"
-          fill="none"
-        >
-          <g fill="#bae6fd" fontFamily="serif" fontStyle="italic">
-            <text x="20" y="40" fontSize="22">d/dt(mv) = F</text>
-            <text x="20" y="100" fontSize="22">∇·E = ρ/ε₀</text>
-            <text x="20" y="160" fontSize="22">iℏ ∂ψ/∂t = Ĥψ</text>
-            <text x="20" y="220" fontSize="22">E = mc²</text>
-            <text x="20" y="280" fontSize="20" opacity="0.7">∮ B·dl = μ₀I</text>
-            <text x="20" y="340" fontSize="20" opacity="0.6">∫ ψ*ψ dV = 1</text>
-          </g>
-          {/* Sine wave */}
-          <path
-            d="M 0 380 Q 35 350 70 380 T 140 380 T 210 380 T 280 380 T 350 380 T 420 380"
-            stroke="#7dd3fc"
-            strokeWidth="1.5"
-            fill="none"
-            opacity="0.6"
-          />
-        </svg>
-
-        {/* Star field — pure CSS, no images */}
+        {/* Single decorative orb (cheap to paint) */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-60"
+          className="pointer-events-none absolute -right-32 -top-24 h-[420px] w-[420px] rounded-full opacity-60"
           style={{
-            backgroundImage:
-              "radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.9), transparent 100%), radial-gradient(1.5px 1.5px at 78% 24%, rgba(186,230,253,0.85), transparent 100%), radial-gradient(1px 1px at 42% 60%, rgba(255,255,255,0.7), transparent 100%), radial-gradient(1.5px 1.5px at 88% 72%, rgba(255,255,255,0.85), transparent 100%), radial-gradient(1px 1px at 22% 78%, rgba(186,230,253,0.7), transparent 100%), radial-gradient(2px 2px at 65% 12%, rgba(255,255,255,0.95), transparent 100%), radial-gradient(1px 1px at 8% 50%, rgba(255,255,255,0.6), transparent 100%)",
-            backgroundSize: "100% 100%",
+            background:
+              "radial-gradient(circle, rgba(29,78,216,0.5), transparent 70%)",
           }}
         />
-
-        {/* Subtle blueprint grid overlay */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(186,230,253,0.7) 1px, transparent 1px), linear-gradient(90deg, rgba(186,230,253,0.7) 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
-          }}
-        />
-
-        {/* Top hairline */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-[linear-gradient(90deg,transparent,#38bdf8,#f59e0b,#38bdf8,transparent)] opacity-70"
@@ -629,111 +590,26 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="relative">
-              {/* Cosmic ecosystem orb visual replacing the bright HeroVisual */}
-              <div className="relative aspect-square w-full overflow-hidden rounded-[32px] bg-[radial-gradient(circle_at_50%_45%,rgba(56,189,248,0.18),transparent_60%)] ring-1 ring-white/10">
+            {/* Right column orb — pure CSS gradient hub (no SVG) */}
+            <div className="relative hidden lg:block">
+              <div className="relative aspect-square w-full overflow-hidden rounded-[32px] ring-1 ring-white/10">
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-0"
+                  className="absolute inset-0"
                   style={{
                     background:
-                      "radial-gradient(circle at 50% 50%, rgba(186,230,253,0.18), transparent 60%)",
+                      "radial-gradient(circle at 50% 50%, rgba(125,211,252,0.5) 0%, rgba(29,78,216,0.35) 35%, transparent 70%)",
                   }}
                 />
-                <svg
-                  viewBox="0 0 480 480"
-                  className="block h-full w-full"
-                  role="img"
-                  aria-label="Solvora が4サービスを束ねるエコシステム図"
-                >
-                  <defs>
-                    <radialGradient id="hero-hub-glow" cx="0.5" cy="0.5" r="0.5">
-                      <stop offset="0" stopColor="#bae6fd" stopOpacity="0.6" />
-                      <stop offset="0.5" stopColor="#1d4ed8" stopOpacity="0.4" />
-                      <stop offset="1" stopColor="#1d4ed8" stopOpacity="0" />
-                    </radialGradient>
-                    <radialGradient id="hero-hub-core" cx="0.5" cy="0.5" r="0.5">
-                      <stop offset="0" stopColor="#ffffff" stopOpacity="0.95" />
-                      <stop offset="0.5" stopColor="#7dd3fc" stopOpacity="0.85" />
-                      <stop offset="1" stopColor="#1d4ed8" stopOpacity="0.85" />
-                    </radialGradient>
-                    <linearGradient id="hero-orbit" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0" stopColor="#bae6fd" stopOpacity="0.7" />
-                      <stop offset="1" stopColor="#1d4ed8" stopOpacity="0.2" />
-                    </linearGradient>
-                  </defs>
-
-                  {/* Outer glow */}
-                  <circle cx="240" cy="240" r="220" fill="url(#hero-hub-glow)" />
-
-                  {/* Orbit rings */}
-                  <circle cx="240" cy="240" r="170" fill="none" stroke="url(#hero-orbit)" strokeWidth="1" opacity="0.6" />
-                  <circle cx="240" cy="240" r="170" fill="none" stroke="#bae6fd" strokeWidth="0.6" opacity="0.25" strokeDasharray="3 6" />
-                  <ellipse cx="240" cy="240" rx="170" ry="60" fill="none" stroke="#7dd3fc" strokeWidth="0.8" opacity="0.35" />
-                  <ellipse cx="240" cy="240" rx="170" ry="60" fill="none" stroke="#7dd3fc" strokeWidth="0.8" opacity="0.35" transform="rotate(60 240 240)" />
-                  <ellipse cx="240" cy="240" rx="170" ry="60" fill="none" stroke="#7dd3fc" strokeWidth="0.8" opacity="0.35" transform="rotate(-60 240 240)" />
-
-                  {/* Core hub */}
-                  <circle cx="240" cy="240" r="62" fill="url(#hero-hub-core)" />
-                  <circle cx="240" cy="240" r="62" fill="none" stroke="#ffffff" strokeWidth="0.6" opacity="0.8" />
-                  <text x="240" y="236" textAnchor="middle" fontSize="22" fontWeight="800" fill="#0b1d4a" letterSpacing="2">S</text>
-                  <text x="240" y="256" textAnchor="middle" fontSize="9" fontWeight="700" fill="#0b1d4a" letterSpacing="3">SOLVORA</text>
-
-                  {/* 4 service nodes around the hub */}
-                  {/* Eddivom — top */}
-                  <g>
-                    <circle cx="240" cy="70" r="32" fill="#02061b" stroke="#fbbf24" strokeWidth="1.6" />
-                    <circle cx="240" cy="70" r="32" fill="none" stroke="#fbbf24" strokeWidth="0.6" opacity="0.5" strokeDasharray="2 3" />
-                    <path d="M240 56l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z" fill="#fbbf24" />
-                    <rect x="232" y="74" width="16" height="3" rx="1" fill="#fef3c7" opacity="0.85" />
-                    <rect x="232" y="80" width="12" height="3" rx="1" fill="#fef3c7" opacity="0.6" />
-                    <text x="240" y="118" textAnchor="middle" fontSize="11" fontWeight="800" fill="#fef3c7">Eddivom</text>
-                    <text x="240" y="132" textAnchor="middle" fontSize="8" fill="#bae6fd" opacity="0.85">AI 教材作成</text>
-                  </g>
-                  {/* 物理の森 — right */}
-                  <g>
-                    <circle cx="410" cy="240" r="32" fill="#02061b" stroke="#34d399" strokeWidth="1.6" />
-                    <circle cx="410" cy="240" r="32" fill="none" stroke="#34d399" strokeWidth="0.6" opacity="0.5" strokeDasharray="2 3" />
-                    <path d="M403 246 Q 410 232 417 246" stroke="#34d399" strokeWidth="1.6" fill="none" strokeLinecap="round" />
-                    <ellipse cx="410" cy="240" rx="12" ry="5" fill="none" stroke="#34d399" strokeWidth="1" opacity="0.6" />
-                    <circle cx="410" cy="240" r="2.5" fill="#34d399" />
-                    <text x="410" y="288" textAnchor="middle" fontSize="11" fontWeight="800" fill="#a7f3d0">物理の森</text>
-                    <text x="410" y="302" textAnchor="middle" fontSize="8" fill="#bae6fd" opacity="0.85">物理専門塾</text>
-                  </g>
-                  {/* Solvora Physics — bottom */}
-                  <g>
-                    <circle cx="240" cy="410" r="32" fill="#02061b" stroke="#7dd3fc" strokeWidth="1.6" />
-                    <circle cx="240" cy="410" r="32" fill="none" stroke="#7dd3fc" strokeWidth="0.6" opacity="0.5" strokeDasharray="2 3" />
-                    <rect x="234" y="395" width="12" height="22" rx="2" fill="none" stroke="#7dd3fc" strokeWidth="1.4" />
-                    <rect x="236" y="403" width="2" height="6" fill="#7dd3fc" opacity="0.8" />
-                    <rect x="240" y="399" width="2" height="10" fill="#7dd3fc" />
-                    <rect x="244" y="406" width="2" height="3" fill="#7dd3fc" opacity="0.6" />
-                    <text x="240" y="458" textAnchor="middle" fontSize="11" fontWeight="800" fill="#bae6fd">Solvora Physics</text>
-                    <text x="240" y="472" textAnchor="middle" fontSize="8" fill="#bae6fd" opacity="0.85">高校物理アプリ</text>
-                  </g>
-                  {/* IT Pass — left */}
-                  <g>
-                    <circle cx="70" cy="240" r="32" fill="#02061b" stroke="#c4b5fd" strokeWidth="1.6" />
-                    <circle cx="70" cy="240" r="32" fill="none" stroke="#c4b5fd" strokeWidth="0.6" opacity="0.5" strokeDasharray="2 3" />
-                    <text x="70" y="248" textAnchor="middle" fontSize="14" fontWeight="800" fill="#c4b5fd">{"</>"}</text>
-                    <text x="70" y="288" textAnchor="middle" fontSize="11" fontWeight="800" fill="#ddd6fe">IT Pass</text>
-                    <text x="70" y="302" textAnchor="middle" fontSize="8" fill="#bae6fd" opacity="0.85">IT 学習アプリ</text>
-                  </g>
-
-                  {/* Connecting beams from each node to the hub */}
-                  <line x1="240" y1="102" x2="240" y2="178" stroke="#fbbf24" strokeWidth="1" opacity="0.5" strokeDasharray="2 4" />
-                  <line x1="378" y1="240" x2="302" y2="240" stroke="#34d399" strokeWidth="1" opacity="0.5" strokeDasharray="2 4" />
-                  <line x1="240" y1="378" x2="240" y2="302" stroke="#7dd3fc" strokeWidth="1" opacity="0.5" strokeDasharray="2 4" />
-                  <line x1="102" y1="240" x2="178" y2="240" stroke="#c4b5fd" strokeWidth="1" opacity="0.5" strokeDasharray="2 4" />
-
-                  {/* Floating particles */}
-                  <circle cx="120" cy="120" r="1.5" fill="#bae6fd" opacity="0.8" />
-                  <circle cx="380" cy="140" r="1" fill="#fbbf24" opacity="0.7" />
-                  <circle cx="380" cy="380" r="1.5" fill="#7dd3fc" opacity="0.7" />
-                  <circle cx="120" cy="380" r="1" fill="#c4b5fd" opacity="0.7" />
-                  <circle cx="180" cy="200" r="0.8" fill="#bae6fd" opacity="0.6" />
-                  <circle cx="320" cy="280" r="0.8" fill="#bae6fd" opacity="0.6" />
-                </svg>
+                <div
+                  aria-hidden="true"
+                  className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-white via-[#bae6fd] to-[#1d4ed8] shadow-[0_24px_60px_-12px_rgba(56,189,248,0.6)]"
+                />
+                <div className="absolute inset-0 grid place-items-center">
+                  <span className="font-extrabold tracking-[0.18em] text-[#0b1d4a] text-[1.2rem]">
+                    SOLVORA
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -749,7 +625,7 @@ export default function Home() {
       {/* CREDENTIALS / KPI STRIP — dark gradient breaks the rhythm */}
       <section
         aria-labelledby="kpi-heading"
-        className="relative overflow-hidden text-white"
+        className="cv-defer relative overflow-hidden text-white"
         style={{
           background:
             "radial-gradient(circle at 90% 10%, rgba(56,189,248,0.28), transparent 50%), radial-gradient(circle at 10% 80%, rgba(245,158,11,0.18), transparent 55%), linear-gradient(135deg, #0b1d4a 0%, #1e3a8a 60%, #1d4ed8 100%)",
@@ -894,7 +770,7 @@ export default function Home() {
       </section>
 
       {/* SUBJECT GRID */}
-      <section className="bg-[#f8fafc]">
+      <section className="cv-defer bg-[#f8fafc]">
         <Container className="px-6 py-16 sm:py-24">
           <div className="max-w-2xl">
             <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">
@@ -940,7 +816,7 @@ export default function Home() {
       </section>
 
       {/* FLOW DIAGRAM — visual ecosystem map */}
-      <section className="relative overflow-hidden bg-white">
+      <section className="cv-defer relative overflow-hidden bg-white">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -left-24 top-1/3 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(56,189,248,0.18),transparent)] blur-2xl"
@@ -962,101 +838,41 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Visual ecosystem diagram */}
-          <div className="relative mx-auto mt-12 max-w-5xl sm:mt-16">
-            <svg
-              viewBox="0 0 800 320"
-              className="block h-auto w-full"
-              role="img"
-              aria-label="Solvora の4サービスの動線図"
-            >
-              <defs>
-                <linearGradient id="flow-line" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0" stopColor="#1d4ed8" stopOpacity="0.15" />
-                  <stop offset="0.5" stopColor="#1d4ed8" stopOpacity="0.55" />
-                  <stop offset="1" stopColor="#0ea5e9" stopOpacity="0.15" />
-                </linearGradient>
-                <linearGradient id="hub-grad" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stopColor="#0b1d4a" />
-                  <stop offset="1" stopColor="#1d4ed8" />
-                </linearGradient>
-                <radialGradient id="hub-glow" cx="0.5" cy="0.5" r="0.5">
-                  <stop offset="0" stopColor="#bae6fd" stopOpacity="0.5" />
-                  <stop offset="1" stopColor="#bae6fd" stopOpacity="0" />
-                </radialGradient>
-              </defs>
-
-              {/* Central hub */}
-              <circle cx="400" cy="160" r="100" fill="url(#hub-glow)" />
-
-              {/* Connecting lines (curved) */}
-              <path d="M 140 80 Q 270 100 360 140" stroke="url(#flow-line)" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeDasharray="4 6" />
-              <path d="M 660 80 Q 530 100 440 140" stroke="url(#flow-line)" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeDasharray="4 6" />
-              <path d="M 140 240 Q 270 220 360 180" stroke="url(#flow-line)" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeDasharray="4 6" />
-              <path d="M 660 240 Q 530 220 440 180" stroke="url(#flow-line)" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeDasharray="4 6" />
-
-              {/* Outer service nodes */}
-              {/* Top-left: Blog */}
-              <g>
-                <circle cx="120" cy="80" r="42" fill="#ffffff" stroke="#0ea5e9" strokeWidth="2" />
-                <rect x="100" y="60" width="40" height="32" rx="4" fill="#e0f2fe" stroke="#0ea5e9" strokeWidth="1.6" />
-                <line x1="106" y1="70" x2="134" y2="70" stroke="#0ea5e9" strokeWidth="1.6" strokeLinecap="round" />
-                <line x1="106" y1="76" x2="130" y2="76" stroke="#0ea5e9" strokeWidth="1.6" strokeLinecap="round" opacity="0.7" />
-                <line x1="106" y1="82" x2="124" y2="82" stroke="#0ea5e9" strokeWidth="1.6" strokeLinecap="round" opacity="0.5" />
-                <text x="120" y="138" textAnchor="middle" fontSize="13" fontWeight="800" fill="#0c4a6e">読む</text>
-                <text x="120" y="154" textAnchor="middle" fontSize="10" fontWeight="600" fill="#475569">解説ブログ</text>
-              </g>
-
-              {/* Top-right: Apps */}
-              <g>
-                <circle cx="680" cy="80" r="42" fill="#ffffff" stroke="#0284c7" strokeWidth="2" />
-                <rect x="668" y="56" width="24" height="40" rx="4" fill="#e0f2fe" stroke="#0284c7" strokeWidth="1.6" />
-                <line x1="676" y1="92" x2="684" y2="92" stroke="#0284c7" strokeWidth="1.6" strokeLinecap="round" />
-                <rect x="672" y="74" width="4" height="14" rx="1" fill="#0284c7" opacity="0.7" />
-                <rect x="678" y="68" width="4" height="20" rx="1" fill="#0284c7" />
-                <rect x="684" y="78" width="4" height="10" rx="1" fill="#0284c7" opacity="0.5" />
-                <text x="680" y="138" textAnchor="middle" fontSize="13" fontWeight="800" fill="#0c4a6e">解く</text>
-                <text x="680" y="154" textAnchor="middle" fontSize="10" fontWeight="600" fill="#475569">学習アプリ</text>
-              </g>
-
-              {/* Bottom-left: Eddivom */}
-              <g>
-                <circle cx="120" cy="240" r="42" fill="#ffffff" stroke="#f59e0b" strokeWidth="2" />
-                <rect x="102" y="222" width="36" height="36" rx="4" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.6" />
-                <path d="M120 226 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6-4 -4-1.6 4-1.6z" fill="#f59e0b" />
-                <line x1="108" y1="246" x2="132" y2="246" stroke="#f59e0b" strokeWidth="1.6" strokeLinecap="round" opacity="0.7" />
-                <line x1="108" y1="252" x2="128" y2="252" stroke="#f59e0b" strokeWidth="1.6" strokeLinecap="round" opacity="0.5" />
-                <text x="120" y="298" textAnchor="middle" fontSize="13" fontWeight="800" fill="#7c2d12">つくる</text>
-                <text x="120" y="314" textAnchor="middle" fontSize="10" fontWeight="600" fill="#475569">Eddivom</text>
-              </g>
-
-              {/* Bottom-right: Physics School */}
-              <g>
-                <circle cx="680" cy="240" r="42" fill="#ffffff" stroke="#1e3a8a" strokeWidth="2" />
-                <path d="M 660 252 Q 670 232 680 252 T 700 252" stroke="#1e3a8a" strokeWidth="2" fill="none" strokeLinecap="round" />
-                <ellipse cx="680" cy="240" rx="18" ry="8" stroke="#1e3a8a" strokeWidth="1.5" fill="none" opacity="0.6" />
-                <ellipse cx="680" cy="240" rx="18" ry="8" stroke="#1e3a8a" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(60 680 240)" />
-                <circle cx="680" cy="240" r="4" fill="#1e3a8a" />
-                <text x="680" y="298" textAnchor="middle" fontSize="13" fontWeight="800" fill="#1e3a8a">教える</text>
-                <text x="680" y="314" textAnchor="middle" fontSize="10" fontWeight="600" fill="#475569">物理の森</text>
-              </g>
-
-              {/* Center hub: Solvora */}
-              <g>
-                <circle cx="400" cy="160" r="68" fill="url(#hub-grad)" />
-                <circle cx="400" cy="160" r="68" fill="none" stroke="#bae6fd" strokeWidth="1" opacity="0.4" />
-                <circle cx="400" cy="160" r="60" fill="none" stroke="#bae6fd" strokeWidth="1" opacity="0.2" />
-                <text x="400" y="156" textAnchor="middle" fontSize="14" fontWeight="800" letterSpacing="2" fill="#bae6fd">SOLVORA</text>
-                <text x="400" y="174" textAnchor="middle" fontSize="9" fontWeight="700" letterSpacing="3" fill="#7dd3fc">STEM HUB</text>
-                <circle cx="400" cy="186" r="2" fill="#38bdf8" />
-              </g>
-            </svg>
-          </div>
+          {/* Lightweight CSS-only ecosystem layout (replaced 116-line inline SVG) */}
+          <ul className="mx-auto mt-12 grid max-w-5xl gap-3 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+            {[
+              { verb: "読む", what: "解説ブログ", color: "#0ea5e9" },
+              { verb: "解く", what: "学習アプリ", color: "#0284c7" },
+              { verb: "つくる", what: "Eddivom", color: "#f59e0b" },
+              { verb: "教える", what: "物理の森", color: "#1e3a8a" },
+            ].map((node) => (
+              <li
+                key={node.verb}
+                className="flex items-center gap-4 rounded-[18px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-22px_rgba(15,29,74,0.4)]"
+              >
+                <span
+                  aria-hidden="true"
+                  className="grid h-12 w-12 shrink-0 place-items-center rounded-full text-[1rem] font-extrabold text-white"
+                  style={{ background: node.color }}
+                >
+                  {node.verb}
+                </span>
+                <span className="flex flex-col">
+                  <span className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-[#94a3b8]">
+                    {node.verb}
+                  </span>
+                  <span className="text-[0.98rem] font-extrabold leading-[1.4] text-[#0b1d4a]">
+                    {node.what}
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
         </Container>
       </section>
 
       {/* FEATURED: Physics School */}
-      <section className="bg-[#f8fafc]">
+      <section className="cv-defer bg-[#f8fafc]">
         <Container className="px-6 py-20 sm:py-28">
           <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
             <div>
@@ -1089,7 +905,7 @@ export default function Home() {
       </section>
 
       {/* FEATURED: Eddivom — AI教材作成 */}
-      <section className="relative overflow-hidden bg-white">
+      <section className="cv-defer relative overflow-hidden bg-white">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute right-0 top-0 h-64 w-[40%] bg-[radial-gradient(closest-side,rgba(245,158,11,0.18),transparent)]"
@@ -1164,7 +980,7 @@ export default function Home() {
       </section>
 
       {/* FEATURED: Learning design */}
-      <section className="bg-white">
+      <section className="cv-defer bg-white">
         <Container className="px-6 py-20 sm:py-28">
           <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
             <div>
@@ -1224,7 +1040,7 @@ export default function Home() {
       </section>
 
       {/* ABOUT — Manifesto */}
-      <section className="relative overflow-hidden bg-white">
+      <section className="cv-defer relative overflow-hidden bg-white">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(15,29,74,0.2),transparent)]"
@@ -1390,7 +1206,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="bg-[#f8fafc]">
+      <section className="cv-defer bg-[#f8fafc]">
         <Container className="px-6 py-20 sm:py-24">
           <div className="mx-auto max-w-3xl">
             <h2 className="text-center text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
@@ -1416,7 +1232,7 @@ export default function Home() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="bg-white">
+      <section className="cv-defer bg-white">
         <Container className="px-6 py-20 sm:py-28">
           <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
             <h2 className="text-balance text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.4rem]">

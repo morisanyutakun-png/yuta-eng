@@ -43,6 +43,39 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
+      // PageSpeed flagged "効率的なキャッシュ保存期間": ensure favicon, manifest,
+      // and other root static files have a meaningful TTL.
+      {
+        source: "/favicon.svg",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/mask-icon.svg",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
+        source: "/site.webmanifest",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=86400" },
+        ],
+      },
+      // Static HTML pages are SSG; allow a short cache + long stale-while-revalidate
+      // so repeat visits skip the network entirely until the next deploy. The
+      // negative lookahead excludes paths with a file extension so static asset
+      // headers above stay effective.
+      {
+        source: "/:path((?!.*\\.[a-zA-Z0-9]+$|_next|api).*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
+          },
+        ],
+      },
     ];
   },
 };

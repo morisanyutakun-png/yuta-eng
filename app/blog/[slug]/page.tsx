@@ -372,7 +372,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       </section>
 
       {/* RELATED SERVICES — internal linking to service pages by category */}
-      <section className="bg-white">
+      <section className="cv-defer bg-white">
         <Container className="px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
           <div className="mx-auto max-w-3xl">
             <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">
@@ -494,7 +494,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
       {/* RELATED */}
       {relatedPosts.length > 0 ? (
-        <section className="bg-[#f8fafc]">
+        <section className="cv-defer bg-[#f8fafc]">
           <Container className="px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
             <div className="flex items-end justify-between gap-4">
               <div>

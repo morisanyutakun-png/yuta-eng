@@ -35,6 +35,19 @@
   --font-mono: "Geist Mono", "SFMono-Regular", monospace;
 }
 
+/*
+ * Below-fold sections: tell the browser to skip rendering until the section
+ * approaches the viewport. Saves ~400-600ms of initial paint on long pages
+ * by deferring layout/paint of everything below the hero.
+ *
+ * `contain-intrinsic-size` reserves space so CLS stays at 0 (the browser
+ * uses this estimate before the section is rendered for real).
+ */
+.cv-defer {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
+}
+
 html {
   font-size: 15.5px;
   -webkit-text-size-adjust: 100%;

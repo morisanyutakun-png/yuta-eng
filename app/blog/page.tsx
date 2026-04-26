@@ -219,7 +219,7 @@ export default function BlogPage() {
       ) : null}
 
       {/* ALL ARTICLES */}
-      <section className="bg-white">
+      <section className="cv-defer bg-white">
         <Container className="px-4 py-14 sm:px-6 sm:py-24 lg:py-28">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
