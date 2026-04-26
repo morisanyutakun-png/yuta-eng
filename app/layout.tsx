@@ -4,7 +4,6 @@ import localFont from "next/font/local";
 import Script from "next/script";
 
 import { JsonLd } from "@/components/json-ld";
-import { ScrollProgress } from "@/components/scroll-progress";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { siteConfig } from "@/data/site";
@@ -19,11 +18,15 @@ import "./globals.css";
 const GA_MEASUREMENT_ID =
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-WT6BZVH9YJ";
 
+// We ship only Regular (400) and Bold (700). The Medium (500) weight was
+// dropped — at ~220KB extra on slow 4G it hurt LCP on the Moto-G-Power class
+// devices; for "font-medium" callers the browser snaps to the nearest declared
+// weight (Regular), which is visually a near-imperceptible difference for the
+// small detail text where 500 was used.
 const zenKaku = localFont({
   variable: "--font-sans-jp",
   src: [
     { path: "../public/fonts/NotoSansJP-Regular.woff2", weight: "400", style: "normal" },
-    { path: "../public/fonts/NotoSansJP-Medium.woff2", weight: "500", style: "normal" },
     { path: "../public/fonts/NotoSansJP-Bold.woff2", weight: "700", style: "normal" },
   ],
   display: "swap",
@@ -166,7 +169,6 @@ export default function RootLayout({
             </Script>
           </>
         ) : null}
-        <ScrollProgress />
         <JsonLd data={createWebsiteJsonLd()} />
         <JsonLd data={createOrganizationJsonLd()} />
         <JsonLd data={createPersonJsonLd()} />

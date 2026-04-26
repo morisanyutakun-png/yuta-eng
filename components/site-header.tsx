@@ -235,9 +235,13 @@ export function SiteHeader() {
         </Container>
       </header>
 
-      {/* Mobile drawer — outside <header> for clean overlay z-stack */}
+      {/* Mobile drawer — outside <header> for clean overlay z-stack.
+          Use `inert` instead of `aria-hidden` so the closed drawer's
+          focusable links/buttons are removed from the focus order entirely.
+          (`aria-hidden` on a container with focusable children is a known a11y
+          violation; `inert` is the modern replacement and well supported.) */}
       <div
-        aria-hidden={!isMenuOpen}
+        inert={!isMenuOpen}
         className={cn(
           "fixed inset-0 z-40 transition duration-300 md:hidden",
           isMenuOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
