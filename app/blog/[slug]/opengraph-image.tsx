@@ -28,8 +28,8 @@ type AccentTheme = {
 
 const categoryAccent: Record<string, AccentTheme> = {
   Physics: {
-    bg: "linear-gradient(135deg, #020617 0%, #0b1d4a 35%, #1e3a8a 70%, #1d4ed8 100%)",
-    glow: "rgba(56,189,248,0.55)",
+    bg: "linear-gradient(135deg, #020617 0%, #0b1d4a 35%, #1e3a8a 75%, #1d4ed8 100%)",
+    glow: "rgba(56,189,248,0.6)",
     accent: "#38bdf8",
     accentSoft: "#bae6fd",
     chip: "#bae6fd",
@@ -38,7 +38,7 @@ const categoryAccent: Record<string, AccentTheme> = {
   },
   Materials: {
     bg: "linear-gradient(135deg, #0c0a09 0%, #1c1917 35%, #92400e 75%, #f59e0b 100%)",
-    glow: "rgba(251,191,36,0.55)",
+    glow: "rgba(251,191,36,0.6)",
     accent: "#fbbf24",
     accentSoft: "#fef3c7",
     chip: "#fef3c7",
@@ -47,7 +47,7 @@ const categoryAccent: Record<string, AccentTheme> = {
   },
   LaTeX: {
     bg: "linear-gradient(135deg, #020617 0%, #0c4a6e 40%, #0369a1 75%, #0ea5e9 100%)",
-    glow: "rgba(125,211,252,0.55)",
+    glow: "rgba(125,211,252,0.6)",
     accent: "#7dd3fc",
     accentSoft: "#e0f2fe",
     chip: "#e0f2fe",
@@ -56,7 +56,7 @@ const categoryAccent: Record<string, AccentTheme> = {
   },
   Education: {
     bg: "linear-gradient(135deg, #022c22 0%, #064e3b 40%, #0f766e 75%, #14b8a6 100%)",
-    glow: "rgba(94,234,212,0.55)",
+    glow: "rgba(94,234,212,0.6)",
     accent: "#5eead4",
     accentSoft: "#ccfbf1",
     chip: "#d1fae5",
@@ -67,7 +67,7 @@ const categoryAccent: Record<string, AccentTheme> = {
 
 const defaultAccent: AccentTheme = {
   bg: "linear-gradient(135deg, #020617 0%, #0f172a 50%, #334155 100%)",
-  glow: "rgba(186,230,253,0.4)",
+  glow: "rgba(186,230,253,0.45)",
   accent: "#7dd3fc",
   accentSoft: "#e2e8f0",
   chip: "#e2e8f0",
@@ -77,146 +77,195 @@ const defaultAccent: AccentTheme = {
 
 type Params = { slug: string };
 
-/** Per-category decorative SVG motif painted in top-right and bottom-left.
- *  Vector primitives compress well in AVIF/WebP, keeping files <30KB. */
-function CategoryMotif({ theme }: { theme: AccentTheme }) {
+/** Big article-specific hero artwork (right half of the OG card). */
+function ArticleArtwork({ theme }: { theme: AccentTheme }) {
   const stroke = theme.accent;
   const soft = theme.accentSoft;
 
   if (theme.motif === "physics") {
-    // Atomic orbits + sine wave (shapes only, no text — Satori limitation)
+    // Atomic system: nucleus + 3 orbits + traveling electron + sine wave
     return (
       <svg
-        width="640"
-        height="640"
-        viewBox="0 0 640 640"
+        width="540"
+        height="540"
+        viewBox="0 0 540 540"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ position: "absolute", top: -120, right: -120, opacity: 0.55 }}
+        style={{ display: "flex" }}
       >
-        <ellipse cx="320" cy="320" rx="240" ry="90" stroke={stroke} strokeWidth="1.6" fill="none" opacity="0.75" />
-        <ellipse cx="320" cy="320" rx="240" ry="90" stroke={stroke} strokeWidth="1.6" fill="none" opacity="0.75" transform="rotate(60 320 320)" />
-        <ellipse cx="320" cy="320" rx="240" ry="90" stroke={stroke} strokeWidth="1.6" fill="none" opacity="0.75" transform="rotate(-60 320 320)" />
-        <circle cx="320" cy="320" r="28" fill={soft} opacity="0.95" />
-        <circle cx="320" cy="320" r="60" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.5" />
-        <circle cx="560" cy="320" r="6" fill={soft} />
-        <circle cx="80" cy="320" r="4" fill={stroke} opacity="0.7" />
-        <circle cx="500" cy="180" r="3" fill={soft} opacity="0.8" />
-        <circle cx="160" cy="480" r="3" fill={soft} opacity="0.6" />
-        {/* Sine wave (top-left vibe) */}
+        {/* Glow ring */}
+        <circle cx="270" cy="270" r="220" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.25" />
+        <circle cx="270" cy="270" r="180" stroke={stroke} strokeWidth="1.6" fill="none" opacity="0.4" strokeDasharray="2 6" />
+        {/* 3 orbital ellipses */}
+        <ellipse cx="270" cy="270" rx="200" ry="78" stroke={stroke} strokeWidth="2" fill="none" opacity="0.85" />
+        <ellipse cx="270" cy="270" rx="200" ry="78" stroke={stroke} strokeWidth="2" fill="none" opacity="0.85" transform="rotate(60 270 270)" />
+        <ellipse cx="270" cy="270" rx="200" ry="78" stroke={stroke} strokeWidth="2" fill="none" opacity="0.85" transform="rotate(-60 270 270)" />
+        {/* Nucleus */}
+        <circle cx="270" cy="270" r="44" fill={soft} opacity="0.95" />
+        <circle cx="270" cy="270" r="44" stroke={stroke} strokeWidth="2" fill="none" opacity="0.7" />
+        <circle cx="270" cy="270" r="20" fill={stroke} opacity="0.85" />
+        {/* Electrons */}
+        <circle cx="470" cy="270" r="10" fill={soft} />
+        <circle cx="338" cy="105" r="8" fill={soft} opacity="0.9" />
+        <circle cx="138" cy="425" r="7" fill={soft} opacity="0.8" />
+        {/* Sine wave at bottom */}
         <path
-          d="M 40 120 Q 80 80 120 120 T 200 120 T 280 120 T 360 120"
+          d="M 40 480 Q 80 440 120 480 T 200 480 T 280 480 T 360 480 T 440 480 T 520 480"
           stroke={stroke}
-          strokeWidth="1.6"
+          strokeWidth="2.4"
           fill="none"
-          opacity="0.45"
+          opacity="0.7"
         />
+        {/* Particles scattered */}
+        <circle cx="80" cy="120" r="3" fill={soft} opacity="0.85" />
+        <circle cx="450" cy="80" r="2.5" fill={soft} opacity="0.7" />
+        <circle cx="500" cy="450" r="3" fill={soft} opacity="0.6" />
       </svg>
     );
   }
 
   if (theme.motif === "latex") {
-    // LaTeX brackets + sine waves (shapes only)
+    // Big curly braces + integral + sigma curve + code lines
     return (
       <svg
-        width="640"
-        height="640"
-        viewBox="0 0 640 640"
+        width="540"
+        height="540"
+        viewBox="0 0 540 540"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ position: "absolute", top: -100, right: -160, opacity: 0.5 }}
+        style={{ display: "flex" }}
       >
-        {/* Big curly bracket left side, drawn as path */}
+        {/* Big left brace */}
         <path
-          d="M 120 80 Q 60 80 60 200 Q 60 280 30 280 Q 60 280 60 360 Q 60 480 120 480"
+          d="M 130 50 Q 60 50 60 200 Q 60 270 30 270 Q 60 270 60 340 Q 60 490 130 490"
           stroke={soft}
-          strokeWidth="3"
+          strokeWidth="5"
           fill="none"
-          opacity="0.55"
+          strokeLinecap="round"
+          opacity="0.85"
         />
-        {/* Big curly bracket right side */}
+        {/* Big right brace */}
         <path
-          d="M 460 80 Q 520 80 520 200 Q 520 280 550 280 Q 520 280 520 360 Q 520 480 460 480"
+          d="M 410 50 Q 480 50 480 200 Q 480 270 510 270 Q 480 270 480 340 Q 480 490 410 490"
           stroke={soft}
-          strokeWidth="3"
+          strokeWidth="5"
           fill="none"
-          opacity="0.55"
+          strokeLinecap="round"
+          opacity="0.85"
         />
-        {/* Inner integral-like swoop */}
+        {/* Inner integral curve */}
         <path
-          d="M 220 160 Q 250 200 240 280 Q 230 360 280 400"
+          d="M 200 130 Q 240 180 230 280 Q 220 380 280 430"
           stroke={stroke}
-          strokeWidth="2.2"
+          strokeWidth="4"
           fill="none"
+          strokeLinecap="round"
+        />
+        {/* Sigma-style triangle */}
+        <path
+          d="M 320 200 L 380 200 L 340 270 L 380 340 L 320 340"
+          stroke={stroke}
+          strokeWidth="3"
+          fill="none"
+          strokeLinejoin="round"
           opacity="0.7"
         />
         {/* Code-style underlines */}
-        <line x1="80" y1="540" x2="540" y2="540" stroke={stroke} strokeWidth="1.5" opacity="0.4" />
-        <line x1="80" y1="570" x2="380" y2="570" stroke={stroke} strokeWidth="1.5" opacity="0.25" />
-        <circle cx="540" cy="540" r="3" fill={stroke} opacity="0.6" />
-        <circle cx="380" cy="570" r="3" fill={stroke} opacity="0.4" />
+        <line x1="80" y1="540" x2="460" y2="540" stroke={stroke} strokeWidth="2" opacity="0.4" />
+        <circle cx="270" cy="280" r="6" fill={stroke} opacity="0.5" />
       </svg>
     );
   }
 
   if (theme.motif === "materials") {
-    // Document layers + AI sparkles
+    // Stack of documents + AI sparkles + connection lines
     return (
       <svg
-        width="640"
-        height="640"
-        viewBox="0 0 640 640"
+        width="540"
+        height="540"
+        viewBox="0 0 540 540"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ position: "absolute", top: -60, right: -100, opacity: 0.55 }}
+        style={{ display: "flex" }}
       >
-        <rect x="200" y="120" width="240" height="320" rx="14" fill={soft} opacity="0.18" stroke={stroke} strokeWidth="1.5" />
-        <rect x="170" y="100" width="240" height="320" rx="14" fill={soft} opacity="0.22" stroke={stroke} strokeWidth="1.5" />
-        <rect x="140" y="80" width="240" height="320" rx="14" fill={soft} opacity="0.32" stroke={stroke} strokeWidth="1.6" />
-        <line x1="160" y1="130" x2="340" y2="130" stroke={stroke} strokeWidth="2" opacity="0.6" />
-        <line x1="160" y1="160" x2="320" y2="160" stroke={stroke} strokeWidth="2" opacity="0.45" />
-        <line x1="160" y1="190" x2="300" y2="190" stroke={stroke} strokeWidth="2" opacity="0.3" />
-        <rect x="160" y="220" width="180" height="80" rx="6" fill={stroke} opacity="0.35" />
-        {/* Sparkles */}
-        <path d="M 460 80 l 5 14 l 14 5 l -14 5 l -5 14 l -5 -14 l -14 -5 l 14 -5 z" fill={soft} opacity="0.85" />
-        <path d="M 80 460 l 4 10 l 10 4 l -10 4 l -4 10 l -4 -10 l -10 -4 l 10 -4 z" fill={soft} opacity="0.6" />
+        {/* Background glow circle */}
+        <circle cx="270" cy="270" r="220" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.25" strokeDasharray="2 6" />
+        {/* Document layer 3 (back) */}
+        <rect x="180" y="100" width="240" height="320" rx="14" fill={soft} opacity="0.18" stroke={stroke} strokeWidth="1.6" />
+        {/* Document layer 2 */}
+        <rect x="150" y="80" width="240" height="320" rx="14" fill={soft} opacity="0.28" stroke={stroke} strokeWidth="1.8" />
+        {/* Document layer 1 (front) */}
+        <rect x="120" y="60" width="240" height="320" rx="14" fill={soft} opacity="0.45" stroke={stroke} strokeWidth="2.2" />
+        {/* Document content lines */}
+        <line x1="140" y1="110" x2="320" y2="110" stroke={stroke} strokeWidth="2.5" opacity="0.85" />
+        <line x1="140" y1="140" x2="300" y2="140" stroke={stroke} strokeWidth="2.5" opacity="0.7" />
+        <line x1="140" y1="170" x2="280" y2="170" stroke={stroke} strokeWidth="2.5" opacity="0.55" />
+        {/* Inner box (formula/code area) */}
+        <rect x="140" y="200" width="200" height="100" rx="8" fill={stroke} opacity="0.4" />
+        <rect x="140" y="200" width="200" height="100" rx="8" stroke={stroke} strokeWidth="2" fill="none" opacity="0.7" />
+        <line x1="158" y1="232" x2="240" y2="232" stroke={soft} strokeWidth="2.5" opacity="0.95" />
+        <line x1="158" y1="252" x2="280" y2="252" stroke={soft} strokeWidth="2.5" opacity="0.85" />
+        <line x1="158" y1="272" x2="220" y2="272" stroke={soft} strokeWidth="2.5" opacity="0.75" />
+        {/* Bottom rule line */}
+        <line x1="140" y1="330" x2="280" y2="330" stroke={stroke} strokeWidth="2" opacity="0.5" />
+        <line x1="140" y1="355" x2="240" y2="355" stroke={stroke} strokeWidth="2" opacity="0.35" />
+        {/* AI Sparkles */}
+        <path d="M 440 90 l 6 16 l 16 6 l -16 6 l -6 16 l -6 -16 l -16 -6 l 16 -6 z" fill={soft} opacity="0.95" />
+        <path d="M 60 480 l 5 12 l 12 5 l -12 5 l -5 12 l -5 -12 l -12 -5 l 12 -5 z" fill={soft} opacity="0.75" />
+        <path d="M 480 380 l 4 10 l 10 4 l -10 4 l -4 10 l -4 -10 l -10 -4 l 10 -4 z" fill={soft} opacity="0.6" />
       </svg>
     );
   }
 
   if (theme.motif === "education") {
-    // Connected nodes (learning network)
+    // Larger learning network with 7 nodes
     return (
       <svg
-        width="640"
-        height="640"
-        viewBox="0 0 640 640"
+        width="540"
+        height="540"
+        viewBox="0 0 540 540"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ position: "absolute", top: -80, right: -120, opacity: 0.55 }}
+        style={{ display: "flex" }}
       >
-        <line x1="160" y1="200" x2="320" y2="120" stroke={stroke} strokeWidth="1.5" opacity="0.6" strokeDasharray="3 5" />
-        <line x1="320" y1="120" x2="480" y2="220" stroke={stroke} strokeWidth="1.5" opacity="0.6" strokeDasharray="3 5" />
-        <line x1="160" y1="200" x2="240" y2="380" stroke={stroke} strokeWidth="1.5" opacity="0.6" strokeDasharray="3 5" />
-        <line x1="320" y1="120" x2="240" y2="380" stroke={stroke} strokeWidth="1.5" opacity="0.6" strokeDasharray="3 5" />
-        <line x1="480" y1="220" x2="400" y2="400" stroke={stroke} strokeWidth="1.5" opacity="0.6" strokeDasharray="3 5" />
-        <line x1="240" y1="380" x2="400" y2="400" stroke={stroke} strokeWidth="1.5" opacity="0.6" strokeDasharray="3 5" />
-        <circle cx="160" cy="200" r="14" fill={soft} stroke={stroke} strokeWidth="2" />
-        <circle cx="320" cy="120" r="22" fill={stroke} stroke={soft} strokeWidth="2" />
-        <circle cx="480" cy="220" r="14" fill={soft} stroke={stroke} strokeWidth="2" />
-        <circle cx="240" cy="380" r="14" fill={soft} stroke={stroke} strokeWidth="2" />
-        <circle cx="400" cy="400" r="18" fill={stroke} stroke={soft} strokeWidth="2" opacity="0.85" />
+        {/* Outer dashed ring */}
+        <circle cx="270" cy="270" r="240" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.3" strokeDasharray="2 6" />
+        {/* Connection lines */}
+        <line x1="120" y1="180" x2="270" y2="80" stroke={stroke} strokeWidth="2" opacity="0.7" strokeDasharray="3 5" />
+        <line x1="270" y1="80" x2="420" y2="180" stroke={stroke} strokeWidth="2" opacity="0.7" strokeDasharray="3 5" />
+        <line x1="120" y1="180" x2="270" y2="270" stroke={stroke} strokeWidth="2" opacity="0.7" strokeDasharray="3 5" />
+        <line x1="420" y1="180" x2="270" y2="270" stroke={stroke} strokeWidth="2" opacity="0.7" strokeDasharray="3 5" />
+        <line x1="270" y1="270" x2="160" y2="420" stroke={stroke} strokeWidth="2" opacity="0.7" strokeDasharray="3 5" />
+        <line x1="270" y1="270" x2="380" y2="420" stroke={stroke} strokeWidth="2" opacity="0.7" strokeDasharray="3 5" />
+        <line x1="160" y1="420" x2="380" y2="420" stroke={stroke} strokeWidth="2" opacity="0.7" strokeDasharray="3 5" />
+        <line x1="120" y1="180" x2="160" y2="420" stroke={stroke} strokeWidth="1.5" opacity="0.45" strokeDasharray="3 5" />
+        <line x1="420" y1="180" x2="380" y2="420" stroke={stroke} strokeWidth="1.5" opacity="0.45" strokeDasharray="3 5" />
+        {/* Nodes (small outer) */}
+        <circle cx="120" cy="180" r="18" fill={soft} stroke={stroke} strokeWidth="2.5" />
+        <circle cx="420" cy="180" r="18" fill={soft} stroke={stroke} strokeWidth="2.5" />
+        <circle cx="160" cy="420" r="18" fill={soft} stroke={stroke} strokeWidth="2.5" />
+        <circle cx="380" cy="420" r="18" fill={soft} stroke={stroke} strokeWidth="2.5" />
+        {/* Top node (highlighted) */}
+        <circle cx="270" cy="80" r="26" fill={stroke} stroke={soft} strokeWidth="2.5" />
+        <circle cx="270" cy="80" r="10" fill={soft} />
+        {/* Center hub (big) */}
+        <circle cx="270" cy="270" r="44" fill={soft} opacity="0.92" />
+        <circle cx="270" cy="270" r="44" stroke={stroke} strokeWidth="3" fill="none" />
+        <circle cx="270" cy="270" r="22" fill={stroke} />
+        <circle cx="270" cy="270" r="8" fill={soft} />
       </svg>
     );
   }
 
   return (
     <svg
-      width="640"
-      height="640"
-      viewBox="0 0 640 640"
+      width="540"
+      height="540"
+      viewBox="0 0 540 540"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ position: "absolute", top: -100, right: -100, opacity: 0.4 }}
+      style={{ display: "flex" }}
     >
-      <circle cx="320" cy="320" r="200" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.5" />
-      <circle cx="320" cy="320" r="140" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.4" />
-      <circle cx="320" cy="320" r="80" stroke={stroke} strokeWidth="1.4" fill="none" opacity="0.35" />
+      <circle cx="270" cy="270" r="220" stroke={stroke} strokeWidth="1.6" fill="none" opacity="0.5" />
+      <circle cx="270" cy="270" r="160" stroke={stroke} strokeWidth="1.6" fill="none" opacity="0.4" />
+      <circle cx="270" cy="270" r="100" stroke={stroke} strokeWidth="1.6" fill="none" opacity="0.35" />
+      <circle cx="270" cy="270" r="48" fill={soft} opacity="0.95" />
+      <circle cx="270" cy="270" r="22" fill={stroke} />
     </svg>
   );
 }
@@ -225,16 +274,12 @@ export default async function Image({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
-  const title = post?.title ?? "Solvora ブログ";
-  const description = post?.description ?? siteConfig.description;
   const category = post?.category ?? "Solvora";
   const theme = categoryAccent[category] ?? defaultAccent;
   const date = post?.formattedDate ?? "";
   const reading = post?.readingTime ?? "";
-
-  const displayTitle = title.length > 60 ? title.slice(0, 58) + "…" : title;
-  const displayDesc =
-    description.length > 110 ? description.slice(0, 108) + "…" : description;
+  // Pick 1-2 tags as the "topic chip" — short and visual, no full title.
+  const topic = post?.tags?.[0] ?? category;
 
   const [notoRegular, notoBold] = await Promise.all([
     readFile(join(process.cwd(), "public/fonts/NotoSansJP-Regular.ttf")),
@@ -256,93 +301,85 @@ export default async function Image({ params }: { params: Promise<Params> }) {
           overflow: "hidden",
         }}
       >
-        {/* Layer 1: blueprint micro-grid */}
+        {/* Layer 1: micro-grid blueprint */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)",
+              "linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px)",
             backgroundSize: "48px 48px",
             display: "flex",
           }}
         />
-        {/* Layer 2: large grid blueprint accent */}
+        {/* Layer 2: large blueprint accent */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.09) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.09) 1px, transparent 1px)",
+              "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
             backgroundSize: "192px 192px",
             display: "flex",
           }}
         />
-
-        {/* Layer 3: top-right primary glow */}
+        {/* Layer 3: top-right glow */}
         <div
           style={{
             position: "absolute",
-            top: -180,
-            right: -180,
-            width: 640,
-            height: 640,
+            top: -200,
+            right: -200,
+            width: 720,
+            height: 720,
             borderRadius: "50%",
             background: `radial-gradient(circle, ${theme.glow}, transparent 70%)`,
             display: "flex",
           }}
         />
-
-        {/* Layer 4: bottom-left secondary glow */}
+        {/* Layer 4: bottom-left soft glow */}
         <div
           style={{
             position: "absolute",
-            bottom: -200,
-            left: -160,
-            width: 520,
-            height: 520,
+            bottom: -240,
+            left: -180,
+            width: 560,
+            height: 560,
             borderRadius: "50%",
             background:
-              "radial-gradient(circle, rgba(186,230,253,0.18), transparent 70%)",
+              "radial-gradient(circle, rgba(186,230,253,0.2), transparent 70%)",
             display: "flex",
           }}
         />
-
-        {/* Layer 5: category-specific decorative motif */}
-        <CategoryMotif theme={theme} />
-
-        {/* Layer 6: top-left accent corner bracket */}
+        {/* Layer 5: corner brackets */}
         <div
           style={{
             position: "absolute",
             top: 36,
             left: 36,
-            width: 60,
-            height: 60,
+            width: 64,
+            height: 64,
             borderTop: `2px solid ${theme.accent}`,
             borderLeft: `2px solid ${theme.accent}`,
             borderTopLeftRadius: 4,
-            opacity: 0.65,
+            opacity: 0.7,
             display: "flex",
           }}
         />
-        {/* Layer 7: bottom-right accent corner bracket */}
         <div
           style={{
             position: "absolute",
             bottom: 36,
             right: 36,
-            width: 60,
-            height: 60,
+            width: 64,
+            height: 64,
             borderBottom: `2px solid ${theme.accent}`,
             borderRight: `2px solid ${theme.accent}`,
             borderBottomRightRadius: 4,
-            opacity: 0.65,
+            opacity: 0.7,
             display: "flex",
           }}
         />
-
-        {/* Layer 8: top accent line */}
+        {/* Layer 6: top accent line */}
         <div
           style={{
             position: "absolute",
@@ -355,34 +392,64 @@ export default async function Image({ params }: { params: Promise<Params> }) {
           }}
         />
 
+        {/* Main 2-column layout: brand on left, artwork on right */}
         <div
           style={{
             position: "relative",
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
             width: "100%",
             height: "100%",
           }}
         >
-          {/* Top: brand + category */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
-              {/* Solvora L mark with glow ring */}
+          {/* LEFT: brand identity column */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              flex: "1.1",
+              paddingRight: 40,
+            }}
+          >
+            {/* Top: ARTICLE eyebrow */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 14,
+                color: theme.accent,
+                fontSize: "14px",
+                fontWeight: 800,
+                letterSpacing: "0.36em",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  width: 64,
+                  height: 2,
+                  background: theme.accent,
+                }}
+              />
+              ARTICLE
+            </div>
+
+            {/* Middle: BIG brand mark + wordmark */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               <div
                 style={{
                   position: "relative",
                   display: "flex",
-                  width: 64,
-                  height: 64,
-                  borderRadius: 18,
+                  width: 156,
+                  height: 156,
+                  borderRadius: 36,
                   background: `linear-gradient(135deg, #ffffff 0%, ${theme.accentSoft} 100%)`,
                   alignItems: "center",
                   justifyContent: "center",
-                  boxShadow: `0 8px 24px -8px ${theme.glow}`,
+                  boxShadow: `0 24px 60px -16px ${theme.glow}`,
                 }}
               >
-                <svg width="48" height="48" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                <svg width="118" height="118" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
                   <path d="M28 14h22v64h44v22H28V14Z" fill="#0b1d4a" />
                   <rect x="54" y="64" width="7" height="14" rx="1" fill="#1f3a8a" />
                   <rect x="63" y="56" width="7" height="22" rx="1" fill="#2563eb" />
@@ -392,35 +459,180 @@ export default async function Image({ params }: { params: Promise<Params> }) {
                   <circle cx="106" cy="22" r="6" fill="#38bdf8" />
                 </svg>
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: "30px", fontWeight: 800, letterSpacing: "0.04em" }}>
-                  SOLVORA
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <span
+                  style={{
+                    fontSize: "72px",
+                    fontWeight: 800,
+                    letterSpacing: "0.02em",
+                    lineHeight: 1,
+                    color: "#ffffff",
+                  }}
+                >
+                  Solvora
                 </span>
                 <span
                   style={{
-                    fontSize: "11px",
+                    fontSize: "16px",
                     color: theme.accentSoft,
-                    letterSpacing: "0.28em",
+                    letterSpacing: "0.32em",
                     fontWeight: 700,
                   }}
                 >
                   STEM LEARNING HUB
                 </span>
               </div>
+              {/* Topic chip (single tag, short — replaces the full title) */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 12,
+                  marginTop: 4,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                    background: theme.chip,
+                    color: theme.chipText,
+                    padding: "10px 18px",
+                    borderRadius: 999,
+                    fontSize: "16px",
+                    fontWeight: 800,
+                    letterSpacing: "0.16em",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      width: 6,
+                      height: 6,
+                      borderRadius: "50%",
+                      background: theme.chipText,
+                    }}
+                  />
+                  {category.toUpperCase()}
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    fontSize: "16px",
+                    fontWeight: 700,
+                    color: "rgba(255,255,255,0.8)",
+                    letterSpacing: "0.04em",
+                    border: `1px solid ${theme.accent}80`,
+                    padding: "9px 16px",
+                    borderRadius: 999,
+                  }}
+                >
+                  #{topic}
+                </div>
+              </div>
             </div>
+
+            {/* Bottom: author + date footer */}
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: 10,
-                background: theme.chip,
-                color: theme.chipText,
-                padding: "12px 22px",
-                borderRadius: "999px",
-                fontSize: "16px",
+                gap: 14,
+                borderTop: "1px solid rgba(255,255,255,0.18)",
+                paddingTop: 22,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  width: 44,
+                  height: 44,
+                  borderRadius: "50%",
+                  background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentSoft})`,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 20,
+                  fontWeight: 800,
+                  color: theme.chipText,
+                  boxShadow: `0 6px 16px -4px ${theme.glow}`,
+                }}
+              >
+                森
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <span style={{ fontSize: "17px", fontWeight: 700, color: "#ffffff" }}>
+                  {siteConfig.author}
+                </span>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    fontSize: "14px",
+                    color: "rgba(255,255,255,0.7)",
+                    fontWeight: 500,
+                  }}
+                >
+                  {date ? <span>{date}</span> : null}
+                  {date && reading ? <span style={{ opacity: 0.5 }}>·</span> : null}
+                  {reading ? <span>{reading}</span> : null}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT: big article-specific artwork */}
+          <div
+            style={{
+              display: "flex",
+              flex: "0.9",
+              alignItems: "center",
+              justifyContent: "center",
+              position: "relative",
+            }}
+          >
+            {/* Subtle frame around artwork */}
+            <div
+              style={{
+                position: "absolute",
+                top: -10,
+                right: -10,
+                width: 24,
+                height: 24,
+                borderTop: `2px solid ${theme.accent}80`,
+                borderRight: `2px solid ${theme.accent}80`,
+                display: "flex",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: -10,
+                left: -10,
+                width: 24,
+                height: 24,
+                borderBottom: `2px solid ${theme.accent}80`,
+                borderLeft: `2px solid ${theme.accent}80`,
+                display: "flex",
+              }}
+            />
+            <ArticleArtwork theme={theme} />
+            {/* URL label below artwork */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: 8,
+                right: 0,
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                color: theme.accentSoft,
+                fontSize: "12px",
                 fontWeight: 800,
-                letterSpacing: "0.18em",
-                boxShadow: `0 8px 22px -8px ${theme.glow}`,
+                letterSpacing: "0.28em",
+                opacity: 0.75,
               }}
             >
               <div
@@ -428,121 +640,6 @@ export default async function Image({ params }: { params: Promise<Params> }) {
                   display: "flex",
                   width: 6,
                   height: 6,
-                  borderRadius: "50%",
-                  background: theme.chipText,
-                }}
-              />
-              {category.toUpperCase()}
-            </div>
-          </div>
-
-          {/* Middle: title + description with accent rule */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "22px", maxWidth: "1080px" }}>
-            {/* Decorative accent rule above title */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 16,
-                color: theme.accent,
-                fontSize: "13px",
-                fontWeight: 800,
-                letterSpacing: "0.32em",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  width: 56,
-                  height: 2,
-                  background: theme.accent,
-                }}
-              />
-              ARTICLE
-            </div>
-            <h1
-              style={{
-                fontSize: title.length > 36 ? "54px" : "64px",
-                lineHeight: 1.26,
-                fontWeight: 800,
-                letterSpacing: "-0.012em",
-                margin: 0,
-                textShadow: `0 4px 18px rgba(0,0,0,0.35)`,
-              }}
-            >
-              {displayTitle}
-            </h1>
-            <p
-              style={{
-                fontSize: "20px",
-                lineHeight: 1.65,
-                color: "rgba(255,255,255,0.85)",
-                margin: 0,
-                maxWidth: "960px",
-                fontWeight: 500,
-              }}
-            >
-              {displayDesc}
-            </p>
-          </div>
-
-          {/* Bottom: meta strip with author + URL */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              borderTop: "1px solid rgba(255,255,255,0.18)",
-              paddingTop: 22,
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-              {/* Author initial avatar */}
-              <div
-                style={{
-                  display: "flex",
-                  width: 40,
-                  height: 40,
-                  borderRadius: "50%",
-                  background: `linear-gradient(135deg, ${theme.accent}, ${theme.accentSoft})`,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 18,
-                  fontWeight: 800,
-                  color: theme.chipText,
-                  boxShadow: `0 4px 12px -4px ${theme.glow}`,
-                }}
-              >
-                森
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                <span style={{ fontSize: "16px", fontWeight: 700, color: "#ffffff" }}>
-                  {siteConfig.author}
-                </span>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: "14px", color: "rgba(255,255,255,0.7)", fontWeight: 500 }}>
-                  {date ? <span>{date}</span> : null}
-                  {date && reading ? <span style={{ opacity: 0.5 }}>·</span> : null}
-                  {reading ? <span>{reading}</span> : null}
-                </div>
-              </div>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                color: theme.accentSoft,
-                fontSize: "14px",
-                fontWeight: 800,
-                letterSpacing: "0.22em",
-                opacity: 0.85,
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  width: 8,
-                  height: 8,
                   borderRadius: "50%",
                   background: theme.accent,
                 }}
