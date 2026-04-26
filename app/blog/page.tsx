@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArticleCard } from "@/components/article-card";
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
-import { siteConfig } from "@/data/site";
 import {
   getAllCategories,
   getAllPosts,
@@ -15,7 +14,6 @@ import { createPageMetadata } from "@/lib/metadata";
 import {
   createBreadcrumbJsonLd,
   createCollectionPageJsonLd,
-  createItemListJsonLd,
 } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
@@ -59,6 +57,11 @@ export default function BlogPage() {
   // diagnostic). The full tag index is still reachable from the tag landing pages.
   const popularTags = getAllTags().slice(0, 8);
 
+  // ItemList JSON-LD was dropped — at 38 items × ~200 bytes it inflated the
+  // HTML by ~7KB without measurable SEO benefit beyond what CollectionPage and
+  // BreadcrumbList already provide. Each individual article still ships its own
+  // BlogPosting microdata (see ArticleCard), so Google has structured data per
+  // post regardless.
   const jsonLd = [
     createBreadcrumbJsonLd([
       { name: "ホーム", path: "/" },
@@ -71,14 +74,6 @@ export default function BlogPage() {
       path: "/blog",
       itemCount: posts.length,
     }),
-    createItemListJsonLd(
-      "Solvora ブログ記事一覧",
-      posts.map((post) => ({
-        name: post.title,
-        description: post.description,
-        url: new URL(`/blog/${post.slug}`, siteConfig.url).toString(),
-      })),
-    ),
   ];
 
   // Preload the LCP image — the featured (first) card thumbnail. Browsers
