@@ -162,7 +162,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 style={{ background: accent }}
               />
               <p className="pl-3 text-pretty text-[clamp(0.96rem,0.92rem+0.3vw,1.05rem)] leading-[2.1] tracking-[0.02em] text-[#334155] sm:pl-4 sm:leading-[1.95]">
-                {post.description}
+                {renderWithMath(post.description)}
               </p>
             </div>
 

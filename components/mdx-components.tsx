@@ -3,15 +3,21 @@ import Image from "next/image";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 
 export function renderWithMath(text: string): ReactNode {
-  if (!text || !text.includes("$")) return text;
+  if (!text) return text;
+  // Auto-promote bare Unicode physics expressions (no $) to LaTeX so frontmatter
+  // descriptions like "T=2π√(m/k)" render as proper math without authors having
+  // to wrap them in $...$ themselves.
+  const normalized = text.includes("$") ? text : autoLatexize(text);
+  if (!normalized.includes("$")) return text;
+
   const parts: ReactNode[] = [];
   const regex = /\$\$([\s\S]+?)\$\$|\$([^$\n]+?)\$/g;
   let lastIndex = 0;
   let key = 0;
   let match: RegExpExecArray | null;
-  while ((match = regex.exec(text)) !== null) {
+  while ((match = regex.exec(normalized)) !== null) {
     if (match.index > lastIndex) {
-      parts.push(text.slice(lastIndex, match.index));
+      parts.push(normalized.slice(lastIndex, match.index));
     }
     const isDisplay = match[1] !== undefined;
     const expr = (match[1] ?? match[2] ?? "").trim();
@@ -30,8 +36,94 @@ export function renderWithMath(text: string): ReactNode {
     );
     lastIndex = match.index + match[0].length;
   }
-  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+  if (lastIndex < normalized.length) parts.push(normalized.slice(lastIndex));
   return parts.length ? parts : text;
+}
+
+/**
+ * Convert bare Unicode physics expressions inside a plain string into $...$
+ * LaTeX so renderWithMath() can typeset them. Recognises common patterns:
+ *  - T=2π√(m/k)  →  $T = 2\pi\sqrt{m/k}$
+ *  - x(t)=A sin(ωt+φ)  →  $x(t) = A\sin(\omega t + \varphi)$
+ *  - F=mv²/r  →  $F = mv^2/r$
+ * Conservative: only wraps tokens that look unambiguously like math.
+ */
+function autoLatexize(text: string): string {
+  // 1. Simple "X=Y" forms with math glyphs (π, √, ω, φ, ², ³, /, ±, ∓, etc.)
+  // 2. Function-call forms: x(t)=A sin(ωt+φ)
+  const greekMap: Record<string, string> = {
+    π: "\\pi",
+    ω: "\\omega",
+    φ: "\\varphi",
+    θ: "\\theta",
+    Δ: "\\Delta",
+    α: "\\alpha",
+    β: "\\beta",
+    ε: "\\varepsilon",
+    μ: "\\mu",
+    ρ: "\\rho",
+    Σ: "\\Sigma",
+    Φ: "\\Phi",
+    Ψ: "\\Psi",
+  };
+  const supMap: Record<string, string> = {
+    "²": "^2",
+    "³": "^3",
+    "⁴": "^4",
+  };
+  // Detect a "math token" by scanning for chunks containing at least one math
+  // glyph (π, √, ω, φ, ², ³, ±, ∓) plus optional letters/digits/operators.
+  // Stop at Japanese characters, spaces (unless inside parens), comma, period,
+  // closing 】、 etc.
+  const tokenPattern = /([A-Za-z][A-Za-z0-9_]*\([^)]+\))?\s*=?\s*[A-Za-z0-9π√ω φε∓±⁰-⁹·²³⁴/().,\\^_+\-]*[π√ω φε∓±²³]+[A-Za-z0-9π√ω φε∓±⁰-⁹·²³⁴/().,\\^_+\-]*/gu;
+
+  // Heuristic: split into segments and wrap matched ones in $...$.
+  // Simpler approach: find compact patterns and wrap them.
+  // We'll do a series of targeted regex replacements for common forms.
+
+  let s = text;
+
+  // Replace √(...) with \sqrt{...}
+  s = s.replace(/√\(([^)]+)\)/g, "\\sqrt{$1}");
+  // Replace inline √x (single token after) — rare in JP text
+  // Skip to keep conservative.
+
+  // Replace × superscript chars with ^N
+  s = s.replace(/[²³⁴]/g, (m) => supMap[m] ?? m);
+
+  // Replace bare Greek letters with LaTeX commands (only when surrounded by math context)
+  // We do this only inside likely-math tokens, identified below.
+
+  // Identify candidate math tokens: contiguous runs that contain at least one
+  // unambiguous math glyph from the set { π, \sqrt, ω, φ, ε, ², ³, ⁴, =, ± }
+  // and consist of ASCII letters/digits/operators/Greek/spaces.
+  // Wrap each such token with $...$.
+  const candidateRe =
+    /([A-Za-z][A-Za-z0-9_]*(?:\([^)　-鿿]+\))?\s*=\s*[^、。」』】\n（）぀-ヿ一-鿿]*?(?:\\sqrt\{[^}]+\}|[πωφεμρΣΦΨ]|\^[0-9]|±|∓)[^、。」』】\n（）぀-ヿ一-鿿]*?)(?=[、。」』】\n（）぀-ヿ一-鿿]|$)/gu;
+
+  s = s.replace(candidateRe, (match) => {
+    let inner = match;
+    // Replace remaining Greek letters with LaTeX commands.
+    inner = inner.replace(/[πωφθΔαβεμρΣΦΨ]/g, (g) => `${greekMap[g] ?? g}`);
+    // Insert space after \pi, \omega, etc. when followed by a letter/number to
+    // avoid \pisqrt-like glue.
+    inner = inner.replace(
+      /(\\(?:pi|omega|varphi|theta|Delta|alpha|beta|varepsilon|mu|rho|Sigma|Phi|Psi))(?=[A-Za-z])/g,
+      "$1 ",
+    );
+    // Wrap function names so KaTeX renders them upright instead of italic
+    // letter-by-letter (e.g. "sin" → "\sin", "cos" → "\cos").
+    inner = inner.replace(
+      /(?<![A-Za-z\\])(sin|cos|tan|sec|csc|cot|log|ln|exp|max|min)(?![A-Za-z])/g,
+      "\\$1 ",
+    );
+    // Replace · (middle dot) with \cdot and remove stray spaces around it.
+    inner = inner.replace(/\s*[·∙⋅]\s*/g, " \\cdot ");
+    // Normalize " " spaces inside math.
+    return `$${inner.trim()}$`;
+  });
+
+  return s;
 }
 
 type CalloutVariant = "info" | "tip" | "warn" | "note";
@@ -174,11 +266,11 @@ function Toc({ items = [], title = "もくじ" }: TocProps) {
   if (!items.length) return null;
   return (
     <nav className="lumora-toc" aria-label="目次">
-      <p className="lumora-toc-title">{title}</p>
+      <p className="lumora-toc-title">{renderWithMath(title)}</p>
       <ol>
         {items.map((item) => (
           <li key={item.id}>
-            <a href={`#${item.id}`}>{item.label}</a>
+            <a href={`#${item.id}`}>{renderWithMath(item.label)}</a>
           </li>
         ))}
       </ol>
