@@ -9,6 +9,7 @@ import {
   getAllCategories,
   getAllPosts,
   getAllTags,
+  getOgVersion,
 } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
 import {
@@ -78,8 +79,31 @@ export default function BlogPage() {
     ),
   ];
 
+  // Preload the LCP image — the featured (first) card thumbnail. Browsers
+  // start fetching it while still parsing HTML, shaving 200-500ms off LCP on
+  // first visit. React 18+ hoists <link> rendered in body to <head> automatically.
+  const ogVersion = getOgVersion();
+  const lcpSlug = featuredPost?.slug;
+  const lcpAvif640 = lcpSlug
+    ? `/og/${lcpSlug}-640.avif?v=${ogVersion}`
+    : null;
+  const lcpAvif1200 = lcpSlug
+    ? `/og/${lcpSlug}-1200.avif?v=${ogVersion}`
+    : null;
+
   return (
     <>
+      {lcpAvif640 && lcpAvif1200 ? (
+        <link
+          rel="preload"
+          as="image"
+          fetchPriority="high"
+          imageSrcSet={`${lcpAvif640} 640w, ${lcpAvif1200} 1200w`}
+          imageSizes="(min-width: 1024px) 60vw, 100vw"
+          type="image/avif"
+          href={lcpAvif1200}
+        />
+      ) : null}
       <JsonLd data={jsonLd} />
 
       {/* HERO */}

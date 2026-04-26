@@ -91,8 +91,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   };
   const accent = categoryAccent[post.category] ?? "#1d4ed8";
 
+  // Preload the article hero — biggest LCP win. Browser fetches the AVIF in
+  // parallel with HTML parsing instead of waiting for <img> discovery.
+  const v = getOgVersion();
+  const heroAvif640 = `/og/${post.slug}-640.avif?v=${v}`;
+  const heroAvif1200 = `/og/${post.slug}-1200.avif?v=${v}`;
+
   return (
     <>
+      <link
+        rel="preload"
+        as="image"
+        fetchPriority="high"
+        imageSrcSet={`${heroAvif640} 640w, ${heroAvif1200} 1200w`}
+        imageSizes="(min-width: 1024px) 896px, 100vw"
+        type="image/avif"
+        href={heroAvif1200}
+      />
       <JsonLd
         data={[
           createArticleJsonLd(post),

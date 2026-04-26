@@ -30,17 +30,23 @@ const zenKaku = localFont({
   fallback: ["Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "sans-serif"],
 });
 
+// Shippori Mincho is a CJK font: next/font/google emits ~100 @font-face rules
+// per weight (unicode-range subsets). 4 weights → ~400 @font-face rules =
+// 378KB of CSS on every page. We drop to a single weight (700) used by article
+// headings and serif accents, falling back to OS mincho for other weights.
 const shipporiMincho = Shippori_Mincho({
   variable: "--font-serif-jp",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["700"],
   display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  weight: ["400"],
   display: "swap",
+  preload: false,
 });
 
 export const viewport: Viewport = {
@@ -149,11 +155,13 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         {GA_MEASUREMENT_ID ? (
           <>
+            {/* GA4: lazyOnload defers ~75KB of script until the browser is
+                idle, so it never competes with LCP/INP on first visit. */}
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
+              strategy="lazyOnload"
             />
-            <Script id="ga4-init" strategy="afterInteractive">
+            <Script id="ga4-init" strategy="lazyOnload">
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
