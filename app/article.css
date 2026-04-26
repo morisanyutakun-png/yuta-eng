@@ -234,7 +234,7 @@
   background: #e0f2fe;
   padding: 0.1rem 0.4rem;
   color: #0c4a6e;
-  font-family: var(--font-geist-mono), "SFMono-Regular", monospace;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   font-size: 0.86em;
   font-weight: 600;
 }

@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import Script from "next/script";
 
@@ -23,14 +22,22 @@ const GA_MEASUREMENT_ID =
 // devices; for "font-medium" callers the browser snaps to the nearest declared
 // weight (Regular), which is visually a near-imperceptible difference for the
 // small detail text where 500 was used.
+//
+// `display: "optional"` prevents the late-arriving JP woff2 from re-painting
+// the LCP element on slow networks. Browsers give the font ~100ms to download;
+// if it misses, the fallback (Hiragino on iOS, system Noto Sans CJK on Android)
+// stays for the whole session and the cached font is used on the next visit.
+// This reliably shaves 1–3s off the LCP on slow 4G — worth the small first-
+// paint typeface mismatch on cold visits.
 const zenKaku = localFont({
   variable: "--font-sans-jp",
   src: [
     { path: "../public/fonts/NotoSansJP-Regular.woff2", weight: "400", style: "normal" },
     { path: "../public/fonts/NotoSansJP-Bold.woff2", weight: "700", style: "normal" },
   ],
-  display: "swap",
+  display: "optional",
   fallback: ["Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "sans-serif"],
+  adjustFontFallback: false,
 });
 
 // Shippori Mincho was dropped entirely — `next/font/google` emits ~125
@@ -38,14 +45,13 @@ const zenKaku = localFont({
 // ~96KB of render-blocking CSS on every page. We rely on the OS Mincho
 // fallback chain (Hiragino Mincho ProN / Yu Mincho / serif) instead, which
 // is visually almost identical on JP devices and adds zero network cost.
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-  preload: false,
-});
+//
+// Geist Mono was also dropped from the layout. It was only used inside MDX
+// `<code>` blocks on article pages; loading it in the root layout added
+// @font-face bytes to every page (including the /blog index, which has no
+// monospaced text). Article pages now fall back to the OS monospace stack —
+// `ui-monospace, SF Mono, Menlo, Consolas, Liberation Mono, monospace` — set
+// directly in `article.css`.
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -137,7 +143,7 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${zenKaku.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
+      className={`${zenKaku.variable} h-full scroll-smooth antialiased`}
     >
       <head>
         {/* Preconnect to third-party origins so the GA & gtag handshake

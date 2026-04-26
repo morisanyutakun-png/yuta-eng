@@ -55,7 +55,9 @@ export default function BlogPage() {
   const posts = getAllPosts();
   const [featuredPost, ...restPosts] = posts;
   const allCategories = getAllCategories();
-  const popularTags = getAllTags().slice(0, 12);
+  // Trimmed from 12 → 8 to shrink the above-the-fold DOM (lighthouse "DOM size"
+  // diagnostic). The full tag index is still reachable from the tag landing pages.
+  const popularTags = getAllTags().slice(0, 8);
 
   const jsonLd = [
     createBreadcrumbJsonLd([
