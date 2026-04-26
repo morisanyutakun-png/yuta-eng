@@ -19,7 +19,7 @@ import {
 export const metadata: Metadata = createPageMetadata({
   title: "理系人材育成のEdTechハブ｜AI教材・学習アプリ・物理塾を集約 - Solvora",
   description:
-    "Solvora は、AI 教材作成「Eddivom」・物理専門オンライン塾「物理の森」・学習アプリ「Physics」「IT Pass」を集約した理系人材育成のEdTechハブ。GIGAスクール構想後の高校・大学・社会人の学びを、AI教材作成と学習支援アプリでつなぎ、現場で使える形に整理しています。教育DX・STEM教育・LaTeX教材作成を実装する公式入口。",
+    "Solvora は、AI 教材作成「Eddivom」・物理専門オンライン塾「物理の森」・学習アプリ「Solvora Physics」「IT Pass」を集約した理系人材育成のEdTechハブ。GIGAスクール構想後の高校・大学・社会人の学びを、AI教材作成と学習支援アプリでつなぎ、現場で使える形に整理しています。教育DX・STEM教育・LaTeX教材作成を実装する公式入口。",
   keywords: [
     "理系人材育成",
     "EdTech 日本",
@@ -55,7 +55,7 @@ const subjects = [
   },
   {
     label: "Learning Apps",
-    title: "学習アプリ Physics・IT Pass",
+    title: "学習アプリ Solvora Physics・IT Pass",
     sub: "高校物理 / IT パスポートをスマホで毎日 5〜10 分積み上げ。",
     href: "/apps",
     accent: "#0284c7",
@@ -442,48 +442,95 @@ export default function Home() {
     <>
       <JsonLd data={homeJsonLd} />
 
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-white">
-        {/* Decorative gradient orbs — pure CSS, no extra payload */}
+      {/* HERO — cosmic / dark cinematic */}
+      <section
+        className="relative overflow-hidden text-white"
+        style={{
+          background:
+            "radial-gradient(ellipse at 20% 0%, rgba(29,78,216,0.5), transparent 55%), radial-gradient(ellipse at 90% 35%, rgba(14,165,233,0.32), transparent 55%), radial-gradient(ellipse at 50% 110%, rgba(245,158,11,0.18), transparent 55%), linear-gradient(180deg, #02061b 0%, #050b2c 40%, #0b1d4a 100%)",
+        }}
+      >
+        {/* Equation overlay (top-left) — gives the "physics cosmos" vibe */}
+        <svg
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-4 top-6 hidden h-[420px] w-[420px] opacity-[0.18] lg:block"
+          viewBox="0 0 420 420"
+          fill="none"
+        >
+          <g fill="#bae6fd" fontFamily="serif" fontStyle="italic">
+            <text x="20" y="40" fontSize="22">d/dt(mv) = F</text>
+            <text x="20" y="100" fontSize="22">∇·E = ρ/ε₀</text>
+            <text x="20" y="160" fontSize="22">iℏ ∂ψ/∂t = Ĥψ</text>
+            <text x="20" y="220" fontSize="22">E = mc²</text>
+            <text x="20" y="280" fontSize="20" opacity="0.7">∮ B·dl = μ₀I</text>
+            <text x="20" y="340" fontSize="20" opacity="0.6">∫ ψ*ψ dV = 1</text>
+          </g>
+          {/* Sine wave */}
+          <path
+            d="M 0 380 Q 35 350 70 380 T 140 380 T 210 380 T 280 380 T 350 380 T 420 380"
+            stroke="#7dd3fc"
+            strokeWidth="1.5"
+            fill="none"
+            opacity="0.6"
+          />
+        </svg>
+
+        {/* Star field — pure CSS, no images */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -left-32 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(56,189,248,0.45),transparent)] blur-2xl"
+          className="pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            backgroundImage:
+              "radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.9), transparent 100%), radial-gradient(1.5px 1.5px at 78% 24%, rgba(186,230,253,0.85), transparent 100%), radial-gradient(1px 1px at 42% 60%, rgba(255,255,255,0.7), transparent 100%), radial-gradient(1.5px 1.5px at 88% 72%, rgba(255,255,255,0.85), transparent 100%), radial-gradient(1px 1px at 22% 78%, rgba(186,230,253,0.7), transparent 100%), radial-gradient(2px 2px at 65% 12%, rgba(255,255,255,0.95), transparent 100%), radial-gradient(1px 1px at 8% 50%, rgba(255,255,255,0.6), transparent 100%)",
+            backgroundSize: "100% 100%",
+          }}
         />
+
+        {/* Subtle blueprint grid overlay */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-32 top-40 h-96 w-96 rounded-full bg-[radial-gradient(closest-side,rgba(245,158,11,0.25),transparent)] blur-3xl"
+          className="pointer-events-none absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(186,230,253,0.7) 1px, transparent 1px), linear-gradient(90deg, rgba(186,230,253,0.7) 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+          }}
         />
+
+        {/* Top hairline */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-[linear-gradient(90deg,transparent,#1d4ed8,transparent)] opacity-50"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-[linear-gradient(90deg,transparent,#38bdf8,#f59e0b,#38bdf8,transparent)] opacity-70"
         />
+
         <Container className="relative px-6">
-          <div className="grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-32">
+          <div className="grid items-center gap-12 py-20 sm:py-28 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:py-36">
             <div>
-              <p className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#eef4ff] via-white to-[#fef3c7] px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#1d4ed8] ring-1 ring-[rgba(15,29,74,0.08)] sm:text-[0.74rem] sm:tracking-[0.24em]">
+              <p className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#bae6fd] ring-1 ring-white/15 backdrop-blur-md sm:text-[0.74rem] sm:tracking-[0.24em]">
                 <span aria-hidden="true" className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#38bdf8] opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#38bdf8]" />
                 </span>
-                STEM Learning Hub · 理系人材育成 EdTech
+                Solvora · STEM EdTech Hub
               </p>
-              <h1 className="mt-5 text-balance text-[2.2rem] font-extrabold leading-[1.18] tracking-[-0.012em] text-[#0b1d4a] sm:text-[3rem] sm:leading-[1.14] lg:text-[3.6rem]">
-                <span className="block">理系人材を、</span>
-                <span className="block bg-gradient-to-r from-[#0b1d4a] via-[#1d4ed8] to-[#0ea5e9] bg-clip-text text-transparent">
-                  育てる。
-                </span>
-                <span className="mt-2 block text-[1.6rem] font-extrabold leading-[1.25] text-[#0b1d4a] sm:mt-3 sm:text-[2.1rem] lg:text-[2.5rem]">
-                  学びを設計する <span className="relative inline-block">
-                    <span className="relative z-10">EdTech ハブ</span>
-                    <span
-                      aria-hidden="true"
-                      className="absolute inset-x-0 bottom-1 -z-0 h-2 bg-gradient-to-r from-[#fef3c7] to-[#bae6fd] sm:bottom-2 sm:h-3"
-                    />
-                  </span>。
+
+              <h1 className="mt-6 text-balance text-[2.4rem] font-extrabold leading-[1.14] tracking-[-0.018em] text-white sm:text-[3.4rem] sm:leading-[1.1] lg:text-[4.2rem]">
+                <span className="block">理系の学びを、</span>
+                <span className="relative block">
+                  <span className="bg-[linear-gradient(120deg,#ffffff_0%,#bae6fd_45%,#7dd3fc_70%,#ffffff_100%)] bg-clip-text text-transparent">
+                    つくり直す。
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    className="absolute -bottom-1 left-0 h-[3px] w-32 rounded-full bg-gradient-to-r from-[#38bdf8] via-[#bae6fd] to-transparent sm:-bottom-2 sm:w-48"
+                  />
                 </span>
               </h1>
-              <p className="mt-6 max-w-xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
-                AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、物理専門オンライン塾 <strong className="font-bold text-[#0b1d4a]">物理の森</strong>、学習アプリ <strong className="font-bold text-[#0b1d4a]">Physics・IT Pass</strong>。GIGA スクール構想以降の理系教育を、教材設計・AI・アプリで一気通貫につなぎ直します。
+
+              <p className="mt-8 max-w-xl text-pretty text-[1rem] leading-[2] text-white/85 sm:text-[1.1rem]">
+                教材・アプリ・AI で、
+                <strong className="font-bold text-white">理系人材の未来を設計する</strong>。
+                AI 教材作成 <strong className="font-bold text-white">Eddivom</strong>、物理専門塾 <strong className="font-bold text-white">物理の森</strong>、学習アプリ <strong className="font-bold text-white">Solvora Physics・IT Pass</strong> を 1 つの動線で。
               </p>
 
               {/* Visual coverage badges — each pairs an icon with a short label */}
@@ -542,10 +589,13 @@ export default function Home() {
                 ].map((badge) => (
                   <li
                     key={badge.label}
-                    className={`inline-flex items-center gap-2.5 rounded-2xl bg-gradient-to-br ${badge.bg} px-3 py-2.5 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_8px_18px_-12px_rgba(15,29,74,0.25)]`}
-                    style={{ color: badge.fg }}
+                    className="inline-flex items-center gap-2.5 rounded-2xl bg-white/[0.06] px-3 py-2.5 ring-1 ring-white/15 backdrop-blur-md transition hover:bg-white/[0.1]"
+                    style={{ color: "#ffffff" }}
                   >
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/80 ring-1 ring-white/60 shadow-[0_2px_6px_-2px_rgba(15,29,74,0.2)]">
+                    <span
+                      className="grid h-9 w-9 shrink-0 place-items-center rounded-xl ring-1 ring-white/20"
+                      style={{ background: `${badge.fg}33`, color: "#ffffff" }}
+                    >
                       {badge.icon}
                     </span>
                     <span className="text-[0.82rem] font-bold leading-[1.3] tracking-[-0.005em] sm:text-[0.88rem]">
@@ -555,24 +605,24 @@ export default function Home() {
                 ))}
               </ul>
 
-              <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+              <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <Link
                   href="/apps"
-                  className="group/cta relative inline-flex min-h-12 items-center justify-center overflow-hidden rounded-full px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-white shadow-[0_14px_30px_-12px_rgba(15,29,74,0.6)] transition hover:-translate-y-px hover:shadow-[0_20px_40px_-12px_rgba(29,78,216,0.65)]"
+                  className="group/cta relative inline-flex min-h-12 items-center justify-center overflow-hidden rounded-full px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-[#0b1d4a] shadow-[0_18px_38px_-14px_rgba(186,230,253,0.6)] transition hover:-translate-y-px hover:shadow-[0_22px_44px_-14px_rgba(186,230,253,0.7)]"
                 >
                   <span
                     aria-hidden="true"
-                    className="absolute inset-0 bg-[linear-gradient(135deg,#0b1d4a_0%,#1e3a8a_55%,#1d4ed8_100%)]"
+                    className="absolute inset-0 bg-[linear-gradient(135deg,#ffffff_0%,#bae6fd_55%,#7dd3fc_100%)]"
                   />
                   <span
                     aria-hidden="true"
-                    className="absolute -inset-x-1 -inset-y-1 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(186,230,253,0.45)_50%,transparent_70%)] transition duration-700 group-hover/cta:translate-x-full"
+                    className="absolute -inset-x-1 -inset-y-1 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.7)_50%,transparent_70%)] transition duration-700 group-hover/cta:translate-x-full"
                   />
                   <span className="relative">サービスを見る →</span>
                 </Link>
                 <Link
                   href="/blog"
-                  className="inline-flex min-h-12 items-center justify-center rounded-full px-2 text-[0.96rem] font-semibold text-[#1d4ed8] transition hover:text-[#0b1d4a]"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full px-2 text-[0.96rem] font-semibold text-[#bae6fd] transition hover:text-white"
                 >
                   解説ブログを読む <span aria-hidden="true" className="ml-1">→</span>
                 </Link>
@@ -580,11 +630,119 @@ export default function Home() {
             </div>
 
             <div className="relative">
-              <div className="overflow-hidden rounded-[28px] bg-white shadow-[0_40px_80px_-50px_rgba(15,29,74,0.35)] ring-1 ring-[rgba(15,29,74,0.08)]">
-                <HeroVisual />
+              {/* Cosmic ecosystem orb visual replacing the bright HeroVisual */}
+              <div className="relative aspect-square w-full overflow-hidden rounded-[32px] bg-[radial-gradient(circle_at_50%_45%,rgba(56,189,248,0.18),transparent_60%)] ring-1 ring-white/10">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    background:
+                      "radial-gradient(circle at 50% 50%, rgba(186,230,253,0.18), transparent 60%)",
+                  }}
+                />
+                <svg
+                  viewBox="0 0 480 480"
+                  className="block h-full w-full"
+                  role="img"
+                  aria-label="Solvora が4サービスを束ねるエコシステム図"
+                >
+                  <defs>
+                    <radialGradient id="hero-hub-glow" cx="0.5" cy="0.5" r="0.5">
+                      <stop offset="0" stopColor="#bae6fd" stopOpacity="0.6" />
+                      <stop offset="0.5" stopColor="#1d4ed8" stopOpacity="0.4" />
+                      <stop offset="1" stopColor="#1d4ed8" stopOpacity="0" />
+                    </radialGradient>
+                    <radialGradient id="hero-hub-core" cx="0.5" cy="0.5" r="0.5">
+                      <stop offset="0" stopColor="#ffffff" stopOpacity="0.95" />
+                      <stop offset="0.5" stopColor="#7dd3fc" stopOpacity="0.85" />
+                      <stop offset="1" stopColor="#1d4ed8" stopOpacity="0.85" />
+                    </radialGradient>
+                    <linearGradient id="hero-orbit" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stopColor="#bae6fd" stopOpacity="0.7" />
+                      <stop offset="1" stopColor="#1d4ed8" stopOpacity="0.2" />
+                    </linearGradient>
+                  </defs>
+
+                  {/* Outer glow */}
+                  <circle cx="240" cy="240" r="220" fill="url(#hero-hub-glow)" />
+
+                  {/* Orbit rings */}
+                  <circle cx="240" cy="240" r="170" fill="none" stroke="url(#hero-orbit)" strokeWidth="1" opacity="0.6" />
+                  <circle cx="240" cy="240" r="170" fill="none" stroke="#bae6fd" strokeWidth="0.6" opacity="0.25" strokeDasharray="3 6" />
+                  <ellipse cx="240" cy="240" rx="170" ry="60" fill="none" stroke="#7dd3fc" strokeWidth="0.8" opacity="0.35" />
+                  <ellipse cx="240" cy="240" rx="170" ry="60" fill="none" stroke="#7dd3fc" strokeWidth="0.8" opacity="0.35" transform="rotate(60 240 240)" />
+                  <ellipse cx="240" cy="240" rx="170" ry="60" fill="none" stroke="#7dd3fc" strokeWidth="0.8" opacity="0.35" transform="rotate(-60 240 240)" />
+
+                  {/* Core hub */}
+                  <circle cx="240" cy="240" r="62" fill="url(#hero-hub-core)" />
+                  <circle cx="240" cy="240" r="62" fill="none" stroke="#ffffff" strokeWidth="0.6" opacity="0.8" />
+                  <text x="240" y="236" textAnchor="middle" fontSize="22" fontWeight="800" fill="#0b1d4a" letterSpacing="2">S</text>
+                  <text x="240" y="256" textAnchor="middle" fontSize="9" fontWeight="700" fill="#0b1d4a" letterSpacing="3">SOLVORA</text>
+
+                  {/* 4 service nodes around the hub */}
+                  {/* Eddivom — top */}
+                  <g>
+                    <circle cx="240" cy="70" r="32" fill="#02061b" stroke="#fbbf24" strokeWidth="1.6" />
+                    <circle cx="240" cy="70" r="32" fill="none" stroke="#fbbf24" strokeWidth="0.6" opacity="0.5" strokeDasharray="2 3" />
+                    <path d="M240 56l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z" fill="#fbbf24" />
+                    <rect x="232" y="74" width="16" height="3" rx="1" fill="#fef3c7" opacity="0.85" />
+                    <rect x="232" y="80" width="12" height="3" rx="1" fill="#fef3c7" opacity="0.6" />
+                    <text x="240" y="118" textAnchor="middle" fontSize="11" fontWeight="800" fill="#fef3c7">Eddivom</text>
+                    <text x="240" y="132" textAnchor="middle" fontSize="8" fill="#bae6fd" opacity="0.85">AI 教材作成</text>
+                  </g>
+                  {/* 物理の森 — right */}
+                  <g>
+                    <circle cx="410" cy="240" r="32" fill="#02061b" stroke="#34d399" strokeWidth="1.6" />
+                    <circle cx="410" cy="240" r="32" fill="none" stroke="#34d399" strokeWidth="0.6" opacity="0.5" strokeDasharray="2 3" />
+                    <path d="M403 246 Q 410 232 417 246" stroke="#34d399" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+                    <ellipse cx="410" cy="240" rx="12" ry="5" fill="none" stroke="#34d399" strokeWidth="1" opacity="0.6" />
+                    <circle cx="410" cy="240" r="2.5" fill="#34d399" />
+                    <text x="410" y="288" textAnchor="middle" fontSize="11" fontWeight="800" fill="#a7f3d0">物理の森</text>
+                    <text x="410" y="302" textAnchor="middle" fontSize="8" fill="#bae6fd" opacity="0.85">物理専門塾</text>
+                  </g>
+                  {/* Solvora Physics — bottom */}
+                  <g>
+                    <circle cx="240" cy="410" r="32" fill="#02061b" stroke="#7dd3fc" strokeWidth="1.6" />
+                    <circle cx="240" cy="410" r="32" fill="none" stroke="#7dd3fc" strokeWidth="0.6" opacity="0.5" strokeDasharray="2 3" />
+                    <rect x="234" y="395" width="12" height="22" rx="2" fill="none" stroke="#7dd3fc" strokeWidth="1.4" />
+                    <rect x="236" y="403" width="2" height="6" fill="#7dd3fc" opacity="0.8" />
+                    <rect x="240" y="399" width="2" height="10" fill="#7dd3fc" />
+                    <rect x="244" y="406" width="2" height="3" fill="#7dd3fc" opacity="0.6" />
+                    <text x="240" y="458" textAnchor="middle" fontSize="11" fontWeight="800" fill="#bae6fd">Solvora Physics</text>
+                    <text x="240" y="472" textAnchor="middle" fontSize="8" fill="#bae6fd" opacity="0.85">高校物理アプリ</text>
+                  </g>
+                  {/* IT Pass — left */}
+                  <g>
+                    <circle cx="70" cy="240" r="32" fill="#02061b" stroke="#c4b5fd" strokeWidth="1.6" />
+                    <circle cx="70" cy="240" r="32" fill="none" stroke="#c4b5fd" strokeWidth="0.6" opacity="0.5" strokeDasharray="2 3" />
+                    <text x="70" y="248" textAnchor="middle" fontSize="14" fontWeight="800" fill="#c4b5fd">{"</>"}</text>
+                    <text x="70" y="288" textAnchor="middle" fontSize="11" fontWeight="800" fill="#ddd6fe">IT Pass</text>
+                    <text x="70" y="302" textAnchor="middle" fontSize="8" fill="#bae6fd" opacity="0.85">IT 学習アプリ</text>
+                  </g>
+
+                  {/* Connecting beams from each node to the hub */}
+                  <line x1="240" y1="102" x2="240" y2="178" stroke="#fbbf24" strokeWidth="1" opacity="0.5" strokeDasharray="2 4" />
+                  <line x1="378" y1="240" x2="302" y2="240" stroke="#34d399" strokeWidth="1" opacity="0.5" strokeDasharray="2 4" />
+                  <line x1="240" y1="378" x2="240" y2="302" stroke="#7dd3fc" strokeWidth="1" opacity="0.5" strokeDasharray="2 4" />
+                  <line x1="102" y1="240" x2="178" y2="240" stroke="#c4b5fd" strokeWidth="1" opacity="0.5" strokeDasharray="2 4" />
+
+                  {/* Floating particles */}
+                  <circle cx="120" cy="120" r="1.5" fill="#bae6fd" opacity="0.8" />
+                  <circle cx="380" cy="140" r="1" fill="#fbbf24" opacity="0.7" />
+                  <circle cx="380" cy="380" r="1.5" fill="#7dd3fc" opacity="0.7" />
+                  <circle cx="120" cy="380" r="1" fill="#c4b5fd" opacity="0.7" />
+                  <circle cx="180" cy="200" r="0.8" fill="#bae6fd" opacity="0.6" />
+                  <circle cx="320" cy="280" r="0.8" fill="#bae6fd" opacity="0.6" />
+                </svg>
               </div>
             </div>
           </div>
+
+          {/* Tagline ribbon at the bottom of hero */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(90deg,transparent,rgba(186,230,253,0.3),transparent)]"
+          />
         </Container>
       </section>
 
@@ -781,8 +939,124 @@ export default function Home() {
         </Container>
       </section>
 
+      {/* FLOW DIAGRAM — visual ecosystem map */}
+      <section className="relative overflow-hidden bg-white">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-24 top-1/3 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(56,189,248,0.18),transparent)] blur-2xl"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-[radial-gradient(closest-side,rgba(245,158,11,0.14),transparent)] blur-3xl"
+        />
+        <Container className="relative px-6 py-20 sm:py-28">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-[#1d4ed8] sm:text-[0.76rem]">
+              How it connects · 学びの動線
+            </p>
+            <h2 className="mt-3 text-balance text-[1.7rem] font-extrabold leading-[1.32] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.3rem]">
+              読む → 解く → つくる → 教える、を1つの動線に。
+            </h2>
+            <p className="mt-4 text-[0.96rem] leading-[1.95] text-[#475569] sm:text-[1.02rem]">
+              Solvora は4つのサービスを循環できる導線で結びます。学習者は<strong className="font-bold text-[#0b1d4a]">読む</strong>から、教える側は<strong className="font-bold text-[#0b1d4a]">つくる</strong>から入れます。
+            </p>
+          </div>
+
+          {/* Visual ecosystem diagram */}
+          <div className="relative mx-auto mt-12 max-w-5xl sm:mt-16">
+            <svg
+              viewBox="0 0 800 320"
+              className="block h-auto w-full"
+              role="img"
+              aria-label="Solvora の4サービスの動線図"
+            >
+              <defs>
+                <linearGradient id="flow-line" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stopColor="#1d4ed8" stopOpacity="0.15" />
+                  <stop offset="0.5" stopColor="#1d4ed8" stopOpacity="0.55" />
+                  <stop offset="1" stopColor="#0ea5e9" stopOpacity="0.15" />
+                </linearGradient>
+                <linearGradient id="hub-grad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stopColor="#0b1d4a" />
+                  <stop offset="1" stopColor="#1d4ed8" />
+                </linearGradient>
+                <radialGradient id="hub-glow" cx="0.5" cy="0.5" r="0.5">
+                  <stop offset="0" stopColor="#bae6fd" stopOpacity="0.5" />
+                  <stop offset="1" stopColor="#bae6fd" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+
+              {/* Central hub */}
+              <circle cx="400" cy="160" r="100" fill="url(#hub-glow)" />
+
+              {/* Connecting lines (curved) */}
+              <path d="M 140 80 Q 270 100 360 140" stroke="url(#flow-line)" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeDasharray="4 6" />
+              <path d="M 660 80 Q 530 100 440 140" stroke="url(#flow-line)" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeDasharray="4 6" />
+              <path d="M 140 240 Q 270 220 360 180" stroke="url(#flow-line)" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeDasharray="4 6" />
+              <path d="M 660 240 Q 530 220 440 180" stroke="url(#flow-line)" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeDasharray="4 6" />
+
+              {/* Outer service nodes */}
+              {/* Top-left: Blog */}
+              <g>
+                <circle cx="120" cy="80" r="42" fill="#ffffff" stroke="#0ea5e9" strokeWidth="2" />
+                <rect x="100" y="60" width="40" height="32" rx="4" fill="#e0f2fe" stroke="#0ea5e9" strokeWidth="1.6" />
+                <line x1="106" y1="70" x2="134" y2="70" stroke="#0ea5e9" strokeWidth="1.6" strokeLinecap="round" />
+                <line x1="106" y1="76" x2="130" y2="76" stroke="#0ea5e9" strokeWidth="1.6" strokeLinecap="round" opacity="0.7" />
+                <line x1="106" y1="82" x2="124" y2="82" stroke="#0ea5e9" strokeWidth="1.6" strokeLinecap="round" opacity="0.5" />
+                <text x="120" y="138" textAnchor="middle" fontSize="13" fontWeight="800" fill="#0c4a6e">読む</text>
+                <text x="120" y="154" textAnchor="middle" fontSize="10" fontWeight="600" fill="#475569">解説ブログ</text>
+              </g>
+
+              {/* Top-right: Apps */}
+              <g>
+                <circle cx="680" cy="80" r="42" fill="#ffffff" stroke="#0284c7" strokeWidth="2" />
+                <rect x="668" y="56" width="24" height="40" rx="4" fill="#e0f2fe" stroke="#0284c7" strokeWidth="1.6" />
+                <line x1="676" y1="92" x2="684" y2="92" stroke="#0284c7" strokeWidth="1.6" strokeLinecap="round" />
+                <rect x="672" y="74" width="4" height="14" rx="1" fill="#0284c7" opacity="0.7" />
+                <rect x="678" y="68" width="4" height="20" rx="1" fill="#0284c7" />
+                <rect x="684" y="78" width="4" height="10" rx="1" fill="#0284c7" opacity="0.5" />
+                <text x="680" y="138" textAnchor="middle" fontSize="13" fontWeight="800" fill="#0c4a6e">解く</text>
+                <text x="680" y="154" textAnchor="middle" fontSize="10" fontWeight="600" fill="#475569">学習アプリ</text>
+              </g>
+
+              {/* Bottom-left: Eddivom */}
+              <g>
+                <circle cx="120" cy="240" r="42" fill="#ffffff" stroke="#f59e0b" strokeWidth="2" />
+                <rect x="102" y="222" width="36" height="36" rx="4" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.6" />
+                <path d="M120 226 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6-4 -4-1.6 4-1.6z" fill="#f59e0b" />
+                <line x1="108" y1="246" x2="132" y2="246" stroke="#f59e0b" strokeWidth="1.6" strokeLinecap="round" opacity="0.7" />
+                <line x1="108" y1="252" x2="128" y2="252" stroke="#f59e0b" strokeWidth="1.6" strokeLinecap="round" opacity="0.5" />
+                <text x="120" y="298" textAnchor="middle" fontSize="13" fontWeight="800" fill="#7c2d12">つくる</text>
+                <text x="120" y="314" textAnchor="middle" fontSize="10" fontWeight="600" fill="#475569">Eddivom</text>
+              </g>
+
+              {/* Bottom-right: Physics School */}
+              <g>
+                <circle cx="680" cy="240" r="42" fill="#ffffff" stroke="#1e3a8a" strokeWidth="2" />
+                <path d="M 660 252 Q 670 232 680 252 T 700 252" stroke="#1e3a8a" strokeWidth="2" fill="none" strokeLinecap="round" />
+                <ellipse cx="680" cy="240" rx="18" ry="8" stroke="#1e3a8a" strokeWidth="1.5" fill="none" opacity="0.6" />
+                <ellipse cx="680" cy="240" rx="18" ry="8" stroke="#1e3a8a" strokeWidth="1.5" fill="none" opacity="0.6" transform="rotate(60 680 240)" />
+                <circle cx="680" cy="240" r="4" fill="#1e3a8a" />
+                <text x="680" y="298" textAnchor="middle" fontSize="13" fontWeight="800" fill="#1e3a8a">教える</text>
+                <text x="680" y="314" textAnchor="middle" fontSize="10" fontWeight="600" fill="#475569">物理の森</text>
+              </g>
+
+              {/* Center hub: Solvora */}
+              <g>
+                <circle cx="400" cy="160" r="68" fill="url(#hub-grad)" />
+                <circle cx="400" cy="160" r="68" fill="none" stroke="#bae6fd" strokeWidth="1" opacity="0.4" />
+                <circle cx="400" cy="160" r="60" fill="none" stroke="#bae6fd" strokeWidth="1" opacity="0.2" />
+                <text x="400" y="156" textAnchor="middle" fontSize="14" fontWeight="800" letterSpacing="2" fill="#bae6fd">SOLVORA</text>
+                <text x="400" y="174" textAnchor="middle" fontSize="9" fontWeight="700" letterSpacing="3" fill="#7dd3fc">STEM HUB</text>
+                <circle cx="400" cy="186" r="2" fill="#38bdf8" />
+              </g>
+            </svg>
+          </div>
+        </Container>
+      </section>
+
       {/* FEATURED: Physics School */}
-      <section className="bg-white">
+      <section className="bg-[#f8fafc]">
         <Container className="px-6 py-20 sm:py-28">
           <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
             <div>
@@ -815,8 +1089,12 @@ export default function Home() {
       </section>
 
       {/* FEATURED: Eddivom — AI教材作成 */}
-      <section className="bg-[#f8fafc]">
-        <Container className="px-6 py-20 sm:py-28">
+      <section className="relative overflow-hidden bg-white">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute right-0 top-0 h-64 w-[40%] bg-[radial-gradient(closest-side,rgba(245,158,11,0.18),transparent)]"
+        />
+        <Container className="relative px-6 py-20 sm:py-28">
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="order-2 overflow-hidden rounded-[28px] bg-gradient-to-br from-[#eef4ff] via-[#fff7ed] to-[#fef3c7] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_30px_70px_-50px_rgba(15,29,74,0.4)] lg:order-1">
               <img
@@ -979,10 +1257,10 @@ export default function Home() {
               </p>
             </blockquote>
             <p className="mx-auto mt-8 max-w-2xl text-pretty text-center text-[1.02rem] leading-[2] text-[#334155]">
-              Solvora は、物理・数学・情報の解説ブログ、AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、学習アプリ <strong className="font-bold text-[#0b1d4a]">Physics・IT Pass</strong>、物理専門オンライン塾 <strong className="font-bold text-[#0b1d4a]">物理の森</strong> を集約する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。GIGA スクール構想後の高校・大学・社会人の学びをひとつの動線でつなぎます。
+              Solvora は、物理・数学・情報の解説ブログ、AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、学習アプリ <strong className="font-bold text-[#0b1d4a]">Solvora Physics・IT Pass</strong>、物理専門オンライン塾 <strong className="font-bold text-[#0b1d4a]">物理の森</strong> を集約する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。GIGA スクール構想後の高校・大学・社会人の学びをひとつの動線でつなぎます。
             </p>
 
-            {/* Three pillars — short value props */}
+            {/* Three pillars — short value props with iconic visuals */}
             <ul className="mt-12 grid gap-4 sm:mt-14 sm:grid-cols-3 sm:gap-5">
               {[
                 {
@@ -990,18 +1268,73 @@ export default function Home() {
                   title: "理解で解く。",
                   body: "公式暗記ではなく、現象を読み解く順序を設計する。",
                   accent: "#1d4ed8",
+                  bgFrom: "#eef4ff",
+                  bgTo: "#dbeafe",
+                  visual: (
+                    // Lightbulb + circuit lines (理解＝ひらめき)
+                    <svg viewBox="0 0 64 64" className="h-14 w-14" fill="none" aria-hidden="true">
+                      <circle cx="32" cy="28" r="14" fill="#fef3c7" />
+                      <path
+                        d="M32 14a10 10 0 0110 10c0 4-2 6-3.5 8-1 1.2-1.5 2.5-1.5 4h-10c0-1.5-.5-2.8-1.5-4-1.5-2-3.5-4-3.5-8a10 10 0 0110-10z"
+                        stroke="#1d4ed8"
+                        strokeWidth="2"
+                        fill="#ffffff"
+                      />
+                      <line x1="28" y1="40" x2="36" y2="40" stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round" />
+                      <line x1="29" y1="44" x2="35" y2="44" stroke="#1d4ed8" strokeWidth="2" strokeLinecap="round" />
+                      <path d="M30 46l4 4M34 46l-4 4" stroke="#1d4ed8" strokeWidth="1.5" strokeLinecap="round" opacity="0.5" />
+                      <path d="M14 28h-4M54 28h-4M32 6V2M18 14l-3-3M46 14l3-3" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  ),
                 },
                 {
                   no: "02",
                   title: "AI で軽く。",
                   body: "AI × LaTeX で、教材作成を毎週の負担から解放する。",
                   accent: "#f59e0b",
+                  bgFrom: "#fef3c7",
+                  bgTo: "#fed7aa",
+                  visual: (
+                    // Document with AI sparkle (AI教材作成)
+                    <svg viewBox="0 0 64 64" className="h-14 w-14" fill="none" aria-hidden="true">
+                      <rect x="14" y="10" width="32" height="44" rx="4" fill="#ffffff" stroke="#f59e0b" strokeWidth="2" />
+                      <line x1="20" y1="20" x2="36" y2="20" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" />
+                      <line x1="20" y1="26" x2="40" y2="26" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+                      <line x1="20" y1="32" x2="32" y2="32" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" opacity="0.5" />
+                      <rect x="20" y="40" width="20" height="8" rx="2" fill="#fef3c7" stroke="#f59e0b" strokeWidth="1.5" />
+                      <text x="30" y="46" textAnchor="middle" fontSize="6" fontWeight="800" fill="#92400e">PDF</text>
+                      <g transform="translate(46 8)">
+                        <path d="M8 0l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#f59e0b" />
+                        <circle cx="14" cy="14" r="2" fill="#f59e0b" opacity="0.6" />
+                      </g>
+                    </svg>
+                  ),
                 },
                 {
                   no: "03",
                   title: "動線でつなぐ。",
                   body: "ブログ → 教材 → アプリ → 塾。学びを止めない動線を組む。",
                   accent: "#0ea5e9",
+                  bgFrom: "#e0f2fe",
+                  bgTo: "#bae6fd",
+                  visual: (
+                    // Connected nodes flow (動線)
+                    <svg viewBox="0 0 64 64" className="h-14 w-14" fill="none" aria-hidden="true">
+                      <path
+                        d="M10 16 Q 22 16 22 32 Q 22 48 34 48 Q 46 48 50 36"
+                        stroke="#0ea5e9"
+                        strokeWidth="2.2"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeDasharray="3 3"
+                      />
+                      <circle cx="10" cy="16" r="5" fill="#ffffff" stroke="#0ea5e9" strokeWidth="2" />
+                      <circle cx="22" cy="32" r="5" fill="#ffffff" stroke="#0ea5e9" strokeWidth="2" />
+                      <circle cx="34" cy="48" r="5" fill="#ffffff" stroke="#0ea5e9" strokeWidth="2" />
+                      <circle cx="50" cy="36" r="6" fill="#0ea5e9" />
+                      <text x="50" y="39" textAnchor="middle" fontSize="6" fontWeight="800" fill="#ffffff">★</text>
+                    </svg>
+                  ),
                 },
               ].map((pillar) => (
                 <li
@@ -1013,14 +1346,24 @@ export default function Home() {
                     className="absolute inset-x-0 top-0 h-[3px]"
                     style={{ background: `linear-gradient(90deg, ${pillar.accent}, transparent 80%)` }}
                   />
-                  <span
-                    aria-hidden="true"
-                    className="block text-[0.72rem] font-extrabold tracking-[0.22em]"
-                    style={{ color: pillar.accent }}
-                  >
-                    {pillar.no}
-                  </span>
-                  <p className="mt-2 text-[1.18rem] font-extrabold leading-[1.45] tracking-[-0.005em] text-[#0b1d4a]">
+                  <div className="flex items-start justify-between gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="block text-[0.72rem] font-extrabold tracking-[0.22em]"
+                      style={{ color: pillar.accent }}
+                    >
+                      {pillar.no}
+                    </span>
+                    <span
+                      className="grid h-16 w-16 shrink-0 place-items-center rounded-[16px] ring-1 ring-[rgba(15,29,74,0.06)]"
+                      style={{
+                        background: `linear-gradient(135deg, ${pillar.bgFrom}, ${pillar.bgTo})`,
+                      }}
+                    >
+                      {pillar.visual}
+                    </span>
+                  </div>
+                  <p className="mt-4 text-[1.18rem] font-extrabold leading-[1.45] tracking-[-0.005em] text-[#0b1d4a]">
                     {pillar.title}
                   </p>
                   <p className="mt-2 text-[0.92rem] leading-[1.95] text-[#475569]">

@@ -117,10 +117,16 @@ function readPost(fileName: string): BlogPost {
   };
 }
 
-export function getAllPosts({ includeDrafts = false } = {}) {
+export function getAllPosts({
+  includeDrafts = false,
+  includeFuture = false,
+}: { includeDrafts?: boolean; includeFuture?: boolean } = {}) {
+  // Cut off at start-of-tomorrow in JST so posts dated "today" still publish.
+  const cutoff = Date.now() + 24 * 60 * 60 * 1000;
   return getBlogFileNames()
     .map(readPost)
     .filter((post) => includeDrafts || !post.draft)
+    .filter((post) => includeFuture || new Date(post.date).getTime() < cutoff)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
@@ -129,7 +135,12 @@ export function getLatestPosts(limit = 3) {
 }
 
 export function getPostBySlug(slug: string) {
-  return getAllPosts({ includeDrafts: true }).find((post) => post.slug === slug && !post.draft);
+  // Future-dated and draft posts can still be reached by direct URL (preview),
+  // but they are excluded from listings so visitors do not see "tomorrow's"
+  // articles on the homepage / index / sitemap.
+  return getAllPosts({ includeDrafts: true, includeFuture: true }).find(
+    (post) => post.slug === slug && !post.draft,
+  );
 }
 
 export function getPostSlugs() {

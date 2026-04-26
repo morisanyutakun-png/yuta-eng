@@ -102,7 +102,7 @@ export default function AboutPage() {
               EdTech で再設計する。
             </h1>
             <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
-              Solvora（ソルヴォラ）は、{siteConfig.author}が運営する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。AI 教材作成「Eddivom」、物理専門オンライン塾「物理の森」、学習アプリ「Physics」「IT Pass」の 4 つを公式入口として集約し、GIGA スクール構想以降の高校・大学・社会人の理系教育を、教材・AI・アプリの動線で一気通貫につなぎ直します。
+              Solvora（ソルヴォラ）は、{siteConfig.author}が運営する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。AI 教材作成「Eddivom」、物理専門オンライン塾「物理の森」、学習アプリ「Solvora Physics」「IT Pass」の 4 つを公式入口として集約し、GIGA スクール構想以降の高校・大学・社会人の理系教育を、教材・AI・アプリの動線で一気通貫につなぎ直します。
             </p>
           </div>
         </Container>
