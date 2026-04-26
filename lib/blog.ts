@@ -119,14 +119,14 @@ function readPost(fileName: string): BlogPost {
 
 export function getAllPosts({
   includeDrafts = false,
-  includeFuture = false,
-}: { includeDrafts?: boolean; includeFuture?: boolean } = {}) {
-  // Cut off at start-of-tomorrow in JST so posts dated "today" still publish.
-  const cutoff = Date.now() + 24 * 60 * 60 * 1000;
+}: { includeDrafts?: boolean } = {}) {
+  // Future-date filtering was removed: it silently hid published articles
+  // (e.g. the "考える力を育てる電磁気" textbook post) whenever today's date
+  // hadn't yet caught up to the frontmatter date. Use `draft: true` to keep
+  // a post unpublished instead.
   return getBlogFileNames()
     .map(readPost)
     .filter((post) => includeDrafts || !post.draft)
-    .filter((post) => includeFuture || new Date(post.date).getTime() < cutoff)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
@@ -135,10 +135,7 @@ export function getLatestPosts(limit = 3) {
 }
 
 export function getPostBySlug(slug: string) {
-  // Future-dated and draft posts can still be reached by direct URL (preview),
-  // but they are excluded from listings so visitors do not see "tomorrow's"
-  // articles on the homepage / index / sitemap.
-  return getAllPosts({ includeDrafts: true, includeFuture: true }).find(
+  return getAllPosts({ includeDrafts: true }).find(
     (post) => post.slug === slug && !post.draft,
   );
 }
