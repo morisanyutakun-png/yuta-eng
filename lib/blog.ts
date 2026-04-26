@@ -152,6 +152,24 @@ export function slugifyTag(tag: string): string {
   return tag.trim();
 }
 
+/**
+ * Read the build-stamp written by `scripts/precompute-og-cards.mjs` so card
+ * thumbnails can be cache-busted across deploys without breaking the
+ * `immutable` cache headers (URL changes → fresh cache key).
+ */
+let cachedOgVersion: string | null = null;
+export function getOgVersion(): string {
+  if (cachedOgVersion !== null) return cachedOgVersion;
+  try {
+    const versionPath = path.join(process.cwd(), "public", "og", ".version");
+    const v = fs.readFileSync(versionPath, "utf8").trim();
+    cachedOgVersion = v.length > 0 ? v : "v1";
+  } catch {
+    cachedOgVersion = "v1";
+  }
+  return cachedOgVersion;
+}
+
 /** Returns all unique tags with their post counts, sorted desc by count. */
 export function getAllTags(): { tag: string; count: number }[] {
   const counts = new Map<string, number>();

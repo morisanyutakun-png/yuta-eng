@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { siteConfig } from "@/data/site";
-import type { BlogPostMeta } from "@/lib/blog";
+import { getOgVersion, type BlogPostMeta } from "@/lib/blog";
 
 const categoryAccent: Record<string, { fg: string; bg: string }> = {
   Physics: { fg: "#0b1d4a", bg: "#dbeafe" },
@@ -35,7 +35,9 @@ type CardImageProps = {
  * runtime conversion, served straight from CDN with the build's Cache-Control.
  */
 function CardImage({ slug, title, preload, variant }: CardImageProps) {
+  const v = getOgVersion();
   const fileBase = `/og/${slug}`;
+  const q = `?v=${v}`;
   const sizes =
     variant === "featured"
       ? "(min-width: 1024px) 60vw, 100vw"
@@ -45,16 +47,16 @@ function CardImage({ slug, title, preload, variant }: CardImageProps) {
     <picture>
       <source
         type="image/avif"
-        srcSet={`${fileBase}-640.avif 640w, ${fileBase}-1200.avif 1200w`}
+        srcSet={`${fileBase}-640.avif${q} 640w, ${fileBase}-1200.avif${q} 1200w`}
         sizes={sizes}
       />
       <source
         type="image/webp"
-        srcSet={`${fileBase}-640.webp 640w, ${fileBase}-1200.webp 1200w`}
+        srcSet={`${fileBase}-640.webp${q} 640w, ${fileBase}-1200.webp${q} 1200w`}
         sizes={sizes}
       />
       <img
-        src={`${fileBase}.png`}
+        src={`${fileBase}.png${q}`}
         alt={title}
         width={1200}
         height={630}

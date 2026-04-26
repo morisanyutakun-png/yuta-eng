@@ -74,6 +74,9 @@ async function main() {
     total += 1;
   }
 
+  // Version stamp is written by `scripts/stamp-og-version.mjs` BEFORE
+  // `next build` so SSG can pick it up via `lib/blog.ts:getOgVersion()`.
+  // We don't overwrite it here.
   console.log(`[og] wrote ${total} files to public/og/ for ${slugs.length} posts`);
 }
 
