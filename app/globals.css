@@ -139,6 +139,26 @@ a {
 
 /* ── Solvora trust-style decorative primitives ── */
 
+/* Article reading-progress bar — slim strip pinned to the very top of the
+ * viewport. Only mounted on article pages by <ReadingTools/>. CLS-safe
+ * (fixed positioning, no layout impact). The transform-only animation is
+ * cheap on mobile GPUs.
+ */
+.reading-progress-bar {
+  --reading-progress: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1d4ed8 0%, #38bdf8 60%, #f59e0b 100%);
+  transform: scaleX(var(--reading-progress));
+  transform-origin: left center;
+  z-index: 60;
+  pointer-events: none;
+  will-change: transform;
+}
+
 .scroll-reveal {
   filter: blur(12px);
   opacity: 0;

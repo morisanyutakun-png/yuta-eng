@@ -41,7 +41,10 @@
   color: #0b1d4a;
   font-weight: 800;
   letter-spacing: -0.005em;
-  scroll-margin-top: 6rem;
+  /* Account for the sticky header (~56px mobile / ~70px desktop) plus a
+   * small breathing room so anchored sections aren't immediately flush
+   * with the header bottom edge. clamp() avoids a media query. */
+  scroll-margin-top: clamp(5rem, 7vh, 6.5rem);
 }
 
 .article-content h2 {
@@ -1631,6 +1634,31 @@
     margin-left: -0.25rem;
     margin-right: -0.25rem;
     border-radius: 12px;
+  }
+
+  /* Stronger right-edge gradient hint on mobile so readers see at a glance
+   * that the table can scroll horizontally — the previous 24px wash blended
+   * into the page background on slightly off-white sections. */
+  .article-table-scroll::after {
+    width: 36px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(15, 29, 74, 0.14)
+    );
+    opacity: 1;
+  }
+
+  /* Larger tap targets for inline article links on touch screens — gives a
+   * full ~44px line-height of vertical padding around the underline. */
+  .article-content a {
+    padding: 0.18em 0;
+  }
+
+  /* Mobile: pre/code horizontal scroll is comfortable on touch — hide the
+   * scrollbar and use a subtle inset shadow as the scroll affordance. */
+  .article-content pre {
+    box-shadow: inset -16px 0 16px -16px rgba(255, 255, 255, 0.18);
   }
 }
 

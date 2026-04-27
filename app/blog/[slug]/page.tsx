@@ -14,6 +14,8 @@ import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
 import { ArticleCard } from "@/components/article-card";
 import { mdxComponents, renderWithMath } from "@/components/mdx-components";
+import { ReadingTools } from "@/components/reading-tools";
+import { ScrollToTop } from "@/components/scroll-to-top";
 import { siteConfig } from "@/data/site";
 import { getOgVersion, getPostBySlug, getPostSlugs, getRelatedPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
@@ -100,6 +102,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
   return (
     <>
+      <ScrollToTop />
+      <ReadingTools />
       <link
         rel="preload"
         as="image"
@@ -129,26 +133,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <Container className="relative px-4 sm:px-6">
           <nav
             aria-label="パンくずリスト"
-            className="pt-4 text-[0.72rem] text-[#94a3b8] sm:pt-10 sm:text-[0.78rem]"
+            className="pt-3 text-[0.7rem] text-[#94a3b8] sm:pt-10 sm:text-[0.78rem]"
           >
-            <ol className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-              <li>
+            <ol className="flex flex-nowrap items-center gap-1.5 overflow-x-auto sm:flex-wrap sm:gap-2">
+              <li className="shrink-0">
                 <Link className="transition hover:text-[#1d4ed8]" href="/">
                   ホーム
                 </Link>
               </li>
-              <li aria-hidden="true" className="text-[#cbd5e1]">/</li>
-              <li>
+              <li aria-hidden="true" className="shrink-0 text-[#cbd5e1]">/</li>
+              <li className="shrink-0">
                 <Link className="transition hover:text-[#1d4ed8]" href="/blog">
                   ブログ
                 </Link>
               </li>
-              <li aria-hidden="true" className="text-[#cbd5e1]">/</li>
-              <li className="truncate text-[#475569]">{post.category}</li>
+              <li aria-hidden="true" className="shrink-0 text-[#cbd5e1]">/</li>
+              <li className="shrink-0 text-[#475569]">{post.category}</li>
             </ol>
           </nav>
 
-          <div className="mx-auto max-w-4xl pb-8 pt-5 sm:py-12 lg:py-14">
+          <div className="mx-auto max-w-4xl pb-6 pt-4 sm:py-12 lg:py-14">
             {/* Meta row: category pill + date + reading time */}
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.14em] sm:gap-x-3 sm:text-[0.74rem] sm:tracking-[0.18em]">
               <span
@@ -165,19 +169,20 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <span className="text-[#64748b]">{post.readingTime}</span>
             </div>
 
-            {/* Title */}
-            <h1 className="mt-3 text-balance text-[clamp(1.32rem,0.95rem+2.1vw,2.5rem)] font-extrabold leading-[1.55] tracking-[-0.005em] text-[#0b1d4a] sm:mt-4 sm:leading-[1.32]">
+            {/* Title — tighter line-height on mobile (1.42 → less wasted
+                vertical space; long Japanese titles still readable). */}
+            <h1 className="mt-2.5 text-balance text-[clamp(1.32rem,0.95rem+2.1vw,2.5rem)] font-extrabold leading-[1.42] tracking-[-0.005em] text-[#0b1d4a] sm:mt-4 sm:leading-[1.32]">
               {post.title}
             </h1>
 
             {/* Description in a structured panel for legibility */}
-            <div className="relative mt-5 rounded-[16px] bg-[#f8fbff] p-5 ring-1 ring-[rgba(15,29,74,0.08)] sm:mt-7 sm:rounded-[20px] sm:p-5">
+            <div className="relative mt-4 rounded-[14px] bg-[#f8fbff] p-4 ring-1 ring-[rgba(15,29,74,0.08)] sm:mt-7 sm:rounded-[20px] sm:p-5">
               <span
                 aria-hidden="true"
                 className="absolute left-0 top-3 h-[calc(100%-1.5rem)] w-[3px] rounded-r-full"
                 style={{ background: accent }}
               />
-              <p className="pl-3 text-pretty text-[clamp(0.96rem,0.92rem+0.3vw,1.05rem)] leading-[2.1] tracking-[0.02em] text-[#334155] sm:pl-4 sm:leading-[1.95]">
+              <p className="pl-3 text-pretty text-[0.92rem] leading-[1.95] tracking-[0.02em] text-[#334155] sm:pl-4 sm:text-[1.02rem] sm:leading-[1.95]">
                 {renderWithMath(post.description)}
               </p>
             </div>
