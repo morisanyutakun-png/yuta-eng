@@ -38,6 +38,12 @@ const zenKaku = localFont({
   display: "optional",
   fallback: ["Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "sans-serif"],
   adjustFontFallback: false,
+  // Don't preload the JP woff2. With `display: optional` the font is allowed
+  // ~100ms to arrive before the browser commits to fallback for the session;
+  // preloading just steals bandwidth from the LCP image on slow 4G. Letting
+  // the woff2 download lazily (after FCP) keeps the critical path narrow,
+  // and the font lands in cache for the next visit.
+  preload: false,
 });
 
 // Shippori Mincho was dropped entirely — `next/font/google` emits ~125

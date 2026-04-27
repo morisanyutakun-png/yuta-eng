@@ -121,94 +121,70 @@ export default function BlogPage() {
             </ol>
           </nav>
 
-          <div className="py-12 sm:py-20 lg:py-24">
-            <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.78rem]">
+          <div className="py-8 sm:py-14 lg:py-16">
+            <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.76rem]">
               Insights · 理系人材育成 EdTech
             </p>
-            <h1 className="mt-4 text-balance text-[2rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3.2rem]">
-              理系教育と EdTech の、
-              <br className="hidden sm:block" />
-              実装ノート。
+            {/* Smaller H1 — the previous 32–51px headline was the LCP element on
+                mobile and dominated the above-the-fold area. Tightening it lets
+                the (preloaded) featured card image become the LCP candidate
+                instead, which is much faster to settle. */}
+            <h1 className="mt-3 text-balance text-[1.55rem] font-extrabold leading-[1.3] tracking-[-0.005em] text-[#0b1d4a] sm:mt-4 sm:text-[2.1rem] sm:leading-[1.2] lg:text-[2.4rem]">
+              理系教育と EdTech の、実装ノート。
             </h1>
-            <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
-              高校物理を理解で解く読み方、AI × LaTeX で教材を作るワークフロー、GIGA スクール構想後の学習支援アプリ設計、学習科学のエビデンス。理系人材育成の現場で使える形に、1 記事ずつまとめています。
+            <p className="mt-4 max-w-2xl text-pretty text-[0.96rem] leading-[1.85] text-[#334155] sm:mt-5 sm:text-[1.02rem] sm:leading-[1.9]">
+              高校物理を理解で解く読み方、AI × LaTeX で教材を作るワークフロー、GIGA スクール構想後の学習支援アプリ設計。理系人材育成の現場で使える形に、1 記事ずつまとめています。
             </p>
 
-            {/* Category nav — links to each category landing page */}
-            <div className="mt-10">
-              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#94a3b8]">
-                Browse by category
-              </p>
-              <ul className="mt-4 flex flex-wrap gap-2 sm:gap-3">
-                {allCategories.map(({ category, count }) => {
-                  const accent = categoryAccent[category] ?? "#1d4ed8";
-                  return (
-                    <li key={category}>
-                      <Link
-                        href={`/blog/category/${category}`}
-                        className="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-[0.84rem] font-semibold ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_8px_18px_-10px_rgba(15,29,74,0.45)] sm:text-[0.88rem]"
-                        style={{ color: accent, borderColor: `${accent}33` }}
-                      >
-                        <span
-                          aria-hidden="true"
-                          className="h-1.5 w-1.5 rounded-full"
-                          style={{ background: accent }}
-                        />
-                        {categoryJpName[category] ?? category}
-                        <span className="text-[0.74rem] font-medium text-[#94a3b8]">
-                          {count}
-                        </span>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-
-            {/* Popular tag cloud — links to each tag landing page */}
-            {popularTags.length > 0 ? (
-              <div className="mt-8">
-                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#94a3b8]">
-                  Popular tags · ロングテールで深掘る
-                </p>
-                <ul className="mt-4 flex flex-wrap gap-1.5 sm:gap-2">
-                  {popularTags.map(({ tag, count }) => (
-                    <li key={tag}>
-                      <Link
-                        href={`/blog/tag/${encodeURIComponent(tag)}`}
-                        className="inline-flex items-center gap-1.5 rounded-full bg-[#f1f5f9] px-2.5 py-1 text-[0.74rem] font-medium text-[#475569] ring-1 ring-[rgba(15,29,74,0.06)] transition hover:bg-[#dbeafe] hover:text-[#1d4ed8] sm:text-[0.78rem]"
-                      >
-                        #{tag}
-                        {count > 1 ? (
-                          <span className="text-[0.66rem] font-semibold text-[#94a3b8]">
-                            {count}
-                          </span>
-                        ) : null}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : null}
+            {/* Category nav — kept above the fold (4 pills, light DOM cost). */}
+            <ul className="mt-6 flex flex-wrap gap-2 sm:mt-8 sm:gap-2.5">
+              {allCategories.map(({ category, count }) => {
+                const accent = categoryAccent[category] ?? "#1d4ed8";
+                return (
+                  <li key={category}>
+                    <Link
+                      href={`/blog/category/${category}`}
+                      className="inline-flex items-center gap-2 rounded-full border bg-white px-3.5 py-1.5 text-[0.82rem] font-semibold ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_8px_18px_-10px_rgba(15,29,74,0.45)] sm:text-[0.86rem]"
+                      style={{ color: accent, borderColor: `${accent}33` }}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="h-1.5 w-1.5 rounded-full"
+                        style={{ background: accent }}
+                      />
+                      {categoryJpName[category] ?? category}
+                      <span className="text-[0.72rem] font-medium text-[#94a3b8]">
+                        {count}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            {/* Popular tag cloud was moved below the fold (into the All
+                Articles section) to shrink the above-the-fold DOM. The full
+                tag index is still reachable from each article's tag list. */}
           </div>
         </Container>
       </section>
 
-      {/* FEATURED */}
+      {/* FEATURED — tighter padding so the preloaded card image lands inside
+          the initial viewport on mobile and becomes the LCP element directly,
+          rather than a hero-text candidate that's harder to nail down. */}
       {featuredPost ? (
         <section className="bg-[#f8fafc]">
-          <Container className="px-4 py-12 sm:px-6 sm:py-20">
+          <Container className="px-4 py-8 sm:px-6 sm:py-14">
             <div className="flex items-end justify-between gap-4">
               <div>
-                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">
+                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">
                   Featured
                 </p>
-                <h2 className="mt-2 text-[clamp(1.4rem,1rem+2vw,2.2rem)] font-extrabold leading-[1.32] tracking-[-0.005em] text-[#0b1d4a] sm:mt-3">
+                <h2 className="mt-1.5 text-[clamp(1.2rem,1rem+1.6vw,1.7rem)] font-extrabold leading-[1.32] tracking-[-0.005em] text-[#0b1d4a] sm:mt-2">
                   最新の記事
                 </h2>
               </div>
             </div>
-            <div className="mt-8 sm:mt-10">
+            <div className="mt-5 sm:mt-7">
               <ArticleCard post={featuredPost} variant="featured" preload />
             </div>
           </Container>
@@ -243,6 +219,34 @@ export default function BlogPage() {
               まだ公開記事はありません。
             </div>
           )}
+
+          {/* Popular tags — moved below the All Articles list. Outside the
+              critical path so DOM cost doesn't compete with LCP, and still
+              surfaces the long-tail tag landings for SEO. */}
+          {popularTags.length > 0 ? (
+            <div className="mt-14 sm:mt-20">
+              <p className="text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-[#94a3b8]">
+                Popular tags · ロングテールで深掘る
+              </p>
+              <ul className="mt-4 flex flex-wrap gap-1.5 sm:gap-2">
+                {popularTags.map(({ tag, count }) => (
+                  <li key={tag}>
+                    <Link
+                      href={`/blog/tag/${encodeURIComponent(tag)}`}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-[#f1f5f9] px-2.5 py-1 text-[0.74rem] font-medium text-[#475569] ring-1 ring-[rgba(15,29,74,0.06)] transition hover:bg-[#dbeafe] hover:text-[#1d4ed8] sm:text-[0.78rem]"
+                    >
+                      #{tag}
+                      {count > 1 ? (
+                        <span className="text-[0.66rem] font-semibold text-[#94a3b8]">
+                          {count}
+                        </span>
+                      ) : null}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </Container>
       </section>
     </>
