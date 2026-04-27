@@ -13,30 +13,30 @@ slug: "overleaf-free-physics-report-guide"
 draft: false
 searchIntent: "Overleaf を無料で使い始めて物理レポート（実験レポート・卒論）を書きたい大学生・大学院生・教員向け。LaTeX の基本〜図表挿入〜参考文献までを最短で押さえたい人。"
 keyPoints:
-  - "Overleaf 無料 使い方 を物理レポートを例に5ステップで体得できる"
-  - "Overleaf 物理 レポートで頻出の数式・図表・参考文献を一発で書ける"
-  - "LaTeX 図表 入れ方（graphicx, subfigure）と BibTeX 参考文献の手順がわかる"
+  - "Overleaf 無料プランの使い方を、物理レポートを例に 5 ステップで体得できる"
+  - "Overleaf で物理レポートを書くときに頻出する数式・図表・参考文献を一発で書ける"
+  - "LaTeX で図表を入れる手順（graphicx, subfigure）と BibTeX 参考文献の流れがわかる"
   - "Overleaf 無料プランの制限と、有料に切り替える判断基準がはっきりする"
 ---
 
-「**Overleaf 無料 使い方** を最短で覚えて物理レポートを書きたい」── 大学1年〜大学院生から最も多い相談です。Overleaf はオンラインで動く LaTeX エディタで、**インストール不要・PC性能不問・共同編集可** という強みがあります。本記事では Overleaf 物理 レポートを書く5ステップを、図表挿入と参考文献まで含めて1ページで完結させます。
+「**Overleaf 無料プランの使い方**を最短で覚えて、物理レポートを書きたい」── 大学 1 年〜大学院生から最も多い相談です。Overleaf はオンラインで動く LaTeX エディタで、**インストール不要・PC 性能不問・共同編集可** という強みがあります。本記事では **Overleaf で物理レポートを書く 5 ステップ** を、図表挿入と参考文献まで含めて 1 ページで完結させます。
 
 <KeyPoints
   title="この記事の結論"
   items={[
-    "Overleaf 無料 使い方 は『登録 → テンプレ → 数式 → 図表 → 参考文献 → ビルド』の5ステップ",
-    "物理レポートでは article クラス + amsmath + graphicx + bm + biblatex の5パッケージで足りる",
-    "LaTeX 図表 入れ方 は \\includegraphics と figure 環境の組み合わせで完結",
+    "Overleaf 無料プランの使い方は『登録 → テンプレ → 数式 → 図表 → 参考文献 → ビルド』の 5 ステップ",
+    "物理レポートでは article クラス + amsmath + graphicx + bm + biblatex の 5 パッケージで足りる",
+    "LaTeX で図表を入れるなら \\includegraphics と figure 環境の組み合わせで完結",
     "BibTeX 参考文献は .bib ファイルに DOI から自動取得が最短",
   ]}
 />
 
 <Toc
   items={[
-    { id: "h2-signup", label: "Step 1｜Overleaf 無料 登録とプロジェクト作成" },
+    { id: "h2-signup", label: "Step 1｜Overleaf に無料登録してプロジェクトを作る" },
     { id: "h2-template", label: "Step 2｜物理レポート向けテンプレートと最低限のパッケージ" },
     { id: "h2-math", label: "Step 3｜LaTeX 数式の書き方（物理頻出パターン）" },
-    { id: "h2-figures", label: "Step 4｜LaTeX 図表 入れ方｜画像と表を綺麗に挿入" },
+    { id: "h2-figures", label: "Step 4｜LaTeX で画像と表を綺麗に挿入する" },
     { id: "h2-bibliography", label: "Step 5｜BibTeX 参考文献を半自動で揃える" },
     { id: "h2-build", label: "PDF ビルドと共有・共同編集" },
     { id: "h2-limits", label: "Overleaf 無料プランの制限と有料化判断" },
@@ -44,9 +44,9 @@ keyPoints:
   ]}
 />
 
-## <span id="h2-signup">Step 1｜Overleaf 無料 登録とプロジェクト作成</span>
+## <span id="h2-signup">Step 1｜Overleaf に無料登録してプロジェクトを作る</span>
 
-**Overleaf 無料 使い方** の最初の一歩は、登録 → 新規プロジェクト作成です。
+Overleaf を使う最初の一歩は、登録 → 新規プロジェクト作成です。
 
 | 操作 | 手順 |
 | --- | --- |
@@ -61,7 +61,7 @@ LuaLaTeX + ltjsarticle が最短。ltjsarticle はクラスファイル自体が
 
 ## <span id="h2-template">Step 2｜物理レポート向けテンプレートと最低限のパッケージ</span>
 
-**Overleaf 物理 レポート** に必要なパッケージは5つだけです。これでレポートの9割が書けます。
+Overleaf で物理レポートを書くときに必要なパッケージは 5 つだけです。これでレポートの 9 割が書けます。
 
 ```latex
 \documentclass[a4paper,11pt]{ltjsarticle}
@@ -119,9 +119,9 @@ T = 2\pi\sqrt{\frac{m}{k}}.
 `\label{eq:newton}` を equation 環境内に置き、本文で `\eqref{eq:newton}` と書くと「式(1)」のように自動参照されます。レポートで多用すると章番号が変わっても自動追従。
 </Callout>
 
-## <span id="h2-figures">Step 4｜LaTeX 図表 入れ方｜画像と表を綺麗に挿入</span>
+## <span id="h2-figures">Step 4｜LaTeX で画像と表を綺麗に挿入する</span>
 
-**LaTeX 図表 入れ方** は graphicx パッケージで完結します。
+LaTeX で図表を入れるときは、graphicx パッケージで完結します。
 
 ### 画像（実験データのグラフなど）
 
@@ -243,15 +243,15 @@ DOI を [doi2bib.org](https://www.doi2bib.org/) や [Crossref](https://search.cr
 <Faq
   items={[
     {
-      q: "Overleaf 無料 使い方 で日本語が文字化けします。どうすれば？",
+      q: "Overleaf 無料プランで日本語が文字化けします。どうすれば？",
       a: "Compiler を LuaLaTeX に設定し、ドキュメントクラスを ltjsarticle にしてください。pdfLaTeX のままだと日本語は通りません。プロジェクト設定（左の歯車）から変更できます。",
     },
     {
-      q: "Overleaf 物理 レポート で実験データのグラフはどう貼ればいいですか？",
+      q: "Overleaf で物理レポートを書くとき、実験データのグラフはどう貼ればいいですか？",
       a: "Excel・Python（matplotlib）で作った PNG/PDF を Overleaf にアップロードし、\\includegraphics{figures/xxx.png} で貼ります。PDF で貼るとベクター画像になり、拡大しても綺麗です。matplotlib なら savefig('xxx.pdf') が推奨。",
     },
     {
-      q: "LaTeX 図表 入れ方 で図がずれて配置されます。",
+      q: "LaTeX で図表を入れたら、図がずれて配置されます。",
       a: "[h] や [t] は『この付近に置いてほしい』というヒントで強制ではありません。強制するなら [H]（要 float パッケージ）。ただし [H] を多用すると組版が崩れるので、基本は LaTeX に任せて [tb] あたりが推奨です。",
     },
     {
