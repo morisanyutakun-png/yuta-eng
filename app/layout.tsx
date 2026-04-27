@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 
+import { GoogleAnalyticsLoader } from "@/components/google-analytics-loader";
 import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -117,33 +117,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className="h-full antialiased">
-      <head>
-        {GA_MEASUREMENT_ID ? (
-          <link
-            rel="preconnect"
-            href="https://www.googletagmanager.com"
-            crossOrigin=""
-          />
-        ) : null}
-      </head>
+      <head />
       <body className="flex min-h-full flex-col">
         {GA_MEASUREMENT_ID ? (
-          <>
-            {/* GA4: lazyOnload defers ~150KB of script until the browser is
-                idle, so it never competes with LCP/INP on first visit. */}
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-              strategy="lazyOnload"
-            />
-            <Script id="ga4-init" strategy="lazyOnload">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_MEASUREMENT_ID}', { send_page_view: true });
-              `}
-            </Script>
-          </>
+          <GoogleAnalyticsLoader measurementId={GA_MEASUREMENT_ID} />
         ) : null}
         <JsonLd data={createWebsiteJsonLd()} />
         <JsonLd data={createOrganizationJsonLd()} />
