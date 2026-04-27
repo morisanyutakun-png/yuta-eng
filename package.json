@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/stamp-og-version.mjs && next build && node scripts/precompute-og-cards.mjs",
+    "build": "node scripts/stamp-og-version.mjs && next build && node scripts/precompute-og-cards.mjs && node scripts/inline-critical-css.mjs",
     "start": "next start",
     "lint": "eslint"
   },
@@ -24,6 +24,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "beasties": "^0.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
     "tailwindcss": "^4",
