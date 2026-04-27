@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
 import Script from "next/script";
 
 import { JsonLd } from "@/components/json-ld";
@@ -17,47 +16,17 @@ import "./globals.css";
 const GA_MEASUREMENT_ID =
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-WT6BZVH9YJ";
 
-// We ship only Regular (400) and Bold (700). The Medium (500) weight was
-// dropped — at ~220KB extra on slow 4G it hurt LCP on the Moto-G-Power class
-// devices; for "font-medium" callers the browser snaps to the nearest declared
-// weight (Regular), which is visually a near-imperceptible difference for the
-// small detail text where 500 was used.
-//
-// `display: "optional"` prevents the late-arriving JP woff2 from re-painting
-// the LCP element on slow networks. Browsers give the font ~100ms to download;
-// if it misses, the fallback (Hiragino on iOS, system Noto Sans CJK on Android)
-// stays for the whole session and the cached font is used on the next visit.
-// This reliably shaves 1–3s off the LCP on slow 4G — worth the small first-
-// paint typeface mismatch on cold visits.
-const zenKaku = localFont({
-  variable: "--font-sans-jp",
-  src: [
-    { path: "../public/fonts/NotoSansJP-Regular.woff2", weight: "400", style: "normal" },
-    { path: "../public/fonts/NotoSansJP-Bold.woff2", weight: "700", style: "normal" },
-  ],
-  display: "optional",
-  fallback: ["Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", "sans-serif"],
-  adjustFontFallback: false,
-  // Don't preload the JP woff2. With `display: optional` the font is allowed
-  // ~100ms to arrive before the browser commits to fallback for the session;
-  // preloading just steals bandwidth from the LCP image on slow 4G. Letting
-  // the woff2 download lazily (after FCP) keeps the critical path narrow,
-  // and the font lands in cache for the next visit.
-  preload: false,
-});
-
-// Shippori Mincho was dropped entirely — `next/font/google` emits ~125
-// `unicode-range` @font-face declarations per weight for CJK fonts, costing
-// ~96KB of render-blocking CSS on every page. We rely on the OS Mincho
-// fallback chain (Hiragino Mincho ProN / Yu Mincho / serif) instead, which
-// is visually almost identical on JP devices and adds zero network cost.
-//
-// Geist Mono was also dropped from the layout. It was only used inside MDX
-// `<code>` blocks on article pages; loading it in the root layout added
-// @font-face bytes to every page (including the /blog index, which has no
-// monospaced text). Article pages now fall back to the OS monospace stack —
-// `ui-monospace, SF Mono, Menlo, Consolas, Liberation Mono, monospace` — set
-// directly in `article.css`.
+// Web fonts dropped entirely. Lighthouse showed `NotoSansJP-Regular.woff2`
+// (219 KB) and `NotoSansJP-Bold.woff2` (224 KB) sitting in the LCP critical
+// chain at 1.4–1.5s on slow 4G — together they were the largest remaining
+// FCP/LCP block. JP-locale devices already ship excellent system fonts:
+//   • iOS / iPadOS : Hiragino Sans (sans-serif), Hiragino Mincho (serif)
+//   • macOS        : Hiragino Sans / Hiragino Mincho
+//   • Android      : Noto Sans CJK JP (built into the OS)
+//   • Windows      : Yu Gothic UI / Meiryo
+// The CSS variable `--font-sans-jp` is still referenced by `globals.css` but
+// resolves to `undefined`, which CSS gracefully skips, falling through to the
+// next entry in the stack. Net savings: ~440 KB on first visit, ~1.5s LCP.
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -147,24 +116,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="ja"
-      className={`${zenKaku.variable} h-full antialiased`}
-    >
+    <html lang="ja" className="h-full antialiased">
       <head>
-        {/* Preconnect to third-party origins so the GA & gtag handshake
-            (DNS+TLS) overlaps with HTML parsing instead of blocking later. */}
         {GA_MEASUREMENT_ID ? (
-          <>
-            <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
-            <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-          </>
+          <link
+            rel="preconnect"
+            href="https://www.googletagmanager.com"
+            crossOrigin=""
+          />
         ) : null}
       </head>
       <body className="flex min-h-full flex-col">
         {GA_MEASUREMENT_ID ? (
           <>
-            {/* GA4: lazyOnload defers ~75KB of script until the browser is
+            {/* GA4: lazyOnload defers ~150KB of script until the browser is
                 idle, so it never competes with LCP/INP on first visit. */}
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}

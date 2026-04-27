@@ -166,7 +166,7 @@
   border-radius: 999px;
   background: var(--accent-deep);
   color: #ffffff;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 0.82rem;
   font-weight: 700;
 }
@@ -200,7 +200,7 @@
   background: #fbf6e8;
   padding: 1.1rem 1.25rem 1.1rem 1.6rem;
   color: #3a2c0a;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-weight: 500;
   letter-spacing: 0.04em;
   line-height: 2;
@@ -211,7 +211,7 @@
   position: absolute;
   left: 0.45rem;
   top: -0.05rem;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 2.4rem;
   color: rgba(200, 146, 17, 0.45);
   line-height: 1;
@@ -300,7 +300,7 @@
 
 .article-content thead th {
   padding: 0.85rem 1rem;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-weight: 800;
   text-align: left;
   letter-spacing: 0.04em;
@@ -403,7 +403,7 @@
   background: var(--lumora-callout-accent);
   color: #ffffff;
   border-radius: 0.25rem;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -412,7 +412,7 @@
 
 .lumora-callout-title {
   margin: 0 0 0.45rem;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--lumora-callout-fg);
@@ -440,7 +440,7 @@
   align-items: center;
   gap: 0.55rem;
   margin-bottom: 0.85rem;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 0.92rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -517,7 +517,7 @@
   border-radius: 999px;
   background: var(--accent-deep);
   color: #ffffff;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -525,7 +525,7 @@
 
 .lumora-step-title {
   margin: 0.15rem 0 0.4rem;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--ink);
@@ -573,7 +573,7 @@
 }
 
 .lumora-comparison-label {
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -609,7 +609,7 @@
 
 .lumora-figure-caption {
   margin-top: 0.75rem;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 0.82rem;
   color: var(--ink-soft);
   letter-spacing: 0.06em;
@@ -628,7 +628,7 @@
   display: flex;
   gap: 0.65rem;
   align-items: flex-start;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-weight: 700;
   font-size: 1rem;
   color: var(--ink);
@@ -647,7 +647,7 @@
   border-radius: 0.25rem;
   background: var(--accent-deep);
   color: #ffffff;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 0.82rem;
   font-weight: 700;
 }
@@ -676,7 +676,7 @@
   border-radius: 0.25rem;
   background: var(--accent-warm);
   color: #ffffff;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 0.82rem;
   font-weight: 700;
 }
@@ -707,7 +707,7 @@
 }
 
 .lumora-cta-card-eyebrow {
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.22em;
@@ -716,7 +716,7 @@
 }
 
 .lumora-cta-card-title {
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 1.18rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -744,7 +744,7 @@
   border-radius: 0.3rem;
   background: var(--accent-warm);
   color: #1a1a1a;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-weight: 700;
   font-size: 0.86rem;
   text-decoration: none;
@@ -771,7 +771,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 0.92rem;
   font-weight: 700;
   letter-spacing: 0.16em;
@@ -817,7 +817,7 @@
   position: absolute;
   left: 0;
   top: 0.18rem;
-  font-family: var(--font-serif-jp), serif;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--accent-warm);

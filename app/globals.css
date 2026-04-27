@@ -17,16 +17,21 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  /* System-only font stacks. JP devices ship Hiragino (iOS/macOS), Noto Sans
+   * CJK JP (Android, built into the OS), or Yu Gothic / Meiryo (Windows) by
+   * default — all visually equivalent to Noto Sans JP for body copy, with
+   * zero network cost. Saves ~440 KB on first visit on slow 4G. */
   --font-sans:
-    var(--font-sans-jp),
-    "Hiragino Kaku Gothic ProN",
+    -apple-system,
+    BlinkMacSystemFont,
     "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN",
     "Yu Gothic Medium",
     "Yu Gothic",
     "Meiryo",
+    "Noto Sans CJK JP",
     sans-serif;
   --font-serif:
-    var(--font-serif-jp),
     "Hiragino Mincho ProN",
     "Yu Mincho",
     "YuMincho",
