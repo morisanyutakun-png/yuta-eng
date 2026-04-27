@@ -44,10 +44,13 @@ async function main() {
     // `/_next` segment when resolving stylesheet hrefs to disk paths.
     path: STATIC_DIR,
     publicPath: "/_next/",
-    // Inline above-the-fold rules; defer the rest. `swap` strategy injects a
-    // `<link rel="preload" ... onload="...">` swap so the remaining sheet
-    // applies once it arrives without blocking FCP.
-    preload: "swap",
+    // `media` strategy uses the well-known `media="print" onload="this.media='all'"`
+    // trick. Browsers fetch print-media stylesheets at low priority and never
+    // block render with them; on `onload` we promote the sheet back to `all`
+    // media so it applies. Lighthouse explicitly recognizes this pattern as
+    // non-render-blocking, whereas the older `swap` preload still showed up
+    // in the critical-request-chain audit.
+    preload: "media",
     pruneSource: false,
     inlineFonts: false,
     fonts: false,

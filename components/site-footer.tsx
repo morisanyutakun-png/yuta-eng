@@ -122,7 +122,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-[rgba(15,29,74,0.1)] pt-6 text-[0.8rem] text-[#94a3b8] sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-2 border-t border-[rgba(15,29,74,0.1)] pt-6 text-[0.8rem] text-[#475569] sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {siteConfig.name}</p>
           <p>Built with Next.js · TypeScript · Tailwind CSS</p>
         </div>
