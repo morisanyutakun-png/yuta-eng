@@ -1493,12 +1493,12 @@
   }
 }
 
-/* Smooth scroll for in-page nav */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
+/* Smooth scroll was previously applied site-wide to <html>, but it caused
+ * the post-navigation `window.scrollTo(0, 0)` (run by Next.js Link on route
+ * change) to play as a *visible* smooth animation — readers saw the page
+ * scrolling from where they left off on /blog up to the article's top, which
+ * felt like the article opened mid-page. Instant scroll now; in-page anchor
+ * clicks (TOC/back-to-top) opt into smooth via JS where appropriate. */
 
 /* Improve focus visibility for keyboard nav (a11y + SEO/UX) */
 .article-content a:focus-visible,

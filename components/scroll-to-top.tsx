@@ -1,28 +1,30 @@
 "use client";
 
-import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useLayoutEffect } from "react";
 
 /**
- * Resets the scroll position to (0, 0) on mount.
+ * Forces a scroll-to-(0, 0) on every route change. Combined with the inline
+ * script in `app/layout.tsx` that flips `history.scrollRestoration` to
+ * "manual" *before* hydration runs, this guarantees readers always land at
+ * the top of the article — never mid-page from a leftover scroll position.
  *
- * Why: Browsers (and Next.js App Router under some conditions) restore the
- * previous page's scroll position on navigation, so when a reader scrolls
- * partway down /blog and clicks an article card, the article opens already
- * scrolled — the title is offscreen. Mounting this on the article page forces
- * a top-of-page start every time the route renders.
- *
- * `scrollRestoration = "manual"` tells the browser not to restore on its own,
- * and the explicit `scrollTo(0, 0)` covers cases where the navigation already
- * landed mid-page before this effect ran.
+ * `useLayoutEffect` is used instead of `useEffect` so the scroll happens
+ * synchronously before the browser paints the new route, killing the
+ * brief "open mid-page then jump" flash that `useEffect` allowed.
  */
 export function ScrollToTop() {
-  useEffect(() => {
+  const pathname = usePathname();
+
+  useLayoutEffect(() => {
     if (typeof window === "undefined") return;
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
-    window.scrollTo(0, 0);
-  }, []);
+    // Use `instant` to bypass any `scroll-behavior: smooth` applied via CSS
+    // — readers must not see a visible scroll animation on route entry.
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+  }, [pathname]);
 
   return null;
 }
