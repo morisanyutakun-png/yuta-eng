@@ -1,12 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Modern build target — drops legacy Babel polyfills (~14 KiB) that
-  // Lighthouse flagged under "以前の JavaScript". Browser support matches the
-  // top-level `browserslist` field in package.json.
-  experimental: {
-    optimizePackageImports: ["next-mdx-remote"],
-  },
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [70, 75, 90],

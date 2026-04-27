@@ -152,25 +152,11 @@ export default function RootLayout({
       className={`${zenKaku.variable} h-full antialiased`}
     >
       <head>
-        {/* Disable browser scroll-restoration *before* any rendering happens.
-            Without this, navigating from a scrolled /blog into an article
-            briefly preserved the previous scroll-Y on the new page, so the
-            article opened mid-page (often at the TOC) before the React
-            effect could correct it. The inline script runs synchronously
-            during HTML parsing, so by the time the browser paints the new
-            route the scroll is already at (0, 0). */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "if('scrollRestoration' in history){history.scrollRestoration='manual'}",
-          }}
-        />
         {/* Preconnect to third-party origins so the GA & gtag handshake
             (DNS+TLS) overlaps with HTML parsing instead of blocking later. */}
         {GA_MEASUREMENT_ID ? (
           <>
             <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
-            <link rel="preconnect" href="https://www.google-analytics.com" crossOrigin="" />
             <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
           </>
         ) : null}

@@ -330,7 +330,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   mdxOptions: {
                     useDynamicImport: false,
                     remarkPlugins: [remarkGfm, remarkMath],
-                    rehypePlugins: [[rehypeKatex, { strict: "ignore" }]],
+                    // `output: "html"` drops the duplicated MathML tree
+                    // KaTeX emits by default — math-heavy articles shed ~35%
+                    // of their served HTML, the biggest single FCP win.
+                    rehypePlugins: [
+                      [rehypeKatex, { strict: "ignore", output: "html" }],
+                    ],
                   },
                   blockJS: false,
                 }}

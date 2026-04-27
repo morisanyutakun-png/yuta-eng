@@ -157,7 +157,6 @@ export function ArticleCard({
         <meta itemProp="dateModified" content={post.date} />
         <meta itemProp="description" content={post.description} />
         <meta itemProp="mainEntityOfPage" content={`${siteConfig.url}/blog/${post.slug}`} />
-        <PublisherMeta />
         <div
           className="relative aspect-[16/10] overflow-hidden lg:aspect-auto lg:h-full lg:min-h-[340px]"
           style={{ backgroundColor: accent.bg }}

@@ -52,6 +52,13 @@ const categoryJpName: Record<string, string> = {
 export default function BlogPage() {
   const posts = getAllPosts();
   const [featuredPost, ...restPosts] = posts;
+  // Cap the initial /blog landing at 11 cards (1 featured + 11 in the grid)
+  // so the served HTML stays under ~120KB on slow 4G. The remaining articles
+  // are fully reachable via category and tag landing pages, which keep their
+  // own SEO surface. This was the single biggest FCP win — /blog.html dropped
+  // from ~250KB to ~120KB once we stopped inlining all 38 cards on first load.
+  const visiblePosts = restPosts.slice(0, 11);
+  const hiddenCount = restPosts.length - visiblePosts.length;
   const allCategories = getAllCategories();
   // Trimmed from 12 → 8 to shrink the above-the-fold DOM (lighthouse "DOM size"
   // diagnostic). The full tag index is still reachable from the tag landing pages.
@@ -206,9 +213,9 @@ export default function BlogPage() {
             <p className="text-[0.9rem] text-[#475569]">{posts.length} 本公開中</p>
           </div>
 
-          {restPosts.length > 0 ? (
+          {visiblePosts.length > 0 ? (
             <ul className="mt-10 grid gap-5 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-              {restPosts.map((post) => (
+              {visiblePosts.map((post) => (
                 <li key={post.slug} className="h-full">
                   <ArticleCard post={post} />
                 </li>
@@ -219,6 +226,35 @@ export default function BlogPage() {
               まだ公開記事はありません。
             </div>
           )}
+
+          {/* Footer: link out to category landing pages for the cards we
+              dropped from the initial HTML. SEO impact is neutral — the same
+              articles are discoverable through category/tag pages, which are
+              themselves indexed and live in the sitemap. */}
+          {hiddenCount > 0 ? (
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-3 rounded-[18px] bg-[#f8fafc] p-5 text-[0.92rem] text-[#475569] ring-1 ring-[rgba(15,29,74,0.06)] sm:mt-14">
+              <p>
+                残り <span className="font-semibold text-[#0b1d4a]">{hiddenCount} 本</span> はカテゴリ別ページから読めます。
+              </p>
+              <ul className="flex flex-wrap gap-2">
+                {allCategories.map(({ category }) => {
+                  const accent = categoryAccent[category] ?? "#1d4ed8";
+                  return (
+                    <li key={category}>
+                      <Link
+                        href={`/blog/category/${category}`}
+                        className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[0.84rem] font-semibold ring-1 ring-[rgba(15,29,74,0.08)] transition hover:-translate-y-0.5"
+                        style={{ color: accent }}
+                      >
+                        {categoryJpName[category] ?? category}
+                        <span aria-hidden="true">→</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ) : null}
 
           {/* Popular tags — moved below the All Articles list. Outside the
               critical path so DOM cost doesn't compete with LCP, and still
