@@ -56,147 +56,201 @@ type Visual = {
 };
 
 function MoriArtwork() {
-  // 物理の森: trees / wave / dotted ground — warm paper feel of the app's hero.
+  // 物理の森: faithful scale-up of physics.yuta-eng.com/icon.svg.
+  // Source favicon palette / motif:
+  //   - Background gradient: #142341 → #0a1528 → #1f5aa6 (navy ↘ deep ↘ blue)
+  //   - Radial gold glow: #caa34b (the "warm sun behind the orbits")
+  //   - 3 atomic ellipses at 0° / 60° / -60° in blue / orange / sage
+  //     (#3b7cd9 / #e28040 / #597a5b)
+  //   - Center: gold dot (#caa34b) + white core (#fdfbf5)
+  // We reproduce the same DNA in a 480×320 frame and add the brand-site
+  // wave at the bottom (matches physics.yuta-eng.com hero).
   return (
     <svg
       viewBox="0 0 480 320"
       className="h-full w-full"
       role="img"
-      aria-label="物理の森のビジュアル：紙のような暖色背景に三本の杉と物理の波形"
+      aria-label="物理の森のブランドビジュアル：navy 基調の背景に金の輝きと 3 本の原子軌道（青・橙・苔色）"
     >
       <defs>
+        <linearGradient id="mori-bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#142341" />
+          <stop offset="55%" stopColor="#0a1528" />
+          <stop offset="100%" stopColor="#1f5aa6" />
+        </linearGradient>
+        <radialGradient id="mori-glow" cx="0.5" cy="0.5" r="0.45">
+          <stop offset="0%" stopColor="#caa34b" stopOpacity="0.6" />
+          <stop offset="100%" stopColor="#caa34b" stopOpacity="0" />
+        </radialGradient>
         <linearGradient id="mori-wave" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor="#3b7cd9" stopOpacity="0" />
-          <stop offset="50%" stopColor="#3b7cd9" stopOpacity="0.45" />
+          <stop offset="50%" stopColor="#3b7cd9" stopOpacity="0.4" />
           <stop offset="100%" stopColor="#e28040" stopOpacity="0" />
         </linearGradient>
-        <linearGradient id="mori-tree" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1f3a6b" />
-          <stop offset="100%" stopColor="#0e1e3d" />
-        </linearGradient>
       </defs>
-      {/* Cream paper backdrop */}
-      <rect width="480" height="320" fill="#fbf5e6" rx="12" />
-      <rect
-        width="480"
-        height="320"
-        rx="12"
-        fill="url(#mori-grain)"
-        opacity="0.04"
+
+      {/* Background: same navy gradient as the app favicon */}
+      <rect width="480" height="320" fill="url(#mori-bg)" rx="12" />
+
+      {/* Subtle grid texture (matches the brand site's 26px diagonal grid) */}
+      <defs>
+        <pattern id="mori-grid" width="32" height="32" patternUnits="userSpaceOnUse">
+          <path d="M0 32 L32 0" stroke="#caa34b" strokeWidth="0.4" opacity="0.18" />
+        </pattern>
+      </defs>
+      <rect width="480" height="320" rx="12" fill="url(#mori-grid)" />
+
+      {/* Gold radial glow centered behind the orbits */}
+      <circle cx="240" cy="160" r="135" fill="url(#mori-glow)" />
+
+      {/* 3 atomic-orbit ellipses (the favicon's signature motif) */}
+      <g transform="translate(240 160)" fill="none" strokeWidth="2.4" strokeLinecap="round">
+        <ellipse rx="135" ry="48" stroke="#3b7cd9" />
+        <ellipse rx="135" ry="48" stroke="#e28040" transform="rotate(60)" />
+        <ellipse rx="135" ry="48" stroke="#597a5b" transform="rotate(-60)" />
+      </g>
+
+      {/* Center nucleus: gold dot + white core (same as favicon) */}
+      <circle cx="240" cy="160" r="22" fill="#caa34b" opacity="0.32" />
+      <circle cx="240" cy="160" r="12" fill="#caa34b" />
+      <circle cx="240" cy="160" r="5" fill="#fdfbf5" />
+
+      {/* Decorative orbital electrons */}
+      <circle cx="375" cy="160" r="3.5" fill="#3b7cd9" />
+      <circle cx="172" cy="103" r="3.5" fill="#e28040" />
+      <circle cx="172" cy="217" r="3" fill="#597a5b" />
+
+      {/* Brand-site wave at the bottom (same gradient as physics.yuta-eng.com hero) */}
+      <path
+        d="M0,288 C80,256 160,316 240,288 C320,260 400,316 480,288"
+        stroke="url(#mori-wave)"
+        strokeWidth="2"
+        fill="none"
       />
-      <pattern
-        id="mori-grain"
-        width="22"
-        height="22"
-        patternUnits="userSpaceOnUse"
+      <path
+        d="M0,300 C80,272 160,326 240,300 C320,274 400,326 480,300"
+        stroke="url(#mori-wave)"
+        strokeWidth="1.2"
+        fill="none"
+        opacity="0.55"
+      />
+
+      {/* Wordmark hint (small, low-contrast — mirrors the favicon's quiet brand style) */}
+      <text
+        x="240"
+        y="44"
+        textAnchor="middle"
+        fontFamily="serif"
+        fontSize="11"
+        fontWeight="700"
+        fill="#caa34b"
+        letterSpacing="6"
+        opacity="0.85"
       >
-        <path d="M0 22 L22 0" stroke="#142341" strokeWidth="0.6" />
-      </pattern>
-      {/* Sun-like orange orb top-right */}
-      <circle cx="396" cy="60" r="46" fill="#f5d68a" opacity="0.7" />
-      <circle cx="396" cy="60" r="22" fill="#e28040" opacity="0.85" />
-      {/* Sky-blue orb top-left */}
-      <circle cx="60" cy="48" r="38" fill="#9bbcff" opacity="0.6" />
-      {/* Three stylised cedars (the 森 motif) */}
-      {[
-        { x: 110, h: 1 },
-        { x: 240, h: 1.18 },
-        { x: 360, h: 0.92 },
-      ].map((t, i) => (
-        <g key={i} transform={`translate(${t.x} ${110}) scale(1 ${t.h})`}>
-          <path d="M0 0 L 26 60 L -26 60 Z" fill="url(#mori-tree)" />
-          <path d="M0 30 L 32 100 L -32 100 Z" fill="url(#mori-tree)" />
-          <path d="M0 60 L 38 140 L -38 140 Z" fill="url(#mori-tree)" />
-          <rect x="-3" y="138" width="6" height="20" fill="#3a2c0a" />
-        </g>
-      ))}
-      {/* Physics wave across the bottom */}
-      <path
-        d="M0,278 C80,250 160,310 240,278 C320,246 400,310 480,278"
-        stroke="url(#mori-wave)"
-        strokeWidth="2.4"
-        fill="none"
-      />
-      <path
-        d="M0,290 C80,266 160,318 240,290 C320,262 400,318 480,290"
-        stroke="url(#mori-wave)"
-        strokeWidth="1.4"
-        fill="none"
-        opacity="0.6"
-      />
-      {/* Dotted ground texture */}
-      {Array.from({ length: 18 }).map((_, i) => (
-        <circle
-          key={i}
-          cx={20 + i * 26}
-          cy={302}
-          r={1.3}
-          fill="#142341"
-          opacity="0.45"
-        />
-      ))}
+        MORI PHYSICS FOREST
+      </text>
     </svg>
   );
 }
 
 function EddivomArtwork() {
-  // AI core + LaTeX braces + page lines — matches the article OG style.
+  // Eddivom: faithful scale-up of eddivom.yuta-eng.com/icon.svg.
+  // Source favicon palette / motif:
+  //   - Background gradient: Indigo → Violet → Fuchsia
+  //     (#4f46e5 → #7c3aed → #c026d3)
+  //   - 3 white worksheet-text rows (middle one shorter, leaves room for AI)
+  //   - White circle on the right = AI / answer / check
+  //   - 22% rounded corners (iOS/Android icon convention)
+  // We keep the exact icon DNA at the card-size, plus a soft top-light
+  // highlight to match the favicon's `#shine` overlay.
   return (
     <svg
       viewBox="0 0 480 320"
       className="h-full w-full"
       role="img"
-      aria-label="Eddivom のビジュアル：AI コアから LaTeX 整形と PDF が放射するレイアウト"
+      aria-label="Eddivom のブランドビジュアル：indigo→violet→fuchsia のグラデに教材 3 本線と AI 円"
     >
       <defs>
-        <linearGradient id="ed-bg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#1e1b4b" />
-          <stop offset="50%" stopColor="#5b21b6" />
-          <stop offset="100%" stopColor="#06b6d4" />
+        <linearGradient id="ed-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#4f46e5" />
+          <stop offset="50%" stopColor="#7c3aed" />
+          <stop offset="100%" stopColor="#c026d3" />
+        </linearGradient>
+        <linearGradient id="ed-shine" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="white" stopOpacity="0.22" />
+          <stop offset="45%" stopColor="white" stopOpacity="0" />
         </linearGradient>
       </defs>
+
+      {/* Background: exact same gradient as the favicon */}
       <rect width="480" height="320" fill="url(#ed-bg)" rx="12" />
-      <circle cx="120" cy="80" r="80" fill="#c026d3" opacity="0.32" />
-      <circle cx="380" cy="240" r="100" fill="#22d3ee" opacity="0.25" />
-      {/* LaTeX braces */}
-      <path
-        d="M 130 120 Q 100 120 100 160 Q 100 175 86 180 Q 100 185 100 200 Q 100 240 130 240"
-        stroke="#ede9fe"
-        strokeWidth="3.4"
-        fill="none"
-        strokeLinecap="round"
-      />
-      <path
-        d="M 350 120 Q 380 120 380 160 Q 380 175 394 180 Q 380 185 380 200 Q 380 240 350 240"
-        stroke="#ede9fe"
-        strokeWidth="3.4"
-        fill="none"
-        strokeLinecap="round"
-      />
-      {/* AI core */}
-      <circle cx="240" cy="180" r="46" fill="#ede9fe" opacity="0.95" />
-      <circle cx="240" cy="180" r="46" fill="none" stroke="#c4b5fd" strokeWidth="2" />
-      <path
-        d="M 240 156 l 7 16 l 16 7 l -16 7 l -7 16 l -7 -16 l -16 -7 l 16 -7 z"
-        fill="#5b21b6"
-      />
-      {/* "PDF" page (right) */}
-      <rect
-        x="170"
-        y="76"
-        width="56"
-        height="32"
-        rx="4"
-        stroke="#22d3ee"
-        strokeWidth="2"
-        fill="rgba(255,255,255,0.08)"
-      />
-      <line x1="180" y1="86" x2="216" y2="86" stroke="#22d3ee" strokeWidth="1.6" />
-      <line x1="180" y1="94" x2="208" y2="94" stroke="#22d3ee" strokeWidth="1.6" opacity="0.7" />
-      <line x1="180" y1="102" x2="200" y2="102" stroke="#22d3ee" strokeWidth="1.6" opacity="0.5" />
-      {/* Sparkles */}
-      <path d="M 410 60 l 4 10 l 10 4 l -10 4 l -4 10 l -4 -10 l -10 -4 l 10 -4 z" fill="#ede9fe" opacity="0.85" />
-      <path d="M 50 250 l 3 8 l 8 3 l -8 3 l -3 8 l -3 -8 l -8 -3 l 8 -3 z" fill="#22d3ee" opacity="0.7" />
+      {/* Top shine layer (matches favicon's #shine overlay) */}
+      <rect width="480" height="320" rx="12" fill="url(#ed-shine)" />
+
+      {/* Soft accent orbs to add depth without breaking brand DNA */}
+      <circle cx="60" cy="60" r="80" fill="#c026d3" opacity="0.22" />
+      <circle cx="430" cy="280" r="100" fill="#4f46e5" opacity="0.28" />
+
+      {/* Centered favicon-style mark — the recognizable Eddivom glyph,
+          scaled up so it dominates the card. The favicon ViewBox is 256x256
+          and we mirror the same coordinates inside an offset translate. */}
+      <g transform="translate(112 32)">
+        {/* Rounded "icon plate" backdrop, slightly translucent so it sits
+            on the card gradient like a brand chip */}
+        <rect
+          width="256"
+          height="256"
+          rx="56"
+          ry="56"
+          fill="rgba(255,255,255,0.06)"
+          stroke="rgba(255,255,255,0.18)"
+          strokeWidth="2"
+        />
+        {/* 3 white worksheet rows (favicon DNA) */}
+        <g fill="none" stroke="white" strokeWidth="26" strokeLinecap="round">
+          <line x1="60" y1="78" x2="180" y2="78" />
+          <line x1="60" y1="128" x2="142" y2="128" />
+          <line x1="60" y1="178" x2="180" y2="178" />
+        </g>
+        {/* AI circle on the right (favicon DNA) */}
+        <circle
+          cx="196"
+          cy="128"
+          r="30"
+          fill="white"
+          fillOpacity="0.42"
+          stroke="white"
+          strokeWidth="18"
+        />
+      </g>
+
+      {/* Wordmark + tagline matching the actual app header */}
+      <text
+        x="240"
+        y="36"
+        textAnchor="middle"
+        fontFamily="system-ui, -apple-system, sans-serif"
+        fontSize="14"
+        fontWeight="800"
+        fill="white"
+        letterSpacing="3"
+        opacity="0.95"
+      >
+        EDDIVOM
+      </text>
+      <text
+        x="240"
+        y="304"
+        textAnchor="middle"
+        fontFamily="system-ui, -apple-system, sans-serif"
+        fontSize="10"
+        fontWeight="700"
+        fill="white"
+        letterSpacing="4"
+        opacity="0.7"
+      >
+        AI WORKSHEET IDE
+      </text>
     </svg>
   );
 }
@@ -361,6 +415,10 @@ function ItPassArtwork() {
 
 const visualBySlug: Record<string, Visual> = {
   "butsuri-no-mori": {
+    // Same paper-warm gradient that physics.yuta-eng.com uses on its hero.
+    // The artwork itself carries the navy + gold favicon palette — placing
+    // it on the cream backdrop mirrors how the brand site presents the
+    // dark icon against its warm paper background.
     bg: "bg-[linear-gradient(180deg,#fefcf6_0%,#fbf5e6_55%,#f7f0de_100%)]",
     ring: "ring-[rgba(20,35,65,0.1)]",
     chip: "text-[#142341] border-[rgba(20,35,65,0.2)]",
