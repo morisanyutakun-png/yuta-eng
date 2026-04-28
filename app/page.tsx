@@ -152,53 +152,242 @@ function HeroVisual() {
 }
 
 function PhysicsVisual() {
+  // Mirrors the physics.yuta-eng.com hero: paper-warm aurora, three orbit
+  // ellipses around a sun glow, and mechanics / EM / wave formula chips.
   return (
-    <svg viewBox="0 0 720 480" className="block h-full w-full" aria-hidden="true">
+    <svg
+      viewBox="0 0 720 480"
+      className="block h-full w-full"
+      role="img"
+      aria-label="物理の森のブランドビジュアル：紙のような暖色背景に 3 本の原子軌道と力学・電磁気・波動の代表式"
+    >
       <defs>
         <linearGradient id="phy-bg" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stopColor="#0b1d4a" />
-          <stop offset="1" stopColor="#1e3a8a" />
+          <stop offset="0" stopColor="#fbf3e3" />
+          <stop offset="0.55" stopColor="#fde9d4" />
+          <stop offset="1" stopColor="#fcd9b6" />
         </linearGradient>
-        <radialGradient id="phy-glow" cx="0.8" cy="0.2" r="0.8">
-          <stop offset="0" stopColor="#38bdf8" stopOpacity="0.5" />
-          <stop offset="1" stopColor="#38bdf8" stopOpacity="0" />
+        <radialGradient id="phy-sun" cx="0.62" cy="0.52" r="0.42">
+          <stop offset="0" stopColor="#fff4dc" stopOpacity="0.95" />
+          <stop offset="0.55" stopColor="#fcd9a3" stopOpacity="0.55" />
+          <stop offset="1" stopColor="#fcd9a3" stopOpacity="0" />
         </radialGradient>
+        <radialGradient id="phy-core" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stopColor="#fff7e0" />
+          <stop offset="0.6" stopColor="#fbbf24" stopOpacity="0.55" />
+          <stop offset="1" stopColor="#fbbf24" stopOpacity="0" />
+        </radialGradient>
+        <linearGradient id="phy-card" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#ffffff" stopOpacity="0.92" />
+          <stop offset="1" stopColor="#ffffff" stopOpacity="0.72" />
+        </linearGradient>
       </defs>
-      <rect width="720" height="480" fill="url(#phy-bg)" />
-      <rect width="720" height="480" fill="url(#phy-glow)" />
 
-      {/* v-t graph */}
-      <g stroke="rgba(255,255,255,0.16)" strokeWidth="1">
-        {Array.from({ length: 10 }).map((_, i) => (
-          <line key={`vv${i}`} x1={i * 64 + 40} y1="60" x2={i * 64 + 40} y2="430" />
-        ))}
-        {Array.from({ length: 7 }).map((_, i) => (
-          <line key={`hh${i}`} x1="40" y1={i * 56 + 80} x2="680" y2={i * 56 + 80} />
-        ))}
-      </g>
-      <g stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round">
-        <line x1="80" y1="400" x2="660" y2="400" />
-        <line x1="80" y1="400" x2="80" y2="80" />
-      </g>
-      <text x="92" y="100" fill="#bae6fd" fontSize="13" fontFamily="system-ui" letterSpacing="2">
-        v
+      {/* Paper-warm background + sun glow */}
+      <rect width="720" height="480" fill="url(#phy-bg)" />
+      <rect width="720" height="480" fill="url(#phy-sun)" />
+
+      {/* Faint kanji watermark "森" — mori (forest), the brand mark */}
+      <text
+        x="56"
+        y="190"
+        fontFamily="'Noto Serif JP', 'Hiragino Mincho ProN', serif"
+        fontSize="220"
+        fontWeight="600"
+        fill="#0b1d4a"
+        opacity="0.05"
+      >
+        森
       </text>
-      <text x="640" y="420" fill="#bae6fd" fontSize="13" fontFamily="system-ui" letterSpacing="2">
-        t
+      <text
+        x="520"
+        y="450"
+        fontFamily="'Noto Serif JP', 'Hiragino Mincho ProN', serif"
+        fontSize="220"
+        fontWeight="600"
+        fill="#0b1d4a"
+        opacity="0.045"
+      >
+        森
       </text>
-      <path
-        d="M 80 380 Q 240 360 360 280 T 660 100"
-        fill="none"
-        stroke="#7dd3fc"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-      />
-      <path
-        d="M 80 380 Q 240 360 360 280 T 660 100 L 660 400 L 80 400 Z"
-        fill="rgba(56,189,248,0.18)"
-      />
-      <circle cx="360" cy="280" r="6" fill="#fbbf24" />
-      <circle cx="360" cy="280" r="14" fill="none" stroke="#fbbf24" strokeWidth="1.5" opacity="0.5" />
+
+      {/* Sun core */}
+      <circle cx="446" cy="250" r="120" fill="url(#phy-core)" />
+      <circle cx="446" cy="250" r="6" fill="#f59e0b" />
+
+      {/* Three atom orbits — blue / amber / moss, the brand's tri-color */}
+      <g fill="none" strokeLinecap="round">
+        <ellipse
+          cx="446"
+          cy="250"
+          rx="180"
+          ry="58"
+          stroke="#1e3a8a"
+          strokeWidth="1.8"
+          opacity="0.7"
+          transform="rotate(-18 446 250)"
+        />
+        <ellipse
+          cx="446"
+          cy="250"
+          rx="180"
+          ry="58"
+          stroke="#c2410c"
+          strokeWidth="1.8"
+          opacity="0.7"
+          transform="rotate(36 446 250)"
+        />
+        <ellipse
+          cx="446"
+          cy="250"
+          rx="180"
+          ry="58"
+          stroke="#4d7c0f"
+          strokeWidth="1.6"
+          opacity="0.55"
+          transform="rotate(82 446 250)"
+        />
+      </g>
+
+      {/* Electron dots on the orbits */}
+      <circle cx="612" cy="206" r="4.5" fill="#1e3a8a" />
+      <circle cx="296" cy="304" r="4" fill="#c2410c" />
+      <circle cx="492" cy="332" r="3.5" fill="#4d7c0f" />
+
+      {/* MECHANICS chip — top-left */}
+      <g transform="translate(60 78)">
+        <rect
+          width="200"
+          height="74"
+          rx="14"
+          fill="url(#phy-card)"
+          stroke="#0b1d4a"
+          strokeWidth="1"
+          strokeOpacity="0.12"
+        />
+        <text
+          x="20"
+          y="28"
+          fontFamily="system-ui, sans-serif"
+          fontSize="11"
+          fontWeight="700"
+          fill="#1d4ed8"
+          letterSpacing="3"
+        >
+          MECHANICS
+        </text>
+        <text
+          x="20"
+          y="58"
+          fontFamily="'Cambria Math', 'Latin Modern Math', 'Times New Roman', serif"
+          fontSize="26"
+          fontStyle="italic"
+          fill="#0b1d4a"
+        >
+          F = ma
+        </text>
+      </g>
+
+      {/* EM chip — right */}
+      <g transform="translate(488 96)">
+        <rect
+          width="208"
+          height="74"
+          rx="14"
+          fill="url(#phy-card)"
+          stroke="#0b1d4a"
+          strokeWidth="1"
+          strokeOpacity="0.12"
+        />
+        <text
+          x="20"
+          y="28"
+          fontFamily="system-ui, sans-serif"
+          fontSize="11"
+          fontWeight="700"
+          fill="#1d4ed8"
+          letterSpacing="3"
+        >
+          EM
+        </text>
+        <text
+          x="20"
+          y="58"
+          fontFamily="'Cambria Math', 'Latin Modern Math', 'Times New Roman', serif"
+          fontSize="22"
+          fontStyle="italic"
+          fill="#0b1d4a"
+        >
+          ∮ E · dA = Q ∕ ε₀
+        </text>
+      </g>
+
+      {/* WAVE chip — bottom-left */}
+      <g transform="translate(60 348)">
+        <rect
+          width="180"
+          height="74"
+          rx="14"
+          fill="url(#phy-card)"
+          stroke="#0b1d4a"
+          strokeWidth="1"
+          strokeOpacity="0.12"
+        />
+        <text
+          x="20"
+          y="28"
+          fontFamily="system-ui, sans-serif"
+          fontSize="11"
+          fontWeight="700"
+          fill="#1d4ed8"
+          letterSpacing="3"
+        >
+          WAVE
+        </text>
+        <text
+          x="20"
+          y="58"
+          fontFamily="'Cambria Math', 'Latin Modern Math', 'Times New Roman', serif"
+          fontSize="26"
+          fontStyle="italic"
+          fill="#0b1d4a"
+        >
+          v = f λ
+        </text>
+      </g>
+
+      {/* Pricing pill — matches brand-site CTA */}
+      <g transform="translate(496 384)">
+        <rect width="184" height="44" rx="22" fill="#0b1d4a" />
+        <circle cx="22" cy="22" r="5" fill="#fbbf24" />
+        <text
+          x="40"
+          y="28"
+          fontFamily="system-ui, sans-serif"
+          fontSize="14"
+          fontWeight="700"
+          fill="#fef9c3"
+          letterSpacing="1"
+        >
+          月 ¥38,000〜
+        </text>
+      </g>
+
+      {/* FREE TRIAL eyebrow */}
+      <g transform="translate(280 36)">
+        <circle cx="0" cy="0" r="4" fill="#c2410c" />
+        <text
+          x="14"
+          y="5"
+          fontFamily="system-ui, sans-serif"
+          fontSize="11"
+          fontWeight="700"
+          fill="#0b1d4a"
+          letterSpacing="4"
+        >
+          FREE TRIAL · 60 MIN
+        </text>
+      </g>
     </svg>
   );
 }
@@ -923,10 +1112,18 @@ export default function Home() {
           <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="order-2 overflow-hidden rounded-[28px] bg-gradient-to-br from-[#eef4ff] via-[#fff7ed] to-[#fef3c7] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_30px_70px_-50px_rgba(15,29,74,0.4)] lg:order-1">
               <picture>
-                <source type="image/avif" srcSet="/eddivom-hero.avif" />
-                <source type="image/webp" srcSet="/eddivom-hero.webp" />
+                <source
+                  type="image/avif"
+                  srcSet="/eddivom-hero-480.avif 480w, /eddivom-hero-960.avif 960w, /eddivom-hero-1440.avif 1440w"
+                  sizes="(min-width: 1024px) 600px, 100vw"
+                />
+                <source
+                  type="image/webp"
+                  srcSet="/eddivom-hero-480.webp 480w, /eddivom-hero-960.webp 960w, /eddivom-hero-1440.webp 1440w"
+                  sizes="(min-width: 1024px) 600px, 100vw"
+                />
                 <img
-                  src="/eddivom-hero.webp"
+                  src="/eddivom-hero-960.webp"
                   alt="Eddivom — AI で問題下書きを作り、LaTeX に整形して PDF・Web 配布まで一気通貫"
                   width={1536}
                   height={1024}
