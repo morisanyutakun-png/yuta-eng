@@ -9,6 +9,8 @@ export type BlogFrontmatter = {
   title: string;
   description: string;
   date: string;
+  /** Optional. Set when meaningfully revising a post — drives sitemap <lastmod>. */
+  updated?: string;
   tags: string[];
   category: string;
   slug: string;
@@ -68,6 +70,10 @@ function assertFrontmatter(data: Record<string, unknown>, fileName: string): Blo
     title,
     description,
     date,
+    updated:
+      typeof data.updated === "string" && data.updated.length > 0
+        ? data.updated
+        : undefined,
     tags: data.tags,
     category,
     slug,

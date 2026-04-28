@@ -5,11 +5,18 @@ import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { siteConfig } from "@/data/site";
+import { getOgVersion } from "@/lib/blog";
 import {
   createOrganizationJsonLd,
   createPersonJsonLd,
   createWebsiteJsonLd,
 } from "@/lib/structured-data";
+
+// Vercel serves /favicon.svg with `Cache-Control: immutable, max-age=1y`, so
+// the only way to push a redesigned favicon to browsers (and eventually to
+// Google's separate favicon crawler) is a URL change. Reuse the per-deploy
+// OG version stamp.
+const ICON_V = `?v=${getOgVersion()}`;
 
 import "./globals.css";
 
@@ -60,27 +67,27 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/favicon.svg",
+        url: `/favicon.svg${ICON_V}`,
         type: "image/svg+xml",
         sizes: "512x512",
       },
       {
-        url: "/icon.svg",
+        url: `/icon.svg${ICON_V}`,
         type: "image/svg+xml",
         sizes: "512x512",
       },
     ],
-    shortcut: "/favicon.svg",
-    apple: "/favicon.svg",
+    shortcut: `/favicon.svg${ICON_V}`,
+    apple: `/favicon.svg${ICON_V}`,
     other: [
       {
         rel: "mask-icon",
-        url: "/mask-icon.svg",
+        url: `/mask-icon.svg${ICON_V}`,
         color: "#0f172a",
       },
     ],
   },
-  manifest: "/site.webmanifest",
+  manifest: `/site.webmanifest${ICON_V}`,
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,
