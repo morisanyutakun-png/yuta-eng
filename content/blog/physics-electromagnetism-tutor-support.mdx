@@ -27,6 +27,11 @@ keyPoints:
 
 物理専門塾 **物理の森** は、こうした個人塾・家庭教師の **高校物理 外注先** として、指導・教材監修・質問対応を請け負います。本記事では、なぜ高校物理 電磁気が個人塾でカバーしきれないのか、**物理の森への外注フロー**、そして共通テキストとして活用できる森祐太著 **『考える力を育てる電磁気』** の使い方をまとめます。
 
+<GraphIllustration
+  variant="workflow"
+  caption="高校物理 外注の流れ：個人塾・家庭教師 → 物理の森 → 生徒へ。スポット相談から生徒丸ごと外注まで段階的に"
+/>
+
 <KeyPoints
   title="この記事の結論"
   items={[
@@ -72,6 +77,11 @@ keyPoints:
 ## <span id="h2-why-hard">なぜ高校物理 電磁気は個人塾講師がカバーしきれないのか</span>
 
 **高校物理 電磁気**は、他のどの単元よりも以下 3 つの条件が重なる「難単元」です。
+
+<GraphIllustration
+  variant="em-map"
+  caption="高校物理 電磁気の単元構造：①静電気 → ②直流回路 → ③磁場 → ④電磁誘導 → ⑤交流回路の 5 段積み上げ"
+/>
 
 <Comparison
   rows={[
@@ -160,20 +170,102 @@ keyPoints:
 
 **高校物理 外注**の料金感です。すべて税込・目安で、生徒数や対応範囲で柔軟に調整します。**初回のオンライン顔合わせ（30 分）は無料**で、見積もりは案件ごとに提示します。
 
-| プラン | 料金（税込・目安） | 内容 |
-| --- | --- | --- |
-| **スポット相談** | **¥8,000 / 1 時間** | 高校物理 電磁気の問題解説・教材選定・指導法の壁打ち。塾講師・家庭教師が単発で利用可。 |
-| **質問対応外注（ライト）** | **¥30,000 / 月**（質問 30 件まで） | 塾の生徒からの物理質問を Slack / LINE / メールで受け、24〜48 時間以内に回答。 |
-| **質問対応外注（スタンダード）** | **¥60,000 / 月**（質問 80 件まで） | 中規模塾向け。週次レポート＋月 1 回の振り返り MTG 込み。 |
-| **教材監修・改訂** | **¥80,000 〜 / 案件** | 自塾の物理教材（電磁気を含む単元）を物理の森が監修。改訂提案書付き。 |
-| **講師研修（電磁気）** | **¥40,000 / 半日（3 時間）** | 高校物理 塾講師向けの電磁気指導研修。森祐太『考える力を育てる電磁気』をベーステキストに使用。 |
-| **生徒丸ごと外注（個別指導）** | **¥18,000 〜 / 月（生徒 1 名）** | 物理の森（オンライン）に生徒を直接受講。月 4 回の個別指導 + 進捗の塾内共有レポート付き。 |
-| **法人プラン（年契約）** | **個別見積もり** | 複数生徒・複数年契約。生徒数 5 名以上から割引適用。 |
+<div className="my-8 grid gap-4 sm:my-10 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+  <div className="relative rounded-[18px] bg-white p-5 ring-1 ring-[rgba(20,35,65,0.1)] shadow-[0_18px_38px_-30px_rgba(20,35,65,0.4)] sm:p-6">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#eef4ff] px-2.5 py-1 text-[0.66rem] font-bold uppercase tracking-[0.18em] text-[#1e3a8a]">
+      <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#1d4ed8]" />
+      お試しに最適
+    </span>
+    <p className="mt-3 text-[1.05rem] font-extrabold text-[#142341]">スポット相談</p>
+    <p className="mt-2 text-[1.85rem] font-extrabold leading-none tracking-[-0.02em] text-[#1d4ed8]">
+      ¥8,000<span className="ml-1 text-[0.78rem] font-bold text-[#3a4d6b]">／ 1 時間</span>
+    </p>
+    <p className="mt-3 text-[0.86rem] leading-[1.85] text-[#3a4d6b]">
+      高校物理 電磁気の問題解説・教材選定・指導法の壁打ち。塾講師・家庭教師が単発で利用可。
+    </p>
+  </div>
+
+  <div className="relative rounded-[18px] bg-white p-5 ring-1 ring-[rgba(20,35,65,0.1)] shadow-[0_18px_38px_-30px_rgba(20,35,65,0.4)] sm:p-6">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#fef3c7] px-2.5 py-1 text-[0.66rem] font-bold uppercase tracking-[0.18em] text-[#a35a16]">
+      <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#e28040]" />
+      小規模塾向け
+    </span>
+    <p className="mt-3 text-[1.05rem] font-extrabold text-[#142341]">質問対応外注 ライト</p>
+    <p className="mt-2 text-[1.85rem] font-extrabold leading-none tracking-[-0.02em] text-[#1d4ed8]">
+      ¥30,000<span className="ml-1 text-[0.78rem] font-bold text-[#3a4d6b]">／ 月</span>
+    </p>
+    <p className="mt-1 text-[0.78rem] font-semibold text-[#a35a16]">質問 30 件 / 月まで</p>
+    <p className="mt-3 text-[0.86rem] leading-[1.85] text-[#3a4d6b]">
+      塾の生徒からの物理質問を Slack / LINE / メールで受け、24〜48 時間以内に物理の森が回答。
+    </p>
+  </div>
+
+  <div className="relative rounded-[18px] bg-[#142341] p-5 text-white ring-1 ring-[rgba(20,35,65,0.1)] shadow-[0_18px_38px_-22px_rgba(20,35,65,0.6)] sm:p-6">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#fef3c7] px-2.5 py-1 text-[0.66rem] font-bold uppercase tracking-[0.18em] text-[#a35a16]">
+      <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#e28040]" />
+      もっとも人気
+    </span>
+    <p className="mt-3 text-[1.05rem] font-extrabold text-white">質問対応外注 スタンダード</p>
+    <p className="mt-2 text-[1.85rem] font-extrabold leading-none tracking-[-0.02em] text-[#fbbf24]">
+      ¥60,000<span className="ml-1 text-[0.78rem] font-bold text-[#bae6fd]">／ 月</span>
+    </p>
+    <p className="mt-1 text-[0.78rem] font-semibold text-[#fbbf24]">質問 80 件 / 月まで</p>
+    <p className="mt-3 text-[0.86rem] leading-[1.85] text-white/85">
+      中規模塾向け。週次レポート＋月 1 回の振り返り MTG 込み。塾講師の物理対応負担をほぼゼロに。
+    </p>
+  </div>
+
+  <div className="relative rounded-[18px] bg-white p-5 ring-1 ring-[rgba(20,35,65,0.1)] shadow-[0_18px_38px_-30px_rgba(20,35,65,0.4)] sm:p-6">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#dcfce7] px-2.5 py-1 text-[0.66rem] font-bold uppercase tracking-[0.18em] text-[#15803d]">
+      <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#16a34a]" />
+      教材リプレイス
+    </span>
+    <p className="mt-3 text-[1.05rem] font-extrabold text-[#142341]">教材監修・改訂</p>
+    <p className="mt-2 text-[1.85rem] font-extrabold leading-none tracking-[-0.02em] text-[#1d4ed8]">
+      ¥80,000<span className="ml-1 text-[0.78rem] font-bold text-[#3a4d6b]">〜 / 案件</span>
+    </p>
+    <p className="mt-3 text-[0.86rem] leading-[1.85] text-[#3a4d6b]">
+      自塾の物理教材（電磁気を含む単元）を物理の森が監修。改訂提案書付き。
+    </p>
+  </div>
+
+  <div className="relative rounded-[18px] bg-white p-5 ring-1 ring-[rgba(20,35,65,0.1)] shadow-[0_18px_38px_-30px_rgba(20,35,65,0.4)] sm:p-6">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ede9fe] px-2.5 py-1 text-[0.66rem] font-bold uppercase tracking-[0.18em] text-[#6d28d9]">
+      <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#7c3aed]" />
+      講師スキルアップ
+    </span>
+    <p className="mt-3 text-[1.05rem] font-extrabold text-[#142341]">講師研修（電磁気）</p>
+    <p className="mt-2 text-[1.85rem] font-extrabold leading-none tracking-[-0.02em] text-[#1d4ed8]">
+      ¥40,000<span className="ml-1 text-[0.78rem] font-bold text-[#3a4d6b]">／ 半日（3 時間）</span>
+    </p>
+    <p className="mt-3 text-[0.86rem] leading-[1.85] text-[#3a4d6b]">
+      高校物理 塾講師向けの電磁気指導研修。『考える力を育てる電磁気』をベーステキストに使用。
+    </p>
+  </div>
+
+  <div className="relative rounded-[18px] bg-white p-5 ring-1 ring-[rgba(20,35,65,0.1)] shadow-[0_18px_38px_-30px_rgba(20,35,65,0.4)] sm:p-6">
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#fce7f3] px-2.5 py-1 text-[0.66rem] font-bold uppercase tracking-[0.18em] text-[#be185d]">
+      <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#db2777]" />
+      生徒を完全に任せる
+    </span>
+    <p className="mt-3 text-[1.05rem] font-extrabold text-[#142341]">生徒丸ごと外注</p>
+    <p className="mt-2 text-[1.85rem] font-extrabold leading-none tracking-[-0.02em] text-[#1d4ed8]">
+      ¥18,000<span className="ml-1 text-[0.78rem] font-bold text-[#3a4d6b]">〜 / 月（生徒 1 名）</span>
+    </p>
+    <p className="mt-3 text-[0.86rem] leading-[1.85] text-[#3a4d6b]">
+      物理の森（オンライン）に生徒を直接受講。月 4 回の個別指導 + 進捗の塾内共有レポート付き。
+    </p>
+  </div>
+</div>
+
+<Callout variant="info" title="法人プラン（年契約）は個別見積もり">
+複数生徒・複数年契約のご相談には、**個別見積もり**を提示します。生徒数 5 名以上で割引適用。塾の規模・契約期間に合わせて柔軟に調整します。
+</Callout>
 
 <Callout variant="tip" title="料金プランの選び方">
-- **小規模塾・家庭教師**：まずスポット相談（¥8,000）で物理の森の指導観を確認 → 質問対応外注ライト（¥30,000/月）にスケール<br />
-- **中規模塾**：質問対応外注スタンダード（¥60,000/月）＋必要に応じて教材監修（¥80,000〜）の組み合わせ<br />
-- **生徒の物理だけ完全に任せたい**：生徒丸ごと外注（¥18,000〜/月／生徒 1 名）。塾は他教科に集中
+- **小規模塾・家庭教師**：まずスポット相談（¥8,000）で物理の森の指導観を確認 → 質問対応外注ライト（¥30,000 / 月）にスケール<br />
+- **中規模塾**：質問対応外注スタンダード（¥60,000 / 月）＋必要に応じて教材監修（¥80,000 〜）の組み合わせ<br />
+- **生徒の物理だけ完全に任せたい**：生徒丸ごと外注（¥18,000 〜 / 月／生徒 1 名）。塾は他教科に集中
 </Callout>
 
 <Callout variant="warn" title="料金についての注記">
