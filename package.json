@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/stamp-og-version.mjs && next build && node scripts/precompute-og-cards.mjs && node scripts/inline-critical-css.mjs",
+    "build": "node scripts/stamp-og-version.mjs && next build && node scripts/precompute-og-cards.mjs && node scripts/convert-book-cover.mjs && node scripts/inline-critical-css.mjs",
     "start": "next start",
     "lint": "eslint"
   },
