@@ -19,7 +19,7 @@ import {
 export const metadata: Metadata = createPageMetadata({
   title: "理系人材育成のEdTechハブ｜AI教材・学習アプリ・物理塾を集約 - Solvora",
   description:
-    "Solvora は、AI 教材作成「Eddivom」・物理専門オンライン塾「物理の森」・学習アプリ「Solvora Physics」「IT Pass」を集約した理系人材育成のEdTechハブ。GIGAスクール構想後の高校・大学・社会人の学びを、AI教材作成と学習支援アプリでつなぎ、現場で使える形に整理しています。教育DX・STEM教育・LaTeX教材作成を実装する公式入口。",
+    "Solvora は、AI 教材作成「Eddivom」・物理専門オンライン塾「物理の森」・学習アプリ「Physics」「IT Pass」を集約した理系人材育成のEdTechハブ。GIGAスクール構想後の高校・大学・社会人の学びを、AI教材作成と学習支援アプリでつなぎ、現場で使える形に整理しています。教育DX・STEM教育・LaTeX教材作成を実装する公式入口。",
   keywords: [
     "理系人材育成",
     "EdTech 日本",
@@ -55,7 +55,7 @@ const subjects = [
   },
   {
     label: "Learning Apps",
-    title: "学習アプリ Solvora Physics・IT Pass",
+    title: "学習アプリ Physics・IT Pass",
     sub: "高校物理 / IT パスポートをスマホで毎日 5〜10 分積み上げ。",
     href: "/apps",
     // sky-700 (was sky-700 already) but Lighthouse counts 4.84:1 borderline
@@ -498,7 +498,7 @@ export default function Home() {
               <p className="mt-8 max-w-xl text-pretty text-[1rem] leading-[2] text-white/85 sm:text-[1.1rem]">
                 教材・アプリ・AI で、
                 <strong className="font-bold text-white">理系人材の未来を設計する</strong>。
-                AI 教材作成 <strong className="font-bold text-white">Eddivom</strong>、物理専門塾 <strong className="font-bold text-white">物理の森</strong>、学習アプリ <strong className="font-bold text-white">Solvora Physics・IT Pass</strong> を 1 つの動線で。
+                AI 教材作成 <strong className="font-bold text-white">Eddivom</strong>、物理専門塾 <strong className="font-bold text-white">物理の森</strong>、学習アプリ <strong className="font-bold text-white">Physics・IT Pass</strong> を 1 つの動線で。
               </p>
 
               {/* Visual coverage badges — each pairs an icon with a short label */}
@@ -1086,7 +1086,7 @@ export default function Home() {
               </p>
             </blockquote>
             <p className="mx-auto mt-8 max-w-2xl text-pretty text-center text-[1.02rem] leading-[2] text-[#334155]">
-              Solvora は、物理・数学・情報の解説ブログ、AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、学習アプリ <strong className="font-bold text-[#0b1d4a]">Solvora Physics・IT Pass</strong>、物理専門オンライン塾 <strong className="font-bold text-[#0b1d4a]">物理の森</strong> を集約する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。GIGA スクール構想後の高校・大学・社会人の学びをひとつの動線でつなぎます。
+              Solvora は、物理・数学・情報の解説ブログ、AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、学習アプリ <strong className="font-bold text-[#0b1d4a]">Physics・IT Pass</strong>、物理専門オンライン塾 <strong className="font-bold text-[#0b1d4a]">物理の森</strong> を集約する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。GIGA スクール構想後の高校・大学・社会人の学びをひとつの動線でつなぎます。
             </p>
 
             {/* Three pillars — short value props with iconic visuals */}

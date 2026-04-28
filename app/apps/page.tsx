@@ -19,7 +19,7 @@ export const metadata: Metadata = createPageMetadata({
   title:
     "物理専門塾オンライン・高校物理アプリ・LaTeX教材作成・ITパスポートアプリ - Solvora",
   description:
-    "Solvora が運営する物理専門塾「物理の森」、高校物理アプリ「Solvora Physics」、LaTeX教材作成アプリ「Eddivom」、ITパスポート対策アプリ「IT Pass」を1ページで比較。受験生・教員・社会人それぞれに最適な公式入口へ直接アクセスできます。",
+    "Solvora が運営する物理専門塾「物理の森」、高校物理アプリ「Physics」、LaTeX教材作成アプリ「Eddivom」、ITパスポート対策アプリ「IT Pass」を1ページで比較。受験生・教員・社会人それぞれに最適な公式入口へ直接アクセスできます。",
   keywords: [
     "物理専門塾 オンライン",
     "高校物理 アプリ",

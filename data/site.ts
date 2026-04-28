@@ -12,7 +12,7 @@ export const siteConfig = {
   brandTagline: "STEM Learning Hub for Japan",
   title: "理系人材育成のEdTechハブ｜AI教材・学習アプリ・物理塾を集約 - Solvora",
   description:
-    "Solvora（ソルヴォラ）は、AI教材作成 Eddivom・学習支援アプリ Solvora Physics／IT Pass・物理専門オンライン塾「物理の森」を集約した理系人材育成 EdTech ハブ。GIGAスクール構想後の高校・大学・社会人の理系学習をつなぐ教材設計とサービス公式入口、深く学べる解説ブログをまとめています。",
+    "Solvora（ソルヴォラ）は、AI教材作成 Eddivom・学習支援アプリ Physics／IT Pass・物理専門オンライン塾「物理の森」を集約した理系人材育成 EdTech ハブ。GIGAスクール構想後の高校・大学・社会人の理系学習をつなぐ教材設計とサービス公式入口、深く学べる解説ブログをまとめています。",
   url: siteUrl,
   physicsSchoolUrl,
   eddivomUrl,
@@ -47,7 +47,7 @@ export const siteConfig = {
     "学習支援アプリ",
     "学習デザイン",
     "Eddivom",
-    "Solvora Physics",
+    "Physics",
     "IT Pass",
     "物理の森",
     "高校物理 オンライン塾",
