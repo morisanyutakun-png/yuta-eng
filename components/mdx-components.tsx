@@ -287,6 +287,7 @@ type CtaCardProps = {
   body: string;
   image?: string;
   imageAlt?: string;
+  imageLayout?: "wide" | "book";
   primary?: { label: string; href: string };
   secondary?: { label: string; href: string };
 };
@@ -297,19 +298,22 @@ function CtaCard({
   body,
   image,
   imageAlt,
+  imageLayout = "wide",
   primary,
   secondary,
 }: CtaCardProps) {
+  const isBookImage = imageLayout === "book";
+
   return (
     <aside className="lumora-cta-card">
       {image ? (
-        <div className="lumora-cta-card-image">
+        <div className={`lumora-cta-card-image lumora-cta-card-image-${imageLayout}`}>
           <Image
             src={image}
             alt={imageAlt ?? title}
-            width={1536}
-            height={1024}
-            sizes="(min-width: 768px) 640px, 100vw"
+            width={isBookImage ? 857 : 1536}
+            height={isBookImage ? 1328 : 1024}
+            sizes={isBookImage ? "(min-width: 768px) 240px, 56vw" : "(min-width: 768px) 640px, 100vw"}
             className="h-auto w-full"
           />
         </div>

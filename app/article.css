@@ -1191,6 +1191,14 @@
   box-shadow: 0 14px 32px -28px rgba(15, 29, 74, 0.45);
 }
 
+.lumora-cta-card-image-book {
+  width: min(240px, 64vw);
+  margin: -0.1rem auto 1.25rem;
+  border-radius: 10px;
+  background: #1f1a16;
+  box-shadow: 0 22px 44px -26px rgba(2, 6, 23, 0.72);
+}
+
 .lumora-cta-card-image img {
   display: block;
   width: 100%;
