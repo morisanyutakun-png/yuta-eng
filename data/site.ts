@@ -9,10 +9,10 @@ export const itPassUrl = "https://itpass.yuta-eng.com";
 export const siteConfig = {
   name: "Solvora",
   shortName: "Solvora",
-  brandTagline: "STEM Learning Hub for Japan",
-  title: "理系人材育成のEdTechハブ｜AI教材・学習アプリ・物理塾を集約 - Solvora",
+  brandTagline: "EdTech SaaS for STEM Talent Development",
+  title: "理系人材育成 EdTech SaaS｜AI教材・学習アプリ・物理塾の公式ハブ - Solvora",
   description:
-    "Solvora（ソルヴォラ）は、AI教材作成 Eddivom・学習支援アプリ Physics／IT Pass・物理専門オンライン塾「物理の森」を集約した理系人材育成 EdTech ハブ。GIGAスクール構想後の高校・大学・社会人の理系学習をつなぐ教材設計とサービス公式入口、深く学べる解説ブログをまとめています。",
+    "Solvora（ソルヴォラ）は、理系人材育成のための EdTech SaaS を開発・運営する EdTech スタートアップ。主力 SaaS の AI×LaTeX 教材作成「Eddivom」、高校物理学習アプリ「Physics」、ITパスポート対策アプリ「IT Pass」、そして直営の物理専門オンライン塾「物理の森」を 1 つの公式ハブに集約。GIGAスクール構想後の教育DX／STEM 教育を、AI 教材作成と学習支援 SaaS で支えます。",
   url: siteUrl,
   physicsSchoolUrl,
   eddivomUrl,
@@ -23,36 +23,43 @@ export const siteConfig = {
   brand: {
     hub: {
       name: "Solvora",
-      role: "STEM Learning Hub｜理系人材育成EdTech",
+      role: "EdTech SaaS Hub｜理系人材育成 EdTech スタートアップ",
     },
     physicsSchool: {
       name: "物理の森",
       tagline: "高校物理 専門塾",
       url: physicsSchoolUrl,
-      role: "Solvora が運営する高校物理のオンライン専門塾",
+      role: "Solvora 直営の高校物理オンライン専門塾（物理講座の外注はこちら経由）",
     },
   },
   keywords: [
-    "理系人材育成",
-    "理系 教育",
-    "STEM教育",
+    // primary — 検索意図の主軸
     "EdTech",
-    "EdTech 日本",
-    "GIGAスクール",
-    "GIGAスクール構想",
-    "教育DX",
+    "EdTech SaaS",
+    "教育 SaaS",
+    "理系人材育成",
+    "理系人材 育成",
+    "STEM教育",
+    "STEM 人材育成",
+    // supporting — Solvora の事業領域
+    "EdTech スタートアップ",
+    "教育系 スタートアップ",
     "AI 教材作成",
     "教材作成 AI",
     "LaTeX 教材作成",
     "学習支援アプリ",
-    "学習デザイン",
+    "学習支援 SaaS",
+    "教育DX",
+    "GIGAスクール",
+    "GIGAスクール構想",
+    // brand
+    "Solvora",
+    "ソルヴォラ",
     "Eddivom",
     "Physics",
     "IT Pass",
     "物理の森",
     "高校物理 オンライン塾",
-    "Solvora",
-    "ソルヴォラ",
   ],
 };
 
@@ -67,7 +74,7 @@ export const navItems = [
   },
   { label: "サービス", href: "/apps" },
   { label: "About", href: "/about" },
-  { label: "相談", href: "/contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const footerSocialLinks = [

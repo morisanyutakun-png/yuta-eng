@@ -17,22 +17,26 @@ import {
 } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "理系人材育成のEdTechハブ｜AI教材・学習アプリ・物理塾を集約 - Solvora",
+  title: "理系人材育成 EdTech SaaS｜AI教材・学習アプリ・物理塾の公式ハブ - Solvora",
   description:
-    "Solvora は、AI 教材作成「Eddivom」・物理専門オンライン塾「物理の森」・学習アプリ「Physics」「IT Pass」を集約した理系人材育成のEdTechハブ。GIGAスクール構想後の高校・大学・社会人の学びを、AI教材作成と学習支援アプリでつなぎ、現場で使える形に整理しています。教育DX・STEM教育・LaTeX教材作成を実装する公式入口。",
+    "Solvora は、理系人材育成のための EdTech SaaS を開発する EdTech スタートアップ。主力 SaaS の AI×LaTeX 教材作成「Eddivom」、高校物理学習アプリ「Physics」、ITパスポート アプリ「IT Pass」、直営の物理専門オンライン塾「物理の森」を 1 つの公式ハブに集約。GIGAスクール構想後の教育DX・STEM 教育を、AI 教材作成と学習支援 SaaS で支えます。",
   keywords: [
+    "EdTech",
+    "EdTech SaaS",
+    "教育 SaaS",
     "理系人材育成",
-    "EdTech 日本",
-    "GIGAスクール",
-    "教育DX",
     "STEM教育",
+    "EdTech スタートアップ",
+    "教育系 スタートアップ",
     "AI 教材作成",
     "教材作成 AI",
     "LaTeX 教材作成",
     "学習支援アプリ",
+    "学習支援 SaaS",
+    "教育DX",
+    "GIGAスクール",
     "Eddivom",
     "物理の森",
-    "高校物理 オンライン塾",
     "Solvora",
   ],
   path: "/",
@@ -40,35 +44,31 @@ export const metadata: Metadata = createPageMetadata({
 
 const subjects = [
   {
-    label: "AI Materials",
-    title: "AI 教材作成 Eddivom",
-    sub: "AIで下書き → LaTeX で組版 → PDF 配布までワンストップ。",
+    label: "Flagship SaaS",
+    title: "AI×LaTeX 教材作成 SaaS『Eddivom』",
+    sub: "Solvora の主力 SaaS。AI 下書き → LaTeX 整形 → 小テスト・解答 PDF までワンストップで生成。",
     href: "/apps#eddivom",
     accent: "#1d4ed8",
   },
   {
-    label: "Physics School",
-    title: "物理専門オンライン塾「物理の森」",
-    sub: "高校物理に完全特化したカリキュラムを Solvora が直営。",
-    href: "/apps#physics-school",
-    accent: "#0b1d4a",
+    label: "Learning SaaS",
+    title: "学習アプリ Physics・IT Pass",
+    sub: "高校物理 / IT パスポートをスマホで毎日 5〜10 分。学習者向け SaaS の 2 本柱。",
+    href: "/apps",
+    accent: "#0369a1",
   },
   {
-    label: "Learning Apps",
-    title: "学習アプリ Physics・IT Pass",
-    sub: "高校物理 / IT パスポートをスマホで毎日 5〜10 分積み上げ。",
-    href: "/apps",
-    // sky-700 (was sky-700 already) but Lighthouse counts 4.84:1 borderline
-    // for the small-uppercase eyebrow size. Bump to sky-800 (6.28:1, passes
-    // WCAG AA comfortably).
-    accent: "#0369a1",
+    label: "Outsource Lane",
+    title: "高校物理 講座外注｜物理の森",
+    sub: "Solvora 直営の物理専門オンライン塾。物理講座の業務委託・受講相談はこちらに集約。",
+    href: "/apps#butsuri-no-mori",
+    accent: "#0b1d4a",
   },
   {
     label: "Insights",
     title: "理系教育・教材設計の解説ブログ",
     sub: "GIGA・EdTech・学習科学を、現場で使える形に整理。",
     href: "/blog",
-    // sky-500 (#0ea5e9) was 3.31:1 on white — fails WCAG AA. Use sky-800.
     accent: "#0369a1",
   },
 ];
@@ -668,14 +668,14 @@ export default function Home() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#38bdf8] opacity-75" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#38bdf8]" />
                 </span>
-                Solvora · STEM EdTech Hub
+                Solvora · EdTech SaaS for STEM Talent
               </p>
 
               <h1 className="mt-6 text-balance text-[2.4rem] font-extrabold leading-[1.14] tracking-[-0.018em] text-white sm:text-[3.4rem] sm:leading-[1.1] lg:text-[4.2rem]">
-                <span className="block">理系の学びを、</span>
+                <span className="block">理系人材育成を、</span>
                 <span className="relative block">
                   <span className="bg-[linear-gradient(120deg,#ffffff_0%,#bae6fd_45%,#7dd3fc_70%,#ffffff_100%)] bg-clip-text text-transparent">
-                    つくり直す。
+                    SaaS で実装する。
                   </span>
                   <span
                     aria-hidden="true"
@@ -685,9 +685,12 @@ export default function Home() {
               </h1>
 
               <p className="mt-8 max-w-xl text-pretty text-[1rem] leading-[2] text-white/85 sm:text-[1.1rem]">
-                教材・アプリ・AI で、
-                <strong className="font-bold text-white">理系人材の未来を設計する</strong>。
-                AI 教材作成 <strong className="font-bold text-white">Eddivom</strong>、物理専門塾 <strong className="font-bold text-white">物理の森</strong>、学習アプリ <strong className="font-bold text-white">Physics・IT Pass</strong> を 1 つの動線で。
+                Solvora は、
+                <strong className="font-bold text-white">理系人材育成のための EdTech SaaS</strong>{" "}
+                を開発する EdTech スタートアップ。AI×LaTeX 教材作成{" "}
+                <strong className="font-bold text-white">Eddivom</strong> を主力に、学習アプリ{" "}
+                <strong className="font-bold text-white">Physics・IT Pass</strong>、直営の物理専門塾{" "}
+                <strong className="font-bold text-white">物理の森</strong> までを 1 つの動線で。
               </p>
 
               {/* Visual coverage badges — each pairs an icon with a short label */}

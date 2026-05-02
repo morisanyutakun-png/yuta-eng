@@ -448,6 +448,51 @@ export function createArticleJsonLd(post: BlogPost) {
 }
 
 /**
+ * ContactPage schema for /contact. Pairs nicely with the FAQ + Organization
+ * schemas already on the page so Google can connect "this contact is for
+ * Solvora the EdTech SaaS publisher" rather than guessing from anchor text.
+ */
+export function createContactPageJsonLd() {
+  const url = new URL("/contact", siteConfig.url).toString();
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: `${siteConfig.name} お問い合わせ｜EdTech SaaS / 物理講座 外注`,
+    url,
+    inLanguage: "ja",
+    isPartOf: {
+      "@type": "WebSite",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    about: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+      email: siteConfig.email,
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          contactType: "customer support",
+          email: siteConfig.email,
+          areaServed: "JP",
+          availableLanguage: ["ja"],
+        },
+        {
+          "@type": "ContactPoint",
+          contactType: "sales",
+          email: siteConfig.email,
+          areaServed: "JP",
+          availableLanguage: ["ja"],
+          description:
+            "Eddivom などの EdTech SaaS に関する取材・パートナー連携・機能要望",
+        },
+      ],
+    },
+  };
+}
+
+/**
  * FAQPage JSON-LD built from frontmatter `faq:` items. Returns null when the
  * post has no FAQ block, so the caller can spread the result conditionally.
  */

@@ -17,17 +17,19 @@ import {
 
 export const metadata: Metadata = createPageMetadata({
   title:
-    "物理専門塾オンライン・高校物理アプリ・LaTeX教材作成・ITパスポートアプリ - Solvora",
+    "EdTech SaaS / 学習アプリ / 物理塾の公式入口｜Eddivom・Physics・IT Pass・物理の森 - Solvora",
   description:
-    "Solvora が運営する物理専門塾「物理の森」、高校物理アプリ「Physics」、LaTeX教材作成アプリ「Eddivom」、ITパスポート対策アプリ「IT Pass」を1ページで比較。受験生・教員・社会人それぞれに最適な公式入口へ直接アクセスできます。",
+    "Solvora が開発・運営する EdTech SaaS の公式比較。主力 SaaS の AI×LaTeX 教材作成『Eddivom』、学習アプリ『Physics』『IT Pass』、直営の物理専門オンライン塾『物理の森』を 1 ページに集約。受験生・教員・社会人・教材会社それぞれに最適な公式入口へ直接アクセスできます。",
   keywords: [
-    "物理専門塾 オンライン",
-    "高校物理 アプリ",
+    "EdTech SaaS",
+    "教育 SaaS",
+    "AI 教材作成 SaaS",
     "LaTeX 教材作成",
+    "学習支援 SaaS",
+    "高校物理 アプリ",
     "ITパスポート アプリ",
-    "高校物理 オンライン塾",
-    "教材作成 AI",
-    "物理 個別指導 オンライン",
+    "物理専門塾 オンライン",
+    "理系人材育成 SaaS",
   ],
   path: "/apps",
 });
