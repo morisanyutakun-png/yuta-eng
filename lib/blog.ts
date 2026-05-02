@@ -20,6 +20,12 @@ export type BlogFrontmatter = {
   coverImage?: string;
   keyPoints?: string[];
   searchIntent?: string;
+  /** FAQPage entries for SEO JSON-LD. Mirror the on-page <Faq> component when present. */
+  faq?: { q: string; a: string }[];
+  /** Educational metadata for LearningResource JSON-LD on tutorial-style articles. */
+  educationalLevel?: string;
+  /** Estimated active study time, ISO-8601 duration (e.g. "PT15M"). */
+  timeRequired?: string;
 };
 
 export type BlogPostMeta = BlogFrontmatter & {
@@ -33,6 +39,19 @@ export type BlogPost = BlogPostMeta & {
 
 function isStringArray(value: unknown): value is string[] {
   return Array.isArray(value) && value.every((item) => typeof item === "string");
+}
+
+function isFaqArray(value: unknown): value is { q: string; a: string }[] {
+  return (
+    Array.isArray(value) &&
+    value.every(
+      (item) =>
+        typeof item === "object" &&
+        item !== null &&
+        typeof (item as Record<string, unknown>).q === "string" &&
+        typeof (item as Record<string, unknown>).a === "string",
+    )
+  );
 }
 
 function assertFrontmatter(data: Record<string, unknown>, fileName: string): BlogFrontmatter {
@@ -82,6 +101,15 @@ function assertFrontmatter(data: Record<string, unknown>, fileName: string): Blo
     coverImage: typeof data.coverImage === "string" ? data.coverImage : undefined,
     keyPoints: isStringArray(data.keyPoints) ? data.keyPoints : undefined,
     searchIntent: typeof data.searchIntent === "string" ? data.searchIntent : undefined,
+    faq: isFaqArray(data.faq) ? data.faq : undefined,
+    educationalLevel:
+      typeof data.educationalLevel === "string" && data.educationalLevel.length > 0
+        ? data.educationalLevel
+        : undefined,
+    timeRequired:
+      typeof data.timeRequired === "string" && data.timeRequired.length > 0
+        ? data.timeRequired
+        : undefined,
   };
 }
 

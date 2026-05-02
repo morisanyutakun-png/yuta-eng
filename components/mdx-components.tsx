@@ -331,6 +331,41 @@ function CtaCard({
   );
 }
 
+type FormulaCardProps = {
+  /** Eyebrow label rendered above the equation, e.g. "ドップラー効果の公式". */
+  label?: string;
+  /**
+   * Raw LaTeX expression (no surrounding `$`). Server-rendered into HTML by
+   * KaTeX so the formula card prints fully styled in the SSR HTML — no
+   * client-side JS or font flash on first paint.
+   */
+  tex: string;
+  /** Optional caption shown below the equation. */
+  caption?: string;
+};
+
+function FormulaCard({ label = "公式", tex, caption }: FormulaCardProps) {
+  const html = katex.renderToString(tex, {
+    throwOnError: false,
+    output: "html",
+    displayMode: true,
+    strict: "ignore",
+  });
+
+  return (
+    <aside className="lumora-formula-card" role="figure" aria-label={label}>
+      <span className="lumora-formula-card-eyebrow">{label}</span>
+      <div
+        className="lumora-formula-card-equation"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      {caption ? (
+        <p className="lumora-formula-card-caption">{renderWithMath(caption)}</p>
+      ) : null}
+    </aside>
+  );
+}
+
 type FigureProps = {
   caption?: string;
   children: ReactNode;
@@ -1303,5 +1338,6 @@ export const mdxComponents = {
   Toc,
   CtaCard,
   Figure,
+  FormulaCard,
   GraphIllustration,
 };

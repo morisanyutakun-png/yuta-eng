@@ -1379,6 +1379,134 @@
   display: none;
 }
 
+/* ========================================================================
+   FORMULA CARD — for hero/summary equations that deserve visual emphasis.
+   Used by math-heavy articles via <FormulaCard>. Renders a labelled, gently
+   gradient panel around the equation with an optional caption. The KaTeX
+   block inside drops its default border because the card supplies the frame.
+   ======================================================================== */
+.lumora-formula-card {
+  position: relative;
+  margin: 1.8rem 0;
+  padding: 1.1rem 1.1rem 1.2rem;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ffffff 0%, #eef4ff 55%, #fef9ec 100%);
+  border: 1px solid rgba(29, 78, 216, 0.16);
+  box-shadow: 0 22px 44px -38px rgba(15, 29, 74, 0.45);
+  overflow: hidden;
+}
+
+.lumora-formula-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 92% 6%, rgba(255, 224, 138, 0.45), transparent 38%),
+    radial-gradient(circle at 4% 96%, rgba(29, 78, 216, 0.12), transparent 42%);
+}
+
+@media (min-width: 640px) {
+  .lumora-formula-card {
+    padding: 1.4rem 1.6rem 1.6rem;
+  }
+}
+
+.lumora-formula-card-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.6rem;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #1d4ed8;
+  position: relative;
+  z-index: 1;
+}
+
+.lumora-formula-card-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent-deep), var(--accent-warm));
+}
+
+.lumora-formula-card-equation {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem 0.2rem 0.2rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  font-size: clamp(1rem, 0.92rem + 0.6vw, 1.14rem);
+}
+
+.lumora-formula-card-equation .katex-display {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  overflow: visible;
+}
+
+.lumora-formula-card-equation .katex {
+  white-space: nowrap;
+}
+
+.lumora-formula-card-caption {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.6rem;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
+  font-size: clamp(0.84rem, 0.8rem + 0.2vw, 0.92rem);
+  color: #475569;
+  text-align: center;
+  letter-spacing: 0.04em;
+  line-height: 1.85;
+}
+
+/* Make KaTeX boxed formulas (\boxed{...}) blend with the card */
+.lumora-formula-card .katex .boxed,
+.lumora-formula-card .katex .fbox {
+  border-radius: 10px;
+  padding: 0.45em 0.75em;
+  border-color: rgba(29, 78, 216, 0.32);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: saturate(120%);
+}
+
+/* Display math: tighten spacing on mobile so equations don't feel airy */
+@media (max-width: 640px) {
+  .article-content .katex-display,
+  .article-content > p > .katex-display {
+    margin: 1.1rem -0.25rem;
+    padding: 0.75rem 0.6rem;
+    border-radius: 12px;
+  }
+}
+
+/* Equation tag (right-side numbering "(式 1)") used inline in flow */
+.lumora-eq-tag {
+  display: inline-block;
+  margin-left: 0.55em;
+  padding: 0.05em 0.55em;
+  border-radius: 999px;
+  background: rgba(29, 78, 216, 0.08);
+  color: #1d4ed8;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "MS PMincho", serif;
+  font-size: 0.74em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  vertical-align: 0.18em;
+}
+
 /* Mobile: tighten article body rhythm for better scanability */
 @media (max-width: 640px) {
   .article-content {

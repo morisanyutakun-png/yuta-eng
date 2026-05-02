@@ -19,7 +19,11 @@ import { ScrollToTop } from "@/components/scroll-to-top";
 import { siteConfig } from "@/data/site";
 import { getOgVersion, getPostBySlug, getPostSlugs, getRelatedPosts } from "@/lib/blog";
 import { createPageMetadata } from "@/lib/metadata";
-import { createArticleJsonLd, createBreadcrumbJsonLd } from "@/lib/structured-data";
+import {
+  createArticleJsonLd,
+  createBreadcrumbJsonLd,
+  createPostFaqJsonLd,
+} from "@/lib/structured-data";
 
 type BlogPostPageProps = {
   params: Promise<{
@@ -121,6 +125,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             { name: "ブログ", path: "/blog" },
             { name: post.title, path: `/blog/${post.slug}` },
           ]),
+          ...(createPostFaqJsonLd(post) ? [createPostFaqJsonLd(post)!] : []),
         ]}
       />
 

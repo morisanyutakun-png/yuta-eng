@@ -383,7 +383,7 @@ export function createArticleJsonLd(post: BlogPost) {
     description: post.description,
     url,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: post.updated ?? post.date,
     articleSection: post.category,
     about: post.tags,
     image: [
@@ -432,6 +432,38 @@ export function createArticleJsonLd(post: BlogPost) {
     },
     keywords: post.tags.join(", "),
     inLanguage: "ja",
+    ...(post.educationalLevel
+      ? {
+          educationalLevel: post.educationalLevel,
+          learningResourceType: "Article",
+          educationalUse: "Self-Study",
+          audience: {
+            "@type": "EducationalAudience",
+            educationalRole: "student",
+          },
+        }
+      : {}),
+    ...(post.timeRequired ? { timeRequired: post.timeRequired } : {}),
+  };
+}
+
+/**
+ * FAQPage JSON-LD built from frontmatter `faq:` items. Returns null when the
+ * post has no FAQ block, so the caller can spread the result conditionally.
+ */
+export function createPostFaqJsonLd(post: BlogPost) {
+  if (!post.faq || post.faq.length === 0) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: post.faq.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a,
+      },
+    })),
   };
 }
 
