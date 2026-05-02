@@ -391,6 +391,8 @@ type GraphIllustrationProps = {
     | "centripetal"
     | "shm-projection"
     | "doppler"
+    | "doppler-oblique"
+    | "doppler-reflection"
     | "em-map"
     | "roadmap"
     | "retrieval";
@@ -773,6 +775,226 @@ function GraphIllustration({ variant = "kinematic", caption }: GraphIllustration
 
         <text x="240" y="262" textAnchor="middle" fontFamily="serif" fontSize="11" fill="#6b6b6b" letterSpacing="0.16em">
           DOPPLER EFFECT · WAVELENGTH SHIFT
+        </text>
+      </svg>
+    ) : variant === "doppler-oblique" ? (
+      <svg
+        viewBox="0 0 480 300"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="斜め方向のドップラー効果：音源の速度ベクトル v_s を観測者方向に射影し、有効成分は v_s cosθ となる"
+      >
+        <defs>
+          <marker
+            id="dpo-arrow"
+            markerWidth="12"
+            markerHeight="12"
+            refX="9"
+            refY="6"
+            orient="auto"
+            markerUnits="userSpaceOnUse"
+          >
+            <path d="M2 2 L10 6 L2 10 z" fill={ARROW_WARM} />
+          </marker>
+          <marker
+            id="dpo-arrow-deep"
+            markerWidth="12"
+            markerHeight="12"
+            refX="9"
+            refY="6"
+            orient="auto"
+            markerUnits="userSpaceOnUse"
+          >
+            <path d="M2 2 L10 6 L2 10 z" fill={ARROW_DEEP} />
+          </marker>
+        </defs>
+        <rect width="480" height="300" fill="#fbf9f4" rx="6" stroke="#d8cfb8" />
+
+        {/* Title */}
+        <text x="240" y="28" textAnchor="middle" fontFamily="serif" fontSize="13" fontWeight="700" fill="#1a1a1a">
+          斜め方向のドップラー効果（cos θ 補正）
+        </text>
+
+        {/* Observer (right side) */}
+        <g transform="translate(400 200)">
+          <circle r="14" fill="#fff" stroke="#1a1a1a" strokeWidth="1.6" />
+          <text textAnchor="middle" y="4" fontFamily="serif" fontSize="11" fontWeight="700" fill="#1a1a1a">
+            👂
+          </text>
+          <text textAnchor="middle" y="32" fontFamily="serif" fontSize="11" fontWeight="700" fill={ARROW_DEEP}>
+            観測者
+          </text>
+        </g>
+
+        {/* Source position */}
+        <circle cx="120" cy="120" r="8" fill={ARROW_WARM} stroke="#1a1a1a" strokeWidth="1.4" />
+        <text x="92" y="112" fontFamily="serif" fontSize="11" fontWeight="700" fill={ARROW_WARM}>
+          音源
+        </text>
+
+        {/* Line of sight (source → observer) */}
+        <line x1="120" y1="120" x2="400" y2="200" stroke={ARROW_DEEP} strokeWidth="1.6" strokeDasharray="3 3" />
+        <text x="252" y="172" fontFamily="serif" fontSize="11" fill={ARROW_DEEP} fontWeight="700">
+          視線方向
+        </text>
+
+        {/* Source velocity v_s (general direction, e.g. roughly horizontal) */}
+        <line
+          x1="120"
+          y1="120"
+          x2="240"
+          y2="120"
+          stroke={ARROW_WARM}
+          strokeWidth="3"
+          markerEnd="url(#dpo-arrow)"
+        />
+        <text x="170" y="110" fontFamily="serif" fontSize="13" fontWeight="700" fill={ARROW_WARM}>
+          v_s
+        </text>
+
+        {/* Projection onto line of sight: drop perpendicular from tip of v_s onto the line of sight */}
+        {/* line of sight unit vector ≈ (280,80)/sqrt(280²+80²)=(280,80)/291.4 ≈ (0.961,0.275) */}
+        {/* projection of (120,0) onto LoS = 120*0.961 ≈ 115.3 along LoS */}
+        {/* foot point = (120,120) + 115.3*(0.961,0.275) ≈ (230.8, 151.7) */}
+        <line
+          x1="240"
+          y1="120"
+          x2="230.8"
+          y2="151.7"
+          stroke="#9a8c5a"
+          strokeWidth="1.2"
+          strokeDasharray="2 3"
+        />
+        {/* Effective component v_s cosθ along LoS */}
+        <line
+          x1="120"
+          y1="120"
+          x2="230.8"
+          y2="151.7"
+          stroke={ARROW_DEEP}
+          strokeWidth="3"
+          markerEnd="url(#dpo-arrow-deep)"
+        />
+        <text x="135" y="148" fontFamily="serif" fontSize="13" fontWeight="700" fill={ARROW_DEEP}>
+          v_s cos θ
+        </text>
+
+        {/* angle θ at source */}
+        <path d="M 156 120 A 36 36 0 0 1 154.6 130.3" fill="none" stroke="#1a1a1a" strokeWidth="1.2" />
+        <text x="158" y="135" fontFamily="serif" fontSize="12" fontWeight="700" fill="#1a1a1a">
+          θ
+        </text>
+
+        {/* Annotation box */}
+        <rect x="50" y="234" width="380" height="50" rx="6" fill="#fff" stroke="#d8cfb8" strokeWidth="1" />
+        <text x="240" y="254" textAnchor="middle" fontFamily="serif" fontSize="12" fontWeight="700" fill="#1a1a1a">
+          視線方向の速度成分だけが f′ に効く
+        </text>
+        <text x="240" y="272" textAnchor="middle" fontFamily="serif" fontSize="12" fill={ARROW_DEEP} fontWeight="700">
+          f′ = f · V / (V − v_s cos θ)
+        </text>
+      </svg>
+    ) : variant === "doppler-reflection" ? (
+      <svg
+        viewBox="0 0 480 280"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="反射音のドップラー効果：壁を①観測者として受け、②音源として送り返す2段階で公式を適用"
+      >
+        <defs>
+          <marker
+            id="dpr-arrow-deep"
+            markerWidth="12"
+            markerHeight="12"
+            refX="9"
+            refY="6"
+            orient="auto"
+            markerUnits="userSpaceOnUse"
+          >
+            <path d="M2 2 L10 6 L2 10 z" fill={ARROW_DEEP} />
+          </marker>
+          <marker
+            id="dpr-arrow-warm"
+            markerWidth="12"
+            markerHeight="12"
+            refX="9"
+            refY="6"
+            orient="auto"
+            markerUnits="userSpaceOnUse"
+          >
+            <path d="M2 2 L10 6 L2 10 z" fill={ARROW_WARM} />
+          </marker>
+        </defs>
+        <rect width="480" height="280" fill="#fbf9f4" rx="6" stroke="#d8cfb8" />
+
+        <text x="240" y="26" textAnchor="middle" fontFamily="serif" fontSize="13" fontWeight="700" fill="#1a1a1a">
+          反射音のドップラー効果（壁が観測者→音源の2段）
+        </text>
+
+        {/* Source (car) */}
+        <g transform="translate(70 140)">
+          <rect x="-22" y="-12" width="44" height="22" rx="3" fill="#fff" stroke="#1a1a1a" strokeWidth="1.4" />
+          <text textAnchor="middle" y="4" fontFamily="serif" fontSize="10" fontWeight="700" fill="#1a1a1a">
+            音源
+          </text>
+          <text textAnchor="middle" y="-18" fontFamily="serif" fontSize="11" fontWeight="700" fill={ARROW_WARM}>
+            f, v_s
+          </text>
+        </g>
+
+        {/* Wall on the right */}
+        <rect x="380" y="60" width="14" height="160" fill="#cfd8e8" stroke="#1a1a1a" strokeWidth="1.4" />
+        <g>
+          {[78, 96, 114, 132, 150, 168, 186, 204].map((y) => (
+            <line key={`hatch-${y}`} x1="394" y1={y} x2="408" y2={y - 8} stroke="#1a1a1a" strokeWidth="1" />
+          ))}
+        </g>
+        <text x="387" y="50" fontFamily="serif" fontSize="11" fontWeight="700" fill="#1a1a1a">
+          壁
+        </text>
+
+        {/* Step 1: source → wall (warm arrow above) */}
+        <line
+          x1="100"
+          y1="118"
+          x2="376"
+          y2="100"
+          stroke={ARROW_WARM}
+          strokeWidth="2.8"
+          markerEnd="url(#dpr-arrow-warm)"
+        />
+        <rect x="160" y="64" width="180" height="28" rx="14" fill="#fff" stroke={ARROW_WARM} strokeWidth="1.4" />
+        <text x="250" y="82" textAnchor="middle" fontFamily="serif" fontSize="11" fontWeight="700" fill="#1a1a1a">
+          ① 音源 → 壁（壁＝観測者）
+        </text>
+
+        {/* f1 label near wall */}
+        <text x="404" y="116" fontFamily="serif" fontSize="11" fontWeight="700" fill={ARROW_WARM}>
+          f₁
+        </text>
+
+        {/* Step 2: wall → observer (deep arrow below) */}
+        <line
+          x1="376"
+          y1="170"
+          x2="100"
+          y2="186"
+          stroke={ARROW_DEEP}
+          strokeWidth="2.8"
+          markerEnd="url(#dpr-arrow-deep)"
+        />
+        <rect x="160" y="196" width="200" height="28" rx="14" fill="#fff" stroke={ARROW_DEEP} strokeWidth="1.4" />
+        <text x="260" y="214" textAnchor="middle" fontFamily="serif" fontSize="11" fontWeight="700" fill="#1a1a1a">
+          ② 壁 → 観測者（壁＝音源）
+        </text>
+
+        {/* f2 label near source */}
+        <text x="50" y="180" fontFamily="serif" fontSize="11" fontWeight="700" fill={ARROW_DEEP}>
+          f₂
+        </text>
+
+        <text x="240" y="262" textAnchor="middle" fontFamily="serif" fontSize="11" fill="#6b6b6b" letterSpacing="0.16em">
+          REFLECTED DOPPLER · TWO-STEP APPLICATION
         </text>
       </svg>
     ) : variant === "em-map" ? (
