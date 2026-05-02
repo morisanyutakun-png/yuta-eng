@@ -778,10 +778,21 @@ function GraphIllustration({ variant = "kinematic", caption }: GraphIllustration
         </text>
       </svg>
     ) : variant === "doppler-oblique" ? (
-      // Geometrically exact: S=(100,210), O=(460,210); v_s makes 35° above
-      // the horizontal line-of-sight, length 150 → tip=(222.86,124.96).
-      // Foot of perpendicular onto LoS = (222.86,210); |v_s cosθ| = 122.86.
-      // All labels live in non-overlapping bands.
+      // Strict geometry. S=(100,210), O=(460,210). v_s makes 35° above the
+      // horizontal line-of-sight, length 150:
+      //   tip T  = (100 + 150·cos35°, 210 − 150·sin35°) = (222.87, 123.96)
+      //   foot F = (222.87, 210)             (perpendicular drop onto LoS)
+      //   |v_s cosθ| = 150·cos35° = 122.87   (drawn along +x from S to F)
+      // Arc of θ is centred at S with radius 38:
+      //   start (on LoS):     (100 + 38, 210)              = (138, 210)
+      //   end   (on v_s ray): (100 + 38·cos35°, 210 − 38·sin35°)
+      //                     = (131.13, 188.20)
+      //   sweep-flag = 0  (counter-clockwise in SVG screen-coords → arc goes
+      //                    upward from +x ray, which is what we want).
+      // θ label sits on the bisector at radius 24, angle 17.5° above +x:
+      //   (100 + 24·cos17.5°, 210 − 24·sin17.5°) = (122.89, 202.78)
+      //   text-anchor=middle, baseline y=207 ⇒ glyph visually centred at the
+      //   bisector point and clearly inside the arc, between the two rays.
       <svg
         viewBox="0 0 540 320"
         xmlns="http://www.w3.org/2000/svg"
@@ -819,50 +830,54 @@ function GraphIllustration({ variant = "kinematic", caption }: GraphIllustration
           斜め方向のドップラー効果：cosθ 補正
         </text>
 
-        {/* Line of sight S→O — drawn first so vectors overlay it */}
+        {/* Line of sight S→O */}
         <line x1="100" y1="210" x2="460" y2="210" stroke="#8a8270" strokeWidth="1.2" strokeDasharray="4 4" />
         <text x="362" y="204" fontFamily="serif" fontSize="11" fontWeight="700" fill="#6b6b6b">
           視線方向
         </text>
 
-        {/* Foot-of-perpendicular dashed line: from tip of v_s straight down to LoS */}
-        <line x1="222.86" y1="124.96" x2="222.86" y2="210" stroke="#9a8c5a" strokeWidth="1.2" strokeDasharray="2 3" />
-        {/* small right-angle marker at the foot */}
-        <path d="M 215 210 L 215 202 L 222.86 202" fill="none" stroke="#9a8c5a" strokeWidth="1" />
+        {/* Foot-of-perpendicular dashed line: T=(222.87, 123.96) → F=(222.87, 210) */}
+        <line x1="222.87" y1="123.96" x2="222.87" y2="210" stroke="#9a8c5a" strokeWidth="1.2" strokeDasharray="2 3" />
+        {/* Right-angle marker at F: 8px L pointing into the angle region */}
+        <path d="M 214.87 210 L 214.87 202 L 222.87 202" fill="none" stroke="#9a8c5a" strokeWidth="1" />
 
-        {/* v_s cosθ — projection along LoS, deep blue */}
+        {/* v_s cosθ — projection along LoS, ends at (210, 210) so the arrowhead
+             sits clear of the right-angle marker at x∈[214.87, 222.87] */}
         <line
           x1="100"
           y1="210"
-          x2="218"
+          x2="210"
           y2="210"
           stroke={ARROW_DEEP}
           strokeWidth="3"
           markerEnd="url(#dpo-arrow-deep)"
         />
-        {/* projection label — placed BELOW the LoS, well clear of arc & vector */}
-        <text x="160" y="232" textAnchor="middle" fontFamily="serif" fontSize="13" fontWeight="700" fill={ARROW_DEEP}>
+        {/* projection label — below the LoS, clear of the θ arc & v_s vector */}
+        <text x="155" y="232" textAnchor="middle" fontFamily="serif" fontSize="13" fontWeight="700" fill={ARROW_DEEP}>
           v_s cosθ
         </text>
 
-        {/* v_s — actual velocity vector at 35° above LoS */}
+        {/* v_s — actual velocity vector, 35° above LoS, length 150, tip at T */}
         <line
           x1="100"
           y1="210"
-          x2="218"
-          y2="129.5"
+          x2="222.87"
+          y2="123.96"
           stroke={ARROW_WARM}
           strokeWidth="3"
           markerEnd="url(#dpo-arrow-warm)"
         />
-        {/* v_s label — perpendicular-offset to upper-left of vector midpoint */}
+        {/* v_s label — perpendicular-offset above-left of vector midpoint
+             (midpoint ≈ (161.4, 167.0); label at (138, 158) sits ~13px above
+             the vector line and clear of the θ arc which never goes above y=188) */}
         <text x="138" y="158" fontFamily="serif" fontSize="13" fontWeight="700" fill={ARROW_WARM}>
           v_s
         </text>
 
-        {/* Angle θ arc at S — from LoS direction (along +x) to v_s direction (35° above) */}
-        <path d="M 138 210 A 38 38 0 0 0 169.13 188.21" fill="none" stroke="#1a1a1a" strokeWidth="1.4" />
-        <text x="155" y="202" fontFamily="serif" fontSize="13" fontWeight="700" fill="#1a1a1a">
+        {/* Angle θ arc at S, radius 38 — start (138,210) on +x, end (131.13,188.20) on v_s ray */}
+        <path d="M 138 210 A 38 38 0 0 0 131.13 188.20" fill="none" stroke="#1a1a1a" strokeWidth="1.4" />
+        {/* θ label — on the bisector at radius 24, angle 17.5°, inside the arc */}
+        <text x="123" y="207" textAnchor="middle" fontFamily="serif" fontSize="13" fontWeight="700" fill="#1a1a1a">
           θ
         </text>
 
