@@ -647,6 +647,49 @@ export default function AppsPage() {
         </Container>
       </section>
 
+      {/* INDIVIDUAL SUPPORT — 森祐太 個人による個別支援メニュー。
+          SaaS とは別レイヤなので、控えめに小さく提示する。 */}
+      <section className="bg-white" id="individual-support">
+        <Container className="px-5 pb-14 sm:px-6 sm:pb-20">
+          <div className="mx-auto max-w-4xl border-t border-[rgba(20,35,65,0.1)] pt-10 sm:pt-12">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#475569]">
+                  Individual Support · 個別サポート
+                </p>
+                <h2 className="mt-2 text-[1.2rem] font-extrabold leading-[1.45] tracking-[-0.005em] text-[#142341] sm:text-[1.4rem]">
+                  森 祐太による個別支援メニュー
+                </h2>
+                <p className="mt-2 text-[0.86rem] leading-[1.85] text-[#475569]">
+                  基本情報技術者試験 / LaTeX / 物理教材制作
+                </p>
+              </div>
+            </div>
+            <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+              <li>
+                <Link
+                  href="/services/fe-support"
+                  className="group flex h-full flex-col rounded-[16px] bg-[#fbf5e6] p-5 ring-1 ring-[rgba(20,35,65,0.08)] transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_18px_40px_-28px_rgba(20,35,65,0.4)]"
+                >
+                  <span className="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-[#1e3a8a]">
+                    FE Support
+                  </span>
+                  <p className="mt-2 text-[0.98rem] font-bold leading-[1.5] text-[#142341]">
+                    基本情報技術者試験 学習サポート
+                  </p>
+                  <p className="mt-2 text-[0.84rem] leading-[1.85] text-[#475569]">
+                    応用情報技術者が、基本情報技術者試験の科目B・アルゴリズム・情報セキュリティを中心に、独学で詰まりやすい部分を整理します。
+                  </p>
+                  <span className="mt-3 inline-flex items-center text-[0.82rem] font-semibold text-[#1e3a8a]">
+                    詳しく見る <span aria-hidden="true" className="ml-1 transition group-hover:translate-x-0.5">→</span>
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </Container>
+      </section>
+
       {/* BRAND STRUCTURE */}
       <section className="relative overflow-hidden bg-[linear-gradient(180deg,#fefcf6_0%,#fbf5e6_100%)]">
         <div
