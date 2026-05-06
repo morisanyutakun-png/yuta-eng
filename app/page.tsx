@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { ArticleCard } from "@/components/article-card";
@@ -77,16 +78,89 @@ const subjects = [
 
 const faqItems = homeFaq;
 
+function HeroVisual() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 640 520"
+      className="block h-full w-full"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <linearGradient id="hero-bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stopColor="#f8fbff" />
+          <stop offset="1" stopColor="#eef4ff" />
+        </linearGradient>
+        <linearGradient id="hero-bar1" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0" stopColor="#1e3a8a" />
+          <stop offset="1" stopColor="#3b82f6" />
+        </linearGradient>
+        <linearGradient id="hero-bar2" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0" stopColor="#2563eb" />
+          <stop offset="1" stopColor="#60a5fa" />
+        </linearGradient>
+        <linearGradient id="hero-bar3" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0" stopColor="#3b82f6" />
+          <stop offset="1" stopColor="#7dd3fc" />
+        </linearGradient>
+        <radialGradient id="hero-glow" cx="0.7" cy="0.25" r="0.7">
+          <stop offset="0" stopColor="#bae6fd" stopOpacity="0.55" />
+          <stop offset="1" stopColor="#bae6fd" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect width="640" height="520" fill="url(#hero-bg)" />
+      <rect width="640" height="520" fill="url(#hero-glow)" />
+
+      {/* soft grid */}
+      <g stroke="rgba(15,29,74,0.06)" strokeWidth="1">
+        {Array.from({ length: 12 }).map((_, i) => (
+          <line key={`v${i}`} x1={i * 56 + 32} y1="40" x2={i * 56 + 32} y2="480" />
+        ))}
+        {Array.from({ length: 9 }).map((_, i) => (
+          <line key={`h${i}`} x1="32" y1={i * 52 + 60} x2="608" y2={i * 52 + 60} />
+        ))}
+      </g>
+
+      {/* axes */}
+      <g stroke="#0b1d4a" strokeWidth="2.5" strokeLinecap="round">
+        <line x1="120" y1="430" x2="540" y2="430" />
+        <line x1="120" y1="430" x2="120" y2="100" />
+      </g>
+      <polygon points="120,86 110,108 130,108" fill="#0b1d4a" />
+      <polygon points="556,430 534,420 534,440" fill="#0b1d4a" />
+
+      {/* bar chart */}
+      <rect x="180" y="320" width="44" height="110" rx="3" fill="url(#hero-bar1)" />
+      <rect x="246" y="260" width="44" height="170" rx="3" fill="url(#hero-bar2)" />
+      <rect x="312" y="200" width="44" height="230" rx="3" fill="url(#hero-bar3)" />
+      <rect x="378" y="150" width="44" height="280" rx="3" fill="url(#hero-bar3)" opacity="0.85" />
+
+      {/* orbit curve */}
+      <path
+        d="M 60 470 Q 30 280 220 160 Q 460 30 600 130"
+        fill="none"
+        stroke="#1d4ed8"
+        strokeWidth="3"
+        strokeLinecap="round"
+        opacity="0.85"
+      />
+      <circle cx="600" cy="130" r="11" fill="#38bdf8" />
+      <circle cx="60" cy="470" r="9" fill="#1d4ed8" />
+
+      {/* small annotation node */}
+      <circle cx="312" cy="200" r="5" fill="#0b1d4a" />
+      <circle cx="312" cy="200" r="11" fill="none" stroke="#0b1d4a" strokeWidth="1.5" opacity="0.4" />
+    </svg>
+  );
+}
+
 function PhysicsVisual() {
   // Mirrors the physics.yuta-eng.com hero: paper-warm aurora, three orbit
   // ellipses around a sun glow, and mechanics / EM / wave formula chips.
-  // Explicit width/height + h-auto = browser reserves intrinsic 3:2 ratio.
   return (
     <svg
       viewBox="0 0 720 480"
-      width={720}
-      height={480}
-      className="block h-auto w-full"
+      className="block h-full w-full"
       role="img"
       aria-label="物理の森のブランドビジュアル：紙のような暖色背景に 3 本の原子軌道と力学・電磁気・波動の代表式"
     >
@@ -323,14 +397,10 @@ function PhysicsVisual() {
 
 function FeSupportVisual() {
   // 基本情報サポートのビジュアル：擬似言語のコードカード + 科目B 進捗チェックリスト。
-  // width/height attrs let the browser reserve intrinsic 3:2 aspect ratio
-  // before paint — keeps CLS at 0 even on slow connections.
   return (
     <svg
       viewBox="0 0 720 480"
-      width={720}
-      height={480}
-      className="block h-auto w-full"
+      className="block h-full w-full"
       role="img"
       aria-label="基本情報技術者試験 学習サポートのビジュアル：擬似言語のコードカードと科目B 進捗チェックリスト"
     >
@@ -424,6 +494,55 @@ function FeSupportVisual() {
         <rect width="170" height="28" rx="14" fill="rgba(255,255,255,0.92)" />
         <text x="85" y="19" fontFamily="system-ui" fontSize="12" fontWeight="700" fill="#0b1d4a" textAnchor="middle">
           初回相談 60 分 ¥2,000
+        </text>
+      </g>
+    </svg>
+  );
+}
+
+function MaterialVisual() {
+  return (
+    <svg viewBox="0 0 720 480" className="block h-full w-full" aria-hidden="true">
+      <defs>
+        <linearGradient id="mat-bg" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stopColor="#f0f9ff" />
+          <stop offset="1" stopColor="#e0f2fe" />
+        </linearGradient>
+      </defs>
+      <rect width="720" height="480" fill="url(#mat-bg)" />
+
+      {/* three stacked sheets */}
+      <g>
+        <rect x="120" y="110" width="320" height="200" rx="14" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />
+        <rect x="140" y="135" width="200" height="8" rx="3" fill="#bfdbfe" />
+        <rect x="140" y="155" width="260" height="6" rx="3" fill="#e2e8f0" />
+        <rect x="140" y="170" width="240" height="6" rx="3" fill="#e2e8f0" />
+        <rect x="140" y="185" width="180" height="6" rx="3" fill="#e2e8f0" />
+        <rect x="140" y="220" width="120" height="40" rx="6" fill="#dbeafe" />
+        <rect x="280" y="220" width="120" height="40" rx="6" fill="#bae6fd" />
+      </g>
+      <g transform="translate(180 60)">
+        <rect width="320" height="200" rx="14" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.5" />
+        <rect x="20" y="25" width="200" height="8" rx="3" fill="#3b82f6" />
+        <rect x="20" y="45" width="260" height="6" rx="3" fill="#e2e8f0" />
+        <rect x="20" y="60" width="240" height="6" rx="3" fill="#e2e8f0" />
+      </g>
+      <g transform="translate(260 30)">
+        <rect width="380" height="240" rx="16" fill="#ffffff" stroke="#94a3b8" strokeWidth="1.5" />
+        <rect x="22" y="28" width="180" height="10" rx="3" fill="#0b1d4a" />
+        <rect x="22" y="50" width="320" height="6" rx="3" fill="#cbd5e1" />
+        <rect x="22" y="65" width="280" height="6" rx="3" fill="#cbd5e1" />
+        <rect x="22" y="80" width="240" height="6" rx="3" fill="#cbd5e1" />
+        <rect x="22" y="115" width="100" height="80" rx="6" fill="#dbeafe" />
+        <rect x="135" y="115" width="100" height="80" rx="6" fill="#bae6fd" />
+        <rect x="248" y="115" width="100" height="80" rx="6" fill="#7dd3fc" />
+      </g>
+
+      {/* AI chip */}
+      <g transform="translate(80 350)">
+        <rect width="160" height="64" rx="32" fill="#0b1d4a" />
+        <text x="80" y="40" textAnchor="middle" fill="#bae6fd" fontFamily="system-ui" fontSize="18" fontWeight="700" letterSpacing="3">
+          AI · LaTeX
         </text>
       </g>
     </svg>
@@ -1088,10 +1207,7 @@ export default function Home() {
                 物理の森を見る <span aria-hidden="true" className="ml-1.5">↗</span>
               </a>
             </div>
-            <div
-              className="overflow-hidden rounded-[28px] shadow-[0_40px_80px_-50px_rgba(11,29,74,0.55)]"
-              style={{ aspectRatio: "3 / 2" }}
-            >
+            <div className="overflow-hidden rounded-[28px] shadow-[0_40px_80px_-50px_rgba(11,29,74,0.55)]">
               <PhysicsVisual />
             </div>
           </div>
@@ -1228,10 +1344,7 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            <div
-              className="overflow-hidden rounded-[28px] shadow-[0_40px_80px_-50px_rgba(11,29,74,0.55)]"
-              style={{ aspectRatio: "3 / 2" }}
-            >
+            <div className="overflow-hidden rounded-[28px] shadow-[0_40px_80px_-50px_rgba(11,29,74,0.55)]">
               <FeSupportVisual />
             </div>
           </div>
@@ -1270,7 +1383,7 @@ export default function Home() {
       </section>
 
       {/* LATEST */}
-      <section className="cv-defer bg-[#f8fafc]">
+      <section className="bg-[#f8fafc]">
         <Container className="px-6 py-20 sm:py-28">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>

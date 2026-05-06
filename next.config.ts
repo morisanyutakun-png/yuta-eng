@@ -36,19 +36,14 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
-      // Service hero base + responsive variants (-480/-960/-1440 in avif/webp).
-      // Wildcard so build artifacts from convert-service-hero.mjs all get
-      // immutable + 1y caching. Keep one rule per service base — the script
-      // currently produces /eddivom-hero* and /fe-support-hero* (latter only
-      // when a source raster is present in /public).
       {
-        source: "/eddivom-hero:rest(.*)",
+        source: "/eddivom-hero.webp",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
       {
-        source: "/fe-support-hero:rest(.*)",
+        source: "/eddivom-hero.avif",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],

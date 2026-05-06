@@ -22,11 +22,6 @@ const PUBLIC = path.join(repoRoot, "public");
 
 const SOURCES = [
   { base: "eddivom-hero", widths: [480, 960, 1440] },
-  // Drop-in support: if a real raster ever lands at public/fe-support-hero.{png,webp,jpg},
-  // this auto-generates AVIF + WebP responsive variants on next build. While
-  // no source file exists, the loop logs a skip line and the home page falls
-  // back to the inline SVG <FeSupportVisual />.
-  { base: "fe-support-hero", widths: [480, 960, 1440] },
 ];
 
 async function main() {
