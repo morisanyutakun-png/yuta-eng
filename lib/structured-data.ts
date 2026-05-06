@@ -93,14 +93,12 @@ export function createOrganizationJsonLd() {
           "Solvora が運営する物理専門塾オンライン。高校物理（力学・電磁気・波動・熱・原子）を理解で解くための個別カリキュラムを提供する高校物理オンライン塾。",
       },
       {
-        "@type": "SoftwareApplication",
-        name: "Physics",
-        alternateName: ["高校物理アプリ Physics", "Solvora Physics"],
-        url: siteConfig.physicsSchoolUrl,
-        applicationCategory: "EducationalApplication",
-        operatingSystem: "Web",
+        "@type": "EducationalOrganization",
+        name: "基本情報技術者試験 学習サポート",
+        alternateName: ["FE 学習サポート", "基本情報 学習サポート"],
+        url: new URL("/services/fe-support", siteConfig.url).toString(),
         description:
-          "Solvora が提供する高校物理アプリ。力学・電磁気・波動・熱・原子の各単元を概念解説 → 例題 → 演習の3ステップでスマホから学べる高校物理学習アプリ。",
+          "Solvora 代表 森 祐太（応用情報技術者）が提供する個別サポートサービス。基本情報技術者試験の科目B・アルゴリズム・擬似言語・情報セキュリティ・ネットワーク・データベースを、独学者向けに整理して伴走します。",
       },
       {
         "@type": "SoftwareApplication",

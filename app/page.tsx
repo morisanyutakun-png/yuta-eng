@@ -19,7 +19,7 @@ import {
 export const metadata: Metadata = createPageMetadata({
   title: "理系人材育成 EdTech SaaS｜AI教材・学習アプリ・物理塾の公式ハブ - Solvora",
   description:
-    "Solvora は、理系人材育成のための EdTech SaaS を開発する EdTech スタートアップ。主力 SaaS の AI×LaTeX 教材作成「Eddivom」、高校物理学習アプリ「Physics」、ITパスポート アプリ「IT Pass」、直営の物理専門オンライン塾「物理の森」を 1 つの公式ハブに集約。GIGAスクール構想後の教育DX・STEM 教育を、AI 教材作成と学習支援 SaaS で支えます。",
+    "Solvora は、理系人材育成のための EdTech SaaS を開発する EdTech スタートアップ。主力 SaaS の AI×LaTeX 教材作成「Eddivom」、ITパスポート アプリ「IT Pass」、応用情報技術者による「基本情報技術者試験 学習サポート」、直営の物理専門オンライン塾「物理の森」を 1 つの公式ハブに集約。GIGAスクール構想後の教育DX・STEM 教育を、AI 教材作成と学習支援 SaaS で支えます。",
   keywords: [
     "EdTech",
     "EdTech SaaS",
@@ -37,6 +37,9 @@ export const metadata: Metadata = createPageMetadata({
     "GIGAスクール",
     "Eddivom",
     "物理の森",
+    "基本情報技術者試験 学習サポート",
+    "基本情報 科目B",
+    "基本情報 アルゴリズム",
     "Solvora",
   ],
   path: "/",
@@ -51,10 +54,10 @@ const subjects = [
     accent: "#1d4ed8",
   },
   {
-    label: "Learning SaaS",
-    title: "学習アプリ Physics・IT Pass",
-    sub: "高校物理 / IT パスポートをスマホで毎日 5〜10 分。学習者向け SaaS の 2 本柱。",
-    href: "/apps",
+    label: "Individual Support",
+    title: "基本情報技術者試験 学習サポート",
+    sub: "応用情報技術者が、独学で詰まりやすい科目B・アルゴリズム・情報セキュリティを整理。",
+    href: "/services/fe-support",
     accent: "#0369a1",
   },
   {
@@ -688,8 +691,9 @@ export default function Home() {
                 Solvora は、
                 <strong className="font-bold text-white">理系人材育成のための EdTech SaaS</strong>{" "}
                 を開発する EdTech スタートアップ。AI×LaTeX 教材作成{" "}
-                <strong className="font-bold text-white">Eddivom</strong> を主力に、学習アプリ{" "}
-                <strong className="font-bold text-white">Physics・IT Pass</strong>、直営の物理専門塾{" "}
+                <strong className="font-bold text-white">Eddivom</strong> を主力に、ITパスポート アプリ{" "}
+                <strong className="font-bold text-white">IT Pass</strong>、応用情報技術者による{" "}
+                <strong className="font-bold text-white">基本情報技術者試験 学習サポート</strong>、直営の物理専門塾{" "}
                 <strong className="font-bold text-white">物理の森</strong> までを 1 つの動線で。
               </p>
 
@@ -1286,7 +1290,7 @@ export default function Home() {
               </p>
             </blockquote>
             <p className="mx-auto mt-8 max-w-2xl text-pretty text-center text-[1.02rem] leading-[2] text-[#334155]">
-              Solvora は、物理・数学・情報の解説ブログ、AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、学習アプリ <strong className="font-bold text-[#0b1d4a]">Physics・IT Pass</strong>、物理専門オンライン塾 <strong className="font-bold text-[#0b1d4a]">物理の森</strong> を集約する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。GIGA スクール構想後の高校・大学・社会人の学びをひとつの動線でつなぎます。
+              Solvora は、物理・数学・情報の解説ブログ、AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、ITパスポート アプリ <strong className="font-bold text-[#0b1d4a]">IT Pass</strong>、応用情報技術者による <strong className="font-bold text-[#0b1d4a]">基本情報技術者試験 学習サポート</strong>、物理専門オンライン塾 <strong className="font-bold text-[#0b1d4a]">物理の森</strong> を集約する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。GIGA スクール構想後の高校・大学・社会人の学びをひとつの動線でつなぎます。
             </p>
 
             {/* Three pillars — short value props with iconic visuals */}
@@ -1416,46 +1420,6 @@ export default function Home() {
                 Solvora の運営方針と事業構成を読む <span aria-hidden="true" className="ml-1">→</span>
               </Link>
             </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* INDIVIDUAL SUPPORT — 森祐太 個人による小規模な個別支援メニュー。
-          SaaS とは別レイヤなので、控えめな小カードで提示する。 */}
-      <section className="cv-defer bg-white">
-        <Container className="px-6 py-12 sm:py-16">
-          <div className="mx-auto max-w-4xl border-t border-[rgba(15,29,74,0.08)] pt-10 sm:pt-12">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-[0.7rem] font-semibold uppercase tracking-[0.24em] text-[#475569]">
-                  Individual Support · 個別サポート
-                </p>
-                <p className="mt-1 text-[0.86rem] text-[#475569]">
-                  基本情報技術者試験 / LaTeX / 物理教材制作
-                </p>
-              </div>
-            </div>
-            <ul className="mt-6 grid gap-4 sm:grid-cols-2">
-              <li>
-                <Link
-                  href="/services/fe-support"
-                  className="group flex h-full flex-col rounded-[16px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_18px_40px_-28px_rgba(15,29,74,0.4)]"
-                >
-                  <span className="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-[#1d4ed8]">
-                    FE Support
-                  </span>
-                  <p className="mt-2 text-[0.98rem] font-bold leading-[1.5] text-[#0b1d4a]">
-                    基本情報技術者試験 学習サポート
-                  </p>
-                  <p className="mt-2 text-[0.84rem] leading-[1.85] text-[#475569]">
-                    応用情報技術者が、基本情報技術者試験の科目B・アルゴリズム・情報セキュリティを中心に、独学で詰まりやすい部分を整理します。
-                  </p>
-                  <span className="mt-3 inline-flex items-center text-[0.82rem] font-semibold text-[#1d4ed8]">
-                    詳しく見る <span aria-hidden="true" className="ml-1 transition group-hover:translate-x-0.5">→</span>
-                  </span>
-                </Link>
-              </li>
-            </ul>
           </div>
         </Container>
       </section>

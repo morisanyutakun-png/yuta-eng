@@ -17,16 +17,16 @@ import {
 
 export const metadata: Metadata = createPageMetadata({
   title:
-    "EdTech SaaS / 学習アプリ / 物理塾の公式入口｜Eddivom・Physics・IT Pass・物理の森 - Solvora",
+    "EdTech SaaS / 学習サポート / 物理塾の公式入口｜Eddivom・IT Pass・基本情報サポート・物理の森 - Solvora",
   description:
-    "Solvora が開発・運営する EdTech SaaS の公式比較。主力 SaaS の AI×LaTeX 教材作成『Eddivom』、学習アプリ『Physics』『IT Pass』、直営の物理専門オンライン塾『物理の森』を 1 ページに集約。受験生・教員・社会人・教材会社それぞれに最適な公式入口へ直接アクセスできます。",
+    "Solvora が開発・運営する EdTech SaaS と個別サポートの公式比較。主力 SaaS の AI×LaTeX 教材作成『Eddivom』、ITパスポート アプリ『IT Pass』、応用情報技術者による『基本情報技術者試験 学習サポート』、直営の物理専門オンライン塾『物理の森』を 1 ページに集約。受験生・教員・社会人・教材会社それぞれに最適な公式入口へ直接アクセスできます。",
   keywords: [
     "EdTech SaaS",
     "教育 SaaS",
     "AI 教材作成 SaaS",
     "LaTeX 教材作成",
     "学習支援 SaaS",
-    "高校物理 アプリ",
+    "基本情報技術者試験 学習サポート",
     "ITパスポート アプリ",
     "物理専門塾 オンライン",
     "理系人材育成 SaaS",
@@ -39,7 +39,7 @@ export const metadata: Metadata = createPageMetadata({
  * the cards on `/apps` feel like extensions of the actual apps:
  *  - butsuri-no-mori: paper-warm ink-navy palette of physics.yuta-eng.com
  *  - eddivom        : violet → magenta → cyan (the LaTeX×AI OG palette)
- *  - physics        : ocean blue (matches the high-school physics app)
+ *  - fe-support     : ocean blue (FE / 科目B / 擬似言語 feel)
  *  - it-pass        : forest teal (study/productivity feel)
  *
  * `bg` is the gradient backdrop, `ring` is the ring color around the card,
@@ -257,82 +257,71 @@ function EddivomArtwork() {
   );
 }
 
-function PhysicsArtwork() {
-  // Phone shape with kinematic v-t graph — high-school physics app feel.
+function FeSupportArtwork() {
+  // Pseudocode card + checklist motif — FE support / 科目B feel.
   return (
     <svg
       viewBox="0 0 480 320"
       className="h-full w-full"
       role="img"
-      aria-label="Physics アプリのビジュアル：スマホ画面に v-t グラフが表示されている図"
+      aria-label="基本情報技術者試験 学習サポートのビジュアル：擬似言語のコードカードとチェックリストの図"
     >
       <defs>
-        <linearGradient id="phys-bg" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id="fe-bg" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#0c4a6e" />
-          <stop offset="60%" stopColor="#0284c7" />
+          <stop offset="60%" stopColor="#0369a1" />
           <stop offset="100%" stopColor="#38bdf8" />
         </linearGradient>
       </defs>
-      <rect width="480" height="320" fill="url(#phys-bg)" rx="12" />
+      <rect width="480" height="320" fill="url(#fe-bg)" rx="12" />
       <circle cx="380" cy="60" r="60" fill="#bae6fd" opacity="0.3" />
       <circle cx="80" cy="270" r="80" fill="#0ea5e9" opacity="0.3" />
-      {/* Phone */}
-      <rect
-        x="170"
-        y="40"
-        width="140"
-        height="240"
-        rx="22"
-        fill="#0b1d4a"
-        stroke="#bae6fd"
-        strokeWidth="2"
-      />
-      <rect
-        x="178"
-        y="56"
-        width="124"
-        height="208"
-        rx="6"
-        fill="#fbf9f4"
-      />
-      {/* Status bar */}
-      <rect x="186" y="64" width="20" height="3" rx="1.5" fill="#0b1d4a" opacity="0.4" />
-      <circle cx="290" cy="65.5" r="2" fill="#0b1d4a" opacity="0.4" />
-      {/* v-t graph */}
-      <line x1="186" y1="244" x2="296" y2="244" stroke="#0b1d4a" strokeWidth="1.4" />
-      <line x1="186" y1="244" x2="186" y2="84" stroke="#0b1d4a" strokeWidth="1.4" />
-      <path
-        d="M 186 232 L 296 110"
-        stroke="#0284c7"
-        strokeWidth="2.6"
-        strokeLinecap="round"
-      />
-      <path
-        d="M 186 232 L 296 110 L 296 244 L 186 244 Z"
-        fill="#0284c7"
-        fillOpacity="0.18"
-      />
-      <circle cx="296" cy="110" r="4" fill="#f59e0b" />
-      <circle cx="186" cy="232" r="3" fill="#0b1d4a" />
-      {/* Title / subtitle on screen */}
-      <text x="194" y="100" fontFamily="system-ui" fontSize="9" fontWeight="700" fill="#0b1d4a">
-        v-t グラフ
-      </text>
-      <text x="194" y="262" fontFamily="system-ui" fontSize="7" fontWeight="600" fill="#475569">
-        概念 → 例題 → 演習
-      </text>
-      {/* Floating equations */}
-      <g transform="translate(60 130)">
-        <rect width="80" height="32" rx="6" fill="rgba(255,255,255,0.94)" />
-        <text x="40" y="20" fontFamily="system-ui" fontSize="10" fontWeight="700" fill="#0b1d4a" textAnchor="middle">
-          v = v₀ + at
+
+      {/* Pseudocode card */}
+      <g transform="translate(60 60)">
+        <rect width="240" height="200" rx="12" fill="#0b1d4a" stroke="#bae6fd" strokeWidth="2" />
+        <rect x="14" y="14" width="212" height="22" rx="4" fill="rgba(255,255,255,0.08)" />
+        <circle cx="26" cy="25" r="3" fill="#f87171" />
+        <circle cx="38" cy="25" r="3" fill="#fbbf24" />
+        <circle cx="50" cy="25" r="3" fill="#34d399" />
+        <text x="64" y="29" fontFamily="ui-monospace, Menlo, monospace" fontSize="9" fill="#bae6fd">
+          algorithm.pseudo
         </text>
+        {/* Pseudocode lines */}
+        <g fontFamily="ui-monospace, Menlo, monospace" fontSize="11" fill="#e2e8f0">
+          <text x="20" y="60">○ 整数型: i, sum</text>
+          <text x="20" y="80">sum ← 0</text>
+          <text x="20" y="100">  for (i を 1 から n まで)</text>
+          <text x="20" y="120" fill="#fde68a">    sum ← sum + i</text>
+          <text x="20" y="140">  endfor</text>
+          <text x="20" y="160">return sum</text>
+        </g>
+        {/* Highlighted line */}
+        <rect x="14" y="108" width="212" height="16" rx="3" fill="rgba(253,224,71,0.18)" />
       </g>
-      <g transform="translate(340 200)">
-        <rect width="86" height="32" rx="6" fill="rgba(255,255,255,0.94)" />
-        <text x="43" y="20" fontFamily="system-ui" fontSize="10" fontWeight="700" fill="#0b1d4a" textAnchor="middle">
-          F = mv²/r
+
+      {/* Checklist card */}
+      <g transform="translate(320 90)">
+        <rect width="130" height="160" rx="10" fill="#fbf9f4" />
+        <text x="14" y="26" fontFamily="system-ui" fontSize="10" fontWeight="700" fill="#0b1d4a">
+          科目B 対策
         </text>
+        {[
+          { y: 50, label: "アルゴリズム", done: true },
+          { y: 75, label: "擬似言語", done: true },
+          { y: 100, label: "情報セキュリティ", done: false },
+          { y: 125, label: "過去問演習", done: false },
+        ].map((row, i) => (
+          <g key={i} transform={`translate(14 ${row.y})`}>
+            <rect width="14" height="14" rx="3" fill={row.done ? "#0369a1" : "#ffffff"} stroke="#0369a1" strokeWidth="1.5" />
+            {row.done ? (
+              <path d="M3 7 L6 10 L11 4" stroke="#ffffff" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+            ) : null}
+            <text x="22" y="11" fontFamily="system-ui" fontSize="9" fontWeight="600" fill="#0b1d4a">
+              {row.label}
+            </text>
+          </g>
+        ))}
       </g>
     </svg>
   );
@@ -440,7 +429,7 @@ const visualBySlug: Record<string, Visual> = {
     inkSoft: "text-[#e9d5ff]",
     artwork: <EddivomArtwork />,
   },
-  physics: {
+  "fe-support": {
     bg: "bg-[linear-gradient(135deg,#0b1d4a_0%,#0c4a6e_55%,#082f49_100%)]",
     ring: "ring-[rgba(186,230,253,0.18)]",
     chip: "text-[#bae6fd] border-[rgba(186,230,253,0.4)]",
@@ -448,7 +437,7 @@ const visualBySlug: Record<string, Visual> = {
     glow2: "rgba(125,211,252,0.3)",
     ink: "text-white",
     inkSoft: "text-[#bae6fd]",
-    artwork: <PhysicsArtwork />,
+    artwork: <FeSupportArtwork />,
   },
   "it-pass": {
     bg: "bg-[linear-gradient(135deg,#022c22_0%,#064e3b_55%,#022c22_100%)]",
@@ -560,12 +549,12 @@ export default function AppsPage() {
               Services · Solvora
             </p>
             <h1 className="mt-4 text-balance text-[1.85rem] font-extrabold leading-[1.25] tracking-[-0.01em] text-[#142341] sm:text-[2.4rem] sm:leading-[1.2] lg:text-[2.9rem]">
-              物理専門塾オンライン、高校物理アプリ、
+              物理専門塾オンライン、基本情報サポート、
               <br className="hidden sm:block" />
               LaTeX 教材作成、ITパスポート アプリ。
             </h1>
             <p className="mt-5 max-w-2xl text-pretty text-[0.98rem] leading-[1.95] text-[#3a4d6b] sm:mt-6 sm:text-[1.06rem]">
-              Solvora が運営・公式紹介する 4 つのサービスを 1 ページにまとめました。高校生・受験生から教員・社会人まで、目的別に最短ルートで公式サイトへアクセスできます。
+              Solvora が運営・公式紹介する 4 つのサービスを 1 ページにまとめました。高校生・受験生から社会人まで、目的別に最短ルートで該当ページへアクセスできます。
             </p>
 
             {/* Quick-jump dock — anchors to each service section */}
@@ -647,49 +636,6 @@ export default function AppsPage() {
         </Container>
       </section>
 
-      {/* INDIVIDUAL SUPPORT — 森祐太 個人による個別支援メニュー。
-          SaaS とは別レイヤなので、控えめに小さく提示する。 */}
-      <section className="bg-white" id="individual-support">
-        <Container className="px-5 pb-14 sm:px-6 sm:pb-20">
-          <div className="mx-auto max-w-4xl border-t border-[rgba(20,35,65,0.1)] pt-10 sm:pt-12">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#475569]">
-                  Individual Support · 個別サポート
-                </p>
-                <h2 className="mt-2 text-[1.2rem] font-extrabold leading-[1.45] tracking-[-0.005em] text-[#142341] sm:text-[1.4rem]">
-                  森 祐太による個別支援メニュー
-                </h2>
-                <p className="mt-2 text-[0.86rem] leading-[1.85] text-[#475569]">
-                  基本情報技術者試験 / LaTeX / 物理教材制作
-                </p>
-              </div>
-            </div>
-            <ul className="mt-6 grid gap-4 sm:grid-cols-2">
-              <li>
-                <Link
-                  href="/services/fe-support"
-                  className="group flex h-full flex-col rounded-[16px] bg-[#fbf5e6] p-5 ring-1 ring-[rgba(20,35,65,0.08)] transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_18px_40px_-28px_rgba(20,35,65,0.4)]"
-                >
-                  <span className="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-[#1e3a8a]">
-                    FE Support
-                  </span>
-                  <p className="mt-2 text-[0.98rem] font-bold leading-[1.5] text-[#142341]">
-                    基本情報技術者試験 学習サポート
-                  </p>
-                  <p className="mt-2 text-[0.84rem] leading-[1.85] text-[#475569]">
-                    応用情報技術者が、基本情報技術者試験の科目B・アルゴリズム・情報セキュリティを中心に、独学で詰まりやすい部分を整理します。
-                  </p>
-                  <span className="mt-3 inline-flex items-center text-[0.82rem] font-semibold text-[#1e3a8a]">
-                    詳しく見る <span aria-hidden="true" className="ml-1 transition group-hover:translate-x-0.5">→</span>
-                  </span>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </Container>
-      </section>
-
       {/* BRAND STRUCTURE */}
       <section className="relative overflow-hidden bg-[linear-gradient(180deg,#fefcf6_0%,#fbf5e6_100%)]">
         <div
@@ -709,7 +655,7 @@ export default function AppsPage() {
               Solvora と各サービスの関係
             </h2>
             <p className="mt-4 text-[0.92rem] leading-[1.95] text-[#3a4d6b]">
-              Solvora は理系学習ハブの親ブランド。物理の森は Solvora が直営するオンライン物理専門塾、Physics は高校物理アプリ、Eddivom は LaTeX 教材作成 AI、IT Pass は IT パスポート アプリです。
+              Solvora は理系学習ハブの親ブランド。物理の森は Solvora が直営するオンライン物理専門塾、Eddivom は LaTeX 教材作成 AI、IT Pass は IT パスポート アプリ、基本情報技術者試験 学習サポートは応用情報技術者による個別サポートです。
             </p>
           </div>
 
@@ -755,7 +701,7 @@ function ServiceCard({
   visual: Visual | undefined;
   isFeatured?: boolean;
 }) {
-  const v = visual ?? visualBySlug.physics;
+  const v = visual ?? visualBySlug["fe-support"];
   const ctaStyle: CSSProperties = isFeatured
     ? { backgroundColor: "#142341" }
     : {};
@@ -806,15 +752,25 @@ function ServiceCard({
             <p className={`mt-4 text-[0.95rem] leading-[1.9] ${v.inkSoft} sm:text-[1.02rem]`}>
               {app.comparison}
             </p>
-            <a
-              href={app.href}
-              rel="noreferrer noopener"
-              target="_blank"
-              className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-[0.94rem] font-bold tracking-[0.02em] text-[#0b1d4a] shadow-[0_14px_30px_-16px_rgba(15,29,74,0.55)] transition hover:-translate-y-0.5 hover:bg-[#bae6fd]"
-              style={ctaStyle.backgroundColor ? undefined : undefined}
-            >
-              {app.ctaLabel} <span aria-hidden="true">↗</span>
-            </a>
+            {app.href.startsWith("/") ? (
+              <Link
+                href={app.href}
+                className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-[0.94rem] font-bold tracking-[0.02em] text-[#0b1d4a] shadow-[0_14px_30px_-16px_rgba(15,29,74,0.55)] transition hover:-translate-y-0.5 hover:bg-[#bae6fd]"
+                style={ctaStyle.backgroundColor ? undefined : undefined}
+              >
+                {app.ctaLabel} <span aria-hidden="true">→</span>
+              </Link>
+            ) : (
+              <a
+                href={app.href}
+                rel="noreferrer noopener"
+                target="_blank"
+                className="mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-white px-6 text-[0.94rem] font-bold tracking-[0.02em] text-[#0b1d4a] shadow-[0_14px_30px_-16px_rgba(15,29,74,0.55)] transition hover:-translate-y-0.5 hover:bg-[#bae6fd]"
+                style={ctaStyle.backgroundColor ? undefined : undefined}
+              >
+                {app.ctaLabel} <span aria-hidden="true">↗</span>
+              </a>
+            )}
           </div>
 
           {/* Visual artwork (inline SVG, zero extra requests) */}

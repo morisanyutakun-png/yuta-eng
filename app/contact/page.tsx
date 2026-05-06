@@ -36,7 +36,7 @@ const lanes = [
     eyebrow: "Lane A · SaaS",
     badgeBg: "#1d4ed8",
     title: "EdTech SaaS のお問い合わせ",
-    body: "AI×LaTeX 教材作成 SaaS『Eddivom』、高校物理アプリ『Physics』、ITパスポート アプリ『IT Pass』に関する内容のみ。法人 / メディア / 個人いずれも歓迎します。",
+    body: "AI×LaTeX 教材作成 SaaS『Eddivom』、ITパスポート アプリ『IT Pass』、応用情報技術者による『基本情報技術者試験 学習サポート』に関する内容のみ。法人 / メディア / 個人いずれも歓迎します。",
     bullets: [
       "Eddivom など SaaS の機能要望・不具合報告・サポート",
       "メディア取材・寄稿・登壇のご依頼",
