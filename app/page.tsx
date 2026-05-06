@@ -395,6 +395,111 @@ function PhysicsVisual() {
   );
 }
 
+function FeSupportVisual() {
+  // 基本情報サポートのビジュアル：擬似言語のコードカード + 科目B 進捗チェックリスト。
+  return (
+    <svg
+      viewBox="0 0 720 480"
+      className="block h-full w-full"
+      role="img"
+      aria-label="基本情報技術者試験 学習サポートのビジュアル：擬似言語のコードカードと科目B 進捗チェックリスト"
+    >
+      <defs>
+        <linearGradient id="fe-bg-home" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#082f49" />
+          <stop offset="55%" stopColor="#0c4a6e" />
+          <stop offset="100%" stopColor="#0369a1" />
+        </linearGradient>
+        <radialGradient id="fe-glow-home" cx="0.78" cy="0.22" r="0.55">
+          <stop offset="0" stopColor="#bae6fd" stopOpacity="0.45" />
+          <stop offset="1" stopColor="#bae6fd" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+
+      <rect width="720" height="480" fill="url(#fe-bg-home)" />
+      <rect width="720" height="480" fill="url(#fe-glow-home)" />
+      <circle cx="80" cy="400" r="110" fill="#0ea5e9" opacity="0.18" />
+
+      {/* Pseudocode card */}
+      <g transform="translate(70 90)">
+        <rect width="380" height="300" rx="18" fill="#0b1d4a" stroke="#bae6fd" strokeWidth="2" />
+        <rect x="20" y="20" width="340" height="32" rx="6" fill="rgba(255,255,255,0.08)" />
+        <circle cx="38" cy="36" r="4" fill="#f87171" />
+        <circle cx="54" cy="36" r="4" fill="#fbbf24" />
+        <circle cx="70" cy="36" r="4" fill="#34d399" />
+        <text x="92" y="41" fontFamily="ui-monospace, Menlo, monospace" fontSize="13" fill="#bae6fd">
+          algorithm.pseudo
+        </text>
+
+        <g fontFamily="ui-monospace, Menlo, monospace" fontSize="15" fill="#e2e8f0">
+          <text x="30" y="88">○ 整数型: i, sum</text>
+          <text x="30" y="118">sum ← 0</text>
+          <text x="30" y="148">  for (i を 1 から n まで)</text>
+          <text x="30" y="178" fill="#fde68a">    sum ← sum + i</text>
+          <text x="30" y="208">  endfor</text>
+          <text x="30" y="238">return sum</text>
+        </g>
+        <rect x="20" y="160" width="340" height="24" rx="4" fill="rgba(253,224,71,0.16)" />
+
+        {/* "trace" annotation */}
+        <g transform="translate(280 92)">
+          <rect width="84" height="28" rx="14" fill="#1d4ed8" />
+          <text x="42" y="19" fontFamily="system-ui" fontSize="12" fontWeight="700" fill="#ffffff" textAnchor="middle">
+            trace ↓
+          </text>
+        </g>
+      </g>
+
+      {/* Checklist card */}
+      <g transform="translate(490 110)">
+        <rect width="180" height="260" rx="14" fill="#fbf9f4" />
+        <text x="20" y="34" fontFamily="system-ui" fontSize="13" fontWeight="800" fill="#0b1d4a">
+          科目B 対策
+        </text>
+        <line x1="20" y1="44" x2="160" y2="44" stroke="#0b1d4a" strokeOpacity="0.18" strokeWidth="1" />
+        {[
+          { y: 70, label: "アルゴリズム", done: true },
+          { y: 105, label: "擬似言語 trace", done: true },
+          { y: 140, label: "情報セキュリティ", done: true },
+          { y: 175, label: "ネットワーク", done: false },
+          { y: 210, label: "過去問演習", done: false },
+        ].map((row, i) => (
+          <g key={i} transform={`translate(20 ${row.y})`}>
+            <rect
+              width="18"
+              height="18"
+              rx="4"
+              fill={row.done ? "#0369a1" : "#ffffff"}
+              stroke="#0369a1"
+              strokeWidth="1.6"
+            />
+            {row.done ? (
+              <path d="M4 9 L8 13 L14 5" stroke="#ffffff" strokeWidth="2.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            ) : null}
+            <text x="28" y="14" fontFamily="system-ui" fontSize="12" fontWeight="600" fill="#0b1d4a">
+              {row.label}
+            </text>
+          </g>
+        ))}
+      </g>
+
+      {/* Floating chips */}
+      <g transform="translate(60 36)">
+        <rect width="160" height="28" rx="14" fill="rgba(255,255,255,0.92)" />
+        <text x="80" y="19" fontFamily="system-ui" fontSize="12" fontWeight="700" fill="#0b1d4a" textAnchor="middle">
+          応用情報技術者 が伴走
+        </text>
+      </g>
+      <g transform="translate(490 412)">
+        <rect width="170" height="28" rx="14" fill="rgba(255,255,255,0.92)" />
+        <text x="85" y="19" fontFamily="system-ui" fontSize="12" fontWeight="700" fill="#0b1d4a" textAnchor="middle">
+          初回相談 60 分 ¥2,000
+        </text>
+      </g>
+    </svg>
+  );
+}
+
 function MaterialVisual() {
   return (
     <svg viewBox="0 0 720 480" className="block h-full w-full" aria-hidden="true">
@@ -1187,6 +1292,60 @@ export default function Home() {
                   詳しく見る
                 </Link>
               </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* FEATURED: 基本情報技術者試験 学習サポート */}
+      <section className="cv-defer bg-[#f8fafc]">
+        <Container className="px-6 py-20 sm:py-28">
+          <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
+            <div>
+              <p className="inline-flex items-center gap-2 text-[0.72rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.74rem]">
+                <span aria-hidden="true" className="inline-block h-1.5 w-1.5 rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#38bdf8]" />
+                Individual Support · 基本情報技術者試験
+              </p>
+              <h2 className="mt-3 text-balance text-[2rem] font-extrabold leading-[1.2] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.6rem]">
+                独学の詰まりを、
+                <br className="hidden sm:block" />
+                応用情報技術者が整理する。
+              </h2>
+              <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
+                基本情報を独学していて科目B・アルゴリズム・擬似言語・情報セキュリティで止まる人へ。<strong className="font-bold text-[#0b1d4a]">応用情報技術者</strong> による個別サポートで、必要なテーマだけを必要な分だけ伴走します。予備校ほど大げさではない『部分サポート』として設計しました。
+              </p>
+              <ul className="mt-6 grid gap-2 text-[0.92rem] leading-[1.85] text-[#334155]">
+                {[
+                  "学習計画 → 科目B → 苦手単元 → 直前確認の順で整理",
+                  "アルゴリズム・擬似言語のトレースと頻出パターンを伴走",
+                  "初回相談 60 分 ¥2,000 / 単発 ¥3,000 / 4 回パック ¥12,000",
+                ].map((feat) => (
+                  <li key={feat} className="flex gap-2.5">
+                    <span
+                      aria-hidden="true"
+                      className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-br from-[#1d4ed8] to-[#38bdf8]"
+                    />
+                    <span>{feat}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-9 flex flex-wrap items-center gap-3">
+                <Link
+                  href="/services/fe-support"
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#0b1d4a] px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a]"
+                >
+                  学習サポートを見る <span aria-hidden="true" className="ml-1">→</span>
+                </Link>
+                <Link
+                  href="/apps#fe-support"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-6 text-[0.96rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
+                >
+                  サービス概要
+                </Link>
+              </div>
+            </div>
+            <div className="overflow-hidden rounded-[28px] shadow-[0_40px_80px_-50px_rgba(11,29,74,0.55)]">
+              <FeSupportVisual />
             </div>
           </div>
         </Container>
