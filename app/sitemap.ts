@@ -78,6 +78,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     },
     {
+      url: `${SITE_URL}/services/fe-support`,
+      lastModified: pageMtime("/services/fe-support", now),
+      changeFrequency: "monthly",
+      priority: 0.55,
+    },
+    {
       url: `${SITE_URL}/blog`,
       lastModified: newestPost,
       changeFrequency: "weekly",
