@@ -408,10 +408,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                       accent: "#0b1d4a",
                     },
                     {
-                      label: "Learning App",
-                      title: "Physics｜高校物理アプリ",
-                      body: "単元別の概念解説 → 例題 → 演習をスマホで毎日 5〜10 分積み上げる自学アプリ。",
-                      href: "/apps#physics",
+                      label: "Service Hub",
+                      title: "Solvora の公式サービス一覧",
+                      body: "物理の森・Eddivom・IT Pass・基本情報学習サポートの 4 つの公式入口。",
+                      href: "/apps",
                       external: false,
                       accent: "#0284c7",
                     },
@@ -429,7 +429,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {
                       label: "Service Hub",
                       title: "Solvora の公式サービス一覧",
-                      body: "AI 教材・物理塾・学習アプリの 4 サービスを比較できる公式入口。",
+                      body: "AI 教材・物理塾・IT 学習サポートの 4 サービスを比較できる公式入口。",
                       href: "/apps",
                       external: false,
                       accent: "#0ea5e9",
@@ -439,7 +439,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {
                       label: "Service Hub",
                       title: "Solvora の公式サービス一覧",
-                      body: "AI 教材作成 Eddivom、物理の森、学習アプリ Physics・IT Pass の 4 つの公式入口。",
+                      body: "AI 教材作成 Eddivom、物理の森、IT Pass、基本情報技術者試験 学習サポートの 4 つの公式入口。",
                       href: "/apps",
                       external: false,
                       accent: "#1d4ed8",
