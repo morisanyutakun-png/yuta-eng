@@ -357,7 +357,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 読んだあとの行き先を、Solvora から選ぶ。
               </p>
               <p className="mt-2 text-[clamp(0.86rem,0.83rem+0.2vw,0.94rem)] leading-[1.85] text-[#475569] sm:mt-3 sm:leading-[1.95]">
-                Solvora（学習ハブ）から、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass へ直接遷移できます。
+                Solvora Learning Lab から、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass、応用情報技術者による「基本情報技術者試験 学習サポート」へ直接遷移できます。
               </p>
               <div className="mt-5 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:flex-wrap sm:gap-3">
                 <a

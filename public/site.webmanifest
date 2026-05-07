@@ -1,11 +1,11 @@
 {
-  "name": "Solvora 学習ハブ",
+  "name": "Solvora Learning Lab",
   "short_name": "Solvora",
-  "description": "Solvora（ソルヴォラ）は、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass などの公式入口を集約する学習ハブブランドです。",
+  "description": "Solvora（ソルヴォラ）は、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass、応用情報技術者による「基本情報技術者試験 学習サポート」の公式入口を集約する Learning Lab ブランドです。",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#fbf9f4",
-  "theme_color": "#0b1220",
+  "background_color": "#ffffff",
+  "theme_color": "#0b1d4a",
   "icons": [
     {
       "src": "/favicon.svg?v=2",

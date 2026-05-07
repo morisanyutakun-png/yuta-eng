@@ -53,10 +53,10 @@ export function SiteHeader() {
       </a>
 
       <header className="sticky top-0 z-50 bg-white/95 supports-[backdrop-filter]:backdrop-blur-md supports-[backdrop-filter]:bg-white/80 shadow-[0_10px_30px_-22px_rgba(15,29,74,0.18)]">
-        {/* Top hairline gradient — accent stripe */}
+        {/* Top hairline gradient — accent stripe (Learning Lab palette: navy → sky → teal) */}
         <div
           aria-hidden="true"
-          className="h-[2px] w-full bg-[linear-gradient(90deg,#1e3a8a_0%,#1d4ed8_28%,#38bdf8_55%,#0ea5e9_78%,#1e3a8a_100%)] opacity-90"
+          className="h-[2px] w-full bg-[linear-gradient(90deg,#1e3a8a_0%,#1d4ed8_24%,#38bdf8_50%,#5eead4_72%,#0d9488_92%,#1e3a8a_100%)] opacity-90"
         />
 
         <Container className="relative">
@@ -80,8 +80,8 @@ export function SiteHeader() {
                     />
                   </span>
                 </span>
-                <span className="mt-1 hidden text-[0.6rem] font-semibold tracking-[0.32em] text-transparent bg-clip-text bg-gradient-to-r from-[#1d4ed8] to-[#0ea5e9] sm:block">
-                  SCIENCE LEARNING HUB
+                <span className="mt-1 hidden text-[0.6rem] font-semibold tracking-[0.32em] text-transparent bg-clip-text bg-gradient-to-r from-[#0d9488] to-[#0ea5e9] sm:block">
+                  LEARNING LAB
                 </span>
               </span>
             </Link>

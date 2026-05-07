@@ -30,8 +30,8 @@ export function SiteFooter() {
                 <span className="block text-[1.2rem] font-extrabold tracking-[0.04em] text-[#0b1d4a]">
                   SOLVORA
                 </span>
-                <span className="mt-0.5 block text-[0.66rem] font-semibold tracking-[0.28em] text-[#1d4ed8]">
-                  SCIENCE LEARNING HUB
+                <span className="mt-0.5 block text-[0.66rem] font-semibold tracking-[0.28em] text-[#0d9488]">
+                  LEARNING LAB
                 </span>
               </span>
             </Link>
@@ -81,19 +81,34 @@ export function SiteFooter() {
               サービス
             </h2>
             <ul className="mt-4 space-y-2 text-[0.88rem]">
-              {apps.map((app) => (
-                <li key={app.href}>
-                  <a
-                    className="text-[#475569] transition hover:text-[#0b1d4a]"
-                    href={app.href}
-                    rel="noreferrer noopener"
-                    target="_blank"
-                  >
-                    {app.name}
-                    <span aria-hidden="true" className="ml-1 text-[0.7rem]">↗</span>
-                  </a>
-                </li>
-              ))}
+              {apps.map((app) => {
+                const internal = app.href.startsWith("/");
+                if (internal) {
+                  return (
+                    <li key={app.href}>
+                      <Link
+                        className="text-[#475569] transition hover:text-[#0b1d4a]"
+                        href={app.href}
+                      >
+                        {app.name}
+                      </Link>
+                    </li>
+                  );
+                }
+                return (
+                  <li key={app.href}>
+                    <a
+                      className="text-[#475569] transition hover:text-[#0b1d4a]"
+                      href={app.href}
+                      rel="noreferrer noopener"
+                      target="_blank"
+                    >
+                      {app.name}
+                      <span aria-hidden="true" className="ml-1 text-[0.7rem]">↗</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
