@@ -19,7 +19,7 @@ import {
 export const metadata: Metadata = createPageMetadata({
   title: "理系人材育成 EdTech SaaS｜AI教材・学習アプリ・物理塾の公式ハブ - Solvora",
   description:
-    "Solvora は、理系人材育成のための EdTech SaaS を開発する EdTech スタートアップ。主力 SaaS の AI×LaTeX 教材作成「Eddivom」、ITパスポート アプリ「IT Pass」、応用情報技術者による「基本情報技術者試験 学習サポート」、直営の物理専門オンライン塾「物理の森」を 1 つの公式ハブに集約。GIGAスクール構想後の教育DX・STEM 教育を、AI 教材作成と学習支援 SaaS で支えます。",
+    "Solvora は、理系人材育成のための EdTech SaaS を開発する EdTech スタートアップ。主力 SaaS の AI×LaTeX 教材作成「Eddivom」、ITパスポート アプリ「IT Pass」、応用情報技術者による「基本情報技術者試験 学習サポート」、直営の理系個別指導オンライン「Solvora Learning Lab（旧 物理の森）」を 1 つの公式ハブに集約。GIGAスクール構想後の教育DX・STEM 教育を、AI 教材作成と学習支援 SaaS で支えます。",
   keywords: [
     "EdTech",
     "EdTech SaaS",
@@ -36,6 +36,9 @@ export const metadata: Metadata = createPageMetadata({
     "教育DX",
     "GIGAスクール",
     "Eddivom",
+    "Solvora Learning Lab",
+    "Learning Lab",
+    "理系個別指導",
     "物理の森",
     "基本情報技術者試験 学習サポート",
     "基本情報 科目B",
@@ -61,9 +64,9 @@ const subjects = [
     accent: "#0369a1",
   },
   {
-    label: "Outsource Lane",
-    title: "高校物理 講座外注｜物理の森",
-    sub: "Solvora 直営の物理専門オンライン塾。物理講座の業務委託・受講相談はこちらに集約。",
+    label: "Tutoring",
+    title: "理系個別指導｜Solvora Learning Lab",
+    sub: "Solvora 直営の理系個別指導オンライン（旧『物理の森』）。AI 復習プリント付き。受講相談・講座外注はこちら。",
     href: "/apps#butsuri-no-mori",
     accent: "#0b1d4a",
   },
@@ -162,7 +165,7 @@ function PhysicsVisual() {
       viewBox="0 0 720 480"
       className="block h-full w-full"
       role="img"
-      aria-label="物理の森のブランドビジュアル：紙のような暖色背景に 3 本の原子軌道と力学・電磁気・波動の代表式"
+      aria-label="Solvora Learning Lab のブランドビジュアル：紙のような暖色背景に 3 本の原子軌道と力学・電磁気・波動の代表式"
     >
       <defs>
         <linearGradient id="phy-bg" x1="0" x2="1" y1="0" y2="1">
@@ -640,9 +643,9 @@ function SubjectIcon({ accent, label }: { accent: string; label: string }) {
   const id = label.replace(/[^A-Za-z0-9]/g, "");
   // Per-service light gradient palettes (no dark fills) so cards feel bright.
   const palettes: Record<string, { from: string; via: string; to: string }> = {
-    "AI Materials": { from: "#eef4ff", via: "#fff7ed", to: "#fef3c7" },
-    "Physics School": { from: "#eff6ff", via: "#dbeafe", to: "#bae6fd" },
-    "Learning Apps": { from: "#ecfeff", via: "#e0f2fe", to: "#dbeafe" },
+    "Flagship SaaS": { from: "#eef4ff", via: "#fff7ed", to: "#fef3c7" },
+    "Individual Support": { from: "#ecfeff", via: "#e0f2fe", to: "#dbeafe" },
+    Tutoring: { from: "#eff6ff", via: "#dbeafe", to: "#bae6fd" },
     Insights: { from: "#f0fdfa", via: "#ecfeff", to: "#eef4ff" },
   };
   const palette = palettes[label] ?? { from: "#eef4ff", via: "#f8fbff", to: "#dbeafe" };
@@ -663,7 +666,7 @@ function SubjectIcon({ accent, label }: { accent: string; label: string }) {
       <rect width="200" height="200" rx="22" fill={`url(#bg-${id})`} />
       <rect width="200" height="200" rx="22" fill={`url(#glow-${id})`} />
 
-      {label === "AI Materials" ? (
+      {label === "Flagship SaaS" ? (
         // Doc + AI sparkle — Eddivom motif
         <g>
           <rect x="48" y="44" width="92" height="116" rx="10" fill="#ffffff" stroke={accent} strokeWidth="2" />
@@ -679,8 +682,8 @@ function SubjectIcon({ accent, label }: { accent: string; label: string }) {
             <path d="M 7 0 L 9 6 L 14 7 L 9 8 L 7 14 L 5 8 L 0 7 L 5 6 Z" fill={accent} opacity="0.7" />
           </g>
         </g>
-      ) : label === "Physics School" ? (
-        // Wave + atom orbit — physics motif
+      ) : label === "Tutoring" ? (
+        // Wave + atom orbit — Learning Lab (理系個別指導) motif
         <g fill="none" strokeLinecap="round">
           <path d="M 30 130 Q 60 90 90 130 T 150 130 T 210 130" stroke={accent} strokeWidth="3" />
           <path d="M 30 100 Q 60 60 90 100 T 150 100 T 210 100" stroke={accent} strokeWidth="2.4" opacity="0.55" />
@@ -689,8 +692,8 @@ function SubjectIcon({ accent, label }: { accent: string; label: string }) {
           <ellipse cx="100" cy="100" rx="48" ry="20" stroke={accent} strokeWidth="2" opacity="0.45" transform="rotate(-60 100 100)" />
           <circle cx="100" cy="100" r="9" fill={accent} />
         </g>
-      ) : label === "Learning Apps" ? (
-        // Phone + bar chart — apps motif
+      ) : label === "Individual Support" ? (
+        // Phone + bar chart — individual support motif
         <g>
           <rect x="64" y="34" width="72" height="132" rx="14" fill="#ffffff" stroke={accent} strokeWidth="2" />
           {/* `rx` only takes a single length per SVG spec — the browser logged
@@ -798,8 +801,8 @@ export default function Home() {
                 を開発する EdTech スタートアップ。AI×LaTeX 教材作成{" "}
                 <strong className="font-bold text-white">Eddivom</strong> を主力に、ITパスポート アプリ{" "}
                 <strong className="font-bold text-white">IT Pass</strong>、応用情報技術者による{" "}
-                <strong className="font-bold text-white">基本情報技術者試験 学習サポート</strong>、直営の物理専門塾{" "}
-                <strong className="font-bold text-white">物理の森</strong> までを 1 つの動線で。
+                <strong className="font-bold text-white">基本情報技術者試験 学習サポート</strong>、直営の理系個別指導{" "}
+                <strong className="font-bold text-white">Solvora Learning Lab</strong>（旧『物理の森』）までを 1 つの動線で。
               </p>
 
               {/* Visual coverage badges — each pairs an icon with a short label */}
@@ -1154,7 +1157,7 @@ export default function Home() {
               { verb: "読む", what: "解説ブログ", color: "#0369a1" },
               { verb: "解く", what: "学習アプリ", color: "#0284c7" },
               { verb: "つくる", what: "Eddivom", color: "#b45309" },
-              { verb: "教える", what: "物理の森", color: "#1e3a8a" },
+              { verb: "教える", what: "Learning Lab", color: "#1e3a8a" },
             ].map((node) => (
               <li
                 key={node.verb}
@@ -1181,22 +1184,22 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* FEATURED: Physics School */}
+      {/* FEATURED: Solvora Learning Lab（旧 物理の森） */}
       <section className="cv-defer bg-[#f8fafc]">
         <Container className="px-6 py-20 sm:py-28">
           <div className="grid items-center gap-12 lg:grid-cols-[0.95fr_1.05fr]">
             <div>
-              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
-                Physics
+              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#0d9488]">
+                Solvora Learning Lab
               </p>
               <h2 className="mt-3 text-balance text-[2rem] font-extrabold leading-[1.2] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.6rem]">
-                物理に特化した、
+                AI 復習プリント付き、
                 <br />
-                オンライン専門塾。
+                理系個別指導 オンライン。
               </h2>
               <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
-                公式を覚えるのではなく、現象を読み解く。
-                高校物理だけに集中したカリキュラムで、つまずきの前提から丁寧に積み直します。
+                旧『物理の森』をリブランドした、Solvora 直営の理系個別指導オンラインです。
+                公式を覚えるのではなく、現象を読み解く。物理を中心に、AI が当日の理解度に合わせた復習プリントまで一気通貫で支えます。
               </p>
               <a
                 href={siteConfig.physicsSchoolUrl}
@@ -1204,7 +1207,7 @@ export default function Home() {
                 rel="noreferrer noopener"
                 className="mt-9 inline-flex min-h-12 items-center justify-center rounded-full bg-[#0b1d4a] px-7 text-[0.96rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a]"
               >
-                物理の森を見る <span aria-hidden="true" className="ml-1.5">↗</span>
+                Solvora Learning Lab を見る <span aria-hidden="true" className="ml-1.5">↗</span>
               </a>
             </div>
             <div className="overflow-hidden rounded-[28px] shadow-[0_40px_80px_-50px_rgba(11,29,74,0.55)]">
@@ -1449,7 +1452,7 @@ export default function Home() {
               </p>
             </blockquote>
             <p className="mx-auto mt-8 max-w-2xl text-pretty text-center text-[1.02rem] leading-[2] text-[#334155]">
-              Solvora は、物理・数学・情報の解説ブログ、AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、ITパスポート アプリ <strong className="font-bold text-[#0b1d4a]">IT Pass</strong>、応用情報技術者による <strong className="font-bold text-[#0b1d4a]">基本情報技術者試験 学習サポート</strong>、物理専門オンライン塾 <strong className="font-bold text-[#0b1d4a]">物理の森</strong> を集約する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。GIGA スクール構想後の高校・大学・社会人の学びをひとつの動線でつなぎます。
+              Solvora は、物理・数学・情報の解説ブログ、AI 教材作成 <strong className="font-bold text-[#0b1d4a]">Eddivom</strong>、ITパスポート アプリ <strong className="font-bold text-[#0b1d4a]">IT Pass</strong>、応用情報技術者による <strong className="font-bold text-[#0b1d4a]">基本情報技術者試験 学習サポート</strong>、理系個別指導オンライン <strong className="font-bold text-[#0b1d4a]">Solvora Learning Lab</strong>（旧『物理の森』）を集約する <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech ハブ</strong>。GIGA スクール構想後の高校・大学・社会人の学びをひとつの動線でつなぎます。
             </p>
 
             {/* Three pillars — short value props with iconic visuals */}

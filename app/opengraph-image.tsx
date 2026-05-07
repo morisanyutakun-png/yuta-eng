@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "Solvora — 物理の森（物理塾）や教材作成AIをまとめる学習ハブ";
+  "Solvora — 理系個別指導 Solvora Learning Lab・教材作成AI Eddivom・基本情報学習サポートを束ねる Learning Lab ハブ";
 
 export const size = {
   width: 1200,
@@ -77,7 +77,7 @@ export default async function Image() {
                 width: 18,
               }}
             />
-            SOLVORA · LEARNING HUB
+            SOLVORA · LEARNING LAB
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <div
@@ -91,7 +91,7 @@ export default async function Image() {
                 maxWidth: 980,
               }}
             >
-              物理塾も、教材作成AIも。
+理系個別指導も、教材作成AIも。
             </div>
             <div
               style={{
@@ -103,11 +103,11 @@ export default async function Image() {
                 maxWidth: 980,
               }}
             >
-              Solvora は、物理の森や教材作成AIをまとめる学習ハブブランド。
+              Solvora は、理系個別指導 Learning Lab・教材作成 AI Eddivom・基本情報学習サポートを束ねるブランド。
             </div>
           </div>
           <div style={{ display: "flex", gap: 16 }}>
-            {["物理の森（物理塾）", "教材作成AI", "学習アプリ"].map((item) => (
+            {["Solvora Learning Lab", "教材作成 AI", "基本情報学習サポート"].map((item) => (
               <div
                 key={item}
                 style={{

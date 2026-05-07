@@ -81,8 +81,14 @@ export function createOrganizationJsonLd() {
     subOrganization: [
       {
         "@type": "EducationalOrganization",
-        name: "物理の森",
-        alternateName: ["物理の森 オンライン物理塾", "Solvora 物理塾"],
+        name: "Solvora Learning Lab",
+        alternateName: [
+          "Solvora Learning Lab",
+          "Learning Lab",
+          "物理の森",
+          "物理の森 オンライン物理塾",
+          "Solvora 物理塾",
+        ],
         url: siteConfig.physicsSchoolUrl,
         parentOrganization: {
           "@type": "Organization",
@@ -90,7 +96,7 @@ export function createOrganizationJsonLd() {
           url: siteConfig.url,
         },
         description:
-          "Solvora が運営する物理専門塾オンライン。高校物理（力学・電磁気・波動・熱・原子）を理解で解くための個別カリキュラムを提供する高校物理オンライン塾。",
+          "Solvora が運営する理系個別指導オンライン（旧『物理の森』）。AI 復習プリント付きで、高校物理（力学・電磁気・波動・熱・原子）を中心に、関連する数学・情報の単元横断にも対応する個別カリキュラム。",
       },
       {
         "@type": "EducationalOrganization",
@@ -234,7 +240,7 @@ export function createEducationalServiceJsonLd() {
     url: siteConfig.url,
     description:
       "理系の学びを深めるための記事と専門サービスをまとめるサイト。",
-    serviceType: ["記事の発信", "高校物理 専門塾（物理の森）", "教材作成の支援"],
+    serviceType: ["記事の発信", "理系個別指導 オンライン（Solvora Learning Lab）", "教材作成の支援"],
     provider: {
       "@type": "Organization",
       name: siteConfig.name,

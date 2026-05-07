@@ -121,7 +121,7 @@ const story = [
   {
     year: "Now",
     title: "Solvora と Eddivom で動線を 1 本にまとめる",
-    body: "親ブランド Solvora の下に、物理専門塾「物理の森」を直営事業として置き、教材作成 AI Eddivom や学習アプリも公式入口で接続。すべてを一本の動線で運営しています。",
+    body: "親ブランド Solvora の下に、理系個別指導オンライン「Solvora Learning Lab（旧 物理の森）」を直営事業として置き、教材作成 AI Eddivom や学習アプリも公式入口で接続。すべてを一本の動線で運営しています。",
   },
 ];
 

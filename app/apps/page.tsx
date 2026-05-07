@@ -17,9 +17,9 @@ import {
 
 export const metadata: Metadata = createPageMetadata({
   title:
-    "EdTech SaaS / 学習サポート / 物理塾の公式入口｜Eddivom・IT Pass・基本情報サポート・物理の森 - Solvora",
+    "EdTech SaaS / 学習サポート / 理系個別指導の公式入口｜Eddivom・IT Pass・基本情報サポート・Solvora Learning Lab - Solvora",
   description:
-    "Solvora が開発・運営する EdTech SaaS と個別サポートの公式比較。主力 SaaS の AI×LaTeX 教材作成『Eddivom』、ITパスポート アプリ『IT Pass』、応用情報技術者による『基本情報技術者試験 学習サポート』、直営の物理専門オンライン塾『物理の森』を 1 ページに集約。受験生・教員・社会人・教材会社それぞれに最適な公式入口へ直接アクセスできます。",
+    "Solvora が開発・運営する EdTech SaaS と個別サポートの公式比較。主力 SaaS の AI×LaTeX 教材作成『Eddivom』、ITパスポート アプリ『IT Pass』、応用情報技術者による『基本情報技術者試験 学習サポート』、直営の理系個別指導オンライン『Solvora Learning Lab（旧 物理の森）』を 1 ページに集約。受験生・教員・社会人・教材会社それぞれに最適な公式入口へ直接アクセスできます。",
   keywords: [
     "EdTech SaaS",
     "教育 SaaS",
@@ -28,7 +28,8 @@ export const metadata: Metadata = createPageMetadata({
     "学習支援 SaaS",
     "基本情報技術者試験 学習サポート",
     "ITパスポート アプリ",
-    "物理専門塾 オンライン",
+    "理系個別指導 オンライン",
+    "Solvora Learning Lab",
     "理系人材育成 SaaS",
   ],
   path: "/apps",
@@ -72,7 +73,7 @@ function MoriArtwork() {
       viewBox="0 0 480 320"
       className="h-full w-full"
       role="img"
-      aria-label="物理の森のブランドビジュアル：navy 基調の背景に金の輝きと 3 本の原子軌道（青・橙・苔色）"
+      aria-label="Solvora Learning Lab のブランドビジュアル：navy 基調の背景に金の輝きと 3 本の原子軌道（青・橙・苔色）"
     >
       <defs>
         <linearGradient id="mori-bg" x1="0" y1="0" x2="1" y2="1">
@@ -549,7 +550,7 @@ export default function AppsPage() {
               Services · Solvora
             </p>
             <h1 className="mt-4 text-balance text-[1.85rem] font-extrabold leading-[1.25] tracking-[-0.01em] text-[#142341] sm:text-[2.4rem] sm:leading-[1.2] lg:text-[2.9rem]">
-              物理専門塾オンライン、基本情報サポート、
+              理系個別指導オンライン、基本情報サポート、
               <br className="hidden sm:block" />
               LaTeX 教材作成、ITパスポート アプリ。
             </h1>
@@ -597,7 +598,7 @@ export default function AppsPage() {
         </svg>
       </section>
 
-      {/* FEATURED: 物理の森 */}
+      {/* FEATURED: Solvora Learning Lab（旧 物理の森） */}
       {featured ? (
         <section className="bg-[#fbf5e6]" id={featured.slug}>
           <Container className="px-5 py-14 sm:px-6 sm:py-20">
@@ -655,7 +656,7 @@ export default function AppsPage() {
               Solvora と各サービスの関係
             </h2>
             <p className="mt-4 text-[0.92rem] leading-[1.95] text-[#3a4d6b]">
-              Solvora は理系学習ハブの親ブランド。物理の森は Solvora が直営するオンライン物理専門塾、Eddivom は LaTeX 教材作成 AI、IT Pass は IT パスポート アプリ、基本情報技術者試験 学習サポートは応用情報技術者による個別サポートです。
+              Solvora は理系学習ハブの親ブランド。Solvora Learning Lab（旧『物理の森』）は Solvora が直営する理系個別指導オンライン、Eddivom は LaTeX 教材作成 AI、IT Pass は IT パスポート アプリ、基本情報技術者試験 学習サポートは応用情報技術者による個別サポートです。
             </p>
           </div>
 
@@ -669,7 +670,7 @@ export default function AppsPage() {
               rel="noreferrer noopener"
               target="_blank"
             >
-              物理の森を開く <span aria-hidden="true">↗</span>
+              Solvora Learning Lab を開く <span aria-hidden="true">↗</span>
             </a>
             <Link
               href="/blog"

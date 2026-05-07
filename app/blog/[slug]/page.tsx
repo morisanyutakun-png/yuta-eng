@@ -311,10 +311,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <div>
                   <p className="inline-flex items-center gap-2 text-[0.66rem] font-semibold uppercase tracking-[0.18em] text-[#bae6fd] sm:text-[0.7rem] sm:tracking-[0.22em]">
                     <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#38bdf8]" />
-                    Solvora × 物理の森｜物理専門塾
+                    Solvora × Solvora Learning Lab｜理系個別指導
                   </p>
                   <p className="mt-2 text-[clamp(0.96rem,0.9rem+0.4vw,1.15rem)] font-bold leading-[1.55] text-white sm:mt-3">
-                    高校物理の受講相談は、物理の森から。
+                    理系個別指導の受講相談は、Solvora Learning Lab から。
                   </p>
                 </div>
                 <a
@@ -323,7 +323,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   rel="noreferrer noopener"
                   target="_blank"
                 >
-                  物理の森を開く <span aria-hidden="true">↗</span>
+                  Learning Lab を開く <span aria-hidden="true">↗</span>
                 </a>
               </aside>
             ) : null}
@@ -357,7 +357,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 読んだあとの行き先を、Solvora から選ぶ。
               </p>
               <p className="mt-2 text-[clamp(0.86rem,0.83rem+0.2vw,0.94rem)] leading-[1.85] text-[#475569] sm:mt-3 sm:leading-[1.95]">
-                Solvora Learning Lab から、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass、応用情報技術者による「基本情報技術者試験 学習サポート」へ直接遷移できます。
+                Solvora から、理系個別指導オンライン「Solvora Learning Lab（旧 物理の森）」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass、応用情報技術者による「基本情報技術者試験 学習サポート」へ直接遷移できます。
               </p>
               <div className="mt-5 flex flex-col gap-2.5 sm:mt-7 sm:flex-row sm:flex-wrap sm:gap-3">
                 <a
@@ -366,7 +366,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   rel="noreferrer noopener"
                   target="_blank"
                 >
-                  物理の森を開く <span aria-hidden="true">↗</span>
+                  Solvora Learning Lab を開く <span aria-hidden="true">↗</span>
                 </a>
                 <Link
                   href="/apps"
@@ -400,9 +400,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               {(post.category === "Physics"
                 ? [
                     {
-                      label: "Physics School",
-                      title: "物理の森｜物理専門オンライン塾",
-                      body: "高校物理に完全特化したオンライン個別指導。理解で解く設計思想を Solvora が直営。",
+                      label: "Learning Lab",
+                      title: "Solvora Learning Lab｜理系個別指導 オンライン",
+                      body: "AI 復習プリント付き、理解で解く設計思想を Solvora が直営する理系個別指導（旧『物理の森』）。",
                       href: siteConfig.physicsSchoolUrl,
                       external: true,
                       accent: "#0b1d4a",
@@ -410,7 +410,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {
                       label: "Service Hub",
                       title: "Solvora の公式サービス一覧",
-                      body: "物理の森・Eddivom・IT Pass・基本情報学習サポートの 4 つの公式入口。",
+                      body: "Solvora Learning Lab・Eddivom・IT Pass・基本情報学習サポートの 4 つの公式入口。",
                       href: "/apps",
                       external: false,
                       accent: "#0284c7",
@@ -439,7 +439,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                     {
                       label: "Service Hub",
                       title: "Solvora の公式サービス一覧",
-                      body: "AI 教材作成 Eddivom、物理の森、IT Pass、基本情報技術者試験 学習サポートの 4 つの公式入口。",
+                      body: "AI 教材作成 Eddivom、Solvora Learning Lab、IT Pass、基本情報技術者試験 学習サポートの 4 つの公式入口。",
                       href: "/apps",
                       external: false,
                       accent: "#1d4ed8",

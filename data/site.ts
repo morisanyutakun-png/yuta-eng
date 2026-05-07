@@ -2,7 +2,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://yuta-eng.com";
 const contactEmail =
   process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "contact@yuta-eng.com";
 
+// Solvora Learning Lab（旧「物理の森」）— 物理を出発点に、AI 復習プリント付きの
+// 理系個別指導へとブランドを拡張。サブドメインは互換のため physics.yuta-eng.com を
+// 維持しているため、内部の URL 定数名は physicsSchoolUrl のまま据え置く。
 export const physicsSchoolUrl = "https://physics.yuta-eng.com";
+export const learningLabUrl = physicsSchoolUrl;
 export const eddivomUrl = "https://eddivom.yuta-eng.com";
 export const itPassUrl = "https://itpass.yuta-eng.com";
 
@@ -10,11 +14,12 @@ export const siteConfig = {
   name: "Solvora",
   shortName: "Solvora",
   brandTagline: "EdTech SaaS for STEM Talent Development",
-  title: "理系人材育成 EdTech SaaS｜AI教材・学習アプリ・物理塾の公式ハブ - Solvora",
+  title: "理系人材育成 EdTech SaaS｜AI教材・学習アプリ・理系個別指導の公式ハブ - Solvora",
   description:
-    "Solvora（ソルヴォラ）は、理系人材育成のための EdTech SaaS を開発・運営する EdTech スタートアップ。主力 SaaS の AI×LaTeX 教材作成「Eddivom」、ITパスポート対策アプリ「IT Pass」、応用情報技術者による「基本情報技術者試験 学習サポート」、そして直営の物理専門オンライン塾「物理の森」を 1 つの公式ハブに集約。GIGAスクール構想後の教育DX／STEM 教育を、AI 教材作成と学習支援 SaaS で支えます。",
+    "Solvora（ソルヴォラ）は、理系人材育成のための EdTech SaaS を開発・運営する EdTech スタートアップ。主力 SaaS の AI×LaTeX 教材作成「Eddivom」、ITパスポート対策アプリ「IT Pass」、応用情報技術者による「基本情報技術者試験 学習サポート」、そして直営の理系個別指導オンライン「Solvora Learning Lab（旧 物理の森）」を 1 つの公式ハブに集約。GIGAスクール構想後の教育DX／STEM 教育を、AI 教材作成と学習支援 SaaS で支えます。",
   url: siteUrl,
   physicsSchoolUrl,
+  learningLabUrl,
   eddivomUrl,
   itPassUrl,
   author: "森 祐太",
@@ -25,11 +30,12 @@ export const siteConfig = {
       name: "Solvora",
       role: "EdTech SaaS Hub｜理系人材育成 EdTech スタートアップ",
     },
-    physicsSchool: {
-      name: "物理の森",
-      tagline: "高校物理 専門塾",
+    learningLab: {
+      name: "Solvora Learning Lab",
+      legacyName: "物理の森",
+      tagline: "AI 復習プリント付き 理系個別指導 オンライン",
       url: physicsSchoolUrl,
-      role: "Solvora 直営の高校物理オンライン専門塾（物理講座の外注はこちら経由）",
+      role: "Solvora 直営の理系個別指導オンライン（旧『物理の森』。理系個別指導の外注・受講相談はこちら経由）",
     },
   },
   keywords: [
@@ -55,11 +61,16 @@ export const siteConfig = {
     // brand
     "Solvora",
     "ソルヴォラ",
+    "Solvora Learning Lab",
+    "Learning Lab",
+    "理系個別指導",
+    "理系個別指導 オンライン",
     "Eddivom",
     "IT Pass",
     "基本情報技術者試験 学習サポート",
     "基本情報 科目B",
     "基本情報 アルゴリズム",
+    // 旧ブランド（SEO 互換のため残す）
     "物理の森",
     "高校物理 オンライン塾",
   ],
@@ -69,7 +80,7 @@ export const navItems = [
   { label: "ホーム", href: "/" },
   { label: "学ぶ", href: "/blog" },
   {
-    label: "物理の森",
+    label: "Learning Lab",
     href: physicsSchoolUrl,
     external: true,
     highlight: true,

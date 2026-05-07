@@ -15,7 +15,7 @@ import {
 export const metadata: Metadata = createPageMetadata({
   title: "お問い合わせ｜EdTech SaaS／物理講座の外注",
   description:
-    "Solvora の窓口は、(1) AI×LaTeX 教材作成「Eddivom」など EdTech SaaS の取材・パートナー連携・機能要望、(2) 高校物理講座の外注（物理の森への取り次ぎ）の 2 種類のみ。汎用的な EdTech 導入コンサルや学習相談は受け付けていません。理系人材育成 SaaS の Solvora が運営。",
+    "Solvora の窓口は、(1) AI×LaTeX 教材作成「Eddivom」など EdTech SaaS の取材・パートナー連携・機能要望、(2) 理系個別指導講座の外注（Solvora Learning Lab／旧 物理の森への取り次ぎ）の 2 種類のみ。汎用的な EdTech 導入コンサルや学習相談は受け付けていません。理系人材育成 SaaS の Solvora が運営。",
   keywords: [
     "Solvora 問い合わせ",
     "EdTech SaaS 問い合わせ",
@@ -47,17 +47,17 @@ const lanes = [
     secondary: { label: "サービス一覧を見る", href: "/apps" },
   },
   {
-    eyebrow: "Lane B · 物理講座 外注",
+    eyebrow: "Lane B · 理系個別指導 外注",
     badgeBg: "#0f1c3a",
-    title: "高校物理講座の外注（物理の森が受託）",
-    body: "高校・予備校・通信教育・教材会社からの『高校物理 講師業務の業務委託 / 講座外注 / 教材監修』はすべて Solvora 直営の物理専門塾『物理の森』が受託します。Solvora 本体では受け付けていません。",
+    title: "理系個別指導の外注（Solvora Learning Lab が受託）",
+    body: "高校・予備校・通信教育・教材会社からの『理系科目 講師業務の業務委託 / 講座外注 / 教材監修』はすべて Solvora 直営の理系個別指導オンライン『Solvora Learning Lab（旧 物理の森）』が受託します。Solvora 本体では受け付けていません。",
     bullets: [
       "高校物理（力学・電磁気・波動・熱・原子）の講座コマ外注",
       "定期テスト・共通テスト・国公立二次・私大入試の対策講座外注",
-      "物理問題の解説執筆・教材監修・模試解答制作",
-      "高校生向け個別指導の受講相談（物理の森公式サイトから）",
+      "理系科目の解説執筆・教材監修・模試解答制作",
+      "高校生向け個別指導の受講相談（Solvora Learning Lab 公式サイトから）",
     ],
-    cta: { label: "物理の森の窓口を開く", href: siteConfig.physicsSchoolUrl, external: true },
+    cta: { label: "Solvora Learning Lab の窓口を開く", href: siteConfig.physicsSchoolUrl, external: true },
     secondary: null as { label: string; href: string } | null,
   },
 ];
@@ -65,7 +65,7 @@ const lanes = [
 const trust = [
   { label: "事業形態", value: "EdTech スタートアップ／個人事業" },
   { label: "代表", value: siteConfig.author },
-  { label: "対応領域", value: "AI 教材作成 SaaS、学習支援 SaaS、高校物理講座（外注は物理の森）" },
+  { label: "対応領域", value: "AI 教材作成 SaaS、学習支援 SaaS、理系個別指導（外注は Solvora Learning Lab）" },
   { label: "対応地域", value: "日本全国（オンライン）" },
   { label: "返信目安", value: "1 営業日以内（土日祝は翌営業日）" },
   { label: "対応言語", value: "日本語（英語は要相談）" },
@@ -73,7 +73,7 @@ const trust = [
 
 const notAccepted = [
   "汎用的な『EdTech 導入相談』『教育コンサル』",
-  "個人の学習相談（高校物理の受講相談は物理の森の公式サイトから）",
+  "個人の学習相談（理系個別指導の受講相談は Solvora Learning Lab の公式サイトから）",
   "営業電話・無差別 BtoB 営業メール",
   "Solvora と関係のない教材・教育サービスの宣伝依頼",
 ];
@@ -92,7 +92,7 @@ const contactFaq = [
   {
     question: "高校物理の受講相談や個別指導の依頼はできますか？",
     answer:
-      "Solvora 本体では受け付けていません。受講相談・個別指導・物理講座の外注はすべて Solvora 直営の物理専門塾『物理の森』が受託します。Lane B のリンクから物理の森の公式サイトへお進みください。",
+      "Solvora 本体では受け付けていません。受講相談・個別指導・理系科目の講座外注はすべて Solvora 直営の理系個別指導オンライン『Solvora Learning Lab（旧 物理の森）』が受託します。Lane B のリンクから Solvora Learning Lab の公式サイトへお進みください。",
   },
   {
     question: "返信はどれくらいで届きますか？",
@@ -274,7 +274,7 @@ export default function ContactPage() {
                 Solvora は、理系人材育成のための EdTech SaaS を提供する{" "}
                 <strong className="font-bold text-[#0b1d4a]">EdTech スタートアップ</strong>。
                 {" "}
-                直営の物理専門塾「物理の森」と合わせて、AI 教材作成・学習支援アプリ・物理教育の 3 領域を運営しています。
+                直営の理系個別指導オンライン「Solvora Learning Lab（旧 物理の森）」と合わせて、AI 教材作成・学習支援アプリ・理系個別指導の 3 領域を運営しています。
               </p>
             </div>
             <dl className="grid gap-3 rounded-[22px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)] sm:grid-cols-2 sm:p-8">
@@ -369,7 +369,7 @@ export default function ContactPage() {
                 rel="noreferrer noopener"
                 target="_blank"
               >
-                物理の森の窓口を開く ↗
+                Solvora Learning Lab の窓口を開く ↗
               </a>
             </div>
           </div>
