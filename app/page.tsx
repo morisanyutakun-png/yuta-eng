@@ -298,6 +298,18 @@ export default function Home() {
           className="pointer-events-none absolute -left-24 bottom-0 h-[360px] w-[360px] rounded-full opacity-60"
           style={{ background: "radial-gradient(circle, rgba(29,78,216,0.12), transparent 70%)" }}
         />
+        {/* 方眼ノートのテクスチャ — 演習・添削のブランドに馴染ませる */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(13,148,136,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(13,148,136,0.05) 1px, transparent 1px)",
+            backgroundSize: "26px 26px",
+            maskImage: "radial-gradient(ellipse 80% 70% at 72% 38%, #000 35%, transparent 78%)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 72% 38%, #000 35%, transparent 78%)",
+          }}
+        />
 
         <Container className="relative px-6">
           <div className="grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24">
@@ -340,12 +352,23 @@ export default function Home() {
               <div className="overflow-hidden rounded-[26px] bg-white ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_40px_80px_-50px_rgba(11,29,74,0.5)]">
                 <WorksheetVisual />
               </div>
-              {/* ノビットくんが添削答案を案内する */}
-              <Mascot
-                variant="wave"
-                alt="ノビットくん"
-                className="pointer-events-none absolute -bottom-7 -left-3 z-10 h-28 w-auto drop-shadow-[0_18px_24px_rgba(11,29,74,0.18)] sm:-left-6 sm:h-36"
+              {/* マスコットを地に馴染ませる発光と接地影 */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -bottom-6 -left-6 h-44 w-44 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.28),transparent)] blur-2xl sm:-left-10 sm:h-52 sm:w-52"
               />
+              <div className="pointer-events-none absolute -bottom-7 -left-3 z-10 sm:-left-7">
+                <Mascot
+                  variant="wave"
+                  alt="ノビットくん"
+                  className="h-28 w-auto drop-shadow-[0_16px_18px_rgba(11,29,74,0.22)] sm:h-36"
+                />
+                {/* 接地影 */}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-3 -bottom-1 mx-auto h-3 rounded-[50%] bg-[rgba(11,29,74,0.18)] blur-md"
+                />
+              </div>
             </div>
           </div>
         </Container>
