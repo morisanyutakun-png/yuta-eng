@@ -635,22 +635,58 @@ export default function Home() {
           className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(249,115,22,0.3),transparent)]"
         />
         <Container className="relative px-6 py-20 sm:py-24">
-          <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-            <h2 className="text-balance text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.005em] sm:text-[2.4rem]">
-              答案を、毎日プロに見てもらう習慣を。
-            </h2>
-            <p className="mt-5 max-w-xl text-[1rem] leading-[1.95] text-white/85">
-              まずは無料体験で、ノビットの教材と添削を試してみてください。
-              現状の悩みや目標を聞かせていただければ、続け方のイメージもご案内します。
-            </p>
-            <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-              <PrimaryCta href="/contact">無料体験を申し込む</PrimaryCta>
-              <Link
-                href="/contact"
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/40 px-7 text-[0.98rem] font-semibold text-white transition hover:bg-white hover:text-[#0b1d4a]"
-              >
-                相談してみる
-              </Link>
+          <div className="mx-auto grid max-w-4xl items-center gap-8 text-center lg:grid-cols-[auto_1fr] lg:gap-14 lg:text-left">
+            {/* ノビットくんを暗背景の中で発光と接地でシーンに立たせる */}
+            <div className="relative mx-auto w-fit lg:mx-0">
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-[55%] rounded-full bg-[radial-gradient(closest-side,rgba(94,234,212,0.4),rgba(94,234,212,0.12)_55%,transparent)] blur-md sm:h-56 sm:w-56"
+              />
+              <picture>
+                <source
+                  type="image/avif"
+                  srcSet="/brand/nobit-kun-wave-240.avif 240w, /brand/nobit-kun-wave-480.avif 480w"
+                  sizes="200px"
+                />
+                <source
+                  type="image/webp"
+                  srcSet="/brand/nobit-kun-wave-240.webp 240w, /brand/nobit-kun-wave-480.webp 480w"
+                  sizes="200px"
+                />
+                <img
+                  src="/brand/nobit-kun-wave-480.webp"
+                  alt="ノビットスタディのマスコット「ノビットくん」"
+                  width={740}
+                  height={896}
+                  loading="lazy"
+                  decoding="async"
+                  className="relative h-36 w-auto sm:h-44 lg:h-52"
+                />
+              </picture>
+              {/* 接地のための淡い光のプラットフォーム */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -bottom-1 left-1/2 h-3 w-28 -translate-x-1/2 rounded-[50%] bg-[radial-gradient(closest-side,rgba(94,234,212,0.55),transparent)] blur-[3px] sm:w-32"
+              />
+            </div>
+
+            <div>
+              <h2 className="text-balance text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.005em] sm:text-[2.4rem]">
+                答案を、毎日プロに見てもらう習慣を。
+              </h2>
+              <p className="mx-auto mt-5 max-w-xl text-[1rem] leading-[1.95] text-white/85 lg:mx-0">
+                まずは無料体験で、ノビットの教材と添削を試してみてください。
+                現状の悩みや目標を聞かせていただければ、続け方のイメージもご案内します。
+              </p>
+              <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
+                <PrimaryCta href="/contact">無料体験を申し込む</PrimaryCta>
+                <Link
+                  href="/contact"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/40 px-7 text-[0.98rem] font-semibold text-white transition hover:bg-white hover:text-[#0b1d4a]"
+                >
+                  相談してみる
+                </Link>
+              </div>
             </div>
           </div>
         </Container>
