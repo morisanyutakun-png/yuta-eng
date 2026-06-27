@@ -215,7 +215,7 @@ export default function Home() {
         />
 
         <Container className="relative px-6">
-          <div className="grid grid-cols-1 items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24">
+          <div className="grid grid-cols-1 items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24 lg:pb-40">
             <div className="min-w-0">
               <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.25)] sm:text-[0.74rem]">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
@@ -274,6 +274,30 @@ export default function Home() {
                   />
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* ヒーローの足元に立つノビットくん（デスクトップのみ。接地影＋ステージ発光で馴染ませる） */}
+          <div className="pointer-events-none absolute bottom-4 left-[40%] hidden lg:block xl:left-[42%]">
+            <div className="relative">
+              <span
+                aria-hidden="true"
+                className="absolute left-1/2 top-[46%] -z-10 h-52 w-52 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.2),rgba(29,78,216,0.08)_55%,transparent)] blur-xl"
+              />
+              <img
+                src="/brand/nobit-kun-point-480.webp"
+                alt="ノビットスタディのマスコット「ノビットくん」"
+                width={887}
+                height={976}
+                loading="lazy"
+                decoding="async"
+                className="relative h-52 w-auto xl:h-56"
+              />
+              {/* 接地影 */}
+              <span
+                aria-hidden="true"
+                className="absolute -bottom-1 left-1/2 h-4 w-28 -translate-x-1/2 rounded-[50%] bg-[rgba(11,29,74,0.16)] blur-[6px]"
+              />
             </div>
           </div>
         </Container>
