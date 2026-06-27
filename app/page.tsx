@@ -136,44 +136,6 @@ function SecondaryCta({
   );
 }
 
-/** マスコット「ノビットくん」。白背景なので明るい面のみで使用する。 */
-function Mascot({
-  variant,
-  className,
-  alt = "",
-}: {
-  variant: "wave" | "point";
-  className?: string;
-  alt?: string;
-}) {
-  const base = variant === "wave" ? "nobit-kun-wave" : "nobit-kun-point";
-  const w = variant === "wave" ? 740 : 887;
-  const h = variant === "wave" ? 896 : 976;
-  return (
-    <picture>
-      <source
-        type="image/avif"
-        srcSet={`/brand/${base}-240.avif 240w, /brand/${base}-480.avif 480w`}
-        sizes="200px"
-      />
-      <source
-        type="image/webp"
-        srcSet={`/brand/${base}-240.webp 240w, /brand/${base}-480.webp 480w`}
-        sizes="200px"
-      />
-      <img
-        src={`/brand/${base}-480.webp`}
-        alt={alt}
-        width={w}
-        height={h}
-        loading="lazy"
-        decoding="async"
-        className={className}
-      />
-    </picture>
-  );
-}
-
 /** 本物の公式演習本ページ（PDF からレンダリングした実画像）。 */
 function PrintImage({
   base,
@@ -311,32 +273,6 @@ export default function Home() {
                     className="block h-auto w-full"
                   />
                 </div>
-                {/* 添削コメントの吹き出し */}
-                <div className="absolute -right-3 bottom-12 hidden rotate-[2deg] rounded-2xl bg-white p-3 shadow-[0_22px_44px_-22px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(13,148,136,0.3)] sm:block">
-                  <p className="flex items-center gap-1.5 text-[0.64rem] font-bold tracking-[0.08em] text-[#0f766e]">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#f97316]" />
-                    添削コメント
-                  </p>
-                  <p className="mt-1 text-[0.84rem] font-bold leading-tight text-[#0b1d4a]">考え方の筋は◎</p>
-                  <p className="text-[0.7rem] leading-tight text-[#475569]">あと一歩、記述を補足。</p>
-                </div>
-              </div>
-              {/* マスコットを地に馴染ませる発光と接地影 */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -bottom-6 -left-6 h-44 w-44 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.28),transparent)] blur-2xl sm:-left-10 sm:h-52 sm:w-52"
-              />
-              <div className="pointer-events-none absolute -bottom-7 -left-3 z-10 sm:-left-7">
-                <Mascot
-                  variant="wave"
-                  alt="ノビットくん"
-                  className="h-28 w-auto drop-shadow-[0_16px_18px_rgba(11,29,74,0.22)] sm:h-36"
-                />
-                {/* 接地影 */}
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-3 -bottom-1 mx-auto h-3 rounded-[50%] bg-[rgba(11,29,74,0.18)] blur-md"
-                />
               </div>
             </div>
           </div>
@@ -614,12 +550,9 @@ export default function Home() {
       <section id="pricing" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-3xl">
-            <div className="mb-6 flex items-center justify-center gap-3 sm:mb-8">
-              <Mascot variant="point" alt="ノビットくん" className="h-16 w-auto sm:h-20" />
-              <p className="text-[0.98rem] font-bold text-[#0f766e] sm:text-[1.1rem]">
-                まずは気軽に、無料体験から！
-              </p>
-            </div>
+            <p className="mb-6 text-center text-[0.98rem] font-bold text-[#0f766e] sm:mb-8 sm:text-[1.1rem]">
+              まずは気軽に、無料体験から。
+            </p>
             <div className="overflow-hidden rounded-[26px] bg-white ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_30px_70px_-50px_rgba(15,29,74,0.4)]">
               <div className="bg-[linear-gradient(135deg,#0d9488_0%,#0f766e_100%)] px-7 py-7 text-white sm:px-10">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#bbf7e9]">
