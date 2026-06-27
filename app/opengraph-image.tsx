@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "Solvora — 理系個別指導 Solvora Learning Lab・教材作成AI Eddivom・基本情報学習サポートを束ねる Learning Lab ハブ";
+  "ノビットスタディ 中高部 — 高校物理・数学の毎日添削オンライン塾。考える力を育てる記述答案の添削。";
 
 export const size = {
   width: 1200,
@@ -27,7 +27,7 @@ export default async function Image() {
         style={{
           alignItems: "center",
           background:
-            "linear-gradient(135deg, #fff7ed 0%, #e0f2fe 48%, #ecfdf5 100%)",
+            "linear-gradient(135deg, #e0f2fe 0%, #ecfdf5 48%, #fff7ed 100%)",
           color: "#0b1220",
           display: "flex",
           fontFamily: '"Noto Sans JP", system-ui, sans-serif',
@@ -70,14 +70,14 @@ export default async function Image() {
           >
             <span
               style={{
-                background: "#fbbf24",
+                background: "#f97316",
                 borderRadius: "999px",
                 display: "flex",
                 height: 18,
                 width: 18,
               }}
             />
-            SOLVORA · LEARNING LAB
+            ノビットスタディ 中高部
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <div
@@ -91,7 +91,7 @@ export default async function Image() {
                 maxWidth: 980,
               }}
             >
-理系個別指導も、教材作成AIも。
+考える力を育てる、高校物理のオンライン添削。
             </div>
             <div
               style={{
@@ -103,18 +103,18 @@ export default async function Image() {
                 maxWidth: 980,
               }}
             >
-              Solvora は、理系個別指導 Learning Lab・教材作成 AI Eddivom・基本情報学習サポートを束ねるブランド。
+              毎日演習・毎日添削で、途中式・考え方・答案の組み立てまで丁寧に。塾長オリジナル教材で自立した学びを。
             </div>
           </div>
           <div style={{ display: "flex", gap: 16 }}>
-            {["Solvora Learning Lab", "教材作成 AI", "基本情報学習サポート"].map((item) => (
+            {["毎日演習・毎日添削", "塾長オリジナル教材", "添削専門・自立学習"].map((item) => (
               <div
                 key={item}
                 style={{
                   background: "#ffffff",
-                  border: "1px solid #bae6fd",
+                  border: "1px solid #99f6e4",
                   borderRadius: "999px",
-                  color: "#0369a1",
+                  color: "#0f766e",
                   display: "flex",
                   fontSize: 24,
                   fontWeight: 700,

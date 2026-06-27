@@ -1,12 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Solvora Learning Lab">
-  <g fill="#000000">
-    <path d="M88 348 Q 256 308 256 348 L256 432 Q 256 408 88 444 Z"/>
-    <path d="M424 348 Q 256 308 256 348 L256 432 Q 256 408 424 444 Z"/>
-  </g>
-  <path d="M180 96 L340 96 L244 196 L340 332 L180 332"
-        fill="none" stroke="#000000" stroke-width="40"
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ノビットスタディ Nobit Study">
+  <path d="M104 384 Q 170 410 240 342 Q 324 256 366 162"
+        fill="none" stroke="#000000" stroke-width="48"
         stroke-linecap="round" stroke-linejoin="round"/>
-  <g transform="translate(384 116)" fill="#000000">
-    <path d="M0 -32 L8 -8 L32 0 L8 8 L0 32 L-8 8 L-32 0 L-8 -8 Z"/>
-  </g>
+  <path d="M290 154 L376 146 L368 238"
+        fill="none" stroke="#000000" stroke-width="48"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M424 104 L436 136 L468 148 L436 160 L424 192 L412 160 L380 148 L412 136 Z" fill="#000000"/>
 </svg>

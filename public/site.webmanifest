@@ -1,7 +1,7 @@
 {
-  "name": "Solvora Learning Lab",
-  "short_name": "Solvora",
-  "description": "Solvora（ソルヴォラ）は、物理専門塾「物理の森」、教材作成アプリ Eddivom、IT 学習アプリ IT Pass、応用情報技術者による「基本情報技術者試験 学習サポート」の公式入口を集約する Learning Lab ブランドです。",
+  "name": "ノビットスタディ 中高部",
+  "short_name": "ノビットスタディ",
+  "description": "ノビットスタディ 中高部は、高校物理・数学・英語を中心に、毎日の演習と毎日の添削で『考える力』を育てるオンライン添削塾。塾長オリジナル教材と独自の学習管理システムで、自立した学びと記述答案の力を伸ばします。",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -14,32 +14,46 @@ function isHighlight(item: NavItem): boolean {
   return Boolean((item as { highlight?: boolean }).highlight);
 }
 
-function SolvoraLogo() {
+/**
+ * Brand lockup — the official Nobit Study logo (full lockup incl. 中高部 badge
+ * + Nobit Study sub-label). Served as optimized AVIF/WebP; the header logo is
+ * a likely LCP element so it loads with high priority.
+ */
+export function NobitBrand() {
   return (
-    // SVG served directly — no /_next/image overhead (vector is already optimal).
-    <img
-      alt="Solvora"
-      src="/brand/solvora-mark.svg"
-      width={120}
-      height={120}
-      decoding="async"
-      fetchPriority="high"
-      className="h-9 w-9 sm:h-10 sm:w-10"
-    />
+    <Link
+      className="group inline-flex min-w-0 items-center"
+      href="/"
+      aria-label="ノビットスタディ 中高部 ホームへ"
+    >
+      <picture>
+        <source
+          type="image/avif"
+          srcSet="/brand/nobit-logo-480.avif 480w, /brand/nobit-logo-960.avif 960w"
+          sizes="200px"
+        />
+        <source
+          type="image/webp"
+          srcSet="/brand/nobit-logo-480.webp 480w, /brand/nobit-logo-960.webp 960w"
+          sizes="200px"
+        />
+        <img
+          alt="ノビットスタディ 中高部"
+          src="/brand/nobit-logo-480.webp"
+          width={1970}
+          height={375}
+          decoding="async"
+          fetchPriority="high"
+          className="h-8 w-auto sm:h-9"
+        />
+      </picture>
+    </Link>
   );
 }
 
 /**
  * SiteHeader is server-rendered. The interactive parts (mobile drawer + open
- * state) live in <MobileMenu/>, the only client island we ship. This removes
- * `usePathname`, the scroll listener, and the body-scroll-lock effect from the
- * hydration path on every page — the previous all-client header was responsible
- * for ~30ms of TBT and one of the long tasks Lighthouse flagged.
- *
- * The "active page" underline that the old client header rendered relied on
- * `usePathname`. We drop the underline rather than reintroduce a client island
- * around every nav link — it's a low-value indicator and the user already sees
- * the page they're on.
+ * state) live in <MobileMenu/>, the only client island we ship.
  */
 export function SiteHeader() {
   return (
@@ -53,38 +67,15 @@ export function SiteHeader() {
       </a>
 
       <header className="sticky top-0 z-50 bg-white/95 supports-[backdrop-filter]:backdrop-blur-md supports-[backdrop-filter]:bg-white/80 shadow-[0_10px_30px_-22px_rgba(15,29,74,0.18)]">
-        {/* Top hairline gradient — accent stripe (Learning Lab palette: navy → sky → teal) */}
+        {/* Top hairline gradient — brand accent stripe (blue → teal → green → orange) */}
         <div
           aria-hidden="true"
-          className="h-[2px] w-full bg-[linear-gradient(90deg,#1e3a8a_0%,#1d4ed8_24%,#38bdf8_50%,#5eead4_72%,#0d9488_92%,#1e3a8a_100%)] opacity-90"
+          className="h-[2px] w-full bg-[linear-gradient(90deg,#1d4ed8_0%,#0d9488_42%,#16a34a_70%,#f97316_100%)] opacity-90"
         />
 
         <Container className="relative">
           <div className="flex min-h-14 items-center justify-between gap-3 py-2 sm:min-h-[68px] sm:gap-5 sm:py-2.5">
-            <Link
-              className="group inline-flex min-w-0 items-center gap-2.5 sm:gap-3"
-              href="/"
-              aria-label="Solvora ホームへ"
-            >
-              <span className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-gradient-to-br from-white to-[#eef4ff] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_6px_14px_-8px_rgba(15,29,74,0.45)] transition group-hover:shadow-[0_10px_20px_-10px_rgba(29,78,216,0.55)] sm:h-10 sm:w-10">
-                <SolvoraLogo />
-              </span>
-              <span className="flex min-w-0 flex-col leading-none">
-                <span className="truncate text-[1.18rem] font-extrabold tracking-[0.04em] text-[#0b1d4a] sm:text-[1.32rem]">
-                  SOLVOR
-                  <span className="relative">
-                    A
-                    <span
-                      aria-hidden="true"
-                      className="absolute -right-1 top-0 h-1 w-1 rounded-full bg-gradient-to-br from-[#38bdf8] to-[#1d4ed8] shadow-[0_0_8px_rgba(56,189,248,0.7)]"
-                    />
-                  </span>
-                </span>
-                <span className="mt-1 hidden text-[0.6rem] font-semibold tracking-[0.32em] text-transparent bg-clip-text bg-gradient-to-r from-[#0d9488] to-[#0ea5e9] sm:block">
-                  LEARNING LAB
-                </span>
-              </span>
-            </Link>
+            <NobitBrand />
 
             <nav aria-label="Global navigation" className="hidden md:block">
               <ul className="flex flex-wrap items-center justify-end gap-0.5">
@@ -92,28 +83,26 @@ export function SiteHeader() {
                   const external = isExternal(item);
                   const highlight = isHighlight(item);
 
-                  if (external && highlight) {
+                  if (highlight) {
                     return (
                       <li className="ml-2" key={item.href}>
-                        <a
-                          className="group/cta relative inline-flex min-h-10 items-center gap-1.5 overflow-hidden rounded-full px-4 py-1.5 text-[0.84rem] font-semibold tracking-[0.04em] text-white shadow-[0_8px_18px_-10px_rgba(15,29,74,0.7)] transition hover:-translate-y-px hover:shadow-[0_12px_24px_-10px_rgba(29,78,216,0.7)]"
+                        <Link
+                          className="group/cta relative inline-flex min-h-10 items-center gap-1.5 overflow-hidden rounded-full px-5 py-1.5 text-[0.84rem] font-bold tracking-[0.02em] text-white shadow-[0_8px_18px_-10px_rgba(234,88,12,0.8)] transition hover:-translate-y-px hover:shadow-[0_12px_24px_-10px_rgba(234,88,12,0.8)]"
                           href={item.href}
-                          rel="noreferrer noopener"
-                          target="_blank"
                         >
                           <span
                             aria-hidden="true"
-                            className="absolute inset-0 bg-[linear-gradient(135deg,#0b1d4a_0%,#1e3a8a_55%,#1d4ed8_100%)]"
+                            className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]"
                           />
                           <span
                             aria-hidden="true"
-                            className="absolute -inset-x-1 -inset-y-1 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(186,230,253,0.45)_50%,transparent_70%)] transition duration-700 group-hover/cta:translate-x-full"
+                            className="absolute -inset-x-1 -inset-y-1 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.45)_50%,transparent_70%)] transition duration-700 group-hover/cta:translate-x-full"
                           />
                           <span className="relative z-10">{item.label}</span>
                           <span aria-hidden="true" className="relative z-10 text-[0.7rem]">
-                            ↗
+                            →
                           </span>
-                        </a>
+                        </Link>
                       </li>
                     );
                   }

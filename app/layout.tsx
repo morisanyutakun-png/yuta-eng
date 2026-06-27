@@ -5,7 +5,7 @@ import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { siteConfig } from "@/data/site";
-import { getOgVersion } from "@/lib/blog";
+import { getOgVersion } from "@/lib/og-version";
 import {
   createOrganizationJsonLd,
   createPersonJsonLd,
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   publisher: siteConfig.name,
   category: "education",
   classification:
-    "理系人材育成、STEM教育、EdTech、教育DX、GIGAスクール、AI教材作成、LaTeX教材作成、学習支援アプリ、物理オンライン塾、教材制作",
+    "高校物理 添削、記述答案 添削、オンライン添削塾、毎日添削、学習管理、高校数学、高校英語、大学受験 物理、教材開発、自立学習",
   alternates: {
     canonical: siteConfig.url,
   },

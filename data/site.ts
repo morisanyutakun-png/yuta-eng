@@ -2,98 +2,74 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://yuta-eng.com";
 const contactEmail =
   process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "contact@yuta-eng.com";
 
-// Solvora Learning Lab（旧「物理の森」）— 物理を出発点に、AI 復習プリント付きの
-// 理系個別指導へとブランドを拡張。サブドメインは互換のため physics.yuta-eng.com を
-// 維持しているため、内部の URL 定数名は physicsSchoolUrl のまま据え置く。
-export const physicsSchoolUrl = "https://physics.yuta-eng.com";
-export const learningLabUrl = physicsSchoolUrl;
-export const eddivomUrl = "https://eddivom.yuta-eng.com";
-export const itPassUrl = "https://itpass.yuta-eng.com";
+// KDP で販売している教材シリーズへの補助導線。正式な商品 URL が決まったら
+// この定数を差し替えるだけで、トップ・教材ページ・フッターに反映される。
+export const kdpAmazonUrl =
+  "https://www.amazon.co.jp/s?k=%E8%80%83%E3%81%88%E3%82%8B%E5%8A%9B%E3%82%92%E8%82%B2%E3%81%A6%E3%82%8B%E9%AB%98%E6%A0%A1%E7%89%A9%E7%90%86";
 
 export const siteConfig = {
-  name: "Solvora",
-  shortName: "Solvora",
-  brandTagline: "EdTech SaaS for STEM Talent Development",
-  title: "理系人材育成 EdTech SaaS｜AI教材・学習アプリ・理系個別指導の公式ハブ - Solvora",
+  name: "ノビットスタディ",
+  shortName: "ノビットスタディ",
+  latinName: "Nobit Study",
+  division: "中高部",
+  brandTagline: "考える力を育てるオンライン学習",
+  title:
+    "ノビットスタディ 中高部｜高校物理・数学の毎日添削オンライン塾（考える力を育てる）",
   description:
-    "Solvora（ソルヴォラ）は、理系人材育成のための EdTech SaaS を開発・運営する EdTech スタートアップ。主力 SaaS の AI×LaTeX 教材作成「Eddivom」、ITパスポート対策アプリ「IT Pass」、応用情報技術者による「基本情報技術者試験 学習サポート」、そして直営の理系個別指導オンライン「Solvora Learning Lab（旧 物理の森）」を 1 つの公式ハブに集約。GIGAスクール構想後の教育DX／STEM 教育を、AI 教材作成と学習支援 SaaS で支えます。",
+    "ノビットスタディ 中高部は、高校物理・数学・英語を中心に「毎日演習・毎日添削」で考える力を育てるオンライン添削塾です。面談や授業は行わず、塾長オリジナル教材と独自の学習管理システムで、自分のペースの自立した学びと、記述答案・途中式・考え方の力を伸ばします。塾としては安価に、毎日プロの添削が受けられます。無料体験受付中。",
   url: siteUrl,
-  physicsSchoolUrl,
-  learningLabUrl,
-  eddivomUrl,
-  itPassUrl,
   author: "森 祐太",
   email: contactEmail,
   locale: "ja_JP",
-  brand: {
-    hub: {
-      name: "Solvora",
-      role: "EdTech SaaS Hub｜理系人材育成 EdTech スタートアップ",
-    },
-    learningLab: {
-      name: "Solvora Learning Lab",
-      legacyName: "物理の森",
-      tagline: "AI 復習プリント付き 理系個別指導 オンライン",
-      url: physicsSchoolUrl,
-      role: "Solvora 直営の理系個別指導オンライン（旧『物理の森』。理系個別指導の外注・受講相談はこちら経由）",
-    },
-  },
+  kdpAmazonUrl,
   keywords: [
     // primary — 検索意図の主軸
-    "EdTech",
-    "EdTech SaaS",
-    "教育 SaaS",
-    "理系人材育成",
-    "理系人材 育成",
-    "STEM教育",
-    "STEM 人材育成",
-    // supporting — Solvora の事業領域
-    "EdTech スタートアップ",
-    "教育系 スタートアップ",
-    "AI 教材作成",
-    "教材作成 AI",
-    "LaTeX 教材作成",
-    "学習支援アプリ",
-    "学習支援 SaaS",
-    "教育DX",
-    "GIGAスクール",
-    "GIGAスクール構想",
-    // brand
-    "Solvora",
-    "ソルヴォラ",
-    "Solvora Learning Lab",
-    "Learning Lab",
-    "理系個別指導",
-    "理系個別指導 オンライン",
-    "Eddivom",
-    "IT Pass",
-    "基本情報技術者試験 学習サポート",
-    "基本情報 科目B",
-    "基本情報 アルゴリズム",
-    // 旧ブランド（SEO 互換のため残す）
-    "物理の森",
+    "高校物理 添削",
     "高校物理 オンライン塾",
+    "記述答案 添削",
+    "物理 記述 添削",
+    "オンライン添削塾",
+    "毎日添削",
+    "高校数学 添削",
+    // supporting — サービス特徴
+    "考える力を育てる",
+    "学習管理 オンライン",
+    "自立学習 オンライン",
+    "高校物理 個別 オンライン",
+    "難関大 物理 記述",
+    "名大 物理 対策",
+    "高校生 添削指導",
+    "高校 英語 添削",
+    "理系 オンライン塾",
+    // 教材
+    "考える力を育てる高校物理",
+    "ノビット公式演習本",
+    "高校物理 教材",
+    // brand
+    "ノビットスタディ",
+    "ノビットスタディ 中高部",
+    "Nobit Study",
+    "ノビット 添削",
   ],
 };
 
+// グローバルナビ。ノビットスタディ中心のため、トップページ内の各セクションへの
+// アンカーと、無料体験・相談（/contact）への CTA に絞る。
 export const navItems = [
-  { label: "ホーム", href: "/" },
-  { label: "学ぶ", href: "/blog" },
-  {
-    label: "Learning Lab",
-    href: physicsSchoolUrl,
-    external: true,
-    highlight: true,
-  },
-  { label: "サービス", href: "/apps" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
+  { label: "特徴", href: "/#features" },
+  { label: "学習の流れ", href: "/#flow" },
+  { label: "教材", href: "/#materials" },
+  { label: "料金・無料体験", href: "/#pricing" },
+  { label: "よくある質問", href: "/#faq" },
+  { label: "無料体験・相談", href: "/contact", highlight: true },
 ];
 
-export const footerSocialLinks = [
-  {
-    label: "更新情報",
-    href: "/blog",
-    note: "最新記事はブログから",
-  },
+export const footerNavItems = [
+  { label: "サービスの特徴", href: "/#features" },
+  { label: "学習の流れ", href: "/#flow" },
+  { label: "教材・実績", href: "/#materials" },
+  { label: "料金・無料体験", href: "/#pricing" },
+  { label: "よくある質問", href: "/#faq" },
+  { label: "塾について", href: "/about" },
+  { label: "無料体験・相談", href: "/contact" },
 ];

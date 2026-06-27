@@ -115,30 +115,28 @@ export function MobileMenu() {
                 const external = isExternal(item);
                 const highlight = isHighlight(item);
 
-                if (external && highlight) {
+                if (highlight) {
                   return (
                     <li key={item.href}>
-                      <a
-                        className="relative flex min-h-12 items-center justify-between gap-3 overflow-hidden rounded-[14px] px-4 py-3 text-white shadow-[0_10px_22px_-12px_rgba(15,29,74,0.6)]"
+                      <Link
+                        className="relative flex min-h-12 items-center justify-between gap-3 overflow-hidden rounded-[14px] px-4 py-3 text-white shadow-[0_10px_22px_-12px_rgba(234,88,12,0.7)]"
                         href={item.href}
-                        rel="noreferrer noopener"
-                        target="_blank"
                         onClick={close}
                       >
                         <span
                           aria-hidden="true"
-                          className="absolute inset-0 bg-[linear-gradient(135deg,#0b1d4a_0%,#1e3a8a_55%,#1d4ed8_100%)]"
+                          className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]"
                         />
                         <span className="relative flex flex-col">
                           <span className="text-[0.96rem] font-bold tracking-[0.02em]">
                             {item.label}
                           </span>
-                          <span className="text-[0.66rem] font-medium tracking-[0.18em] text-[#bae6fd]">
-                            外部サイトへ移動
+                          <span className="text-[0.66rem] font-medium tracking-[0.18em] text-[#ffedd5]">
+                            まずは無料で
                           </span>
                         </span>
-                        <span aria-hidden="true" className="relative text-[#bae6fd]">↗</span>
-                      </a>
+                        <span aria-hidden="true" className="relative text-[#ffedd5]">→</span>
+                      </Link>
                     </li>
                   );
                 }

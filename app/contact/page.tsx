@@ -13,274 +13,180 @@ import {
 } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "お問い合わせ｜EdTech SaaS／物理講座の外注",
+  title: "無料体験・相談のお申し込み",
   description:
-    "Solvora の窓口は、(1) AI×LaTeX 教材作成「Eddivom」など EdTech SaaS の取材・パートナー連携・機能要望、(2) 理系個別指導講座の外注（Solvora Learning Lab／旧 物理の森への取り次ぎ）の 2 種類のみ。汎用的な EdTech 導入コンサルや学習相談は受け付けていません。理系人材育成 SaaS の Solvora が運営。",
+    "ノビットスタディ 中高部の無料体験・受講相談のお申し込みページ。高校物理・数学・英語の記述答案を毎日添削するオンライン学習管理塾です。実際の教材で演習し、答案を提出して、ノビットの添削を体験できます。面談や授業は行わない添削専門の塾です。お気軽にご相談ください。",
   keywords: [
-    "Solvora 問い合わせ",
-    "EdTech SaaS 問い合わせ",
-    "教育 SaaS 取材",
-    "Eddivom 法人問い合わせ",
-    "AI 教材作成 SaaS パートナー",
-    "理系人材育成 EdTech 取材",
-    "EdTech スタートアップ 取材",
-    "物理講座 外注",
-    "高校物理 講師 業務委託",
-    "物理 教材 外注",
+    "ノビットスタディ 無料体験",
+    "高校物理 添削 体験",
+    "オンライン添削塾 相談",
+    "高校生 添削 申し込み",
+    "記述答案 添削 体験",
   ],
   path: "/contact",
 });
 
-const lanes = [
+const canDo = [
   {
-    eyebrow: "Lane A · SaaS",
-    badgeBg: "#1d4ed8",
-    title: "EdTech SaaS のお問い合わせ",
-    body: "AI×LaTeX 教材作成 SaaS『Eddivom』、ITパスポート アプリ『IT Pass』、応用情報技術者による『基本情報技術者試験 学習サポート』に関する内容のみ。法人 / メディア / 個人いずれも歓迎します。",
-    bullets: [
-      "Eddivom など SaaS の機能要望・不具合報告・サポート",
-      "メディア取材・寄稿・登壇のご依頼",
-      "EdTech / 教育 SaaS パートナー連携・OEM・代理店相談",
-      "学校・予備校・教材会社からの SaaS 一括導入の見積依頼",
-    ],
-    cta: { label: "SaaS の問い合わせを送る", href: `mailto:${siteConfig.email}?subject=%5BSaaS%5D%20Solvora%20%E3%81%B8%E3%81%AE%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B` },
-    secondary: { label: "サービス一覧を見る", href: "/apps" },
+    title: "実際の教材で演習する",
+    body: "塾長オリジナル教材・公式演習本の一部に、実際に取り組んでいただきます。記述前提の問題で「考える力」を体験。",
   },
   {
-    eyebrow: "Lane B · 理系個別指導 外注",
-    badgeBg: "#0f1c3a",
-    title: "理系個別指導の外注（Solvora Learning Lab が受託）",
-    body: "高校・予備校・通信教育・教材会社からの『理系科目 講師業務の業務委託 / 講座外注 / 教材監修』はすべて Solvora 直営の理系個別指導オンライン『Solvora Learning Lab（旧 物理の森）』が受託します。Solvora 本体では受け付けていません。",
-    bullets: [
-      "高校物理（力学・電磁気・波動・熱・原子）の講座コマ外注",
-      "定期テスト・共通テスト・国公立二次・私大入試の対策講座外注",
-      "理系科目の解説執筆・教材監修・模試解答制作",
-      "高校生向け個別指導の受講相談（Solvora Learning Lab 公式サイトから）",
-    ],
-    cta: { label: "Solvora Learning Lab の窓口を開く", href: siteConfig.physicsSchoolUrl, external: true },
-    secondary: null as { label: string; href: string } | null,
+    title: "答案を提出して添削を受ける",
+    body: "提出した答案に、途中式・考え方・減点ポイントまで踏み込んだ添削フィードバックをお返しします。",
+  },
+  {
+    title: "学習管理システムを試す",
+    body: "毎日の演習と添削がどう回るのか、独自の学習管理システムの使い方とペース配分をご案内します。",
   },
 ];
 
 const trust = [
-  { label: "事業形態", value: "EdTech スタートアップ／個人事業" },
-  { label: "代表", value: siteConfig.author },
-  { label: "対応領域", value: "AI 教材作成 SaaS、学習支援 SaaS、理系個別指導（外注は Solvora Learning Lab）" },
-  { label: "対応地域", value: "日本全国（オンライン）" },
-  { label: "返信目安", value: "1 営業日以内（土日祝は翌営業日）" },
-  { label: "対応言語", value: "日本語（英語は要相談）" },
-];
-
-const notAccepted = [
-  "汎用的な『EdTech 導入相談』『教育コンサル』",
-  "個人の学習相談（理系個別指導の受講相談は Solvora Learning Lab の公式サイトから）",
-  "営業電話・無差別 BtoB 営業メール",
-  "Solvora と関係のない教材・教育サービスの宣伝依頼",
+  { label: "サービス形態", value: "オンライン添削・学習管理塾（添削専門）" },
+  { label: "塾長", value: siteConfig.author },
+  { label: "対応科目", value: "高校物理を中心に、高校数学・英語の記述答案" },
+  { label: "対象", value: "高校生・高卒生（中高一貫の高校範囲も相談可）" },
+  { label: "対応地域", value: "日本全国（オンライン完結）" },
+  { label: "返信目安", value: "1〜2 営業日以内" },
 ];
 
 const contactFaq = [
   {
-    question: "Solvora に EdTech 導入のコンサルや、学校・自治体向けの教育DX 相談はできますか？",
+    question: "無料体験では何ができますか？",
     answer:
-      "Solvora は EdTech SaaS を提供する立場で、汎用的な EdTech 導入コンサル・教育DX コンサルは受け付けていません。Eddivom など Solvora の SaaS を導入したい、複数ライセンスで使いたい、API パートナーになりたい等の場合は Lane A の窓口からご連絡ください。",
+      "実際の教材で演習に取り組み、答案を提出して、ノビットの添削フィードバックを体験できます。学習管理システムの使い方や、毎日のペース配分もあわせてご案内します。費用はかかりません。",
   },
   {
-    question: "Eddivom（AI 教材作成 SaaS）の機能要望や不具合報告はどこに送ればいい？",
+    question: "面談や授業はありますか？",
     answer:
-      "Solvora 本体の Contact メールで受け付けています。再現手順・スクリーンショット・ご利用環境（OS / ブラウザ）を添えてお送りください。重大な不具合は最優先で対応します。",
+      "ノビットスタディは添削専門の学習管理塾です。現状、面談や授業（ライブ指導）は行っていません。毎日の演習に対して毎日添削を返す形で、自立した学びを支えます。",
   },
   {
-    question: "高校物理の受講相談や個別指導の依頼はできますか？",
+    question: "料金はどのくらいですか？",
     answer:
-      "Solvora 本体では受け付けていません。受講相談・個別指導・理系科目の講座外注はすべて Solvora 直営の理系個別指導オンライン『Solvora Learning Lab（旧 物理の森）』が受託します。Lane B のリンクから Solvora Learning Lab の公式サイトへお進みください。",
+      "料金プランは現在準備中です。「塾としては安価に、毎日プロの添削が受けられる」ことを大切にしています。お申し込み・ご相談時に、最新の料金と受講の流れをご案内します。",
   },
   {
-    question: "返信はどれくらいで届きますか？",
+    question: "申し込みから受講までの流れは？",
     answer:
-      "初回返信は 1 営業日以内が目安です。土日祝に送付された場合は翌営業日になることがあります。営業メール・関係のない宣伝への返信は行っていません。",
-  },
-  {
-    question: "メディア取材・寄稿・登壇の依頼はどこから？",
-    answer:
-      "Lane A の窓口からご連絡ください。テーマ（理系人材育成 / EdTech SaaS / AI 教材作成 / 高校物理 等）、想定読者、媒体名、希望日程を添えていただければ調整がスムーズです。",
+      "下記のメールから、学年・志望校・現在の悩みなどを添えてご連絡ください。折り返し、無料体験の進め方と日程をご案内します。体験後、続けるかどうかはご自由に判断いただけます。",
   },
 ];
 
 export default function ContactPage() {
   const breadcrumb = createBreadcrumbJsonLd([
     { name: "ホーム", path: "/" },
-    { name: "Contact", path: "/contact" },
+    { name: "無料体験・相談", path: "/contact" },
   ]);
   const contactPageJsonLd = createContactPageJsonLd();
   const orgJsonLd = createOrganizationJsonLd();
   const faqJsonLd = createFaqJsonLd(contactFaq);
 
-  const subjectSaas = encodeURIComponent("[SaaS] Solvora へのお問い合わせ");
-  const subjectPhysics = encodeURIComponent("[物理講座 外注] お問い合わせ");
+  const subject = encodeURIComponent("[無料体験・相談] ノビットスタディへのお問い合わせ");
+  const body = encodeURIComponent(
+    "▼ご記入ください\n・学年（例：高2）：\n・志望校／目標（任意）：\n・対応希望科目（物理／数学／英語）：\n・いまの悩み：\n",
+  );
+  const mailHref = `mailto:${siteConfig.email}?subject=${subject}&body=${body}`;
 
   return (
     <>
       <JsonLd data={[contactPageJsonLd, orgJsonLd, breadcrumb, faqJsonLd]} />
 
-      {/* HERO — clear positioning: SaaS-first, two lanes only */}
-      <section className="bg-white">
+      {/* HERO */}
+      <section className="bg-[linear-gradient(180deg,#ffffff_0%,#f3f8ff_100%)]">
         <Container className="px-5 sm:px-6">
           <nav aria-label="パンくずリスト" className="pt-7 text-[0.78rem] text-[#94a3b8] sm:pt-9">
             <ol className="flex flex-wrap items-center gap-2">
               <li>
-                <Link className="transition hover:text-[#1d4ed8]" href="/">
+                <Link className="transition hover:text-[#0f766e]" href="/">
                   ホーム
                 </Link>
               </li>
               <li aria-hidden="true" className="text-[#cbd5e1]">/</li>
-              <li className="text-[#475569]">Contact</li>
+              <li className="text-[#475569]">無料体験・相談</li>
             </ol>
           </nav>
-          <div className="py-10 sm:py-16 lg:py-20">
-            <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8] sm:text-[0.78rem]">
-              Contact · EdTech SaaS / 理系人材育成
+          <div className="py-10 sm:py-14 lg:py-16">
+            <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.25)]">
+              <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
+              Free Trial · 無料体験受付中
             </p>
-            <h1 className="mt-4 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3.1rem]">
-              Solvora の窓口は、
+            <h1 className="mt-5 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3rem]">
+              まずは無料体験で、
               <br className="hidden sm:block" />
-              SaaS と物理講座 外注の 2 つだけ。
+              ノビットの添削を試す。
             </h1>
-            <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
-              Solvora は <strong className="font-bold text-[#0b1d4a]">理系人材育成 EdTech SaaS</strong>{" "}
-              を開発する EdTech スタートアップです。お問い合わせは下記 2 種類のみ受け付けています。
-              個人の学習相談・汎用的な EdTech 導入コンサルは受け付けていません。
+            <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.06rem]">
+              高校物理・数学・英語の記述答案を、毎日添削するオンライン学習管理塾です。
+              面談や授業は行いません。下記から、お気軽に無料体験・ご相談をお申し込みください。
             </p>
-            {/* Pills: clarify the 2 lanes inline so users self-select instantly */}
-            <ul className="mt-7 flex flex-wrap gap-2.5">
-              <li>
-                <a
-                  href="#lane-saas"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#0b1d4a] px-4 py-2 text-[0.86rem] font-semibold text-white transition hover:bg-[#1e3a8a]"
-                >
-                  <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#bae6fd]" />
-                  Lane A · SaaS のお問い合わせ
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#lane-physics"
-                  className="inline-flex items-center gap-2 rounded-full border border-[#0b1d4a] bg-white px-4 py-2 text-[0.86rem] font-semibold text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
-                >
-                  <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#1d4ed8]" />
-                  Lane B · 物理講座の外注
-                </a>
-              </li>
-            </ul>
+            <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+              <a
+                href={mailHref}
+                className="group/cta relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-full px-7 text-[0.98rem] font-bold text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px"
+              >
+                <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
+                <span className="relative">メールで無料体験を申し込む</span>
+              </a>
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-7 text-[0.98rem] font-semibold text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
+              >
+                {siteConfig.email}
+              </a>
+            </div>
+            <p className="mt-4 text-[0.82rem] leading-[1.8] text-[#94a3b8]">
+              ※ LINE・お申し込みフォームでの受付は準備中です。当面はメールにて承ります。
+            </p>
           </div>
         </Container>
       </section>
 
-      {/* TWO LANES */}
+      {/* 無料体験でできること */}
       <section className="bg-[#f8fafc]">
         <Container className="px-5 py-12 sm:px-6 sm:py-16 lg:py-20">
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-7">
-            {lanes.map((lane, idx) => {
-              const isSaaS = idx === 0;
-              const anchor = isSaaS ? "lane-saas" : "lane-physics";
-              const subject = isSaaS ? subjectSaas : subjectPhysics;
-              const ctaHref = isSaaS
-                ? `mailto:${siteConfig.email}?subject=${subject}`
-                : lane.cta.href;
-
-              return (
-                <article
-                  key={lane.title}
-                  id={anchor}
-                  className="scroll-mt-24 rounded-[24px] bg-white p-7 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_24px_50px_-38px_rgba(15,29,74,0.4)] sm:rounded-[28px] sm:p-9"
-                >
-                  <span
-                    className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.2em] text-white sm:text-[0.74rem]"
-                    style={{ background: lane.badgeBg }}
-                  >
-                    <span aria-hidden="true" className="h-1 w-1 rounded-full bg-white/70" />
-                    {lane.eyebrow}
-                  </span>
-                  <h2 className="mt-4 text-balance text-[1.4rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.6rem]">
-                    {lane.title}
-                  </h2>
-                  <p className="mt-3 text-[0.95rem] leading-[1.95] text-[#334155]">
-                    {lane.body}
-                  </p>
-
-                  <ul className="mt-5 grid gap-2.5">
-                    {lane.bullets.map((b) => (
-                      <li
-                        key={b}
-                        className="flex items-start gap-2.5 text-[0.92rem] leading-[1.85] text-[#0b1d4a]"
-                      >
-                        <span
-                          aria-hidden="true"
-                          className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full"
-                          style={{ background: lane.badgeBg }}
-                        />
-                        <span>{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="mt-7 flex flex-col gap-2.5 sm:flex-row sm:flex-wrap">
-                    {lane.cta.external ? (
-                      <a
-                        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-[0.94rem] font-semibold tracking-[0.02em] text-white transition hover:-translate-y-0.5"
-                        href={ctaHref}
-                        rel="noreferrer noopener"
-                        target="_blank"
-                        style={{ background: lane.badgeBg }}
-                      >
-                        {lane.cta.label} <span aria-hidden="true">↗</span>
-                      </a>
-                    ) : (
-                      <a
-                        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-[0.94rem] font-semibold tracking-[0.02em] text-white transition hover:-translate-y-0.5"
-                        href={ctaHref}
-                        style={{ background: lane.badgeBg }}
-                      >
-                        {lane.cta.label}
-                      </a>
-                    )}
-                    {lane.secondary ? (
-                      <Link
-                        href={lane.secondary.href}
-                        className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-6 text-[0.94rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
-                      >
-                        {lane.secondary.label}
-                      </Link>
-                    ) : null}
-                  </div>
-                </article>
-              );
-            })}
+          <div className="max-w-2xl">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
+              Free Trial · 無料体験でできること
+            </p>
+            <h2 className="mt-3 text-[1.55rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.95rem]">
+              「演習 → 提出 → 添削」を、実際に体験
+            </h2>
           </div>
+          <ul className="mt-8 grid gap-5 sm:grid-cols-3">
+            {canDo.map((c, i) => (
+              <li key={c.title} className="rounded-[18px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-[#eef6f6] text-[0.95rem] font-extrabold text-[#0f766e]">
+                  {i + 1}
+                </span>
+                <p className="mt-4 text-[1.05rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{c.title}</p>
+                <p className="mt-2 text-[0.88rem] leading-[1.9] text-[#475569]">{c.body}</p>
+              </li>
+            ))}
+          </ul>
         </Container>
       </section>
 
-      {/* TRUST · 運営者・対応領域（EEAT 強化） */}
+      {/* TRUST */}
       <section className="cv-defer bg-white">
         <Container className="px-5 py-14 sm:px-6 sm:py-20">
           <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
             <div>
-              <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
                 Trust · 運営情報
               </p>
               <h2 className="mt-3 text-[1.55rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.95rem]">
-                信頼してご連絡いただくために
+                安心してご相談いただくために
               </h2>
               <p className="mt-4 text-[0.94rem] leading-[1.95] text-[#475569]">
-                Solvora は、理系人材育成のための EdTech SaaS を提供する{" "}
-                <strong className="font-bold text-[#0b1d4a]">EdTech スタートアップ</strong>。
-                {" "}
-                直営の理系個別指導オンライン「Solvora Learning Lab（旧 物理の森）」と合わせて、AI 教材作成・学習支援アプリ・理系個別指導の 3 領域を運営しています。
+                ノビットスタディ 中高部は、教材開発者でもある塾長が、
+                高校物理を中心に記述答案を毎日添削するオンライン学習管理塾です。
               </p>
             </div>
             <dl className="grid gap-3 rounded-[22px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)] sm:grid-cols-2 sm:p-8">
               {trust.map((row) => (
                 <div key={row.label} className="flex flex-col gap-1">
-                  <dt className="text-[0.7rem] font-bold uppercase tracking-[0.18em] text-[#1d4ed8]">
+                  <dt className="text-[0.7rem] font-bold uppercase tracking-[0.16em] text-[#0f766e]">
                     {row.label}
                   </dt>
                   <dd className="text-[0.94rem] leading-[1.85] text-[#0b1d4a]">{row.value}</dd>
@@ -291,59 +197,26 @@ export default function ContactPage() {
         </Container>
       </section>
 
-      {/* SCOPE · 受け付けないもの（透明性 + ボリューム削減） */}
-      <section className="cv-defer bg-[#f8fafc]">
-        <Container className="px-5 py-12 sm:px-6 sm:py-16">
-          <div className="mx-auto max-w-3xl">
-            <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#b45309]">
-              Out of Scope · 受け付けていないもの
-            </p>
-            <h2 className="mt-3 text-[1.4rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.7rem]">
-              この 4 つは、別の窓口へどうぞ
-            </h2>
-            <p className="mt-3 text-[0.92rem] leading-[1.95] text-[#475569]">
-              Solvora は SaaS 開発と物理講座の外注に集中しています。下記は対応しません。
-            </p>
-            <ul className="mt-6 grid gap-3">
-              {notAccepted.map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-3 rounded-[14px] bg-white p-4 ring-1 ring-[rgba(180,83,9,0.18)] sm:p-5"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="mt-[0.1em] grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#fef3c7] text-[0.78rem] font-bold text-[#92400e]"
-                  >
-                    !
-                  </span>
-                  <span className="text-[0.92rem] leading-[1.85] text-[#0b1d4a]">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Container>
-      </section>
-
       {/* FAQ */}
-      <section className="cv-defer bg-white">
+      <section className="cv-defer bg-[#f8fafc]">
         <Container className="px-5 py-14 sm:px-6 sm:py-20">
           <div className="mx-auto max-w-3xl">
-            <p className="text-[0.74rem] font-semibold uppercase tracking-[0.24em] text-[#1d4ed8]">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
               FAQ · よくある質問
             </p>
             <h2 className="mt-3 text-[1.55rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-              お問い合わせの前に
+              お申し込みの前に
             </h2>
             <ol className="mt-8 grid gap-4">
               {contactFaq.map((item) => (
                 <li
                   key={item.question}
-                  className="rounded-[16px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.06)] sm:p-6"
+                  className="rounded-[16px] bg-white p-5 ring-1 ring-[rgba(15,29,74,0.06)] sm:p-6"
                 >
                   <p className="flex items-start gap-2.5 text-[1rem] font-extrabold leading-[1.55] text-[#0b1d4a]">
                     <span
                       aria-hidden="true"
-                      className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#1d4ed8] text-[0.78rem] font-bold text-white"
+                      className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#0d9488] text-[0.78rem] font-bold text-white"
                     >
                       Q
                     </span>
@@ -356,21 +229,20 @@ export default function ContactPage() {
               ))}
             </ol>
 
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <a
-                className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#0b1d4a] px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-white transition hover:bg-[#1e3a8a]"
-                href={`mailto:${siteConfig.email}?subject=${subjectSaas}`}
+                className="group/cta relative inline-flex min-h-12 items-center justify-center overflow-hidden rounded-full px-8 text-[0.96rem] font-bold text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px"
+                href={mailHref}
               >
-                SaaS の問い合わせを送る
+                <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
+                <span className="relative">無料体験を申し込む</span>
               </a>
-              <a
-                className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-7 text-[0.95rem] font-semibold tracking-[0.02em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
-                href={siteConfig.physicsSchoolUrl}
-                rel="noreferrer noopener"
-                target="_blank"
+              <Link
+                href="/"
+                className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-8 text-[0.96rem] font-semibold text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
               >
-                Solvora Learning Lab の窓口を開く ↗
-              </a>
+                サービス内容に戻る
+              </Link>
             </div>
           </div>
         </Container>
