@@ -1,163 +1,103 @@
-# yuta-eng.com
+# ノビットスタディ 中高部 (yuta-eng.com)
 
-`yuta-eng.com` のブランドサイト / 情報サイト / ブログ基盤です。教育、物理、教材制作、LaTeX、学習支援Webアプリ開発の専門性を伝えつつ、既存アプリへの公式導線と自サイトブログを運用できる構成にしています。
+高校物理・数学・英語を中心に、**毎日演習・毎日添削**で「考える力」を育てるオンライン
+添削塾「ノビットスタディ 中高部」の公式サイトです。面談や授業は行わず、塾長オリジナル
+教材と学習管理で、自分のペースの自立学習と記述答案力を支えるサービスを訴求する
+ランディングページ構成になっています。
 
 ## ディレクトリ構成
 
 ```txt
 app/
-  about/
-  apps/
-  blog/
-    [slug]/
-  contact/
-  studio/
+  about/          塾長・塾の考え方
+  contact/        無料体験・相談（メール導線）
   globals.css
   layout.tsx
   not-found.tsx
-  page.tsx
+  page.tsx        トップ（LP：FV→悩み→特徴→流れ→教材→料金→FAQ→CTA）
+  opengraph-image.tsx
+  icon.svg / favicon.ico
   robots.ts
   sitemap.ts
 components/
-  app-card.tsx
-  article-card.tsx
-  blog-builder.tsx
   button-link.tsx
   container.tsx
+  google-analytics-loader.tsx
   json-ld.tsx
-  mdx-components.tsx
-  section.tsx
+  mobile-menu.tsx
   site-footer.tsx
   site-header.tsx
-content/
-  blog/
-    *.mdx
 data/
-  apps.ts
-  focus-areas.ts
-  seo.ts
-  site.ts
-docs/
-  seo-research.md
+  home.ts         トップの FAQ
+  site.ts         ブランド・ナビ・キーワード・KDP リンク
 lib/
-  blog.ts
   metadata.ts
-  structured-data.ts
+  og-version.ts   favicon/OG のデプロイ別バージョンスタンプ
+  structured-data.ts  JSON-LD（EducationalOrganization / Service / FAQ など）
   utils.ts
 public/
+  brand/          公式ロゴ・マスコット「ノビットくん」・各種 SVG マーク
+  denjikigaku-*   KDP『考える力を育てる高校物理』表紙
+scripts/          ビルド時の画像・favicon・critical CSS 生成
 ```
 
 ## 環境変数
 
-現時点で必須の環境変数はありません。何も設定しなくても `https://yuta-eng.com` と `contact@yuta-eng.com` を既定値としてビルドできます。
-
-必要に応じて Vercel 側で以下を設定できます。
+必須の環境変数はありません。未設定でも `https://yuta-eng.com` と
+`contact@yuta-eng.com` を既定値としてビルドできます。
 
 ```bash
 NEXT_PUBLIC_SITE_URL=https://yuta-eng.com
 NEXT_PUBLIC_CONTACT_EMAIL=contact@yuta-eng.com
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX   # 任意
 ```
 
-`NEXT_PUBLIC_SITE_URL` は metadata、canonical、sitemap、robots、JSON-LD のURL生成に使います。`NEXT_PUBLIC_CONTACT_EMAIL` は Contact ページのメール導線に使います。
+`NEXT_PUBLIC_SITE_URL` は metadata・canonical・sitemap・robots・JSON-LD の URL 生成に、
+`NEXT_PUBLIC_CONTACT_EMAIL` は Contact ページのメール導線に使います。
 
-## セットアップ
+## セットアップ / ローカル起動
 
 ```bash
 npm install
+npm run dev      # http://localhost:3000
 ```
 
-## ローカル起動
-
-```bash
-npm run dev
-```
-
-ブラウザで `http://localhost:3000` を開きます。
-
-## 品質チェック
+## 品質チェック / ビルド
 
 ```bash
 npm run lint
 npm run build
 ```
 
-## Vercel デプロイ
+`npm run build` は次を順に実行します（`package.json` の build スクリプト）。
 
-1. このリポジトリを GitHub などに push します。
-2. Vercel で New Project からリポジトリを選択します。
-3. Framework Preset は Next.js のままで問題ありません。
-4. Build Command は `npm run build`、Install Command は `npm install` を使います。
-5. Production Domain に `yuta-eng.com` を設定します。
+1. `scripts/stamp-og-version.mjs` — デプロイ別バージョンスタンプ
+2. `scripts/render-favicon-ico.mjs` — `public/favicon.svg` → `app/favicon.ico`
+3. `scripts/convert-brand-images.mjs` — ロゴ・マスコットの AVIF/WebP 変換
+4. `scripts/convert-book-cover.mjs` — 教材カバーの AVIF/WebP 変換
+5. `next build`
+6. `scripts/inline-critical-css.mjs` — above-the-fold CSS のインライン化
 
-Vercel CLI を使う場合:
+## ブランド画像の差し替え
+
+`public/brand/` 配下が正本です。
+
+- ロゴ: `nobit-logo.png`（余白トリミング済みの正本）
+- マスコット: `nobit-kun-wave.png` / `nobit-kun-point.png`
+
+これらの PNG を置き替えて `npm run build`（または
+`node scripts/convert-brand-images.mjs`）を実行すると、AVIF/WebP の各サイズが
+再生成され、ヘッダー・フッター・トップに反映されます。
+
+KDP 教材への導線 URL は `data/site.ts` の `kdpAmazonUrl` で一元管理しています。
+
+## デプロイ（Vercel）
+
+1. リポジトリを push し、Vercel の New Project で選択。
+2. Framework Preset は Next.js、Build Command は `npm run build`。
+3. Production Domain に `yuta-eng.com` を設定。
 
 ```bash
 npx vercel
 npx vercel --prod
 ```
-
-## ブログ記事追加手順
-
-運用者向けの簡易ビルダーは `/studio` にあります。ホームやナビには表示していない非公開導線です。
-
-1. `npm run dev` でローカル起動します。
-2. `http://localhost:3000/studio` を開きます。
-3. フォームにタイトル、説明文、タグ、読者の目的、本文を入力します。
-4. 生成されたMDXをコピー、またはダウンロードします。
-5. `content/blog/{slug}.mdx` として保存します。
-6. `npm run lint` と `npm run build` で確認します。
-
-手で追加する場合は、`content/blog` に `.mdx` または `.md` ファイルを追加します。frontmatter は以下の形式です。
-
-```mdx
----
-title: "記事タイトル"
-description: "記事説明"
-date: "2026-04-23"
-tags:
-  - Education
-  - Physics
-category: "Education"
-slug: "example-slug"
-draft: false
-searchIntent: "この記事を読む人の目的"
-keyPoints:
-  - "この記事でわかること1"
-  - "この記事でわかること2"
-coverImage: "/optional-image.jpg"
----
-
-## 見出し
-
-本文を書きます。
-```
-
-`draft: true` の記事は一覧、詳細、sitemap に表示されません。記事は `date` の新しい順に並びます。
-
-## アプリ追加手順
-
-`data/apps.ts` の `apps` 配列へ、同じ形式で項目を追加します。
-
-```ts
-{
-  name: "New App",
-  description: "既存アプリの説明",
-  audience: "想定ユーザー",
-  category: "Category",
-  href: "https://example.yuta-eng.com",
-  ctaLabel: "New App を開く",
-  status: "外部の既存アプリ",
-}
-```
-
-このサイトではアプリ本体を再実装せず、紹介カードと外部リンクだけを扱います。
-
-## 今後の拡張案
-
-- `content/blog` にカテゴリ別一覧やタグページを追加する
-- `data/site.ts` にSNS、GitHub、外部フォームのリンクを追加する
-- About ページに出版実績、制作実績、開発実績を追加する
-- Contact ページを Server Action や外部フォームに接続する
-- 記事末尾に関連記事、アプリCTA、ニュースレター導線を追加する
-- `public/og.png` を追加して Open Graph 画像を設定する
-- `/studio` に認証、下書き保存、GitHub連携、CMS連携を追加する

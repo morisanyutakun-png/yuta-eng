@@ -1,26 +1,20 @@
 import { siteConfig } from "@/data/site";
 import { homeFaq } from "@/data/home";
-import type { BlogPost } from "@/lib/blog";
-
-type ItemListItem = {
-  name: string;
-  description?: string;
-  url: string;
-};
 
 type BreadcrumbItem = {
   name: string;
   path: string;
 };
 
-const LOGO_URL = new URL("/brand/solvora-mark.svg", siteConfig.url).toString();
+const LOGO_URL = new URL("/brand/nobit-mark.svg", siteConfig.url).toString();
+const FULL_NAME = `${siteConfig.name} ${siteConfig.division}`;
 
 export function createWebsiteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: siteConfig.name,
-    alternateName: ["ソルヴォラ", "Solvora STEM Learning Hub"],
+    alternateName: ["ノビットスタディ 中高部", "Nobit Study"],
     url: siteConfig.url,
     description: siteConfig.description,
     inLanguage: "ja",
@@ -33,99 +27,41 @@ export function createWebsiteJsonLd() {
         url: LOGO_URL,
       },
     },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: `${siteConfig.url}/blog?q={search_term_string}`,
-      },
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 
 export function createOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    name: siteConfig.name,
-    alternateName: [
-      "ソルヴォラ",
-      "Solvora STEM Learning Hub",
-      "理系人材育成 EdTech ハブ Solvora",
-    ],
+    "@type": "EducationalOrganization",
+    name: FULL_NAME,
+    alternateName: ["ノビットスタディ", "Nobit Study", "ノビット 添削塾"],
     url: siteConfig.url,
     description: siteConfig.description,
-    slogan: "理系人材を育てる、学びを設計する EdTech ハブ。",
+    slogan: "考える力を育てる、高校物理のオンライン添削。",
     email: siteConfig.email,
-    logo: new URL("/brand/solvora-mark.svg", siteConfig.url).toString(),
+    logo: LOGO_URL,
+    image: LOGO_URL,
     founder: {
       "@type": "Person",
       name: siteConfig.author,
-      url: siteConfig.url,
+      url: new URL("/about", siteConfig.url).toString(),
     },
     knowsAbout: [
-      "理系人材育成",
-      "STEM教育",
-      "EdTech",
-      "GIGAスクール構想",
-      "教育DX",
-      "AI教材作成",
-      "LaTeX教材作成",
-      "学習支援アプリ",
       "高校物理",
-      "学習科学",
+      "高校物理 記述答案 添削",
+      "高校数学",
+      "高校英語 添削",
+      "記述答案の指導",
+      "学習管理",
+      "オンライン学習",
+      "大学受験 物理",
+      "教材開発",
     ],
     areaServed: { "@type": "Country", name: "Japan" },
-    sameAs: [siteConfig.physicsSchoolUrl, siteConfig.eddivomUrl, siteConfig.itPassUrl],
-    subOrganization: [
-      {
-        "@type": "EducationalOrganization",
-        name: "Solvora Learning Lab",
-        alternateName: [
-          "Solvora Learning Lab",
-          "Learning Lab",
-          "物理の森",
-          "物理の森 オンライン物理塾",
-          "Solvora 物理塾",
-        ],
-        url: siteConfig.physicsSchoolUrl,
-        parentOrganization: {
-          "@type": "Organization",
-          name: siteConfig.name,
-          url: siteConfig.url,
-        },
-        description:
-          "Solvora が運営する理系個別指導オンライン（旧『物理の森』）。AI 復習プリント付きで、高校物理（力学・電磁気・波動・熱・原子）を中心に、関連する数学・情報の単元横断にも対応する個別カリキュラム。",
-      },
-      {
-        "@type": "EducationalOrganization",
-        name: "基本情報技術者試験 学習サポート",
-        alternateName: ["FE 学習サポート", "基本情報 学習サポート"],
-        url: new URL("/services/fe-support", siteConfig.url).toString(),
-        description:
-          "Solvora 代表 森 祐太（応用情報技術者）が提供する個別サポートサービス。基本情報技術者試験の科目B・アルゴリズム・擬似言語・情報セキュリティ・ネットワーク・データベースを、独学者向けに整理して伴走します。",
-      },
-      {
-        "@type": "SoftwareApplication",
-        name: "Eddivom",
-        alternateName: ["Eddivom LaTeX教材作成", "LaTeX 教材作成 ツール Eddivom"],
-        url: siteConfig.eddivomUrl,
-        applicationCategory: "EducationalApplication",
-        operatingSystem: "Web",
-        description:
-          "Solvora が公式紹介する LaTeX 教材作成 Web アプリ。AI で問題下書き → LaTeX 整形 → PDF 出力までをワンストップで処理し、教員・塾講師の問題プリント作成を効率化。",
-      },
-      {
-        "@type": "SoftwareApplication",
-        name: "IT Pass",
-        alternateName: ["ITパスポート アプリ IT Pass", "ITパスポート 学習アプリ"],
-        url: siteConfig.itPassUrl,
-        applicationCategory: "EducationalApplication",
-        operatingSystem: "Web",
-        description:
-          "Solvora が公式紹介する ITパスポート アプリ。過去問演習・分野別解説・苦手単元復習をスマホから 5〜10 分のスキマ時間で積み上げられる IT パスポート対策学習アプリ。",
-      },
+    audience: [
+      { "@type": "EducationalAudience", educationalRole: "student" },
+      { "@type": "Audience", audienceType: "保護者" },
     ],
   };
 }
@@ -137,9 +73,9 @@ export function createPersonJsonLd() {
     name: siteConfig.author,
     url: new URL("/about", siteConfig.url).toString(),
     image: LOGO_URL,
-    jobTitle: "理系教育クリエイター・EdTech 設計者・Eddivom 開発者",
+    jobTitle: "ノビットスタディ 塾長・教材開発者・添削指導者",
     description:
-      "名古屋大学 工学部 電気電子情報系で学び、暗号・セキュリティ分野に関心を持つ理系教育クリエイター。高校物理・電磁気学を中心に、現象・図・言葉・式を結びつけた構造的理解を支える教材制作と、AI×LaTeX を用いた教材作成アプリ Eddivom の開発を行う。",
+      "名古屋大学 工学部 電気電子情報系で学んだ理系教育者。高校物理・電磁気を中心に、現象・図・言葉・式を結びつけた構造的理解を育てる教材を開発し、KDP で『考える力を育てる高校物理』シリーズを刊行。ノビットスタディ 中高部では、塾長オリジナル教材と毎日添削で高校生の記述答案力と自立した学びを支える。",
     alumniOf: {
       "@type": "CollegeOrUniversity",
       name: "名古屋大学",
@@ -157,52 +93,20 @@ export function createPersonJsonLd() {
           name: "情報処理推進機構（IPA）",
         },
       },
-      {
-        "@type": "EducationalOccupationalCredential",
-        name: "日商簿記検定 2級",
-        credentialCategory: "公的資格",
-        recognizedBy: {
-          "@type": "Organization",
-          name: "日本商工会議所",
-        },
-      },
-      {
-        "@type": "EducationalOccupationalCredential",
-        name: "FP（ファイナンシャル・プランニング）技能検定 3級",
-        credentialCategory: "国家資格",
-        recognizedBy: {
-          "@type": "Organization",
-          name: "日本 FP 協会 / 金融財政事情研究会",
-        },
-      },
     ],
     worksFor: {
-      "@type": "Organization",
-      name: siteConfig.name,
+      "@type": "EducationalOrganization",
+      name: FULL_NAME,
       url: siteConfig.url,
     },
     knowsAbout: [
       "高校物理",
       "電磁気学",
       "物理教育",
+      "記述答案 添削",
       "教材制作",
-      "LaTeX 組版",
-      "AI 教材作成",
-      "EdTech 開発",
-      "暗号 セキュリティ",
-      "システム設計",
-      "ネットワーク",
-      "データベース",
-      "Webアプリケーション開発",
-      "Next.js TypeScript",
       "学習デザイン",
-      "理系人材育成",
-      "STEM教育",
-    ],
-    sameAs: [
-      siteConfig.physicsSchoolUrl,
-      siteConfig.eddivomUrl,
-      siteConfig.itPassUrl,
+      "高校数学",
     ],
   };
 }
@@ -216,13 +120,12 @@ export function createHomePageJsonLd() {
     description: siteConfig.description,
     inLanguage: "ja",
     about: [
-      "高校物理",
-      "数学",
-      "情報",
-      "教材作成",
-      "LaTeX",
-      "学習デザイン",
-      "EdTech",
+      "高校物理 添削",
+      "記述答案 添削",
+      "オンライン添削塾",
+      "毎日添削",
+      "学習管理",
+      "考える力",
     ],
     isPartOf: {
       "@type": "WebSite",
@@ -236,14 +139,19 @@ export function createEducationalServiceJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "Solvora",
+    name: FULL_NAME,
     url: siteConfig.url,
     description:
-      "理系の学びを深めるための記事と専門サービスをまとめるサイト。",
-    serviceType: ["記事の発信", "理系個別指導 オンライン（Solvora Learning Lab）", "教材作成の支援"],
+      "高校物理・数学・英語を中心に、毎日の演習と毎日の添削で考える力と記述答案力を育てるオンライン添削・学習管理サービス。面談や授業は行わず、塾長オリジナル教材で自立した学びを支える。",
+    serviceType: [
+      "オンライン添削",
+      "学習管理",
+      "記述答案の添削指導",
+      "教材提供",
+    ],
     provider: {
-      "@type": "Organization",
-      name: siteConfig.name,
+      "@type": "EducationalOrganization",
+      name: FULL_NAME,
       url: siteConfig.url,
     },
     areaServed: {
@@ -252,7 +160,7 @@ export function createEducationalServiceJsonLd() {
     },
     audience: [
       { "@type": "EducationalAudience", educationalRole: "student" },
-      { "@type": "EducationalAudience", educationalRole: "teacher" },
+      { "@type": "Audience", audienceType: "保護者" },
     ],
   };
 }
@@ -268,21 +176,6 @@ export function createHomeFaqJsonLd() {
         "@type": "Answer",
         text: item.answer,
       },
-    })),
-  };
-}
-
-export function createItemListJsonLd(name: string, items: ItemListItem[]) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name,
-    itemListElement: items.map((item, index) => ({
-      "@type": "ListItem",
-      position: index + 1,
-      url: item.url,
-      name: item.name,
-      description: item.description,
     })),
   };
 }
@@ -374,94 +267,15 @@ export function createBreadcrumbJsonLd(items: BreadcrumbItem[]) {
   };
 }
 
-export function createArticleJsonLd(post: BlogPost) {
-  const url = new URL(`/blog/${post.slug}`, siteConfig.url).toString();
-  const imageUrl1200 = new URL(`/og/${post.slug}-1200.webp`, siteConfig.url).toString();
-  const imageUrl640 = new URL(`/og/${post.slug}-640.webp`, siteConfig.url).toString();
-  const imagePng = new URL(`/og/${post.slug}.png`, siteConfig.url).toString();
-
-  return {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    headline: post.title,
-    description: post.description,
-    url,
-    datePublished: post.date,
-    dateModified: post.updated ?? post.date,
-    articleSection: post.category,
-    about: post.tags,
-    image: [
-      {
-        "@type": "ImageObject",
-        url: imageUrl1200,
-        width: 1200,
-        height: 630,
-      },
-      {
-        "@type": "ImageObject",
-        url: imageUrl640,
-        width: 640,
-        height: 336,
-      },
-      {
-        "@type": "ImageObject",
-        url: imagePng,
-        width: 1200,
-        height: 630,
-      },
-    ],
-    isAccessibleForFree: true,
-    author: {
-      "@type": "Person",
-      name: siteConfig.author,
-      url: new URL("/about", siteConfig.url).toString(),
-    },
-    publisher: {
-      "@type": "Organization",
-      name: siteConfig.name,
-      url: siteConfig.url,
-      logo: {
-        "@type": "ImageObject",
-        url: LOGO_URL,
-      },
-    },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": url,
-    },
-    isPartOf: {
-      "@type": "Blog",
-      name: `${siteConfig.name} Blog`,
-      url: new URL("/blog", siteConfig.url).toString(),
-    },
-    keywords: post.tags.join(", "),
-    inLanguage: "ja",
-    ...(post.educationalLevel
-      ? {
-          educationalLevel: post.educationalLevel,
-          learningResourceType: "Article",
-          educationalUse: "Self-Study",
-          audience: {
-            "@type": "EducationalAudience",
-            educationalRole: "student",
-          },
-        }
-      : {}),
-    ...(post.timeRequired ? { timeRequired: post.timeRequired } : {}),
-  };
-}
-
 /**
- * ContactPage schema for /contact. Pairs nicely with the FAQ + Organization
- * schemas already on the page so Google can connect "this contact is for
- * Solvora the EdTech SaaS publisher" rather than guessing from anchor text.
+ * ContactPage schema for /contact. ノビットスタディの無料体験・相談の窓口。
  */
 export function createContactPageJsonLd() {
   const url = new URL("/contact", siteConfig.url).toString();
   return {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    name: `${siteConfig.name} お問い合わせ｜EdTech SaaS / 物理講座 外注`,
+    name: `${FULL_NAME} 無料体験・相談のお申し込み`,
     url,
     inLanguage: "ja",
     isPartOf: {
@@ -470,8 +284,8 @@ export function createContactPageJsonLd() {
       url: siteConfig.url,
     },
     about: {
-      "@type": "Organization",
-      name: siteConfig.name,
+      "@type": "EducationalOrganization",
+      name: FULL_NAME,
       url: siteConfig.url,
       email: siteConfig.email,
       contactPoint: [
@@ -481,69 +295,10 @@ export function createContactPageJsonLd() {
           email: siteConfig.email,
           areaServed: "JP",
           availableLanguage: ["ja"],
-        },
-        {
-          "@type": "ContactPoint",
-          contactType: "sales",
-          email: siteConfig.email,
-          areaServed: "JP",
-          availableLanguage: ["ja"],
-          description:
-            "Eddivom などの EdTech SaaS に関する取材・パートナー連携・機能要望",
+          description: "無料体験のお申し込み・受講相談・教材に関するお問い合わせ",
         },
       ],
     },
   };
 }
 
-/**
- * FAQPage JSON-LD built from frontmatter `faq:` items. Returns null when the
- * post has no FAQ block, so the caller can spread the result conditionally.
- */
-export function createPostFaqJsonLd(post: BlogPost) {
-  if (!post.faq || post.faq.length === 0) return null;
-  return {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: post.faq.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: item.a,
-      },
-    })),
-  };
-}
-
-/** CollectionPage schema for blog index, tag, category landing pages. */
-export function createCollectionPageJsonLd(input: {
-  name: string;
-  description: string;
-  path: string;
-  itemCount?: number;
-}) {
-  const url = new URL(input.path, siteConfig.url).toString();
-  return {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    name: input.name,
-    description: input.description,
-    url,
-    inLanguage: "ja",
-    isPartOf: {
-      "@type": "WebSite",
-      name: siteConfig.name,
-      url: siteConfig.url,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: siteConfig.name,
-      url: siteConfig.url,
-      logo: { "@type": "ImageObject", url: LOGO_URL },
-    },
-    ...(typeof input.itemCount === "number"
-      ? { numberOfItems: input.itemCount }
-      : {}),
-  };
-}

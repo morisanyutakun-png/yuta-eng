@@ -1,69 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Solvora Learning Lab">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ノビットスタディ Nobit Study">
   <defs>
-    <linearGradient id="fv-sigma" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0b1d4a"/>
-      <stop offset="1" stop-color="#1e3a8a"/>
+    <linearGradient id="fv-arrow" x1="0.05" y1="0.95" x2="0.95" y2="0.1">
+      <stop offset="0" stop-color="#1d4ed8"/>
+      <stop offset="0.5" stop-color="#0d9488"/>
+      <stop offset="0.8" stop-color="#16a34a"/>
+      <stop offset="1" stop-color="#f97316"/>
     </linearGradient>
-    <linearGradient id="fv-swoosh" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#5eead4"/>
-      <stop offset="1" stop-color="#0d9488"/>
-    </linearGradient>
-    <linearGradient id="fv-page" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="fv-tile" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="1" stop-color="#cbe5fb"/>
+      <stop offset="1" stop-color="#eef5ff"/>
     </linearGradient>
   </defs>
 
-  <rect width="512" height="512" rx="96" fill="#ffffff"/>
+  <rect width="512" height="512" rx="112" fill="url(#fv-tile)"/>
 
-  <!-- Open book (base) -->
-  <g>
-    <path
-      d="M88 348 Q 256 308 256 348 L256 432 Q 256 408 88 444 Z"
-      fill="url(#fv-page)"
-      stroke="#0b1d4a"
-      stroke-width="8"
-      stroke-linejoin="round"
-    />
-    <path
-      d="M424 348 Q 256 308 256 348 L256 432 Q 256 408 424 444 Z"
-      fill="url(#fv-page)"
-      stroke="#0b1d4a"
-      stroke-width="8"
-      stroke-linejoin="round"
-    />
-    <path d="M124 380 Q 200 368 240 376" stroke="#1d4ed8" stroke-width="4" fill="none" opacity="0.4" stroke-linecap="round"/>
-    <path d="M272 376 Q 312 368 388 380" stroke="#1d4ed8" stroke-width="4" fill="none" opacity="0.4" stroke-linecap="round"/>
-  </g>
+  <!-- Rising growth arrow: blue → teal → green → orange -->
+  <path d="M104 384 Q 170 410 240 342 Q 324 256 366 162"
+        fill="none" stroke="url(#fv-arrow)" stroke-width="48"
+        stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- Teal swoosh (behind Σ) -->
-  <path
-    d="M180 110 Q 384 152 348 320"
-    fill="none"
-    stroke="url(#fv-swoosh)"
-    stroke-width="26"
-    stroke-linecap="round"
-    opacity="0.9"
-  />
+  <!-- Arrowhead -->
+  <path d="M290 154 L376 146 L368 238"
+        fill="none" stroke="#f97316" stroke-width="48"
+        stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- Sigma (Σ) -->
-  <path
-    d="M180 96 L340 96 L244 196 L340 332 L180 332"
-    fill="none"
-    stroke="url(#fv-sigma)"
-    stroke-width="40"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
-
-  <!-- Atom orbit + electron (lower-left) -->
-  <g transform="translate(168 270) rotate(-22)">
-    <ellipse cx="0" cy="0" rx="58" ry="20" fill="none" stroke="#1d4ed8" stroke-width="7"/>
-    <circle cx="-44" cy="6" r="12" fill="#38bdf8"/>
-  </g>
-
-  <!-- 4-point sparkle star (upper-right) -->
-  <g transform="translate(384 116)">
-    <path d="M0 -32 L8 -8 L32 0 L8 8 L0 32 L-8 8 L-32 0 L-8 -8 Z" fill="#f59e0b"/>
-  </g>
+  <!-- Sparkles -->
+  <path d="M424 104 L436 136 L468 148 L436 160 L424 192 L412 160 L380 148 L412 136 Z" fill="#f97316"/>
+  <path d="M316 78 L327 104 L353 115 L327 126 L316 152 L305 126 L279 115 L305 104 Z" fill="#38bdf8"/>
 </svg>

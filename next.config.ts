@@ -36,18 +36,6 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
-      {
-        source: "/eddivom-hero.webp",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      {
-        source: "/eddivom-hero.avif",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
       // Book cover and its AVIF/WebP variants — same immutable policy as other
       // never-changing public assets so CDNs cache aggressively.
       {
