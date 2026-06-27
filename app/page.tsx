@@ -176,6 +176,72 @@ function PrintImage({
   );
 }
 
+/** マスコット「ノビットくん」（透過 PNG / AVIF・WebP）。 */
+function Mascot({
+  variant,
+  className,
+}: {
+  variant: "wave" | "point";
+  className?: string;
+}) {
+  const base = variant === "wave" ? "nobit-kun-wave" : "nobit-kun-point";
+  const w = variant === "wave" ? 740 : 887;
+  const h = variant === "wave" ? 896 : 976;
+  return (
+    <picture>
+      <source
+        type="image/avif"
+        srcSet={`/brand/${base}-240.avif 240w, /brand/${base}-480.avif 480w`}
+        sizes="200px"
+      />
+      <source
+        type="image/webp"
+        srcSet={`/brand/${base}-240.webp 240w, /brand/${base}-480.webp 480w`}
+        sizes="200px"
+      />
+      <img
+        src={`/brand/${base}-480.webp`}
+        alt="ノビットスタディのマスコット「ノビットくん」"
+        width={w}
+        height={h}
+        loading="lazy"
+        decoding="async"
+        className={className}
+      />
+    </picture>
+  );
+}
+
+/**
+ * 各セクションの空きスペースに「立っている」マスコット。接地影＋ステージ発光で
+ * 背景に馴染ませる（明るい面に貼り付いた感を出さない）。デスクトップのみ表示。
+ */
+function GroundedMascot({
+  variant,
+  position,
+  sizeClass,
+}: {
+  variant: "wave" | "point";
+  position: string;
+  sizeClass: string;
+}) {
+  return (
+    <div className={`pointer-events-none absolute z-10 hidden lg:block ${position}`}>
+      <div className="relative">
+        <span
+          aria-hidden="true"
+          className="absolute left-1/2 top-[46%] -z-10 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.18),rgba(29,78,216,0.06)_55%,transparent)] blur-xl"
+        />
+        <Mascot variant={variant} className={`relative w-auto ${sizeClass}`} />
+        <span
+          aria-hidden="true"
+          className="absolute -bottom-1 left-1/2 h-3.5 w-24 -translate-x-1/2 rounded-[50%] bg-[rgba(11,29,74,0.15)] blur-[6px]"
+        />
+      </div>
+    </div>
+  );
+}
+
 /* ───────────────────────── page ───────────────────────── */
 
 export default function Home() {
@@ -277,29 +343,12 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ヒーローの足元に立つノビットくん（デスクトップのみ。接地影＋ステージ発光で馴染ませる） */}
-          <div className="pointer-events-none absolute bottom-4 left-[40%] hidden lg:block xl:left-[42%]">
-            <div className="relative">
-              <span
-                aria-hidden="true"
-                className="absolute left-1/2 top-[46%] -z-10 h-52 w-52 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.2),rgba(29,78,216,0.08)_55%,transparent)] blur-xl"
-              />
-              <img
-                src="/brand/nobit-kun-point-480.webp"
-                alt="ノビットスタディのマスコット「ノビットくん」"
-                width={887}
-                height={976}
-                loading="lazy"
-                decoding="async"
-                className="relative h-52 w-auto xl:h-56"
-              />
-              {/* 接地影 */}
-              <span
-                aria-hidden="true"
-                className="absolute -bottom-1 left-1/2 h-4 w-28 -translate-x-1/2 rounded-[50%] bg-[rgba(11,29,74,0.16)] blur-[6px]"
-              />
-            </div>
-          </div>
+          {/* ヒーロー：演習本のそばに立つノビットくん（デスクトップのみ） */}
+          <GroundedMascot
+            variant="point"
+            position="bottom-4 left-[47%] xl:left-[49%]"
+            sizeClass="h-52 xl:h-56"
+          />
         </Container>
       </section>
 
@@ -424,8 +473,8 @@ export default function Home() {
       </section>
 
       {/* ───────── FLOW（学習の流れ） ───────── */}
-      <section id="flow" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
-        <Container className="px-6 py-16 sm:py-24">
+      <section id="flow" className="cv-defer relative overflow-hidden scroll-mt-24 bg-[#f8fafc]">
+        <Container className="px-6 py-16 sm:py-24 lg:pb-44">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
               Flow · 学習の流れ
@@ -462,6 +511,12 @@ export default function Home() {
             ))}
           </ol>
         </Container>
+        {/* 学習の流れを見守るノビットくん（デスクトップのみ） */}
+        <GroundedMascot
+          variant="point"
+          position="bottom-4 right-[4%] xl:right-[7%]"
+          sizeClass="h-36 xl:h-40"
+        />
       </section>
 
       {/* ───────── MATERIALS（教材・実績） ───────── */}
@@ -616,8 +671,8 @@ export default function Home() {
       </section>
 
       {/* ───────── FAQ ───────── */}
-      <section id="faq" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
-        <Container className="px-6 py-16 sm:py-24">
+      <section id="faq" className="cv-defer relative overflow-hidden scroll-mt-24 bg-[#f8fafc]">
+        <Container className="px-6 py-16 sm:py-24 lg:pb-40">
           <div className="mx-auto max-w-3xl">
             <div className="text-center">
               <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
@@ -650,6 +705,12 @@ export default function Home() {
             </ul>
           </div>
         </Container>
+        {/* よくある質問のそばに立つノビットくん（デスクトップのみ） */}
+        <GroundedMascot
+          variant="wave"
+          position="bottom-3 left-[4%] xl:left-[9%]"
+          sizeClass="h-40 xl:h-44"
+        />
       </section>
 
       {/* ───────── FINAL CTA ───────── */}
