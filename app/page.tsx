@@ -91,105 +91,6 @@ const faqItems = homeFaq;
 
 /* ───────────────────────── visuals ───────────────────────── */
 
-/**
- * 公式演習本＋添削を象った SVG。ティール基調のワークシート（実物の演習本に準拠）に、
- * オレンジ／レッドの添削コメントを重ねて「毎日添削」を表現する。
- */
-function WorksheetVisual() {
-  return (
-    <svg
-      viewBox="0 0 560 460"
-      className="block h-full w-full"
-      role="img"
-      aria-label="ノビットスタディ公式演習本の答案に、途中式・考え方・減点ポイントの添削コメントが入っているイメージ"
-    >
-      <defs>
-        <linearGradient id="ws-bg" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#f3fbfb" />
-          <stop offset="1" stopColor="#e6f4f4" />
-        </linearGradient>
-        <linearGradient id="ws-arrow" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stopColor="#1d4ed8" />
-          <stop offset="0.5" stopColor="#0d9488" />
-          <stop offset="1" stopColor="#f97316" />
-        </linearGradient>
-      </defs>
-
-      <rect width="560" height="460" rx="22" fill="url(#ws-bg)" />
-
-      {/* paper sheet */}
-      <g>
-        <rect x="60" y="40" width="380" height="400" rx="12" fill="#ffffff" stroke="#d4e7e7" strokeWidth="2" />
-
-        {/* header band */}
-        <rect x="60" y="40" width="380" height="46" rx="12" fill="#0f5e5e" />
-        <rect x="60" y="74" width="380" height="12" fill="#0f5e5e" />
-        <text x="84" y="70" fontFamily="system-ui, sans-serif" fontSize="15" fontWeight="700" fill="#ffffff">
-          高校数学　複素数平面
-        </text>
-        <rect x="372" y="52" width="48" height="22" rx="5" fill="#0d9488" />
-        <text x="396" y="68" fontFamily="system-ui, sans-serif" fontSize="12" fontWeight="700" fill="#ffffff" textAnchor="middle">
-          C-1
-        </text>
-
-        {/* problem 1 */}
-        <g transform="translate(84 108)">
-          <rect width="18" height="18" rx="3" fill="#0f5e5e" />
-          <text x="9" y="14" fontFamily="system-ui" fontSize="12" fontWeight="700" fill="#ffffff" textAnchor="middle">1</text>
-          <text x="28" y="14" fontFamily="serif" fontSize="13" fill="#1f2937">z = −9 + 12i の絶対値を求めよ。</text>
-        </g>
-        {/* answer box 1 with 添削 check */}
-        <rect x="84" y="134" width="312" height="46" rx="6" fill="#ffffff" stroke="#9fc7c7" strokeWidth="1.5" />
-        <text x="96" y="164" fontFamily="serif" fontSize="13" fill="#334155">|z| = √(81+144) = 15</text>
-        <path d="M356 150 l7 8 l14 -16" fill="none" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-
-        {/* problem 2 */}
-        <g transform="translate(84 200)">
-          <rect width="18" height="18" rx="3" fill="#0f5e5e" />
-          <text x="9" y="14" fontFamily="system-ui" fontSize="12" fontWeight="700" fill="#ffffff" textAnchor="middle">2</text>
-          <text x="28" y="14" fontFamily="serif" fontSize="13" fill="#1f2937">(4 + i)(1 − 2i) を計算せよ。</text>
-        </g>
-        <rect x="84" y="226" width="312" height="66" rx="6" fill="#ffffff" stroke="#9fc7c7" strokeWidth="1.5" />
-        <text x="96" y="252" fontFamily="serif" fontSize="13" fill="#334155">= 4 − 8i + i − 2i²</text>
-        {/* red 添削 underline + comment */}
-        <text x="96" y="274" fontFamily="serif" fontSize="13" fill="#334155">= 6 − 7i</text>
-        <path d="M150 246 q 18 6 36 0" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" />
-        <text x="210" y="252" fontFamily="system-ui" fontSize="11" fontWeight="700" fill="#ef4444">i²=−1 を明示！</text>
-
-        {/* problem 3 lines */}
-        <g transform="translate(84 312)">
-          <rect width="18" height="18" rx="3" fill="#0f5e5e" />
-          <text x="9" y="14" fontFamily="system-ui" fontSize="12" fontWeight="700" fill="#ffffff" textAnchor="middle">3</text>
-          <text x="28" y="14" fontFamily="serif" fontSize="13" fill="#1f2937">極形式で表せ。</text>
-        </g>
-        <rect x="84" y="338" width="312" height="40" rx="6" fill="#ffffff" stroke="#9fc7c7" strokeWidth="1.5" />
-        <line x1="98" y1="360" x2="280" y2="360" stroke="#e2e8f0" strokeWidth="1.5" />
-
-        {/* footer mark */}
-        <text x="396" y="416" fontFamily="system-ui" fontSize="10" fontWeight="700" fill="#0d9488" textAnchor="end">
-          NOBIT STUDY
-        </text>
-      </g>
-
-      {/* floating 添削 comment bubble (考え方OK) */}
-      <g transform="translate(360 300)">
-        <rect width="172" height="68" rx="14" fill="#0f5e5e" />
-        <path d="M28 68 l-12 18 l30 -18 z" fill="#0f5e5e" />
-        <text x="16" y="28" fontFamily="system-ui" fontSize="12" fontWeight="700" fill="#5eead4">添削コメント</text>
-        <text x="16" y="48" fontFamily="system-ui" fontSize="13" fontWeight="700" fill="#ffffff">考え方の筋は◎。</text>
-        <text x="16" y="62" fontFamily="system-ui" fontSize="11" fill="#cbfbf1">あと一歩、記述を補足。</text>
-      </g>
-
-      {/* growth arrow + score chip */}
-      <g transform="translate(24 26)">
-        <rect width="120" height="34" rx="17" fill="#ffffff" stroke="#f97316" strokeWidth="2" />
-        <path d="M16 24 q 8 4 16 -2 q 8 -6 12 -12" fill="none" stroke="url(#ws-arrow)" strokeWidth="4" strokeLinecap="round" />
-        <path d="M40 8 l8 0 l0 8" fill="none" stroke="#f97316" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-        <text x="60" y="23" fontFamily="system-ui" fontSize="13" fontWeight="800" fill="#ea580c">毎日、添削</text>
-      </g>
-    </svg>
-  );
-}
 
 /* ───────────────────────── reusable bits ───────────────────────── */
 
@@ -273,6 +174,46 @@ function Mascot({
   );
 }
 
+/** 本物の公式演習本ページ（PDF からレンダリングした実画像）。 */
+function PrintImage({
+  base,
+  alt,
+  className,
+  sizes = "(min-width: 1024px) 460px, 80vw",
+  priority = false,
+}: {
+  base: string;
+  alt: string;
+  className?: string;
+  sizes?: string;
+  priority?: boolean;
+}) {
+  return (
+    <picture>
+      <source
+        type="image/avif"
+        srcSet={`/prints/${base}-620.avif 620w, /prints/${base}-960.avif 960w`}
+        sizes={sizes}
+      />
+      <source
+        type="image/webp"
+        srcSet={`/prints/${base}-620.webp 620w, /prints/${base}-960.webp 960w`}
+        sizes={sizes}
+      />
+      <img
+        src={`/prints/${base}-960.webp`}
+        alt={alt}
+        width={1241}
+        height={1754}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={priority ? "high" : undefined}
+        className={className}
+      />
+    </picture>
+  );
+}
+
 /* ───────────────────────── page ───────────────────────── */
 
 export default function Home() {
@@ -298,20 +239,31 @@ export default function Home() {
           className="pointer-events-none absolute -left-24 bottom-0 h-[360px] w-[360px] rounded-full opacity-60"
           style={{ background: "radial-gradient(circle, rgba(29,78,216,0.12), transparent 70%)" }}
         />
+        {/* 方眼ノートのテクスチャ — 演習・添削のブランドに馴染ませる */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(13,148,136,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(13,148,136,0.05) 1px, transparent 1px)",
+            backgroundSize: "26px 26px",
+            maskImage: "radial-gradient(ellipse 80% 70% at 72% 38%, #000 35%, transparent 78%)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 72% 38%, #000 35%, transparent 78%)",
+          }}
+        />
 
         <Container className="relative px-6">
-          <div className="grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24">
-            <div>
+          <div className="grid grid-cols-1 items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24">
+            <div className="min-w-0">
               <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.25)] sm:text-[0.74rem]">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
                 オンライン添削塾・中高部
               </p>
 
-              <h1 className="mt-6 text-balance text-[2.1rem] font-extrabold leading-[1.2] tracking-[-0.018em] text-[#0b1d4a] sm:text-[2.9rem] sm:leading-[1.15] lg:text-[3.3rem]">
-                考える力を育てる、
-                <br />
-                <span className="bg-[linear-gradient(95deg,#1d4ed8_0%,#0d9488_55%,#16a34a_100%)] bg-clip-text text-transparent">
-                  高校物理のオンライン添削。
+              <h1 className="mt-6 text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.018em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.16] lg:text-[3.1rem]">
+                <span className="block">考える力を育てる、</span>
+                <span className="block bg-[linear-gradient(95deg,#1d4ed8_0%,#0d9488_55%,#16a34a_100%)] bg-clip-text text-transparent">
+                  高校物理の<span className="whitespace-nowrap">オンライン添削。</span>
                 </span>
               </h1>
 
@@ -336,16 +288,56 @@ export default function Home() {
               </ul>
             </div>
 
-            <div className="relative">
-              <div className="overflow-hidden rounded-[26px] bg-white ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_40px_80px_-50px_rgba(11,29,74,0.5)]">
-                <WorksheetVisual />
-              </div>
-              {/* ノビットくんが添削答案を案内する */}
-              <Mascot
-                variant="wave"
-                alt="ノビットくん"
-                className="pointer-events-none absolute -bottom-7 -left-3 z-10 h-28 w-auto drop-shadow-[0_18px_24px_rgba(11,29,74,0.18)] sm:-left-6 sm:h-36"
+            <div className="relative min-w-0">
+              {/* 背面の柔らかな発光 */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-6 -top-10 h-60 w-60 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.22),transparent)] blur-2xl"
               />
+              {/* 本物の演習本ページ（冊子に見えるよう表紙を背面に） */}
+              <div className="relative mx-auto max-w-[20rem] sm:max-w-[24rem] lg:mx-0 lg:ml-auto">
+                <div
+                  aria-hidden="true"
+                  className="absolute -right-4 top-5 hidden w-[74%] rotate-[7deg] overflow-hidden rounded-[12px] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_24px_44px_-26px_rgba(11,29,74,0.5)] sm:block"
+                >
+                  <PrintImage base="print-cover" alt="" sizes="280px" className="block h-auto w-full" />
+                </div>
+                <div className="relative -rotate-[2.5deg] overflow-hidden rounded-[14px] bg-white ring-1 ring-[rgba(15,29,74,0.1)] shadow-[0_44px_70px_-38px_rgba(11,29,74,0.55)]">
+                  <PrintImage
+                    base="print-problem"
+                    alt="ノビット公式演習本（数学IIIC 関数）の問題ページ。右側に解答欄があり、提出した答案を毎日添削する。"
+                    sizes="(min-width: 1024px) 440px, 78vw"
+                    priority
+                    className="block h-auto w-full"
+                  />
+                </div>
+                {/* 添削コメントの吹き出し */}
+                <div className="absolute -right-3 bottom-12 hidden rotate-[2deg] rounded-2xl bg-white p-3 shadow-[0_22px_44px_-22px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(13,148,136,0.3)] sm:block">
+                  <p className="flex items-center gap-1.5 text-[0.64rem] font-bold tracking-[0.08em] text-[#0f766e]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#f97316]" />
+                    添削コメント
+                  </p>
+                  <p className="mt-1 text-[0.84rem] font-bold leading-tight text-[#0b1d4a]">考え方の筋は◎</p>
+                  <p className="text-[0.7rem] leading-tight text-[#475569]">あと一歩、記述を補足。</p>
+                </div>
+              </div>
+              {/* マスコットを地に馴染ませる発光と接地影 */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -bottom-6 -left-6 h-44 w-44 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.28),transparent)] blur-2xl sm:-left-10 sm:h-52 sm:w-52"
+              />
+              <div className="pointer-events-none absolute -bottom-7 -left-3 z-10 sm:-left-7">
+                <Mascot
+                  variant="wave"
+                  alt="ノビットくん"
+                  className="h-28 w-auto drop-shadow-[0_16px_18px_rgba(11,29,74,0.22)] sm:h-36"
+                />
+                {/* 接地影 */}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-3 -bottom-1 mx-auto h-3 rounded-[50%] bg-[rgba(11,29,74,0.18)] blur-md"
+                />
+              </div>
             </div>
           </div>
         </Container>
@@ -557,41 +549,61 @@ export default function Home() {
             </div>
 
             <div className="order-1 lg:order-2">
-              <div className="grid grid-cols-[1fr_1.25fr] items-end gap-4 sm:gap-6">
-                {/* KDP book cover */}
-                <figure className="overflow-hidden rounded-[16px] bg-[#f1f5f9] shadow-[0_30px_60px_-40px_rgba(11,29,74,0.6)] ring-1 ring-[rgba(15,29,74,0.08)]">
-                  <picture>
-                    <source
-                      type="image/avif"
-                      srcSet="/denjikigaku-cover-200.avif 200w, /denjikigaku-cover-400.avif 400w, /denjikigaku-cover-600.avif 600w"
-                      sizes="(min-width: 1024px) 200px, 40vw"
-                    />
-                    <source
-                      type="image/webp"
-                      srcSet="/denjikigaku-cover-200.webp 200w, /denjikigaku-cover-400.webp 400w, /denjikigaku-cover-600.webp 600w"
-                      sizes="(min-width: 1024px) 200px, 40vw"
-                    />
-                    <img
-                      src="/denjikigaku-cover-400.webp"
-                      alt="KDP 刊行『考える力を育てる高校物理』シリーズ（電磁気学）の表紙"
-                      width={857}
-                      height={1328}
-                      loading="lazy"
-                      decoding="async"
-                      className="block h-auto w-full"
-                    />
-                  </picture>
-                  <figcaption className="bg-white px-3 py-2 text-center text-[0.72rem] font-semibold text-[#475569]">
-                    KDP『考える力を育てる高校物理』
+              <p className="mb-3 text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#0f766e]">
+                実際の公式演習本（数学Ⅲ C 関数）より
+              </p>
+              {/* 本物の演習本：問題ページと解答・解説ページ */}
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <figure className="overflow-hidden rounded-[12px] bg-white ring-1 ring-[rgba(15,29,74,0.1)] shadow-[0_26px_50px_-34px_rgba(11,29,74,0.5)]">
+                  <PrintImage
+                    base="print-problem"
+                    alt="ノビット公式演習本の問題ページ（解答欄つき）"
+                    sizes="(min-width: 1024px) 230px, 44vw"
+                    className="block h-auto w-full"
+                  />
+                  <figcaption className="border-t border-[rgba(15,29,74,0.06)] bg-white px-3 py-2 text-center text-[0.72rem] font-semibold text-[#475569]">
+                    問題ページ（解答欄つき）
                   </figcaption>
                 </figure>
-                {/* official workbook */}
-                <figure className="overflow-hidden rounded-[16px] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_30px_60px_-40px_rgba(11,29,74,0.5)]">
-                  <WorksheetVisual />
-                  <figcaption className="bg-white px-3 py-2 text-center text-[0.72rem] font-semibold text-[#475569]">
-                    ノビット公式演習本＋毎日添削
+                <figure className="overflow-hidden rounded-[12px] bg-white ring-1 ring-[rgba(15,29,74,0.1)] shadow-[0_26px_50px_-34px_rgba(11,29,74,0.5)]">
+                  <PrintImage
+                    base="print-solution"
+                    alt="ノビット公式演習本の解答・解説ページ（方針つきの丁寧な解説）"
+                    sizes="(min-width: 1024px) 230px, 44vw"
+                    className="block h-auto w-full"
+                  />
+                  <figcaption className="border-t border-[rgba(15,29,74,0.06)] bg-white px-3 py-2 text-center text-[0.72rem] font-semibold text-[#475569]">
+                    解答・解説（方針つき）
                   </figcaption>
                 </figure>
+              </div>
+              {/* KDP の市販教材＝信頼材料 */}
+              <div className="mt-4 flex items-center gap-4 rounded-2xl bg-[#f8fafc] p-4 ring-1 ring-[rgba(15,29,74,0.08)]">
+                <picture>
+                  <source
+                    type="image/avif"
+                    srcSet="/denjikigaku-cover-200.avif 200w, /denjikigaku-cover-400.avif 400w"
+                    sizes="64px"
+                  />
+                  <source
+                    type="image/webp"
+                    srcSet="/denjikigaku-cover-200.webp 200w, /denjikigaku-cover-400.webp 400w"
+                    sizes="64px"
+                  />
+                  <img
+                    src="/denjikigaku-cover-200.webp"
+                    alt="KDP 刊行『考える力を育てる高校物理』シリーズ（電磁気学）の表紙"
+                    width={857}
+                    height={1328}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-20 w-auto shrink-0 rounded-[6px] shadow-[0_10px_22px_-12px_rgba(11,29,74,0.6)] ring-1 ring-[rgba(15,29,74,0.08)]"
+                  />
+                </picture>
+                <p className="text-[0.84rem] leading-[1.8] text-[#334155]">
+                  市販の <strong className="font-bold text-[#0b1d4a]">『考える力を育てる高校物理』</strong>（KDP）も塾長が執筆。
+                  同じ設計思想の演習本に取り組み、その答案を<strong className="font-bold text-[#0b1d4a]">開発者本人が添削</strong>します。
+                </p>
               </div>
             </div>
           </div>
