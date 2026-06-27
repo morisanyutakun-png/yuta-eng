@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw print source booklets (large PDFs / build logs). Only the rendered
+# AVIF/WebP page images under public/prints/*.{avif,webp} are committed.
+public/prints/冊子*/
+public/prints/**/*.pdf
+public/prints/**/*.log
