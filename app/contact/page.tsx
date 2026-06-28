@@ -13,78 +13,78 @@ import {
 } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "無料体験・相談のお申し込み",
+  title: "お申し込み・ご相談｜初月半額ではじめる",
   description:
-    "ノビットスタディ 中高部の無料体験・受講相談のお申し込みページ。高校物理・数学・英語の記述答案を毎日添削するオンライン学習管理塾です。実際の教材で演習し、答案を提出して、ノビットの添削を体験できます。面談や授業は行わない添削専門の塾です。お気軽にご相談ください。",
+    "ノビットスタディ 中高部のお申し込み・ご相談ページ。物理・化学・数学・英語の答案を毎日添削する、授業をしないオンライン添削塾です。教科ごとに選べて月¥4,980〜、いまなら初月半額・入会金0円。面談や勧誘は一切ありません。お気軽にお申し込み・ご相談ください。",
   keywords: [
-    "ノビットスタディ 無料体験",
-    "高校物理 添削 体験",
-    "オンライン添削塾 相談",
-    "高校生 添削 申し込み",
-    "記述答案 添削 体験",
+    "ノビットスタディ 申し込み",
+    "オンライン添削塾 申し込み",
+    "理系 添削 申し込み",
+    "高校生 添削 オンライン",
+    "添削 アプリ 保護者",
   ],
   path: "/contact",
 });
 
 const canDo = [
   {
-    title: "実際の教材で演習する",
-    body: "塾長オリジナル教材・公式演習本の一部に、実際に取り組んでいただきます。記述前提の問題で「考える力」を体験。",
+    title: "科目を選んで、すぐ始められる",
+    body: "物理・化学・数学・英語の9科目から、必要な分だけ。教科ごとの月額制で、いつでも追加・解約できます。",
   },
   {
-    title: "答案を提出して添削を受ける",
-    body: "提出した答案に、途中式・考え方・減点ポイントまで踏み込んだ添削フィードバックをお返しします。",
+    title: "毎日、答案に添削が返る",
+    body: "提出した答案に、途中式・考え方・減点ポイントまで踏み込んだ添削をお返しします。授業はありません。",
   },
   {
-    title: "学習管理システムを試す",
-    body: "毎日の演習と添削がどう回るのか、独自の学習管理システムの使い方とペース配分をご案内します。",
+    title: "アプリで進捗が見える（保護者も）",
+    body: "課題・提出・添削・進捗を公式アプリに集約。保護者も同じ画面で見守れるので、面談がなくても安心です。",
   },
 ];
 
 const trust = [
   { label: "サービス形態", value: "オンライン添削・学習管理塾（添削専門）" },
   { label: "塾長", value: siteConfig.author },
-  { label: "対応科目", value: "高校物理を中心に、高校数学・英語の記述答案" },
+  { label: "対応科目", value: "物理・化学・数学・英語（9科目／教科ごとに選択）" },
+  { label: "料金", value: "1教科 月¥4,980〜・初月半額・入会金/教材費0円" },
   { label: "対象", value: "高校生・高卒生（中高一貫の高校範囲も相談可）" },
-  { label: "対応地域", value: "日本全国（オンライン完結）" },
-  { label: "返信目安", value: "1〜2 営業日以内" },
+  { label: "返信目安", value: "1〜2 営業日以内（面談・勧誘なし）" },
 ];
 
 const contactFaq = [
   {
-    question: "無料体験では何ができますか？",
+    question: "初月半額とは？ どのくらいで始められますか？",
     answer:
-      "実際の教材で演習に取り組み、答案を提出して、ノビットの添削フィードバックを体験できます。学習管理システムの使い方や、毎日のペース配分もあわせてご案内します。費用はかかりません。",
+      "初めてのご利用月は、月額が半額になります（1教科なら ¥2,490）。入会金・教材費はかかりません。お申し込み後、希望の科目から学習を開始できます。合わなければいつでも解約できます。",
   },
   {
-    question: "面談や授業はありますか？",
+    question: "面談や授業はありますか？ 勧誘されませんか？",
     answer:
-      "ノビットスタディは添削専門の学習管理塾です。現状、面談や授業（ライブ指導）は行っていません。毎日の演習に対して毎日添削を返す形で、自立した学びを支えます。",
+      "ノビットスタディは添削専門の学習管理塾です。面談や授業（ライブ指導）、電話・対面での勧誘は一切行っていません。毎日の演習に毎日添削を返す形で、自立した学びを支えます。",
   },
   {
-    question: "料金はどのくらいですか？",
+    question: "料金と対応科目は？",
     answer:
-      "料金プランは現在準備中です。「塾としては安価に、毎日プロの添削が受けられる」ことを大切にしています。お申し込み・ご相談時に、最新の料金と受講の流れをご案内します。",
+      "料金は教科ごとの月額制です。1教科 ¥4,980／2教科 ¥8,800／3教科 ¥12,800、4教科以上は +¥3,000/教科。対応科目は物理基礎・物理・化学基礎・化学・数学IA・IIBC・IIIC・英語長文・英文法です。",
   },
   {
-    question: "申し込みから受講までの流れは？",
+    question: "保護者も進捗を確認できますか？",
     answer:
-      "下記のメールから、学年・志望校・現在の悩みなどを添えてご連絡ください。折り返し、無料体験の進め方と日程をご案内します。体験後、続けるかどうかはご自由に判断いただけます。",
+      "はい。公式アプリ「ノビットスタディ」で、提出数・添削完了・連続日数などを見える化しています。保護者も同じ画面でお子さまの進捗を確認できるので、安心してお任せいただけます。",
   },
 ];
 
 export default function ContactPage() {
   const breadcrumb = createBreadcrumbJsonLd([
     { name: "ホーム", path: "/" },
-    { name: "無料体験・相談", path: "/contact" },
+    { name: "お申し込み・相談", path: "/contact" },
   ]);
   const contactPageJsonLd = createContactPageJsonLd();
   const orgJsonLd = createOrganizationJsonLd();
   const faqJsonLd = createFaqJsonLd(contactFaq);
 
-  const subject = encodeURIComponent("[無料体験・相談] ノビットスタディへのお問い合わせ");
+  const subject = encodeURIComponent("[お申し込み・相談] ノビットスタディへのお問い合わせ");
   const body = encodeURIComponent(
-    "▼ご記入ください\n・学年（例：高2）：\n・志望校／目標（任意）：\n・対応希望科目（物理／数学／英語）：\n・いまの悩み：\n",
+    "▼ご記入ください\n・学年（例：高2）：\n・志望校／目標（任意）：\n・希望科目（物理／化学／数学IA・IIBC・IIIC／英語長文／英文法 から）：\n・いまの悩み：\n",
   );
   const mailHref = `mailto:${siteConfig.email}?subject=${subject}&body=${body}`;
 
@@ -103,22 +103,22 @@ export default function ContactPage() {
                 </Link>
               </li>
               <li aria-hidden="true" className="text-[#cbd5e1]">/</li>
-              <li className="text-[#475569]">無料体験・相談</li>
+              <li className="text-[#475569]">お申し込み・相談</li>
             </ol>
           </nav>
           <div className="py-10 sm:py-14 lg:py-16">
-            <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.25)]">
+            <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.3)]">
               <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
-              Free Trial · 無料体験受付中
+              いまなら初月半額・入会金0円
             </p>
             <h1 className="mt-5 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3rem]">
-              まずは無料体験で、
+              初月半額で、
               <br className="hidden sm:block" />
-              ノビットの添削を試す。
+              ノビットを始める。
             </h1>
             <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.06rem]">
-              高校物理・数学・英語の記述答案を、毎日添削するオンライン学習管理塾です。
-              面談や授業は行いません。下記から、お気軽に無料体験・ご相談をお申し込みください。
+              物理・化学・数学・英語の答案を、毎日添削する授業をしないオンライン塾です。
+              面談や勧誘は一切ありません。下記から、希望の科目を添えてお気軽にお申し込み・ご相談ください。
             </p>
             <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
               <a
@@ -126,7 +126,7 @@ export default function ContactPage() {
                 className="group/cta relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-full px-7 text-[0.98rem] font-bold text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px"
               >
                 <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
-                <span className="relative">メールで無料体験を申し込む</span>
+                <span className="relative">メールで申し込む（初月半額）</span>
               </a>
               <a
                 href={`mailto:${siteConfig.email}`}
@@ -142,15 +142,15 @@ export default function ContactPage() {
         </Container>
       </section>
 
-      {/* 無料体験でできること */}
+      {/* 始めると、できること */}
       <section className="bg-[#f8fafc]">
         <Container className="px-5 py-12 sm:px-6 sm:py-16 lg:py-20">
           <div className="max-w-2xl">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
-              Free Trial · 無料体験でできること
+              Start · 始めると、できること
             </p>
             <h2 className="mt-3 text-[1.55rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.95rem]">
-              「演習 → 提出 → 添削」を、実際に体験
+              選んで、出して、毎日添削。
             </h2>
           </div>
           <ul className="mt-8 grid gap-5 sm:grid-cols-3">
@@ -180,7 +180,7 @@ export default function ContactPage() {
               </h2>
               <p className="mt-4 text-[0.94rem] leading-[1.95] text-[#475569]">
                 ノビットスタディ 中高部は、教材開発者でもある塾長が、
-                高校物理を中心に記述答案を毎日添削するオンライン学習管理塾です。
+                物理・化学・数学・英語の答案を毎日添削するオンライン添削塾です。
               </p>
             </div>
             <dl className="grid gap-3 rounded-[22px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)] sm:grid-cols-2 sm:p-8">
@@ -235,7 +235,7 @@ export default function ContactPage() {
                 href={mailHref}
               >
                 <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
-                <span className="relative">無料体験を申し込む</span>
+                <span className="relative">初月半額で申し込む</span>
               </a>
               <Link
                 href="/"

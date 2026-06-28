@@ -49,13 +49,14 @@ export function createOrganizationJsonLd() {
     },
     knowsAbout: [
       "高校物理",
-      "高校物理 記述答案 添削",
+      "高校化学",
       "高校数学",
       "高校英語 添削",
+      "理系科目 記述答案 添削",
       "記述答案の指導",
-      "学習管理",
+      "学習管理アプリ",
       "オンライン学習",
-      "大学受験 物理",
+      "大学受験 理系",
       "教材開発",
     ],
     areaServed: { "@type": "Country", name: "Japan" },
@@ -268,14 +269,14 @@ export function createBreadcrumbJsonLd(items: BreadcrumbItem[]) {
 }
 
 /**
- * ContactPage schema for /contact. ノビットスタディの無料体験・相談の窓口。
+ * ContactPage schema for /contact. ノビットスタディのお申し込み・相談の窓口。
  */
 export function createContactPageJsonLd() {
   const url = new URL("/contact", siteConfig.url).toString();
   return {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    name: `${FULL_NAME} 無料体験・相談のお申し込み`,
+    name: `${FULL_NAME} お申し込み・ご相談（初月半額）`,
     url,
     inLanguage: "ja",
     isPartOf: {
@@ -295,7 +296,7 @@ export function createContactPageJsonLd() {
           email: siteConfig.email,
           areaServed: "JP",
           availableLanguage: ["ja"],
-          description: "無料体験のお申し込み・受講相談・教材に関するお問い合わせ",
+          description: "お申し込み（初月半額）・受講相談・教材に関するお問い合わせ",
         },
       ],
     },

@@ -324,14 +324,14 @@ export default function AboutPage() {
                 Get Started
               </p>
               <h2 className="mt-4 text-balance text-[1.6rem] font-extrabold leading-[1.4] sm:text-[2rem]">
-                まずは無料体験で、添削を試してみてください。
+                初月半額で、ノビットの添削を始めてみてください。
               </h2>
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <Link
                   href="/contact"
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#f97316] px-7 text-[0.95rem] font-bold tracking-[0.02em] text-white transition hover:-translate-y-0.5 hover:bg-[#ea580c]"
                 >
-                  無料体験を申し込む <span aria-hidden="true">→</span>
+                  初月半額ではじめる <span aria-hidden="true">→</span>
                 </Link>
                 <Link
                   href="/"

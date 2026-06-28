@@ -14,9 +14,9 @@ import {
 
 export const metadata: Metadata = createPageMetadata({
   title:
-    "高校物理・数学の毎日添削オンライン塾｜授業をしない添削専門 - ノビットスタディ 中高部",
+    "理系の毎日添削オンライン塾｜物理・化学・数学・英語の答案添削 - ノビットスタディ 中高部",
   description:
-    "ノビットスタディ 中高部は、授業をしない「添削専門」のオンライン塾。16冊の物理・数学教材を書いた塾長が、あなたの記述答案を毎日添削します。途中式・考え方・減点ポイントまで指摘し、独自の学習管理で自分のペースの自立学習を支援。高校物理・数学・英語に対応、塾として安価に毎日プロの添削が受けられます。無料体験受付中。",
+    "ノビットスタディ 中高部は、授業をしない「添削専門」のオンライン塾。物理・化学・数学・英語の答案を、16冊の教材を書いた塾長が毎日添削します。公式アプリで進捗を見える化し、保護者も安心。教科ごとに選べて月¥4,980〜、いまなら初月半額・入会金/教材費0円。",
   path: "/",
 });
 
@@ -124,7 +124,7 @@ const forYouFit = [
   "解けるけど、記述答案に自信がない",
   "自分のペースで毎日コツコツ続けたい",
   "難関大・名大の記述対策を本気でしたい",
-  "物理・数学のどこが弱点か、具体的に知りたい",
+  "物理・化学・数学のどこが弱点か、具体的に知りたい",
   "教材は持っているが、答案が書けるようにならない",
 ];
 
@@ -132,6 +132,29 @@ const forYouNotFit = [
   "対面授業・ライブ授業を受けたい",
   "その場で質問してすぐ答えてほしい（現状は未提供）",
   "自分で手を動かす演習はしたくない",
+];
+
+// 対応科目（理系を中心に英語まで）。
+const subjectGroups = [
+  { area: "物理", items: ["物理基礎", "物理"], color: "#1d4ed8" },
+  { area: "化学", items: ["化学基礎", "化学"], color: "#0d9488" },
+  { area: "数学", items: ["数学IA", "数学IIBC", "数学IIIC"], color: "#16a34a" },
+  { area: "英語", items: ["英語長文", "英文法"], color: "#ea580c" },
+];
+
+// 料金（教科ごと月額・初月半額）。数字は塾長の添削キャパに合わせて調整可。
+const pricingTiers = [
+  { count: "1教科", price: "4,980", per: "4,980", note: "まずは1教科から" },
+  { count: "2教科", price: "8,800", per: "4,400", popular: true, note: "いちばん人気" },
+  { count: "3教科", price: "12,800", per: "4,267", note: "理系をまとめて" },
+];
+
+// アプリ「ノビットスタディ」でできること。
+const appPoints = [
+  { title: "今日の課題が届く", body: "塾長が組んだ課題が毎日アプリに配信。何を解けばいいか迷いません。" },
+  { title: "添削がそのまま返る", body: "提出した答案に、途中式・減点ポイントまでの添削が返却。スマホで見返せます。" },
+  { title: "保護者も進捗を確認", body: "提出数・添削完了・連続日数を見える化。保護者も同じ画面で見守れて安心です。" },
+  { title: "続けたくなる仕組み", body: "はなまる・称号・連続記録で、毎日の学習が自然と習慣になります。" },
 ];
 
 // 塾長 森祐太 が KDP（Amazon）で刊行する『考える力を育てる』シリーズ全ラインナップ。
@@ -338,6 +361,109 @@ function GroundedMascot({
   );
 }
 
+/**
+ * 添削管理アプリ「ノビットスタディ」の画面を、電話フレームで再現したモック。
+ * 進捗・連続日数・添削の返却・課題が一目で分かり、保護者も同じ画面で見守れる。
+ */
+function AppMock({ className = "" }: { className?: string }) {
+  return (
+    <div className={`relative w-[270px] shrink-0 ${className}`}>
+      {/* 端末ベゼル */}
+      <div className="rounded-[2.4rem] bg-[#0b1d4a] p-2.5 shadow-[0_50px_80px_-40px_rgba(11,29,74,0.7)] ring-1 ring-white/10">
+        <div className="relative overflow-hidden rounded-[1.9rem] bg-[#eef3fb]">
+          {/* ノッチ */}
+          <div className="absolute left-1/2 top-2 z-10 h-4 w-20 -translate-x-1/2 rounded-full bg-[#0b1d4a]" />
+          <div className="px-3 pb-4 pt-7">
+            {/* ヘッダーカード */}
+            <div className="relative overflow-hidden rounded-[16px] bg-[linear-gradient(120deg,#1d4ed8_0%,#0d9488_100%)] p-3.5 text-white">
+              <div className="pr-12">
+                <p className="text-[0.82rem] font-extrabold leading-tight">こんにちは、ユウタさん！</p>
+                <p className="mt-1 text-[0.6rem] leading-snug text-white/85">今日の課題が2件 届いています。</p>
+              </div>
+              <img
+                src="/brand/nobit-kun-wave-240.webp"
+                alt=""
+                width={740}
+                height={896}
+                loading="lazy"
+                decoding="async"
+                className="absolute -bottom-2 right-1 h-16 w-auto drop-shadow-[0_6px_8px_rgba(11,29,74,0.3)]"
+              />
+              <div className="mt-3 flex gap-1.5">
+                {[
+                  { t: "🔥 12日", s: "れんぞく" },
+                  { t: "⭐ 48", s: "はなまる" },
+                  { t: "🏅 努力家", s: "称号" },
+                ].map((c) => (
+                  <div key={c.s} className="flex-1 rounded-[8px] bg-white/15 px-1.5 py-1 text-center ring-1 ring-white/20">
+                    <p className="text-[0.6rem] font-bold leading-none">{c.t}</p>
+                    <p className="mt-0.5 text-[0.48rem] text-white/80">{c.s}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 添削が返ってきた通知 */}
+            <div className="mt-2.5 flex items-center gap-2 rounded-[12px] border-l-[3px] border-[#16a34a] bg-[#eafaf0] px-2.5 py-2">
+              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#16a34a] text-[0.7rem] text-white">✓</span>
+              <p className="text-[0.62rem] font-bold leading-snug text-[#0b1d4a]">
+                先生から添削が2件 返ってきました
+              </p>
+            </div>
+
+            {/* 今日の課題 */}
+            <div className="mt-2.5 rounded-[12px] bg-white p-3 ring-1 ring-[rgba(15,29,74,0.06)]">
+              <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">今日の課題</p>
+              <ul className="mt-2 grid gap-1.5">
+                {[
+                  { s: "物理", t: "力学・運動方程式", c: "#1d4ed8" },
+                  { s: "数学IIBC", t: "複素数平面", c: "#0d9488" },
+                ].map((q) => (
+                  <li key={q.s} className="flex items-center gap-2 rounded-[8px] bg-[#f8fafc] px-2 py-1.5">
+                    <span
+                      className="shrink-0 rounded-[5px] px-1.5 py-0.5 text-[0.5rem] font-bold text-white"
+                      style={{ background: q.c }}
+                    >
+                      {q.s}
+                    </span>
+                    <span className="min-w-0 flex-1 truncate text-[0.6rem] font-semibold text-[#334155]">{q.t}</span>
+                    <span className="shrink-0 rounded-full bg-[#f97316] px-2 py-0.5 text-[0.5rem] font-bold text-white">提出</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* がんばりメーター */}
+            <div className="mt-2.5 rounded-[12px] bg-white p-3 ring-1 ring-[rgba(15,29,74,0.06)]">
+              <div className="flex items-center justify-between">
+                <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">がんばりメーター</p>
+                <p className="text-[0.52rem] font-semibold text-[#0f766e]">あと1こで昇格</p>
+              </div>
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#e2e8f0]">
+                <div className="h-full w-[78%] rounded-full bg-[linear-gradient(90deg,#1d4ed8,#0d9488)]" />
+              </div>
+              <div className="mt-2.5 grid grid-cols-3 gap-1.5 text-center">
+                {[
+                  { n: "48", l: "はなまる", c: "#ea580c" },
+                  { n: "31", l: "添削完了", c: "#16a34a" },
+                  { n: "6", l: "今週の提出", c: "#1d4ed8" },
+                ].map((s) => (
+                  <div key={s.l} className="rounded-[8px] bg-[#f8fafc] py-1.5">
+                    <p className="text-[0.86rem] font-extrabold leading-none" style={{ color: s.c }}>
+                      {s.n}
+                    </p>
+                    <p className="mt-0.5 text-[0.48rem] text-[#64748b]">{s.l}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ───────────────────────── page ───────────────────────── */
 
 export default function Home() {
@@ -377,78 +503,48 @@ export default function Home() {
         />
 
         <Container className="relative px-6">
-          <div className="grid grid-cols-1 items-center gap-12 py-16 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-24 lg:pb-40">
-            <div className="min-w-0">
-              <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.25)] sm:text-[0.74rem]">
+          <div className="grid grid-cols-1 items-center gap-10 py-14 sm:py-20 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12 lg:py-24">
+            <div className="min-w-0 text-center lg:text-left">
+              <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.7rem] font-bold tracking-[0.06em] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.25)] sm:text-[0.76rem]">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
-                オンライン添削塾・中高部
+                理系を伸ばす・オンライン添削塾
               </p>
 
-              <h1 className="mt-6 text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.018em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.16] lg:text-[3.1rem]">
+              <h1 className="mt-5 text-[2.3rem] font-extrabold leading-[1.18] tracking-[-0.02em] text-[#0b1d4a] sm:text-[2.9rem] lg:text-[3.2rem]">
                 <span className="block">考える力を育てる、</span>
                 <span className="block bg-[linear-gradient(95deg,#1d4ed8_0%,#0d9488_55%,#16a34a_100%)] bg-clip-text text-transparent">
-                  高校物理の<span className="whitespace-nowrap">オンライン添削。</span>
+                  理系の<span className="whitespace-nowrap">毎日添削。</span>
                 </span>
               </h1>
 
-              <p className="mt-6 max-w-xl text-pretty text-[1.02rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
-                解答を書いて終わりにしない。
-                <strong className="font-bold text-[#0b1d4a]">16冊の物理・数学教材を書いた塾長</strong>
-                が、あなたの<strong className="font-bold text-[#0b1d4a]">途中式・考え方・答案の組み立て</strong>まで毎日添削します。
-                授業はしません——毎日の演習と毎日の添削で、自分のペースで伸びる塾です。
+              <p className="mx-auto mt-5 max-w-md text-[1.05rem] leading-[1.85] text-[#334155] sm:text-[1.12rem] lg:mx-0">
+                物理・化学・数学・英語。教材を書いた塾長が、あなたの答案を
+                <strong className="font-bold text-[#0b1d4a]">毎日添削</strong>します。授業はしません。
               </p>
 
-              <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-                <PrimaryCta href="/contact">無料体験を申し込む</PrimaryCta>
-                <SecondaryCta href="/#features">サービスを詳しく見る</SecondaryCta>
+              <div className="mt-7 flex flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0">
+                <PrimaryCta href="/contact">初月半額ではじめる</PrimaryCta>
+                <SecondaryCta href="/#pricing">料金・科目を見る</SecondaryCta>
               </div>
-              <p className="mt-3 text-[0.82rem] leading-[1.7] text-[#64748b]">
-                オンライン完結／入会金・教材販売の押し売りなし。お申し込み・ご相談はメールから、1〜2営業日でご返信します。
+              <p className="mt-3 text-[0.8rem] text-[#64748b]">
+                入会金・教材費 0円／いつでも科目の追加・解約OK。
               </p>
-
-              <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[0.84rem] font-semibold text-[#475569]">
-                {["毎日演習・毎日添削", "面談・授業なしの添削専門", "自分のペースで自立学習"].map((t) => (
-                  <li key={t} className="inline-flex items-center gap-1.5">
-                    <span aria-hidden="true" className="text-[#0d9488]">✓</span>
-                    {t}
-                  </li>
-                ))}
-              </ul>
             </div>
 
             <div className="relative min-w-0">
-              {/* 背面の柔らかな発光 */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -right-6 -top-10 h-60 w-60 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.22),transparent)] blur-2xl"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.22),rgba(29,78,216,0.08)_55%,transparent)] blur-2xl sm:h-96 sm:w-96"
               />
-              {/* 本物の演習本ページ（冊子に見えるよう表紙を背面に） */}
-              <div className="relative mx-auto max-w-[20rem] sm:max-w-[24rem] lg:mx-0 lg:ml-auto">
-                <div
-                  aria-hidden="true"
-                  className="absolute -right-4 top-5 hidden w-[74%] rotate-[7deg] overflow-hidden rounded-[12px] ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_24px_44px_-26px_rgba(11,29,74,0.5)] sm:block"
-                >
-                  <PrintImage base="print-cover" alt="" sizes="280px" className="block h-auto w-full" />
+              {/* アプリ画面（主役）＋演習本プリント（背面） */}
+              <div className="relative mx-auto flex w-fit items-center justify-center">
+                <div className="absolute -left-14 top-8 w-[46%] max-w-[170px] -rotate-[9deg] overflow-hidden rounded-[12px] bg-white shadow-[0_30px_50px_-30px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.1)] sm:-left-24">
+                  <PrintImage base="print-problem" alt="ノビット公式演習本の問題ページ" sizes="170px" className="block h-auto w-full" />
                 </div>
-                <div className="relative -rotate-[2.5deg] overflow-hidden rounded-[14px] bg-white ring-1 ring-[rgba(15,29,74,0.1)] shadow-[0_44px_70px_-38px_rgba(11,29,74,0.55)]">
-                  <PrintImage
-                    base="print-problem"
-                    alt="ノビット公式演習本（数学IIIC 関数）の問題ページ。右側に解答欄があり、提出した答案を毎日添削する。"
-                    sizes="(min-width: 1024px) 440px, 78vw"
-                    priority
-                    className="block h-auto w-full"
-                  />
-                </div>
+                <AppMock className="relative z-10" />
               </div>
             </div>
           </div>
-
-          {/* ヒーロー：演習本のそばに立つノビットくん（デスクトップのみ） */}
-          <GroundedMascot
-            variant="point"
-            position="bottom-4 left-[47%] xl:left-[49%]"
-            sizeClass="h-52 xl:h-56"
-          />
         </Container>
       </section>
 
@@ -569,6 +665,48 @@ export default function Home() {
               </li>
             ))}
           </ul>
+        </Container>
+      </section>
+
+      {/* ───────── APP（アプリ・保護者も安心） ───────── */}
+      <section id="app" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
+        <Container className="px-6 py-16 sm:py-24">
+          <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
+            {/* アプリ画面 */}
+            <div className="relative order-1 flex justify-center lg:order-1">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.18),transparent)] blur-2xl sm:h-96 sm:w-96"
+              />
+              <AppMock className="relative" />
+            </div>
+
+            <div className="order-2 lg:order-2">
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
+                App · 公式アプリで完結
+              </p>
+              <h2 className="mt-3 text-balance text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+                毎日の学習も添削も、
+                <br className="hidden sm:block" />
+                アプリひとつで。
+              </h2>
+              <p className="mt-4 max-w-lg text-[0.98rem] leading-[1.9] text-[#334155]">
+                課題・提出・添削・進捗を、専用アプリ「ノビットスタディ」に集約。
+                <strong className="font-bold text-[#0b1d4a]">保護者も同じ画面で進捗を確認</strong>できるから、安心して任せられます。
+              </p>
+              <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+                {appPoints.map((p) => (
+                  <li key={p.title} className="rounded-[16px] bg-white p-5 ring-1 ring-[rgba(15,29,74,0.06)]">
+                    <p className="flex items-center gap-2 text-[1rem] font-bold leading-[1.4] text-[#0b1d4a]">
+                      <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#0d9488]" />
+                      {p.title}
+                    </p>
+                    <p className="mt-2 text-[0.86rem] leading-[1.8] text-[#475569]">{p.body}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </Container>
       </section>
 
@@ -747,7 +885,7 @@ export default function Home() {
                 ))}
               </ul>
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <PrimaryCta href="/contact">無料体験で教材を試す</PrimaryCta>
+                <PrimaryCta href="/contact">初月半額ではじめる</PrimaryCta>
                 <a
                   href={kdpAmazonUrl}
                   target="_blank"
@@ -904,7 +1042,7 @@ export default function Home() {
                   {[
                     "『考える力を育てる』シリーズ 全16冊を執筆",
                     "公式暗記に頼らない「理解で解く」教材設計",
-                    "高校物理を中心に、数学・英語の記述答案を添削",
+                    "物理・化学・数学・英語の答案を、毎日添削",
                   ].map((t) => (
                     <li key={t} className="flex gap-2">
                       <span aria-hidden="true" className="mt-[0.5em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d9488]" />
@@ -998,47 +1136,101 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ───────── PRICING / 無料体験 ───────── */}
-      <section id="pricing" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
+      {/* ───────── PRICING（料金・対応科目） ───────── */}
+      <section id="pricing" className="cv-defer scroll-mt-24 bg-white">
         <Container className="px-6 py-16 sm:py-24">
-          <div className="mx-auto max-w-3xl">
-            <p className="mb-6 text-center text-[0.98rem] font-bold text-[#0f766e] sm:mb-8 sm:text-[1.1rem]">
-              まずは気軽に、無料体験から。
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
+              Price · 料金・対応科目
             </p>
-            <div className="overflow-hidden rounded-[26px] bg-white ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_30px_70px_-50px_rgba(15,29,74,0.4)]">
-              <div className="bg-[linear-gradient(135deg,#0d9488_0%,#0f766e_100%)] px-7 py-7 text-white sm:px-10">
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#bbf7e9]">
-                  Price · 料金・無料体験
+            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+              必要な科目だけ、毎日添削。
+            </h2>
+            <p className="mt-3 text-[0.96rem] leading-[1.9] text-[#475569]">
+              入会金・教材費は0円。理系を中心に9科目から、必要な分だけ選べます。
+              <strong className="font-bold text-[#ea580c]">いまなら初月半額</strong>ではじめられます。
+            </p>
+          </div>
+
+          {/* 対応科目 */}
+          <div className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-2">
+            <span className="text-[0.74rem] font-bold text-[#64748b]">対応科目</span>
+            {subjectGroups.flatMap((g) =>
+              g.items.map((it) => (
+                <span
+                  key={it}
+                  className="rounded-full bg-[#f8fafc] px-3 py-1 text-[0.8rem] font-semibold text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]"
+                >
+                  <span aria-hidden="true" className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: g.color }} />
+                  {it}
+                </span>
+              )),
+            )}
+          </div>
+
+          {/* 料金プラン */}
+          <div className="mx-auto mt-10 grid max-w-4xl gap-5 sm:grid-cols-3">
+            {pricingTiers.map((t) => (
+              <div
+                key={t.count}
+                className={`relative flex flex-col rounded-[22px] p-6 sm:p-7 ${
+                  t.popular
+                    ? "bg-[#0b1d4a] text-white shadow-[0_34px_60px_-34px_rgba(11,29,74,0.7)] ring-1 ring-[#0b1d4a] sm:-translate-y-2"
+                    : "bg-[#f8fafc] text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]"
+                }`}
+              >
+                {t.popular ? (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#f97316] px-3 py-1 text-[0.66rem] font-extrabold tracking-[0.06em] text-white shadow-[0_8px_18px_-8px_rgba(234,88,12,0.7)]">
+                    {t.note}
+                  </span>
+                ) : null}
+                <p className={`text-[0.82rem] font-bold ${t.popular ? "text-[#7dd3fc]" : "text-[#0f766e]"}`}>
+                  {t.count}
                 </p>
-                <h2 className="mt-2 text-[1.6rem] font-extrabold leading-[1.3] sm:text-[2rem]">
-                  まずは無料体験から。
-                </h2>
-              </div>
-              <div className="px-7 py-8 sm:px-10 sm:py-10">
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <div className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
-                    <p className="text-[0.78rem] font-bold tracking-[0.1em] text-[#0f766e]">月額プラン</p>
-                    <p className="mt-2 flex items-baseline gap-2">
-                      <span className="text-[1.8rem] font-extrabold text-[#0b1d4a]">準備中</span>
-                    </p>
-                    <p className="mt-2 text-[0.86rem] leading-[1.85] text-[#475569]">
-                      料金プランは現在準備中です。「塾としては安価に、毎日プロの添削」を大切に設計しています。お申し込み・ご相談時に最新の料金をご案内します。
-                    </p>
-                  </div>
-                  <div className="rounded-[18px] bg-[#fff7ed] p-6 ring-1 ring-[rgba(234,88,12,0.18)]">
-                    <p className="text-[0.78rem] font-bold tracking-[0.1em] text-[#ea580c]">無料体験</p>
-                    <p className="mt-2 text-[1.8rem] font-extrabold text-[#0b1d4a]">受付中</p>
-                    <p className="mt-2 text-[0.86rem] leading-[1.85] text-[#7c2d12]">
-                      実際の教材で演習し、答案を提出して、ノビットの添削を体験できます。学習管理システムの使い方もご案内します。
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
-                  <PrimaryCta href="/contact">無料体験を申し込む</PrimaryCta>
-                  <SecondaryCta href="/contact">相談してみる</SecondaryCta>
+                <p className="mt-2 flex items-baseline gap-1">
+                  <span className="text-[0.95rem] font-bold">¥</span>
+                  <span className="text-[2.4rem] font-extrabold leading-none tracking-[-0.02em]">{t.price}</span>
+                  <span className={`text-[0.84rem] font-semibold ${t.popular ? "text-white/70" : "text-[#64748b]"}`}>/月</span>
+                </p>
+                <p className={`mt-1.5 text-[0.78rem] ${t.popular ? "text-white/70" : "text-[#64748b]"}`}>
+                  1教科あたり ¥{t.per}
+                </p>
+                <p className={`mt-3 inline-flex w-fit items-center gap-1 rounded-full px-2.5 py-1 text-[0.72rem] font-bold ${t.popular ? "bg-white/15 text-white" : "bg-[#fff1e6] text-[#ea580c]"}`}>
+                  初月は半額 ¥{(Number(t.price.replace(",", "")) / 2).toLocaleString()}
+                </p>
+                <div className="mt-5">
+                  <Link
+                    href="/contact"
+                    className={`flex min-h-11 items-center justify-center rounded-full px-5 text-[0.9rem] font-bold transition ${
+                      t.popular
+                        ? "bg-[#f97316] text-white hover:bg-[#ea580c]"
+                        : "border border-[#0b1d4a] text-[#0b1d4a] hover:bg-[#0b1d4a] hover:text-white"
+                    }`}
+                  >
+                    この科目数ではじめる
+                  </Link>
                 </div>
               </div>
-            </div>
+            ))}
+          </div>
+          <p className="mx-auto mt-5 max-w-3xl text-center text-[0.82rem] leading-[1.7] text-[#64748b]">
+            4教科以上は ¥12,800 ＋ 1教科ごと +¥3,000。いつでも科目の追加・休会・解約OK（入会金・教材費なし）。
+          </p>
+
+          {/* 他塾との比較 */}
+          <div className="mx-auto mt-8 flex max-w-3xl flex-col items-center gap-3 rounded-[18px] bg-[#eef6f6] p-5 text-center ring-1 ring-[rgba(13,148,136,0.18)] sm:flex-row sm:justify-center sm:gap-6 sm:text-left">
+            <p className="text-[0.86rem] leading-[1.7] text-[#475569]">
+              大手の個別指導は <span className="font-bold text-[#0b1d4a]">1教科 週1で月¥15,000〜</span>。
+            </p>
+            <span aria-hidden="true" className="hidden text-[#0d9488] sm:block">→</span>
+            <p className="text-[0.95rem] font-extrabold leading-[1.5] text-[#0f766e]">
+              ノビットは毎日添削で <span className="text-[1.15rem]">月¥4,980〜</span>。
+            </p>
+          </div>
+
+          <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
+            <PrimaryCta href="/contact">初月半額ではじめる</PrimaryCta>
+            <SecondaryCta href="/contact">まず質問してみる</SecondaryCta>
           </div>
         </Container>
       </section>
@@ -1133,11 +1325,10 @@ export default function Home() {
                 答案を、毎日プロに見てもらう習慣を。
               </h2>
               <p className="mx-auto mt-5 max-w-xl text-[1rem] leading-[1.95] text-white/85 lg:mx-0">
-                まずは無料体験で、ノビットの教材と添削を試してみてください。
-                現状の悩みや目標を聞かせていただければ、続け方のイメージもご案内します。
+                必要な科目を選んで、初月半額ではじめられます。入会金・教材費は0円、面談や勧誘もありません。
               </p>
               <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
-                <PrimaryCta href="/contact">無料体験を申し込む</PrimaryCta>
+                <PrimaryCta href="/contact">初月半額ではじめる</PrimaryCta>
                 <Link
                   href="/contact"
                   className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/40 px-7 text-[0.98rem] font-semibold text-white transition hover:bg-white hover:text-[#0b1d4a]"
@@ -1155,16 +1346,16 @@ export default function Home() {
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
             <p className="truncate text-[0.82rem] font-extrabold text-[#0b1d4a]">
-              毎日演習・毎日添削の添削塾
+              理系の毎日添削・月¥4,980〜
             </p>
-            <p className="truncate text-[0.68rem] text-[#64748b]">面談・授業なし／オンライン完結</p>
+            <p className="truncate text-[0.68rem] text-[#64748b]">いまなら初月半額／入会金0円</p>
           </div>
           <Link
             href="/contact"
             className="relative inline-flex min-h-11 shrink-0 items-center justify-center overflow-hidden rounded-full px-5 text-[0.86rem] font-bold text-white shadow-[0_8px_18px_-8px_rgba(234,88,12,0.7)]"
           >
             <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316,#ea580c)]" />
-            <span className="relative">無料体験へ</span>
+            <span className="relative">申し込む</span>
           </Link>
         </div>
       </div>
