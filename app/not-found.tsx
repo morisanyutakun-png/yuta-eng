@@ -16,7 +16,7 @@ export default function NotFound() {
           </h1>
           <p className="mt-5 text-sm leading-7 text-slate-600 sm:mt-6 sm:text-base sm:leading-8">
             URLが変更されたか、まだ公開されていないページの可能性があります。
-            トップ、塾について、無料体験の窓口から目的の情報へ戻れます。
+            トップ、塾について、お申し込みの窓口から目的の情報へ戻れます。
           </p>
           <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:justify-center">
             <ButtonLink className="w-full sm:w-auto" href="/">
@@ -29,7 +29,7 @@ export default function NotFound() {
               className="inline-flex min-h-12 w-full items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 sm:w-auto"
               href="/contact"
             >
-              無料体験・相談
+              お申し込み・相談
             </Link>
           </div>
         </div>
