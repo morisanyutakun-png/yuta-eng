@@ -43,14 +43,39 @@ scripts/          ビルド時の画像・favicon・critical CSS 生成
 
 ## 環境変数
 
-必須の環境変数はありません。未設定でも `https://yuta-eng.com` と
-`contact@yuta-eng.com` を既定値としてビルドできます。
+サイト表示だけなら必須の環境変数はありません（未設定でも既定値でビルド可）。
+**申し込み・決済（Stripe）を有効化する場合は `.env.example` を参照**して
+`.env.local`／Vercel に設定してください。
 
 ```bash
 NEXT_PUBLIC_SITE_URL=https://yuta-eng.com
 NEXT_PUBLIC_CONTACT_EMAIL=contact@yuta-eng.com
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX   # 任意
+
+# 申し込み・決済（Stripe）
+STRIPE_SECRET_KEY=sk_live_xxx           # API キー（シークレット）
+STRIPE_WEBHOOK_SECRET=whsec_xxx         # Webhook 署名シークレット
+# NOBIT_REGISTER_WEBHOOK_URL=...         # 支払い完了データの連携先（管理システム）
+# NOBIT_REGISTER_SECRET=...              # 連携先への共有シークレット
 ```
+
+## 申し込み・決済の流れ（Stripe）
+
+`/apply` で科目を選ぶと料金（`lib/pricing.ts`）が自動計算され、
+`POST /api/checkout` が **Stripe Checkout（サブスク・初月半額クーポン）** を作成、
+決済画面へリダイレクトします。申込科目・教科数は metadata に載せて Stripe へ。
+
+支払い完了は `POST /api/stripe/webhook`（`checkout.session.completed`）で受け取り、
+生徒の登録情報＋申込科目を `NOBIT_REGISTER_WEBHOOK_URL`（ノビットスタディ管理
+システムの受け口）へ POST します（未設定ならログ出力のみ）。
+
+Stripe ダッシュボードでの準備：
+1. APIキー（シークレット）を `STRIPE_SECRET_KEY` に設定。
+2. Webhook で `https://yuta-eng.com/api/stripe/webhook` を登録し、イベント
+   `checkout.session.completed` を購読。表示の `whsec_...` を `STRIPE_WEBHOOK_SECRET` に。
+3. 初月半額クーポン（id: `nobit-first-month-50` / 50%off・1回）は初回決済時に
+   自動作成されます（手動作成も可）。
+4. 料金・科目を変えるときは `lib/pricing.ts` の `SUBJECTS` と `monthlyTotal()` を編集。
 
 `NEXT_PUBLIC_SITE_URL` は metadata・canonical・sitemap・robots・JSON-LD の URL 生成に、
 `NEXT_PUBLIC_CONTACT_EMAIL` は Contact ページのメール導線に使います。

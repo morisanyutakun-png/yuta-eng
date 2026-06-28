@@ -66,9 +66,9 @@ export function SiteFooter() {
               <li>
                 <Link
                   className="text-[#475569] transition hover:text-[#0d9488]"
-                  href="/contact"
+                  href="/apply"
                 >
-                  無料体験・相談
+                  お申し込み（初月半額）
                 </Link>
               </li>
               <li>

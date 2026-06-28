@@ -523,7 +523,7 @@ export default function Home() {
               </p>
 
               <div className="mt-7 flex flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0">
-                <PrimaryCta href="/contact">初月半額ではじめる</PrimaryCta>
+                <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
                 <SecondaryCta href="/#pricing">料金・科目を見る</SecondaryCta>
               </div>
               <p className="mt-3 text-[0.8rem] text-[#64748b]">
@@ -885,7 +885,7 @@ export default function Home() {
                 ))}
               </ul>
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <PrimaryCta href="/contact">初月半額ではじめる</PrimaryCta>
+                <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
                 <a
                   href={kdpAmazonUrl}
                   target="_blank"
@@ -1200,14 +1200,14 @@ export default function Home() {
                 </p>
                 <div className="mt-5">
                   <Link
-                    href="/contact"
+                    href="/apply"
                     className={`flex min-h-11 items-center justify-center rounded-full px-5 text-[0.9rem] font-bold transition ${
                       t.popular
                         ? "bg-[#f97316] text-white hover:bg-[#ea580c]"
                         : "border border-[#0b1d4a] text-[#0b1d4a] hover:bg-[#0b1d4a] hover:text-white"
                     }`}
                   >
-                    この科目数ではじめる
+                    科目を選んで申し込む
                   </Link>
                 </div>
               </div>
@@ -1229,7 +1229,7 @@ export default function Home() {
           </div>
 
           <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
-            <PrimaryCta href="/contact">初月半額ではじめる</PrimaryCta>
+            <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
             <SecondaryCta href="/contact">まず質問してみる</SecondaryCta>
           </div>
         </Container>
@@ -1328,7 +1328,7 @@ export default function Home() {
                 必要な科目を選んで、初月半額ではじめられます。入会金・教材費は0円、面談や勧誘もありません。
               </p>
               <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
-                <PrimaryCta href="/contact">初月半額ではじめる</PrimaryCta>
+                <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
                 <Link
                   href="/contact"
                   className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/40 px-7 text-[0.98rem] font-semibold text-white transition hover:bg-white hover:text-[#0b1d4a]"
@@ -1351,7 +1351,7 @@ export default function Home() {
             <p className="truncate text-[0.68rem] text-[#64748b]">いまなら初月半額／入会金0円</p>
           </div>
           <Link
-            href="/contact"
+            href="/apply"
             className="relative inline-flex min-h-11 shrink-0 items-center justify-center overflow-hidden rounded-full px-5 text-[0.86rem] font-bold text-white shadow-[0_8px_18px_-8px_rgba(234,88,12,0.7)]"
           >
             <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316,#ea580c)]" />
