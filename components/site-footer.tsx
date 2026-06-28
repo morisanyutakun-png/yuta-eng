@@ -6,7 +6,8 @@ import { footerNavItems, kdpAmazonUrl, siteConfig } from "@/data/site";
 export function SiteFooter() {
   return (
     <footer className="bg-[#f8fafc] text-[#334155]">
-      <Container className="px-6 py-16 sm:py-20">
+      {/* スマホは下部固定 CTA バーの分だけ余白を広げる */}
+      <Container className="px-6 pt-16 pb-28 sm:pt-20 sm:pb-24 lg:pb-20">
         <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr]">
           <div>
             <Link className="inline-flex items-center" href="/">
