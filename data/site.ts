@@ -60,7 +60,7 @@ export const navItems = [
   { label: "料金・科目", href: "/#pricing" },
   { label: "教材", href: "/#materials" },
   { label: "よくある質問", href: "/#faq" },
-  { label: "申し込む", href: "/contact", highlight: true },
+  { label: "申し込む", href: "/apply", highlight: true },
 ];
 
 export const footerNavItems = [
@@ -71,5 +71,6 @@ export const footerNavItems = [
   { label: "料金・対応科目", href: "/#pricing" },
   { label: "よくある質問", href: "/#faq" },
   { label: "塾について", href: "/about" },
-  { label: "お申し込み・相談", href: "/contact" },
+  { label: "お申し込み（初月半額）", href: "/apply" },
+  { label: "質問・相談", href: "/contact" },
 ];
