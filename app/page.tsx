@@ -87,6 +87,41 @@ const flow = [
   },
 ];
 
+// 塾長 森祐太 が KDP（Amazon）で刊行する『考える力を育てる』シリーズ全ラインナップ。
+const bookSeries = [
+  {
+    group: "理論・本質理解編",
+    note: "現象・図・言葉・式を結びつけ、本質から理解する。",
+    accent: "#1d4ed8",
+    books: [
+      { title: "力学", desc: "運動方程式・エネルギー・運動量からケプラー・剛体まで本質から。" },
+      { title: "電磁気学", desc: "電場・電位からコンデンサー・回路・電磁誘導まで筋道立てて。" },
+      { title: "熱力学", desc: "気体分子運動論から熱機関・熱効率まで体系的に。" },
+      { title: "波動・原子物理学", desc: "波の式・干渉・光子・原子核を現象のイメージから。" },
+    ],
+  },
+  {
+    group: "演習編",
+    note: "入門 → 標準 → 発展と、無理なくステップアップ。",
+    accent: "#0d9488",
+    books: [
+      { title: "高校物理『入門演習』", desc: "公式の意味を確かめ、自分で立式できる感覚を養う。" },
+      { title: "高校物理『標準演習』", desc: "入試標準〜難関大を分野横断で鍛える 85 題。" },
+      { title: "高校物理『発展演習』", desc: "微積も駆使し、難関大の応用を攻略する 77 題。" },
+      { title: "『電磁気学演習』", desc: "圧倒的な演習量で、電磁気を得点源に変える。" },
+    ],
+  },
+  {
+    group: "入試対策編",
+    note: "出題傾向に直結、本番でそのまま使える実戦力。",
+    accent: "#ea580c",
+    books: [
+      { title: "『名大物理 予想問題集』", desc: "実践模試 5 回分＋詳しい解答解説。記述・論述に対応。" },
+      { title: "『共通テスト物理 予想問題集』", desc: "現象を読む力を鍛える、共通テスト型の予想模試。" },
+    ],
+  },
+];
+
 const faqItems = homeFaq;
 
 /* ───────────────────────── visuals ───────────────────────── */
@@ -533,16 +568,18 @@ export default function Home() {
                 直接添削します。
               </h2>
               <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
-                塾長は、KDP（Amazon Kindle）で
-                <strong className="font-bold text-[#0b1d4a]">「考える力を育てる高校物理」シリーズ</strong>
-                を刊行している教材開発者です。市販教材と同じ設計思想で作られた公式演習本に取り組み、
-                その答案を開発者本人が毎日添削する——だから、教材と添削に一切のズレがありません。
+                塾長は、KDP（Amazon）で
+                <strong className="font-bold text-[#0b1d4a]">『考える力を育てる』シリーズ</strong>
+                ──理論編・演習編・入試対策編──を刊行する教材開発者です。
+                その設計思想でつくられたノビット公式演習本に取り組み、
+                答案を<strong className="font-bold text-[#0b1d4a]">開発者本人が毎日添削</strong>する。
+                だから、教材と添削に一切のズレがありません。
               </p>
               <ul className="mt-6 grid gap-2 text-[0.92rem] leading-[1.85] text-[#334155]">
                 {[
                   "ノビット公式演習本で、記述前提の演習を毎日積む",
-                  "KDP 物理シリーズの設計思想をそのままカリキュラムへ",
-                  "教材だけの購入も可能（添削はサービスとセット）",
+                  "『考える力を育てる』シリーズの設計思想をカリキュラムへ",
+                  "市販書籍の購入も可能（毎日添削・学習管理はサービスとセット）",
                 ].map((t) => (
                   <li key={t} className="flex gap-2.5">
                     <span aria-hidden="true" className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d9488]" />
@@ -592,34 +629,75 @@ export default function Home() {
                   </figcaption>
                 </figure>
               </div>
-              {/* KDP の市販教材＝信頼材料 */}
-              <div className="mt-4 flex items-center gap-4 rounded-2xl bg-[#f8fafc] p-4 ring-1 ring-[rgba(15,29,74,0.08)]">
-                <picture>
-                  <source
-                    type="image/avif"
-                    srcSet="/denjikigaku-cover-200.avif 200w, /denjikigaku-cover-400.avif 400w"
-                    sizes="64px"
-                  />
-                  <source
-                    type="image/webp"
-                    srcSet="/denjikigaku-cover-200.webp 200w, /denjikigaku-cover-400.webp 400w"
-                    sizes="64px"
-                  />
-                  <img
-                    src="/denjikigaku-cover-200.webp"
-                    alt="KDP 刊行『考える力を育てる高校物理』シリーズ（電磁気学）の表紙"
-                    width={857}
-                    height={1328}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-20 w-auto shrink-0 rounded-[6px] shadow-[0_10px_22px_-12px_rgba(11,29,74,0.6)] ring-1 ring-[rgba(15,29,74,0.08)]"
-                  />
-                </picture>
-                <p className="text-[0.84rem] leading-[1.8] text-[#334155]">
-                  市販の <strong className="font-bold text-[#0b1d4a]">『考える力を育てる高校物理』</strong>（KDP）も塾長が執筆。
-                  同じ設計思想の演習本に取り組み、その答案を<strong className="font-bold text-[#0b1d4a]">開発者本人が添削</strong>します。
-                </p>
-              </div>
+              <p className="mt-3 text-center text-[0.78rem] leading-[1.7] text-[#64748b]">
+                毎日取り組むノビット公式演習本（数値違いの並行類題＋方針つき解答解説）。
+              </p>
+            </div>
+          </div>
+
+          {/* 『考える力を育てる』シリーズ 全ラインナップ */}
+          <div className="mt-16 sm:mt-20">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#f97316]">
+                Books · 塾長の著書
+              </p>
+              <h3 className="mt-3 text-[1.5rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.9rem]">
+                『考える力を育てる』シリーズ
+              </h3>
+              <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569]">
+                公式の丸暗記から抜け出し、現象・図・言葉・式を結びつけて理解する力を育てる——その一点を貫いたシリーズ。
+                <strong className="font-bold text-[#0b1d4a]">理論編・演習編・入試対策編</strong>の三本柱で、学びはじめから合格までを切れ目なく支えます。すべて Amazon（KDP）にて発売中。
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-5 lg:grid-cols-3">
+              {bookSeries.map((group) => (
+                <div
+                  key={group.group}
+                  className="flex flex-col rounded-[20px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]"
+                >
+                  <span
+                    className="inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-[0.72rem] font-extrabold tracking-[0.06em] text-white"
+                    style={{ background: group.accent }}
+                  >
+                    {group.group}
+                  </span>
+                  <p className="mt-3 text-[0.84rem] leading-[1.7] text-[#475569]">{group.note}</p>
+                  <ul className="mt-4 grid gap-3 border-t border-[rgba(15,29,74,0.08)] pt-4">
+                    {group.books.map((b) => (
+                      <li key={b.title} className="flex gap-2.5">
+                        <span
+                          aria-hidden="true"
+                          className="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={{ background: group.accent }}
+                        />
+                        <span>
+                          <span className="text-[0.95rem] font-bold leading-[1.5] text-[#0b1d4a]">
+                            考える力を育てる{b.title.startsWith("『") || b.title.startsWith("高校") ? b.title : `『${b.title}』`}
+                          </span>
+                          <span className="mt-0.5 block text-[0.82rem] leading-[1.7] text-[#475569]">
+                            {b.desc}
+                          </span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-col items-center gap-3">
+              <a
+                href={kdpAmazonUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#0b1d4a] px-7 text-[0.96rem] font-semibold tracking-[0.01em] text-white transition hover:bg-[#0f5e5e]"
+              >
+                Amazon で「考える力を育てる 森祐太」を見る <span aria-hidden="true">↗</span>
+              </a>
+              <p className="text-[0.8rem] text-[#94a3b8]">
+                新刊・電子書籍版・無料配布の演習プリント情報もあわせてご覧いただけます。
+              </p>
             </div>
           </div>
         </Container>

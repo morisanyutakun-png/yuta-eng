@@ -85,7 +85,7 @@ export function SiteFooter() {
                   rel="noreferrer noopener"
                   target="_blank"
                 >
-                  KDP教材「考える力を育てる高校物理」
+                  KDP『考える力を育てる』シリーズ
                   <span aria-hidden="true" className="ml-1 text-[0.7rem]">↗</span>
                 </a>
               </li>

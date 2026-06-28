@@ -2,10 +2,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://yuta-eng.com";
 const contactEmail =
   process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "contact@yuta-eng.com";
 
-// KDP で販売している教材シリーズへの補助導線。正式な商品 URL が決まったら
-// この定数を差し替えるだけで、トップ・教材ページ・フッターに反映される。
+// KDP で販売している『考える力を育てる』シリーズへの補助導線。正式な商品 URL が
+// 決まったら、この定数を差し替えるだけでトップ・教材・フッターに反映される。
 export const kdpAmazonUrl =
-  "https://www.amazon.co.jp/s?k=%E8%80%83%E3%81%88%E3%82%8B%E5%8A%9B%E3%82%92%E8%82%B2%E3%81%A6%E3%82%8B%E9%AB%98%E6%A0%A1%E7%89%A9%E7%90%86";
+  "https://www.amazon.co.jp/s?k=" + encodeURIComponent("考える力を育てる 森祐太");
 
 export const siteConfig = {
   name: "ノビットスタディ",
