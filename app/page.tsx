@@ -88,16 +88,17 @@ const flow = [
 ];
 
 // 塾長 森祐太 が KDP（Amazon）で刊行する『考える力を育てる』シリーズ全ラインナップ。
-const bookSeries = [
+// asin から Amazon 商品ページ（/dp/{asin}）と表紙（public/books/{asin}）に対応。
+const bookGroups = [
   {
     group: "理論・本質理解編",
     note: "現象・図・言葉・式を結びつけ、本質から理解する。",
     accent: "#1d4ed8",
     books: [
-      { title: "力学", desc: "運動方程式・エネルギー・運動量からケプラー・剛体まで本質から。" },
-      { title: "電磁気学", desc: "電場・電位からコンデンサー・回路・電磁誘導まで筋道立てて。" },
-      { title: "熱力学", desc: "気体分子運動論から熱機関・熱効率まで体系的に。" },
-      { title: "波動・原子物理学", desc: "波の式・干渉・光子・原子核を現象のイメージから。" },
+      { asin: "B0GZGBMPJG", title: "力学", sub: "運動方程式・エネルギー・運動量からケプラー・剛体まで。" },
+      { asin: "B0FQ2GJY5V", title: "電磁気学", sub: "電場・電位から回路・電磁誘導まで筋道立てて。" },
+      { asin: "B0GZNFFC23", title: "熱力学", sub: "気体分子運動論から熱機関・熱効率まで体系的に。" },
+      { asin: "B0GZTZH5NJ", title: "波動・原子物理学", sub: "波の式・干渉・光子・原子核を現象のイメージから。" },
     ],
   },
   {
@@ -105,10 +106,12 @@ const bookSeries = [
     note: "入門 → 標準 → 発展と、無理なくステップアップ。",
     accent: "#0d9488",
     books: [
-      { title: "高校物理『入門演習』", desc: "公式の意味を確かめ、自分で立式できる感覚を養う。" },
-      { title: "高校物理『標準演習』", desc: "入試標準〜難関大を分野横断で鍛える 85 題。" },
-      { title: "高校物理『発展演習』", desc: "微積も駆使し、難関大の応用を攻略する 77 題。" },
-      { title: "『電磁気学演習』", desc: "圧倒的な演習量で、電磁気を得点源に変える。" },
+      { asin: "B0H4J34162", title: "高校物理 入門演習", sub: "公式の意味を確かめ、自分で立式できる感覚を養う。" },
+      { asin: "B0H3LLW1F2", title: "高校物理 標準演習", sub: "入試標準〜難関大を分野横断で鍛える 85 題。" },
+      { asin: "B0H639CPQW", title: "高校物理 発展演習", sub: "微積も駆使し、難関大の応用を攻略する 77 題。" },
+      { asin: "B0H65Y6FXQ", title: "力学 解法ドリル", sub: "書き込み式・全6章。力学の解法を手で再現する。" },
+      { asin: "B0H66JNR6Q", title: "高校物理 無双（全分野）", sub: "力学〜原子の全5分野・厳選60問を一冊で総点検。" },
+      { asin: "B0FSCMCRDR", title: "電磁気学演習", sub: "圧倒的な演習量で、電磁気を得点源に変える。" },
     ],
   },
   {
@@ -116,8 +119,19 @@ const bookSeries = [
     note: "出題傾向に直結、本番でそのまま使える実戦力。",
     accent: "#ea580c",
     books: [
-      { title: "『名大物理 予想問題集』", desc: "実践模試 5 回分＋詳しい解答解説。記述・論述に対応。" },
-      { title: "『共通テスト物理 予想問題集』", desc: "現象を読む力を鍛える、共通テスト型の予想模試。" },
+      { asin: "B0H4D4RZNF", title: "名大物理 予想問題集", sub: "名古屋大学に特化した実践模試 5 回分＋詳しい解説。" },
+      { asin: "B0H67XF1XL", title: "名工大物理 予想問題集", sub: "名古屋工業大学に特化した実践模試 5 回分。" },
+      { asin: "B0H62FCBS5", title: "共通テスト物理 予想問題集", sub: "現象を読む力を鍛える共通テスト型模試 5 回分。" },
+    ],
+  },
+  {
+    group: "総まとめ・数学編",
+    note: "分野横断の総まとめと、数学の「考える力」。",
+    accent: "#16a34a",
+    books: [
+      { asin: "B0GZKCTHT5", title: "高校物理I（力学・電磁気）", sub: "力学・電磁気を一冊に。難関国公立二次対策。" },
+      { asin: "B0GZV321YZ", title: "高校物理II（熱・波動・原子）", sub: "熱・波動・原子を一冊に。難関国公立二次対策。" },
+      { asin: "B0GX1ZY4Y6", title: "高校数学 高一からの因数分解", sub: "見抜く力を鍛える 1050 題。4ステップ構成。" },
     ],
   },
 ];
@@ -646,39 +660,54 @@ export default function Home() {
               </h3>
               <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569]">
                 公式の丸暗記から抜け出し、現象・図・言葉・式を結びつけて理解する力を育てる——その一点を貫いたシリーズ。
-                <strong className="font-bold text-[#0b1d4a]">理論編・演習編・入試対策編</strong>の三本柱で、学びはじめから合格までを切れ目なく支えます。すべて Amazon（KDP）にて発売中。
+                <strong className="font-bold text-[#0b1d4a]">理論・演習・入試対策・総まとめ</strong>まで、学びはじめから合格までを切れ目なく支えます。各表紙から Amazon（KDP）の商品ページへ。
               </p>
             </div>
 
-            <div className="mt-10 grid gap-5 lg:grid-cols-3">
-              {bookSeries.map((group) => (
-                <div
-                  key={group.group}
-                  className="flex flex-col rounded-[20px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]"
-                >
-                  <span
-                    className="inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-[0.72rem] font-extrabold tracking-[0.06em] text-white"
-                    style={{ background: group.accent }}
-                  >
-                    {group.group}
-                  </span>
-                  <p className="mt-3 text-[0.84rem] leading-[1.7] text-[#475569]">{group.note}</p>
-                  <ul className="mt-4 grid gap-3 border-t border-[rgba(15,29,74,0.08)] pt-4">
+            <div className="mt-10 grid gap-8">
+              {bookGroups.map((group) => (
+                <div key={group.group}>
+                  <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-[rgba(15,29,74,0.08)] pb-3">
+                    <span
+                      className="inline-flex items-center rounded-full px-3 py-1 text-[0.72rem] font-extrabold tracking-[0.06em] text-white"
+                      style={{ background: group.accent }}
+                    >
+                      {group.group}
+                    </span>
+                    <span className="text-[0.82rem] text-[#64748b]">{group.note}</span>
+                  </div>
+                  <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-6">
                     {group.books.map((b) => (
-                      <li key={b.title} className="flex gap-2.5">
-                        <span
-                          aria-hidden="true"
-                          className="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-full"
-                          style={{ background: group.accent }}
-                        />
-                        <span>
-                          <span className="text-[0.95rem] font-bold leading-[1.5] text-[#0b1d4a]">
-                            考える力を育てる{b.title.startsWith("『") || b.title.startsWith("高校") ? b.title : `『${b.title}』`}
+                      <li key={b.asin}>
+                        <a
+                          href={`https://www.amazon.co.jp/dp/${b.asin}`}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="group/book flex h-full flex-col"
+                        >
+                          <div className="overflow-hidden rounded-[10px] bg-[#0b1d4a] shadow-[0_18px_30px_-18px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.1)] transition group-hover/book:-translate-y-1 group-hover/book:shadow-[0_26px_44px_-20px_rgba(11,29,74,0.6)]">
+                            <picture>
+                              <source type="image/avif" srcSet={`/books/${b.asin}.avif`} />
+                              <source type="image/webp" srcSet={`/books/${b.asin}.webp`} />
+                              <img
+                                src={`/books/${b.asin}.webp`}
+                                alt={`考える力を育てる ${b.title}（森祐太・KDP）の表紙`}
+                                width={320}
+                                height={451}
+                                loading="lazy"
+                                decoding="async"
+                                className="block aspect-[71/100] h-auto w-full object-cover"
+                              />
+                            </picture>
+                          </div>
+                          <p className="mt-2.5 text-[0.84rem] font-bold leading-[1.4] text-[#0b1d4a] transition group-hover/book:text-[#0f766e]">
+                            {b.title}
+                          </p>
+                          <p className="mt-1 text-[0.72rem] leading-[1.6] text-[#64748b]">{b.sub}</p>
+                          <span className="mt-1.5 inline-flex items-center gap-1 text-[0.7rem] font-semibold text-[#ea580c]">
+                            Amazonで見る <span aria-hidden="true">↗</span>
                           </span>
-                          <span className="mt-0.5 block text-[0.82rem] leading-[1.7] text-[#475569]">
-                            {b.desc}
-                          </span>
-                        </span>
+                        </a>
                       </li>
                     ))}
                   </ul>
@@ -686,7 +715,7 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="mt-8 flex flex-col items-center gap-3">
+            <div className="mt-10 flex flex-col items-center gap-3">
               <a
                 href={kdpAmazonUrl}
                 target="_blank"
