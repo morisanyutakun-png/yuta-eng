@@ -68,6 +68,14 @@ export async function POST(req: NextRequest) {
 
   const origin = siteConfig.url || new URL(req.url).origin;
 
+  // 決済完了後の戻り先。ノビットスタディアプリの初期設定ページ（/setup）が
+  // あればそこへ session_id 付きで送り、その場でパスワード設定→ログインさせる。
+  // 未設定なら yuta-eng 内の完了ページにフォールバック。
+  const appUrl = process.env.NOBIT_APP_URL?.replace(/\/$/, "");
+  const successUrl = appUrl
+    ? `${appUrl}/setup?session_id={CHECKOUT_SESSION_ID}`
+    : `${origin}/apply/complete?session_id={CHECKOUT_SESSION_ID}`;
+
   try {
     const couponId = await ensureFirstMonthCoupon(stripe);
 
@@ -118,7 +126,7 @@ export async function POST(req: NextRequest) {
       // 初月半額クーポンを discounts で自動適用するため、allow_promotion_codes は
       // 併用不可（Stripe 仕様）。プロモコード入力欄は出さない。
       locale: "ja",
-      success_url: `${origin}/apply/complete?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: successUrl,
       cancel_url: `${origin}/apply?canceled=1`,
     });
 
