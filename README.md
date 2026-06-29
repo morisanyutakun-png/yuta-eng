@@ -55,8 +55,9 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX   # 任意
 # 申し込み・決済（Stripe）
 STRIPE_SECRET_KEY=sk_live_xxx           # API キー（シークレット）
 STRIPE_WEBHOOK_SECRET=whsec_xxx         # Webhook 署名シークレット
-# NOBIT_REGISTER_WEBHOOK_URL=...         # 支払い完了データの連携先（管理システム）
-# NOBIT_REGISTER_SECRET=...              # 連携先への共有シークレット
+# NOBIT_APP_URL=...                      # ノビットスタディ アプリ URL（決済後の戻り先 /setup）
+# NOBIT_REGISTER_WEBHOOK_URL=...         # 支払い完了データの連携先（アプリの provision）
+# NOBIT_REGISTER_SECRET=...              # 連携の共有シークレット（送信ヘッダ／照会APIの認証）
 ```
 
 ## 申し込み・決済の流れ（Stripe）
@@ -68,6 +69,35 @@ STRIPE_WEBHOOK_SECRET=whsec_xxx         # Webhook 署名シークレット
 支払い完了は `POST /api/stripe/webhook`（`checkout.session.completed`）で受け取り、
 生徒の登録情報＋申込科目を `NOBIT_REGISTER_WEBHOOK_URL`（ノビットスタディ管理
 システムの受け口）へ POST します（未設定ならログ出力のみ）。
+
+### ノビットスタディ アプリとの連携（アカウント発行）
+
+アカウントの発行・認証は **アプリ側（Neon + Vercel）が所有**し、yuta-eng は
+「決済の事実」を渡す側に徹する（疎結合）。導線は2系統：
+
+1. **画面でその場設定**：`NOBIT_APP_URL` を設定すると、決済成功の戻り先が
+   `{NOBIT_APP_URL}/setup?session_id=...` になる。アプリの `/setup` は
+   この `session_id` を yuta-eng の照会 API に問い合わせて申込内容を取得する：
+
+   ```
+   GET https://yuta-eng.com/api/provision/session?session_id=cs_...
+   ヘッダ: x-nobit-secret: <NOBIT_REGISTER_SECRET と同じ値>
+   → { paid, email, name, phone, studentName, grade,
+       subjects, subjectLabels, subjectCount, monthlyAmount,
+       stripeCustomerId, stripeSubscriptionId, stripeSessionId }
+   ```
+
+   アプリはこの情報で users に本登録（パスワードは既存のハッシュ方式で保存）し、
+   そのままログインさせる。`paid:false`（未払い）の session_id は 402 を返す。
+
+2. **メールでの設定リンク（保険）**：`NOBIT_REGISTER_WEBHOOK_URL` を設定すると、
+   Webhook が同じ正規化データ（`lib/registration.ts`）を `x-nobit-secret` 付きで
+   POST する。アプリは「仮登録＋設定用トークン発行＋設定メール送信」を行う。
+   ユーザーがタブを閉じても確実にログインできる導線になり、ログも残る。
+
+`/setup` 照会 API と Webhook は **同じ `lib/registration.ts` の出力形** を返すので、
+アプリ側は片方の受け口だけ作れば両系統に対応できる。`NOBIT_REGISTER_SECRET` は
+本番では必ず長いランダム文字列を設定すること（照会 API の認証に使う）。
 
 Stripe ダッシュボードでの準備：
 1. APIキー（シークレット）を `STRIPE_SECRET_KEY` に設定。

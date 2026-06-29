@@ -1,6 +1,8 @@
 import type { NextRequest } from "next/server";
 import Stripe from "stripe";
 
+import { buildRegistration } from "@/lib/registration";
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -33,30 +35,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === "checkout.session.completed") {
-    const s = event.data.object;
-    const fields = Object.fromEntries(
-      (s.custom_fields ?? []).map((f) => [
-        f.key,
-        f.type === "dropdown" ? f.dropdown?.value : f.text?.value,
-      ]),
-    );
-
-    const registration = {
-      type: "new_subscription",
-      stripeCustomerId: s.customer,
-      stripeSubscriptionId: s.subscription,
-      stripeSessionId: s.id,
-      email: s.customer_details?.email ?? null,
-      name: s.customer_details?.name ?? null,
-      phone: s.customer_details?.phone ?? null,
-      studentName: fields.student_name ?? null,
-      grade: fields.grade ?? null,
-      subjects: s.metadata?.subjects ?? "",
-      subjectLabels: s.metadata?.subject_labels ?? "",
-      subjectCount: s.metadata?.subject_count ?? "",
-      monthlyAmount: s.metadata?.monthly_amount ?? "",
-      createdAt: new Date(event.created * 1000).toISOString(),
-    };
+    const registration = buildRegistration(event.data.object, event.created);
 
     const forwardUrl = process.env.NOBIT_REGISTER_WEBHOOK_URL;
     if (forwardUrl) {
