@@ -112,7 +112,8 @@ export async function POST(req: NextRequest) {
           },
         },
       ],
-      customer_creation: "always",
+      // subscription モードでは顧客が常に自動作成されるため customer_creation は不要
+      // （指定すると "can only be used in payment mode" エラーになる）。
       phone_number_collection: { enabled: true },
       // 初月半額クーポンを discounts で自動適用するため、allow_promotion_codes は
       // 併用不可（Stripe 仕様）。プロモコード入力欄は出さない。
