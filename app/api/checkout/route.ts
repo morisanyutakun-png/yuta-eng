@@ -114,7 +114,8 @@ export async function POST(req: NextRequest) {
       ],
       customer_creation: "always",
       phone_number_collection: { enabled: true },
-      allow_promotion_codes: true,
+      // 初月半額クーポンを discounts で自動適用するため、allow_promotion_codes は
+      // 併用不可（Stripe 仕様）。プロモコード入力欄は出さない。
       locale: "ja",
       success_url: `${origin}/apply/complete?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/apply?canceled=1`,
