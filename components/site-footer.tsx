@@ -94,7 +94,27 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-[rgba(15,29,74,0.1)] pt-6 text-[0.8rem] text-[#475569] sm:flex-row sm:items-center sm:justify-between">
+        {/* 法的情報（特商法・プライバシー・返金/解約） */}
+        <nav
+          aria-label="法的情報"
+          className="mt-12 flex flex-wrap gap-x-5 gap-y-2 border-t border-[rgba(15,29,74,0.1)] pt-6 text-[0.8rem]"
+        >
+          {[
+            { label: "特定商取引法に基づく表記", href: "/legal/tokushoho" },
+            { label: "プライバシーポリシー", href: "/legal/privacy" },
+            { label: "返金・解約ポリシー", href: "/legal/refund" },
+          ].map((item) => (
+            <Link
+              key={item.href}
+              className="text-[#475569] transition hover:text-[#0d9488]"
+              href={item.href}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="mt-5 flex flex-col gap-2 text-[0.8rem] text-[#475569] sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {siteConfig.name} {siteConfig.division}</p>
           <p>教材 × 習慣化 × 添削のデジタル通信添削（面談・授業は行いません）</p>
         </div>
