@@ -1395,6 +1395,21 @@ export default function Home() {
                 </li>
               ))}
             </ul>
+            <p className="mt-5 border-t border-[rgba(15,29,74,0.08)] pt-4 text-[0.78rem] leading-[1.85] text-[#64748b]">
+              ご契約の前に{" "}
+              <Link className="font-semibold text-[#0f766e] underline" href="/legal/tokushoho">
+                特定商取引法に基づく表記
+              </Link>
+              ・
+              <Link className="font-semibold text-[#0f766e] underline" href="/legal/refund">
+                返金・解約ポリシー
+              </Link>
+              ・
+              <Link className="font-semibold text-[#0f766e] underline" href="/legal/privacy">
+                プライバシーポリシー
+              </Link>
+              をご確認ください。
+            </p>
           </div>
 
           <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">

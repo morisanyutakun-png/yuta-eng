@@ -91,6 +91,21 @@ export default async function ApplyPage({
             </Link>{" "}
             もご覧ください。
           </p>
+          <p className="mx-auto mt-4 max-w-3xl text-center text-[0.78rem] leading-[1.8] text-[#94a3b8]">
+            お申し込みの前に{" "}
+            <Link href="/legal/tokushoho" className="underline underline-offset-2 hover:text-[#0f766e]">
+              特定商取引法に基づく表記
+            </Link>
+            ・
+            <Link href="/legal/refund" className="underline underline-offset-2 hover:text-[#0f766e]">
+              返金・解約ポリシー
+            </Link>
+            ・
+            <Link href="/legal/privacy" className="underline underline-offset-2 hover:text-[#0f766e]">
+              プライバシーポリシー
+            </Link>
+            をご確認ください。お申し込みをもって、これらに同意いただいたものとみなします。
+          </p>
         </Container>
       </section>
     </>
