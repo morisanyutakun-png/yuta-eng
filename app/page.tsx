@@ -161,6 +161,14 @@ const appPoints = [
   { title: "続けたくなる仕組み", body: "はなまる・称号・連続記録で、毎日の学習が自然と積み上がります。" },
 ];
 
+// ノビット公式教材。毎日の演習の土台となる、ノビットのために書き下ろした教材。
+// いまは数学を先行公開し、物理・化学・英語など各分野へ順次拡大していく。
+const officialBooks = [
+  { asin: "B0H6ZRPLVJ", title: "ノビットの数学ⅠA 標準演習", sub: "基礎から入試標準まで。10分野・類題演習・詳しい解説。", subject: "数学IA" },
+  { asin: "B0H71TQJYY", title: "ノビットの数学ⅡBC 標準演習", sub: "基礎から入試標準まで。11分野・類題演習・詳しい解説。", subject: "数学IIBC" },
+  { asin: "B0H724CBBT", title: "ノビットの数学ⅢC 標準演習", sub: "基礎から入試標準まで。9分野・類題演習・詳しい解説。", subject: "数学IIIC" },
+];
+
 // 開発・添削担当 森祐太 が KDP（Amazon）で刊行する『考える力を育てる』シリーズ全ラインナップ。
 // asin から Amazon 商品ページ（/dp/{asin}）と表紙（public/books/{asin}）に対応。
 const bookGroups = [
@@ -991,18 +999,21 @@ export default function Home() {
                 毎日<Penned>直接添削</Penned>します。
               </h2>
               <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
-                教材は、KDP（Amazon）で
-                <strong className="font-bold text-[#0b1d4a]">『考える力を育てる』シリーズ</strong>
-                ──理論編・演習編・入試対策編──を刊行する開発者の自作。
-                その設計思想でつくったノビット公式演習本に取り組み、
-                答案を<strong className="font-bold text-[#0b1d4a]">つくった本人が毎日添削</strong>する。
-                だから、教材と添削に一切のズレがありません。
+                演習の土台は、ノビットのために書き下ろした
+                <strong className="font-bold text-[#0b1d4a]">公式教材</strong>。
+                いまは数学を先行公開し、物理・化学・英語など各分野へ
+                <strong className="font-bold text-[#0b1d4a]">順次拡大中</strong>。
+                さらに開発者が KDP で刊行する
+                <strong className="font-bold text-[#0b1d4a]">『考える力を育てる』シリーズ（全16冊）</strong>
+                も演習に活用します。
+                <strong className="font-bold text-[#0b1d4a]">教材が豊富だから、毎日の演習に困りません。</strong>
+                そのすべてを、つくった本人が毎日添削します。
               </p>
               <ul className="mt-6 grid gap-2 text-[0.92rem] leading-[1.85] text-[#334155]">
                 {[
-                  "ノビット公式演習本で、記述前提の演習を毎日積む",
-                  "『考える力を育てる』シリーズの設計思想をそのままカリキュラムへ",
-                  "市販書籍の購入も可能（毎日添削・習慣化アプリはサービスとセット）",
+                  "ノビット公式教材で、記述前提の演習を毎日積む",
+                  "公式教材は各分野で続々制作中（数学 → 物理・化学・英語…）",
+                  "KDP『考える力を育てる』シリーズ16冊も演習に活用できる",
                 ].map((t) => (
                   <li key={t} className="flex gap-2.5">
                     <span aria-hidden="true" className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d9488]" />
@@ -1058,17 +1069,85 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 『考える力を育てる』シリーズ 全ラインナップ */}
+          {/* ノビット公式教材（先行公開：数学。各分野へ拡大予定） */}
+          <div className="mt-16 sm:mt-20">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="inline-flex items-center gap-1.5 rounded-full bg-[#0b1d4a] px-3 py-1 text-[0.68rem] font-extrabold tracking-[0.08em] text-white">
+                ★ ノビット公式教材
+              </p>
+              <h3 className="mt-4 text-[1.5rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.9rem]">
+                演習の土台は、公式教材から。
+              </h3>
+              <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569]">
+                ノビットのために書き下ろした公式教材。まずは
+                <strong className="font-bold text-[#0b1d4a]">数学（ⅠA・ⅡBC・ⅢC）</strong>
+                を公開中で、<strong className="font-bold text-[#0b1d4a]">物理・化学・英語など各分野へ順次拡大</strong>していきます。
+              </p>
+            </div>
+
+            <ul className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-3">
+              {officialBooks.map((b) => (
+                <li key={b.asin}>
+                  <a
+                    href={`https://www.amazon.co.jp/dp/${b.asin}`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="group/book flex h-full flex-col rounded-[16px] bg-[#f8fafc] p-4 ring-1 ring-[rgba(15,29,74,0.08)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-34px_rgba(11,29,74,0.45)]"
+                  >
+                    <div className="relative overflow-hidden rounded-[10px] bg-[#0b1d4a] shadow-[0_18px_30px_-18px_rgba(11,29,74,0.55)]">
+                      <span className="absolute left-2 top-2 z-10 rounded-full bg-[#16a34a] px-2 py-0.5 text-[0.6rem] font-extrabold text-white shadow-[0_6px_12px_-6px_rgba(22,163,74,0.8)]">
+                        {b.subject}
+                      </span>
+                      <picture>
+                        <source type="image/avif" srcSet={`/books/${b.asin}.avif`} />
+                        <source type="image/webp" srcSet={`/books/${b.asin}.webp`} />
+                        <img
+                          src={`/books/${b.asin}.webp`}
+                          alt={`${b.title}（森祐太・ノビット公式教材）の表紙`}
+                          width={355}
+                          height={500}
+                          loading="lazy"
+                          decoding="async"
+                          className="block aspect-[71/100] h-auto w-full object-cover"
+                        />
+                      </picture>
+                    </div>
+                    <p className="mt-3 text-[0.92rem] font-bold leading-[1.45] text-[#0b1d4a] transition group-hover/book:text-[#0f766e]">
+                      {b.title}
+                    </p>
+                    <p className="mt-1 text-[0.76rem] leading-[1.6] text-[#64748b]">{b.sub}</p>
+                    <span className="mt-2 inline-flex items-center gap-1 text-[0.72rem] font-semibold text-[#ea580c]">
+                      Amazonで見る <span aria-hidden="true">↗</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <ul className="mx-auto mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-[0.74rem] font-semibold text-[#64748b]">
+              <li className="text-[#475569]">続々制作中：</li>
+              {["物理基礎・物理", "化学基礎・化学", "英語長文・英文法"].map((s) => (
+                <li
+                  key={s}
+                  className="rounded-full bg-white px-3 py-1 text-[#94a3b8] ring-1 ring-dashed ring-[rgba(15,29,74,0.15)]"
+                >
+                  {s}（準備中）
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* あわせて演習できる教材：『考える力を育てる』シリーズ 全ラインナップ */}
           <div className="mt-16 sm:mt-20">
             <div className="mx-auto max-w-3xl text-center">
               <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#f97316]">
-                Books · 開発者の著書
+                Books · あわせて演習できる教材
               </p>
               <h3 className="mt-3 text-[1.5rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.9rem]">
-                『考える力を育てる』シリーズ
+                『考える力を育てる』シリーズ（全16冊）
               </h3>
               <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569]">
-                公式の丸暗記から抜け出し、現象・図・言葉・式を結びつけて理解する力を育てる——その一点を貫いたシリーズ。
+                公式教材に加え、開発者が KDP で刊行するこのシリーズも演習に活用できます。
                 <strong className="font-bold text-[#0b1d4a]">理論・演習・入試対策・総まとめ</strong>まで、学びはじめから合格までを切れ目なく支えます。各表紙から Amazon（KDP）の商品ページへ。
               </p>
             </div>
