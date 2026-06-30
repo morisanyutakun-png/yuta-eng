@@ -35,10 +35,10 @@ export function createOrganizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
     name: FULL_NAME,
-    alternateName: ["ノビットスタディ", "Nobit Study", "ノビット 添削塾"],
+    alternateName: ["ノビットスタディ", "Nobit Study", "ノビット 通信添削"],
     url: siteConfig.url,
     description: siteConfig.description,
-    slogan: "考える力を育てる、高校物理のオンライン添削。",
+    slogan: "毎日の学習を、仕組みにする。教材 × 習慣化 × 添削。",
     email: siteConfig.email,
     logo: LOGO_URL,
     image: LOGO_URL,
@@ -74,9 +74,9 @@ export function createPersonJsonLd() {
     name: siteConfig.author,
     url: new URL("/about", siteConfig.url).toString(),
     image: LOGO_URL,
-    jobTitle: "ノビットスタディ 塾長・教材開発者・添削指導者",
+    jobTitle: "ノビットスタディ 教材開発・添削担当",
     description:
-      "名古屋大学 工学部 電気電子情報系で学んだ理系教育者。高校物理・電磁気を中心に、現象・図・言葉・式を結びつけた構造的理解を育てる教材を開発し、KDP で『考える力を育てる高校物理』シリーズを刊行。ノビットスタディ 中高部では、塾長オリジナル教材と毎日添削で高校生の記述答案力と自立した学びを支える。",
+      "名古屋大学 工学部 電気電子情報系で学んだ理系教育者。高校物理・電磁気を中心に、現象・図・言葉・式を結びつけた構造的理解を育てる教材を開発し、KDP で『考える力を育てる高校物理』シリーズを刊行。ノビットスタディ 中高部では、自作オリジナル教材・習慣化アプリ・毎日添削で高校生の記述答案力と自立した学びを支える。",
     alumniOf: {
       "@type": "CollegeOrUniversity",
       name: "名古屋大学",
@@ -121,11 +121,11 @@ export function createHomePageJsonLd() {
     description: siteConfig.description,
     inLanguage: "ja",
     about: [
-      "高校物理 添削",
+      "デジタル通信添削",
       "記述答案 添削",
-      "オンライン添削塾",
       "毎日添削",
-      "学習管理",
+      "学習習慣化",
+      "オリジナル教材",
       "考える力",
     ],
     isPartOf: {
@@ -143,11 +143,11 @@ export function createEducationalServiceJsonLd() {
     name: FULL_NAME,
     url: siteConfig.url,
     description:
-      "高校物理・数学・英語を中心に、毎日の演習と毎日の添削で考える力と記述答案力を育てるオンライン添削・学習管理サービス。面談や授業は行わず、塾長オリジナル教材で自立した学びを支える。",
+      "物理・化学・数学・英語を中心に、自作オリジナル教材を毎日進め、提出した答案に毎日添削を返すデジタル通信添削サービス。専用アプリで学習を習慣化し、保護者も進捗を確認できる。授業や面談は行わず、教材 × 習慣化 × 添削で自立した学びを支える。",
     serviceType: [
-      "オンライン添削",
-      "学習管理",
+      "デジタル通信添削",
       "記述答案の添削指導",
+      "学習習慣化アプリ",
       "教材提供",
     ],
     provider: {
