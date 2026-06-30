@@ -1358,10 +1358,52 @@ export default function Home() {
             </p>
           </div>
 
+          {/* 決済の安心（Stripe 連携） */}
+          <div className="mx-auto mt-8 max-w-3xl rounded-[22px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_28px_56px_-44px_rgba(11,29,74,0.45)] sm:p-7">
+            <div className="flex items-start gap-4">
+              <span
+                aria-hidden="true"
+                className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] bg-[#eef6f6] text-[1.5rem] ring-1 ring-[rgba(13,148,136,0.18)]"
+              >
+                🔒
+              </span>
+              <div>
+                <p className="text-[1.02rem] font-extrabold leading-[1.5] text-[#0b1d4a]">
+                  お支払いは、世界標準の決済システム{" "}
+                  <span className="font-extrabold text-[#635bff]">Stripe</span> で安全に。
+                </p>
+                <p className="mt-2 text-[0.88rem] leading-[1.95] text-[#475569]">
+                  Stripe は世界中の企業が採用し、国際カードセキュリティ基準（PCI DSS）に準拠した決済基盤。
+                  カード情報は Stripe が暗号化して処理し、
+                  <strong className="font-bold text-[#0b1d4a]">
+                    当サービスがカード番号を保持・閲覧することはありません
+                  </strong>
+                  。
+                </p>
+              </div>
+            </div>
+            <ul className="mt-5 grid gap-x-6 gap-y-2.5 border-t border-[rgba(15,29,74,0.08)] pt-5 sm:grid-cols-2">
+              {[
+                ["🔐", "通信は SSL で常時暗号化"],
+                ["💳", "カード情報は非保持（Stripe が管理）"],
+                ["🔁", "いつでもオンラインで解約 OK"],
+                ["🧾", "入会金・教材費 0円／初月半額"],
+              ].map(([icon, text]) => (
+                <li key={text} className="flex items-center gap-2.5 text-[0.88rem] font-semibold text-[#334155]">
+                  <span aria-hidden="true" className="text-[1.05rem]">{icon}</span>
+                  <span>{text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
             <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
             <SecondaryCta href="/contact">まず質問してみる</SecondaryCta>
           </div>
+          <p className="mt-4 text-center text-[0.78rem] leading-[1.7] text-[#94a3b8]">
+            お申し込み後は Stripe の安全な決済画面に進みます。決済情報は暗号化され、安心してご利用いただけます。
+          </p>
         </Container>
       </section>
 
