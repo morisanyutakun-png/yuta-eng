@@ -67,12 +67,8 @@ export function SiteHeader() {
       </a>
 
       <header className="sticky top-0 z-50 bg-white/95 supports-[backdrop-filter]:backdrop-blur-md supports-[backdrop-filter]:bg-white/80 shadow-[0_10px_30px_-22px_rgba(15,29,74,0.18)]">
-        {/* Top hairline gradient — brand accent stripe (blue → teal → green → orange) */}
-        <div
-          aria-hidden="true"
-          className="h-[2px] w-full bg-[linear-gradient(90deg,#1d4ed8_0%,#0d9488_42%,#16a34a_70%,#f97316_100%)] opacity-90"
-        />
-
+        {/* The brand top stripe now lives in the global scroll-progress bar
+            (app/layout.tsx) so it doubles as a reading-progress indicator. */}
         <Container className="relative">
           <div className="flex min-h-14 items-center justify-between gap-3 py-2 sm:min-h-[68px] sm:gap-5 sm:py-2.5">
             <NobitBrand />

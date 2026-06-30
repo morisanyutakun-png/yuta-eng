@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 
 import { GoogleAnalyticsLoader } from "@/components/google-analytics-loader";
 import { JsonLd } from "@/components/json-ld";
+import { ScrollReveal } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { siteConfig } from "@/data/site";
@@ -132,9 +133,14 @@ export default function RootLayout({
         <JsonLd data={createWebsiteJsonLd()} />
         <JsonLd data={createOrganizationJsonLd()} />
         <JsonLd data={createPersonJsonLd()} />
+        {/* Top reading-progress bar (CSS scroll-timeline, zero JS) */}
+        <div aria-hidden="true" className="scroll-progress">
+          <span />
+        </div>
         <SiteHeader />
         <main id="main" className="flex-1">{children}</main>
         <SiteFooter />
+        <ScrollReveal />
       </body>
     </html>
   );

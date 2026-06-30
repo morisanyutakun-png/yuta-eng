@@ -54,7 +54,7 @@
 }
 
 html {
-  font-size: 15.5px;
+  font-size: 16px;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -83,8 +83,64 @@ body {
 /* Mobile-first defaults */
 @media (min-width: 480px) {
   html {
-    font-size: 16px;
+    font-size: 16.25px;
   }
+}
+
+/*
+ * ── Scroll-driven polish (zero-JS, progressive enhancement) ──────────
+ * Both effects are pure CSS scroll-/view-timelines: no JS, no hydration,
+ * no layout cost. They light up only on supporting browsers (Chromium,
+ * Safari 26+) and only when the user hasn't asked to reduce motion.
+ * Everything degrades to "fully visible, no animation" elsewhere.
+ */
+
+/* Top reading-progress bar — grows as the page scrolls. */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  z-index: 60;
+  background: rgba(15, 29, 74, 0.06);
+  pointer-events: none;
+}
+.scroll-progress > span {
+  display: block;
+  height: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(1); /* fallback: looks like a static brand hairline */
+  background: linear-gradient(90deg, #1d4ed8 0%, #0d9488 42%, #16a34a 70%, #f97316 100%);
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress > span {
+    transform: scaleX(0);
+    animation: scroll-progress-grow linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes scroll-progress-grow {
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+
+/*
+ * Reveal-on-scroll. The hidden start state applies ONLY after the
+ * <ScrollReveal/> island adds `.reveal-ready` to <html> (and only when JS is
+ * on + motion is allowed). Without it, sections stay fully visible — so this
+ * can never hide content from no-JS / reduced-motion users or crawlers.
+ */
+.reveal-ready .cv-defer {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.2, 0.65, 0.2, 1);
+  will-change: opacity, transform;
+}
+.reveal-ready .cv-defer.revealed {
+  opacity: 1;
+  transform: none;
 }
 
 button,
