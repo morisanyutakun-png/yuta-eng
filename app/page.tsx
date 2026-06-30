@@ -212,6 +212,19 @@ const bookGroups = [
 
 const faqItems = homeFaq;
 
+// 流れる帯（マーキー）のフレーズ。視覚的なリズム＋SEO のキーワードを兼ねる。
+const marqueeItems = [
+  "物理・化学・数学・英語",
+  "毎日演習 × 毎日添削",
+  "提出と同時に解答・解説",
+  "翌日までにプロの添削",
+  "自作オリジナル教材",
+  "習慣化アプリで毎日続く",
+  "保護者も進捗を確認",
+  "入会金・教材費 0円",
+  "いまなら初月半額",
+];
+
 /* ───────────────────────── reusable bits ───────────────────────── */
 
 /**
@@ -273,6 +286,37 @@ function Stamp({ label, className = "" }: { label: string; className?: string })
     >
       {label}
     </span>
+  );
+}
+
+/** 流れるキーワード帯。スクロールで現れ、横に流れてリズムと SEO を兼ねる。 */
+function MarqueeGroup({ hidden = false }: { hidden?: boolean }) {
+  return (
+    <div className="flex shrink-0 items-center" aria-hidden={hidden || undefined}>
+      {marqueeItems.map((t) => (
+        <span key={t} className="flex items-center">
+          <span className="px-6 text-[0.9rem] font-bold tracking-[0.02em] text-white sm:text-[0.96rem]">
+            {t}
+          </span>
+          <span aria-hidden="true" className="text-[0.7rem] text-[#5eead4]">
+            ✦
+          </span>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+function MarqueeBand({ reverse = false }: { reverse?: boolean }) {
+  return (
+    <section className="cv-defer overflow-hidden bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] py-3.5">
+      <div className="marquee">
+        <div className={`marquee__track${reverse ? " marquee__track--reverse" : ""}`}>
+          <MarqueeGroup />
+          <MarqueeGroup hidden />
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -578,7 +622,7 @@ export default function Home() {
                 <div className="absolute -left-14 top-8 w-[46%] max-w-[170px] -rotate-[9deg] overflow-hidden rounded-[12px] bg-white shadow-[0_30px_50px_-30px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.1)] sm:-left-24">
                   <PrintImage base="print-problem" alt="ノビット公式演習本の問題ページ" sizes="170px" className="block h-auto w-full" priority />
                 </div>
-                <AppMock className="relative z-10" />
+                <AppMock className="relative z-10 float-slow" />
                 {/* 手書きメモ風の付箋（正直なひとことで、人の手作り感を出す） */}
                 <div className="absolute -bottom-3 right-0 hidden -rotate-[5deg] rounded-[10px] bg-[#fff7ed] px-3 py-2 text-[0.74rem] font-bold leading-snug text-[#9a3412] shadow-[0_14px_28px_-16px_rgba(154,52,18,0.6)] ring-1 ring-[rgba(234,88,12,0.25)] sm:block">
                   教材も添削も、<br />つくった本人が担当。
@@ -589,6 +633,9 @@ export default function Home() {
 
         </Container>
       </section>
+
+      {/* ───────── 流れるキーワード帯（リズム＋SEO） ───────── */}
+      <MarqueeBand />
 
       {/* ───────── STEPS（やることはこれだけ・実物プリントで見せる） ───────── */}
       <section id="steps" className="cv-defer scroll-mt-24 bg-white">
@@ -1215,6 +1262,9 @@ export default function Home() {
           </div>
         </Container>
       </section>
+
+      {/* ───────── 流れるキーワード帯（逆方向・再リズム） ───────── */}
+      <MarqueeBand reverse />
 
       {/* ───────── PRICING（料金・対応科目） ───────── */}
       <section id="pricing" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
