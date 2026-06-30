@@ -1,30 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ノビットスタディ Nobit Study">
   <defs>
-    <linearGradient id="fv-arrow" x1="0.05" y1="0.95" x2="0.95" y2="0.1">
-      <stop offset="0" stop-color="#1d4ed8"/>
-      <stop offset="0.5" stop-color="#0d9488"/>
-      <stop offset="0.8" stop-color="#16a34a"/>
-      <stop offset="1" stop-color="#f97316"/>
-    </linearGradient>
-    <linearGradient id="fv-tile" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#ffffff"/>
-      <stop offset="1" stop-color="#eef5ff"/>
+    <linearGradient id="fv-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1d4a"/>
+      <stop offset="1" stop-color="#0f5e5e"/>
     </linearGradient>
   </defs>
 
-  <rect width="512" height="512" rx="112" fill="url(#fv-tile)"/>
+  <!-- Solid dark tile so the mark stays visible on light browser tab bars -->
+  <rect width="512" height="512" rx="116" fill="url(#fv-bg)"/>
 
-  <!-- Rising growth arrow: blue → teal → green → orange -->
-  <path d="M104 384 Q 170 410 240 342 Q 324 256 366 162"
-        fill="none" stroke="url(#fv-arrow)" stroke-width="48"
+  <!-- Bold rising growth arrow (white shaft) -->
+  <path d="M120 366 Q 198 402 270 332 Q 350 252 392 158"
+        fill="none" stroke="#ffffff" stroke-width="62"
         stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- Arrowhead -->
-  <path d="M290 154 L376 146 L368 238"
-        fill="none" stroke="#f97316" stroke-width="48"
+  <!-- Arrowhead at the tip (orange brand accent) -->
+  <path d="M300 150 L400 138 L392 238"
+        fill="none" stroke="#f97316" stroke-width="62"
         stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- Sparkles -->
-  <path d="M424 104 L436 136 L468 148 L436 160 L424 192 L412 160 L380 148 L412 136 Z" fill="#f97316"/>
-  <path d="M316 78 L327 104 L353 115 L327 126 L316 152 L305 126 L279 115 L305 104 Z" fill="#38bdf8"/>
 </svg>
