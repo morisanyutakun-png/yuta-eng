@@ -34,9 +34,9 @@ export function SiteFooter() {
               </picture>
             </Link>
             <p className="mt-5 max-w-sm text-[0.9rem] leading-[1.95] text-[#475569]">
-              高校物理・数学・英語を中心に、毎日演習・毎日添削で「考える力」を育てる
-              オンライン添削塾。面談や授業は行わず、塾長オリジナル教材と学習管理で
-              自立した学びを支えます。
+              物理・化学・数学・英語を中心に、自作教材 × 習慣化 × 毎日添削で
+              「考える力」を育てるデジタル通信添削サービス。授業はせず、
+              毎日続く学習システムで自立した学びを支えます。
             </p>
           </div>
 
@@ -96,7 +96,7 @@ export function SiteFooter() {
 
         <div className="mt-12 flex flex-col gap-2 border-t border-[rgba(15,29,74,0.1)] pt-6 text-[0.8rem] text-[#475569] sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {siteConfig.name} {siteConfig.division}</p>
-          <p>添削専門のオンライン学習管理塾（面談・授業は行いません）</p>
+          <p>教材 × 習慣化 × 添削のデジタル通信添削（面談・授業は行いません）</p>
         </div>
       </Container>
     </footer>

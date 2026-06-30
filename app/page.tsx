@@ -14,76 +14,80 @@ import {
 
 export const metadata: Metadata = createPageMetadata({
   title:
-    "理系の毎日添削オンライン塾｜物理・化学・数学・英語の答案添削 - ノビットスタディ 中高部",
+    "毎日の学習を、仕組みにする。デジタル通信添削 - ノビットスタディ 中高部",
   description:
-    "ノビットスタディ 中高部は、授業をしない「添削専門」のオンライン塾。物理・化学・数学・英語の答案を、16冊の教材を書いた塾長が毎日添削します。公式アプリで進捗を見える化し、保護者も安心。教科ごとに選べて月¥4,980〜、いまなら初月半額・入会金/教材費0円。",
+    "ノビットスタディ 中高部は、塾でも参考書でもない「続く学習システム」。開発者が自作したオリジナル教材を毎日1枚ずつ進め、提出した答案に毎日添削。専用アプリで習慣化し、保護者も進捗を確認できます。物理・化学・数学・英語、教科ごと月¥4,980〜・初月半額・入会金/教材費0円。",
   path: "/",
 });
 
 /* ───────────────────────── content data ───────────────────────── */
 
+// 独学・受け身の学びが続かない理由＝「習慣」と「フィードバック」の欠落。
 const problems = [
   {
-    title: "問題は解けるけど、記述答案に自信がない",
-    body: "答えは合っているのに、途中式や説明の書き方で減点される。自分の答案が試験で通用するのか分からない。",
+    title: "参考書は買った。でも、続かない。",
+    body: "独学は「今日どれをどれだけやるか」を毎日決めるのが大変。気づけば三日坊主。続かないのは意志ではなく、仕組みが無いからです。",
   },
   {
-    title: "参考書を読んでも、どこで詰まっているか分からない",
-    body: "解説を読めば「分かった気」になる。でも自分のどこが弱点なのか、誰も具体的に指摘してくれない。",
+    title: "解いて終わり、やりっぱなし。",
+    body: "丸付けはしても、自分の答案のどこがズレているかは誰も直してくれない。間違いの「クセ」に気づけないまま、同じ失点をくり返します。",
   },
   {
-    title: "学校や塾では、答案を細かく見てもらえない",
-    body: "答え合わせはしてくれても、途中式・考え方・減点ポイントまで一枚ずつ添削してもらう機会がない。",
+    title: "映像授業は「見て分かった気」になる。",
+    body: "インプットは増えるのに、いざ自分で書くと手が止まる。「分かる」と「書ける」は別の力。手を動かさない学びは点に変わりません。",
   },
   {
-    title: "難関大レベルの記述力を、本気で伸ばしたい",
-    body: "名大・難関大の二次や記述模試で安定して得点したい。自己流ではなく、プロの目で答案を仕上げたい。",
+    title: "毎日の勉強が、仕組みになっていない。",
+    body: "やる気まかせでムラがある。でも「今日やる1枚」が決まっていて、出せば必ず返ってくるなら——人は自然と続けられます。",
   },
 ];
 
-const features = [
+// ノビットの価値＝3本柱。教材 × 習慣化 × 添削。
+const pillars = [
   {
     no: "01",
-    title: "教材を書いた本人が、答案を添削する",
-    body: "16冊の物理・数学教材を刊行する塾長が、あなたの答案に直接向き合います。市販書籍と同じ「理解で解く」設計思想のまま添削するから、教材と指導に一切のズレがありません。",
+    tag: "教材",
+    color: "#1d4ed8",
+    title: "自作のオリジナル教材を、毎日サイズで。",
+    body: "市販の一般教材ではありません。16冊を刊行した開発者が「理解で解く」設計で書き下ろし、毎日少しずつ進む大きさに分割。今日やる分が、いつも目の前にあります。",
   },
   {
     no: "02",
-    title: "授業はしない。毎日の添削で伸ばす",
-    body: "一方通行の授業や映像授業はありません。毎日取り組んだ答案に、毎日フィードバック。「手を動かす → 直す」の反復こそが、記述力を定着させる一番の近道です。",
+    tag: "習慣化",
+    color: "#0d9488",
+    title: "「今日やること」が決まっているから、続く。",
+    body: "専用アプリが毎日1枚の課題を配信。連続記録・はなまる・称号で、勉強が自然と生活のリズムになります。続ける仕組みごと、お渡しします。",
   },
   {
     no: "03",
-    title: "途中式・考え方・減点ポイントまで",
-    body: "正解／不正解では終わらせません。なぜその式になるのか、どこで論理が飛んだのか、本番なら何点引かれるのか、次の一手は何か——答案を仕上げる視点で指摘します。",
-  },
-  {
-    no: "04",
-    title: "学習管理つきで、自分のペースで続く",
-    body: "独自の学習管理システムで毎日の演習と添削が回り、進み具合も見える化。通塾も時間割もありません。塾としては安価に、毎日プロの添削を受け続けられます。",
+    tag: "添削",
+    color: "#ea580c",
+    title: "出した答案に、毎日あなた専用の指摘。",
+    body: "提出した答案を、教材を書いた本人が添削。途中式・考え方・減点ポイントまで、どこをどう直すかが分かる形で返す。やりっぱなしを、なくします。",
   },
 ];
 
+// 1日のサイクル（習慣ループ）。
 const flow = [
   {
     step: "STEP 1",
-    title: "教材・課題に取り組む",
-    body: "塾長オリジナル教材と公式演習本で、その日の課題に取り組みます。自分のペースで、毎日少しずつ。",
+    title: "今日の1枚が届く",
+    body: "その日やる課題がアプリに配信。「何をやろう」と迷う時間はゼロ。座ったらすぐ始められます。",
   },
   {
     step: "STEP 2",
-    title: "答案を提出する",
-    body: "解いた答案を、独自の学習管理システムから提出。途中式や考え方も含めて、まるごと見てもらえます。",
+    title: "手を動かして解く",
+    body: "自作教材で、理解して書く。10〜20分から。途中式・考え方ごと、まるごと答案にします。",
   },
   {
     step: "STEP 3",
-    title: "添削コメントを受け取る",
-    body: "提出した答案に、毎日添削フィードバックが届きます。途中式・考え方・減点ポイントまで具体的に。",
+    title: "出す → 翌日、添削が返る",
+    body: "提出した答案に、あなた専用の添削が返却。スマホでそのまま見返せます。",
   },
   {
     step: "STEP 4",
-    title: "復習して次の課題へ",
-    body: "指摘をもとに復習し、次の課題へ。「演習 → 添削 → 復習」のループで、記述力が積み上がっていきます。",
+    title: "直して、また明日へ",
+    body: "指摘をもとに直し、連続記録を1日のばす。この小さなループが、力を積み上げます。",
   },
 ];
 
@@ -107,24 +111,23 @@ const correctionPoints = [
   {
     mark: "④",
     title: "次の一手",
-    body: "弱点に合わせて、次に取り組む演習を提示。やみくもではなく、必要な順番で積み上げます。",
+    body: "弱点に合わせて、次に取り組む課題を提示。やみくもではなく、必要な順番で積み上げます。",
   },
 ];
 
-// 「授業を受ける塾」との違いを、行ごとに対比。
-const comparisonRows = [
-  { label: "学び方", others: "授業を受ける（受け身になりがち）", nobit: "自分で解いて、添削で直す（手が動く）" },
-  { label: "答案の添削", others: "答え合わせ中心。一枚ずつは見てもらいにくい", nobit: "途中式・考え方・減点ポイントまで毎日添削" },
-  { label: "進めるペース", others: "クラスや配信のペースに合わせる", nobit: "自分のペースで、毎日少しずつ" },
-  { label: "料金の考え方", others: "コマ数・授業時間で高額になりやすい", nobit: "塾としては安価に、毎日プロの添削" },
-  { label: "面談・質問対応", others: "あり（その分コストもかかる）", nobit: "現状なし。添削に特化（将来拡充予定）" },
+// 市場での立ち位置。他の学び方の「物足りなさ」を1行で。
+const alternatives = [
+  { label: "参考書・独学", lack: "安いが、続かない・直されない" },
+  { label: "映像授業", lack: "見て満足。手が動かず点に変わりにくい" },
+  { label: "集団・個別塾", lack: "通塾と受け身。費用も高くなりがち" },
+  { label: "一般的な通信教育", lack: "教材は既製、添削は数週間に一度" },
 ];
 
 const forYouFit = [
+  "毎日コツコツを、仕組みで続けたい",
   "解けるけど、記述答案に自信がない",
-  "自分のペースで毎日コツコツ続けたい",
+  "やりっぱなしをやめて、弱点を直したい",
   "難関大・名大の記述対策を本気でしたい",
-  "物理・化学・数学のどこが弱点か、具体的に知りたい",
   "教材は持っているが、答案が書けるようにならない",
 ];
 
@@ -142,22 +145,22 @@ const subjectGroups = [
   { area: "英語", items: ["英語長文", "英文法"], color: "#ea580c" },
 ];
 
-// 料金（教科ごと月額・初月半額）。数字は塾長の添削キャパに合わせて調整可。
+// 料金（教科ごと月額・初月半額）。数字は添削キャパに合わせて調整可。
 const pricingTiers = [
   { count: "1教科", price: "4,980", per: "4,980", note: "まずは1教科から" },
   { count: "2教科", price: "8,800", per: "4,400", popular: true, note: "いちばん人気" },
   { count: "3教科", price: "12,800", per: "4,267", note: "理系をまとめて" },
 ];
 
-// アプリ「ノビットスタディ」でできること。
+// アプリ「ノビットスタディ」＝習慣化のエンジン。
 const appPoints = [
-  { title: "今日の課題が届く", body: "塾長が組んだ課題が毎日アプリに配信。何を解けばいいか迷いません。" },
+  { title: "今日の1枚が届く", body: "その日やる課題が毎日配信。迷わず始められ、勉強が習慣に変わります。" },
   { title: "添削がそのまま返る", body: "提出した答案に、途中式・減点ポイントまでの添削が返却。スマホで見返せます。" },
   { title: "保護者も進捗を確認", body: "提出数・添削完了・連続日数を見える化。保護者も同じ画面で見守れて安心です。" },
-  { title: "続けたくなる仕組み", body: "はなまる・称号・連続記録で、毎日の学習が自然と習慣になります。" },
+  { title: "続けたくなる仕組み", body: "はなまる・称号・連続記録で、毎日の学習が自然と積み上がります。" },
 ];
 
-// 塾長 森祐太 が KDP（Amazon）で刊行する『考える力を育てる』シリーズ全ラインナップ。
+// 開発・添削担当 森祐太 が KDP（Amazon）で刊行する『考える力を育てる』シリーズ全ラインナップ。
 // asin から Amazon 商品ページ（/dp/{asin}）と表紙（public/books/{asin}）に対応。
 const bookGroups = [
   {
@@ -208,27 +211,46 @@ const bookGroups = [
 
 const faqItems = homeFaq;
 
-/* ───────────────────────── visuals ───────────────────────── */
-
-
 /* ───────────────────────── reusable bits ───────────────────────── */
 
-function PrimaryCta({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
+/** 手書き風のマーカー下線。見出しの強調語に、人の手で引いた質感を添える。 */
+function PenUnderline({ className = "", color = "#f97316" }: { className?: string; color?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 200 14"
+      fill="none"
+      preserveAspectRatio="none"
+      className={className}
+    >
+      <path
+        d="M4 9.5C42 4.5 96 3.6 150 6C167 6.8 184 7.6 196 6.4"
+        stroke={color}
+        strokeWidth="5"
+        strokeLinecap="round"
+        opacity="0.85"
+      />
+    </svg>
+  );
+}
+
+/** 強調語＋手書き下線をまとめた小コンポーネント。 */
+function Penned({ children, color }: { children: React.ReactNode; color?: string }) {
+  return (
+    <span className="relative inline-block whitespace-nowrap">
+      {children}
+      <PenUnderline color={color} className="absolute -bottom-1 left-0 h-[0.5em] w-full" />
+    </span>
+  );
+}
+
+function PrimaryCta({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <Link
       href={href}
       className="group/cta relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-full px-7 text-[0.98rem] font-bold tracking-[0.01em] text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px hover:shadow-[0_22px_44px_-14px_rgba(234,88,12,0.8)]"
     >
-      <span
-        aria-hidden="true"
-        className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]"
-      />
+      <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
       <span
         aria-hidden="true"
         className="absolute -inset-x-1 -inset-y-1 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.5)_50%,transparent_70%)] transition duration-700 group-hover/cta:translate-x-full"
@@ -238,13 +260,7 @@ function PrimaryCta({
   );
 }
 
-function SecondaryCta({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
+function SecondaryCta({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <Link
       href={href}
@@ -296,28 +312,14 @@ function PrintImage({
 }
 
 /** マスコット「ノビットくん」（透過 PNG / AVIF・WebP）。 */
-function Mascot({
-  variant,
-  className,
-}: {
-  variant: "wave" | "point";
-  className?: string;
-}) {
+function Mascot({ variant, className }: { variant: "wave" | "point"; className?: string }) {
   const base = variant === "wave" ? "nobit-kun-wave" : "nobit-kun-point";
   const w = variant === "wave" ? 740 : 887;
   const h = variant === "wave" ? 896 : 976;
   return (
     <picture>
-      <source
-        type="image/avif"
-        srcSet={`/brand/${base}-240.avif 240w, /brand/${base}-480.avif 480w`}
-        sizes="200px"
-      />
-      <source
-        type="image/webp"
-        srcSet={`/brand/${base}-240.webp 240w, /brand/${base}-480.webp 480w`}
-        sizes="200px"
-      />
+      <source type="image/avif" srcSet={`/brand/${base}-240.avif 240w, /brand/${base}-480.avif 480w`} sizes="200px" />
+      <source type="image/webp" srcSet={`/brand/${base}-240.webp 240w, /brand/${base}-480.webp 480w`} sizes="200px" />
       <img
         src={`/brand/${base}-480.webp`}
         alt="ノビットスタディのマスコット「ノビットくん」"
@@ -507,19 +509,24 @@ export default function Home() {
             <div className="min-w-0 text-center lg:text-left">
               <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.7rem] font-bold tracking-[0.06em] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.25)] sm:text-[0.76rem]">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
-                理系を伸ばす・オンライン添削塾
+                教材 × 習慣化 × 添削／デジタル通信添削
               </p>
 
               <h1 className="mt-5 text-[2.3rem] font-extrabold leading-[1.18] tracking-[-0.02em] text-[#0b1d4a] sm:text-[2.9rem] lg:text-[3.2rem]">
-                <span className="block">考える力を育てる、</span>
-                <span className="block bg-[linear-gradient(95deg,#1d4ed8_0%,#0d9488_55%,#16a34a_100%)] bg-clip-text text-transparent">
-                  理系の<span className="whitespace-nowrap">毎日添削。</span>
+                <span className="block">毎日の学習を、</span>
+                <span className="block">
+                  <Penned color="#f97316">
+                    <span className="bg-[linear-gradient(95deg,#1d4ed8_0%,#0d9488_55%,#16a34a_100%)] bg-clip-text text-transparent">
+                      仕組みにする。
+                    </span>
+                  </Penned>
                 </span>
               </h1>
 
-              <p className="mx-auto mt-5 max-w-md text-[1.05rem] leading-[1.85] text-[#334155] sm:text-[1.12rem] lg:mx-0">
-                物理・化学・数学・英語。教材を書いた塾長が、あなたの答案を
-                <strong className="font-bold text-[#0b1d4a]">毎日添削</strong>します。授業はしません。
+              <p className="mx-auto mt-6 max-w-md text-[1.05rem] leading-[1.85] text-[#334155] sm:text-[1.12rem] lg:mx-0">
+                塾でも参考書でもない、続く学習システム。
+                自作教材を<strong className="font-bold text-[#0b1d4a]">毎日1枚ずつ</strong>進め、
+                出した答案には<strong className="font-bold text-[#0b1d4a]">毎日添削</strong>。
               </p>
 
               <div className="mt-7 flex flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0">
@@ -539,27 +546,45 @@ export default function Home() {
               {/* アプリ画面（主役）＋演習本プリント（背面） */}
               <div className="relative mx-auto flex w-fit items-center justify-center">
                 <div className="absolute -left-14 top-8 w-[46%] max-w-[170px] -rotate-[9deg] overflow-hidden rounded-[12px] bg-white shadow-[0_30px_50px_-30px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.1)] sm:-left-24">
-                  <PrintImage base="print-problem" alt="ノビット公式演習本の問題ページ" sizes="170px" className="block h-auto w-full" />
+                  <PrintImage base="print-problem" alt="ノビット公式演習本の問題ページ" sizes="170px" className="block h-auto w-full" priority />
                 </div>
                 <AppMock className="relative z-10" />
+                {/* 手書きメモ風の付箋（正直なひとことで、人の手作り感を出す） */}
+                <div className="absolute -bottom-3 right-0 hidden -rotate-[5deg] rounded-[10px] bg-[#fff7ed] px-3 py-2 text-[0.74rem] font-bold leading-snug text-[#9a3412] shadow-[0_14px_28px_-16px_rgba(154,52,18,0.6)] ring-1 ring-[rgba(234,88,12,0.25)] sm:block">
+                  教材も添削も、<br />つくった本人が担当。
+                </div>
               </div>
+            </div>
+          </div>
+
+          {/* カテゴリ定義の帯 */}
+          <div className="relative -mt-2 pb-12 sm:pb-16">
+            <div className="mx-auto flex max-w-3xl flex-col items-center gap-2 rounded-[18px] bg-white/70 px-5 py-4 text-center ring-1 ring-[rgba(15,29,74,0.08)] backdrop-blur-sm sm:flex-row sm:justify-center sm:gap-4 sm:text-left">
+              <span className="shrink-0 rounded-full bg-[#0b1d4a] px-3 py-1 text-[0.7rem] font-extrabold tracking-[0.06em] text-white">
+                ノビットとは
+              </span>
+              <p className="text-[0.92rem] leading-[1.8] text-[#334155]">
+                オリジナル教材を<strong className="font-bold text-[#0b1d4a]">毎日</strong>進め、
+                出した答案に<strong className="font-bold text-[#0b1d4a]">毎日</strong>添削が返る——
+                習慣化アプリつきの<strong className="font-bold text-[#0f766e]">デジタル通信添削サービス</strong>です。
+              </p>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* ───────── PROBLEMS（悩み訴求） ───────── */}
+      {/* ───────── PROBLEMS（独学・受け身の限界） ───────── */}
       <section className="cv-defer bg-white">
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#f97316]">
-              Problem · こんな悩みはありませんか
+              Problem · 続かない・直されない
             </p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              「解ける」と「答案が書ける」は、別の力。
+              勉強が伸びないのは、<Penned>意志</Penned>ではなく仕組みのせい。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              記述答案でつまずく高校生の多くが、同じ壁にぶつかっています。
+              成績が伸び悩む高校生の多くが、同じ2つの穴——「続かない」「直されない」——に落ちています。
             </p>
           </div>
           <ul className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2">
@@ -584,92 +609,163 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ───────── MODEL（添削専門・面談なしの明確化） ───────── */}
-      <section className="cv-defer bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white">
-        <Container className="px-6 py-16 sm:py-24">
-          <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-14">
-            <div>
-              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#5eead4]">
-                What is Nobit Study
-              </p>
-              <h2 className="mt-3 text-balance text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.005em] sm:text-[2.3rem]">
-                ノビットは、
-                <br className="hidden sm:block" />
-                <span className="text-[#7dd3fc]">添削専門</span>の学習管理塾です。
-              </h2>
-              <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-white/85">
-                面談や授業（ライブ指導）は行いません。
-                毎日自分のペースで教材を進め、提出した答案にプロの添削が入る——
-                その繰り返しで<strong className="font-bold text-white">自立した学び</strong>を実現します。
-                塾長オリジナル教材で設計されたカリキュラムと、毎日のプロ添削が、ノビットの売りです。
-              </p>
-              <p className="mt-4 max-w-lg text-[0.9rem] leading-[1.9] text-white/70">
-                ※ 質問対応や面談は将来的に拡充予定ですが、現在は提供していません。
-              </p>
-            </div>
+      {/* ───────── PILLARS（教材 × 習慣化 × 添削） ───────── */}
+      <section id="features" className="cv-defer relative scroll-mt-24 overflow-hidden bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
+            backgroundSize: "30px 30px",
+          }}
+        />
+        <Container className="relative px-6 py-16 sm:py-24">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#5eead4]">
+              The Method · ノビットの3本柱
+            </p>
+            <h2 className="mt-3 text-balance text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.005em] sm:text-[2.3rem]">
+              <span className="text-[#7dd3fc]">教材</span> ×{" "}
+              <span className="text-[#5eead4]">習慣化</span> ×{" "}
+              <span className="text-[#fdba74]">添削</span>。
+            </h2>
+            <p className="mt-4 text-[0.98rem] leading-[1.95] text-white/80">
+              3つがかみ合って、はじめて学習は「仕組み」になる。どれが欠けても、続かないか・直らないかのどちらかです。
+            </p>
+          </div>
 
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {[
-                { t: "毎日、自分のペースで", b: "教材が毎日進む。通塾も時間割もなし。生活に合わせて続けられます。" },
-                { t: "プロの添削が毎日介入", b: "答案にプロの目が毎日入るから、独学では気づけない弱点が見える化されます。" },
-                { t: "塾長オリジナルのカリキュラム", b: "塾長が設計した教材と演習本で、基礎から記述まで段階的に。" },
-                { t: "塾として、安価に", b: "毎日添削が受けられて、塾としては手の届きやすい料金を目指しています。" },
-              ].map((c) => (
-                <li
-                  key={c.t}
-                  className="rounded-[18px] bg-white/[0.07] p-5 ring-1 ring-white/15 backdrop-blur-sm"
-                >
-                  <p className="flex items-center gap-2 text-[1rem] font-bold leading-[1.5]">
-                    <span aria-hidden="true" className="text-[#5eead4]">◆</span>
-                    {c.t}
+          <ol className="mt-12 grid gap-5 lg:grid-cols-3">
+            {pillars.map((p) => (
+              <li
+                key={p.no}
+                className="relative overflow-hidden rounded-[22px] bg-white/[0.07] p-7 ring-1 ring-white/15 backdrop-blur-sm"
+              >
+                <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px]" style={{ background: p.color }} />
+                <div className="flex items-center gap-3">
+                  <span
+                    className="grid h-11 w-11 place-items-center rounded-[14px] text-[0.9rem] font-extrabold text-white"
+                    style={{ background: p.color }}
+                  >
+                    {p.tag}
+                  </span>
+                  <span className="text-[0.82rem] font-extrabold tracking-[0.18em] text-white/55">{p.no}</span>
+                </div>
+                <p className="mt-4 text-[1.18rem] font-extrabold leading-[1.5]">{p.title}</p>
+                <p className="mt-3 text-[0.9rem] leading-[1.95] text-white/75">{p.body}</p>
+              </li>
+            ))}
+          </ol>
+
+          <p className="mx-auto mt-9 max-w-2xl text-center text-[0.9rem] leading-[1.9] text-white/70">
+            通塾も時間割もありません。生活のリズムの中で、毎日の学習が自然に回り続けます。
+          </p>
+        </Container>
+      </section>
+
+      {/* ───────── POSITIONING（市場での立ち位置） ───────── */}
+      <section className="cv-defer bg-white">
+        <Container className="px-6 py-16 sm:py-24">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
+              Positioning · ノビットの立ち位置
+            </p>
+            <h2 className="mt-3 text-balance text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+              どれも続かなかった人の、<Penned color="#1d4ed8">最後の選択肢</Penned>。
+            </h2>
+            <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
+              世の中の学び方には、それぞれ「物足りなさ」があります。ノビットは、その隙間を埋めるために生まれました。
+            </p>
+          </div>
+
+          <div className="mx-auto mt-10 max-w-4xl">
+            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {alternatives.map((a) => (
+                <li key={a.label} className="rounded-[16px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.06)]">
+                  <p className="text-[0.96rem] font-bold text-[#64748b]">{a.label}</p>
+                  <p className="mt-2 flex gap-1.5 text-[0.86rem] leading-[1.8] text-[#94a3b8]">
+                    <span aria-hidden="true" className="mt-[0.1em] text-[#cbd5e1]">×</span>
+                    {a.lack}
                   </p>
-                  <p className="mt-2 text-[0.86rem] leading-[1.85] text-white/75">{c.b}</p>
                 </li>
               ))}
             </ul>
+
+            {/* 解決＝ノビット */}
+            <div className="relative mt-6 overflow-hidden rounded-[22px] bg-[linear-gradient(120deg,#0b1d4a_0%,#0f5e5e_100%)] p-7 text-white shadow-[0_34px_60px_-40px_rgba(11,29,74,0.7)] sm:p-9">
+              <p className="text-[0.72rem] font-extrabold uppercase tracking-[0.2em] text-[#5eead4]">そこで、ノビットスタディ</p>
+              <p className="mt-3 text-balance text-[1.25rem] font-extrabold leading-[1.55] sm:text-[1.5rem]">
+                オリジナル教材を<span className="text-[#7dd3fc]">毎日</span>進め、
+                答案に<span className="text-[#fdba74]">毎日添削</span>。
+                習慣化アプリつきで、<span className="text-[#5eead4]">月¥4,980〜</span>。
+              </p>
+              <ul className="mt-6 grid gap-3 sm:grid-cols-3">
+                {[
+                  { t: "続く", b: "毎日の課題＋アプリで習慣に。" },
+                  { t: "手が動く", b: "自作教材で毎日書く。点に変わる。" },
+                  { t: "直る", b: "あなた専用の添削で軌道修正。" },
+                ].map((c) => (
+                  <li key={c.t} className="rounded-[14px] bg-white/[0.08] p-4 ring-1 ring-white/15">
+                    <p className="flex items-center gap-1.5 text-[0.98rem] font-extrabold">
+                      <span aria-hidden="true" className="text-[#5eead4]">◎</span>
+                      {c.t}
+                    </p>
+                    <p className="mt-1.5 text-[0.82rem] leading-[1.8] text-white/75">{c.b}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
+          <p className="mx-auto mt-6 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
+            授業や質問対応が必要な時期は、他のサービスと併用するのも手です。ノビットは「毎日続けて、毎日直す」役割に集中しています。
+          </p>
         </Container>
       </section>
 
-      {/* ───────── FEATURES（特徴） ───────── */}
-      <section id="features" className="cv-defer scroll-mt-24 bg-white">
-        <Container className="px-6 py-16 sm:py-24">
-          <div className="max-w-2xl">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
-              Features · ノビットスタディの特徴
+      {/* ───────── FLOW（1日のサイクル） ───────── */}
+      <section id="flow" className="cv-defer relative overflow-hidden scroll-mt-24 bg-[#f8fafc]">
+        <Container className="px-6 py-16 sm:py-24 lg:pb-44">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
+              Daily Loop · 1日のサイクル
             </p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              答案を仕上げる力を、毎日の添削で。
+              届く → 解く → 返る → 直す。<Penned color="#0d9488">毎日</Penned>くりかえす。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              「正解か」ではなく「本番で通用する答案か」を、一枚ずつ育てます。
+              1回10〜20分から。シンプルなループだから、無理なく続いて積み上がります。
             </p>
           </div>
-          <ul className="mt-10 grid gap-5 sm:grid-cols-2">
-            {features.map((f) => (
-              <li
-                key={f.no}
-                className="relative overflow-hidden rounded-[20px] bg-[#f8fafc] p-7 ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-32px_rgba(15,29,74,0.35)]"
-              >
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 top-0 h-[3px] bg-[linear-gradient(90deg,#1d4ed8,#0d9488_60%,transparent)]"
-                />
-                <span className="text-[0.78rem] font-extrabold tracking-[0.18em] text-[#0d9488]">
-                  {f.no}
+          <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {flow.map((s, i) => (
+              <li key={s.step} className="relative rounded-[20px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#eef6f6] px-3 py-1 text-[0.72rem] font-extrabold tracking-[0.1em] text-[#0f766e]">
+                  {s.step}
                 </span>
-                <p className="mt-3 text-[1.18rem] font-extrabold leading-[1.45] text-[#0b1d4a]">
-                  {f.title}
-                </p>
-                <p className="mt-3 text-[0.92rem] leading-[1.95] text-[#475569]">{f.body}</p>
+                <p className="mt-4 text-[1.08rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{s.title}</p>
+                <p className="mt-2 text-[0.88rem] leading-[1.9] text-[#475569]">{s.body}</p>
+                {i < flow.length - 1 ? (
+                  // 手書き風の矢印（人の手で描いた質感）
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 40 24"
+                    fill="none"
+                    className="absolute -right-4 top-1/2 hidden h-5 w-8 -translate-y-1/2 lg:block"
+                  >
+                    <path d="M2 12C12 11 22 11 33 12" stroke="#0d9488" strokeWidth="2.4" strokeLinecap="round" />
+                    <path d="M27 6C30 9 33 11 36 12C33 13 30 15 27 18" stroke="#0d9488" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                ) : null}
               </li>
             ))}
-          </ul>
+          </ol>
         </Container>
+        {/* 学習の流れを見守るノビットくん（デスクトップのみ） */}
+        <GroundedMascot variant="point" position="bottom-4 right-[4%] xl:right-[7%]" sizeClass="h-36 xl:h-40" />
       </section>
 
-      {/* ───────── APP（アプリ・保護者も安心） ───────── */}
-      <section id="app" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
+      {/* ───────── APP（習慣化のエンジン・保護者も安心） ───────── */}
+      <section id="app" className="cv-defer scroll-mt-24 bg-white">
         <Container className="px-6 py-16 sm:py-24">
           <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
             {/* アプリ画面 */}
@@ -683,20 +779,20 @@ export default function Home() {
 
             <div className="order-2 lg:order-2">
               <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
-                App · 公式アプリで完結
+                App · 続ける仕組み、まるごと
               </p>
               <h2 className="mt-3 text-balance text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-                毎日の学習も添削も、
+                習慣化は、根性ではなく
                 <br className="hidden sm:block" />
-                アプリひとつで。
+                アプリの仕事。
               </h2>
               <p className="mt-4 max-w-lg text-[0.98rem] leading-[1.9] text-[#334155]">
-                課題・提出・添削・進捗を、専用アプリ「ノビットスタディ」に集約。
+                課題・提出・添削・進捗を、専用アプリ「ノビットスタディ」に集約。連続記録やはなまるで、続けるほど楽しくなる。
                 <strong className="font-bold text-[#0b1d4a]">保護者も同じ画面で進捗を確認</strong>できるから、安心して任せられます。
               </p>
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {appPoints.map((p) => (
-                  <li key={p.title} className="rounded-[16px] bg-white p-5 ring-1 ring-[rgba(15,29,74,0.06)]">
+                  <li key={p.title} className="rounded-[16px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.06)]">
                     <p className="flex items-center gap-2 text-[1rem] font-bold leading-[1.4] text-[#0b1d4a]">
                       <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#0d9488]" />
                       {p.title}
@@ -711,142 +807,35 @@ export default function Home() {
       </section>
 
       {/* ───────── CORRECTION（添削の中身） ───────── */}
-      <section className="cv-defer relative overflow-hidden bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
-            backgroundSize: "30px 30px",
-          }}
-        />
+      <section className="cv-defer relative overflow-hidden bg-[#f8fafc]">
         <Container className="relative px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#5eead4]">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
               Correction · 添削でわかること
             </p>
-            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] sm:text-[2.2rem]">
-              1 枚の添削が、答案を仕上げる。
+            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+              「○×」では、終わらせない。
             </h2>
-            <p className="mt-4 text-[0.96rem] leading-[1.95] text-white/80">
-              ノビットの添削は「○×」で終わりません。提出した答案 1 枚から、次の 4 つが返ってきます。
+            <p className="mt-4 text-[0.96rem] leading-[1.95] text-[#475569]">
+              提出した答案 1 枚から、次の 4 つが返ってきます。これが「やりっぱなし」をなくす中身です。
             </p>
           </div>
           <ul className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {correctionPoints.map((c) => (
               <li
                 key={c.title}
-                className="rounded-[20px] bg-white/[0.07] p-6 ring-1 ring-white/15 backdrop-blur-sm"
+                className="rounded-[20px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_24px_44px_-36px_rgba(11,29,74,0.4)]"
               >
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#5eead4] text-[1rem] font-extrabold text-[#0b1d4a]">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#0b1d4a] text-[1rem] font-extrabold text-white">
                   {c.mark}
                 </span>
-                <p className="mt-4 text-[1.08rem] font-extrabold leading-[1.45]">{c.title}</p>
-                <p className="mt-2 text-[0.86rem] leading-[1.9] text-white/75">{c.body}</p>
+                <p className="mt-4 text-[1.08rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{c.title}</p>
+                <p className="mt-2 text-[0.86rem] leading-[1.9] text-[#475569]">{c.body}</p>
               </li>
             ))}
           </ul>
-          <p className="mx-auto mt-8 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-white/70">
+          <p className="mx-auto mt-8 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
             この 1 枚を毎日くりかえす。だから「分かったつもり」で止まらず、本番で書ける答案になります。
-          </p>
-        </Container>
-      </section>
-
-      {/* ───────── FLOW（学習の流れ） ───────── */}
-      <section id="flow" className="cv-defer relative overflow-hidden scroll-mt-24 bg-[#f8fafc]">
-        <Container className="px-6 py-16 sm:py-24 lg:pb-44">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
-              Flow · 学習の流れ
-            </p>
-            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              演習 → 提出 → 添削 → 復習を、毎日くりかえす。
-            </h2>
-            <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              シンプルなループだから、続く。自分のペースで積み上がります。
-            </p>
-          </div>
-          <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {flow.map((s, i) => (
-              <li
-                key={s.step}
-                className="relative rounded-[20px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)]"
-              >
-                <span className="inline-flex items-center gap-2 rounded-full bg-[#eef6f6] px-3 py-1 text-[0.72rem] font-extrabold tracking-[0.1em] text-[#0f766e]">
-                  {s.step}
-                </span>
-                <p className="mt-4 text-[1.08rem] font-extrabold leading-[1.45] text-[#0b1d4a]">
-                  {s.title}
-                </p>
-                <p className="mt-2 text-[0.88rem] leading-[1.9] text-[#475569]">{s.body}</p>
-                {i < flow.length - 1 ? (
-                  <span
-                    aria-hidden="true"
-                    className="absolute -right-3 top-1/2 hidden -translate-y-1/2 text-[1.3rem] text-[#0d9488] lg:block"
-                  >
-                    →
-                  </span>
-                ) : null}
-              </li>
-            ))}
-          </ol>
-        </Container>
-        {/* 学習の流れを見守るノビットくん（デスクトップのみ） */}
-        <GroundedMascot
-          variant="point"
-          position="bottom-4 right-[4%] xl:right-[7%]"
-          sizeClass="h-36 xl:h-40"
-        />
-      </section>
-
-      {/* ───────── DIFFERENCE（他の学び方との違い） ───────── */}
-      <section className="cv-defer bg-white">
-        <Container className="px-6 py-16 sm:py-24">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
-              Difference · 他の学び方との違い
-            </p>
-            <h2 className="mt-3 text-balance text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              授業を受ける塾ではなく、
-              <br className="hidden sm:block" />
-              答案を仕上げる塾。
-            </h2>
-            <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              集団塾・映像授業・個別指導と、ノビットは役割が違います。
-            </p>
-          </div>
-
-          <div className="mx-auto mt-10 max-w-4xl overflow-hidden rounded-[20px] ring-1 ring-[rgba(15,29,74,0.1)]">
-            <div className="grid grid-cols-[0.9fr_1.1fr_1.3fr] bg-[#0b1d4a] text-white">
-              <div className="px-3 py-3.5 text-[0.74rem] font-bold sm:px-5 sm:text-[0.84rem]">比較項目</div>
-              <div className="px-3 py-3.5 text-[0.74rem] font-semibold text-white/75 sm:px-5 sm:text-[0.84rem]">
-                一般的な塾・予備校
-              </div>
-              <div className="flex items-center gap-1.5 bg-[#0f5e5e] px-3 py-3.5 text-[0.78rem] font-extrabold sm:px-5 sm:text-[0.9rem]">
-                <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#5eead4]" />
-                ノビットスタディ
-              </div>
-            </div>
-            {comparisonRows.map((row, i) => (
-              <div
-                key={row.label}
-                className={`grid grid-cols-[0.9fr_1.1fr_1.3fr] ${i % 2 === 0 ? "bg-white" : "bg-[#f8fafc]"}`}
-              >
-                <div className="px-3 py-4 text-[0.8rem] font-bold text-[#0b1d4a] sm:px-5 sm:text-[0.9rem]">
-                  {row.label}
-                </div>
-                <div className="px-3 py-4 text-[0.8rem] leading-[1.7] text-[#64748b] sm:px-5 sm:text-[0.88rem]">
-                  {row.others}
-                </div>
-                <div className="border-l-2 border-[#0f5e5e]/15 bg-[#0f5e5e]/[0.04] px-3 py-4 text-[0.8rem] font-semibold leading-[1.7] text-[#0b1d4a] sm:px-5 sm:text-[0.88rem]">
-                  {row.nobit}
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
-            授業や質問対応が必要な時期は、他のサービスと併用するのも手です。ノビットは「答案を毎日仕上げる」役割に集中しています。
           </p>
         </Container>
       </section>
@@ -860,23 +849,23 @@ export default function Home() {
                 Materials · 教材・実績
               </p>
               <h2 className="mt-3 text-balance text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.3rem]">
-                教材を開発した本人が、
+                教材を書いた本人が、
                 <br className="hidden sm:block" />
-                直接添削します。
+                毎日<Penned>直接添削</Penned>します。
               </h2>
               <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
-                塾長は、KDP（Amazon）で
+                教材は、KDP（Amazon）で
                 <strong className="font-bold text-[#0b1d4a]">『考える力を育てる』シリーズ</strong>
-                ──理論編・演習編・入試対策編──を刊行する教材開発者です。
-                その設計思想でつくられたノビット公式演習本に取り組み、
-                答案を<strong className="font-bold text-[#0b1d4a]">開発者本人が毎日添削</strong>する。
+                ──理論編・演習編・入試対策編──を刊行する開発者の自作。
+                その設計思想でつくったノビット公式演習本に取り組み、
+                答案を<strong className="font-bold text-[#0b1d4a]">つくった本人が毎日添削</strong>する。
                 だから、教材と添削に一切のズレがありません。
               </p>
               <ul className="mt-6 grid gap-2 text-[0.92rem] leading-[1.85] text-[#334155]">
                 {[
                   "ノビット公式演習本で、記述前提の演習を毎日積む",
-                  "『考える力を育てる』シリーズの設計思想をカリキュラムへ",
-                  "市販書籍の購入も可能（毎日添削・学習管理はサービスとセット）",
+                  "『考える力を育てる』シリーズの設計思想をそのままカリキュラムへ",
+                  "市販書籍の購入も可能（毎日添削・習慣化アプリはサービスとセット）",
                 ].map((t) => (
                   <li key={t} className="flex gap-2.5">
                     <span aria-hidden="true" className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d9488]" />
@@ -936,7 +925,7 @@ export default function Home() {
           <div className="mt-16 sm:mt-20">
             <div className="mx-auto max-w-3xl text-center">
               <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#f97316]">
-                Books · 塾長の著書
+                Books · 開発者の著書
               </p>
               <h3 className="mt-3 text-[1.5rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.9rem]">
                 『考える力を育てる』シリーズ
@@ -1015,7 +1004,7 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ───────── MESSAGE（塾長メッセージ） ───────── */}
+      {/* ───────── MESSAGE（開発・添削担当より） ───────── */}
       <section className="cv-defer bg-[#f8fafc]">
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto grid max-w-4xl items-center gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
@@ -1030,7 +1019,7 @@ export default function Home() {
                   </span>
                   <div>
                     <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[#64748b]">
-                      塾長・教材開発者
+                      開発・添削担当
                     </p>
                     <p className="text-[1.2rem] font-extrabold leading-tight text-[#0b1d4a]">森 祐太</p>
                     <p className="mt-0.5 text-[0.78rem] font-semibold text-[#0f766e]">
@@ -1054,14 +1043,14 @@ export default function Home() {
                   href="/about"
                   className="mt-5 inline-flex items-center text-[0.86rem] font-semibold text-[#0f766e] hover:text-[#0b1d4a]"
                 >
-                  塾長と塾の考え方を見る <span aria-hidden="true" className="ml-1">→</span>
+                  つくり手の考え方を見る <span aria-hidden="true" className="ml-1">→</span>
                 </Link>
               </div>
             </div>
 
             <div className="order-1 lg:order-2">
               <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
-                Message · 塾長より
+                Message · つくり手より
               </p>
               <h2 className="mt-3 text-balance text-[1.6rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
                 「分かったつもり」を、終わりにする。
@@ -1069,7 +1058,7 @@ export default function Home() {
               <div className="mt-5 grid gap-4 text-[0.96rem] leading-[2] text-[#334155]">
                 <p>
                   私自身、公式暗記で物理に苦しみ、解説を読んでは「分かったつもり」で止まっていました。
-                  本当に力がついたのは、自分で答案を書き、どこが足りないかを一枚ずつ直してもらえたときでした。
+                  本当に力がついたのは、毎日自分で答案を書き、どこが足りないかを一枚ずつ直してもらえたときでした。
                 </p>
                 <p>
                   だからノビットは、授業をしません。私が書いた教材で毎日手を動かし、その答案を私が添削する。
@@ -1077,10 +1066,14 @@ export default function Home() {
                   「次にどう直すか」が分かる形でお返しします。
                 </p>
                 <p>
-                  派手さはありませんが、これがいちばん確実に伸びる方法だと信じています。
-                  自分のペースで、毎日少しずつ。あなたの答案を、本番で書ける答案に変えていきましょう。
+                  派手さはありません。でも、毎日続く仕組みと毎日のフィードバックこそが、いちばん確実に伸びる道だと信じています。
+                  自分のペースで、毎日少しずつ。一緒に積み上げていきましょう。
                 </p>
               </div>
+              {/* 手書きサイン風（人の手の気配） */}
+              <p className="mt-6 text-[1.4rem] font-extrabold italic tracking-wide text-[#0b1d4a]" style={{ fontFamily: "'Hiragino Mincho ProN', 'YuMincho', serif" }}>
+                森 祐太
+              </p>
             </div>
           </div>
         </Container>
@@ -1137,7 +1130,7 @@ export default function Home() {
       </section>
 
       {/* ───────── PRICING（料金・対応科目） ───────── */}
-      <section id="pricing" className="cv-defer scroll-mt-24 bg-white">
+      <section id="pricing" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
@@ -1159,7 +1152,7 @@ export default function Home() {
               g.items.map((it) => (
                 <span
                   key={it}
-                  className="rounded-full bg-[#f8fafc] px-3 py-1 text-[0.8rem] font-semibold text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]"
+                  className="rounded-full bg-white px-3 py-1 text-[0.8rem] font-semibold text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]"
                 >
                   <span aria-hidden="true" className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: g.color }} />
                   {it}
@@ -1176,7 +1169,7 @@ export default function Home() {
                 className={`relative flex flex-col rounded-[22px] p-6 sm:p-7 ${
                   t.popular
                     ? "bg-[#0b1d4a] text-white shadow-[0_34px_60px_-34px_rgba(11,29,74,0.7)] ring-1 ring-[#0b1d4a] sm:-translate-y-2"
-                    : "bg-[#f8fafc] text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]"
+                    : "bg-white text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]"
                 }`}
               >
                 {t.popular ? (
@@ -1217,7 +1210,7 @@ export default function Home() {
             4教科以上は ¥12,800 ＋ 1教科ごと +¥3,000。いつでも科目の追加・休会・解約OK（入会金・教材費なし）。
           </p>
 
-          {/* 他塾との比較 */}
+          {/* 費用感の比較 */}
           <div className="mx-auto mt-8 flex max-w-3xl flex-col items-center gap-3 rounded-[18px] bg-[#eef6f6] p-5 text-center ring-1 ring-[rgba(13,148,136,0.18)] sm:flex-row sm:justify-center sm:gap-6 sm:text-left">
             <p className="text-[0.86rem] leading-[1.7] text-[#475569]">
               大手の個別指導は <span className="font-bold text-[#0b1d4a]">1教科 週1で月¥15,000〜</span>。
@@ -1236,7 +1229,7 @@ export default function Home() {
       </section>
 
       {/* ───────── FAQ ───────── */}
-      <section id="faq" className="cv-defer relative overflow-hidden scroll-mt-24 bg-[#f8fafc]">
+      <section id="faq" className="cv-defer relative overflow-hidden scroll-mt-24 bg-white">
         <Container className="px-6 py-16 sm:py-24 lg:pb-40">
           <div className="mx-auto max-w-3xl">
             <div className="text-center">
@@ -1249,10 +1242,7 @@ export default function Home() {
             </div>
             <ul className="mt-10 grid gap-3">
               {faqItems.map((item) => (
-                <li
-                  key={item.question}
-                  className="rounded-[18px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)]"
-                >
+                <li key={item.question} className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
                   <p className="flex items-start gap-2.5 text-[1rem] font-bold leading-[1.6] text-[#0b1d4a]">
                     <span
                       aria-hidden="true"
@@ -1271,11 +1261,7 @@ export default function Home() {
           </div>
         </Container>
         {/* よくある質問のそばに立つノビットくん（デスクトップのみ） */}
-        <GroundedMascot
-          variant="wave"
-          position="bottom-3 left-[4%] xl:left-[9%]"
-          sizeClass="h-40 xl:h-44"
-        />
+        <GroundedMascot variant="wave" position="bottom-3 left-[4%] xl:left-[9%]" sizeClass="h-40 xl:h-44" />
       </section>
 
       {/* ───────── FINAL CTA ───────── */}
@@ -1293,16 +1279,8 @@ export default function Home() {
                 className="pointer-events-none absolute left-1/2 top-1/2 h-48 w-48 -translate-x-1/2 -translate-y-[55%] rounded-full bg-[radial-gradient(closest-side,rgba(94,234,212,0.4),rgba(94,234,212,0.12)_55%,transparent)] blur-md sm:h-56 sm:w-56"
               />
               <picture>
-                <source
-                  type="image/avif"
-                  srcSet="/brand/nobit-kun-wave-240.avif 240w, /brand/nobit-kun-wave-480.avif 480w"
-                  sizes="200px"
-                />
-                <source
-                  type="image/webp"
-                  srcSet="/brand/nobit-kun-wave-240.webp 240w, /brand/nobit-kun-wave-480.webp 480w"
-                  sizes="200px"
-                />
+                <source type="image/avif" srcSet="/brand/nobit-kun-wave-240.avif 240w, /brand/nobit-kun-wave-480.avif 480w" sizes="200px" />
+                <source type="image/webp" srcSet="/brand/nobit-kun-wave-240.webp 240w, /brand/nobit-kun-wave-480.webp 480w" sizes="200px" />
                 <img
                   src="/brand/nobit-kun-wave-480.webp"
                   alt="ノビットスタディのマスコット「ノビットくん」"
@@ -1313,7 +1291,6 @@ export default function Home() {
                   className="relative h-36 w-auto sm:h-44 lg:h-52"
                 />
               </picture>
-              {/* 接地のための淡い光のプラットフォーム */}
               <span
                 aria-hidden="true"
                 className="pointer-events-none absolute -bottom-1 left-1/2 h-3 w-28 -translate-x-1/2 rounded-[50%] bg-[radial-gradient(closest-side,rgba(94,234,212,0.55),transparent)] blur-[3px] sm:w-32"
@@ -1322,7 +1299,7 @@ export default function Home() {
 
             <div>
               <h2 className="text-balance text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.005em] sm:text-[2.4rem]">
-                答案を、毎日プロに見てもらう習慣を。
+                毎日の学習を、今日から仕組みに。
               </h2>
               <p className="mx-auto mt-5 max-w-xl text-[1rem] leading-[1.95] text-white/85 lg:mx-0">
                 必要な科目を選んで、初月半額ではじめられます。入会金・教材費は0円、面談や勧誘もありません。
@@ -1346,7 +1323,7 @@ export default function Home() {
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
             <p className="truncate text-[0.82rem] font-extrabold text-[#0b1d4a]">
-              理系の毎日添削・月¥4,980〜
+              毎日続く学習システム・月¥4,980〜
             </p>
             <p className="truncate text-[0.68rem] text-[#64748b]">いまなら初月半額／入会金0円</p>
           </div>
