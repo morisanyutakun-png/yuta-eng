@@ -208,33 +208,51 @@ const faqItems = homeFaq;
 
 /* ───────────────────────── reusable bits ───────────────────────── */
 
-/** 手書き風のマーカー下線。見出しの強調語に、人の手で引いた質感を添える。 */
+/**
+ * 採点ペン風のマーカー下線。ただの直線にせず、右端を「サッ」と跳ね上げ、
+ * 下に二度引きのにじみを重ねて、先生が答案に引いた一筆のような個性を出す。
+ */
 function PenUnderline({ className = "", color = "#f97316" }: { className?: string; color?: string }) {
   return (
     <svg
       aria-hidden="true"
-      viewBox="0 0 200 14"
+      viewBox="0 0 200 18"
       fill="none"
       preserveAspectRatio="none"
       className={className}
     >
+      {/* 本線：左から勢いよく引き、右端を上に跳ね上げる */}
       <path
-        d="M4 9.5C42 4.5 96 3.6 150 6C167 6.8 184 7.6 196 6.4"
+        d="M6 11C48 6.5 104 5.8 156 8C172 8.7 187 8.6 196 4.5"
         stroke={color}
         strokeWidth="5"
         strokeLinecap="round"
-        opacity="0.85"
+        strokeLinejoin="round"
+      />
+      {/* 二度引きのにじみ：少し下に、薄く。felt-tip の質感 */}
+      <path
+        d="M18 15.5C66 13 128 13 182 14.2"
+        stroke={color}
+        strokeWidth="2.6"
+        strokeLinecap="round"
+        opacity="0.38"
       />
     </svg>
   );
 }
 
-/** 強調語＋手書き下線をまとめた小コンポーネント。 */
+/**
+ * 強調語＋採点ペン下線。下線は文字のベースライン直下に置き、グリフへ重ねない。
+ * inline-block 幅＝文字幅なので、語にぴったり沿う。
+ */
 function Penned({ children, color }: { children: React.ReactNode; color?: string }) {
   return (
     <span className="relative inline-block whitespace-nowrap">
       {children}
-      <PenUnderline color={color} className="absolute -bottom-1 left-0 h-[0.5em] w-full" />
+      <PenUnderline
+        color={color}
+        className="pointer-events-none absolute left-0 top-full -mt-[0.14em] h-[0.42em] w-full"
+      />
     </span>
   );
 }
