@@ -128,18 +128,14 @@ const alternatives = [
   { label: "一般的な通信教育", lack: "教材は既製、添削は数週間に一度" },
 ];
 
+// あらゆる段階の生徒に「自分のことだ」と思ってもらえるよう、入門〜難関までを広く。
 const forYouFit = [
-  "毎日コツコツを、仕組みで続けたい",
-  "解けるけど、記述答案に自信がない",
-  "やりっぱなしをやめて、弱点を直したい",
-  "難関大・名大の記述対策を本気でしたい",
-  "教材は持っているが、答案が書けるようにならない",
-];
-
-const forYouNotFit = [
-  "対面授業・ライブ授業を受けたい",
-  "その場で質問してすぐ答えてほしい（現状は未提供）",
-  "自分で手を動かす演習はしたくない",
+  { icon: "🌱", title: "何から手をつければいいか分からない", body: "今日やる1枚が毎日届くから、迷わず始められます。" },
+  { icon: "🗓️", title: "毎日続けられる自信が、まだない", body: "続ける仕組みごとお渡しします。続け方から一緒に。" },
+  { icon: "✍️", title: "解けるのに、記述答案に自信がない", body: "途中式・考え方まで、毎日の添削で仕上げます。" },
+  { icon: "⏱️", title: "部活や習い事で、時間が取りにくい", body: "1回10〜20分から。スキマ時間で積み上がります。" },
+  { icon: "🎯", title: "難関大・名大の記述まで本気で伸ばしたい", body: "基礎から入試レベルまで、切れ目なく対応します。" },
+  { icon: "👪", title: "子どもの学習を、そっと見守りたい", body: "保護者も同じアプリで進捗を確認できて安心です。" },
 ];
 
 // 対応科目（理系を中心に英語まで）。
@@ -1173,52 +1169,49 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ───────── FOR YOU（向き・不向き） ───────── */}
+      {/* ───────── FOR YOU（こんな方へ・やわらかく万人受け） ───────── */}
       <section className="cv-defer bg-white">
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
-              For You · 向いている方・向いていない方
+              For You · こんな方へ
             </p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              正直に、お伝えします。
+              得意でも、苦手でも。<Penned color="#0d9488">あなたのペース</Penned>で。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              合わない方に無理におすすめはしません。まずは相性をご確認ください。
+              今の成績も、得意・苦手も問いません。「毎日少しずつ続けたい」——その気持ちさえあれば、十分です。
             </p>
           </div>
-          <div className="mx-auto mt-10 grid max-w-4xl gap-5 lg:grid-cols-2">
-            <div className="rounded-[20px] bg-[#eef6f6] p-7 ring-1 ring-[rgba(13,148,136,0.2)]">
-              <p className="flex items-center gap-2 text-[1.05rem] font-extrabold text-[#0f766e]">
-                <span aria-hidden="true" className="grid h-6 w-6 place-items-center rounded-full bg-[#0d9488] text-[0.8rem] text-white">○</span>
-                向いている方
-              </p>
-              <ul className="mt-4 grid gap-2.5">
-                {forYouFit.map((t) => (
-                  <li key={t} className="flex gap-2.5 text-[0.92rem] leading-[1.8] text-[#0b1d4a]">
-                    <span aria-hidden="true" className="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d9488]" />
-                    <span>{t}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-[20px] bg-[#f8fafc] p-7 ring-1 ring-[rgba(15,29,74,0.08)]">
-              <p className="flex items-center gap-2 text-[1.05rem] font-extrabold text-[#64748b]">
-                <span aria-hidden="true" className="grid h-6 w-6 place-items-center rounded-full bg-[#94a3b8] text-[0.8rem] text-white">△</span>
-                今は向いていない方
-              </p>
-              <ul className="mt-4 grid gap-2.5">
-                {forYouNotFit.map((t) => (
-                  <li key={t} className="flex gap-2.5 text-[0.92rem] leading-[1.8] text-[#475569]">
-                    <span aria-hidden="true" className="mt-[0.45em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#cbd5e1]" />
-                    <span>{t}</span>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-4 text-[0.8rem] leading-[1.75] text-[#94a3b8]">
-                ※ 質問対応・面談は将来的に拡充予定です。
-              </p>
-            </div>
+
+          <ul className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {forYouFit.map((f) => (
+              <li
+                key={f.title}
+                className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_44px_-34px_rgba(15,29,74,0.4)]"
+              >
+                <span aria-hidden="true" className="text-[1.6rem]">{f.icon}</span>
+                <p className="mt-2 text-[1rem] font-bold leading-[1.5] text-[#0b1d4a]">「{f.title}」</p>
+                <p className="mt-2 text-[0.88rem] leading-[1.85] text-[#475569]">{f.body}</p>
+              </li>
+            ))}
+          </ul>
+
+          {/* 正直な一言は、冷たい「不向き」ではなく、やさしい相談導線として */}
+          <div className="mx-auto mt-8 flex max-w-3xl flex-col items-center gap-4 rounded-[20px] bg-[#eef6f6] p-6 text-center ring-1 ring-[rgba(13,148,136,0.18)] sm:flex-row sm:items-center sm:gap-6 sm:text-left">
+            <span aria-hidden="true" className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white text-[1.5rem] shadow-[0_10px_20px_-12px_rgba(13,148,136,0.6)]">
+              💬
+            </span>
+            <p className="text-[0.92rem] leading-[1.9] text-[#334155]">
+              いまは対面授業やその場での質問対応は行わず、<strong className="font-bold text-[#0b1d4a]">「自分のペースで毎日進める」</strong>ことに集中しています。
+              「うちの子に合うかな？」と迷ったら、どんな小さなことでも気軽にご相談ください。
+            </p>
+            <Link
+              href="/contact"
+              className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full border border-[#0f766e] px-5 text-[0.88rem] font-bold text-[#0f766e] transition hover:bg-[#0f766e] hover:text-white"
+            >
+              相談してみる
+            </Link>
           </div>
         </Container>
       </section>
