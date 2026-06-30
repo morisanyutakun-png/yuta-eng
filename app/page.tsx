@@ -55,11 +55,21 @@ const pillars = [
   },
 ];
 
-// 価値をひと目で伝える3ステップ（解く → 出す → 進む）。実物のプリント画像で見せる。
-const steps = [
+// 価値をひと目で伝えるステップ（解く → 出す → 返る → 進む）。実物のプリント画像で見せる。
+type Step = {
+  no: string;
+  verb: string;
+  caption: string;
+  base: string;
+  tilt: string;
+  stamp?: string;
+  tag?: string;
+};
+const steps: Step[] = [
   { no: "01", verb: "解く", caption: "プリント教材で答案をつくる", base: "print-problem", tilt: "-rotate-2" },
-  { no: "02", verb: "返る", caption: "出すと、翌日に添削が返る", base: "print-solution", tilt: "rotate-2", stamp: "添削" },
-  { no: "03", verb: "進む", caption: "合格したら、次の教材へ", base: "print-cover", tilt: "-rotate-1", stamp: "合格" },
+  { no: "02", verb: "出す", caption: "提出と同時に解答・解説が届く（その場で自己採点）", base: "print-solution", tilt: "rotate-2", tag: "解答・解説" },
+  { no: "03", verb: "返る", caption: "翌日までに、先生の添削が返ってくる", base: "print-problem", tilt: "-rotate-2", stamp: "添削" },
+  { no: "04", verb: "進む", caption: "合格したら、次の教材へ", base: "print-cover", tilt: "-rotate-1", stamp: "合格" },
 ];
 
 // 1日のサイクル（習慣ループ）。
@@ -71,13 +81,13 @@ const flow = [
   },
   {
     step: "STEP 2",
-    title: "手を動かして解く",
-    body: "自作教材で、理解して書く。10〜20分から。途中式・考え方ごと、まるごと答案にします。",
+    title: "解いて、出す",
+    body: "自作教材で理解して書く。提出と同時に解答・解説が届くので、その場で自己採点まで完了します。",
   },
   {
     step: "STEP 3",
-    title: "出す → 翌日、添削が返る",
-    body: "提出した答案に、あなた専用の添削が返却。スマホでそのまま見返せます。",
+    title: "翌日までに添削が返る",
+    body: "自己採点だけで終わりません。翌日までに、あなた専用の添削が返却。スマホでそのまま見返せます。",
   },
   {
     step: "STEP 4",
@@ -549,8 +559,8 @@ export default function Home() {
               </h1>
 
               <p className="mx-auto mt-6 max-w-md text-[1.08rem] leading-[1.8] text-[#334155] sm:text-[1.15rem] lg:mx-0">
-                答案を出すと、翌日には<strong className="font-bold text-[#0b1d4a]">添削</strong>。
-                合格したら、次の教材へ。
+                出すと同時に<strong className="font-bold text-[#0b1d4a]">解答・解説</strong>。
+                翌日までに、<strong className="font-bold text-[#0b1d4a]">先生の添削</strong>も。
               </p>
 
               <div className="mt-7 flex flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0">
@@ -589,37 +599,41 @@ export default function Home() {
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
-              3 STEP · やることは、これだけ
+              4 STEP · やることは、これだけ
             </p>
             <h2 className="mt-3 text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.4rem]">
-              <span className="text-[#1d4ed8]">解く</span> →{" "}
-              <span className="text-[#0d9488]">返る</span> →{" "}
-              <span className="text-[#ea580c]">進む</span>。
+              解いて、出して、
+              <Penned color="#ea580c">進む</Penned>。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.9] text-[#475569]">
-              この3ステップを毎日くりかえすだけ。それが、いちばん確実に伸びる学習です。
+              出した瞬間に解答・解説、翌日までに先生の添削。この流れを毎日くりかえすだけです。
             </p>
           </div>
 
-          <ol className="mx-auto mt-12 grid max-w-5xl items-stretch gap-y-10 sm:gap-y-6 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:gap-x-2">
+          <ol className="mx-auto mt-12 grid max-w-5xl items-stretch gap-y-10 sm:gap-y-6 lg:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] lg:gap-x-1">
             {steps.map((s, i) => (
               <li key={s.no} className="contents">
                 <div className="group relative flex flex-col items-center text-center">
-                  {/* 実物プリント＋スタンプ */}
+                  {/* 実物プリント＋スタンプ／タグ */}
                   <div className={`relative ${s.tilt} transition group-hover:rotate-0`}>
-                    <div className="w-[180px] overflow-hidden rounded-[12px] bg-white shadow-[0_30px_50px_-30px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.12)] sm:w-[200px]">
+                    <div className="w-[176px] overflow-hidden rounded-[12px] bg-white shadow-[0_30px_50px_-30px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.12)]">
                       <PrintImage
                         base={s.base}
                         alt={`ステップ${s.no} ${s.verb}：${s.caption}`}
-                        sizes="200px"
+                        sizes="176px"
                         className="block h-auto w-full"
                       />
                     </div>
                     {s.stamp ? (
                       <Stamp
                         label={s.stamp}
-                        className="absolute -right-3 -top-3 h-16 w-16 text-[0.92rem] sm:-right-4 sm:-top-4 sm:h-[4.6rem] sm:w-[4.6rem] sm:text-[1.05rem]"
+                        className="absolute -right-3 -top-3 h-[3.6rem] w-[3.6rem] text-[0.92rem]"
                       />
+                    ) : null}
+                    {s.tag ? (
+                      <span className="absolute -right-2 -top-2 -rotate-6 rounded-full bg-[#0d9488] px-2.5 py-1 text-[0.66rem] font-extrabold text-white shadow-[0_8px_16px_-8px_rgba(13,148,136,0.8)]">
+                        {s.tag}
+                      </span>
                     ) : null}
                     {/* ステップ番号バッジ */}
                     <span className="absolute -left-3 -top-3 grid h-10 w-10 place-items-center rounded-full bg-[#0b1d4a] text-[0.95rem] font-extrabold text-white ring-4 ring-white">
@@ -627,13 +641,13 @@ export default function Home() {
                     </span>
                   </div>
                   <p className="mt-6 text-[1.5rem] font-extrabold leading-none text-[#0b1d4a]">{s.verb}</p>
-                  <p className="mt-2 text-[0.9rem] leading-[1.7] text-[#475569]">{s.caption}</p>
+                  <p className="mt-2 max-w-[176px] text-[0.86rem] leading-[1.7] text-[#475569]">{s.caption}</p>
                 </div>
 
                 {/* ステップ間の矢印 */}
                 {i < steps.length - 1 ? (
                   <div aria-hidden="true" className="flex items-center justify-center">
-                    <span className="text-[1.8rem] font-bold text-[#0d9488] lg:rotate-0">
+                    <span className="text-[1.7rem] font-bold text-[#0d9488]">
                       <span className="hidden lg:inline">→</span>
                       <span className="lg:hidden">↓</span>
                     </span>
@@ -643,9 +657,9 @@ export default function Home() {
             ))}
           </ol>
 
-          <p className="mx-auto mt-10 max-w-xl text-center text-[0.92rem] leading-[1.8] text-[#475569]">
-            あとは合格したら、また次の1枚へ。
-            <strong className="font-bold text-[#0b1d4a]">「解く→返る→進む」のループ</strong>が、毎日の学習を仕組みに変えます。
+          <p className="mx-auto mt-10 max-w-2xl text-center text-[0.92rem] leading-[1.8] text-[#475569]">
+            <strong className="font-bold text-[#0b1d4a]">出した瞬間に自己採点、翌日までにプロの添削。</strong>
+            この二段構えのフィードバックが、毎日の学習を確実な伸びに変えます。
           </p>
           <div className="mt-8 flex justify-center">
             <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
@@ -751,10 +765,10 @@ export default function Home() {
               Positioning · ノビットの立ち位置
             </p>
             <h2 className="mt-3 text-balance text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              どれも続かなかった人の、<Penned color="#1d4ed8">最後の選択肢</Penned>。
+              続いて、直って、<Penned color="#1d4ed8">ちゃんと伸びる</Penned>。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              世の中の学び方には、それぞれ「物足りなさ」があります。ノビットは、その隙間を埋めるために生まれました。
+              どの学び方にもある「物足りなさ」を、ノビットはすべて解消します。これが、毎日の学習のいちばんいい形です。
             </p>
           </div>
 
