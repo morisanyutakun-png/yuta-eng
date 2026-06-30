@@ -1377,54 +1377,123 @@ export default function Home() {
             )}
           </div>
 
-          {/* 料金プラン */}
-          <div className="mx-auto mt-10 grid max-w-4xl gap-5 sm:grid-cols-3">
-            {pricingTiers.map((t) => (
-              <div
-                key={t.count}
-                className={`relative flex flex-col rounded-[22px] p-6 sm:p-7 ${
-                  t.popular
-                    ? "bg-[#0b1d4a] text-white shadow-[0_34px_60px_-34px_rgba(11,29,74,0.7)] ring-1 ring-[#0b1d4a] sm:-translate-y-2"
-                    : "bg-white text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]"
-                }`}
-              >
-                {t.popular ? (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-[#f97316] px-3 py-1 text-[0.66rem] font-extrabold tracking-[0.06em] text-white shadow-[0_8px_18px_-8px_rgba(234,88,12,0.7)]">
-                    {t.note}
-                  </span>
-                ) : null}
-                <p className={`text-[0.82rem] font-bold ${t.popular ? "text-[#7dd3fc]" : "text-[#0f766e]"}`}>
-                  {t.count}
+          {/* 料金表（採点表ふう・方眼＋手書き注釈で独自性を出す） */}
+          <div className="mx-auto mt-10 max-w-2xl">
+            <div className="overflow-hidden rounded-[24px] bg-white shadow-[0_44px_90px_-55px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.1)]">
+              {/* 採点表の見出し帯 */}
+              <div className="flex items-center justify-between bg-[linear-gradient(120deg,#0b1d4a_0%,#0f5e5e_100%)] px-5 py-4 text-white sm:px-7">
+                <p className="flex items-center gap-2 text-[0.98rem] font-extrabold tracking-wide">
+                  <span aria-hidden="true">📋</span> 料金表
                 </p>
-                <p className="mt-2 flex items-baseline gap-1">
-                  <span className="text-[0.95rem] font-bold">¥</span>
-                  <span className="text-[2.4rem] font-extrabold leading-none tracking-[-0.02em]">{t.price}</span>
-                  <span className={`text-[0.84rem] font-semibold ${t.popular ? "text-white/70" : "text-[#64748b]"}`}>/月</span>
+                <p className="text-[0.74rem] text-white/80">教科ごとの月額・税込</p>
+              </div>
+
+              {/* 本体（方眼背景） */}
+              <div className="relative px-5 py-7 sm:px-8 sm:py-9">
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    backgroundImage:
+                      "linear-gradient(rgba(13,148,136,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(13,148,136,0.06) 1px, transparent 1px)",
+                    backgroundSize: "22px 22px",
+                  }}
+                />
+
+                {/* アンカー価格 */}
+                <div className="relative text-center">
+                  <p className="text-[0.82rem] font-bold text-[#0f766e]">1教科から、必要な分だけ</p>
+                  <p className="mt-1 flex items-end justify-center gap-1.5 text-[#0b1d4a]">
+                    <span className="pb-2.5 text-[1.05rem] font-bold">月</span>
+                    <Penned color="#f97316">
+                      <span className="text-[3.1rem] font-extrabold leading-none tracking-[-0.02em] sm:text-[3.6rem]">
+                        ¥4,980
+                      </span>
+                    </Penned>
+                    <span className="pb-2.5 text-[1.05rem] font-bold">〜</span>
+                  </p>
+                  <p className="mt-3.5">
+                    <span className="inline-flex -rotate-2 items-center gap-1.5 rounded-[10px] bg-[#fff1e6] px-3 py-1 text-[0.78rem] font-extrabold text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">
+                      🔖 いまなら初月はさらに半額
+                    </span>
+                  </p>
+                </div>
+
+                {/* 教科ごとの足し算（行）。足すほど1教科あたりが安くなる価値を見せる。 */}
+                <ul className="relative mt-7 space-y-2.5">
+                  {pricingTiers.map((t) => {
+                    const first = (Number(t.price.replace(",", "")) / 2).toLocaleString();
+                    return (
+                      <li
+                        key={t.count}
+                        className={`relative flex items-center gap-3 rounded-[14px] px-3.5 py-3 sm:gap-4 sm:px-4 ${
+                          t.popular
+                            ? "bg-[#fff7ed] ring-1 ring-[rgba(234,88,12,0.35)]"
+                            : "bg-[#f8fafc] ring-1 ring-[rgba(15,29,74,0.06)]"
+                        }`}
+                      >
+                        <span
+                          className={`grid h-11 w-14 shrink-0 place-items-center rounded-[10px] text-[0.82rem] font-extrabold leading-tight ${
+                            t.popular ? "bg-[#f97316] text-white" : "bg-white text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.1)]"
+                          }`}
+                        >
+                          {t.count}
+                        </span>
+                        <span className="flex flex-1 items-baseline gap-1">
+                          <span className="text-[0.9rem] font-bold text-[#0b1d4a]">¥</span>
+                          <span className="text-[1.7rem] font-extrabold leading-none tracking-[-0.02em] text-[#0b1d4a] sm:text-[2rem]">
+                            {t.price}
+                          </span>
+                          <span className="text-[0.76rem] font-semibold text-[#64748b]">/月</span>
+                        </span>
+                        <span className="text-right">
+                          <span className="block text-[0.74rem] font-semibold text-[#0f766e]">
+                            1教科 ¥{t.per}
+                          </span>
+                          <span className="block text-[0.72rem] text-[#94a3b8]">初月 ¥{first}</span>
+                        </span>
+                        {t.popular ? (
+                          <span className="absolute -right-2 -top-3 -rotate-6 rounded-[8px] bg-[#0b1d4a] px-2.5 py-1 text-[0.62rem] font-extrabold tracking-[0.04em] text-white shadow-[0_8px_16px_-8px_rgba(11,29,74,0.8)]">
+                            いちばん人気
+                          </span>
+                        ) : null}
+                      </li>
+                    );
+                  })}
+
+                  {/* 4教科〜の加算ルール */}
+                  <li className="flex items-center gap-3 rounded-[14px] border border-dashed border-[rgba(15,29,74,0.18)] bg-white/60 px-3.5 py-3 sm:gap-4 sm:px-4">
+                    <span className="grid h-11 w-14 shrink-0 place-items-center rounded-[10px] bg-white text-[0.8rem] font-extrabold text-[#475569] ring-1 ring-[rgba(15,29,74,0.1)]">
+                      4教科〜
+                    </span>
+                    <span className="flex-1 text-[0.84rem] leading-[1.6] text-[#475569]">
+                      ¥12,800 ＋ <strong className="font-bold text-[#0b1d4a]">1教科ごと +¥3,000</strong>
+                    </span>
+                  </li>
+                </ul>
+
+                <p className="relative mt-4 flex items-center justify-center gap-1.5 text-center text-[0.82rem] font-semibold text-[#0f766e]">
+                  <span aria-hidden="true">↑</span>
+                  足すほど、<span className="text-[#ea580c]">1教科あたりはおトク</span>になります。
                 </p>
-                <p className={`mt-1.5 text-[0.78rem] ${t.popular ? "text-white/70" : "text-[#64748b]"}`}>
-                  1教科あたり ¥{t.per}
-                </p>
-                <p className={`mt-3 inline-flex w-fit items-center gap-1 rounded-full px-2.5 py-1 text-[0.72rem] font-bold ${t.popular ? "bg-white/15 text-white" : "bg-[#fff1e6] text-[#ea580c]"}`}>
-                  初月は半額 ¥{(Number(t.price.replace(",", "")) / 2).toLocaleString()}
-                </p>
-                <div className="mt-5">
+
+                {/* パネル内CTA */}
+                <div className="relative mt-6">
                   <Link
                     href="/apply"
-                    className={`flex min-h-11 items-center justify-center rounded-full px-5 text-[0.9rem] font-bold transition ${
-                      t.popular
-                        ? "bg-[#f97316] text-white hover:bg-[#ea580c]"
-                        : "border border-[#0b1d4a] text-[#0b1d4a] hover:bg-[#0b1d4a] hover:text-white"
-                    }`}
+                    className="group/cta relative flex min-h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-full text-[0.98rem] font-bold text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px"
                   >
-                    科目を選んで申し込む
+                    <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
+                    <span className="relative">科目を選んで申し込む（初月半額）</span>
+                    <span aria-hidden="true" className="relative">→</span>
                   </Link>
+                  <p className="mt-3 text-center text-[0.74rem] text-[#94a3b8]">
+                    入会金・教材費0円／いつでも科目の追加・休会・解約OK。
+                  </p>
                 </div>
               </div>
-            ))}
+            </div>
           </div>
-          <p className="mx-auto mt-5 max-w-3xl text-center text-[0.82rem] leading-[1.7] text-[#64748b]">
-            4教科以上は ¥12,800 ＋ 1教科ごと +¥3,000。いつでも科目の追加・休会・解約OK（入会金・教材費なし）。
-          </p>
 
           {/* 費用感の比較 */}
           <div className="mx-auto mt-8 flex max-w-3xl flex-col items-center gap-3 rounded-[18px] bg-[#eef6f6] p-5 text-center ring-1 ring-[rgba(13,148,136,0.18)] sm:flex-row sm:justify-center sm:gap-6 sm:text-left">
