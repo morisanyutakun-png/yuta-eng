@@ -24,22 +24,10 @@ export const metadata: Metadata = createPageMetadata({
 
 // 独学・受け身の学びが続かない理由＝「習慣」と「フィードバック」の欠落。
 const problems = [
-  {
-    title: "参考書は買った。でも、続かない。",
-    body: "独学は「今日どれをどれだけやるか」を毎日決めるのが大変。気づけば三日坊主。続かないのは意志ではなく、仕組みが無いからです。",
-  },
-  {
-    title: "解いて終わり、やりっぱなし。",
-    body: "丸付けはしても、自分の答案のどこがズレているかは誰も直してくれない。間違いの「クセ」に気づけないまま、同じ失点をくり返します。",
-  },
-  {
-    title: "映像授業は「見て分かった気」になる。",
-    body: "インプットは増えるのに、いざ自分で書くと手が止まる。「分かる」と「書ける」は別の力。手を動かさない学びは点に変わりません。",
-  },
-  {
-    title: "毎日の勉強が、仕組みになっていない。",
-    body: "やる気まかせでムラがある。でも「今日やる1枚」が決まっていて、出せば必ず返ってくるなら——人は自然と続けられます。",
-  },
+  { title: "参考書は買った。でも、続かない。", body: "続かないのは意志ではなく、仕組みが無いから。" },
+  { title: "解いて終わり、やりっぱなし。", body: "ズレを誰も直してくれず、同じ失点をくり返す。" },
+  { title: "映像授業は「見て分かった気」。", body: "手が動かないと、点には変わらない。" },
+  { title: "勉強が、仕組みになっていない。", body: "「今日やる1枚」が決まれば、人は続けられる。" },
 ];
 
 // ノビットの価値＝3本柱。教材 × 習慣化 × 添削。
@@ -49,22 +37,29 @@ const pillars = [
     tag: "教材",
     color: "#1d4ed8",
     title: "自作のオリジナル教材を、毎日サイズで。",
-    body: "市販の一般教材ではありません。16冊を刊行した開発者が「理解で解く」設計で書き下ろし、毎日少しずつ進む大きさに分割。今日やる分が、いつも目の前にあります。",
+    body: "16冊を刊行した開発者が「理解で解く」設計で書き下ろし。毎日少しずつ進む大きさに分割します。",
   },
   {
     no: "02",
     tag: "習慣化",
     color: "#0d9488",
     title: "「今日やること」が決まっているから、続く。",
-    body: "専用アプリが毎日1枚の課題を配信。連続記録・はなまる・称号で、勉強が自然と生活のリズムになります。続ける仕組みごと、お渡しします。",
+    body: "専用アプリが毎日1枚を配信。連続記録・はなまる・称号で、勉強が生活のリズムになります。",
   },
   {
     no: "03",
     tag: "添削",
     color: "#ea580c",
     title: "出した答案に、毎日あなた専用の指摘。",
-    body: "提出した答案を、教材を書いた本人が添削。途中式・考え方・減点ポイントまで、どこをどう直すかが分かる形で返す。やりっぱなしを、なくします。",
+    body: "教材を書いた本人が添削。途中式・考え方・減点ポイントまで、直し方が分かる形で返します。",
   },
+];
+
+// 価値をひと目で伝える3ステップ（解く → 出す → 進む）。実物のプリント画像で見せる。
+const steps = [
+  { no: "01", verb: "解く", caption: "プリント教材で答案をつくる", base: "print-problem", tilt: "-rotate-2" },
+  { no: "02", verb: "返る", caption: "出すと、翌日に添削が返る", base: "print-solution", tilt: "rotate-2", stamp: "添削" },
+  { no: "03", verb: "進む", caption: "合格したら、次の教材へ", base: "print-cover", tilt: "-rotate-1", stamp: "合格" },
 ];
 
 // 1日のサイクル（習慣ループ）。
@@ -240,6 +235,19 @@ function Penned({ children, color }: { children: React.ReactNode; color?: string
     <span className="relative inline-block whitespace-nowrap">
       {children}
       <PenUnderline color={color} className="absolute -bottom-1 left-0 h-[0.5em] w-full" />
+    </span>
+  );
+}
+
+/** 答案に押す赤い「合格／返却」スタンプ風。アナログな採点の質感を出す。 */
+function Stamp({ label, className = "" }: { label: string; className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`grid -rotate-12 place-items-center rounded-full border-[3px] border-[#e11d48] font-extrabold leading-none tracking-[0.08em] text-[#e11d48] shadow-[0_6px_14px_-8px_rgba(225,29,72,0.6)] ${className}`}
+      style={{ fontFamily: "'Hiragino Mincho ProN','YuMincho',serif" }}
+    >
+      {label}
     </span>
   );
 }
@@ -509,24 +517,22 @@ export default function Home() {
             <div className="min-w-0 text-center lg:text-left">
               <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.7rem] font-bold tracking-[0.06em] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.25)] sm:text-[0.76rem]">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
-                教材 × 習慣化 × 添削／デジタル通信添削
+                デジタル通信添削
               </p>
 
-              <h1 className="mt-5 text-[2.3rem] font-extrabold leading-[1.18] tracking-[-0.02em] text-[#0b1d4a] sm:text-[2.9rem] lg:text-[3.2rem]">
-                <span className="block">毎日の学習を、</span>
-                <span className="block">
-                  <Penned color="#f97316">
-                    <span className="bg-[linear-gradient(95deg,#1d4ed8_0%,#0d9488_55%,#16a34a_100%)] bg-clip-text text-transparent">
-                      仕組みにする。
-                    </span>
-                  </Penned>
-                </span>
+              <h1 className="mt-5 text-[2.5rem] font-extrabold leading-[1.12] tracking-[-0.02em] text-[#0b1d4a] sm:text-[3.1rem] lg:text-[3.5rem]">
+                解いて、出して、
+                <br />
+                <Penned color="#f97316">
+                  <span className="bg-[linear-gradient(95deg,#1d4ed8_0%,#0d9488_55%,#16a34a_100%)] bg-clip-text text-transparent">
+                    進む。
+                  </span>
+                </Penned>
               </h1>
 
-              <p className="mx-auto mt-6 max-w-md text-[1.05rem] leading-[1.85] text-[#334155] sm:text-[1.12rem] lg:mx-0">
-                塾でも参考書でもない、続く学習システム。
-                自作教材を<strong className="font-bold text-[#0b1d4a]">毎日1枚ずつ</strong>進め、
-                出した答案には<strong className="font-bold text-[#0b1d4a]">毎日添削</strong>。
+              <p className="mx-auto mt-6 max-w-md text-[1.08rem] leading-[1.8] text-[#334155] sm:text-[1.15rem] lg:mx-0">
+                答案を出すと、翌日には<strong className="font-bold text-[#0b1d4a]">添削</strong>。
+                合格したら、次の教材へ。
               </p>
 
               <div className="mt-7 flex flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0">
@@ -557,18 +563,74 @@ export default function Home() {
             </div>
           </div>
 
-          {/* カテゴリ定義の帯 */}
-          <div className="relative -mt-2 pb-12 sm:pb-16">
-            <div className="mx-auto flex max-w-3xl flex-col items-center gap-2 rounded-[18px] bg-white/70 px-5 py-4 text-center ring-1 ring-[rgba(15,29,74,0.08)] backdrop-blur-sm sm:flex-row sm:justify-center sm:gap-4 sm:text-left">
-              <span className="shrink-0 rounded-full bg-[#0b1d4a] px-3 py-1 text-[0.7rem] font-extrabold tracking-[0.06em] text-white">
-                ノビットとは
-              </span>
-              <p className="text-[0.92rem] leading-[1.8] text-[#334155]">
-                オリジナル教材を<strong className="font-bold text-[#0b1d4a]">毎日</strong>進め、
-                出した答案に<strong className="font-bold text-[#0b1d4a]">毎日</strong>添削が返る——
-                習慣化アプリつきの<strong className="font-bold text-[#0f766e]">デジタル通信添削サービス</strong>です。
-              </p>
-            </div>
+        </Container>
+      </section>
+
+      {/* ───────── STEPS（やることはこれだけ・実物プリントで見せる） ───────── */}
+      <section id="steps" className="cv-defer scroll-mt-24 bg-white">
+        <Container className="px-6 py-16 sm:py-24">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
+              3 STEP · やることは、これだけ
+            </p>
+            <h2 className="mt-3 text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.4rem]">
+              <span className="text-[#1d4ed8]">解く</span> →{" "}
+              <span className="text-[#0d9488]">返る</span> →{" "}
+              <span className="text-[#ea580c]">進む</span>。
+            </h2>
+            <p className="mt-3 text-[0.96rem] leading-[1.9] text-[#475569]">
+              この3ステップを毎日くりかえすだけ。それが、いちばん確実に伸びる学習です。
+            </p>
+          </div>
+
+          <ol className="mx-auto mt-12 grid max-w-5xl items-stretch gap-y-10 sm:gap-y-6 lg:grid-cols-[1fr_auto_1fr_auto_1fr] lg:gap-x-2">
+            {steps.map((s, i) => (
+              <li key={s.no} className="contents">
+                <div className="group relative flex flex-col items-center text-center">
+                  {/* 実物プリント＋スタンプ */}
+                  <div className={`relative ${s.tilt} transition group-hover:rotate-0`}>
+                    <div className="w-[180px] overflow-hidden rounded-[12px] bg-white shadow-[0_30px_50px_-30px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.12)] sm:w-[200px]">
+                      <PrintImage
+                        base={s.base}
+                        alt={`ステップ${s.no} ${s.verb}：${s.caption}`}
+                        sizes="200px"
+                        className="block h-auto w-full"
+                      />
+                    </div>
+                    {s.stamp ? (
+                      <Stamp
+                        label={s.stamp}
+                        className="absolute -right-3 -top-3 h-16 w-16 text-[0.92rem] sm:-right-4 sm:-top-4 sm:h-[4.6rem] sm:w-[4.6rem] sm:text-[1.05rem]"
+                      />
+                    ) : null}
+                    {/* ステップ番号バッジ */}
+                    <span className="absolute -left-3 -top-3 grid h-10 w-10 place-items-center rounded-full bg-[#0b1d4a] text-[0.95rem] font-extrabold text-white ring-4 ring-white">
+                      {s.no}
+                    </span>
+                  </div>
+                  <p className="mt-6 text-[1.5rem] font-extrabold leading-none text-[#0b1d4a]">{s.verb}</p>
+                  <p className="mt-2 text-[0.9rem] leading-[1.7] text-[#475569]">{s.caption}</p>
+                </div>
+
+                {/* ステップ間の矢印 */}
+                {i < steps.length - 1 ? (
+                  <div aria-hidden="true" className="flex items-center justify-center">
+                    <span className="text-[1.8rem] font-bold text-[#0d9488] lg:rotate-0">
+                      <span className="hidden lg:inline">→</span>
+                      <span className="lg:hidden">↓</span>
+                    </span>
+                  </div>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+
+          <p className="mx-auto mt-10 max-w-xl text-center text-[0.92rem] leading-[1.8] text-[#475569]">
+            あとは合格したら、また次の1枚へ。
+            <strong className="font-bold text-[#0b1d4a]">「解く→返る→進む」のループ</strong>が、毎日の学習を仕組みに変えます。
+          </p>
+          <div className="mt-8 flex justify-center">
+            <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
           </div>
         </Container>
       </section>
