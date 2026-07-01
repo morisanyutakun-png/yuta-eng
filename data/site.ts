@@ -59,8 +59,8 @@ export const siteConfig = {
 export const navItems = [
   { label: "しくみ", href: "/#features" },
   { label: "アプリ", href: "/#app" },
-  { label: "料金・科目", href: "/#pricing" },
   { label: "教材", href: "/#materials" },
+  { label: "料金・科目", href: "/apply#pricing" },
   { label: "よくある質問", href: "/#faq" },
   { label: "申し込む", href: "/apply", highlight: true },
 ];
@@ -70,7 +70,7 @@ export const footerNavItems = [
   { label: "公式アプリ", href: "/#app" },
   { label: "1日のサイクル", href: "/#flow" },
   { label: "教材・実績", href: "/#materials" },
-  { label: "料金・対応科目", href: "/#pricing" },
+  { label: "料金・対応科目", href: "/apply#pricing" },
   { label: "よくある質問", href: "/#faq" },
   { label: "塾について", href: "/about" },
   { label: "お申し込み（初月半額）", href: "/apply" },
