@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { JsonLd } from "@/components/json-ld";
+import { AppScreen } from "@/components/app-screens";
 import { PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
 import { kdpAmazonUrl } from "@/data/site";
@@ -170,7 +171,21 @@ export default function MaterialsPage() {
               </li>
             ))}
           </ol>
-          <div className="mx-auto mt-10 max-w-3xl rounded-[20px] bg-[#eef6f6] p-6 ring-1 ring-[rgba(13,148,136,0.18)] sm:p-8">
+          {/* 提出→添削の実画面 */}
+          <div className="mt-14 flex flex-wrap items-start justify-center gap-8 sm:gap-12">
+            <div className="text-center">
+              <AppScreen variant="submit" />
+              <p className="mt-4 text-[0.9rem] font-bold text-[#0b1d4a]">答案を写真で提出</p>
+              <p className="mt-1 text-[0.8rem] text-[#64748b]">紙でもタブレットでも。何枚でもOK</p>
+            </div>
+            <div className="text-center">
+              <AppScreen variant="returned" />
+              <p className="mt-4 text-[0.9rem] font-bold text-[#0b1d4a]">添削されて返却</p>
+              <p className="mt-1 text-[0.8rem] text-[#64748b]">合否・得点・コメントで仕上げる</p>
+            </div>
+          </div>
+
+          <div className="mx-auto mt-14 max-w-3xl rounded-[20px] bg-[#eef6f6] p-6 ring-1 ring-[rgba(13,148,136,0.18)] sm:p-8">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#0f766e]">設計思想を、ひとことで</p>
             <p className="mt-2 text-[1.05rem] font-extrabold leading-[1.6] text-[#0b1d4a]">
               現象 → 図 → 言葉 → 式。この順につなぐと、公式は「暗記」から「導けるもの」に変わる。
