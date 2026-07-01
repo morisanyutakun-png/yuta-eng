@@ -1,7 +1,7 @@
 /**
  * 実際のノビットスタディ 高校部アプリ（kumon-app）の画面を、電話フレームで忠実に再現。
  * 実物のUI（紫アクセント／あいさつカード＋実績チップ／学習状況カード／
- * 今日の課題・未提出は右ボタンの横並び）に合わせている。題材は 数学ⅠA 二次関数。
+ * 今日の課題・未提出は右ボタンの横並び）に合わせている。題材は 数学ⅠA 三角関数（万人受け）。
  * 実スクリーンショット（public/app-screens/*.png）が用意できたら差し替え可能。
  */
 
@@ -22,7 +22,7 @@ export const appSteps: {
     title: "今日の課題が「届く」",
     lead: "ログインするとまず表示されるホーム画面。その日に取り組む課題が自動で並びます。",
     facts: [
-      "「今日の課題」に教材名と範囲が表示（例：数学ⅠA 二次関数）",
+      "「今日の課題」に教材名と範囲が表示（例：数学ⅠA 三角関数）",
       "「未提出」に取り組む課題、返却済みは「へんきゃく・かくにん」へ",
       "「学習状況」で合格数・完了・今週の提出を見える化",
     ],
@@ -45,7 +45,7 @@ export const appSteps: {
     lead: "提出した答案は採点者がていねいに添削。合否・点数・コメントつきで返ってきます。",
     facts: [
       "合否と得点が明確（例：合格 41.00 / 50.00）",
-      "コメントで次の一手まで具体的に（例：「次は最大・最小の応用へ」）",
+      "コメントで次の一手まで具体的に（例：「次の範囲へ進みましょう」）",
       "確認したら「完了にする」。合格なら次の範囲へ自動で前進",
     ],
   },
@@ -133,7 +133,7 @@ function ScreenHome() {
         <div className="flex items-center justify-between gap-2">
           <div className="min-w-0">
             <p className="text-[0.5rem] font-bold" style={{ color: P }}>今日の課題</p>
-            <p className="mt-0.5 truncate text-[0.72rem] font-extrabold text-[#0b1d4a]">二次関数</p>
+            <p className="mt-0.5 truncate text-[0.72rem] font-extrabold text-[#0b1d4a]">三角関数</p>
             <p className="text-[0.48rem] text-[#64748b]">数学ⅠA</p>
           </div>
           <PurpleBtn>取り組む →</PurpleBtn>
@@ -172,7 +172,7 @@ function ScreenHome() {
           <div className="flex items-center gap-2">
             <SubjTag label="数" />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[0.6rem] font-extrabold text-[#0b1d4a]">二次関数 <span className="ml-1 rounded bg-[#eef2f7] px-1 text-[0.42rem] font-bold text-[#64748b]">未提出</span></p>
+              <p className="truncate text-[0.6rem] font-extrabold text-[#0b1d4a]">三角関数 <span className="ml-1 rounded bg-[#eef2f7] px-1 text-[0.42rem] font-bold text-[#64748b]">未提出</span></p>
               <p className="text-[0.46rem] text-[#64748b]">数学ⅠA</p>
             </div>
             <PurpleBtn small>提出する</PurpleBtn>
@@ -190,14 +190,14 @@ function ScreenSubmit() {
       <div className="flex items-center gap-2">
         <SubjTag label="数" />
         <div>
-          <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">二次関数 <span className="ml-1 rounded bg-[#eef2f7] px-1 text-[0.44rem] font-bold text-[#64748b]">未提出</span></p>
+          <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">三角関数 <span className="ml-1 rounded bg-[#eef2f7] px-1 text-[0.44rem] font-bold text-[#64748b]">未提出</span></p>
           <p className="text-[0.46rem] text-[#64748b]">数学ⅠA</p>
         </div>
       </div>
 
       <Card>
         <p className="text-[0.5rem] font-bold" style={{ color: P }}>課題</p>
-        <p className="mt-1 text-[0.54rem] leading-[1.7] text-[#334155]">答案を写真に撮って提出してください。<span className="font-bold text-[#0b1d4a]">途中式（平方完成）も残しましょう。</span></p>
+        <p className="mt-1 text-[0.54rem] leading-[1.7] text-[#334155]">答案を写真に撮って提出してください。<span className="font-bold text-[#0b1d4a]">途中式もていねいに残しましょう。</span></p>
       </Card>
 
       <Card>
@@ -220,7 +220,7 @@ function ScreenReturned() {
       <div className="flex items-center gap-2">
         <SubjTag label="数" />
         <div>
-          <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">二次関数 <span className="ml-1 rounded bg-[#eafaf0] px-1 text-[0.44rem] font-bold text-[#16a34a]">返却済み</span></p>
+          <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">三角関数 <span className="ml-1 rounded bg-[#eafaf0] px-1 text-[0.44rem] font-bold text-[#16a34a]">返却済み</span></p>
           <p className="text-[0.46rem] text-[#64748b]">数学ⅠA</p>
         </div>
       </div>
@@ -232,7 +232,7 @@ function ScreenReturned() {
           <span className="text-[0.95rem] font-extrabold leading-none text-[#0b1d4a]">41.00<span className="text-[0.5rem] font-semibold text-[#94a3b8]"> / 50.00</span></span>
         </div>
         <p className="mt-2 rounded-[8px] bg-[#f4f7fb] p-2 text-[0.5rem] leading-[1.75] text-[#334155]">
-          平方完成まで正確に書けています。合格！次は<span className="font-bold text-[#0b1d4a]">最大・最小の応用</span>へ進みましょう。
+          途中式までていねいに書けています。合格！<span className="font-bold text-[#0b1d4a]">次の範囲</span>へ進みましょう。
         </p>
         <button className="mt-2 w-full rounded-[8px] py-2 text-[0.58rem] font-bold text-white" style={{ background: P }}>確認して完了にする</button>
       </Card>
@@ -285,8 +285,8 @@ function ScreenHistory() {
         <div className="mt-1.5 flex items-start gap-2">
           <span className="mt-0.5 rounded bg-[#16a34a] px-1 py-0.5 text-[0.42rem] font-bold text-white">合格</span>
           <div className="min-w-0 flex-1">
-            <p className="text-[0.5rem] font-semibold text-[#0b1d4a]">数学ⅠA 二次関数</p>
-            <p className="truncate text-[0.44rem] text-[#94a3b8]">平方完成まで正確。合格！次は最大・最小へ</p>
+            <p className="text-[0.5rem] font-semibold text-[#0b1d4a]">数学ⅠA 三角関数</p>
+            <p className="truncate text-[0.44rem] text-[#94a3b8]">途中式までていねい。合格！次の範囲へ</p>
           </div>
         </div>
       </Card>
