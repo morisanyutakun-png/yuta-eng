@@ -138,21 +138,6 @@ const forYouFit = [
   { title: "子どもの学習を、そっと見守りたい", body: "保護者も同じアプリで進捗を確認できて安心です。" },
 ];
 
-// 対応科目（理系を中心に英語まで）。
-const subjectGroups = [
-  { area: "物理", items: ["物理基礎", "物理"], color: "#1d4ed8" },
-  { area: "化学", items: ["化学基礎", "化学"], color: "#0d9488" },
-  { area: "数学", items: ["数学IA", "数学IIBC", "数学IIIC"], color: "#16a34a" },
-  { area: "英語", items: ["英語長文", "英文法"], color: "#ea580c" },
-];
-
-// 料金（教科ごと月額・初月半額）。数字は添削キャパに合わせて調整可。
-const pricingTiers = [
-  { count: "1教科", price: "4,980", per: "4,980", note: "まずは1教科から" },
-  { count: "2教科", price: "8,800", per: "4,400", popular: true, note: "いちばん人気" },
-  { count: "3教科", price: "12,800", per: "4,267", note: "理系をまとめて" },
-];
-
 // アプリ「ノビットスタディ」＝習慣化のエンジン。
 const appPoints = [
   { title: "今日の1枚が届く", body: "その日やる課題が毎日配信。迷わず始められ、勉強が習慣に変わります。" },
@@ -298,15 +283,6 @@ function Stamp({ label, className = "" }: { label: string; className?: string })
 }
 
 /* 絵文字の代わりに使う、線画のミニアイコン（現在色を継承）。 */
-function IconLock({ className = "" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="4.5" y="10.5" width="15" height="10" rx="2.2" />
-      <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" />
-      <circle cx="12" cy="15.4" r="1.3" />
-    </svg>
-  );
-}
 function IconCheck({ className = "" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -377,6 +353,21 @@ function SecondaryCta({ href, children }: { href: string; children: React.ReactN
     >
       {children}
     </Link>
+  );
+}
+
+/** セクション間に置く申込・料金への誘導。CTAを増やして申込導線を強化。 */
+function InlineCta({ note }: { note?: string }) {
+  return (
+    <div className="mt-12 flex flex-col items-center gap-3">
+      {note ? (
+        <p className="text-center text-[0.92rem] font-semibold text-[#475569]">{note}</p>
+      ) : null}
+      <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+        <PrimaryCta href="/apply">料金を見て申し込む（初月半額）</PrimaryCta>
+        <SecondaryCta href="/apply#pricing">料金・科目を見る</SecondaryCta>
+      </div>
+    </div>
   );
 }
 
@@ -889,6 +880,7 @@ export default function Home() {
           <p className="mx-auto mt-6 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
             授業や質問対応が必要な時期は、他のサービスと併用するのも手です。ノビットは「毎日続けて、毎日直す」役割に集中しています。
           </p>
+          <InlineCta note="必要な科目を選ぶだけ。いまなら初月半額ではじめられます。" />
         </Container>
       </section>
 
@@ -1007,6 +999,7 @@ export default function Home() {
           <p className="mx-auto mt-8 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
             この 1 枚を毎日くりかえす。だから「分かったつもり」で止まらず、本番で書ける答案になります。
           </p>
+          <InlineCta note="毎日の添削を、今日から。科目ごとに選べます。" />
         </Container>
       </section>
 
@@ -1373,227 +1366,52 @@ export default function Home() {
       <MarqueeBand reverse />
 
       {/* ───────── PRICING（料金・対応科目） ───────── */}
+      {/* ───────── PRICING（料金の告知・詳細は申込ページへ集約） ───────── */}
       <section id="pricing" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
         <Container className="px-6 py-16 sm:py-24">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
-              Price · 料金・対応科目
-            </p>
-            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              必要な科目だけ、毎日添削。
-            </h2>
-            <p className="mt-3 text-[0.96rem] leading-[1.9] text-[#475569]">
-              入会金・教材費は0円。理系を中心に9科目から、必要な分だけ選べます。
-              <strong className="font-bold text-[#ea580c]">いまなら初月半額</strong>ではじめられます。
-            </p>
-          </div>
-
-          {/* 対応科目 */}
-          <div className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-2">
-            <span className="text-[0.74rem] font-bold text-[#64748b]">対応科目</span>
-            {subjectGroups.flatMap((g) =>
-              g.items.map((it) => (
-                <span
-                  key={it}
-                  className="rounded-full bg-white px-3 py-1 text-[0.8rem] font-semibold text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]"
-                >
-                  <span aria-hidden="true" className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: g.color }} />
-                  {it}
-                </span>
-              )),
-            )}
-          </div>
-
-          {/* 料金表（採点表ふう・方眼＋手書き注釈で独自性を出す） */}
-          <div className="mx-auto mt-10 max-w-2xl">
-            <div className="overflow-hidden rounded-[24px] bg-white shadow-[0_44px_90px_-55px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.1)]">
-              {/* 採点表の見出し帯 */}
-              <div className="flex items-center justify-between bg-[linear-gradient(120deg,#0b1d4a_0%,#0f5e5e_100%)] px-5 py-4 text-white sm:px-7">
-                <p className="text-[0.98rem] font-extrabold tracking-wide">料金表</p>
-                <p className="text-[0.74rem] text-white/80">教科ごとの月額・税込</p>
-              </div>
-
-              {/* 本体（方眼背景） */}
-              <div className="relative px-5 py-7 sm:px-8 sm:py-9">
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(rgba(13,148,136,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(13,148,136,0.06) 1px, transparent 1px)",
-                    backgroundSize: "22px 22px",
-                  }}
-                />
-
-                {/* アンカー価格 */}
-                <div className="relative text-center">
-                  <p className="text-[0.82rem] font-bold text-[#0f766e]">1教科から、必要な分だけ</p>
-                  <p className="mt-1 flex items-end justify-center gap-1.5 text-[#0b1d4a]">
-                    <span className="pb-2.5 text-[1.05rem] font-bold">月</span>
-                    <Penned color="#f97316">
-                      <span className="text-[3.1rem] font-extrabold leading-none tracking-[-0.02em] sm:text-[3.6rem]">
-                        ¥4,980
-                      </span>
-                    </Penned>
-                    <span className="pb-2.5 text-[1.05rem] font-bold">〜</span>
-                  </p>
-                  <p className="mt-3.5">
-                    <span className="inline-flex -rotate-2 items-center gap-1.5 rounded-[10px] bg-[#fff1e6] px-3 py-1 text-[0.78rem] font-extrabold text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">
-                      いまなら初月はさらに半額
-                    </span>
-                  </p>
-                </div>
-
-                {/* 教科ごとの足し算（行）。足すほど1教科あたりが安くなる価値を見せる。 */}
-                <ul className="relative mt-7 space-y-2.5">
-                  {pricingTiers.map((t) => {
-                    const first = (Number(t.price.replace(",", "")) / 2).toLocaleString();
-                    return (
-                      <li
-                        key={t.count}
-                        className={`relative flex items-center gap-3 rounded-[14px] px-3.5 py-3 sm:gap-4 sm:px-4 ${
-                          t.popular
-                            ? "bg-[#fff7ed] ring-1 ring-[rgba(234,88,12,0.35)]"
-                            : "bg-[#f8fafc] ring-1 ring-[rgba(15,29,74,0.06)]"
-                        }`}
-                      >
-                        <span
-                          className={`grid h-11 w-14 shrink-0 place-items-center rounded-[10px] text-[0.82rem] font-extrabold leading-tight ${
-                            t.popular ? "bg-[#f97316] text-white" : "bg-white text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.1)]"
-                          }`}
-                        >
-                          {t.count}
-                        </span>
-                        <span className="flex flex-1 items-baseline gap-1">
-                          <span className="text-[0.9rem] font-bold text-[#0b1d4a]">¥</span>
-                          <span className="text-[1.7rem] font-extrabold leading-none tracking-[-0.02em] text-[#0b1d4a] sm:text-[2rem]">
-                            {t.price}
-                          </span>
-                          <span className="text-[0.76rem] font-semibold text-[#64748b]">/月</span>
-                        </span>
-                        <span className="text-right">
-                          <span className="block text-[0.74rem] font-semibold text-[#0f766e]">
-                            1教科 ¥{t.per}
-                          </span>
-                          <span className="block text-[0.72rem] text-[#94a3b8]">初月 ¥{first}</span>
-                        </span>
-                        {t.popular ? (
-                          <span className="absolute -right-2 -top-3 -rotate-6 rounded-[8px] bg-[#0b1d4a] px-2.5 py-1 text-[0.62rem] font-extrabold tracking-[0.04em] text-white shadow-[0_8px_16px_-8px_rgba(11,29,74,0.8)]">
-                            いちばん人気
-                          </span>
-                        ) : null}
-                      </li>
-                    );
-                  })}
-
-                  {/* 4教科〜の加算ルール */}
-                  <li className="flex items-center gap-3 rounded-[14px] border border-dashed border-[rgba(15,29,74,0.18)] bg-white/60 px-3.5 py-3 sm:gap-4 sm:px-4">
-                    <span className="grid h-11 w-14 shrink-0 place-items-center rounded-[10px] bg-white text-[0.8rem] font-extrabold text-[#475569] ring-1 ring-[rgba(15,29,74,0.1)]">
-                      4教科〜
-                    </span>
-                    <span className="flex-1 text-[0.84rem] leading-[1.6] text-[#475569]">
-                      ¥12,800 ＋ <strong className="font-bold text-[#0b1d4a]">1教科ごと +¥3,000</strong>
-                    </span>
-                  </li>
-                </ul>
-
-                <p className="relative mt-4 flex items-center justify-center gap-1.5 text-center text-[0.82rem] font-semibold text-[#0f766e]">
-                  <span aria-hidden="true">↑</span>
-                  足すほど、<span className="text-[#ea580c]">1教科あたりはおトク</span>になります。
-                </p>
-
-                {/* パネル内CTA */}
-                <div className="relative mt-6">
-                  <Link
-                    href="/apply"
-                    className="group/cta relative flex min-h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-full text-[0.98rem] font-bold text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px"
-                  >
-                    <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
-                    <span className="relative">科目を選んで申し込む（初月半額）</span>
-                    <span aria-hidden="true" className="relative">→</span>
-                  </Link>
-                  <p className="mt-3 text-center text-[0.74rem] text-[#94a3b8]">
-                    入会金・教材費0円／いつでも科目の追加・休会・解約OK。
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* 費用感の比較 */}
-          <div className="mx-auto mt-8 flex max-w-3xl flex-col items-center gap-3 rounded-[18px] bg-[#eef6f6] p-5 text-center ring-1 ring-[rgba(13,148,136,0.18)] sm:flex-row sm:justify-center sm:gap-6 sm:text-left">
-            <p className="text-[0.86rem] leading-[1.7] text-[#475569]">
-              大手の個別指導は <span className="font-bold text-[#0b1d4a]">1教科 週1で月¥15,000〜</span>。
-            </p>
-            <span aria-hidden="true" className="hidden text-[#0d9488] sm:block">→</span>
-            <p className="text-[0.95rem] font-extrabold leading-[1.5] text-[#0f766e]">
-              ノビットは毎日添削で <span className="text-[1.15rem]">月¥4,980〜</span>。
-            </p>
-          </div>
-
-          {/* 決済の安心（Stripe 連携） */}
-          <div className="mx-auto mt-8 max-w-3xl rounded-[22px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_28px_56px_-44px_rgba(11,29,74,0.45)] sm:p-7">
-            <div className="flex items-start gap-4">
-              <span
+          <div className="mx-auto max-w-3xl overflow-hidden rounded-[26px] bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white shadow-[0_44px_90px_-55px_rgba(11,29,74,0.6)]">
+            <div className="relative px-6 py-12 text-center sm:px-12 sm:py-14">
+              <div
                 aria-hidden="true"
-                className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] bg-[#eef6f6] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.18)]"
-              >
-                <IconLock className="h-6 w-6" />
-              </span>
-              <div>
-                <p className="text-[1.02rem] font-extrabold leading-[1.5] text-[#0b1d4a]">
-                  お支払いは、世界標準の決済システム{" "}
-                  <span className="font-extrabold text-[#635bff]">Stripe</span> で安全に。
-                </p>
-                <p className="mt-2 text-[0.88rem] leading-[1.95] text-[#475569]">
-                  Stripe は世界中の企業が採用し、国際カードセキュリティ基準（PCI DSS）に準拠した決済基盤。
-                  カード情報は Stripe が暗号化して処理し、
-                  <strong className="font-bold text-[#0b1d4a]">
-                    当サービスがカード番号を保持・閲覧することはありません
-                  </strong>
-                  。
-                </p>
+                className="pointer-events-none absolute inset-0 opacity-[0.06]"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
+                  backgroundSize: "28px 28px",
+                }}
+              />
+              <p className="relative text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#5eead4]">
+                Price · 料金
+              </p>
+              <h2 className="relative mt-3 text-balance text-[1.9rem] font-extrabold leading-[1.3] tracking-[-0.005em] sm:text-[2.4rem]">
+                教科ごとに選べて、<br className="sm:hidden" />月{" "}
+                <span className="text-[#fdba74]">¥4,980〜</span>。
+              </h2>
+              <p className="relative mx-auto mt-4 max-w-xl text-[0.98rem] leading-[1.9] text-white/85">
+                入会金・教材費は0円。理系を中心に9科目から、必要な分だけ選べます。
+              </p>
+              <p className="relative mt-6">
+                <span className="inline-flex -rotate-1 items-center rounded-[12px] bg-[#f97316] px-4 py-2 text-[0.9rem] font-extrabold text-white shadow-[0_14px_28px_-14px_rgba(234,88,12,0.9)]">
+                  いまなら初月半額キャンペーン中
+                </span>
+              </p>
+              <div className="relative mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
+                <PrimaryCta href="/apply">料金を見て申し込む（初月半額）</PrimaryCta>
+                <Link
+                  href="/contact"
+                  className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/40 px-7 text-[0.98rem] font-semibold text-white transition hover:bg-white hover:text-[#0b1d4a]"
+                >
+                  まず質問する
+                </Link>
               </div>
+              <p className="relative mt-5 text-[0.78rem] leading-[1.7] text-white/70">
+                申込ページで科目を選ぶと料金を自動計算。詳しい料金表・対応科目もそちらでご確認いただけます。
+              </p>
+              <p className="relative mt-2 text-[0.7rem] leading-[1.7] text-white/45">
+                物理基礎・物理・化学基礎・化学・数学IA・数学IIBC・数学IIIC・英語長文・英文法
+              </p>
             </div>
-            <ul className="mt-5 grid gap-x-6 gap-y-2.5 border-t border-[rgba(15,29,74,0.08)] pt-5 sm:grid-cols-2">
-              {[
-                "通信は SSL で常時暗号化",
-                "カード情報は非保持（Stripe が管理）",
-                "いつでもオンラインで解約 OK",
-                "入会金・教材費 0円／初月半額",
-              ].map((text) => (
-                <li key={text} className="flex items-center gap-2.5 text-[0.88rem] font-semibold text-[#334155]">
-                  <span aria-hidden="true" className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#0d9488] text-white">
-                    <IconCheck className="h-3.5 w-3.5" />
-                  </span>
-                  <span>{text}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-5 border-t border-[rgba(15,29,74,0.08)] pt-4 text-[0.78rem] leading-[1.85] text-[#64748b]">
-              ご契約の前に{" "}
-              <Link className="font-semibold text-[#0f766e] underline" href="/legal/tokushoho">
-                特定商取引法に基づく表記
-              </Link>
-              ・
-              <Link className="font-semibold text-[#0f766e] underline" href="/legal/refund">
-                返金・解約ポリシー
-              </Link>
-              ・
-              <Link className="font-semibold text-[#0f766e] underline" href="/legal/privacy">
-                プライバシーポリシー
-              </Link>
-              をご確認ください。
-            </p>
           </div>
-
-          <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
-            <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
-            <SecondaryCta href="/contact">まず質問してみる</SecondaryCta>
-          </div>
-          <p className="mt-4 text-center text-[0.78rem] leading-[1.7] text-[#94a3b8]">
-            お申し込み後は Stripe の安全な決済画面に進みます。決済情報は暗号化され、安心してご利用いただけます。
-          </p>
         </Container>
       </section>
 

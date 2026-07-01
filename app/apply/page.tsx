@@ -4,14 +4,16 @@ import Link from "next/link";
 import { ApplyForm } from "@/components/apply-form";
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
+import { PaymentTrust } from "@/components/payment-trust";
+import { PricingTable, SubjectChips } from "@/components/pricing-table";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createOrganizationJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "お申し込み｜科目を選んで初月半額ではじめる",
+  title: "料金・お申し込み｜科目を選んで初月半額ではじめる",
   description:
-    "ノビットスタディ 中高部のお申し込み。物理・化学・数学・英語の9科目から必要な分だけ選ぶと、料金が自動計算され、そのまま Stripe の安全な決済へ。初月半額・入会金/教材費0円、いつでも解約できます。",
-  keywords: ["ノビットスタディ 申し込み", "オンライン添削 申し込み", "理系 添削 月額"],
+    "ノビットスタディ 中高部の料金とお申し込み。教科ごとの月額（1教科 月¥4,980〜・初月半額・入会金/教材費0円）。物理・化学・数学・英語の9科目から必要な分だけ選ぶと料金が自動計算され、そのまま Stripe の安全な決済へ。いつでも解約できます。",
+  keywords: ["ノビットスタディ 料金", "オンライン添削 料金", "理系 添削 月額", "ノビットスタディ 申し込み"],
   path: "/apply",
 });
 
@@ -77,34 +79,52 @@ export default async function ApplyPage({
         </Container>
       </section>
 
-      <section className="bg-[#f8fafc]">
-        <Container className="px-5 py-10 sm:px-6 sm:py-14">
+      {/* 料金の全体像（この申込ページに集約） */}
+      <section id="pricing" className="scroll-mt-24 bg-white">
+        <Container className="px-5 py-12 sm:px-6 sm:py-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
+              Price · 料金・対応科目
+            </p>
+            <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
+              教科ごとの月額。必要な分だけ。
+            </h2>
+            <p className="mt-3 text-[0.95rem] leading-[1.9] text-[#475569]">
+              入会金・教材費は0円。理系を中心に9科目から選べます。
+              <strong className="font-bold text-[#ea580c]">いまなら初月半額</strong>。
+            </p>
+          </div>
+          <SubjectChips className="mx-auto mt-8 max-w-3xl" />
+          <div className="mt-10">
+            <PricingTable cta={{ href: "#form", label: "科目を選んで料金を確定する" }} />
+          </div>
+        </Container>
+      </section>
+
+      {/* 申込フォーム（科目選択→自動計算→決済） */}
+      <section id="form" className="scroll-mt-24 bg-[#f8fafc]">
+        <Container className="px-5 py-12 sm:px-6 sm:py-16">
+          <div className="mx-auto mb-8 max-w-2xl text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
+              Apply · 科目を選んで申し込む
+            </p>
+            <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
+              受講する科目を選ぶと、料金が決まります。
+            </h2>
+          </div>
+
           <ApplyForm canceled={Boolean(canceled)} />
-          <p className="mx-auto mt-8 max-w-3xl text-center text-[0.82rem] leading-[1.8] text-[#64748b]">
+
+          <div className="mt-10">
+            <PaymentTrust />
+          </div>
+
+          <p className="mx-auto mt-8 max-w-2xl text-center text-[0.82rem] leading-[1.8] text-[#64748b]">
             ご不明な点は{" "}
             <Link href="/contact" className="font-semibold text-[#0f766e] underline-offset-2 hover:underline">
               質問・相談の窓口
             </Link>{" "}
-            からどうぞ。料金や対応科目は{" "}
-            <Link href="/#pricing" className="font-semibold text-[#0f766e] underline-offset-2 hover:underline">
-              料金・対応科目
-            </Link>{" "}
-            もご覧ください。
-          </p>
-          <p className="mx-auto mt-4 max-w-3xl text-center text-[0.78rem] leading-[1.8] text-[#94a3b8]">
-            お申し込みの前に{" "}
-            <Link href="/legal/tokushoho" className="underline underline-offset-2 hover:text-[#0f766e]">
-              特定商取引法に基づく表記
-            </Link>
-            ・
-            <Link href="/legal/refund" className="underline underline-offset-2 hover:text-[#0f766e]">
-              返金・解約ポリシー
-            </Link>
-            ・
-            <Link href="/legal/privacy" className="underline underline-offset-2 hover:text-[#0f766e]">
-              プライバシーポリシー
-            </Link>
-            をご確認ください。お申し込みをもって、これらに同意いただいたものとみなします。
+            からどうぞ。お申し込みをもって、上記の各ポリシーに同意いただいたものとみなします。
           </p>
         </Container>
       </section>
