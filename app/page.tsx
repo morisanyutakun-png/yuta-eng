@@ -130,12 +130,12 @@ const alternatives = [
 
 // あらゆる段階の生徒に「自分のことだ」と思ってもらえるよう、入門〜難関までを広く。
 const forYouFit = [
-  { icon: "🌱", title: "何から手をつければいいか分からない", body: "今日やる1枚が毎日届くから、迷わず始められます。" },
-  { icon: "🗓️", title: "毎日続けられる自信が、まだない", body: "続ける仕組みごとお渡しします。続け方から一緒に。" },
-  { icon: "✍️", title: "解けるのに、記述答案に自信がない", body: "途中式・考え方まで、毎日の添削で仕上げます。" },
-  { icon: "⏱️", title: "部活や習い事で、時間が取りにくい", body: "1回10〜20分から。スキマ時間で積み上がります。" },
-  { icon: "🎯", title: "難関大・名大の記述まで本気で伸ばしたい", body: "基礎から入試レベルまで、切れ目なく対応します。" },
-  { icon: "👪", title: "子どもの学習を、そっと見守りたい", body: "保護者も同じアプリで進捗を確認できて安心です。" },
+  { title: "何から手をつければいいか分からない", body: "今日やる1枚が毎日届くから、迷わず始められます。" },
+  { title: "毎日続けられる自信が、まだない", body: "続ける仕組みごとお渡しします。続け方から一緒に。" },
+  { title: "解けるのに、記述答案に自信がない", body: "途中式・考え方まで、毎日の添削で仕上げます。" },
+  { title: "部活や習い事で、時間が取りにくい", body: "1回10〜20分から。スキマ時間で積み上がります。" },
+  { title: "難関大・名大の記述まで本気で伸ばしたい", body: "基礎から入試レベルまで、切れ目なく対応します。" },
+  { title: "子どもの学習を、そっと見守りたい", body: "保護者も同じアプリで進捗を確認できて安心です。" },
 ];
 
 // 対応科目（理系を中心に英語まで）。
@@ -294,6 +294,31 @@ function Stamp({ label, className = "" }: { label: string; className?: string })
     >
       {label}
     </span>
+  );
+}
+
+/* 絵文字の代わりに使う、線画のミニアイコン（現在色を継承）。 */
+function IconLock({ className = "" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2.2" />
+      <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" />
+      <circle cx="12" cy="15.4" r="1.3" />
+    </svg>
+  );
+}
+function IconCheck({ className = "" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12.5l4.3 4.3L19 7" />
+    </svg>
+  );
+}
+function IconChat({ className = "" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M20 11.5a7 7 0 0 1-10.4 6.1L5 19l1.4-4.1A7 7 0 1 1 20 11.5Z" />
+    </svg>
   );
 }
 
@@ -1073,7 +1098,7 @@ export default function Home() {
           <div className="mt-16 sm:mt-20">
             <div className="mx-auto max-w-3xl text-center">
               <p className="inline-flex items-center gap-1.5 rounded-full bg-[#0b1d4a] px-3 py-1 text-[0.68rem] font-extrabold tracking-[0.08em] text-white">
-                ★ ノビット公式教材
+                ノビット公式教材
               </p>
               <h3 className="mt-4 text-[1.5rem] font-extrabold leading-[1.4] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.9rem]">
                 演習の土台は、公式教材から。
@@ -1316,8 +1341,10 @@ export default function Home() {
                 key={f.title}
                 className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_44px_-34px_rgba(15,29,74,0.4)]"
               >
-                <span aria-hidden="true" className="text-[1.6rem]">{f.icon}</span>
-                <p className="mt-2 text-[1rem] font-bold leading-[1.5] text-[#0b1d4a]">「{f.title}」</p>
+                <span aria-hidden="true" className="grid h-9 w-9 place-items-center rounded-[10px] bg-[#e6f4f1] text-[#0f766e]">
+                  <IconCheck className="h-5 w-5" />
+                </span>
+                <p className="mt-3 text-[1rem] font-bold leading-[1.5] text-[#0b1d4a]">「{f.title}」</p>
                 <p className="mt-2 text-[0.88rem] leading-[1.85] text-[#475569]">{f.body}</p>
               </li>
             ))}
@@ -1325,8 +1352,8 @@ export default function Home() {
 
           {/* 正直な一言は、冷たい「不向き」ではなく、やさしい相談導線として */}
           <div className="mx-auto mt-8 flex max-w-3xl flex-col items-center gap-4 rounded-[20px] bg-[#eef6f6] p-6 text-center ring-1 ring-[rgba(13,148,136,0.18)] sm:flex-row sm:items-center sm:gap-6 sm:text-left">
-            <span aria-hidden="true" className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white text-[1.5rem] shadow-[0_10px_20px_-12px_rgba(13,148,136,0.6)]">
-              💬
+            <span aria-hidden="true" className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white text-[#0f766e] shadow-[0_10px_20px_-12px_rgba(13,148,136,0.6)]">
+              <IconChat className="h-6 w-6" />
             </span>
             <p className="text-[0.92rem] leading-[1.9] text-[#334155]">
               いまは対面授業やその場での質問対応は行わず、<strong className="font-bold text-[#0b1d4a]">「自分のペースで毎日進める」</strong>ことに集中しています。
@@ -1382,9 +1409,7 @@ export default function Home() {
             <div className="overflow-hidden rounded-[24px] bg-white shadow-[0_44px_90px_-55px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.1)]">
               {/* 採点表の見出し帯 */}
               <div className="flex items-center justify-between bg-[linear-gradient(120deg,#0b1d4a_0%,#0f5e5e_100%)] px-5 py-4 text-white sm:px-7">
-                <p className="flex items-center gap-2 text-[0.98rem] font-extrabold tracking-wide">
-                  <span aria-hidden="true">📋</span> 料金表
-                </p>
+                <p className="text-[0.98rem] font-extrabold tracking-wide">料金表</p>
                 <p className="text-[0.74rem] text-white/80">教科ごとの月額・税込</p>
               </div>
 
@@ -1414,7 +1439,7 @@ export default function Home() {
                   </p>
                   <p className="mt-3.5">
                     <span className="inline-flex -rotate-2 items-center gap-1.5 rounded-[10px] bg-[#fff1e6] px-3 py-1 text-[0.78rem] font-extrabold text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">
-                      🔖 いまなら初月はさらに半額
+                      いまなら初月はさらに半額
                     </span>
                   </p>
                 </div>
@@ -1511,9 +1536,9 @@ export default function Home() {
             <div className="flex items-start gap-4">
               <span
                 aria-hidden="true"
-                className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] bg-[#eef6f6] text-[1.5rem] ring-1 ring-[rgba(13,148,136,0.18)]"
+                className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] bg-[#eef6f6] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.18)]"
               >
-                🔒
+                <IconLock className="h-6 w-6" />
               </span>
               <div>
                 <p className="text-[1.02rem] font-extrabold leading-[1.5] text-[#0b1d4a]">
@@ -1532,13 +1557,15 @@ export default function Home() {
             </div>
             <ul className="mt-5 grid gap-x-6 gap-y-2.5 border-t border-[rgba(15,29,74,0.08)] pt-5 sm:grid-cols-2">
               {[
-                ["🔐", "通信は SSL で常時暗号化"],
-                ["💳", "カード情報は非保持（Stripe が管理）"],
-                ["🔁", "いつでもオンラインで解約 OK"],
-                ["🧾", "入会金・教材費 0円／初月半額"],
-              ].map(([icon, text]) => (
+                "通信は SSL で常時暗号化",
+                "カード情報は非保持（Stripe が管理）",
+                "いつでもオンラインで解約 OK",
+                "入会金・教材費 0円／初月半額",
+              ].map((text) => (
                 <li key={text} className="flex items-center gap-2.5 text-[0.88rem] font-semibold text-[#334155]">
-                  <span aria-hidden="true" className="text-[1.05rem]">{icon}</span>
+                  <span aria-hidden="true" className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#0d9488] text-white">
+                    <IconCheck className="h-3.5 w-3.5" />
+                  </span>
                   <span>{text}</span>
                 </li>
               ))}
