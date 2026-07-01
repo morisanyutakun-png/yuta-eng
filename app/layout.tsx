@@ -23,6 +23,14 @@ import "./globals.css";
 
 const GA_MEASUREMENT_ID =
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-WT6BZVH9YJ";
+const GSC_VERIFICATION = Array.from(
+  new Set(
+    [
+      "xJ-e8RMue2_IEi2fS0-L0SkG9axuC4oPuXXVawtY7kk",
+      process.env.NEXT_PUBLIC_GSC_VERIFICATION?.trim(),
+    ].filter((token): token is string => Boolean(token)),
+  ),
+);
 
 // Web fonts dropped entirely. Lighthouse showed `NotoSansJP-Regular.woff2`
 // (219 KB) and `NotoSansJP-Bold.woff2` (224 KB) sitting in the LCP critical
@@ -113,9 +121,9 @@ export const metadata: Metadata = {
       "max-video-preview": -1,
     },
   },
-  verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION
-    ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION }
-    : undefined,
+  verification: {
+    google: GSC_VERIFICATION,
+  },
 };
 
 export default function RootLayout({

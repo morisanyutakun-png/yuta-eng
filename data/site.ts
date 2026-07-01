@@ -1,4 +1,6 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://yuta-eng.com";
+const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://yuta-eng.com"
+).replace(/\/+$/, "");
 const contactEmail =
   process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "contact@yuta-eng.com";
 
