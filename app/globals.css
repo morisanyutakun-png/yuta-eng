@@ -41,17 +41,13 @@
 }
 
 /*
- * Below-fold sections: tell the browser to skip rendering until the section
- * approaches the viewport. Saves ~400-600ms of initial paint on long pages
- * by deferring layout/paint of everything below the hero.
- *
- * `contain-intrinsic-size` reserves space so CLS stays at 0 (the browser
- * uses this estimate before the section is rendered for real).
+ * `.cv-defer` is now only a hook for the reveal-on-scroll effect
+ * (components/scroll-reveal.tsx). We removed `content-visibility: auto`:
+ * it deferred paint of below-fold sections, but with anchor/hash navigation
+ * (e.g. arriving on `/#features` from another page) the browser scrolled
+ * using the *estimated* heights of unrendered sections and could land on a
+ * blank area. Correct navigation matters more than the ~400ms paint saving.
  */
-.cv-defer {
-  content-visibility: auto;
-  contain-intrinsic-size: 1px 800px;
-}
 
 html {
   font-size: 16px;
