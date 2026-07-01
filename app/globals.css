@@ -121,23 +121,12 @@ body {
 }
 
 /*
- * Reveal-on-scroll. The hidden start state applies ONLY after the
- * <ScrollReveal/> island adds `.reveal-ready` to <html> (and only when JS is
- * on + motion is allowed). Without it, sections stay fully visible — so this
- * can never hide content from no-JS / reduced-motion users or crawlers.
+ * Reveal-on-scroll was removed: hiding sections with opacity:0 until an
+ * IntersectionObserver revealed them occasionally left content invisible
+ * (blank page) on Safari and on hash navigation. Content correctness beats
+ * the fade-in. Motion is still provided by the marquee bands, hero float,
+ * and the scroll-progress bar — none of which can hide content.
  */
-.reveal-ready .cv-defer {
-  opacity: 0;
-  transform: translateY(26px);
-  transition:
-    opacity 0.7s ease,
-    transform 0.7s cubic-bezier(0.2, 0.65, 0.2, 1);
-  will-change: opacity, transform;
-}
-.reveal-ready .cv-defer.revealed {
-  opacity: 1;
-  transform: none;
-}
 
 /* Infinite keyword band (marquee). Edges fade out; pauses on hover and for
  * reduced-motion. The text is real DOM content, so it also adds crawlable
