@@ -144,6 +144,45 @@ export default function MaterialsPage() {
         </Container>
       </section>
 
+      {/* 教材の使い方 */}
+      <section className="bg-white">
+        <Container className="px-6 py-16 sm:py-24">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">How to use · 教材の使い方</p>
+            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
+              「読む」教材ではなく、「使う」教材。
+            </h2>
+            <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
+              教材は毎日の演習と添削とセットで力に変わります。ノビットでの使い方はこうです。
+            </p>
+          </div>
+          <ol className="mx-auto mt-10 grid max-w-4xl gap-5 sm:grid-cols-2">
+            {[
+              { n: "01", t: "その日の1枚に取り組む", b: "教材から毎日サイズに切り出された課題を、途中式・考え方まで書いて解きます。" },
+              { n: "02", t: "並行類題で定着させる", b: "数値違いの並行類題を用意。同じ考え方を手を変えて反復し、「解ける」を「いつでも解ける」に。" },
+              { n: "03", t: "方針つき解答で確認する", b: "解答・解説は答えだけでなく“なぜその方針か”まで。提出と同時に届くので、その場で自己採点できます。" },
+              { n: "04", t: "添削で仕上げる", b: "書いた答案を開発者本人が添削。教材と添削が地続きだから、直し方まで一貫しています。" },
+            ].map((s) => (
+              <li key={s.n} className="rounded-[20px] bg-[#f8fafc] p-7 ring-1 ring-[rgba(15,29,74,0.06)]">
+                <span className="text-[0.9rem] font-extrabold tracking-[0.14em] text-[#0d9488]">{s.n}</span>
+                <p className="mt-2 text-[1.08rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{s.t}</p>
+                <p className="mt-2 text-[0.9rem] leading-[1.9] text-[#475569]">{s.b}</p>
+              </li>
+            ))}
+          </ol>
+          <div className="mx-auto mt-10 max-w-3xl rounded-[20px] bg-[#eef6f6] p-6 ring-1 ring-[rgba(13,148,136,0.18)] sm:p-8">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#0f766e]">設計思想を、ひとことで</p>
+            <p className="mt-2 text-[1.05rem] font-extrabold leading-[1.6] text-[#0b1d4a]">
+              現象 → 図 → 言葉 → 式。この順につなぐと、公式は「暗記」から「導けるもの」に変わる。
+            </p>
+            <p className="mt-2 text-[0.9rem] leading-[1.95] text-[#334155]">
+              たとえば物理なら、起きている現象を図にし、言葉で条件を整理し、そこから式を立てる。
+              この流れを教材の設計に落とし込んでいるので、初見の問題でも自分で答案を組み立てられるようになります。
+            </p>
+          </div>
+        </Container>
+      </section>
+
       {/* 考える力を育てる シリーズ */}
       <section className="bg-white">
         <Container className="px-6 py-16 sm:py-24">
@@ -190,6 +229,30 @@ export default function MaterialsPage() {
             <a href={kdpAmazonUrl} target="_blank" rel="noreferrer noopener" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#0b1d4a] px-7 text-[0.96rem] font-semibold text-white transition hover:bg-[#0f5e5e]">
               Amazon で「考える力を育てる 森祐太」を見る <span aria-hidden="true">↗</span>
             </a>
+          </div>
+
+          {/* 教材のFAQ */}
+          <div className="mx-auto mt-16 max-w-3xl">
+            <div className="text-center">
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#f97316]">FAQ · 教材について</p>
+              <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2rem]">よくある質問</h2>
+            </div>
+            <ul className="mt-8 grid gap-3">
+              {[
+                { q: "教材は別で買う必要がありますか？", a: "いいえ。毎日の演習に使うノビット公式教材はサービスに含まれ、教材費は0円です。学習は公式教材を中心に進めます（KDPの市販書籍は、さらに演習したい方向けの任意の選択肢です）。" },
+                { q: "どの科目の公式教材がありますか？", a: "現在は数学（ⅠA・ⅡBC・ⅢC）の標準演習を公開しています。物理基礎・物理／化学基礎・化学／英語長文・英文法など、各分野へ順次拡大していきます。" },
+                { q: "レベルはどのくらいですか？", a: "基礎から入試標準までをカバーします。段階的に難易度が上がる設計なので、苦手からでも積み上げられ、難関大・名大の記述対策まで対応します。" },
+                { q: "市販の『考える力を育てる』シリーズとの違いは？", a: "公式教材はノビットのために書き下ろした毎日演習用の教材、『考える力を育てる』シリーズは開発者がKDPで刊行する書籍です。どちらも同じ設計思想で、あわせて演習に活用できます。" },
+              ].map((item) => (
+                <li key={item.q} className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
+                  <p className="flex items-start gap-2.5 text-[1rem] font-bold leading-[1.6] text-[#0b1d4a]">
+                    <span aria-hidden="true" className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#0d9488] text-[0.78rem] font-bold text-white">Q</span>
+                    {item.q}
+                  </p>
+                  <p className="mt-3 border-t border-dotted border-[rgba(15,29,74,0.12)] pt-3 text-[0.92rem] leading-[1.95] text-[#475569]">{item.a}</p>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div className="mx-auto mt-14 max-w-3xl">
