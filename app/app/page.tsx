@@ -3,8 +3,8 @@ import Link from "next/link";
 
 import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
+import { AppScreen, appSteps } from "@/components/app-screens";
 import { JsonLd } from "@/components/json-ld";
-import { AppMock } from "@/components/nobit-media";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createSoftwareAppJsonLd } from "@/lib/structured-data";
 import { siteConfig } from "@/data/site";
@@ -87,7 +87,7 @@ export default function AppPage() {
                 aria-hidden="true"
                 className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.2),transparent)] blur-2xl sm:h-96 sm:w-96"
               />
-              <AppMock className="relative float-slow" />
+              <AppScreen variant="home" className="relative float-slow" />
             </div>
           </div>
         </Container>
@@ -136,33 +136,48 @@ export default function AppPage() {
         </Container>
       </section>
 
-      {/* 画面でわかる、アプリの中身 */}
+      {/* 実画面で見る 4ステップ */}
       <section className="bg-white">
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">Screens · 画面でわかる</p>
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">Screens · 実際のアプリ画面</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
-              ホーム画面に、必要なものが全部。
+              学習は、この<span className="text-[#0f766e]">4画面</span>でまわる。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              アプリを開くと、今日やること・添削の返却・がんばりが一目で分かります。
+              課題が届く → 解いて写真で提出 → 採点者が添削して返却 → すべて記録。実際の画面でご紹介します。
             </p>
           </div>
-          <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2">
-            {[
-              { t: "今日の課題", b: "その日の1枚が科目タグつきで表示。「提出」を押すだけで出せます。物理・数学など複数科目もここに並びます。" },
-              { t: "添削の返却通知", b: "「先生から添削が返ってきました」と通知。タップすると、途中式・減点ポイントまでの指摘を確認できます。" },
-              { t: "がんばりメーター", b: "はなまる・添削完了・今週の提出数を数字で表示。次の称号まであといくつかも一目で分かります。" },
-              { t: "連続記録（れんぞく）", b: "続けた日数がカウントされ、途切れさせたくない気持ちが習慣を後押し。無理のないペースで戻れます。" },
-            ].map((s) => (
-              <div key={s.t} className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
-                <p className="text-[1.02rem] font-extrabold leading-[1.5] text-[#0b1d4a]">{s.t}</p>
-                <p className="mt-2 text-[0.9rem] leading-[1.9] text-[#475569]">{s.b}</p>
+
+          <div className="mx-auto mt-14 grid max-w-4xl gap-y-16">
+            {appSteps.map((s, i) => (
+              <div
+                key={s.no}
+                className={`grid items-center gap-8 lg:grid-cols-[auto_1fr] lg:gap-12 ${i % 2 === 1 ? "lg:grid-cols-[1fr_auto]" : ""}`}
+              >
+                <div className={`flex justify-center ${i % 2 === 1 ? "lg:order-2" : ""}`}>
+                  <AppScreen variant={s.variant} />
+                </div>
+                <div className={i % 2 === 1 ? "lg:order-1" : ""}>
+                  <span className="inline-flex items-center gap-2 rounded-full bg-[#0b1d4a] px-3 py-1 text-[0.72rem] font-extrabold tracking-[0.08em] text-white">
+                    STEP {s.no}
+                  </span>
+                  <p className="mt-3 text-[1.3rem] font-extrabold leading-[1.4] text-[#0b1d4a] sm:text-[1.5rem]">{s.title}</p>
+                  <p className="mt-2 text-[0.95rem] leading-[1.95] text-[#334155]">{s.lead}</p>
+                  <ul className="mt-4 grid gap-2">
+                    {s.facts.map((f) => (
+                      <li key={f} className="flex gap-2.5 text-[0.9rem] leading-[1.8] text-[#475569]">
+                        <span aria-hidden="true" className="mt-[0.4em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d9488]" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
           </div>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-[0.82rem] leading-[1.8] text-[#94a3b8]">
-            ※ 画面はイメージです。実際の表示は改善のため変わることがあります。
+          <p className="mx-auto mt-14 max-w-2xl text-center text-[0.82rem] leading-[1.8] text-[#94a3b8]">
+            ※ 掲載画面はデモ環境での実際の表示例をもとにした再現です。
           </p>
         </Container>
       </section>

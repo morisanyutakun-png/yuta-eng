@@ -5,6 +5,7 @@ import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { JsonLd } from "@/components/json-ld";
 import { createPageMetadata } from "@/lib/metadata";
+import { AppScreen } from "@/components/app-screens";
 import { createBreadcrumbJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
@@ -133,6 +134,36 @@ export default function HowItWorksPage() {
                 </ul>
               </div>
             ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* 実際のアプリ画面（届く→返る） */}
+      <section className="bg-white">
+        <Container className="px-6 py-16 sm:py-24">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">In the app · アプリの中で</p>
+            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
+              しくみは、この画面の中で動く。
+            </h2>
+            <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
+              スマホ・タブレットで完結。課題が「届き」、添削されて「返る」——実際の画面はこう見えます。
+            </p>
+          </div>
+          <div className="mt-12 flex flex-wrap items-start justify-center gap-8 sm:gap-12">
+            <div className="text-center">
+              <AppScreen variant="home" />
+              <p className="mt-4 text-[0.9rem] font-bold text-[#0b1d4a]">課題が届く（ホーム）</p>
+              <p className="mt-1 text-[0.8rem] text-[#64748b]">今日の1枚・やること・がんばりメーター</p>
+            </div>
+            <div className="text-center">
+              <AppScreen variant="returned" />
+              <p className="mt-4 text-[0.9rem] font-bold text-[#0b1d4a]">添削が返る（返却）</p>
+              <p className="mt-1 text-[0.8rem] text-[#64748b]">合否・得点・次の一手までコメント</p>
+            </div>
+          </div>
+          <div className="mt-10 flex justify-center">
+            <SecondaryCta href="/app">アプリの4画面をくわしく見る</SecondaryCta>
           </div>
         </Container>
       </section>
