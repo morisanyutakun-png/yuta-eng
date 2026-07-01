@@ -59,22 +59,21 @@ export const siteConfig = {
 // グローバルナビ。ノビットスタディ中心のため、トップページ内の各セクションへの
 // アンカーと、無料体験・相談（/contact）への CTA に絞る。
 export const navItems = [
-  { label: "しくみ", href: "/#features" },
-  { label: "アプリ", href: "/#app" },
-  { label: "教材", href: "/#materials" },
+  { label: "しくみ", href: "/how-it-works" },
+  { label: "アプリ", href: "/app" },
+  { label: "教材", href: "/materials" },
   { label: "料金・科目", href: "/apply#pricing" },
   { label: "よくある質問", href: "/#faq" },
   { label: "申し込む", href: "/apply", highlight: true },
 ];
 
 export const footerNavItems = [
-  { label: "ノビットのしくみ", href: "/#features" },
-  { label: "公式アプリ", href: "/#app" },
-  { label: "1日のサイクル", href: "/#flow" },
-  { label: "教材・実績", href: "/#materials" },
+  { label: "ノビットのしくみ", href: "/how-it-works" },
+  { label: "公式アプリ", href: "/app" },
+  { label: "教材", href: "/materials" },
   { label: "料金・対応科目", href: "/apply#pricing" },
   { label: "よくある質問", href: "/#faq" },
-  { label: "塾について", href: "/about" },
+  { label: "運営者について", href: "/about" },
   { label: "お申し込み（初月半額）", href: "/apply" },
   { label: "質問・相談", href: "/contact" },
 ];
