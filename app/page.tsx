@@ -2,7 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Container } from "@/components/container";
+import { PrimaryCta, SecondaryCta } from "@/components/cta";
 import { JsonLd } from "@/components/json-ld";
+import {
+  AppMock,
+  GroundedMascot,
+  PrintImage,
+} from "@/components/nobit-media";
+import { bookGroups, officialBooks } from "@/data/books";
 import { homeFaq } from "@/data/home";
 import { kdpAmazonUrl } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
@@ -146,63 +153,6 @@ const appPoints = [
   { title: "続けたくなる仕組み", body: "はなまる・称号・連続記録で、毎日の学習が自然と積み上がります。" },
 ];
 
-// ノビット公式教材。毎日の演習の土台となる、ノビットのために書き下ろした教材。
-// いまは数学を先行公開し、物理・化学・英語など各分野へ順次拡大していく。
-const officialBooks = [
-  { asin: "B0H6ZRPLVJ", title: "ノビットの数学ⅠA 標準演習", sub: "基礎から入試標準まで。10分野・類題演習・詳しい解説。", subject: "数学IA" },
-  { asin: "B0H71TQJYY", title: "ノビットの数学ⅡBC 標準演習", sub: "基礎から入試標準まで。11分野・類題演習・詳しい解説。", subject: "数学IIBC" },
-  { asin: "B0H724CBBT", title: "ノビットの数学ⅢC 標準演習", sub: "基礎から入試標準まで。9分野・類題演習・詳しい解説。", subject: "数学IIIC" },
-];
-
-// 開発・添削担当 森祐太 が KDP（Amazon）で刊行する『考える力を育てる』シリーズ全ラインナップ。
-// asin から Amazon 商品ページ（/dp/{asin}）と表紙（public/books/{asin}）に対応。
-const bookGroups = [
-  {
-    group: "理論・本質理解編",
-    note: "現象・図・言葉・式を結びつけ、本質から理解する。",
-    accent: "#1d4ed8",
-    books: [
-      { asin: "B0GZGBMPJG", title: "力学", sub: "運動方程式・エネルギー・運動量からケプラー・剛体まで。" },
-      { asin: "B0FQ2GJY5V", title: "電磁気学", sub: "電場・電位から回路・電磁誘導まで筋道立てて。" },
-      { asin: "B0GZNFFC23", title: "熱力学", sub: "気体分子運動論から熱機関・熱効率まで体系的に。" },
-      { asin: "B0GZTZH5NJ", title: "波動・原子物理学", sub: "波の式・干渉・光子・原子核を現象のイメージから。" },
-    ],
-  },
-  {
-    group: "演習編",
-    note: "入門 → 標準 → 発展と、無理なくステップアップ。",
-    accent: "#0d9488",
-    books: [
-      { asin: "B0H4J34162", title: "高校物理 入門演習", sub: "公式の意味を確かめ、自分で立式できる感覚を養う。" },
-      { asin: "B0H3LLW1F2", title: "高校物理 標準演習", sub: "入試標準〜難関大を分野横断で鍛える 85 題。" },
-      { asin: "B0H639CPQW", title: "高校物理 発展演習", sub: "微積も駆使し、難関大の応用を攻略する 77 題。" },
-      { asin: "B0H65Y6FXQ", title: "力学 解法ドリル", sub: "書き込み式・全6章。力学の解法を手で再現する。" },
-      { asin: "B0H66JNR6Q", title: "高校物理 無双（全分野）", sub: "力学〜原子の全5分野・厳選60問を一冊で総点検。" },
-      { asin: "B0FSCMCRDR", title: "電磁気学演習", sub: "圧倒的な演習量で、電磁気を得点源に変える。" },
-    ],
-  },
-  {
-    group: "入試対策編",
-    note: "出題傾向に直結、本番でそのまま使える実戦力。",
-    accent: "#ea580c",
-    books: [
-      { asin: "B0H4D4RZNF", title: "名大物理 予想問題集", sub: "名古屋大学に特化した実践模試 5 回分＋詳しい解説。" },
-      { asin: "B0H67XF1XL", title: "名工大物理 予想問題集", sub: "名古屋工業大学に特化した実践模試 5 回分。" },
-      { asin: "B0H62FCBS5", title: "共通テスト物理 予想問題集", sub: "現象を読む力を鍛える共通テスト型模試 5 回分。" },
-    ],
-  },
-  {
-    group: "総まとめ・数学編",
-    note: "分野横断の総まとめと、数学の「考える力」。",
-    accent: "#16a34a",
-    books: [
-      { asin: "B0GZKCTHT5", title: "高校物理I（力学・電磁気）", sub: "力学・電磁気を一冊に。難関国公立二次対策。" },
-      { asin: "B0GZV321YZ", title: "高校物理II（熱・波動・原子）", sub: "熱・波動・原子を一冊に。難関国公立二次対策。" },
-      { asin: "B0GX1ZY4Y6", title: "高校数学 高一からの因数分解", sub: "見抜く力を鍛える 1050 題。4ステップ構成。" },
-    ],
-  },
-];
-
 const faqItems = homeFaq;
 
 // 流れる帯（マーキー）のフレーズ。視覚的なリズム＋SEO のキーワードを兼ねる。
@@ -329,33 +279,6 @@ function MarqueeBand({ reverse = false }: { reverse?: boolean }) {
   );
 }
 
-function PrimaryCta({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      className="group/cta relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-full px-7 text-[0.98rem] font-bold tracking-[0.01em] text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px hover:shadow-[0_22px_44px_-14px_rgba(234,88,12,0.8)]"
-    >
-      <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
-      <span
-        aria-hidden="true"
-        className="absolute -inset-x-1 -inset-y-1 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.5)_50%,transparent_70%)] transition duration-700 group-hover/cta:translate-x-full"
-      />
-      <span className="relative">{children}</span>
-    </Link>
-  );
-}
-
-function SecondaryCta({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <Link
-      href={href}
-      className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-7 text-[0.98rem] font-semibold tracking-[0.01em] text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
-    >
-      {children}
-    </Link>
-  );
-}
-
 /** セクション間に置く申込・料金への誘導。CTAを増やして申込導線を強化。 */
 function InlineCta({ note }: { note?: string }) {
   return (
@@ -366,201 +289,6 @@ function InlineCta({ note }: { note?: string }) {
       <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
         <PrimaryCta href="/apply">料金を見て申し込む（初月半額）</PrimaryCta>
         <SecondaryCta href="/apply#pricing">料金・科目を見る</SecondaryCta>
-      </div>
-    </div>
-  );
-}
-
-/** 本物の公式演習本ページ（PDF からレンダリングした実画像）。 */
-function PrintImage({
-  base,
-  alt,
-  className,
-  sizes = "(min-width: 1024px) 460px, 80vw",
-  priority = false,
-}: {
-  base: string;
-  alt: string;
-  className?: string;
-  sizes?: string;
-  priority?: boolean;
-}) {
-  return (
-    <picture>
-      <source
-        type="image/avif"
-        srcSet={`/prints/${base}-620.avif 620w, /prints/${base}-960.avif 960w`}
-        sizes={sizes}
-      />
-      <source
-        type="image/webp"
-        srcSet={`/prints/${base}-620.webp 620w, /prints/${base}-960.webp 960w`}
-        sizes={sizes}
-      />
-      <img
-        src={`/prints/${base}-960.webp`}
-        alt={alt}
-        width={1241}
-        height={1754}
-        loading={priority ? "eager" : "lazy"}
-        decoding="async"
-        fetchPriority={priority ? "high" : undefined}
-        className={className}
-      />
-    </picture>
-  );
-}
-
-/** マスコット「ノビットくん」（透過 PNG / AVIF・WebP）。 */
-function Mascot({ variant, className }: { variant: "wave" | "point"; className?: string }) {
-  const base = variant === "wave" ? "nobit-kun-wave" : "nobit-kun-point";
-  const w = variant === "wave" ? 740 : 887;
-  const h = variant === "wave" ? 896 : 976;
-  return (
-    <picture>
-      <source type="image/avif" srcSet={`/brand/${base}-240.avif 240w, /brand/${base}-480.avif 480w`} sizes="200px" />
-      <source type="image/webp" srcSet={`/brand/${base}-240.webp 240w, /brand/${base}-480.webp 480w`} sizes="200px" />
-      <img
-        src={`/brand/${base}-480.webp`}
-        alt="ノビットスタディのマスコット「ノビットくん」"
-        width={w}
-        height={h}
-        loading="lazy"
-        decoding="async"
-        className={className}
-      />
-    </picture>
-  );
-}
-
-/**
- * 各セクションの空きスペースに「立っている」マスコット。接地影＋ステージ発光で
- * 背景に馴染ませる（明るい面に貼り付いた感を出さない）。デスクトップのみ表示。
- */
-function GroundedMascot({
-  variant,
-  position,
-  sizeClass,
-}: {
-  variant: "wave" | "point";
-  position: string;
-  sizeClass: string;
-}) {
-  return (
-    <div className={`pointer-events-none absolute z-10 hidden lg:block ${position}`}>
-      <div className="relative">
-        <span
-          aria-hidden="true"
-          className="absolute left-1/2 top-[46%] -z-10 h-48 w-48 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.18),rgba(29,78,216,0.06)_55%,transparent)] blur-xl"
-        />
-        <Mascot variant={variant} className={`relative w-auto ${sizeClass}`} />
-        <span
-          aria-hidden="true"
-          className="absolute -bottom-1 left-1/2 h-3.5 w-24 -translate-x-1/2 rounded-[50%] bg-[rgba(11,29,74,0.15)] blur-[6px]"
-        />
-      </div>
-    </div>
-  );
-}
-
-/**
- * 添削管理アプリ「ノビットスタディ」の画面を、電話フレームで再現したモック。
- * 進捗・連続日数・添削の返却・課題が一目で分かり、保護者も同じ画面で見守れる。
- */
-function AppMock({ className = "" }: { className?: string }) {
-  return (
-    <div className={`relative w-[270px] shrink-0 ${className}`}>
-      {/* 端末ベゼル */}
-      <div className="rounded-[2.4rem] bg-[#0b1d4a] p-2.5 shadow-[0_50px_80px_-40px_rgba(11,29,74,0.7)] ring-1 ring-white/10">
-        <div className="relative overflow-hidden rounded-[1.9rem] bg-[#eef3fb]">
-          {/* ノッチ */}
-          <div className="absolute left-1/2 top-2 z-10 h-4 w-20 -translate-x-1/2 rounded-full bg-[#0b1d4a]" />
-          <div className="px-3 pb-4 pt-7">
-            {/* ヘッダーカード */}
-            <div className="relative overflow-hidden rounded-[16px] bg-[linear-gradient(120deg,#1d4ed8_0%,#0d9488_100%)] p-3.5 text-white">
-              <div className="pr-12">
-                <p className="text-[0.82rem] font-extrabold leading-tight">こんにちは、ユウタさん！</p>
-                <p className="mt-1 text-[0.6rem] leading-snug text-white/85">今日の課題が2件 届いています。</p>
-              </div>
-              <img
-                src="/brand/nobit-kun-wave-240.webp"
-                alt=""
-                width={740}
-                height={896}
-                loading="lazy"
-                decoding="async"
-                className="absolute -bottom-2 right-1 h-16 w-auto drop-shadow-[0_6px_8px_rgba(11,29,74,0.3)]"
-              />
-              <div className="mt-3 flex gap-1.5">
-                {[
-                  { t: "🔥 12日", s: "れんぞく" },
-                  { t: "⭐ 48", s: "はなまる" },
-                  { t: "🏅 努力家", s: "称号" },
-                ].map((c) => (
-                  <div key={c.s} className="flex-1 rounded-[8px] bg-white/15 px-1.5 py-1 text-center ring-1 ring-white/20">
-                    <p className="text-[0.6rem] font-bold leading-none">{c.t}</p>
-                    <p className="mt-0.5 text-[0.48rem] text-white/80">{c.s}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 添削が返ってきた通知 */}
-            <div className="mt-2.5 flex items-center gap-2 rounded-[12px] border-l-[3px] border-[#16a34a] bg-[#eafaf0] px-2.5 py-2">
-              <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#16a34a] text-[0.7rem] text-white">✓</span>
-              <p className="text-[0.62rem] font-bold leading-snug text-[#0b1d4a]">
-                先生から添削が2件 返ってきました
-              </p>
-            </div>
-
-            {/* 今日の課題 */}
-            <div className="mt-2.5 rounded-[12px] bg-white p-3 ring-1 ring-[rgba(15,29,74,0.06)]">
-              <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">今日の課題</p>
-              <ul className="mt-2 grid gap-1.5">
-                {[
-                  { s: "物理", t: "力学・運動方程式", c: "#1d4ed8" },
-                  { s: "数学IIBC", t: "複素数平面", c: "#0d9488" },
-                ].map((q) => (
-                  <li key={q.s} className="flex items-center gap-2 rounded-[8px] bg-[#f8fafc] px-2 py-1.5">
-                    <span
-                      className="shrink-0 rounded-[5px] px-1.5 py-0.5 text-[0.5rem] font-bold text-white"
-                      style={{ background: q.c }}
-                    >
-                      {q.s}
-                    </span>
-                    <span className="min-w-0 flex-1 truncate text-[0.6rem] font-semibold text-[#334155]">{q.t}</span>
-                    <span className="shrink-0 rounded-full bg-[#f97316] px-2 py-0.5 text-[0.5rem] font-bold text-white">提出</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* がんばりメーター */}
-            <div className="mt-2.5 rounded-[12px] bg-white p-3 ring-1 ring-[rgba(15,29,74,0.06)]">
-              <div className="flex items-center justify-between">
-                <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">がんばりメーター</p>
-                <p className="text-[0.52rem] font-semibold text-[#0f766e]">あと1こで昇格</p>
-              </div>
-              <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#e2e8f0]">
-                <div className="h-full w-[78%] rounded-full bg-[linear-gradient(90deg,#1d4ed8,#0d9488)]" />
-              </div>
-              <div className="mt-2.5 grid grid-cols-3 gap-1.5 text-center">
-                {[
-                  { n: "48", l: "はなまる", c: "#ea580c" },
-                  { n: "31", l: "添削完了", c: "#16a34a" },
-                  { n: "6", l: "今週の提出", c: "#1d4ed8" },
-                ].map((s) => (
-                  <div key={s.l} className="rounded-[8px] bg-[#f8fafc] py-1.5">
-                    <p className="text-[0.86rem] font-extrabold leading-none" style={{ color: s.c }}>
-                      {s.n}
-                    </p>
-                    <p className="mt-0.5 text-[0.48rem] text-[#64748b]">{s.l}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
