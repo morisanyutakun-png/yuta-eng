@@ -136,8 +136,91 @@ export default function AppPage() {
         </Container>
       </section>
 
-      {/* 保護者も安心 */}
+      {/* 画面でわかる、アプリの中身 */}
       <section className="bg-white">
+        <Container className="px-6 py-16 sm:py-24">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">Screens · 画面でわかる</p>
+            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
+              ホーム画面に、必要なものが全部。
+            </h2>
+            <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
+              アプリを開くと、今日やること・添削の返却・がんばりが一目で分かります。
+            </p>
+          </div>
+          <div className="mx-auto mt-10 grid max-w-3xl gap-4 sm:grid-cols-2">
+            {[
+              { t: "今日の課題", b: "その日の1枚が科目タグつきで表示。「提出」を押すだけで出せます。物理・数学など複数科目もここに並びます。" },
+              { t: "添削の返却通知", b: "「先生から添削が返ってきました」と通知。タップすると、途中式・減点ポイントまでの指摘を確認できます。" },
+              { t: "がんばりメーター", b: "はなまる・添削完了・今週の提出数を数字で表示。次の称号まであといくつかも一目で分かります。" },
+              { t: "連続記録（れんぞく）", b: "続けた日数がカウントされ、途切れさせたくない気持ちが習慣を後押し。無理のないペースで戻れます。" },
+            ].map((s) => (
+              <div key={s.t} className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
+                <p className="text-[1.02rem] font-extrabold leading-[1.5] text-[#0b1d4a]">{s.t}</p>
+                <p className="mt-2 text-[0.9rem] leading-[1.9] text-[#475569]">{s.b}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mx-auto mt-6 max-w-2xl text-center text-[0.82rem] leading-[1.8] text-[#94a3b8]">
+            ※ 画面はイメージです。実際の表示は改善のため変わることがあります。
+          </p>
+        </Container>
+      </section>
+
+      {/* 対応環境・通知 */}
+      <section className="bg-[#f8fafc]">
+        <Container className="px-6 py-16 sm:py-24">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">Environment · 使える環境</p>
+            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
+              スマホでもPCでも。すぐ始められる。
+            </h2>
+          </div>
+          <div className="mx-auto mt-10 grid max-w-4xl gap-5 sm:grid-cols-3">
+            {[
+              { t: "アプリのインストール不要", b: "Webブラウザで動くので、面倒な設定なし。決済後の案内に沿ってログインすれば、すぐに使い始められます。" },
+              { t: "スマホ・タブレット・PC対応", b: "iPhone / Android / パソコンの最新ブラウザに対応。移動中はスマホ、家ではPCと、使い分けられます。" },
+              { t: "課題・添削のお知らせ", b: "今日の課題や添削の返却をお知らせ。「やり忘れ」を防ぎ、毎日のリズムづくりを助けます。" },
+            ].map((c) => (
+              <div key={c.t} className="rounded-[20px] bg-white p-7 ring-1 ring-[rgba(15,29,74,0.06)]">
+                <p className="text-[1.05rem] font-extrabold leading-[1.5] text-[#0b1d4a]">{c.t}</p>
+                <p className="mt-2 text-[0.9rem] leading-[1.9] text-[#475569]">{c.b}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* アプリのFAQ */}
+      <section className="bg-white">
+        <Container className="px-6 py-16 sm:py-24">
+          <div className="mx-auto max-w-3xl">
+            <div className="text-center">
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">FAQ · アプリについて</p>
+              <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2rem]">よくある質問</h2>
+            </div>
+            <ul className="mt-10 grid gap-3">
+              {[
+                { q: "アプリのダウンロードは必要ですか？", a: "いいえ。Webブラウザで動くので、アプリストアからのインストールは不要です。決済後のご案内に沿ってログインするだけで使い始められます。" },
+                { q: "どの端末で使えますか？", a: "iPhone・Android のスマホ／タブレット、パソコンの最新ブラウザに対応しています。移動中はスマホ、家ではPCなど、使い分けられます。" },
+                { q: "保護者も見られますか？", a: "はい。提出数・添削完了・連続日数などを、保護者の方も同じ画面で確認できます。面談がなくても、お子さまの取り組みをそっと見守れます。" },
+                { q: "提出した答案や学習データはどう扱われますか？", a: "答案・進捗などの学習データは、サービスの提供と品質向上のために適切に管理します。詳しくはプライバシーポリシーをご確認ください。" },
+              ].map((item) => (
+                <li key={item.q} className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
+                  <p className="flex items-start gap-2.5 text-[1rem] font-bold leading-[1.6] text-[#0b1d4a]">
+                    <span aria-hidden="true" className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#0d9488] text-[0.78rem] font-bold text-white">Q</span>
+                    {item.q}
+                  </p>
+                  <p className="mt-3 border-t border-dotted border-[rgba(15,29,74,0.12)] pt-3 text-[0.92rem] leading-[1.95] text-[#475569]">{item.a}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Container>
+      </section>
+
+      {/* 保護者も安心 */}
+      <section className="bg-[#f8fafc]">
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-3xl rounded-[24px] bg-[#eef6f6] p-8 ring-1 ring-[rgba(13,148,136,0.18)] sm:p-10">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">For Parents · 保護者の方へ</p>
