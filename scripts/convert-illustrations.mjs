@@ -28,6 +28,13 @@ const JOBS = [
   { base: "pillar-materials", widths: [128, 256], trim: true },
   { base: "pillar-habit", widths: [128, 256], trim: true },
   { base: "pillar-correction", widths: [128, 256], trim: true },
+  { base: "correction-graded", widths: [560, 1120] },
+  { base: "foryou-1", widths: [360, 640] },
+  { base: "foryou-2", widths: [360, 640] },
+  { base: "foryou-3", widths: [360, 640] },
+  { base: "foryou-4", widths: [360, 640] },
+  { base: "foryou-5", widths: [360, 640] },
+  { base: "foryou-6", widths: [360, 640] },
 ];
 
 async function main() {
