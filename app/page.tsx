@@ -740,9 +740,9 @@ export default function Home() {
                 Materials · 教材・実績
               </p>
               <h2 className="mt-3 text-balance text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.3rem]">
-                教材を書いた本人が、
+                書いた本人が、
                 <br className="hidden sm:block" />
-                毎日<Penned>直接添削</Penned>します。
+                あなたの答案を<Penned>直接見る</Penned>。
               </h2>
               <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
                 演習の土台は、ノビットのために書き下ろした

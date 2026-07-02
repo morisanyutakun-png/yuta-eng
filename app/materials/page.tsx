@@ -48,7 +48,7 @@ export default function MaterialsPage() {
           <div className="py-10 sm:py-14">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#f97316]">Materials · 教材</p>
             <h1 className="mt-3 text-[2.1rem] font-extrabold leading-[1.2] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem]">
-              演習の土台は、教材の豊富さ。
+やる教材に、もう困らない。
             </h1>
             <p className="mt-4 max-w-2xl text-[1rem] leading-[1.95] text-[#334155]">
               ノビットのために書き下ろした<strong className="font-bold text-[#0b1d4a]">公式教材</strong>と、開発者が刊行する
