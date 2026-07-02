@@ -5,7 +5,7 @@ import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { JsonLd } from "@/components/json-ld";
 import { AppScreen } from "@/components/app-screens";
-import { CurveDivider, DarkSectionDecor, SectionGlow } from "@/components/decor";
+import { Blob, CtaDoodle, CurveDivider, DarkSectionDecor, SectionGlow } from "@/components/decor";
 import { PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
 import { kdpAmazonUrl } from "@/data/site";
@@ -40,6 +40,9 @@ export default function MaterialsPage() {
       <section className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#f3f8ff_100%)]">
         <SectionGlow className="-right-24 top-4" color="rgba(249,115,22,0.12)" />
         <SectionGlow className="-left-24 bottom-0" color="rgba(29,78,216,0.08)" />
+        <Blob fill="#f97316" className="pointer-events-none absolute -right-24 -top-16 h-[26rem] w-[26rem] opacity-[0.16]" />
+        <Blob fill="#1d4ed8" className="pointer-events-none absolute -left-28 top-1/3 h-[22rem] w-[22rem] opacity-[0.14]" />
+        <Blob fill="#0d9488" className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 opacity-[0.12]" />
         <Container className="relative px-6">
           <nav aria-label="パンくずリスト" className="pt-7 text-[0.78rem] text-[#94a3b8] sm:pt-9">
             <ol className="flex flex-wrap items-center gap-2">
@@ -58,7 +61,8 @@ export default function MaterialsPage() {
               <strong className="font-bold text-[#0b1d4a]">『考える力を育てる』シリーズ（全16冊）</strong>。
               教材が豊富だから、毎日の演習に困りません。そのすべてを、つくった本人が毎日添削します。
             </p>
-            <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+            <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center lg:mt-16 lg:w-fit">
+              <CtaDoodle />
               <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
               <SecondaryCta href="/how-it-works">ノビットのしくみ</SecondaryCta>
             </div>

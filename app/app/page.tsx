@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { AppScreen, appSteps } from "@/components/app-screens";
-import { Blob, CurveDivider, DarkSectionDecor, MarkerArrow, PhoneBackdrop, SectionGlow } from "@/components/decor";
+import { Blob, CtaDoodle, CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createSoftwareAppJsonLd } from "@/lib/structured-data";
@@ -67,9 +67,9 @@ export default function AppPage() {
           }}
         />
         {/* 有機的なブロブ（色のインパクト） */}
-        <Blob fill="#7c3aed" className="pointer-events-none absolute -right-24 -top-16 h-[26rem] w-[26rem] opacity-[0.13]" />
-        <Blob fill="#0d9488" className="pointer-events-none absolute -left-32 top-[38%] h-[22rem] w-[22rem] opacity-[0.12]" />
-        <Blob fill="#f97316" className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 opacity-[0.08]" />
+        <Blob fill="#7c3aed" className="pointer-events-none absolute -right-24 -top-16 h-[26rem] w-[26rem] opacity-[0.2]" />
+        <Blob fill="#0d9488" className="pointer-events-none absolute -left-32 top-[38%] h-[22rem] w-[22rem] opacity-[0.18]" />
+        <Blob fill="#f97316" className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 opacity-[0.13]" />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
@@ -112,15 +112,7 @@ export default function AppPage() {
               </p>
               <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 {/* 手描きの誘導（人の手の気配） */}
-                <div aria-hidden="true" className="absolute -right-2 -top-14 hidden items-end gap-1 lg:flex">
-                  <span
-                    className="-rotate-6 text-[1.05rem] font-extrabold text-[#ea580c]"
-                    style={{ fontFamily: "'Hiragino Mincho ProN','YuMincho',serif" }}
-                  >
-                    まずは、ここから！
-                  </span>
-                  <MarkerArrow className="h-11 w-12 -scale-x-100 rotate-[8deg] text-[#ea580c]" />
-                </div>
+                <CtaDoodle />
                 <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
                 <SecondaryCta href="/how-it-works">ノビットのしくみ</SecondaryCta>
               </div>

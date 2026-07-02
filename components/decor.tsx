@@ -71,6 +71,9 @@ export function DarkSectionDecor() {
       <div className="absolute -right-56 -top-60 h-[38rem] w-[38rem] rounded-full border border-white/[0.06]" />
       {/* 左下：ソフトなティールの楕円ブロブ */}
       <div className="absolute -left-24 bottom-[-25%] h-80 w-[40rem] rounded-[50%] bg-[radial-gradient(closest-side,rgba(94,234,212,0.16),transparent)] blur-2xl" />
+      {/* 有機的なブロブ（暗い帯にも色のうねりを） */}
+      <Blob fill="#5eead4" className="absolute -bottom-20 -left-16 h-80 w-80 opacity-[0.12]" />
+      <Blob fill="#818cf8" className="absolute -top-24 right-[4%] h-72 w-72 opacity-[0.14]" />
       {/* 左上：見切れの半円（塗り） */}
       <div className="absolute -left-28 top-[12%] h-56 w-56 rounded-full bg-white/[0.035]" />
       {/* 下中央：大きな半円のアウトライン（上向き） */}
@@ -97,6 +100,21 @@ export function Blob({ className = "", fill }: { className?: string; fill: strin
         d="M54,-62C68,-49,76,-30,78,-10C80,10,76,31,64,47C52,63,32,74,11,77C-11,80,-33,75,-51,63C-69,51,-83,32,-85,12C-87,-8,-77,-30,-63,-46C-49,-62,-31,-72,-11,-74C9,-76,28,-75,54,-62Z"
       />
     </svg>
+  );
+}
+
+/** CTAの脇に添える手描きの誘導（手書き調メモ＋採点ペン風矢印）。relative な CTA 親に置く。 */
+export function CtaDoodle({ label = "まずは、ここから！" }: { label?: string }) {
+  return (
+    <div aria-hidden="true" className="absolute -right-2 -top-14 hidden items-end gap-1 lg:flex">
+      <span
+        className="-rotate-6 text-[1.05rem] font-extrabold text-[#ea580c]"
+        style={{ fontFamily: "'Hiragino Mincho ProN','YuMincho',serif" }}
+      >
+        {label}
+      </span>
+      <MarkerArrow className="h-11 w-12 -scale-x-100 rotate-[8deg] text-[#ea580c]" />
+    </div>
   );
 }
 
