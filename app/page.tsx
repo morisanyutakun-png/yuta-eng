@@ -6,7 +6,7 @@ import { Container } from "@/components/container";
 import { PrimaryCta, SecondaryCta } from "@/components/cta";
 import { Blob, CtaDoodle, CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
-import { GroundedMascot, Illust, PrintImage } from "@/components/nobit-media";
+import { GroundedMascot, Illust, Mascot, PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
 import { homeFaq } from "@/data/home";
 import { kdpAmazonUrl } from "@/data/site";
@@ -1269,6 +1269,23 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
+                {/* 実物の書影で「全16冊執筆」を可視化 */}
+                <div className="mt-5 border-t border-[rgba(15,29,74,0.08)] pt-4">
+                  <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-[#64748b]">
+                    著書『考える力を育てる』シリーズ（全16冊・一部）
+                  </p>
+                  <ul className="mt-3 grid grid-cols-5 gap-2">
+                    {bookGroups.flatMap((g) => g.books).slice(0, 5).map((b) => (
+                      <li key={b.asin} className="overflow-hidden rounded-[6px] shadow-[0_10px_18px_-12px_rgba(11,29,74,0.6)] ring-1 ring-[rgba(15,29,74,0.1)] transition hover:-translate-y-0.5">
+                        <picture>
+                          <source type="image/avif" srcSet={`/books/${b.asin}.avif`} />
+                          <source type="image/webp" srcSet={`/books/${b.asin}.webp`} />
+                          <img src={`/books/${b.asin}.webp`} alt={`考える力を育てる ${b.title}（森祐太）`} width={142} height={200} loading="lazy" decoding="async" className="block aspect-[71/100] h-auto w-full object-cover" />
+                        </picture>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 <Link
                   href="/about"
                   className="mt-5 inline-flex items-center text-[0.86rem] font-semibold text-[#0f766e] hover:text-[#0b1d4a]"
@@ -1379,7 +1396,13 @@ export default function Home() {
       {/* ───────── PRICING（料金の告知・詳細は申込ページへ集約） ───────── */}
       <section id="pricing" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
         <Container className="px-6 py-16 sm:py-24">
-          <div className="mx-auto max-w-3xl overflow-hidden rounded-[26px] bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white shadow-[0_44px_90px_-55px_rgba(11,29,74,0.6)]">
+          <div className="relative mx-auto max-w-3xl overflow-hidden rounded-[26px] bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white shadow-[0_44px_90px_-55px_rgba(11,29,74,0.6)]">
+            <Blob fill="#ffffff" className="pointer-events-none absolute -left-20 -top-16 h-64 w-64 opacity-[0.06]" />
+            <Blob fill="#5eead4" className="pointer-events-none absolute -bottom-20 -right-12 h-64 w-64 opacity-[0.12]" />
+            {/* 初月半額シール（キャンペーンと統一） */}
+            <div aria-hidden="true" className="pointer-events-none absolute -right-4 -top-4 z-10 hidden rotate-12 sm:block">
+              <Starburst className="h-24 w-24 drop-shadow-[0_12px_22px_rgba(0,0,0,0.35)]" />
+            </div>
             <div className="relative px-6 py-12 text-center sm:px-12 sm:py-14">
               <div
                 aria-hidden="true"
@@ -1436,38 +1459,59 @@ export default function Home() {
 
       {/* ───────── FAQ ───────── */}
       <section id="faq" className="cv-defer relative overflow-hidden scroll-mt-24 bg-white">
-        <Container className="px-6 py-16 sm:py-24 lg:pb-40">
-          <div className="mx-auto max-w-3xl">
-            <div className="text-center">
+        <Container className="px-6 py-16 sm:py-24">
+          <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-14">
+            {/* 左：見出し＋マスコット＋相談導線 */}
+            <div className="lg:sticky lg:top-28 lg:self-start">
               <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
                 FAQ · よくある質問
               </p>
-              <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-                よくある質問
+              <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.1rem]">
+                まだ、気になる<br className="hidden lg:block" />ことは？
               </h2>
+              <p className="mt-3 text-[0.94rem] leading-[1.9] text-[#475569]">
+                よくいただく質問をまとめました。ここに無いことは、どんな小さなことでも気軽にご相談ください。
+              </p>
+              <div className="mt-6 flex items-center gap-3 rounded-[20px] bg-[#eef6f6] p-4 ring-1 ring-[rgba(13,148,136,0.18)]">
+                <Mascot variant="wave" className="h-20 w-auto shrink-0" />
+                <div>
+                  <p className="text-[0.9rem] font-extrabold text-[#0b1d4a]">解決しないときは</p>
+                  <Link
+                    href="/contact"
+                    className="mt-1.5 inline-flex min-h-10 items-center justify-center rounded-full bg-[#0f766e] px-5 text-[0.86rem] font-bold text-white transition hover:bg-[#0b1d4a]"
+                  >
+                    相談してみる <span aria-hidden="true" className="ml-1">→</span>
+                  </Link>
+                </div>
+              </div>
             </div>
-            <ul className="mt-10 grid gap-3">
-              {faqItems.map((item) => (
-                <li key={item.question} className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
-                  <p className="flex items-start gap-2.5 text-[1rem] font-bold leading-[1.6] text-[#0b1d4a]">
-                    <span
-                      aria-hidden="true"
-                      className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#0d9488] text-[0.78rem] font-bold text-white"
-                    >
-                      Q
-                    </span>
-                    {item.question}
-                  </p>
-                  <p className="mt-3 border-t border-dotted border-[rgba(15,29,74,0.12)] pt-3 text-[0.92rem] leading-[1.95] text-[#475569]">
-                    {item.answer}
-                  </p>
+
+            {/* 右：アコーディオン（ネイティブ details・JSなし） */}
+            <ul className="grid gap-3">
+              {faqItems.map((item, i) => (
+                <li key={item.question}>
+                  <details
+                    className="group rounded-[16px] bg-[#f8fafc] ring-1 ring-[rgba(15,29,74,0.06)] transition open:bg-white open:shadow-[0_24px_44px_-36px_rgba(11,29,74,0.4)] open:ring-[rgba(13,148,136,0.22)]"
+                    {...(i === 0 ? { open: true } : {})}
+                  >
+                    <summary className="flex cursor-pointer list-none items-center gap-3 p-5 [&::-webkit-details-marker]:hidden">
+                      <span aria-hidden="true" className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#0d9488] text-[0.78rem] font-bold text-white">
+                        Q
+                      </span>
+                      <span className="flex-1 text-[0.98rem] font-bold leading-[1.55] text-[#0b1d4a]">{item.question}</span>
+                      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 shrink-0 text-[#0f766e] transition-transform duration-200 group-open:rotate-180" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </summary>
+                    <p className="border-t border-dotted border-[rgba(15,29,74,0.12)] px-5 pb-5 pt-3 text-[0.92rem] leading-[1.95] text-[#475569]">
+                      {item.answer}
+                    </p>
+                  </details>
                 </li>
               ))}
             </ul>
           </div>
         </Container>
-        {/* よくある質問のそばに立つノビットくん（デスクトップのみ） */}
-        <GroundedMascot variant="wave" position="bottom-3 left-[4%] xl:left-[9%]" sizeClass="h-40 xl:h-44" />
       </section>
 
       {/* ───────── FINAL CTA ───────── */}
