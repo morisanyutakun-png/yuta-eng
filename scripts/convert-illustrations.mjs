@@ -60,6 +60,16 @@ async function main() {
     }
     console.log(`[illust] ${j.base}: → ${j.widths.join(",")}`);
   }
+
+  // OGP/SNS シェア画像：1200x630 に整えた軽量 JPG（OG 画像テンプレートの背景に使う）。
+  const ogpSrc = path.join(DIR, "ogp-campaign.png");
+  if (existsSync(ogpSrc)) {
+    await sharp(ogpSrc)
+      .resize({ width: 1200, height: 630, fit: "cover", position: "centre" })
+      .jpeg({ quality: 82, mozjpeg: true })
+      .toFile(path.join(DIR, "ogp-campaign-1200x630.jpg"));
+    console.log("[illust] ogp-campaign: → 1200x630.jpg");
+  }
 }
 
 main().catch((err) => {

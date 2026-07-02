@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "ノビットスタディ 中高部 — 高校物理・数学の毎日添削オンライン塾。考える力を育てる記述答案の添削。";
+  "ノビットスタディ 中高部 — 毎日の学習を、仕組みにする。教材 × 習慣化 × 添削のデジタル通信添削。";
 
 export const size = {
   width: 1200,
@@ -16,112 +16,106 @@ export const dynamic = "force-static";
 export const revalidate = false;
 
 export default async function Image() {
-  const [notoRegular, notoBold] = await Promise.all([
+  const [notoRegular, notoBold, ogpJpg] = await Promise.all([
     readFile(join(process.cwd(), "public/fonts/NotoSansJP-Regular.ttf")),
     readFile(join(process.cwd(), "public/fonts/NotoSansJP-Bold.ttf")),
+    readFile(join(process.cwd(), "public/illust/ogp-campaign-1200x630.jpg")),
   ]);
+  const bg = `data:image/jpeg;base64,${ogpJpg.toString("base64")}`;
 
   return new ImageResponse(
     (
       <div
         style={{
-          alignItems: "center",
-          background:
-            "linear-gradient(135deg, #e0f2fe 0%, #ecfdf5 48%, #fff7ed 100%)",
-          color: "#0b1220",
           display: "flex",
-          fontFamily: '"Noto Sans JP", system-ui, sans-serif',
-          height: "100%",
-          justifyContent: "center",
-          padding: "58px",
+          position: "relative",
           width: "100%",
+          height: "100%",
+          fontFamily: '"Noto Sans JP", system-ui, sans-serif',
         }}
       >
+        {/* 背景＝ブランドイラスト（スマホ・答案・合格スタンプ） */}
+        <img src={bg} width={1200} height={630} style={{ position: "absolute", inset: 0 }} />
+        {/* 左側の空きスペースを暗くして白文字の視認性を確保 */}
         <div
           style={{
-            background: "rgba(255, 255, 255, 0.82)",
-            border: "2px solid rgba(255, 255, 255, 0.92)",
-            borderRadius: "48px",
-            boxShadow: "0 34px 100px rgba(15, 23, 42, 0.18)",
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(90deg, rgba(120,25,0,0.62) 0%, rgba(120,25,0,0.28) 42%, rgba(120,25,0,0) 62%)",
+          }}
+        />
+        {/* テキストオーバーレイ（左） */}
+        <div
+          style={{
+            position: "relative",
             display: "flex",
             flexDirection: "column",
+            justifyContent: "center",
+            gap: 26,
+            padding: "0 64px",
+            width: 660,
             height: "100%",
-            justifyContent: "space-between",
-            overflow: "hidden",
-            padding: "54px",
-            position: "relative",
-            width: "100%",
           }}
         >
           <div
             style={{
-              alignItems: "center",
               alignSelf: "flex-start",
-              background: "#0b1220",
-              borderRadius: "999px",
-              color: "#bae6fd",
               display: "flex",
-              fontSize: 28,
-              fontWeight: 700,
+              alignItems: "center",
               gap: 14,
-              letterSpacing: "0.18em",
-              padding: "16px 26px",
+              background: "#0b1d4a",
+              borderRadius: 999,
+              color: "#ffffff",
+              fontSize: 26,
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              padding: "14px 24px",
             }}
           >
-            <span
-              style={{
-                background: "#f97316",
-                borderRadius: "999px",
-                display: "flex",
-                height: 18,
-                width: 18,
-              }}
-            />
+            <span style={{ width: 16, height: 16, borderRadius: 999, background: "#fdba74", display: "flex" }} />
             ノビットスタディ 中高部
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            <div
-              style={{
-                color: "#0b1220",
-                display: "flex",
-                fontSize: 72,
-                fontWeight: 800,
-                letterSpacing: "-0.04em",
-                lineHeight: 1.05,
-                maxWidth: 980,
-              }}
-            >
-考える力を育てる、高校物理のオンライン添削。
-            </div>
-            <div
-              style={{
-                color: "#334155",
-                display: "flex",
-                fontSize: 32,
-                fontWeight: 600,
-                letterSpacing: "-0.01em",
-                maxWidth: 980,
-              }}
-            >
-              毎日演習・毎日添削で、途中式・考え方・答案の組み立てまで丁寧に。塾長オリジナル教材で自立した学びを。
-            </div>
+          <div
+            style={{
+              display: "flex",
+              color: "#ffffff",
+              fontSize: 74,
+              fontWeight: 800,
+              lineHeight: 1.1,
+              letterSpacing: "-0.03em",
+              textShadow: "0 4px 24px rgba(80,16,0,0.45)",
+            }}
+          >
+            毎日の学習を、仕組みにする。
           </div>
-          <div style={{ display: "flex", gap: 16 }}>
-            {["毎日演習・毎日添削", "塾長オリジナル教材", "添削専門・自立学習"].map((item) => (
+          <div
+            style={{
+              display: "flex",
+              color: "#ffffff",
+              fontSize: 32,
+              fontWeight: 700,
+              letterSpacing: "-0.01em",
+              textShadow: "0 2px 14px rgba(80,16,0,0.5)",
+            }}
+          >
+            教材 × 習慣化 × 添削のデジタル通信添削。
+          </div>
+          <div style={{ display: "flex", gap: 14 }}>
+            {["初月半額", "入会金・教材費0円", "毎日添削"].map((t) => (
               <div
-                key={item}
+                key={t}
                 style={{
-                  background: "#ffffff",
-                  border: "1px solid #99f6e4",
-                  borderRadius: "999px",
-                  color: "#0f766e",
                   display: "flex",
-                  fontSize: 24,
+                  background: "#ffffff",
+                  borderRadius: 999,
+                  color: "#c2410c",
+                  fontSize: 23,
                   fontWeight: 700,
-                  padding: "14px 22px",
+                  padding: "12px 20px",
                 }}
               >
-                {item}
+                {t}
               </div>
             ))}
           </div>
