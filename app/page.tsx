@@ -150,13 +150,14 @@ const alternatives = [
 ];
 
 // あらゆる段階の生徒に「自分のことだ」と思ってもらえるよう、入門〜難関までを広く。
+// img は用意されたイラスト（連番は section の逆順で生成されているため明示的に対応づけ）。
 const forYouFit = [
-  { title: "何から手をつければいいか分からない", body: "今日やる1枚が毎日届くから、迷わず始められます。" },
-  { title: "毎日続けられる自信が、まだない", body: "続ける仕組みごとお渡しします。続け方から一緒に。" },
-  { title: "解けるのに、記述答案に自信がない", body: "途中式・考え方まで、毎日の添削で仕上げます。" },
-  { title: "部活や習い事で、時間が取りにくい", body: "1回10〜20分から。スキマ時間で積み上がります。" },
-  { title: "難関大・名大の記述まで本気で伸ばしたい", body: "基礎から入試レベルまで、切れ目なく対応します。" },
-  { title: "子どもの学習を、そっと見守りたい", body: "保護者も同じアプリで進捗を確認できて安心です。" },
+  { title: "何から手をつければいいか分からない", body: "今日やる1枚が毎日届くから、迷わず始められます。", img: "foryou-6" },
+  { title: "毎日続けられる自信が、まだない", body: "続ける仕組みごとお渡しします。続け方から一緒に。", img: "foryou-5" },
+  { title: "解けるのに、記述答案に自信がない", body: "途中式・考え方まで、毎日の添削で仕上げます。", img: "foryou-4" },
+  { title: "部活や習い事で、時間が取りにくい", body: "1回10〜20分から。スキマ時間で積み上がります。", img: "foryou-3" },
+  { title: "難関大・名大の記述まで本気で伸ばしたい", body: "基礎から入試レベルまで、切れ目なく対応します。", img: "foryou-2" },
+  { title: "子どもの学習を、そっと見守りたい", body: "保護者も同じアプリで進捗を確認できて安心です。", img: "foryou-1" },
 ];
 
 // アプリ「ノビットスタディ」＝習慣化のエンジン。
@@ -943,30 +944,23 @@ export default function Home() {
         <SectionGlow className="-right-24 bottom-4" color="rgba(13,148,136,0.1)" />
         <Container className="relative px-6 py-16 sm:py-24">
           <div className="grid items-center gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
-            {/* 左：採点済み答案のビジュアル（実物プリント＋添削スタンプ＋先生コメント） */}
-            <div className="relative order-1 mx-auto w-full max-w-sm">
-              <SectionGlow className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" color="rgba(234,88,12,0.16)" />
-              <div className="relative -rotate-2 transition hover:rotate-0">
-                <div className="overflow-hidden rounded-[14px] bg-white shadow-[0_40px_70px_-40px_rgba(11,29,74,0.6)] ring-1 ring-[rgba(15,29,74,0.12)]">
-                  <PrintImage
-                    base="print-problem"
-                    alt="先生が添削した答案（途中式・減点ポイントへの指摘つき）"
-                    sizes="(min-width: 1024px) 380px, 80vw"
-                    className="block h-auto w-full"
-                  />
-                </div>
-                <Stamp label="添削" className="absolute -right-4 -top-4 h-[4.2rem] w-[4.2rem] text-[1.05rem]" />
+            {/* 左：採点済み答案のイラスト（赤ペン添削・合格スタンプ・先生コメントを内包） */}
+            <div className="relative order-1 mx-auto w-full max-w-md">
+              <SectionGlow className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" color="rgba(234,88,12,0.18)" />
+              <div className="relative -rotate-2 overflow-hidden rounded-[18px] bg-white shadow-[0_44px_80px_-44px_rgba(11,29,74,0.6)] ring-1 ring-[rgba(15,29,74,0.1)] transition hover:rotate-0">
+                <Illust
+                  base="correction-graded"
+                  widths={[560, 1120]}
+                  width={1448}
+                  height={1086}
+                  alt="赤ペンで添削された数学の答案。途中式へのチェック、合格スタンプ、先生の手書きコメント入り"
+                  sizes="(min-width: 1024px) 440px, 88vw"
+                  className="block h-auto w-full"
+                />
               </div>
-              {/* 先生コメントの付箋 */}
-              <div className="relative z-10 -mt-6 ml-4 max-w-[17rem] rotate-1 rounded-[14px] bg-white px-4 py-3 shadow-[0_26px_46px_-30px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(234,88,12,0.25)] sm:ml-8">
-                <p className="flex items-center gap-1.5 text-[0.68rem] font-extrabold uppercase tracking-[0.14em] text-[#ea580c]">
-                  <IconChat className="h-4 w-4" />
-                  先生からのコメント
-                </p>
-                <p className="mt-1.5 text-[0.86rem] font-bold leading-[1.7] text-[#0b1d4a]" style={{ fontFamily: "'Hiragino Mincho ProN','YuMincho',serif" }}>
-                  途中式までていねいに書けています。ここの定義だけ添えれば満点。次へ進みましょう。
-                </p>
-              </div>
+              <span className="absolute -right-3 -top-3 -rotate-6 rounded-full bg-[#ea580c] px-3.5 py-1.5 text-[0.78rem] font-extrabold text-white shadow-[0_14px_26px_-12px_rgba(234,88,12,0.9)]">
+                毎日、返ってくる
+              </span>
             </div>
 
             {/* 右：4つの指摘 */}
@@ -1331,17 +1325,30 @@ export default function Home() {
             </p>
           </div>
 
-          <ul className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mx-auto mt-10 grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {forYouFit.map((f) => (
               <li
                 key={f.title}
-                className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_24px_44px_-34px_rgba(15,29,74,0.4)]"
+                className="group overflow-hidden rounded-[20px] bg-white ring-1 ring-[rgba(15,29,74,0.07)] shadow-[0_30px_56px_-44px_rgba(11,29,74,0.5)] transition hover:-translate-y-1.5 hover:shadow-[0_36px_64px_-40px_rgba(11,29,74,0.55)]"
               >
-                <span aria-hidden="true" className="grid h-9 w-9 place-items-center rounded-[10px] bg-[#e6f4f1] text-[#0f766e]">
-                  <IconCheck className="h-5 w-5" />
-                </span>
-                <p className="mt-3 text-[1rem] font-bold leading-[1.5] text-[#0b1d4a]">「{f.title}」</p>
-                <p className="mt-2 text-[0.88rem] leading-[1.85] text-[#475569]">{f.body}</p>
+                <div className="relative aspect-[4/3] overflow-hidden bg-[linear-gradient(160deg,#eef4fb,#ffffff)]">
+                  <Illust
+                    base={f.img}
+                    widths={[360, 640]}
+                    width={1254}
+                    height={1254}
+                    alt={`${f.title}——そんなあなたへ`}
+                    sizes="(min-width: 1024px) 300px, (min-width: 640px) 44vw, 88vw"
+                    className="h-full w-full object-cover object-top transition duration-300 group-hover:scale-[1.04]"
+                  />
+                  <span aria-hidden="true" className="absolute left-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white/90 text-[#0f766e] shadow-[0_8px_16px_-8px_rgba(13,148,136,0.6)] backdrop-blur">
+                    <IconCheck className="h-4 w-4" />
+                  </span>
+                </div>
+                <div className="p-5">
+                  <p className="text-[1rem] font-bold leading-[1.5] text-[#0b1d4a]">「{f.title}」</p>
+                  <p className="mt-2 text-[0.88rem] leading-[1.85] text-[#475569]">{f.body}</p>
+                </div>
               </li>
             ))}
           </ul>
