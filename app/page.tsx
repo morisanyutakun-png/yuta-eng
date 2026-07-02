@@ -294,6 +294,63 @@ function InlineCta({ note }: { note?: string }) {
   );
 }
 
+/** セクションに奥行きを出すやわらかい光（装飾）。overflow-hidden な relative 親に置く。 */
+function SectionGlow({
+  className = "",
+  color = "rgba(13,148,136,0.14)",
+}: {
+  className?: string;
+  color?: string;
+}) {
+  return (
+    <div
+      aria-hidden="true"
+      className={`pointer-events-none absolute -z-0 h-80 w-80 rounded-full blur-3xl ${className}`}
+      style={{ background: `radial-gradient(circle, ${color}, transparent 70%)` }}
+    />
+  );
+}
+
+/** ゆるやかな曲線の区切り（上に凸）。暗い/明るいセクションの境目に立体感を出す。 */
+function CurveDivider({ fill, flip = false }: { fill: string; flip?: boolean }) {
+  return (
+    <div aria-hidden="true" className={`pointer-events-none absolute inset-x-0 ${flip ? "bottom-0 rotate-180" : "top-0"} leading-[0]`}>
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" className="h-[36px] w-full sm:h-[52px]">
+        <path d="M0,60 C360,0 1080,0 1440,60 L1440,0 L0,0 Z" fill={fill} />
+      </svg>
+    </div>
+  );
+}
+
+/** 数字で価値を一気に見せる帯（訴求＋デザインのアクセント）。 */
+function StatsBand() {
+  const stats = [
+    { n: "9", u: "科目", d: "物理・化学・数学・英語" },
+    { n: "¥4,980", u: "〜/月", d: "1教科・税込" },
+    { n: "毎日", u: "添削", d: "翌日までに返却" },
+    { n: "0", u: "円", d: "入会金・教材費" },
+  ];
+  return (
+    <section className="cv-defer relative overflow-hidden bg-white">
+      <Container className="px-6 py-12 sm:py-16">
+        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-y-8 rounded-[24px] bg-[linear-gradient(120deg,#f8fbff_0%,#eef6f6_100%)] px-6 py-9 ring-1 ring-[rgba(15,29,74,0.06)] sm:grid-cols-4 sm:py-10">
+          {stats.map((s, i) => (
+            <div key={s.u} className={`text-center ${i > 0 ? "sm:border-l sm:border-[rgba(15,29,74,0.1)]" : ""}`}>
+              <p className="flex items-baseline justify-center gap-0.5">
+                <span className="bg-[linear-gradient(120deg,#1d4ed8,#0d9488)] bg-clip-text text-[1.9rem] font-extrabold leading-none tracking-[-0.02em] text-transparent sm:text-[2.3rem]">
+                  {s.n}
+                </span>
+                <span className="text-[0.86rem] font-bold text-[#0f766e]">{s.u}</span>
+              </p>
+              <p className="mt-1.5 text-[0.72rem] leading-[1.5] text-[#64748b]">{s.d}</p>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 /* ───────────────────────── page ───────────────────────── */
 
 export default function Home() {
@@ -462,9 +519,14 @@ export default function Home() {
         </Container>
       </section>
 
+      {/* ───────── 数字で見る（デザインのアクセント） ───────── */}
+      <StatsBand />
+
       {/* ───────── PROBLEMS（独学・受け身の限界） ───────── */}
-      <section className="cv-defer bg-white">
-        <Container className="px-6 py-16 sm:py-24">
+      <section className="cv-defer relative overflow-hidden bg-[#f8fafc]">
+        <SectionGlow className="-left-24 top-10" color="rgba(249,115,22,0.1)" />
+        <SectionGlow className="-right-28 bottom-0" color="rgba(29,78,216,0.08)" />
+        <Container className="relative px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#f97316]">
               Problem · 続かない・直されない
@@ -500,6 +562,8 @@ export default function Home() {
 
       {/* ───────── PILLARS（教材 × 習慣化 × 添削） ───────── */}
       <section id="features" className="cv-defer relative scroll-mt-24 overflow-hidden bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white">
+        {/* 直前セクション(#f8fafc)から曲線でつなぐ */}
+        <CurveDivider fill="#f8fafc" />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-[0.06]"
@@ -509,7 +573,7 @@ export default function Home() {
             backgroundSize: "30px 30px",
           }}
         />
-        <Container className="relative px-6 py-16 sm:py-24">
+        <Container className="relative px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#5eead4]">
               The Method · ノビットの3本柱
@@ -613,8 +677,10 @@ export default function Home() {
       </section>
 
       {/* ───────── FLOW（1日のサイクル） ───────── */}
-      <section id="flow" className="cv-defer relative overflow-hidden scroll-mt-24 bg-[#f8fafc]">
-        <Container className="px-6 py-16 sm:py-24 lg:pb-44">
+      <section id="flow" className="cv-defer relative overflow-hidden scroll-mt-24 bg-white">
+        <SectionGlow className="-right-24 top-0" color="rgba(13,148,136,0.12)" />
+        <SectionGlow className="-left-28 bottom-10" color="rgba(29,78,216,0.08)" />
+        <Container className="relative px-6 py-16 sm:py-24 lg:pb-44">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
               Daily Loop · 1日のサイクル
@@ -698,6 +764,8 @@ export default function Home() {
 
       {/* ───────── CORRECTION（添削の中身） ───────── */}
       <section className="cv-defer relative overflow-hidden bg-[#f8fafc]">
+        <SectionGlow className="-left-24 top-4" color="rgba(234,88,12,0.1)" />
+        <SectionGlow className="-right-24 bottom-4" color="rgba(13,148,136,0.1)" />
         <Container className="relative px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
@@ -1042,8 +1110,9 @@ export default function Home() {
       </section>
 
       {/* ───────── FOR YOU（こんな方へ・やわらかく万人受け） ───────── */}
-      <section className="cv-defer bg-white">
-        <Container className="px-6 py-16 sm:py-24">
+      <section className="cv-defer relative overflow-hidden bg-[#f8fafc]">
+        <SectionGlow className="-right-24 top-8" color="rgba(13,148,136,0.12)" />
+        <Container className="relative px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
               For You · こんな方へ
