@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { AppScreen, appSteps } from "@/components/app-screens";
-import { CurveDivider, SectionGlow } from "@/components/decor";
+import { CurveDivider, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createSoftwareAppJsonLd } from "@/lib/structured-data";
@@ -123,10 +123,7 @@ export default function AppPage() {
               </ul>
             </div>
             <div className="relative flex justify-center py-4">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(124,58,237,0.2),rgba(13,148,136,0.1)_55%,transparent)] blur-2xl sm:h-96 sm:w-96"
-              />
+              <PhoneBackdrop />
               <AppScreen variant="home" className="relative z-10 float-slow" />
               {/* フローティング吹き出し（ガラス調で上質に） */}
               <div className="absolute -left-4 top-8 hidden -rotate-[5deg] rounded-[14px] bg-white/80 px-3.5 py-2.5 shadow-[0_22px_44px_-20px_rgba(11,29,74,0.55)] ring-1 ring-white/70 backdrop-blur-md sm:block">
