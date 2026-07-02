@@ -85,21 +85,33 @@ const steps: Step[] = [
 const flow = [
   {
     step: "STEP 1",
+    verb: "届く",
+    color: "#1d4ed8",
+    glyph: "M4 6h16v11H4z M4 6l8 6 8-6", // 通知が届く（封筒）
     title: "今日の1枚が届く",
     body: "その日やる課題がアプリに配信。「何をやろう」と迷う時間はゼロ。座ったらすぐ始められます。",
   },
   {
     step: "STEP 2",
+    verb: "解く",
+    color: "#0d9488",
+    glyph: "M4 20l1-4L16 5l3 3L8 19zM14 7l3 3", // 鉛筆で書く
     title: "解いて、出す",
     body: "自作教材で理解して書く。提出と同時に解答・解説が届くので、その場で自己採点まで完了します。",
   },
   {
     step: "STEP 3",
+    verb: "返る",
+    color: "#ea580c",
+    glyph: "M9 7L4 12l5 5M4 12h10a6 6 0 0 1 6 6", // 添削が返ってくる（返信矢印）
     title: "翌日までに添削が返る",
     body: "自己採点だけで終わりません。翌日までに、あなた専用の添削が返却。スマホでそのまま見返せます。",
   },
   {
     step: "STEP 4",
+    verb: "進む",
+    color: "#16a34a",
+    glyph: "M20 7a8 8 0 1 0 1.5 5M20 4v4h-4", // くりかえす（ループ矢印）
     title: "直して、また明日へ",
     body: "指摘をもとに直し、連続記録を1日のばす。この小さなループが、力を積み上げます。",
   },
@@ -818,29 +830,45 @@ export default function Home() {
               1回10〜20分から。シンプルなループだから、無理なく続いて積み上がります。
             </p>
           </div>
-          <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {flow.map((s, i) => (
-              <li key={s.step} className="relative rounded-[20px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
-                <span className="inline-flex items-center gap-2 rounded-full bg-[#eef6f6] px-3 py-1 text-[0.72rem] font-extrabold tracking-[0.1em] text-[#0f766e]">
-                  {s.step}
-                </span>
-                <p className="mt-4 text-[1.08rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{s.title}</p>
-                <p className="mt-2 text-[0.88rem] leading-[1.9] text-[#475569]">{s.body}</p>
-                {i < flow.length - 1 ? (
-                  // 手書き風の矢印（人の手で描いた質感）
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 40 24"
-                    fill="none"
-                    className="absolute -right-4 top-1/2 hidden h-5 w-8 -translate-y-1/2 lg:block"
+          <div className="relative mx-auto mt-12 max-w-4xl">
+            {/* 背景の点線ループ環＋中央ハブ（大画面のみ・サイクル感を図解） */}
+            <div aria-hidden="true" className="pointer-events-none absolute inset-x-[22%] inset-y-2 hidden rounded-full border-2 border-dashed border-[rgba(13,148,136,0.28)] lg:block" />
+            <div aria-hidden="true" className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 flex-col items-center lg:flex">
+              <span className="grid h-24 w-24 place-items-center rounded-full bg-[linear-gradient(135deg,#0b1d4a,#0f5e5e)] text-center text-white shadow-[0_24px_44px_-24px_rgba(11,29,74,0.8)]">
+                <span className="text-[0.7rem] font-bold leading-tight">毎日<br />くりかえす</span>
+              </span>
+            </div>
+
+            <ol className="grid gap-5 sm:grid-cols-2">
+              {flow.map((s, i) => (
+                <li
+                  key={s.step}
+                  className="group relative flex items-start gap-4 rounded-[20px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.07)] shadow-[0_26px_50px_-40px_rgba(11,29,74,0.55)] transition hover:-translate-y-1"
+                >
+                  {/* グリフ入りの色付きノード */}
+                  <span
+                    className="relative grid h-14 w-14 shrink-0 place-items-center rounded-[16px] text-white shadow-[0_16px_28px_-16px_rgba(0,0,0,0.5)]"
+                    style={{ background: s.color }}
                   >
-                    <path d="M2 12C12 11 22 11 33 12" stroke="#0d9488" strokeWidth="2.4" strokeLinecap="round" />
-                    <path d="M27 6C30 9 33 11 36 12C33 13 30 15 27 18" stroke="#0d9488" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                ) : null}
-              </li>
-            ))}
-          </ol>
+                    <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d={s.glyph} />
+                    </svg>
+                    <span className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full bg-white text-[0.72rem] font-extrabold text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.1)]">
+                      {i + 1}
+                    </span>
+                  </span>
+                  <div className="min-w-0">
+                    <p className="flex items-baseline gap-2">
+                      <span className="text-[1.15rem] font-extrabold leading-none text-[#0b1d4a]">{s.verb}</span>
+                      <span className="text-[0.68rem] font-bold tracking-[0.12em] text-[#94a3b8]">{s.step}</span>
+                    </p>
+                    <p className="mt-2 text-[1rem] font-bold leading-[1.45] text-[#0b1d4a]">{s.title}</p>
+                    <p className="mt-1.5 text-[0.86rem] leading-[1.85] text-[#475569]">{s.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
         </Container>
         {/* 学習の流れを見守るノビットくん（デスクトップのみ） */}
         <GroundedMascot variant="point" position="bottom-4 right-[4%] xl:right-[7%]" sizeClass="h-36 xl:h-40" />
@@ -914,33 +942,64 @@ export default function Home() {
         <SectionGlow className="-left-24 top-4" color="rgba(234,88,12,0.1)" />
         <SectionGlow className="-right-24 bottom-4" color="rgba(13,148,136,0.1)" />
         <Container className="relative px-6 py-16 sm:py-24">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
-              Correction · 添削でわかること
-            </p>
-            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              「○×」では、終わらせない。
-            </h2>
-            <p className="mt-4 text-[0.96rem] leading-[1.95] text-[#475569]">
-              提出した答案 1 枚から、次の 4 つが返ってきます。これが「やりっぱなし」をなくす中身です。
-            </p>
+          <div className="grid items-center gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
+            {/* 左：採点済み答案のビジュアル（実物プリント＋添削スタンプ＋先生コメント） */}
+            <div className="relative order-1 mx-auto w-full max-w-sm">
+              <SectionGlow className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" color="rgba(234,88,12,0.16)" />
+              <div className="relative -rotate-2 transition hover:rotate-0">
+                <div className="overflow-hidden rounded-[14px] bg-white shadow-[0_40px_70px_-40px_rgba(11,29,74,0.6)] ring-1 ring-[rgba(15,29,74,0.12)]">
+                  <PrintImage
+                    base="print-problem"
+                    alt="先生が添削した答案（途中式・減点ポイントへの指摘つき）"
+                    sizes="(min-width: 1024px) 380px, 80vw"
+                    className="block h-auto w-full"
+                  />
+                </div>
+                <Stamp label="添削" className="absolute -right-4 -top-4 h-[4.2rem] w-[4.2rem] text-[1.05rem]" />
+              </div>
+              {/* 先生コメントの付箋 */}
+              <div className="relative z-10 -mt-6 ml-4 max-w-[17rem] rotate-1 rounded-[14px] bg-white px-4 py-3 shadow-[0_26px_46px_-30px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(234,88,12,0.25)] sm:ml-8">
+                <p className="flex items-center gap-1.5 text-[0.68rem] font-extrabold uppercase tracking-[0.14em] text-[#ea580c]">
+                  <IconChat className="h-4 w-4" />
+                  先生からのコメント
+                </p>
+                <p className="mt-1.5 text-[0.86rem] font-bold leading-[1.7] text-[#0b1d4a]" style={{ fontFamily: "'Hiragino Mincho ProN','YuMincho',serif" }}>
+                  途中式までていねいに書けています。ここの定義だけ添えれば満点。次へ進みましょう。
+                </p>
+              </div>
+            </div>
+
+            {/* 右：4つの指摘 */}
+            <div className="order-2">
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
+                Correction · 添削でわかること
+              </p>
+              <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
+                「○×」では、<Penned>終わらせない</Penned>。
+              </h2>
+              <p className="mt-4 max-w-lg text-[0.96rem] leading-[1.95] text-[#475569]">
+                提出した答案1枚から、次の4つが返ってきます。これが「やりっぱなし」をなくす中身です。
+              </p>
+              <ul className="mt-7 grid gap-3">
+                {correctionPoints.map((c) => (
+                  <li
+                    key={c.title}
+                    className="flex items-start gap-4 rounded-[16px] bg-white p-5 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_20px_38px_-34px_rgba(11,29,74,0.5)]"
+                  >
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#0b1d4a] text-[1rem] font-extrabold text-white">
+                      {c.mark}
+                    </span>
+                    <span>
+                      <p className="text-[1.05rem] font-extrabold leading-[1.4] text-[#0b1d4a]">{c.title}</p>
+                      <p className="mt-1 text-[0.86rem] leading-[1.85] text-[#475569]">{c.body}</p>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <ul className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {correctionPoints.map((c) => (
-              <li
-                key={c.title}
-                className="rounded-[20px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_24px_44px_-36px_rgba(11,29,74,0.4)]"
-              >
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#0b1d4a] text-[1rem] font-extrabold text-white">
-                  {c.mark}
-                </span>
-                <p className="mt-4 text-[1.08rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{c.title}</p>
-                <p className="mt-2 text-[0.86rem] leading-[1.9] text-[#475569]">{c.body}</p>
-              </li>
-            ))}
-          </ul>
-          <p className="mx-auto mt-8 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
-            この 1 枚を毎日くりかえす。だから「分かったつもり」で止まらず、本番で書ける答案になります。
+          <p className="mx-auto mt-10 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
+            この1枚を毎日くりかえす。だから「分かったつもり」で止まらず、本番で書ける答案になります。
           </p>
           <InlineCta note="毎日の添削を、今日から。科目ごとに選べます。" />
         </Container>
