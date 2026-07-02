@@ -56,19 +56,25 @@ export default function AppPage() {
       />
 
       {/* HERO */}
-      <section className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#eef6f6_100%)]">
-        {/* 装飾：光＋方眼テクスチャ */}
-        <SectionGlow className="-left-24 top-10" color="rgba(124,58,237,0.14)" />
-        <SectionGlow className="right-0 top-24" color="rgba(13,148,136,0.16)" />
+      <section className="relative overflow-hidden">
+        {/* レイヤードなメッシュ背景（奥行き・上質感） */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(55% 45% at 10% 6%, rgba(124,58,237,0.13), transparent 60%), radial-gradient(52% 46% at 94% 10%, rgba(13,148,136,0.17), transparent 60%), radial-gradient(46% 52% at 80% 96%, rgba(29,78,216,0.10), transparent 60%), linear-gradient(180deg, #ffffff 0%, #f4f8fc 100%)",
+          }}
+        />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(13,148,136,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(13,148,136,0.05) 1px, transparent 1px)",
-            backgroundSize: "26px 26px",
-            maskImage: "radial-gradient(ellipse 75% 65% at 72% 42%, #000 35%, transparent 78%)",
-            WebkitMaskImage: "radial-gradient(ellipse 75% 65% at 72% 42%, #000 35%, transparent 78%)",
+              "linear-gradient(rgba(15,29,74,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(15,29,74,0.045) 1px, transparent 1px)",
+            backgroundSize: "30px 30px",
+            maskImage: "radial-gradient(ellipse 80% 70% at 74% 44%, #000 30%, transparent 80%)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 74% 44%, #000 30%, transparent 80%)",
           }}
         />
         <Container className="relative px-6">
@@ -79,22 +85,23 @@ export default function AppPage() {
               <li className="text-[#475569]">公式アプリ</li>
             </ol>
           </nav>
-          <div className="grid items-center gap-10 py-10 sm:py-16 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="grid items-center gap-10 py-12 sm:py-20 lg:grid-cols-[1.05fr_0.95fr]">
             <div>
-              <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.72rem] font-bold tracking-[0.06em] text-[#7c3aed] ring-1 ring-[rgba(124,58,237,0.25)]">
+              <p className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3.5 py-1.5 text-[0.72rem] font-bold tracking-[0.06em] text-[#6d28d9] shadow-[0_8px_20px_-12px_rgba(124,58,237,0.5)] ring-1 ring-[rgba(124,58,237,0.2)] backdrop-blur">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#7c3aed]" />
                 公式アプリ「ノビットスタディ」
               </p>
-              <h1 className="mt-5 text-[2.3rem] font-extrabold leading-[1.15] tracking-[-0.02em] text-[#0b1d4a] sm:text-[3rem]">
+              <h1 className="mt-5 text-[2.55rem] font-extrabold leading-[1.1] tracking-[-0.035em] text-[#0b1d4a] sm:text-[3.35rem]">
                 「今日、何やろう」
                 <br />
                 から、
-                <span className="relative whitespace-nowrap">
-                  <span className="bg-[linear-gradient(100deg,#7c3aed_0%,#1d4ed8_60%,#0d9488_100%)] bg-clip-text text-transparent">解放</span>
+                <span className="relative inline-block whitespace-nowrap">
+                  <span className="bg-[linear-gradient(100deg,#7c3aed_0%,#1d4ed8_55%,#0d9488_100%)] bg-clip-text text-transparent">解放</span>
+                  <span aria-hidden="true" className="absolute -bottom-1 left-0 h-[0.18em] w-full rounded-full bg-[linear-gradient(100deg,#7c3aed,#0d9488)] opacity-80" />
                 </span>
                 されよう。
               </h1>
-              <p className="mt-5 max-w-lg text-[1.05rem] leading-[1.9] text-[#334155]">
+              <p className="mt-6 max-w-lg text-[1.05rem] leading-[1.95] text-[#334155]">
                 やること・提出・添削・成績、ぜんぶスマホの中に。
                 <strong className="font-bold text-[#0b1d4a]">続けるのは、あなたの根性じゃなくてアプリの役目</strong>。
                 おうちの人も、同じ画面でそっと見守れます。
@@ -103,24 +110,35 @@ export default function AppPage() {
                 <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
                 <SecondaryCta href="/how-it-works">ノビットのしくみ</SecondaryCta>
               </div>
+              {/* トラストチップ（安心・信頼） */}
+              <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-2">
+                {["入会金・教材費0円", "初月半額", "いつでも解約OK"].map((t) => (
+                  <li key={t} className="flex items-center gap-1.5 text-[0.82rem] font-semibold text-[#475569]">
+                    <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
+                      <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.3 4.3L19 7" /></svg>
+                    </span>
+                    {t}
+                  </li>
+                ))}
+              </ul>
             </div>
             <div className="relative flex justify-center py-4">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(124,58,237,0.18),rgba(13,148,136,0.1)_55%,transparent)] blur-2xl sm:h-96 sm:w-96"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(124,58,237,0.2),rgba(13,148,136,0.1)_55%,transparent)] blur-2xl sm:h-96 sm:w-96"
               />
               <AppScreen variant="home" className="relative z-10 float-slow" />
-              {/* フローティング吹き出し（機能の見える化） */}
-              <div className="absolute -left-3 top-6 hidden rotate-[-4deg] rounded-[12px] bg-white px-3 py-2 shadow-[0_18px_36px_-18px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.08)] sm:block">
-                <p className="text-[0.7rem] font-extrabold text-[#0b1d4a]">毎日1枚、届く</p>
-                <p className="text-[0.6rem] text-[#64748b]">迷う時間はゼロ</p>
+              {/* フローティング吹き出し（ガラス調で上質に） */}
+              <div className="absolute -left-4 top-8 hidden -rotate-[5deg] rounded-[14px] bg-white/80 px-3.5 py-2.5 shadow-[0_22px_44px_-20px_rgba(11,29,74,0.55)] ring-1 ring-white/70 backdrop-blur-md sm:block">
+                <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#7c3aed]" />毎日1枚、届く</p>
+                <p className="mt-0.5 text-[0.62rem] text-[#64748b]">迷う時間はゼロ</p>
               </div>
-              <div className="absolute -right-3 top-1/2 hidden rotate-[4deg] rounded-[12px] bg-white px-3 py-2 shadow-[0_18px_36px_-18px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.08)] sm:block">
-                <p className="flex items-center gap-1 text-[0.7rem] font-extrabold text-[#16a34a]"><span className="h-1.5 w-1.5 rounded-full bg-[#16a34a]" />翌日までに添削</p>
-                <p className="text-[0.6rem] text-[#64748b]">合否・点数・コメント</p>
+              <div className="absolute -right-4 top-1/2 hidden rotate-[5deg] rounded-[14px] bg-white/80 px-3.5 py-2.5 shadow-[0_22px_44px_-20px_rgba(11,29,74,0.55)] ring-1 ring-white/70 backdrop-blur-md sm:block">
+                <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#16a34a]" />翌日までに添削</p>
+                <p className="mt-0.5 text-[0.62rem] text-[#64748b]">合否・点数・コメント</p>
               </div>
-              <div className="absolute -bottom-1 left-4 hidden -rotate-3 rounded-[12px] bg-white px-3 py-2 shadow-[0_18px_36px_-18px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.08)] sm:block">
-                <p className="text-[0.7rem] font-extrabold text-[#7c3aed]">保護者も見れる</p>
+              <div className="absolute -bottom-1 left-6 hidden -rotate-3 rounded-[14px] bg-white/80 px-3.5 py-2.5 shadow-[0_22px_44px_-20px_rgba(11,29,74,0.55)] ring-1 ring-white/70 backdrop-blur-md sm:block">
+                <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#1d4ed8]" />保護者も見れる</p>
               </div>
             </div>
           </div>
