@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Zen_Kaku_Gothic_New } from "next/font/google";
 
 import { GoogleAnalyticsLoader } from "@/components/google-analytics-loader";
 import { JsonLd } from "@/components/json-ld";
@@ -18,6 +19,25 @@ import {
 // Google's separate favicon crawler) is a URL change. Reuse the per-deploy
 // OG version stamp.
 const ICON_V = `?v=${getOgVersion()}`;
+
+// 見出し専用のブランドフォント。本文は端末標準のまま（速度優先）。
+// display:swap＋preload:false で、初期表示をブロックせず非同期で差し替える。
+const displayFont = Zen_Kaku_Gothic_New({
+  weight: ["700", "900"],
+  subsets: ["latin"],
+  display: "swap",
+  preload: false,
+  variable: "--font-display",
+  fallback: [
+    "-apple-system",
+    "BlinkMacSystemFont",
+    "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic Medium",
+    "Meiryo",
+    "sans-serif",
+  ],
+});
 
 import "./globals.css";
 
@@ -132,7 +152,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className="h-full antialiased">
+    <html lang="ja" className={`h-full antialiased ${displayFont.variable}`}>
       <head />
       <body className="flex min-h-full flex-col">
         {GA_MEASUREMENT_ID ? (

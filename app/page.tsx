@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { AppScreen } from "@/components/app-screens";
 import { Container } from "@/components/container";
 import { PrimaryCta, SecondaryCta } from "@/components/cta";
 import { CurveDivider, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
-import {
-  AppMock,
-  GroundedMascot,
-  PrintImage,
-} from "@/components/nobit-media";
+import { GroundedMascot, PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
 import { homeFaq } from "@/data/home";
 import { kdpAmazonUrl } from "@/data/site";
@@ -339,16 +336,15 @@ export default function Home() {
       <JsonLd data={homeJsonLd} />
 
       {/* ───────── HERO ───────── */}
-      <section className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#f3f8ff_55%,#eef6f6_100%)]">
+      <section className="relative overflow-hidden">
+        {/* レイヤードなメッシュ背景（奥行き・上質感） */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-32 -top-24 h-[420px] w-[420px] rounded-full opacity-60"
-          style={{ background: "radial-gradient(circle, rgba(13,148,136,0.18), transparent 70%)" }}
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -left-24 bottom-0 h-[360px] w-[360px] rounded-full opacity-60"
-          style={{ background: "radial-gradient(circle, rgba(29,78,216,0.12), transparent 70%)" }}
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(52% 46% at 8% 4%, rgba(29,78,216,0.10), transparent 60%), radial-gradient(50% 45% at 95% 8%, rgba(13,148,136,0.16), transparent 60%), radial-gradient(46% 52% at 82% 96%, rgba(249,115,22,0.08), transparent 60%), linear-gradient(180deg, #ffffff 0%, #f4f8fc 100%)",
+          }}
         />
         {/* 方眼ノートのテクスチャ — 演習・添削のブランドに馴染ませる */}
         <div
@@ -356,22 +352,22 @@ export default function Home() {
           className="pointer-events-none absolute inset-0"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(13,148,136,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(13,148,136,0.05) 1px, transparent 1px)",
-            backgroundSize: "26px 26px",
-            maskImage: "radial-gradient(ellipse 80% 70% at 72% 38%, #000 35%, transparent 78%)",
-            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 72% 38%, #000 35%, transparent 78%)",
+              "linear-gradient(rgba(15,29,74,0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(15,29,74,0.045) 1px, transparent 1px)",
+            backgroundSize: "30px 30px",
+            maskImage: "radial-gradient(ellipse 80% 70% at 72% 40%, #000 32%, transparent 80%)",
+            WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 72% 40%, #000 32%, transparent 80%)",
           }}
         />
 
         <Container className="relative px-6">
           <div className="grid grid-cols-1 items-center gap-10 py-14 sm:py-20 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12 lg:py-24">
             <div className="min-w-0 text-center lg:text-left">
-              <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.7rem] font-bold tracking-[0.06em] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.25)] sm:text-[0.76rem]">
+              <p className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3.5 py-1.5 text-[0.7rem] font-bold tracking-[0.06em] text-[#0f766e] shadow-[0_8px_20px_-12px_rgba(13,148,136,0.5)] ring-1 ring-[rgba(13,148,136,0.22)] backdrop-blur sm:text-[0.76rem]">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
                 デジタル通信添削
               </p>
 
-              <h1 className="mt-5 text-[2.5rem] font-extrabold leading-[1.12] tracking-[-0.02em] text-[#0b1d4a] sm:text-[3.1rem] lg:text-[3.5rem]">
+              <h1 className="mt-5 text-[2.6rem] font-extrabold leading-[1.1] tracking-[-0.035em] text-[#0b1d4a] sm:text-[3.2rem] lg:text-[3.6rem]">
                 解いて、出して、
                 <br />
                 <Penned color="#f97316">
@@ -381,18 +377,26 @@ export default function Home() {
                 </Penned>
               </h1>
 
-              <p className="mx-auto mt-6 max-w-md text-[1.08rem] leading-[1.8] text-[#334155] sm:text-[1.15rem] lg:mx-0">
+              <p className="mx-auto mt-6 max-w-md text-[1.08rem] leading-[1.85] text-[#334155] sm:text-[1.15rem] lg:mx-0">
                 出すと同時に<strong className="font-bold text-[#0b1d4a]">解答・解説</strong>。
                 翌日までに、<strong className="font-bold text-[#0b1d4a]">先生の添削</strong>も。
               </p>
 
               <div className="mt-7 flex flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0">
                 <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
-                <SecondaryCta href="/#pricing">料金・科目を見る</SecondaryCta>
+                <SecondaryCta href="/apply#pricing">料金・科目を見る</SecondaryCta>
               </div>
-              <p className="mt-3 text-[0.8rem] text-[#64748b]">
-                入会金・教材費 0円／いつでも科目の追加・解約OK。
-              </p>
+              {/* トラストチップ */}
+              <ul className="mt-6 flex flex-wrap justify-center gap-x-4 gap-y-2 lg:justify-start">
+                {["入会金・教材費0円", "初月半額", "いつでも解約OK"].map((t) => (
+                  <li key={t} className="flex items-center gap-1.5 text-[0.82rem] font-semibold text-[#475569]">
+                    <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
+                      <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.3 4.3L19 7" /></svg>
+                    </span>
+                    {t}
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <div className="relative min-w-0">
@@ -400,14 +404,14 @@ export default function Home() {
                 aria-hidden="true"
                 className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.22),rgba(29,78,216,0.08)_55%,transparent)] blur-2xl sm:h-96 sm:w-96"
               />
-              {/* アプリ画面（主役）＋演習本プリント（背面） */}
+              {/* 実アプリ画面（主役）＋演習本プリント（背面） */}
               <div className="relative mx-auto flex w-fit items-center justify-center">
-                <div className="absolute -left-14 top-8 w-[46%] max-w-[170px] -rotate-[9deg] overflow-hidden rounded-[12px] bg-white shadow-[0_30px_50px_-30px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.1)] sm:-left-24">
-                  <PrintImage base="print-problem" alt="ノビット公式演習本の問題ページ" sizes="170px" className="block h-auto w-full" priority />
+                <div className="absolute -left-14 top-10 z-0 w-[42%] max-w-[160px] -rotate-[9deg] overflow-hidden rounded-[12px] bg-white shadow-[0_30px_50px_-30px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.1)] sm:-left-20">
+                  <PrintImage base="print-problem" alt="ノビット公式演習本の問題ページ" sizes="160px" className="block h-auto w-full" priority />
                 </div>
-                <AppMock className="relative z-10 float-slow" />
+                <AppScreen variant="home" className="relative z-10 float-slow" />
                 {/* 手書きメモ風の付箋（正直なひとことで、人の手作り感を出す） */}
-                <div className="absolute -bottom-3 right-0 hidden -rotate-[5deg] rounded-[10px] bg-[#fff7ed] px-3 py-2 text-[0.74rem] font-bold leading-snug text-[#9a3412] shadow-[0_14px_28px_-16px_rgba(154,52,18,0.6)] ring-1 ring-[rgba(234,88,12,0.25)] sm:block">
+                <div className="absolute -bottom-3 right-0 z-20 hidden -rotate-[5deg] rounded-[12px] bg-white/85 px-3.5 py-2.5 text-[0.74rem] font-bold leading-snug text-[#9a3412] shadow-[0_20px_40px_-18px_rgba(154,52,18,0.5)] ring-1 ring-white/70 backdrop-blur-md sm:block">
                   教材も添削も、<br />つくった本人が担当。
                 </div>
               </div>
@@ -704,7 +708,7 @@ export default function Home() {
                 aria-hidden="true"
                 className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.18),transparent)] blur-2xl sm:h-96 sm:w-96"
               />
-              <AppMock className="relative" />
+              <AppScreen variant="returned" className="relative float-slow" />
             </div>
 
             <div className="order-2 lg:order-2">
