@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/json-ld";
 import { createPageMetadata } from "@/lib/metadata";
 import { AppScreen } from "@/components/app-screens";
 import { Blob, CtaDoodle, CurveDivider, DarkSectionDecor, SectionGlow } from "@/components/decor";
+import { Illust } from "@/components/nobit-media";
 import { createBreadcrumbJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
@@ -20,6 +21,7 @@ export const metadata: Metadata = createPageMetadata({
 const pillars = [
   {
     tag: "教材",
+    icon: "pillar-materials",
     color: "#1d4ed8",
     title: "自作のオリジナル教材",
     body: "市販の一般教材ではありません。16冊を刊行した開発者が「理解で解く」設計で書き下ろし、毎日少しずつ進む大きさに分割。今日やる分がいつも目の前にあります。",
@@ -27,6 +29,7 @@ const pillars = [
   },
   {
     tag: "習慣化",
+    icon: "pillar-habit",
     color: "#0d9488",
     title: "続く仕組みを、まるごと",
     body: "専用アプリが毎日1枚の課題を配信。連続記録・はなまる・称号で、勉強が自然と生活のリズムになります。「今日やること」が決まっているから続きます。",
@@ -34,6 +37,7 @@ const pillars = [
   },
   {
     tag: "添削",
+    icon: "pillar-correction",
     color: "#ea580c",
     title: "あなた専用の指摘",
     body: "提出した答案を、教材を書いた本人が添削。途中式・考え方・減点ポイントまで、どこをどう直すかが分かる形で返します。やりっぱなしをなくします。",
@@ -126,9 +130,14 @@ export default function HowItWorksPage() {
             {pillars.map((p) => (
               <div key={p.tag} className="relative overflow-hidden rounded-[22px] bg-white/[0.07] p-7 ring-1 ring-white/15">
                 <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px]" style={{ background: p.color }} />
-                <span className="grid h-11 w-11 place-items-center rounded-[14px] text-[0.9rem] font-extrabold text-white" style={{ background: p.color }}>
-                  {p.tag}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-[16px] bg-white shadow-[0_14px_28px_-16px_rgba(0,0,0,0.5)] ring-1 ring-white/40">
+                    <Illust base={p.icon} widths={[128, 256]} width={256} height={256} alt={`${p.tag}のイラスト`} sizes="64px" className="h-full w-full object-contain" />
+                  </span>
+                  <span className="inline-flex items-center rounded-full px-3 py-1 text-[0.8rem] font-extrabold text-white" style={{ background: p.color }}>
+                    {p.tag}
+                  </span>
+                </div>
                 <p className="mt-4 text-[1.18rem] font-extrabold leading-[1.5]">{p.title}</p>
                 <p className="mt-3 text-[0.9rem] leading-[1.95] text-white/75">{p.body}</p>
                 <ul className="mt-4 grid gap-1.5 border-t border-white/15 pt-4">
@@ -203,28 +212,41 @@ export default function HowItWorksPage() {
       </section>
 
       {/* 添削の中身 */}
-      <section className="bg-[#f8fafc]">
-        <Container className="px-6 py-16 sm:py-24">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">Correction · 添削の中身</p>
-            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
-              「○×」では、終わらせない。
-            </h2>
-            <p className="mt-4 text-[0.96rem] leading-[1.95] text-[#475569]">
-              提出した答案1枚から、次の4つが返ってきます。これが「やりっぱなし」をなくす中身です。
-            </p>
+      <section className="relative overflow-hidden bg-[#f8fafc]">
+        <SectionGlow className="-left-24 top-8" color="rgba(234,88,12,0.14)" />
+        <Container className="relative px-6 py-16 sm:py-24">
+          <div className="grid items-center gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
+            {/* 採点済み答案イラスト */}
+            <div className="relative order-1 mx-auto w-full max-w-md">
+              <div className="relative -rotate-2 overflow-hidden rounded-[18px] bg-white shadow-[0_44px_80px_-44px_rgba(11,29,74,0.6)] ring-1 ring-[rgba(15,29,74,0.1)] transition hover:rotate-0">
+                <Illust base="correction-graded" widths={[560, 1120]} width={1448} height={1086} alt="赤ペンで添削された数学の答案。チェック・合格スタンプ・先生コメント入り" sizes="(min-width: 1024px) 440px, 88vw" className="block h-auto w-full" />
+              </div>
+              <span className="absolute -right-3 -top-3 -rotate-6 rounded-full bg-[#ea580c] px-3.5 py-1.5 text-[0.78rem] font-extrabold text-white shadow-[0_14px_26px_-12px_rgba(234,88,12,0.9)]">
+                翌日までに
+              </span>
+            </div>
+            {/* 4つの指摘 */}
+            <div className="order-2">
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">Correction · 添削の中身</p>
+              <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
+                「○×」では、終わらせない。
+              </h2>
+              <p className="mt-4 max-w-lg text-[0.96rem] leading-[1.95] text-[#475569]">
+                提出した答案1枚から、次の4つが返ってきます。これが「やりっぱなし」をなくす中身です。
+              </p>
+              <ul className="mt-7 grid gap-3 sm:grid-cols-2">
+                {correction.map((c) => (
+                  <li key={c.title} className="rounded-[16px] bg-white p-5 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_20px_38px_-34px_rgba(11,29,74,0.5)]">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#0b1d4a] text-[0.95rem] font-extrabold text-white">
+                      {c.mark}
+                    </span>
+                    <p className="mt-3 text-[1.02rem] font-extrabold leading-[1.4] text-[#0b1d4a]">{c.title}</p>
+                    <p className="mt-1.5 text-[0.84rem] leading-[1.85] text-[#475569]">{c.body}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <ul className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {correction.map((c) => (
-              <li key={c.title} className="rounded-[20px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.08)]">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#0b1d4a] text-[1rem] font-extrabold text-white">
-                  {c.mark}
-                </span>
-                <p className="mt-4 text-[1.08rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{c.title}</p>
-                <p className="mt-2 text-[0.86rem] leading-[1.9] text-[#475569]">{c.body}</p>
-              </li>
-            ))}
-          </ul>
         </Container>
       </section>
 
