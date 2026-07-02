@@ -6,7 +6,7 @@ import { Container } from "@/components/container";
 import { PrimaryCta, SecondaryCta } from "@/components/cta";
 import { Blob, CtaDoodle, CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
-import { GroundedMascot, PrintImage } from "@/components/nobit-media";
+import { GroundedMascot, Illust, PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
 import { homeFaq } from "@/data/home";
 import { kdpAmazonUrl } from "@/data/site";
@@ -30,10 +30,10 @@ export const metadata: Metadata = createPageMetadata({
 
 // 独学・受け身の学びが続かない理由＝「習慣」と「フィードバック」の欠落。
 const problems = [
-  { title: "参考書は買った。でも、続かない。", body: "続かないのは意志ではなく、仕組みが無いから。" },
-  { title: "解いて終わり、やりっぱなし。", body: "ズレを誰も直してくれず、同じ失点をくり返す。" },
-  { title: "映像授業は「見て分かった気」。", body: "手が動かないと、点には変わらない。" },
-  { title: "勉強が、仕組みになっていない。", body: "「今日やる1枚」が決まれば、人は続けられる。" },
+  { title: "参考書は買った。でも、三日で開かなくなった。", body: "続かないのは、あなたの意志が弱いからじゃない。「続く仕組み」が無いだけです。" },
+  { title: "解いて丸つけ。それで、やりっぱなし。", body: "どこがなぜ違うのか、誰も直してくれない。だから同じ失点を、何度もくり返す。" },
+  { title: "映像授業は「見て、分かった気」になる。", body: "でも手を動かさないと、分かった“つもり”のまま。点には変わりません。" },
+  { title: "そもそも、今日“何を”やればいいの？", body: "毎日の計画づくりに疲れて、勉強そのものが止まってしまう。" },
 ];
 
 // ノビットの価値＝3本柱。教材 × 習慣化 × 添削。
@@ -41,6 +41,7 @@ const pillars = [
   {
     no: "01",
     tag: "教材",
+    icon: "pillar-materials",
     color: "#1d4ed8",
     title: "自作のオリジナル教材を、毎日サイズで。",
     body: "16冊を刊行した開発者が「理解で解く」設計で書き下ろし。毎日少しずつ進む大きさに分割します。",
@@ -48,6 +49,7 @@ const pillars = [
   {
     no: "02",
     tag: "習慣化",
+    icon: "pillar-habit",
     color: "#0d9488",
     title: "「今日やること」が決まっているから、続く。",
     body: "専用アプリが毎日1枚を配信。連続記録・はなまる・称号で、勉強が生活のリズムになります。",
@@ -55,6 +57,7 @@ const pillars = [
   {
     no: "03",
     tag: "添削",
+    icon: "pillar-correction",
     color: "#ea580c",
     title: "出した答案に、毎日あなた専用の指摘。",
     body: "教材を書いた本人が添削。途中式・考え方・減点ポイントまで、直し方が分かる形で返します。",
@@ -606,36 +609,62 @@ export default function Home() {
         <SectionGlow className="-left-24 top-10" color="rgba(249,115,22,0.1)" />
         <SectionGlow className="-right-28 bottom-0" color="rgba(29,78,216,0.08)" />
         <Container className="relative px-6 py-16 sm:py-24">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#f97316]">
-              Problem · 続かない・直されない
-            </p>
-            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              勉強が伸びないのは、<Penned>意志</Penned>ではなく仕組みのせい。
-            </h2>
-            <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              成績が伸び悩む高校生の多くが、同じ2つの穴——「続かない」「直されない」——に落ちています。
-            </p>
+          <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+            {/* 左：悩みチェックリスト */}
+            <div className="order-2 lg:order-1">
+              <p className="inline-flex items-center gap-2 rounded-full bg-[#fff1e6] px-3.5 py-1.5 text-[0.72rem] font-extrabold tracking-[0.08em] text-[#ea580c]">
+                <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
+                CHECK · こんな悩み、ありませんか？
+              </p>
+              <h2 className="mt-4 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.15rem]">
+                その「続かない」、<br className="hidden sm:block" />
+                <Penned>あなたのせい</Penned>じゃない。
+              </h2>
+              <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
+                成績が伸び悩むほとんどの人が、同じ2つの穴——「続かない」「直されない」——に落ちています。ひとつでも当てはまったら、読み進めてください。
+              </p>
+              <ul className="mt-7 grid gap-3">
+                {problems.map((p) => (
+                  <li
+                    key={p.title}
+                    className="flex gap-3.5 rounded-[16px] bg-white p-5 ring-1 ring-[rgba(15,29,74,0.07)] shadow-[0_18px_36px_-30px_rgba(15,29,74,0.5)]"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-[7px] border-2 border-[#f8b48a] bg-[#fff7f1] text-[#ea580c]"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.3 4.3L19 7" /></svg>
+                    </span>
+                    <span>
+                      <p className="text-[1rem] font-bold leading-[1.55] text-[#0b1d4a]">{p.title}</p>
+                      <p className="mt-1.5 text-[0.88rem] leading-[1.85] text-[#475569]">{p.body}</p>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* 右：イラスト＋安心のブリッジ */}
+            <div className="relative order-1 mx-auto w-full max-w-md lg:order-2">
+              <SectionGlow className="left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" color="rgba(13,148,136,0.14)" />
+              <Illust
+                base="student-study"
+                widths={[560, 1120]}
+                width={1448}
+                height={1086}
+                alt="スマホと教材で学ぶ高校生のイラスト"
+                sizes="(min-width: 1024px) 460px, 88vw"
+                className="relative block h-auto w-full"
+              />
+              {/* 安心のひとこと（悩み→解決のブリッジ） */}
+              <div className="relative -mt-2 rounded-[18px] bg-[linear-gradient(120deg,#0b1d4a,#0f5e5e)] px-5 py-4 text-white shadow-[0_28px_50px_-34px_rgba(11,29,74,0.7)] sm:-mt-4 sm:ml-6">
+                <p className="text-[0.72rem] font-extrabold uppercase tracking-[0.16em] text-[#5eead4]">Good news</p>
+                <p className="mt-1 text-[1.05rem] font-extrabold leading-[1.5]">
+                  その悩み、ぜんぶ<span className="text-[#fdba74]">「仕組み」</span>で解決できます。
+                </p>
+              </div>
+            </div>
           </div>
-          <ul className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2">
-            {problems.map((p) => (
-              <li
-                key={p.title}
-                className="flex gap-4 rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]"
-              >
-                <span
-                  aria-hidden="true"
-                  className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#fff1e6] text-[1rem] font-extrabold text-[#ea580c]"
-                >
-                  ?
-                </span>
-                <span>
-                  <p className="text-[1.02rem] font-bold leading-[1.55] text-[#0b1d4a]">{p.title}</p>
-                  <p className="mt-2 text-[0.9rem] leading-[1.9] text-[#475569]">{p.body}</p>
-                </span>
-              </li>
-            ))}
-          </ul>
         </Container>
       </section>
 
@@ -676,13 +705,26 @@ export default function Home() {
               >
                 <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px]" style={{ background: p.color }} />
                 <div className="flex items-center gap-3">
-                  <span
-                    className="grid h-11 w-11 place-items-center rounded-[14px] text-[0.9rem] font-extrabold text-white"
-                    style={{ background: p.color }}
-                  >
-                    {p.tag}
+                  <span className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-[16px] bg-white shadow-[0_14px_28px_-16px_rgba(0,0,0,0.5)] ring-1 ring-white/40">
+                    <Illust
+                      base={p.icon}
+                      widths={[128, 256]}
+                      width={256}
+                      height={256}
+                      alt={`${p.tag}のイラスト`}
+                      sizes="64px"
+                      className="h-full w-full object-contain"
+                    />
                   </span>
-                  <span className="text-[0.82rem] font-extrabold tracking-[0.18em] text-white/55">{p.no}</span>
+                  <div>
+                    <span
+                      className="inline-flex items-center rounded-full px-3 py-1 text-[0.78rem] font-extrabold text-white"
+                      style={{ background: p.color }}
+                    >
+                      {p.tag}
+                    </span>
+                    <p className="mt-1 text-[0.78rem] font-extrabold tracking-[0.18em] text-white/55">{p.no}</p>
+                  </div>
                 </div>
                 <p className="mt-4 text-[1.18rem] font-extrabold leading-[1.5]">{p.title}</p>
                 <p className="mt-3 text-[0.9rem] leading-[1.95] text-white/75">{p.body}</p>
@@ -837,6 +879,27 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
+
+              {/* 保護者も安心（イラストで見せる） */}
+              <figure className="mt-5 flex items-center gap-4 rounded-[18px] bg-[#eef6f6] p-4 ring-1 ring-[rgba(13,148,136,0.2)]">
+                <Illust
+                  base="parent-child"
+                  widths={[520, 1040]}
+                  width={1254}
+                  height={1254}
+                  alt="スマホの学習進捗を一緒に見る保護者と中高生のイラスト"
+                  sizes="88px"
+                  className="h-20 w-20 shrink-0 rounded-[12px] object-cover ring-1 ring-[rgba(13,148,136,0.2)]"
+                />
+                <figcaption>
+                  <p className="text-[0.98rem] font-extrabold leading-[1.45] text-[#0b1d4a]">
+                    保護者も、同じ画面で見守れる。
+                  </p>
+                  <p className="mt-1 text-[0.84rem] leading-[1.8] text-[#475569]">
+                    提出・添削・連続日数がひと目で。声をかけるタイミングまで分かるから、無理なく応援できます。
+                  </p>
+                </figcaption>
+              </figure>
             </div>
           </div>
         </Container>
@@ -1268,10 +1331,19 @@ export default function Home() {
                 入会金・教材費は0円。理系を中心に9科目から、必要な分だけ選べます。
               </p>
               <p className="relative mt-6">
-                <span className="inline-flex -rotate-1 items-center rounded-[12px] bg-[#f97316] px-4 py-2 text-[0.9rem] font-extrabold text-white shadow-[0_14px_28px_-14px_rgba(234,88,12,0.9)]">
+                <span className="inline-flex -rotate-1 items-center gap-1.5 rounded-[12px] bg-[#f97316] px-4 py-2 text-[0.9rem] font-extrabold text-white shadow-[0_14px_28px_-14px_rgba(234,88,12,0.9)]">
+                  <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
                   いまなら初月半額キャンペーン中
                 </span>
               </p>
+              {/* 割引前→後の価格対比（申込直前の後押し） */}
+              <div className="relative mx-auto mt-6 inline-flex flex-wrap items-baseline justify-center gap-x-2.5 gap-y-1 rounded-[18px] bg-white/[0.08] px-6 py-4 ring-1 ring-white/15">
+                <span className="text-[0.84rem] font-bold text-white/85">初月なら 1科目</span>
+                <span className="text-[1rem] font-bold text-white/55 line-through decoration-2">{formatYen(monthlyTotal(1))}</span>
+                <span aria-hidden="true" className="text-[1.1rem] font-black text-white/80">→</span>
+                <span className="text-[2.1rem] font-black leading-none tracking-[-0.02em] text-[#fdba74] sm:text-[2.4rem]">{formatYen(firstMonthTotal(1))}</span>
+                <span className="text-[0.8rem] font-bold text-white/85">（税込）</span>
+              </div>
               <div className="relative mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
                 <PrimaryCta href="/apply">料金を見て申し込む（初月半額）</PrimaryCta>
                 <Link

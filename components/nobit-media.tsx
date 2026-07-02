@@ -38,6 +38,56 @@ export function PrintImage({
   );
 }
 
+/**
+ * ブランドイラスト（public/illust の AVIF・WebP・PNG フォールバック）。
+ * `base` は scripts/convert-illustrations.mjs の出力ベース名、`widths` はその幅。
+ */
+export function Illust({
+  base,
+  widths,
+  width,
+  height,
+  alt,
+  className,
+  sizes = "(min-width: 1024px) 520px, 90vw",
+  priority = false,
+}: {
+  base: string;
+  widths: [number, number];
+  width: number;
+  height: number;
+  alt: string;
+  className?: string;
+  sizes?: string;
+  priority?: boolean;
+}) {
+  const [small, large] = widths;
+  return (
+    <picture>
+      <source
+        type="image/avif"
+        srcSet={`/illust/${base}-${small}.avif ${small}w, /illust/${base}-${large}.avif ${large}w`}
+        sizes={sizes}
+      />
+      <source
+        type="image/webp"
+        srcSet={`/illust/${base}-${small}.webp ${small}w, /illust/${base}-${large}.webp ${large}w`}
+        sizes={sizes}
+      />
+      <img
+        src={`/illust/${base}-${large}.webp`}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
+        fetchPriority={priority ? "high" : undefined}
+        className={className}
+      />
+    </picture>
+  );
+}
+
 /** マスコット「ノビットくん」（透過 PNG / AVIF・WebP）。 */
 export function Mascot({ variant, className }: { variant: "wave" | "point"; className?: string }) {
   const base = variant === "wave" ? "nobit-kun-wave" : "nobit-kun-point";
