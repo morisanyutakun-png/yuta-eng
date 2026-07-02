@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AppScreen } from "@/components/app-screens";
 import { Container } from "@/components/container";
 import { PrimaryCta, SecondaryCta } from "@/components/cta";
-import { CurveDivider, SectionGlow } from "@/components/decor";
+import { CurveDivider, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { GroundedMascot, PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
@@ -400,10 +400,7 @@ export default function Home() {
             </div>
 
             <div className="relative min-w-0">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.22),rgba(29,78,216,0.08)_55%,transparent)] blur-2xl sm:h-96 sm:w-96"
-              />
+              <PhoneBackdrop />
               {/* 実アプリ画面（主役）＋演習本プリント（背面） */}
               <div className="relative mx-auto flex w-fit items-center justify-center">
                 <div className="absolute -left-14 top-10 z-0 w-[42%] max-w-[160px] -rotate-[9deg] overflow-hidden rounded-[12px] bg-white shadow-[0_30px_50px_-30px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.1)] sm:-left-20">
