@@ -10,6 +10,7 @@ import { GroundedMascot, PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
 import { homeFaq } from "@/data/home";
 import { kdpAmazonUrl } from "@/data/site";
+import { firstMonthTotal, formatYen, monthlyTotal } from "@/lib/pricing";
 import { createPageMetadata } from "@/lib/metadata";
 import {
   createEducationalServiceJsonLd,
@@ -292,6 +293,99 @@ function InlineCta({ note }: { note?: string }) {
   );
 }
 
+/** キャンペーンの「50%OFF」シール（ギザギザの星形）。中心に文言を重ねる。 */
+function Starburst({ className = "" }: { className?: string }) {
+  const spikes = 16;
+  const cx = 50;
+  const cy = 50;
+  const outer = 49;
+  const inner = 39;
+  const pts: string[] = [];
+  for (let i = 0; i < spikes * 2; i += 1) {
+    const r = i % 2 === 0 ? outer : inner;
+    const a = (Math.PI / spikes) * i - Math.PI / 2;
+    pts.push(`${(cx + r * Math.cos(a)).toFixed(2)},${(cy + r * Math.sin(a)).toFixed(2)}`);
+  }
+  return (
+    <div aria-hidden="true" className={`relative ${className}`}>
+      <svg viewBox="0 0 100 100" className="h-full w-full drop-shadow-[0_12px_22px_rgba(124,25,0,0.35)]">
+        <polygon points={pts.join(" ")} fill="#fff" />
+        <circle cx="50" cy="50" r="34" fill="none" stroke="#fdba74" strokeWidth="1.4" strokeDasharray="2 3" />
+      </svg>
+      <div className="absolute inset-0 grid place-items-center">
+        <div className="text-center leading-none">
+          <p className="text-[0.6rem] font-extrabold tracking-[0.14em] text-[#ea580c]">初月</p>
+          <p className="mt-1 text-[1.55rem] font-black text-[#ea580c]">半額</p>
+          <p className="mt-1 text-[0.58rem] font-black tracking-[0.08em] text-[#f97316]">50% OFF</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * キャンペーン告知バンド（toC の主役）。実在するオファー（初月半額・入会/教材費0円）を
+ * 大きな数字と割引前→後の対比で一気に見せ、購買行動の背中を押す。虚偽の実績は載せない。
+ */
+function CampaignBanner() {
+  const regular = monthlyTotal(1);
+  const first = firstMonthTotal(1);
+  return (
+    <section className="cv-defer relative overflow-hidden bg-[linear-gradient(120deg,#fb7185_0%,#f97316_56%,#fbbf24_100%)]">
+      <Blob fill="#ffffff" className="pointer-events-none absolute -left-24 -top-20 h-80 w-80 opacity-[0.16]" />
+      <Blob fill="#ffffff" className="pointer-events-none absolute -bottom-24 right-[-4rem] h-80 w-80 opacity-[0.12]" />
+      <span aria-hidden="true" className="pointer-events-none absolute left-[12%] top-6 h-2.5 w-2.5 rounded-full bg-white/50" />
+      <span aria-hidden="true" className="pointer-events-none absolute right-[16%] top-8 h-2 w-2 rounded-full bg-white/40" />
+      <span aria-hidden="true" className="pointer-events-none absolute bottom-6 left-[38%] h-2 w-2 rounded-full bg-white/40" />
+      <Container className="relative px-6 py-10 sm:py-12">
+        <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 text-center lg:flex-row lg:justify-between lg:gap-8 lg:text-left">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
+            <Starburst className="h-24 w-24 shrink-0 -rotate-6 sm:h-28 sm:w-28" />
+            <div>
+              <p className="inline-flex items-center gap-1.5 rounded-full bg-white/25 px-3 py-1 text-[0.66rem] font-extrabold tracking-[0.1em] text-white ring-1 ring-white/45 backdrop-blur">
+                <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+                CAMPAIGN · 新規開講キャンペーン実施中
+              </p>
+              <p className="mt-2.5 text-[1.55rem] font-black leading-[1.15] tracking-[-0.01em] text-white sm:text-[2.05rem]">
+                いま始めると、初月半額。
+              </p>
+              <p className="mt-2 flex flex-wrap items-baseline justify-center gap-x-2 gap-y-1 lg:justify-start">
+                <span className="text-[0.8rem] font-bold text-white/90">1科目あたり</span>
+                <span className="text-[0.98rem] font-bold text-white/70 line-through decoration-2">{formatYen(regular)}</span>
+                <span aria-hidden="true" className="text-[1.1rem] font-black text-white/85">→</span>
+                <span className="text-[2.1rem] font-black leading-none tracking-[-0.02em] text-white sm:text-[2.5rem]">{formatYen(first)}</span>
+                <span className="text-[0.8rem] font-bold text-white/90">/ 初月（税込）</span>
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col items-center gap-3">
+            <Link
+              href="/apply"
+              className="inline-flex min-h-[3.25rem] items-center justify-center gap-1.5 rounded-full bg-white px-8 text-[1rem] font-extrabold text-[#ea580c] shadow-[0_18px_34px_-16px_rgba(88,20,0,0.6)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_40px_-16px_rgba(88,20,0,0.7)]"
+            >
+              初月半額ではじめる
+              <span aria-hidden="true">→</span>
+            </Link>
+            <ul className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-[0.74rem] font-bold text-white">
+              <li className="flex items-center gap-1">
+                <IconCheck className="h-3.5 w-3.5" />入会金0円
+              </li>
+              <li aria-hidden="true" className="text-white/50">/</li>
+              <li className="flex items-center gap-1">
+                <IconCheck className="h-3.5 w-3.5" />教材費0円
+              </li>
+              <li aria-hidden="true" className="text-white/50">/</li>
+              <li className="flex items-center gap-1">
+                <IconCheck className="h-3.5 w-3.5" />いつでも解約OK
+              </li>
+            </ul>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 /** セクションに奥行きを出すやわらかい光（装飾）。overflow-hidden な relative 親に置く。 */
 /** 数字で価値を一気に見せる帯（訴求＋デザインのアクセント）。 */
 function StatsBand() {
@@ -382,8 +476,10 @@ export default function Home() {
               </h1>
 
               <p className="mx-auto mt-6 max-w-md text-[1.08rem] leading-[1.85] text-[#334155] sm:text-[1.15rem] lg:mx-0">
-                出すと同時に<strong className="font-bold text-[#0b1d4a]">解答・解説</strong>。
-                翌日までに、<strong className="font-bold text-[#0b1d4a]">先生の添削</strong>も。
+                毎日1枚、出すだけ。その場で<strong className="font-bold text-[#0b1d4a]">解答・解説</strong>、
+                翌日までに<strong className="font-bold text-[#0b1d4a]">先生の添削</strong>。
+                <br className="hidden sm:block" />
+                「続ける」も「直す」も、まるごと仕組みにしました。
               </p>
 
               <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0">
@@ -425,6 +521,9 @@ export default function Home() {
 
       {/* ───────── 流れるキーワード帯（リズム＋SEO） ───────── */}
       <MarqueeBand />
+
+      {/* ───────── CAMPAIGN（初月半額・toC の主役オファー） ───────── */}
+      <CampaignBanner />
 
       {/* ───────── STEPS（やることはこれだけ・実物プリントで見せる） ───────── */}
       <section id="steps" className="cv-defer scroll-mt-24 bg-white">
