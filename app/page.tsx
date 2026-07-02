@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AppScreen } from "@/components/app-screens";
 import { Container } from "@/components/container";
 import { PrimaryCta, SecondaryCta } from "@/components/cta";
-import { Blob, CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
+import { Blob, CtaDoodle, CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { GroundedMascot, PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
@@ -347,9 +347,9 @@ export default function Home() {
           }}
         />
         {/* 有機的なブロブ（色のインパクト） */}
-        <Blob fill="#1d4ed8" className="pointer-events-none absolute -left-28 -top-16 h-[24rem] w-[24rem] opacity-[0.1]" />
-        <Blob fill="#0d9488" className="pointer-events-none absolute -right-24 top-1/4 h-[26rem] w-[26rem] opacity-[0.12]" />
-        <Blob fill="#f97316" className="pointer-events-none absolute -bottom-24 left-1/4 h-64 w-64 opacity-[0.08]" />
+        <Blob fill="#1d4ed8" className="pointer-events-none absolute -left-28 -top-16 h-[24rem] w-[24rem] opacity-[0.16]" />
+        <Blob fill="#0d9488" className="pointer-events-none absolute -right-24 top-1/4 h-[26rem] w-[26rem] opacity-[0.18]" />
+        <Blob fill="#f97316" className="pointer-events-none absolute -bottom-24 left-1/4 h-64 w-64 opacity-[0.12]" />
         {/* 方眼ノートのテクスチャ — 演習・添削のブランドに馴染ませる */}
         <div
           aria-hidden="true"
@@ -386,7 +386,8 @@ export default function Home() {
                 翌日までに、<strong className="font-bold text-[#0b1d4a]">先生の添削</strong>も。
               </p>
 
-              <div className="mt-7 flex flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0">
+              <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0">
+                <CtaDoodle />
                 <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
                 <SecondaryCta href="/apply#pricing">料金・科目を見る</SecondaryCta>
               </div>

@@ -6,7 +6,7 @@ import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { JsonLd } from "@/components/json-ld";
 import { createPageMetadata } from "@/lib/metadata";
 import { AppScreen } from "@/components/app-screens";
-import { CurveDivider, DarkSectionDecor, SectionGlow } from "@/components/decor";
+import { Blob, CtaDoodle, CurveDivider, DarkSectionDecor, SectionGlow } from "@/components/decor";
 import { createBreadcrumbJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
@@ -66,8 +66,11 @@ export default function HowItWorksPage() {
       />
 
       {/* HERO */}
-      <section className="bg-[linear-gradient(180deg,#ffffff_0%,#f3f8ff_100%)]">
-        <Container className="px-6">
+      <section className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#f3f8ff_100%)]">
+        <Blob fill="#1d4ed8" className="pointer-events-none absolute -left-28 -top-20 h-[24rem] w-[24rem] opacity-[0.14]" />
+        <Blob fill="#0d9488" className="pointer-events-none absolute -right-24 top-4 h-[26rem] w-[26rem] opacity-[0.16]" />
+        <Blob fill="#f97316" className="pointer-events-none absolute -bottom-24 right-1/4 h-64 w-64 opacity-[0.1]" />
+        <Container className="relative px-6">
           <nav aria-label="パンくずリスト" className="pt-7 text-[0.78rem] text-[#94a3b8] sm:pt-9">
             <ol className="flex flex-wrap items-center gap-2">
               <li><Link className="transition hover:text-[#0f766e]" href="/">ホーム</Link></li>
@@ -87,7 +90,8 @@ export default function HowItWorksPage() {
               提出と同時に解答・解説、翌日までにプロの添削が返る——
               <strong className="font-bold text-[#0b1d4a]">「教材 × 習慣化 × 添削」</strong>で回す、続く学習システムです。
             </p>
-            <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+            <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center lg:mt-16 lg:w-fit">
+              <CtaDoodle />
               <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
               <SecondaryCta href="/app">公式アプリを見る</SecondaryCta>
             </div>
