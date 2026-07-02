@@ -26,22 +26,63 @@ export function PhoneBackdrop() {
     </svg>
   );
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
       {/* やわらかい光のオーブ */}
       <div className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(124,58,237,0.2),rgba(13,148,136,0.1)_55%,transparent)] blur-2xl sm:h-[26rem] sm:w-[26rem]" />
-      {/* アウトラインのリング */}
-      <div className="absolute right-[4%] top-[4%] h-40 w-40 rounded-full border-2 border-[rgba(124,58,237,0.16)] sm:h-52 sm:w-52" />
-      <div className="absolute -left-2 bottom-[10%] h-28 w-28 rounded-full border-2 border-[rgba(13,148,136,0.2)]" />
-      <div className="absolute right-[16%] bottom-[4%] h-16 w-16 rounded-full border border-dashed border-[rgba(29,78,216,0.22)]" />
+      {/* 塗りのソフト円・楕円 */}
+      <div className="absolute right-[2%] top-[8%] h-44 w-56 -rotate-12 rounded-[50%] bg-[rgba(124,58,237,0.06)]" />
+      <div className="absolute -left-10 bottom-[8%] h-40 w-40 rounded-full bg-[rgba(13,148,136,0.07)]" />
+      {/* アウトラインのリング（真円・楕円） */}
+      <div className="absolute right-[3%] top-[3%] h-44 w-44 rounded-full border-2 border-[rgba(124,58,237,0.16)] sm:h-56 sm:w-56" />
+      <div className="absolute -left-4 bottom-[6%] h-28 w-44 rotate-[18deg] rounded-[50%] border-2 border-[rgba(13,148,136,0.2)]" />
+      <div className="absolute right-[18%] bottom-[2%] h-16 w-16 rounded-full border border-dashed border-[rgba(29,78,216,0.22)]" />
+      {/* 半円（見切れ） */}
+      <div className="absolute -right-8 top-1/2 h-32 w-16 -translate-y-1/2 rounded-l-full border-2 border-r-0 border-[rgba(56,189,248,0.28)]" />
+      <div className="absolute left-[6%] top-[6%] h-12 w-24 rounded-t-full border-2 border-b-0 border-[rgba(249,115,22,0.22)]" />
       {/* 点在するドット */}
-      <span className="absolute left-[8%] top-[22%] h-2.5 w-2.5 rounded-full bg-[#7c3aed]/60" />
+      <span className="absolute left-[8%] top-[24%] h-2.5 w-2.5 rounded-full bg-[#7c3aed]/60" />
       <span className="absolute right-[10%] top-[42%] h-2 w-2 rounded-full bg-[#0d9488]/70" />
-      <span className="absolute left-[14%] bottom-[16%] h-2 w-2 rounded-full bg-[#f97316]/70" />
-      <span className="absolute right-[24%] top-[10%] h-1.5 w-1.5 rounded-full bg-[#1d4ed8]/60" />
+      <span className="absolute left-[15%] bottom-[18%] h-2 w-2 rounded-full bg-[#f97316]/70" />
+      <span className="absolute right-[26%] top-[12%] h-1.5 w-1.5 rounded-full bg-[#1d4ed8]/60" />
+      <span className="absolute left-[3%] top-[62%] h-1.5 w-1.5 rounded-full bg-[#38bdf8]/70" />
       {/* きらめき */}
-      <Spark className="absolute left-[4%] top-[46%] h-6 w-6 text-[#f97316]/70" />
-      <Spark className="absolute right-[6%] top-[62%] h-5 w-5 text-[#38bdf8]/70" />
-      <Spark className="absolute left-[20%] top-[8%] h-4 w-4 text-[#7c3aed]/60" />
+      <Spark className="absolute left-[3%] top-[46%] h-6 w-6 text-[#f97316]/70" />
+      <Spark className="absolute right-[5%] top-[64%] h-5 w-5 text-[#38bdf8]/70" />
+      <Spark className="absolute left-[22%] top-[9%] h-4 w-4 text-[#7c3aed]/60" />
+    </div>
+  );
+}
+
+/**
+ * ダークなセクション（濃紺の帯）用の装飾。大きな半円・楕円・同心円・光を
+ * 白/ティールの低透明度で敷き、広がりと設計された印象を出す。
+ * overflow-hidden な relative 親（＝暗いセクション）に置く。
+ */
+export function DarkSectionDecor() {
+  const Spark = ({ className }: { className: string }) => (
+    <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
+      <path d="M12 1.5 L14 9.2 L21.8 11.2 L14 13.2 L12 21 L10 13.2 L2.2 11.2 L10 9.2 Z" />
+    </svg>
+  );
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+      {/* 右上：同心円（見切れ） */}
+      <div className="absolute -right-40 -top-44 h-[26rem] w-[26rem] rounded-full border border-white/10" />
+      <div className="absolute -right-56 -top-60 h-[38rem] w-[38rem] rounded-full border border-white/[0.06]" />
+      {/* 左下：ソフトなティールの楕円ブロブ */}
+      <div className="absolute -left-24 bottom-[-25%] h-80 w-[40rem] rounded-[50%] bg-[radial-gradient(closest-side,rgba(94,234,212,0.16),transparent)] blur-2xl" />
+      {/* 左上：見切れの半円（塗り） */}
+      <div className="absolute -left-28 top-[12%] h-56 w-56 rounded-full bg-white/[0.035]" />
+      {/* 下中央：大きな半円のアウトライン（上向き） */}
+      <div className="absolute -bottom-24 left-1/2 h-48 w-[30rem] -translate-x-1/2 rounded-t-full border border-white/[0.08]" />
+      {/* 右：小さめ楕円 */}
+      <div className="absolute right-[8%] bottom-[16%] h-20 w-36 rotate-[-16deg] rounded-[50%] border border-[rgba(94,234,212,0.22)]" />
+      {/* ドット・きらめき */}
+      <span className="absolute left-[10%] top-[20%] h-2 w-2 rounded-full bg-[#5eead4]/50" />
+      <span className="absolute right-[14%] top-[26%] h-1.5 w-1.5 rounded-full bg-white/40" />
+      <span className="absolute left-[24%] bottom-[18%] h-1.5 w-1.5 rounded-full bg-[#7dd3fc]/50" />
+      <Spark className="absolute right-[20%] top-[16%] h-5 w-5 text-[#5eead4]/45" />
+      <Spark className="absolute left-[8%] bottom-[26%] h-4 w-4 text-white/35" />
     </div>
   );
 }

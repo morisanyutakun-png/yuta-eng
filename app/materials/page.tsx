@@ -5,7 +5,7 @@ import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { JsonLd } from "@/components/json-ld";
 import { AppScreen } from "@/components/app-screens";
-import { CurveDivider, SectionGlow } from "@/components/decor";
+import { CurveDivider, DarkSectionDecor, SectionGlow } from "@/components/decor";
 import { PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
 import { kdpAmazonUrl } from "@/data/site";
@@ -109,6 +109,7 @@ export default function MaterialsPage() {
       {/* ノビット公式教材（ダークな帯で主役化） */}
       <section className="relative overflow-hidden bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white">
         <CurveDivider fill="#ffffff" />
+        <DarkSectionDecor />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-[0.06]"
