@@ -68,14 +68,14 @@ export default function AppPage() {
             <div>
               <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">App · 公式アプリ</p>
               <h1 className="mt-3 text-[2.1rem] font-extrabold leading-[1.2] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem]">
-                学習も添削も、
+                「今日、何やろう」から、
                 <br className="hidden sm:block" />
-                アプリひとつで。
+                解放されよう。
               </h1>
               <p className="mt-4 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
-                課題・提出・添削・進捗を、専用アプリ「ノビットスタディ」に集約。
-                <strong className="font-bold text-[#0b1d4a]">習慣化は根性ではなく、アプリの仕事</strong>。
-                保護者も同じ画面で進捗を見守れます。
+                やること・提出・添削・成績、ぜんぶスマホの中に。
+                <strong className="font-bold text-[#0b1d4a]">続けるのは、あなたの根性じゃなくてアプリの役目</strong>。
+                おうちの人も、同じ画面でそっと見守れます。
               </p>
               <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
@@ -99,7 +99,7 @@ export default function AppPage() {
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">Features · できること</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
-              毎日の学習が、ここで完結する。
+              ひらけば、やることが待ってる。
             </h2>
           </div>
           <ul className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -122,7 +122,7 @@ export default function AppPage() {
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">Habit · 続く理由</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
-              「続けられない」を、設計で解く。
+              気づいたら、続いてる。
             </h2>
           </div>
           <div className="mx-auto mt-10 grid max-w-4xl gap-5 lg:grid-cols-3">
@@ -142,7 +142,7 @@ export default function AppPage() {
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">Screens · 実際のアプリ画面</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
-              学習は、この<span className="text-[#0f766e]">4画面</span>でまわる。
+              アプリの中を、のぞいてみよう。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
               課題が届く → 解いて写真で提出 → 採点者が添削して返却 → すべて記録。実際の画面でご紹介します。
@@ -188,7 +188,7 @@ export default function AppPage() {
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">Environment · 使える環境</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
-              スマホでもPCでも。すぐ始められる。
+              やる気になった、その瞬間に。
             </h2>
           </div>
           <div className="mx-auto mt-10 grid max-w-4xl gap-5 sm:grid-cols-3">

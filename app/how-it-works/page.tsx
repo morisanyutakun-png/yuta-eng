@@ -144,7 +144,7 @@ export default function HowItWorksPage() {
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">In the app · アプリの中で</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
-              しくみは、この画面の中で動く。
+アプリの中を、ちょっと見てみる。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
               スマホ・タブレットで完結。課題が「届き」、添削されて「返る」——実際の画面はこう見えます。
