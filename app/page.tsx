@@ -697,37 +697,41 @@ export default function Home() {
             </p>
           </div>
 
-          <ol className="mt-12 grid gap-5 lg:grid-cols-3">
+          <ol className="mt-12 grid gap-6 lg:grid-cols-3">
             {pillars.map((p) => (
               <li
                 key={p.no}
-                className="relative overflow-hidden rounded-[22px] bg-white/[0.07] p-7 ring-1 ring-white/15 backdrop-blur-sm"
+                className="group overflow-hidden rounded-[24px] bg-white shadow-[0_40px_80px_-50px_rgba(0,0,0,0.9)] ring-1 ring-white/20 transition duration-300 hover:-translate-y-1.5"
               >
-                <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px]" style={{ background: p.color }} />
-                <div className="flex items-center gap-3">
-                  <span className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-[16px] bg-white shadow-[0_14px_28px_-16px_rgba(0,0,0,0.5)] ring-1 ring-white/40">
-                    <Illust
-                      base={p.icon}
-                      widths={[128, 256]}
-                      width={256}
-                      height={256}
-                      alt={`${p.tag}のイラスト`}
-                      sizes="64px"
-                      className="h-full w-full object-contain"
-                    />
+                {/* 画像パネル（各柱の色でトーンづけ） */}
+                <div
+                  className="relative flex aspect-[16/11] items-center justify-center overflow-hidden"
+                  style={{ background: `radial-gradient(120% 120% at 50% 15%, ${p.color}1f, #ffffff 72%)` }}
+                >
+                  <span aria-hidden="true" className="absolute right-4 top-4 h-16 w-16 rounded-full" style={{ background: `${p.color}14` }} />
+                  <span aria-hidden="true" className="absolute -bottom-6 -left-4 h-20 w-20 rounded-full" style={{ background: `${p.color}12` }} />
+                  <Illust
+                    base={p.icon}
+                    widths={[128, 256]}
+                    width={256}
+                    height={256}
+                    alt={`${p.tag}のイラスト`}
+                    sizes="(min-width: 1024px) 240px, 60vw"
+                    className="relative h-[68%] w-auto object-contain drop-shadow-[0_18px_24px_rgba(11,29,74,0.18)] transition duration-300 group-hover:scale-[1.05]"
+                  />
+                  <span
+                    className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[0.76rem] font-extrabold text-white shadow-[0_10px_20px_-10px_rgba(0,0,0,0.5)]"
+                    style={{ background: p.color }}
+                  >
+                    <span aria-hidden="true" className="text-[0.66rem] font-black opacity-80">{p.no}</span>
+                    {p.tag}
                   </span>
-                  <div>
-                    <span
-                      className="inline-flex items-center rounded-full px-3 py-1 text-[0.78rem] font-extrabold text-white"
-                      style={{ background: p.color }}
-                    >
-                      {p.tag}
-                    </span>
-                    <p className="mt-1 text-[0.78rem] font-extrabold tracking-[0.18em] text-white/55">{p.no}</p>
-                  </div>
                 </div>
-                <p className="mt-4 text-[1.18rem] font-extrabold leading-[1.5]">{p.title}</p>
-                <p className="mt-3 text-[0.9rem] leading-[1.95] text-white/75">{p.body}</p>
+                {/* テキスト */}
+                <div className="p-6 sm:p-7">
+                  <p className="text-[1.18rem] font-extrabold leading-[1.5] text-[#0b1d4a]">{p.title}</p>
+                  <p className="mt-3 text-[0.9rem] leading-[1.95] text-[#475569]">{p.body}</p>
+                </div>
               </li>
             ))}
           </ol>
