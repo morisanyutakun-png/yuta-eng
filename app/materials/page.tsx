@@ -5,6 +5,7 @@ import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { JsonLd } from "@/components/json-ld";
 import { AppScreen } from "@/components/app-screens";
+import { CurveDivider, SectionGlow } from "@/components/decor";
 import { PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
 import { kdpAmazonUrl } from "@/data/site";
@@ -36,8 +37,10 @@ export default function MaterialsPage() {
       />
 
       {/* HERO */}
-      <section className="bg-[linear-gradient(180deg,#ffffff_0%,#f3f8ff_100%)]">
-        <Container className="px-6">
+      <section className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#f3f8ff_100%)]">
+        <SectionGlow className="-right-24 top-4" color="rgba(249,115,22,0.12)" />
+        <SectionGlow className="-left-24 bottom-0" color="rgba(29,78,216,0.08)" />
+        <Container className="relative px-6">
           <nav aria-label="パンくずリスト" className="pt-7 text-[0.78rem] text-[#94a3b8] sm:pt-9">
             <ol className="flex flex-wrap items-center gap-2">
               <li><Link className="transition hover:text-[#0f766e]" href="/">ホーム</Link></li>
@@ -103,17 +106,27 @@ export default function MaterialsPage() {
         </Container>
       </section>
 
-      {/* ノビット公式教材 */}
-      <section className="bg-[#f8fafc]">
-        <Container className="px-6 py-16 sm:py-24">
+      {/* ノビット公式教材（ダークな帯で主役化） */}
+      <section className="relative overflow-hidden bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white">
+        <CurveDivider fill="#ffffff" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
+            backgroundSize: "30px 30px",
+          }}
+        />
+        <Container className="relative px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="inline-flex items-center rounded-full bg-[#0b1d4a] px-3 py-1 text-[0.68rem] font-extrabold tracking-[0.08em] text-white">
+            <p className="inline-flex items-center rounded-full bg-white/[0.12] px-3 py-1 text-[0.68rem] font-extrabold tracking-[0.08em] text-white ring-1 ring-white/20">
               ノビット公式教材
             </p>
-            <h2 className="mt-4 text-[1.6rem] font-extrabold leading-[1.4] text-[#0b1d4a] sm:text-[2rem]">
+            <h2 className="mt-4 text-[1.6rem] font-extrabold leading-[1.4] sm:text-[2rem]">
               まずは数学から。各分野へ拡大中。
             </h2>
-            <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569]">
+            <p className="mt-4 text-[0.95rem] leading-[1.95] text-white/80">
               ノビットのために書き下ろした公式教材。数学（ⅠA・ⅡBC・ⅢC）を公開中で、物理・化学・英語など各分野へ順次拡大していきます。
             </p>
           </div>
@@ -136,13 +149,14 @@ export default function MaterialsPage() {
               </li>
             ))}
           </ul>
-          <ul className="mx-auto mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-[0.74rem] font-semibold text-[#64748b]">
-            <li className="text-[#475569]">続々制作中：</li>
+          <ul className="mx-auto mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-[0.74rem] font-semibold">
+            <li className="text-white/70">続々制作中：</li>
             {["物理基礎・物理", "化学基礎・化学", "英語長文・英文法"].map((s) => (
-              <li key={s} className="rounded-full bg-white px-3 py-1 text-[#94a3b8] ring-1 ring-dashed ring-[rgba(15,29,74,0.15)]">{s}（準備中）</li>
+              <li key={s} className="rounded-full bg-white/[0.08] px-3 py-1 text-white/70 ring-1 ring-dashed ring-white/25">{s}（準備中）</li>
             ))}
           </ul>
         </Container>
+        <CurveDivider fill="#ffffff" flip />
       </section>
 
       {/* 教材の使い方 */}

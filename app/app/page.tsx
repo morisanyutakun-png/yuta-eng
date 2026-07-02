@@ -57,7 +57,21 @@ export default function AppPage() {
 
       {/* HERO */}
       <section className="relative overflow-hidden bg-[linear-gradient(180deg,#ffffff_0%,#eef6f6_100%)]">
-        <Container className="px-6">
+        {/* 装飾：光＋方眼テクスチャ */}
+        <SectionGlow className="-left-24 top-10" color="rgba(124,58,237,0.14)" />
+        <SectionGlow className="right-0 top-24" color="rgba(13,148,136,0.16)" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(13,148,136,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(13,148,136,0.05) 1px, transparent 1px)",
+            backgroundSize: "26px 26px",
+            maskImage: "radial-gradient(ellipse 75% 65% at 72% 42%, #000 35%, transparent 78%)",
+            WebkitMaskImage: "radial-gradient(ellipse 75% 65% at 72% 42%, #000 35%, transparent 78%)",
+          }}
+        />
+        <Container className="relative px-6">
           <nav aria-label="パンくずリスト" className="pt-7 text-[0.78rem] text-[#94a3b8] sm:pt-9">
             <ol className="flex flex-wrap items-center gap-2">
               <li><Link className="transition hover:text-[#0f766e]" href="/">ホーム</Link></li>
@@ -65,15 +79,22 @@ export default function AppPage() {
               <li className="text-[#475569]">公式アプリ</li>
             </ol>
           </nav>
-          <div className="grid items-center gap-10 py-10 sm:py-14 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="grid items-center gap-10 py-10 sm:py-16 lg:grid-cols-[1.05fr_0.95fr]">
             <div>
-              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">App · 公式アプリ</p>
-              <h1 className="mt-3 text-[2.1rem] font-extrabold leading-[1.2] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem]">
-                「今日、何やろう」から、
-                <br className="hidden sm:block" />
-                解放されよう。
+              <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.72rem] font-bold tracking-[0.06em] text-[#7c3aed] ring-1 ring-[rgba(124,58,237,0.25)]">
+                <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#7c3aed]" />
+                公式アプリ「ノビットスタディ」
+              </p>
+              <h1 className="mt-5 text-[2.3rem] font-extrabold leading-[1.15] tracking-[-0.02em] text-[#0b1d4a] sm:text-[3rem]">
+                「今日、何やろう」
+                <br />
+                から、
+                <span className="relative whitespace-nowrap">
+                  <span className="bg-[linear-gradient(100deg,#7c3aed_0%,#1d4ed8_60%,#0d9488_100%)] bg-clip-text text-transparent">解放</span>
+                </span>
+                されよう。
               </h1>
-              <p className="mt-4 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
+              <p className="mt-5 max-w-lg text-[1.05rem] leading-[1.9] text-[#334155]">
                 やること・提出・添削・成績、ぜんぶスマホの中に。
                 <strong className="font-bold text-[#0b1d4a]">続けるのは、あなたの根性じゃなくてアプリの役目</strong>。
                 おうちの人も、同じ画面でそっと見守れます。
@@ -83,15 +104,28 @@ export default function AppPage() {
                 <SecondaryCta href="/how-it-works">ノビットのしくみ</SecondaryCta>
               </div>
             </div>
-            <div className="relative flex justify-center">
+            <div className="relative flex justify-center py-4">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(13,148,136,0.2),transparent)] blur-2xl sm:h-96 sm:w-96"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(124,58,237,0.18),rgba(13,148,136,0.1)_55%,transparent)] blur-2xl sm:h-96 sm:w-96"
               />
-              <AppScreen variant="home" className="relative float-slow" />
+              <AppScreen variant="home" className="relative z-10 float-slow" />
+              {/* フローティング吹き出し（機能の見える化） */}
+              <div className="absolute -left-3 top-6 hidden rotate-[-4deg] rounded-[12px] bg-white px-3 py-2 shadow-[0_18px_36px_-18px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.08)] sm:block">
+                <p className="text-[0.7rem] font-extrabold text-[#0b1d4a]">毎日1枚、届く</p>
+                <p className="text-[0.6rem] text-[#64748b]">迷う時間はゼロ</p>
+              </div>
+              <div className="absolute -right-3 top-1/2 hidden rotate-[4deg] rounded-[12px] bg-white px-3 py-2 shadow-[0_18px_36px_-18px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.08)] sm:block">
+                <p className="flex items-center gap-1 text-[0.7rem] font-extrabold text-[#16a34a]"><span className="h-1.5 w-1.5 rounded-full bg-[#16a34a]" />翌日までに添削</p>
+                <p className="text-[0.6rem] text-[#64748b]">合否・点数・コメント</p>
+              </div>
+              <div className="absolute -bottom-1 left-4 hidden -rotate-3 rounded-[12px] bg-white px-3 py-2 shadow-[0_18px_36px_-18px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.08)] sm:block">
+                <p className="text-[0.7rem] font-extrabold text-[#7c3aed]">保護者も見れる</p>
+              </div>
             </div>
           </div>
         </Container>
+        <CurveDivider fill="#f8fafc" flip />
       </section>
 
       {/* できること */}

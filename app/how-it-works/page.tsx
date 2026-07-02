@@ -6,6 +6,7 @@ import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { JsonLd } from "@/components/json-ld";
 import { createPageMetadata } from "@/lib/metadata";
 import { AppScreen } from "@/components/app-screens";
+import { CurveDivider, SectionGlow } from "@/components/decor";
 import { createBreadcrumbJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
@@ -96,6 +97,7 @@ export default function HowItWorksPage() {
 
       {/* 3本柱 */}
       <section className="relative overflow-hidden bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white">
+        <CurveDivider fill="#f3f8ff" />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-[0.06]"
@@ -105,7 +107,7 @@ export default function HowItWorksPage() {
             backgroundSize: "30px 30px",
           }}
         />
-        <Container className="relative px-6 py-16 sm:py-24">
+        <Container className="relative px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#5eead4]">The Method · 3本柱</p>
             <h2 className="mt-3 text-[1.8rem] font-extrabold leading-[1.3] sm:text-[2.3rem]">
@@ -136,11 +138,14 @@ export default function HowItWorksPage() {
             ))}
           </div>
         </Container>
+        <CurveDivider fill="#ffffff" flip />
       </section>
 
       {/* 実際のアプリ画面（届く→返る） */}
-      <section className="bg-white">
-        <Container className="px-6 py-16 sm:py-24">
+      <section className="relative overflow-hidden bg-white">
+        <SectionGlow className="-left-24 top-10" color="rgba(124,58,237,0.1)" />
+        <SectionGlow className="-right-24 bottom-10" color="rgba(13,148,136,0.1)" />
+        <Container className="relative px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">In the app · アプリの中で</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
