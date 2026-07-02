@@ -87,6 +87,29 @@ export function DarkSectionDecor() {
   );
 }
 
+/** 有機的なブロブ形（きれいな円ではない“手で描いた塊”）。色のインパクト用。 */
+export function Blob({ className = "", fill }: { className?: string; fill: string }) {
+  return (
+    <svg viewBox="0 0 200 200" aria-hidden="true" className={className}>
+      <path
+        fill={fill}
+        transform="translate(100 100)"
+        d="M54,-62C68,-49,76,-30,78,-10C80,10,76,31,64,47C52,63,32,74,11,77C-11,80,-33,75,-51,63C-69,51,-83,32,-85,12C-87,-8,-77,-30,-63,-46C-49,-62,-31,-72,-11,-74C9,-76,28,-75,54,-62Z"
+      />
+    </svg>
+  );
+}
+
+/** 採点ペン風の手描き矢印（曲線＋矢じり）。人の手の気配を出す。 */
+export function MarkerArrow({ className = "", color = "#f97316" }: { className?: string; color?: string }) {
+  return (
+    <svg viewBox="0 0 120 96" fill="none" aria-hidden="true" className={className}>
+      <path d="M10 8 C 46 2, 82 16, 98 58" stroke={color} strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M83 44 C 90 52, 96 59, 100 66 M100 66 C 91 63, 82 62, 73 64" stroke={color} strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 /** ゆるやかな曲線の区切り（上に凸）。暗い/明るいセクションの境目に立体感を出す。 */
 export function CurveDivider({ fill, flip = false }: { fill: string; flip?: boolean }) {
   return (

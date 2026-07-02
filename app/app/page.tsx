@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { AppScreen, appSteps } from "@/components/app-screens";
-import { CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
+import { Blob, CurveDivider, DarkSectionDecor, MarkerArrow, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createSoftwareAppJsonLd } from "@/lib/structured-data";
@@ -66,6 +66,10 @@ export default function AppPage() {
               "radial-gradient(55% 45% at 10% 6%, rgba(124,58,237,0.13), transparent 60%), radial-gradient(52% 46% at 94% 10%, rgba(13,148,136,0.17), transparent 60%), radial-gradient(46% 52% at 80% 96%, rgba(29,78,216,0.10), transparent 60%), linear-gradient(180deg, #ffffff 0%, #f4f8fc 100%)",
           }}
         />
+        {/* 有機的なブロブ（色のインパクト） */}
+        <Blob fill="#7c3aed" className="pointer-events-none absolute -right-24 -top-16 h-[26rem] w-[26rem] opacity-[0.13]" />
+        <Blob fill="#0d9488" className="pointer-events-none absolute -left-32 top-[38%] h-[22rem] w-[22rem] opacity-[0.12]" />
+        <Blob fill="#f97316" className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 opacity-[0.08]" />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0"
@@ -106,7 +110,17 @@ export default function AppPage() {
                 <strong className="font-bold text-[#0b1d4a]">続けるのは、あなたの根性じゃなくてアプリの役目</strong>。
                 おうちの人も、同じ画面でそっと見守れます。
               </p>
-              <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+              <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+                {/* 手描きの誘導（人の手の気配） */}
+                <div aria-hidden="true" className="absolute -right-2 -top-14 hidden items-end gap-1 lg:flex">
+                  <span
+                    className="-rotate-6 text-[1.05rem] font-extrabold text-[#ea580c]"
+                    style={{ fontFamily: "'Hiragino Mincho ProN','YuMincho',serif" }}
+                  >
+                    まずは、ここから！
+                  </span>
+                  <MarkerArrow className="h-11 w-12 -scale-x-100 rotate-[8deg] text-[#ea580c]" />
+                </div>
                 <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
                 <SecondaryCta href="/how-it-works">ノビットのしくみ</SecondaryCta>
               </div>
