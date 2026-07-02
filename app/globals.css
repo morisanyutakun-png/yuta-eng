@@ -223,6 +223,24 @@ button,
   font-feature-settings: "palt", "kern";
 }
 
+/* 見出しはブランドフォント（Zen Kaku Gothic New）。読み込み前は端末標準で表示。 */
+h1,
+h2,
+.font-display {
+  font-family:
+    var(--font-display),
+    -apple-system,
+    BlinkMacSystemFont,
+    "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic Medium",
+    "Yu Gothic",
+    "Meiryo",
+    "Noto Sans CJK JP",
+    sans-serif;
+  font-feature-settings: "palt", "kern";
+}
+
 ::selection {
   background: #d6e4ff;
   color: #0f3d8c;
