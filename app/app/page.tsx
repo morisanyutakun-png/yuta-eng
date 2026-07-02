@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { AppScreen, appSteps } from "@/components/app-screens";
+import { CurveDivider, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createSoftwareAppJsonLd } from "@/lib/structured-data";
@@ -94,8 +95,10 @@ export default function AppPage() {
       </section>
 
       {/* できること */}
-      <section className="bg-white">
-        <Container className="px-6 py-16 sm:py-24">
+      <section className="relative overflow-hidden bg-[#f8fafc]">
+        <SectionGlow className="-left-24 top-6" color="rgba(13,148,136,0.12)" />
+        <SectionGlow className="-right-28 bottom-0" color="rgba(29,78,216,0.08)" />
+        <Container className="relative px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">Features · できること</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
@@ -103,12 +106,12 @@ export default function AppPage() {
             </h2>
           </div>
           <ul className="mx-auto mt-10 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((f) => (
-              <li key={f.title} className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
-                <p className="flex items-center gap-2 text-[1rem] font-bold leading-[1.45] text-[#0b1d4a]">
-                  <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#0d9488]" />
-                  {f.title}
-                </p>
+            {features.map((f, i) => (
+              <li key={f.title} className="group rounded-[18px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.06)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-34px_rgba(15,29,74,0.4)]">
+                <span className="inline-grid h-8 w-8 place-items-center rounded-[10px] bg-[#eef6f6] text-[0.8rem] font-extrabold text-[#0f766e]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <p className="mt-3 text-[1rem] font-bold leading-[1.45] text-[#0b1d4a]">{f.title}</p>
                 <p className="mt-2 text-[0.88rem] leading-[1.85] text-[#475569]">{f.body}</p>
               </li>
             ))}
@@ -116,29 +119,46 @@ export default function AppPage() {
         </Container>
       </section>
 
-      {/* 習慣化のしくみ */}
-      <section className="bg-[#f8fafc]">
-        <Container className="px-6 py-16 sm:py-24">
+      {/* 習慣化のしくみ（ダークな帯でコントラスト） */}
+      <section className="relative overflow-hidden bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white">
+        <CurveDivider fill="#f8fafc" />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
+            backgroundSize: "30px 30px",
+          }}
+        />
+        <Container className="relative px-6 py-20 sm:py-28">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">Habit · 続く理由</p>
-            <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#5eead4]">Habit · 続く理由</p>
+            <h2 className="mt-3 text-[1.8rem] font-extrabold leading-[1.3] sm:text-[2.3rem]">
               気づいたら、続いてる。
             </h2>
+            <p className="mt-4 text-[0.96rem] leading-[1.95] text-white/80">
+              「がんばる」に頼らない。続く人がやっていることを、アプリが全部肩代わりします。
+            </p>
           </div>
-          <div className="mx-auto mt-10 grid max-w-4xl gap-5 lg:grid-cols-3">
-            {habitPoints.map((h) => (
-              <div key={h.title} className="rounded-[20px] bg-white p-7 ring-1 ring-[rgba(15,29,74,0.06)]">
-                <p className="text-[1.05rem] font-extrabold leading-[1.5] text-[#0b1d4a]">{h.title}</p>
-                <p className="mt-2 text-[0.9rem] leading-[1.95] text-[#475569]">{h.body}</p>
+          <div className="mx-auto mt-12 grid max-w-4xl gap-5 lg:grid-cols-3">
+            {habitPoints.map((h, i) => (
+              <div key={h.title} className="relative overflow-hidden rounded-[20px] bg-white/[0.07] p-7 ring-1 ring-white/15 backdrop-blur-sm">
+                <span className="text-[1.4rem] font-extrabold text-white/30">0{i + 1}</span>
+                <p className="mt-1 text-[1.05rem] font-extrabold leading-[1.5]">{h.title}</p>
+                <p className="mt-2 text-[0.9rem] leading-[1.95] text-white/75">{h.body}</p>
               </div>
             ))}
           </div>
         </Container>
+        <CurveDivider fill="#ffffff" flip />
       </section>
 
       {/* 実画面で見る 4ステップ */}
-      <section className="bg-white">
-        <Container className="px-6 py-16 sm:py-24">
+      <section className="relative overflow-hidden bg-white">
+        <SectionGlow className="-right-24 top-24" color="rgba(124,58,237,0.08)" />
+        <SectionGlow className="-left-28 bottom-24" color="rgba(13,148,136,0.1)" />
+        <Container className="relative px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">Screens · 実際のアプリ画面</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
@@ -183,8 +203,9 @@ export default function AppPage() {
       </section>
 
       {/* 対応環境・通知 */}
-      <section className="bg-[#f8fafc]">
-        <Container className="px-6 py-16 sm:py-24">
+      <section className="relative overflow-hidden bg-[#f8fafc]">
+        <SectionGlow className="-left-24 top-8" color="rgba(29,78,216,0.1)" />
+        <Container className="relative px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">Environment · 使える環境</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
