@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AppScreen } from "@/components/app-screens";
 import { Container } from "@/components/container";
 import { PrimaryCta, SecondaryCta } from "@/components/cta";
-import { CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
+import { Blob, CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { GroundedMascot, PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
@@ -346,6 +346,10 @@ export default function Home() {
               "radial-gradient(52% 46% at 8% 4%, rgba(29,78,216,0.10), transparent 60%), radial-gradient(50% 45% at 95% 8%, rgba(13,148,136,0.16), transparent 60%), radial-gradient(46% 52% at 82% 96%, rgba(249,115,22,0.08), transparent 60%), linear-gradient(180deg, #ffffff 0%, #f4f8fc 100%)",
           }}
         />
+        {/* 有機的なブロブ（色のインパクト） */}
+        <Blob fill="#1d4ed8" className="pointer-events-none absolute -left-28 -top-16 h-[24rem] w-[24rem] opacity-[0.1]" />
+        <Blob fill="#0d9488" className="pointer-events-none absolute -right-24 top-1/4 h-[26rem] w-[26rem] opacity-[0.12]" />
+        <Blob fill="#f97316" className="pointer-events-none absolute -bottom-24 left-1/4 h-64 w-64 opacity-[0.08]" />
         {/* 方眼ノートのテクスチャ — 演習・添削のブランドに馴染ませる */}
         <div
           aria-hidden="true"
