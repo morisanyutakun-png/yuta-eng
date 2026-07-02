@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { AppScreen, appSteps } from "@/components/app-screens";
-import { CurveDivider, PhoneBackdrop, SectionGlow } from "@/components/decor";
+import { CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createSoftwareAppJsonLd } from "@/lib/structured-data";
@@ -171,6 +171,7 @@ export default function AppPage() {
       {/* 習慣化のしくみ（ダークな帯でコントラスト） */}
       <section className="relative overflow-hidden bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white">
         <CurveDivider fill="#f8fafc" />
+        <DarkSectionDecor />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-[0.06]"

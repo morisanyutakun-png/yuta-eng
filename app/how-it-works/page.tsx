@@ -6,7 +6,7 @@ import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { JsonLd } from "@/components/json-ld";
 import { createPageMetadata } from "@/lib/metadata";
 import { AppScreen } from "@/components/app-screens";
-import { CurveDivider, SectionGlow } from "@/components/decor";
+import { CurveDivider, DarkSectionDecor, SectionGlow } from "@/components/decor";
 import { createBreadcrumbJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
@@ -98,6 +98,7 @@ export default function HowItWorksPage() {
       {/* 3本柱 */}
       <section className="relative overflow-hidden bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white">
         <CurveDivider fill="#f3f8ff" />
+        <DarkSectionDecor />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-[0.06]"

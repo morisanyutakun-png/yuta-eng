@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AppScreen } from "@/components/app-screens";
 import { Container } from "@/components/container";
 import { PrimaryCta, SecondaryCta } from "@/components/cta";
-import { CurveDivider, PhoneBackdrop, SectionGlow } from "@/components/decor";
+import { CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { GroundedMascot, PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
@@ -539,6 +539,7 @@ export default function Home() {
       <section id="features" className="cv-defer relative scroll-mt-24 overflow-hidden bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white">
         {/* 直前セクション(#f8fafc)から曲線でつなぐ */}
         <CurveDivider fill="#f8fafc" />
+        <DarkSectionDecor />
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-[0.06]"
