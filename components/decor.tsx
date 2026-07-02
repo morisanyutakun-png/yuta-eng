@@ -122,8 +122,9 @@ export function CtaDoodle({ label = "まずは、ここから！" }: { label?: s
 export function MarkerArrow({ className = "", color = "#f97316" }: { className?: string; color?: string }) {
   return (
     <svg viewBox="0 0 120 96" fill="none" aria-hidden="true" className={className}>
-      <path d="M10 8 C 46 2, 82 16, 98 58" stroke={color} strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M83 44 C 90 52, 96 59, 100 66 M100 66 C 91 63, 82 62, 73 64" stroke={color} strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 8 C 44 4, 80 18, 96 58" stroke={color} strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      {/* 矢じり：曲線の先端(96,58)から2本のバーブを出す */}
+      <path d="M96 58 L78 52 M96 58 L86 74" stroke={color} strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
