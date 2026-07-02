@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Container } from "@/components/container";
 import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { AppScreen, appSteps } from "@/components/app-screens";
+import { Illust } from "@/components/nobit-media";
 import { Blob, CtaDoodle, CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { createPageMetadata } from "@/lib/metadata";
@@ -314,23 +315,36 @@ export default function AppPage() {
       {/* 保護者も安心 */}
       <section className="bg-[#f8fafc]">
         <Container className="px-6 py-16 sm:py-24">
-          <div className="mx-auto max-w-3xl rounded-[24px] bg-[#eef6f6] p-8 ring-1 ring-[rgba(13,148,136,0.18)] sm:p-10">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">For Parents · 保護者の方へ</p>
-            <h2 className="mt-3 text-[1.5rem] font-extrabold leading-[1.4] text-[#0b1d4a] sm:text-[1.9rem]">
-              同じ画面で、そっと見守れる。
-            </h2>
-            <p className="mt-4 text-[0.96rem] leading-[1.95] text-[#334155]">
-              面談がなくても大丈夫。提出数・添削完了・連続日数を、保護者も同じアプリで確認できます。
-              「今日はちゃんと出したかな？」が一目で分かるから、口を出しすぎずに見守れます。
-            </p>
-            <ul className="mt-5 grid gap-2 text-[0.92rem] leading-[1.85] text-[#334155] sm:grid-cols-2">
-              {["提出・添削の状況がわかる", "連続記録で頑張りが見える", "勧誘・営業電話は一切なし", "いつでも科目の追加・解約OK"].map((t) => (
-                <li key={t} className="flex gap-2.5">
-                  <span aria-hidden="true" className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d9488]" />
-                  {t}
-                </li>
-              ))}
-            </ul>
+          <div className="mx-auto grid max-w-4xl items-center gap-8 rounded-[24px] bg-[#eef6f6] p-8 ring-1 ring-[rgba(13,148,136,0.18)] sm:p-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12">
+            <div>
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">For Parents · 保護者の方へ</p>
+              <h2 className="mt-3 text-[1.5rem] font-extrabold leading-[1.4] text-[#0b1d4a] sm:text-[1.9rem]">
+                同じ画面で、そっと見守れる。
+              </h2>
+              <p className="mt-4 text-[0.96rem] leading-[1.95] text-[#334155]">
+                面談がなくても大丈夫。提出数・添削完了・連続日数を、保護者も同じアプリで確認できます。
+                「今日はちゃんと出したかな？」が一目で分かるから、口を出しすぎずに見守れます。
+              </p>
+              <ul className="mt-5 grid gap-2 text-[0.92rem] leading-[1.85] text-[#334155] sm:grid-cols-2">
+                {["提出・添削の状況がわかる", "連続記録で頑張りが見える", "勧誘・営業電話は一切なし", "いつでも科目の追加・解約OK"].map((t) => (
+                  <li key={t} className="flex gap-2.5">
+                    <span aria-hidden="true" className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d9488]" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="mx-auto w-full max-w-xs overflow-hidden rounded-[20px] bg-white shadow-[0_34px_60px_-40px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(13,148,136,0.2)]">
+              <Illust
+                base="parent-child"
+                widths={[520, 1040]}
+                width={1254}
+                height={1254}
+                alt="スマホの学習進捗を一緒に見る保護者と中高生のイラスト"
+                sizes="(min-width: 1024px) 320px, 80vw"
+                className="block h-auto w-full"
+              />
+            </div>
           </div>
 
           <div className="mx-auto mt-14 max-w-3xl">

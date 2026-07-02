@@ -6,7 +6,7 @@ import { PageCtaRow, PrimaryCta, SecondaryCta } from "@/components/cta";
 import { JsonLd } from "@/components/json-ld";
 import { AppScreen } from "@/components/app-screens";
 import { Blob, CtaDoodle, CurveDivider, DarkSectionDecor, SectionGlow } from "@/components/decor";
-import { PrintImage } from "@/components/nobit-media";
+import { Illust, PrintImage } from "@/components/nobit-media";
 import { bookGroups, officialBooks } from "@/data/books";
 import { kdpAmazonUrl } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
@@ -51,20 +51,34 @@ export default function MaterialsPage() {
               <li className="text-[#475569]">教材</li>
             </ol>
           </nav>
-          <div className="py-10 sm:py-14">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#f97316]">Materials · 教材</p>
-            <h1 className="mt-3 text-[2.1rem] font-extrabold leading-[1.2] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem]">
-やる教材に、もう困らない。
-            </h1>
-            <p className="mt-4 max-w-2xl text-[1rem] leading-[1.95] text-[#334155]">
-              ノビットのために書き下ろした<strong className="font-bold text-[#0b1d4a]">公式教材</strong>と、開発者が刊行する
-              <strong className="font-bold text-[#0b1d4a]">『考える力を育てる』シリーズ（全16冊）</strong>。
-              教材が豊富だから、毎日の演習に困りません。そのすべてを、つくった本人が毎日添削します。
-            </p>
-            <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center lg:mt-16 lg:w-fit">
-              <CtaDoodle />
-              <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
-              <SecondaryCta href="/how-it-works">ノビットのしくみ</SecondaryCta>
+          <div className="grid items-center gap-10 py-10 sm:py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+            <div>
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#f97316]">Materials · 教材</p>
+              <h1 className="mt-3 text-[2.1rem] font-extrabold leading-[1.2] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem]">
+                やる教材に、もう困らない。
+              </h1>
+              <p className="mt-4 max-w-2xl text-[1rem] leading-[1.95] text-[#334155]">
+                ノビットのために書き下ろした<strong className="font-bold text-[#0b1d4a]">公式教材</strong>と、開発者が刊行する
+                <strong className="font-bold text-[#0b1d4a]">『考える力を育てる』シリーズ（全16冊）</strong>。
+                教材が豊富だから、毎日の演習に困りません。そのすべてを、つくった本人が毎日添削します。
+              </p>
+              <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center lg:mt-16 lg:w-fit">
+                <CtaDoodle />
+                <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
+                <SecondaryCta href="/how-it-works">ノビットのしくみ</SecondaryCta>
+              </div>
+            </div>
+            <div className="relative mx-auto w-full max-w-sm lg:max-w-md">
+              <Illust
+                base="student-study"
+                widths={[560, 1120]}
+                width={1448}
+                height={1086}
+                alt="スマホと教材で毎日演習する高校生のイラスト"
+                sizes="(min-width: 1024px) 440px, 80vw"
+                priority
+                className="relative block h-auto w-full drop-shadow-[0_30px_50px_-30px_rgba(11,29,74,0.4)]"
+              />
             </div>
           </div>
         </Container>
