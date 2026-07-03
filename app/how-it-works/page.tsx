@@ -53,10 +53,10 @@ const steps = [
 ];
 
 const correction = [
-  { mark: "①", title: "途中式の論理", body: "式と式のつながりを確認。どこで論理が飛んだか、説明が足りないかを具体的に指摘します。" },
-  { mark: "②", title: "減点ポイント", body: "本番なら何点引かれるか。記号の定義漏れ・条件の書き落としなど、もったいない失点を洗い出します。" },
-  { mark: "③", title: "考え方の筋道", body: "なぜその方針を選ぶのか。より速く確実な解き筋があれば、考え方そのものを提案します。" },
-  { mark: "④", title: "次の一手", body: "弱点に合わせて、次に取り組む課題を提示。やみくもではなく、必要な順番で積み上げます。" },
+  { mark: "①", title: "人の目で、読む", body: "機械の丸つけでは拾えない「考え方」まで。途中式の論理も、本番で引かれる減点ポイントも、講師が一枚ずつ読み込みます。" },
+  { mark: "②", title: "やり取りが、続く", body: "出して終わり、ではありません。コメントに返信でき、次の答案でまた返ってくる。双方向だから、疑問がその場で消えます。" },
+  { mark: "③", title: "「見てくれている」実感", body: "提出を続けるほど、頑張りが伝わる。認めてもらえる一言が、次の1枚へのやる気になります。" },
+  { mark: "④", title: "次まで、いっしょに", body: "弱点に合わせて次の課題を提示。ひとりで抱え込まず、必要な順番で積み上げられます。" },
 ];
 
 export default function HowItWorksPage() {
@@ -227,12 +227,12 @@ export default function HowItWorksPage() {
             </div>
             {/* 4つの指摘 */}
             <div className="order-2">
-              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">Correction · 添削の中身</p>
+              <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">Correction · 人が読む添削</p>
               <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
-                「○×」では、終わらせない。
+                答案の向こうに、いつも人がいる。
               </h2>
               <p className="mt-4 max-w-lg text-[0.96rem] leading-[1.95] text-[#475569]">
-                提出した答案1枚から、次の4つが返ってきます。これが「やりっぱなし」をなくす中身です。
+                答案には、講師が目を通してコメントを返します。ただの丸つけと違い、やり取りが生まれ、進み具合まで見てもらえる。「ちゃんと見てくれている」——その手ごたえが、毎日のやる気を支えます。
               </p>
               <ul className="mt-7 grid gap-3 sm:grid-cols-2">
                 {correction.map((c) => (

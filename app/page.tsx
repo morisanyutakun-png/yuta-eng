@@ -117,27 +117,27 @@ const flow = [
   },
 ];
 
-// 1 枚の添削が届けてくれる具体的な価値。
+// 添削の価値＝人が読み、やり取りが続き、やる気につながること。
 const correctionPoints = [
   {
     mark: "①",
-    title: "途中式の論理",
-    body: "式と式のつながりを確認。どこで論理が飛んだか、説明が足りないかを具体的に指摘します。",
+    title: "人の目で、読む",
+    body: "機械の丸つけでは拾えない「考え方」まで。途中式の論理も、本番で引かれる減点ポイントも、講師が一枚ずつ読み込みます。",
   },
   {
     mark: "②",
-    title: "減点ポイント",
-    body: "本番なら何点引かれるか。記号の定義漏れ・条件の書き落としなど、もったいない失点を洗い出します。",
+    title: "やり取りが、続く",
+    body: "出して終わり、ではありません。コメントに返信でき、次の答案でまた返ってくる。双方向だから、疑問がその場で消えます。",
   },
   {
     mark: "③",
-    title: "考え方の筋道",
-    body: "なぜその方針を選ぶのか。より速く確実な解き筋があれば、考え方そのものを提案します。",
+    title: "「見てくれている」実感",
+    body: "提出を続けるほど、頑張りが伝わる。認めてもらえる一言が、次の1枚へのやる気になります。",
   },
   {
     mark: "④",
-    title: "次の一手",
-    body: "弱点に合わせて、次に取り組む課題を提示。やみくもではなく、必要な順番で積み上げます。",
+    title: "次まで、いっしょに",
+    body: "弱点に合わせて次の課題を提示。ひとりで抱え込まず、必要な順番で積み上げられます。",
   },
 ];
 
@@ -966,13 +966,13 @@ export default function Home() {
             {/* 右：4つの指摘 */}
             <div className="order-2">
               <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
-                Correction · 添削でわかること
+                Correction · 人が読む添削
               </p>
               <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-                「○×」では、<Penned>終わらせない</Penned>。
+                答案の向こうに、いつも<Penned>人がいる</Penned>。
               </h2>
               <p className="mt-4 max-w-lg text-[0.96rem] leading-[1.95] text-[#475569]">
-                提出した答案1枚から、次の4つが返ってきます。これが「やりっぱなし」をなくす中身です。
+                答案には、講師が目を通してコメントを返します。ただの丸つけと違い、やり取りが生まれ、進み具合まで見てもらえる。「ちゃんと見てくれている」——その手ごたえが、毎日のやる気を支えます。
               </p>
               <ul className="mt-7 grid gap-3">
                 {correctionPoints.map((c) => (
@@ -993,7 +993,7 @@ export default function Home() {
             </div>
           </div>
           <p className="mx-auto mt-10 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
-            この1枚を毎日くりかえす。だから「分かったつもり」で止まらず、本番で書ける答案になります。
+            見てくれる人がいて、やり取りが続く。ひとりにしないから、「分かったつもり」で止まらない。<strong className="font-bold text-[#0b1d4a]">毎日の見守りと伴走そのもの</strong>——それが、ノビットの添削です。
           </p>
           <InlineCta note="毎日の添削を、今日から。科目ごとに選べます。" />
         </Container>
