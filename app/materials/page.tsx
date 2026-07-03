@@ -304,7 +304,7 @@ export default function MaterialsPage() {
           </div>
 
           <div className="mx-auto mt-14 max-w-3xl">
-            <PageCtaRow note="教材はサービスとセット。毎日演習して、毎日添削で仕上げます。" />
+            <PageCtaRow title="毎日の1枚が、いちばんの近道。" note="教材はサービスとセット。買い足しは不要で、毎日演習して毎日添削で仕上げます。" />
           </div>
         </Container>
       </section>

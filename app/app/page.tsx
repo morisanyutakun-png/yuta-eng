@@ -348,7 +348,7 @@ export default function AppPage() {
           </div>
 
           <div className="mx-auto mt-14 max-w-3xl">
-            <PageCtaRow note="毎日続く仕組みを、今日から。科目ごとに選べます。" />
+            <PageCtaRow title="アプリひとつで、毎日が続く。" note="課題・提出・添削・進捗まで、これひとつ。科目ごとに選べて、いつでも解約できます。" />
           </div>
         </Container>
       </section>
