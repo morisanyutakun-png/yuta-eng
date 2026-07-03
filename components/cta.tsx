@@ -116,8 +116,8 @@ export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
           </h2>
           {note ? <p className="mt-3 text-[0.95rem] leading-[1.85] text-white/85">{note}</p> : null}
 
-          <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
-            <PrimaryCta href="/apply">料金を見て申し込む（初月半額）</PrimaryCta>
+          <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:flex-col lg:items-start">
+            <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
             <SecondaryCta href="/apply#pricing" tone="dark">
               料金・科目を見る
             </SecondaryCta>
