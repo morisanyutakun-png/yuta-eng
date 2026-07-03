@@ -381,7 +381,7 @@ export default function HowItWorksPage() {
               </Link>
             </div>
             <div className="mt-12">
-              <PageCtaRow note="必要な科目を選ぶだけ。いまなら初月半額ではじめられます。" />
+              <PageCtaRow title="しくみが分かったら、あとは始めるだけ。" note="必要な科目を選ぶだけ。むずかしい設定も、長い契約もありません。" />
             </div>
           </div>
         </Container>
