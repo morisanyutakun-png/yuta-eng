@@ -1,5 +1,8 @@
 import Link from "next/link";
 
+import { Blob } from "@/components/decor";
+import { firstMonthTotal, formatYen, monthlyTotal } from "@/lib/pricing";
+
 export function PrimaryCta({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <Link
@@ -39,44 +42,111 @@ export function SecondaryCta({
   );
 }
 
+function CtaCheck({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M5 12.5l4.3 4.3L19 7" />
+    </svg>
+  );
+}
+
+/** 「初月 半額 50%OFF」のギザギザ封緘シール（申込直前の値ごろ感を一点に集める）。 */
+function HalfPriceSeal({ className = "" }: { className?: string }) {
+  const spikes = 16;
+  const pts: string[] = [];
+  for (let i = 0; i < spikes * 2; i += 1) {
+    const r = i % 2 === 0 ? 49 : 39;
+    const a = (Math.PI / spikes) * i - Math.PI / 2;
+    pts.push(`${(50 + r * Math.cos(a)).toFixed(2)},${(50 + r * Math.sin(a)).toFixed(2)}`);
+  }
+  return (
+    <div aria-hidden="true" className={`relative ${className}`}>
+      <svg viewBox="0 0 100 100" className="h-full w-full drop-shadow-[0_10px_18px_rgba(124,25,0,0.4)]">
+        <polygon points={pts.join(" ")} fill="#f97316" />
+        <circle cx="50" cy="50" r="34" fill="none" stroke="#ffe8d1" strokeWidth="1.4" strokeDasharray="2 3" />
+      </svg>
+      <div className="absolute inset-0 grid place-items-center">
+        <div className="text-center leading-none text-white">
+          <p className="text-[0.52rem] font-extrabold tracking-[0.14em]">初月</p>
+          <p className="mt-0.5 text-[1.15rem] font-black">半額</p>
+          <p className="mt-0.5 text-[0.5rem] font-black tracking-[0.06em]">50% OFF</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /**
  * ページ下部の申込・料金への誘導ブロック（詳細ページ共通）。
- * 申込直前の最後のひと押し。実在するオファー（初月半額・入会金/教材費0円・いつでも解約）だけで
- * 安心材料を添え、濃紺のカードで最後にもう一度アクションへ視線を集める。
+ * 申込直前の最後のひと押し。パンフレットの裏表紙のように、実在するオファー
+ * （初月半額・入会金/教材費0円・いつでも解約）を価格対比と封緘シールで一気に見せ、
+ * 濃紺×方眼テクスチャのカードで最後にアクションへ視線を集める。虚偽の実績は載せない。
  */
 export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
+  const regular = monthlyTotal(1);
+  const first = firstMonthTotal(1);
   return (
-    <div className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] px-6 py-11 text-center shadow-[0_40px_80px_-44px_rgba(11,29,74,0.7)] sm:px-10 sm:py-12">
-      {/* 有機的な光の装飾（overflow-hidden 内でにじませる） */}
-      <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-[radial-gradient(closest-side,rgba(94,234,212,0.28),transparent)] blur-2xl" />
-      <span aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-12 h-56 w-56 rounded-full bg-[radial-gradient(closest-side,rgba(129,140,248,0.26),transparent)] blur-2xl" />
+    <div className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] px-6 py-11 shadow-[0_44px_90px_-46px_rgba(11,29,74,0.75)] ring-1 ring-white/10 sm:px-11 sm:py-14">
+      {/* 方眼ノートのテクスチャ（ブランドの演習モチーフ／左上に集めてにじませる） */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.6]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.16) 1px, transparent 1px)",
+          backgroundSize: "26px 26px",
+          maskImage: "radial-gradient(ellipse 75% 85% at 22% 12%, #000 18%, transparent 72%)",
+          WebkitMaskImage: "radial-gradient(ellipse 75% 85% at 22% 12%, #000 18%, transparent 72%)",
+        }}
+      />
+      {/* 有機的なブロブと光の粒 */}
+      <Blob fill="#5eead4" className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 opacity-[0.16]" />
+      <Blob fill="#818cf8" className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 opacity-[0.16]" />
+      <span aria-hidden="true" className="pointer-events-none absolute right-[14%] top-10 h-2 w-2 rounded-full bg-[#5eead4]/70" />
+      <span aria-hidden="true" className="pointer-events-none absolute left-[10%] bottom-12 h-1.5 w-1.5 rounded-full bg-white/50" />
 
-      <div className="relative mx-auto max-w-xl">
-        <p className="inline-flex items-center gap-1.5 rounded-full bg-[#f97316] px-3.5 py-1 text-[0.72rem] font-bold tracking-[0.04em] text-white shadow-[0_10px_24px_-10px_rgba(234,88,12,0.8)]">
-          <span aria-hidden="true">🎁</span>いま始めると初月半額
-        </p>
-        <h2 className="mt-4 text-[1.55rem] font-extrabold leading-[1.35] tracking-[-0.01em] text-white sm:text-[1.95rem]">
-          {title ?? "続く仕組みを、今日から。"}
-        </h2>
-        {note ? <p className="mt-3 text-[0.95rem] leading-[1.85] text-white/85">{note}</p> : null}
+      <div className="relative grid items-center gap-9 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
+        {/* 左：メッセージ＋アクション */}
+        <div className="text-center lg:text-left">
+          <p className="inline-flex items-center gap-1.5 rounded-full bg-[#f97316] px-3.5 py-1 text-[0.72rem] font-bold tracking-[0.04em] text-white shadow-[0_10px_24px_-10px_rgba(234,88,12,0.9)]">
+            <span aria-hidden="true">🎁</span>いま始めると初月半額
+          </p>
+          <h2 className="mt-4 text-[1.55rem] font-extrabold leading-[1.32] tracking-[-0.01em] text-white sm:text-[2rem]">
+            {title ?? "続く仕組みを、今日から。"}
+          </h2>
+          {note ? <p className="mt-3 text-[0.95rem] leading-[1.85] text-white/85">{note}</p> : null}
 
-        <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
-          <PrimaryCta href="/apply">料金を見て申し込む（初月半額）</PrimaryCta>
-          <SecondaryCta href="/apply#pricing" tone="dark">
-            料金・科目を見る
-          </SecondaryCta>
+          <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
+            <PrimaryCta href="/apply">料金を見て申し込む（初月半額）</PrimaryCta>
+            <SecondaryCta href="/apply#pricing" tone="dark">
+              料金・科目を見る
+            </SecondaryCta>
+          </div>
         </div>
 
-        <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-          {["入会金・教材費0円", "初月半額", "いつでも解約OK"].map((t) => (
-            <li key={t} className="flex items-center gap-1.5 text-[0.82rem] font-semibold text-white/90">
-              <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#5eead4] text-[#0b1d4a]">
-                <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.3 4.3L19 7" /></svg>
-              </span>
-              {t}
-            </li>
-          ))}
-        </ul>
+        {/* 右：価格の対比を封緘シールつきの白カードで見せる（パンフレットの値札） */}
+        <div className="relative mx-auto w-full max-w-[19rem]">
+          <HalfPriceSeal className="absolute -right-4 -top-6 z-10 h-[4.6rem] w-[4.6rem] rotate-[10deg]" />
+          <div className="rounded-[22px] bg-white p-6 text-center shadow-[0_36px_70px_-34px_rgba(0,0,0,0.6)] ring-1 ring-white/70">
+            <p className="text-[0.72rem] font-bold tracking-[0.08em] text-[#0f766e]">1科目あたり／月（税込）</p>
+            <div className="mt-2.5 flex items-baseline justify-center gap-2">
+              <span className="text-[1.1rem] font-bold text-[#94a3b8] line-through decoration-2">{formatYen(regular)}</span>
+              <span aria-hidden="true" className="text-[1.05rem] font-black text-[#ea580c]">→</span>
+              <span className="text-[2.55rem] font-black leading-none tracking-[-0.02em] text-[#0b1d4a]">{formatYen(first)}</span>
+            </div>
+            <p className="mt-1.5 text-[0.74rem] font-bold text-[#ea580c]">初月だけの特別価格</p>
+            <ul className="mt-4 grid gap-2 border-t border-dashed border-[rgba(15,29,74,0.18)] pt-4 text-left">
+              {["入会金・教材費 0円", "いつでも解約OK", "毎日、講師の添削つき"].map((t) => (
+                <li key={t} className="flex items-center gap-2 text-[0.82rem] font-semibold text-[#334155]">
+                  <span aria-hidden="true" className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[#0d9488] text-white">
+                    <CtaCheck className="h-2.5 w-2.5" />
+                  </span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );
