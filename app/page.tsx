@@ -444,7 +444,7 @@ function StatsBand() {
           {/* マスキングテープ（紙を貼った気配） */}
           <span aria-hidden="true" className="absolute -top-2.5 left-1/2 z-10 h-5 w-24 -translate-x-1/2 -rotate-2 rounded-[2px] bg-[rgba(94,234,212,0.55)] shadow-[0_4px_10px_-6px_rgba(11,29,74,0.5)]" />
           {/* 方眼メモ紙 */}
-          <div className="relative overflow-hidden rounded-[18px] bg-[#fffdf6] px-5 py-8 shadow-[0_28px_54px_-34px_rgba(11,29,74,0.45)] ring-1 ring-[rgba(234,88,12,0.16)] sm:px-9 sm:py-9">
+          <div className="relative overflow-hidden rounded-[18px] bg-[#fffdf6] px-4 py-8 shadow-[0_28px_54px_-34px_rgba(11,29,74,0.45)] ring-1 ring-[rgba(234,88,12,0.16)] sm:px-9 sm:py-9">
             <span
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 opacity-[0.5]"
@@ -454,17 +454,17 @@ function StatsBand() {
                 backgroundSize: "23px 23px",
               }}
             />
-            <ul className="relative grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4">
+            <ul className="relative grid grid-cols-2 gap-x-2 gap-y-8 sm:grid-cols-4 sm:gap-x-4">
               {stats.map((s, i) => (
                 <li
                   key={s.u}
-                  className={`relative text-center ${i > 0 ? "sm:before:absolute sm:before:-left-2 sm:before:top-1/2 sm:before:h-12 sm:before:-translate-y-1/2 sm:before:border-l sm:before:border-dashed sm:before:border-[rgba(15,29,74,0.18)]" : ""}`}
+                  className={`relative min-w-0 text-center ${i > 0 ? "sm:before:absolute sm:before:-left-2 sm:before:top-1/2 sm:before:h-12 sm:before:-translate-y-1/2 sm:before:border-l sm:before:border-dashed sm:before:border-[rgba(15,29,74,0.18)]" : ""}`}
                 >
-                  <p className={`relative inline-flex items-baseline gap-0.5 ${s.tilt}`}>
+                  <p className={`relative inline-flex max-w-full items-baseline gap-0.5 ${s.tilt}`}>
                     {s.check ? (
-                      <span aria-hidden="true" className="absolute -left-4 -top-2 text-[1.1rem] font-black text-[#16a34a]">✓</span>
+                      <span aria-hidden="true" className="absolute -left-3.5 -top-2 text-[1rem] font-black text-[#16a34a]">✓</span>
                     ) : null}
-                    <span className="relative text-[1.9rem] font-extrabold leading-none tracking-[-0.02em] text-[#0b1d4a] sm:text-[2.2rem]">
+                    <span className="relative text-[1.5rem] font-extrabold leading-none tracking-[-0.02em] text-[#0b1d4a] sm:text-[2.2rem]">
                       {s.n}
                       {s.pen ? <PenUnderline color="#ea580c" className="absolute -bottom-1.5 left-0 h-[0.42em] w-full" /> : null}
                       {s.circle ? <HandCircle className="absolute left-1/2 top-1/2 h-[2.1em] w-[2.7em] -translate-x-1/2 -translate-y-[55%]" /> : null}
