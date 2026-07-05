@@ -1001,7 +1001,7 @@ export default function Home() {
           <p className="mx-auto mt-10 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
             見てくれる人がいて、やり取りが続く。ひとりにしないから、「分かったつもり」で止まらない。<strong className="font-bold text-[#0b1d4a]">毎日の見守りと伴走そのもの</strong>——それが、ノビットの添削です。
           </p>
-          <InlineCta note="毎日の添削を、今日から。科目ごとに選べます。" />
+          <InlineCta note="毎日の添削を、今日から。教材ごとに選べます。" />
         </Container>
       </section>
 

@@ -106,10 +106,10 @@ export default async function ApplyPage({
         <Container className="px-5 py-12 sm:px-6 sm:py-16">
           <div className="mx-auto mb-8 max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
-              Apply · 科目を選んで申し込む
+              Apply · 教材を選んで申し込む
             </p>
             <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-              受講する科目を選ぶと、料金が決まります。
+              やり切る教材を選ぶと、買い切り価格が決まります。
             </h2>
           </div>
 

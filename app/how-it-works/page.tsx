@@ -369,7 +369,7 @@ export default function HowItWorksPage() {
               </Link>
             </div>
             <div className="mt-12">
-              <PageCtaRow title="しくみが分かったら、あとは始めるだけ。" note="必要な科目を選ぶだけ。むずかしい設定も、長い契約もありません。" />
+              <PageCtaRow title="しくみが分かったら、あとは始めるだけ。" note="必要な教材を選ぶだけ。むずかしい設定も、長い契約もありません。" />
             </div>
           </div>
         </Container>

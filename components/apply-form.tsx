@@ -58,7 +58,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
       <div>
         {canceled ? (
           <p className="mb-5 rounded-[14px] bg-[#fff7ed] px-4 py-3 text-[0.86rem] font-semibold text-[#9a3412] ring-1 ring-[rgba(234,88,12,0.2)]">
-            お支払いはキャンセルされました。科目を選び直して、いつでもやり直せます。
+            お支払いはキャンセルされました。教材を選び直して、いつでもやり直せます。
           </p>
         ) : null}
 
