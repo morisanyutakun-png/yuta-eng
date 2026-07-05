@@ -3,11 +3,13 @@
 import { useMemo, useState } from "react";
 
 import {
+  buyoutTotal,
+  formatYen,
+  isCampaignActive,
+  listTotal,
+  packSavings,
   SUBJECT_AREAS,
   SUBJECTS,
-  firstMonthTotal,
-  formatYen,
-  monthlyTotal,
 } from "@/lib/pricing";
 
 export function ApplyForm({ canceled }: { canceled?: boolean }) {
@@ -16,8 +18,10 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
   const [error, setError] = useState<string | null>(null);
 
   const count = selected.length;
-  const monthly = useMemo(() => monthlyTotal(count), [count]);
-  const firstMonth = useMemo(() => firstMonthTotal(count), [count]);
+  const campaign = isCampaignActive();
+  const list = useMemo(() => listTotal(count), [count]);
+  const total = useMemo(() => buyoutTotal(count, campaign), [count, campaign]);
+  const savings = useMemo(() => packSavings(count, campaign), [count, campaign]);
 
   function toggle(id: string) {
     setSelected((prev) =>
@@ -59,9 +63,9 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
         ) : null}
 
         <p className="text-[0.84rem] font-bold text-[#0b1d4a]">
-          ① 受講する科目を選ぶ
+          ① やり切る教材を選ぶ
           <span className="ml-2 text-[0.78rem] font-normal text-[#64748b]">
-            （必要な分だけ・あとから追加もOK）
+            （1教材＝約100日分・2教材以上でパック割）
           </span>
         </p>
 
@@ -111,7 +115,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
           <div className="mt-3 min-h-[2.5rem]">
             {count === 0 ? (
               <p className="text-[0.86rem] text-[#94a3b8]">
-                左から科目を選ぶと、料金が表示されます。
+                左から教材を選ぶと、買い切り価格が表示されます。
               </p>
             ) : (
               <div className="flex flex-wrap gap-1.5">
@@ -133,17 +137,25 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
 
           <dl className="mt-4 grid gap-2 border-t border-[rgba(15,29,74,0.08)] pt-4 text-[0.9rem]">
             <div className="flex items-center justify-between text-[#475569]">
-              <dt>選択科目数</dt>
-              <dd className="font-bold text-[#0b1d4a]">{count}教科</dd>
+              <dt>選択した教材</dt>
+              <dd className="font-bold text-[#0b1d4a]">{count}教材</dd>
             </div>
-            <div className="flex items-center justify-between text-[#475569]">
-              <dt>月額（2か月目〜）</dt>
-              <dd className="font-bold text-[#0b1d4a]">{formatYen(monthly)}</dd>
-            </div>
-            <div className="flex items-baseline justify-between">
-              <dt className="text-[0.86rem] font-bold text-[#ea580c]">初月（半額）</dt>
-              <dd className="text-[1.5rem] font-extrabold leading-none text-[#ea580c]">
-                {formatYen(firstMonth)}
+            {savings > 0 ? (
+              <>
+                <div className="flex items-center justify-between text-[#94a3b8]">
+                  <dt>定価</dt>
+                  <dd className="font-semibold line-through">{formatYen(list)}</dd>
+                </div>
+                <div className="flex items-center justify-between text-[#0d9488]">
+                  <dt className="font-bold">開講記念パック割</dt>
+                  <dd className="font-bold">−{formatYen(savings)}</dd>
+                </div>
+              </>
+            ) : null}
+            <div className="flex items-baseline justify-between border-t border-dashed border-[rgba(15,29,74,0.14)] pt-2">
+              <dt className="text-[0.86rem] font-bold text-[#ea580c]">買い切り合計</dt>
+              <dd className="text-[1.6rem] font-extrabold leading-none text-[#0b1d4a]">
+                {formatYen(total)}
               </dd>
             </div>
           </dl>
@@ -162,11 +174,11 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
           >
             <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
             <span className="relative">
-              {loading ? "決済ページへ移動中…" : "この内容で申し込む（初月半額）"}
+              {loading ? "決済ページへ移動中…" : "この教材を申し込む（買い切り）"}
             </span>
           </button>
           <p className="mt-3 text-center text-[0.74rem] leading-[1.7] text-[#94a3b8]">
-            入会金・教材費0円／いつでも解約OK。お支払いは Stripe の安全な決済画面で行います。
+            入会金・追加費用0円／買い切り・自動更新なし。お支払いは Stripe の安全な決済画面（一括）で行います。
           </p>
         </div>
       </div>

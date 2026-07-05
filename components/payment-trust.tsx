@@ -47,8 +47,8 @@ export function PaymentTrust() {
         {[
           "通信は SSL で常時暗号化",
           "カード情報は非保持（Stripe が管理）",
-          "いつでもオンラインで解約 OK",
-          "入会金・教材費 0円／初月半額",
+          "買い切り・自動更新なし",
+          "入会金・追加費用 0円",
         ].map((text) => (
           <li key={text} className="flex items-center gap-2.5 text-[0.88rem] font-semibold text-[#334155]">
             <span aria-hidden="true" className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#0d9488] text-white">
@@ -65,7 +65,7 @@ export function PaymentTrust() {
         </Link>
         ・
         <Link className="font-semibold text-[#0f766e] underline" href="/legal/refund">
-          返金・解約ポリシー
+          返金ポリシー
         </Link>
         ・
         <Link className="font-semibold text-[#0f766e] underline" href="/legal/privacy">

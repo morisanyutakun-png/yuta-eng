@@ -114,12 +114,12 @@ export default function AppPage() {
               <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 {/* 手描きの誘導（人の手の気配） */}
                 <CtaDoodle />
-                <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
+                <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
                 <SecondaryCta href="/how-it-works">ノビットのしくみ</SecondaryCta>
               </div>
               {/* トラストチップ（安心・信頼） */}
               <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-2">
-                {["入会金・教材費0円", "初月半額", "いつでも解約OK"].map((t) => (
+                {["入会金・追加費用0円", "買い切り・自動更新なし", "毎日添削つき"].map((t) => (
                   <li key={t} className="flex items-center gap-1.5 text-[0.82rem] font-semibold text-[#475569]">
                     <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
                       <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.3 4.3L19 7" /></svg>
@@ -326,7 +326,7 @@ export default function AppPage() {
                 「今日はちゃんと出したかな？」が一目で分かるから、口を出しすぎずに見守れます。
               </p>
               <ul className="mt-5 grid gap-2 text-[0.92rem] leading-[1.85] text-[#334155] sm:grid-cols-2">
-                {["提出・添削の状況がわかる", "連続記録で頑張りが見える", "勧誘・営業電話は一切なし", "いつでも科目の追加・解約OK"].map((t) => (
+                {["提出・添削の状況がわかる", "連続記録で頑張りが見える", "勧誘・営業電話は一切なし", "教材はいつでも追加できる"].map((t) => (
                   <li key={t} className="flex gap-2.5">
                     <span aria-hidden="true" className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d9488]" />
                     {t}
@@ -348,7 +348,7 @@ export default function AppPage() {
           </div>
 
           <div className="mx-auto mt-14 max-w-3xl">
-            <PageCtaRow title="アプリひとつで、毎日が続く。" note="課題・提出・添削・進捗まで、これひとつ。科目ごとに選べて、いつでも解約できます。" />
+            <PageCtaRow title="アプリひとつで、毎日が続く。" note="課題・提出・添削・進捗まで、これひとつ。教材ごとに選べて、買い切り・自動更新なし。" />
           </div>
         </Container>
       </section>

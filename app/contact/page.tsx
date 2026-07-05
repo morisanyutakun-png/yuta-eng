@@ -13,9 +13,9 @@ import {
 } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "お申し込み・ご相談｜初月半額ではじめる",
+  title: "お申し込み・ご相談｜買い切りではじめる",
   description:
-    "ノビットスタディ 中高部のお申し込み・ご相談ページ。物理・化学・数学・英語の答案を毎日添削する、授業をしないオンライン添削塾です。教科ごとに選べて月¥4,980〜、いまなら初月半額・入会金0円。面談や勧誘は一切ありません。お気軽にお申し込み・ご相談ください。",
+    "ノビットスタディ 中高部のお申し込み・ご相談ページ。物理・化学・数学・英語の答案を毎日添削する、授業をしないオンライン添削塾です。教材ごとの買い切り（1教材 ¥14,800〜・約100日分の課題＋毎日添削込み・入会金0円）、8/6まで2教材以上でパック割。面談や勧誘は一切ありません。お気軽にお申し込み・ご相談ください。",
   keywords: [
     "ノビットスタディ 申し込み",
     "オンライン添削塾 申し込み",
@@ -28,8 +28,8 @@ export const metadata: Metadata = createPageMetadata({
 
 const canDo = [
   {
-    title: "科目を選んで、すぐ始められる",
-    body: "物理・化学・数学・英語の9科目から、必要な分だけ。教科ごとの月額制で、いつでも追加・解約できます。",
+    title: "教材を選んで、すぐ始められる",
+    body: "物理・化学・数学・英語の9教材から、やり切る分だけ。教材ごとの買い切りで、あとから追加もできます。",
   },
   {
     title: "毎日、答案に添削が返る",
@@ -44,17 +44,17 @@ const canDo = [
 const trust = [
   { label: "サービス形態", value: "オンライン添削・学習管理塾（添削専門）" },
   { label: "塾長", value: siteConfig.author },
-  { label: "対応科目", value: "物理・化学・数学・英語（9科目／教科ごとに選択）" },
-  { label: "料金", value: "1教科 月¥4,980〜・初月半額・入会金/教材費0円" },
+  { label: "対応教材", value: "物理・化学・数学・英語（9教材／教材ごとに選択）" },
+  { label: "料金", value: "1教材 買い切り¥14,800〜・8/6まで開講記念パック割・入会金/追加費用0円" },
   { label: "対象", value: "高校生・高卒生（中高一貫の高校範囲も相談可）" },
   { label: "返信目安", value: "1〜2 営業日以内（面談・勧誘なし）" },
 ];
 
 const contactFaq = [
   {
-    question: "初月半額とは？ どのくらいで始められますか？",
+    question: "開講記念パック割とは？ どのくらいで始められますか？",
     answer:
-      "初めてのご利用月は、月額が半額になります（1教科なら ¥2,490）。入会金・教材費はかかりません。お申し込み後、希望の科目から学習を開始できます。合わなければいつでも解約できます。",
+      "2教材以上を同時にお申し込みの場合、1教材あたり ¥12,400（例：2教材 ¥24,800）になる開講記念のパック割です（2026年8月6日まで）。入会金・追加費用はかかりません。お申し込み後、購入した教材からすぐに学習を開始できます。",
   },
   {
     question: "面談や授業はありますか？ 勧誘されませんか？",
@@ -62,9 +62,9 @@ const contactFaq = [
       "ノビットスタディは添削専門の学習管理塾です。面談や授業（ライブ指導）、電話・対面での勧誘は一切行っていません。毎日の演習に毎日添削を返す形で、自立した学びを支えます。",
   },
   {
-    question: "料金と対応科目は？",
+    question: "料金と対応教材は？",
     answer:
-      "料金は教科ごとの月額制です。1教科 ¥4,980／2教科 ¥8,800／3教科 ¥12,800、4教科以上は +¥3,000/教科。対応科目は物理基礎・物理・化学基礎・化学・数学IA・IIBC・IIIC・英語長文・英文法です。",
+      "料金は教材（講座）ごとの買い切りです。1教材 ¥14,800（約100日分の課題＋毎日添削込み）。2教材以上は開講記念パック割で1教材あたり ¥12,400（例：2教材 ¥24,800、8/6まで）。対応教材は物理基礎・物理・化学基礎・化学・数学IA・IIBC・IIIC・英語長文・英文法です。",
   },
   {
     question: "保護者も進捗を確認できますか？",
@@ -109,16 +109,16 @@ export default function ContactPage() {
           <div className="py-10 sm:py-14 lg:py-16">
             <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.3)]">
               <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
-              いまなら初月半額・入会金0円
+              8/6まで 開講記念パック割・入会金0円
             </p>
             <h1 className="mt-5 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3rem]">
-              初月半額で、
+              買い切りで、
               <br className="hidden sm:block" />
               ノビットを始める。
             </h1>
             <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.06rem]">
               物理・化学・数学・英語の答案を、毎日添削する授業をしないオンライン塾です。
-              面談や勧誘は一切ありません。下記から、希望の科目を添えてお気軽にお申し込み・ご相談ください。
+              面談や勧誘は一切ありません。下記から、希望の教材を添えてお気軽にお申し込み・ご相談ください。
             </p>
             <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
               <a
@@ -126,7 +126,7 @@ export default function ContactPage() {
                 className="group/cta relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-full px-7 text-[0.98rem] font-bold text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px"
               >
                 <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
-                <span className="relative">メールで申し込む（初月半額）</span>
+                <span className="relative">メールで申し込む（買い切り）</span>
               </a>
               <a
                 href={`mailto:${siteConfig.email}`}
@@ -235,7 +235,7 @@ export default function ContactPage() {
                 href={mailHref}
               >
                 <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
-                <span className="relative">初月半額で申し込む</span>
+                <span className="relative">買い切りで申し込む</span>
               </a>
               <Link
                 href="/"

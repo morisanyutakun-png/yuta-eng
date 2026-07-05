@@ -1,7 +1,13 @@
 import Link from "next/link";
 
 import { Blob } from "@/components/decor";
-import { firstMonthTotal, formatYen, monthlyTotal } from "@/lib/pricing";
+import {
+  CAMPAIGN_DEADLINE_LABEL,
+  formatYen,
+  isCampaignActive,
+  MATERIAL_PRICE,
+  PACK_UNIT_PRICE,
+} from "@/lib/pricing";
 
 export function PrimaryCta({ href, children }: { href: string; children: React.ReactNode }) {
   return (
@@ -50,8 +56,8 @@ function CtaCheck({ className = "" }: { className?: string }) {
   );
 }
 
-/** 「初月 半額 50%OFF」のギザギザ封緘シール（申込直前の値ごろ感を一点に集める）。 */
-function HalfPriceSeal({ className = "" }: { className?: string }) {
+/** 「開講記念 パック割」のギザギザ封緘シール（申込直前の値ごろ感を一点に集める）。 */
+function CampaignSeal({ className = "" }: { className?: string }) {
   const spikes = 16;
   const pts: string[] = [];
   for (let i = 0; i < spikes * 2; i += 1) {
@@ -67,9 +73,9 @@ function HalfPriceSeal({ className = "" }: { className?: string }) {
       </svg>
       <div className="absolute inset-0 grid place-items-center">
         <div className="text-center leading-none text-white">
-          <p className="text-[0.52rem] font-extrabold tracking-[0.14em]">初月</p>
-          <p className="mt-0.5 text-[1.15rem] font-black">半額</p>
-          <p className="mt-0.5 text-[0.5rem] font-black tracking-[0.06em]">50% OFF</p>
+          <p className="text-[0.5rem] font-extrabold tracking-[0.12em]">開講記念</p>
+          <p className="mt-0.5 text-[0.98rem] font-black">パック割</p>
+          <p className="mt-0.5 text-[0.5rem] font-black tracking-[0.06em]">{CAMPAIGN_DEADLINE_LABEL}まで</p>
         </div>
       </div>
     </div>
@@ -79,12 +85,11 @@ function HalfPriceSeal({ className = "" }: { className?: string }) {
 /**
  * ページ下部の申込・料金への誘導ブロック（詳細ページ共通）。
  * 申込直前の最後のひと押し。パンフレットの裏表紙のように、実在するオファー
- * （初月半額・入会金/教材費0円・いつでも解約）を価格対比と封緘シールで一気に見せ、
+ * （買い切り¥14,800〜・入会金/追加費用0円・自動更新なし・開講記念パック割）を封緘シールで見せ、
  * 濃紺×方眼テクスチャのカードで最後にアクションへ視線を集める。虚偽の実績は載せない。
  */
 export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
-  const regular = monthlyTotal(1);
-  const first = firstMonthTotal(1);
+  const campaign = isCampaignActive();
   return (
     <div className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] px-6 py-11 shadow-[0_44px_90px_-46px_rgba(11,29,74,0.75)] ring-1 ring-white/10 sm:px-11 sm:py-14">
       {/* 方眼ノートのテクスチャ（ブランドの演習モチーフ／左上に集めてにじませる） */}
@@ -109,34 +114,38 @@ export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
         {/* 左：メッセージ＋アクション */}
         <div className="text-center lg:text-left">
           <p className="inline-flex items-center gap-1.5 rounded-full bg-[#f97316] px-3.5 py-1 text-[0.72rem] font-bold tracking-[0.04em] text-white shadow-[0_10px_24px_-10px_rgba(234,88,12,0.9)]">
-            <span aria-hidden="true">🎁</span>いま始めると初月半額
+            <span aria-hidden="true">🎁</span>
+            {campaign ? `${CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割` : "教材は、修了までずっと自分のもの"}
           </p>
           <h2 className="mt-4 text-[1.55rem] font-extrabold leading-[1.32] tracking-[-0.01em] text-white sm:text-[2rem]">
-            {title ?? "続く仕組みを、今日から。"}
+            {title ?? "1冊を、最後までやり切る。"}
           </h2>
           {note ? <p className="mt-3 text-[0.95rem] leading-[1.85] text-white/85">{note}</p> : null}
 
           <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:flex-col lg:items-start">
-            <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
+            <PrimaryCta href="/apply">教材を買って、はじめる</PrimaryCta>
             <SecondaryCta href="/apply#pricing" tone="dark">
-              料金・科目を見る
+              料金・教材を見る
             </SecondaryCta>
           </div>
         </div>
 
-        {/* 右：価格の対比を封緘シールつきの白カードで見せる（パンフレットの値札） */}
+        {/* 右：買い切り価格を封緘シールつきの白カードで見せる（パンフレットの値札） */}
         <div className="relative mx-auto w-full max-w-[19rem]">
-          <HalfPriceSeal className="absolute -right-4 -top-6 z-10 h-[4.6rem] w-[4.6rem] rotate-[10deg]" />
+          <CampaignSeal className="absolute -right-4 -top-6 z-10 h-[4.6rem] w-[4.6rem] rotate-[10deg]" />
           <div className="rounded-[22px] bg-white p-6 text-center shadow-[0_36px_70px_-34px_rgba(0,0,0,0.6)] ring-1 ring-white/70">
-            <p className="text-[0.72rem] font-bold tracking-[0.08em] text-[#0f766e]">1科目あたり／月（税込）</p>
-            <div className="mt-2.5 flex items-baseline justify-center gap-2">
-              <span className="text-[1.1rem] font-bold text-[#94a3b8] line-through decoration-2">{formatYen(regular)}</span>
-              <span aria-hidden="true" className="text-[1.05rem] font-black text-[#ea580c]">→</span>
-              <span className="text-[2.55rem] font-black leading-none tracking-[-0.02em] text-[#0b1d4a]">{formatYen(first)}</span>
+            <p className="text-[0.72rem] font-bold tracking-[0.08em] text-[#0f766e]">1教材（約100日分）・買い切り（税込）</p>
+            <div className="mt-2.5 flex items-baseline justify-center gap-1.5">
+              <span className="text-[2.55rem] font-black leading-none tracking-[-0.02em] text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}</span>
+              <span className="pb-1 text-[0.9rem] font-bold text-[#475569]">〜</span>
             </div>
-            <p className="mt-1.5 text-[0.74rem] font-bold text-[#ea580c]">初月だけの特別価格</p>
+            <p className="mt-1.5 text-[0.74rem] font-bold text-[#ea580c]">
+              {campaign
+                ? `2教材パックなら 1教材 ${formatYen(PACK_UNIT_PRICE)}（${CAMPAIGN_DEADLINE_LABEL}まで）`
+                : "毎日添削（約100回）＋アプリ込み"}
+            </p>
             <ul className="mt-4 grid gap-2 border-t border-dashed border-[rgba(15,29,74,0.18)] pt-4 text-left">
-              {["入会金・教材費 0円", "いつでも解約OK", "毎日、講師の添削つき"].map((t) => (
+              {["入会金・追加費用 0円", "買い切り・自動更新なし", "毎日、講師の添削つき"].map((t) => (
                 <li key={t} className="flex items-center gap-2 text-[0.82rem] font-semibold text-[#334155]">
                   <span aria-hidden="true" className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[#0d9488] text-white">
                     <CtaCheck className="h-2.5 w-2.5" />

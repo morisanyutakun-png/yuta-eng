@@ -4,10 +4,12 @@
 import type Stripe from "stripe";
 
 export type Registration = {
-  type: "new_subscription";
+  /** 買い切り（教材の一括購入）。旧サブスク時代は "new_subscription"。 */
+  type: "new_purchase";
   paid: boolean;
   stripeCustomerId: string | null;
-  stripeSubscriptionId: string | null;
+  /** 買い切り（payment モード）の PaymentIntent ID。 */
+  stripePaymentIntentId: string | null;
   stripeSessionId: string;
   email: string | null;
   name: string | null;
@@ -19,7 +21,8 @@ export type Registration = {
   /** 例: "物理・数学IIBC" */
   subjectLabels: string;
   subjectCount: string;
-  monthlyAmount: string;
+  /** 買い切り合計（税込・円）の文字列。 */
+  amount: string;
   createdAt: string;
 };
 
@@ -48,10 +51,10 @@ export function buildRegistration(
   const createdMs = (createdAtSec ?? Math.floor(Date.now() / 1000)) * 1000;
 
   return {
-    type: "new_subscription",
+    type: "new_purchase",
     paid: s.payment_status === "paid" || s.status === "complete",
     stripeCustomerId: idOf(s.customer),
-    stripeSubscriptionId: idOf(s.subscription),
+    stripePaymentIntentId: idOf(s.payment_intent),
     stripeSessionId: s.id,
     email: s.customer_details?.email ?? s.customer_email ?? null,
     name: s.customer_details?.name ?? null,
@@ -61,7 +64,7 @@ export function buildRegistration(
     subjects: s.metadata?.subjects ?? "",
     subjectLabels: s.metadata?.subject_labels ?? "",
     subjectCount: s.metadata?.subject_count ?? "",
-    monthlyAmount: s.metadata?.monthly_amount ?? "",
+    amount: s.metadata?.amount ?? "",
     createdAt: new Date(createdMs).toISOString(),
   };
 }

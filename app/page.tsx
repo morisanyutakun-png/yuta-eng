@@ -10,7 +10,15 @@ import { GroundedMascot, Illust, Mascot, PrintImage } from "@/components/nobit-m
 import { bookGroups, officialBooks } from "@/data/books";
 import { homeFaq } from "@/data/home";
 import { kdpAmazonUrl } from "@/data/site";
-import { firstMonthTotal, formatYen, monthlyTotal } from "@/lib/pricing";
+import {
+  buyoutTotal,
+  CAMPAIGN_DEADLINE_LABEL,
+  formatYen,
+  isCampaignActive,
+  listTotal,
+  MATERIAL_PRICE,
+  PACK_UNIT_PRICE,
+} from "@/lib/pricing";
 import { createPageMetadata } from "@/lib/metadata";
 import {
   createEducationalServiceJsonLd,
@@ -22,7 +30,7 @@ export const metadata: Metadata = createPageMetadata({
   title:
     "毎日の学習を、仕組みにする。デジタル通信添削 - ノビットスタディ 中高部",
   description:
-    "ノビットスタディ 中高部は、塾でも参考書でもない「続く学習システム」。開発者が自作したオリジナル教材を毎日1枚ずつ進め、提出した答案に毎日添削。専用アプリで習慣化し、保護者も進捗を確認できます。物理・化学・数学・英語、教科ごと月¥4,980〜・初月半額・入会金/教材費0円。",
+    "ノビットスタディ 中高部は、自作教材を毎日1枚ずつやり切る、買い切りのデジタル通信添削。提出した答案は著者本人が毎日添削し、専用アプリで習慣化。保護者も進捗を確認できます。物理・化学・数学・英語、1教材（約100日分・毎日添削込み）買い切り¥14,800〜、8/6まで開講記念パック割、入会金・追加費用0円。",
   path: "/",
 });
 
@@ -141,12 +149,11 @@ const correctionPoints = [
   },
 ];
 
-// 市場での立ち位置。他の学び方の「物足りなさ」を1行で。
-const alternatives = [
-  { label: "参考書・独学", lack: "安いが、続かない・直されない" },
-  { label: "映像授業", lack: "見て満足。手が動かず点に変わりにくい" },
-  { label: "集団・個別塾", lack: "通塾と受け身。費用も高くなりがち" },
-  { label: "一般的な通信教育", lack: "教材は既製、添削は数週間に一度" },
+// 教材の特徴（主役＝教材）。市販の寄せ集めではないことを1行で。
+const materialPoints = [
+  { label: "自作オリジナル", body: "16冊を刊行した開発者が書き下ろし。市販の寄せ集めにはない、一貫した設計。" },
+  { label: "理解で解く", body: "暗記ではなく、現象・図・言葉・式を地続きに。初見の問題でも、自分で答案を組み立てられる。" },
+  { label: "毎日サイズ", body: "1回10〜20分に分割。約100日で1冊、無理なく最後までやり切れる大きさに。" },
 ];
 
 // あらゆる段階の生徒に「自分のことだ」と思ってもらえるよう、入門〜難関までを広く。
@@ -179,8 +186,8 @@ const marqueeItems = [
   "自作オリジナル教材",
   "習慣化アプリで毎日続く",
   "保護者も進捗を確認",
-  "入会金・教材費 0円",
-  "いまなら初月半額",
+  "入会金・追加費用 0円",
+  "8/6まで 開講記念パック割",
 ];
 
 /* ───────────────────────── reusable bits ───────────────────────── */
@@ -302,7 +309,7 @@ function InlineCta({ note }: { note?: string }) {
         <p className="text-center text-[0.92rem] font-semibold text-[#475569]">{note}</p>
       ) : null}
       <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-        <PrimaryCta href="/apply">料金を見て申し込む（初月半額）</PrimaryCta>
+        <PrimaryCta href="/apply">料金を見て申し込む（買い切り）</PrimaryCta>
         <SecondaryCta href="/apply#pricing">料金・科目を見る</SecondaryCta>
       </div>
     </div>
@@ -330,9 +337,9 @@ function Starburst({ className = "" }: { className?: string }) {
       </svg>
       <div className="absolute inset-0 grid place-items-center">
         <div className="text-center leading-none">
-          <p className="text-[0.6rem] font-extrabold tracking-[0.14em] text-[#ea580c]">初月</p>
-          <p className="mt-1 text-[1.55rem] font-black text-[#ea580c]">半額</p>
-          <p className="mt-1 text-[0.58rem] font-black tracking-[0.08em] text-[#f97316]">50% OFF</p>
+          <p className="text-[0.58rem] font-extrabold tracking-[0.12em] text-[#ea580c]">開講記念</p>
+          <p className="mt-1 text-[1.15rem] font-black text-[#ea580c]">パック割</p>
+          <p className="mt-1 text-[0.58rem] font-black tracking-[0.06em] text-[#f97316]">{CAMPAIGN_DEADLINE_LABEL}まで</p>
         </div>
       </div>
     </div>
@@ -344,8 +351,8 @@ function Starburst({ className = "" }: { className?: string }) {
  * 大きな数字と割引前→後の対比で一気に見せ、購買行動の背中を押す。虚偽の実績は載せない。
  */
 function CampaignBanner() {
-  const regular = monthlyTotal(1);
-  const first = firstMonthTotal(1);
+  const packList = listTotal(2);
+  const packPrice = buyoutTotal(2, true);
   return (
     <section className="cv-defer relative overflow-hidden bg-[linear-gradient(120deg,#fb7185_0%,#f97316_56%,#fbbf24_100%)]">
       <Blob fill="#ffffff" className="pointer-events-none absolute -left-24 -top-20 h-80 w-80 opacity-[0.16]" />
@@ -360,17 +367,17 @@ function CampaignBanner() {
             <div>
               <p className="inline-flex items-center gap-1.5 rounded-full bg-white/25 px-3 py-1 text-[0.66rem] font-extrabold tracking-[0.1em] text-white ring-1 ring-white/45 backdrop-blur">
                 <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
-                CAMPAIGN · 新規開講キャンペーン実施中
+                CAMPAIGN · 夏の開講記念（{CAMPAIGN_DEADLINE_LABEL}まで）
               </p>
               <p className="mt-2.5 text-[1.55rem] font-black leading-[1.15] tracking-[-0.01em] text-white sm:text-[2.05rem]">
-                いま始めると、初月半額。
+                2教材パックで、もっとおトク。
               </p>
               <p className="mt-2 flex flex-wrap items-baseline justify-center gap-x-2 gap-y-1 lg:justify-start">
-                <span className="text-[0.8rem] font-bold text-white/90">1科目あたり</span>
-                <span className="text-[0.98rem] font-bold text-white/70 line-through decoration-2">{formatYen(regular)}</span>
+                <span className="text-[0.8rem] font-bold text-white/90">2教材パック</span>
+                <span className="text-[0.98rem] font-bold text-white/70 line-through decoration-2">{formatYen(packList)}</span>
                 <span aria-hidden="true" className="text-[1.1rem] font-black text-white/85">→</span>
-                <span className="text-[2.1rem] font-black leading-none tracking-[-0.02em] text-white sm:text-[2.5rem]">{formatYen(first)}</span>
-                <span className="text-[0.8rem] font-bold text-white/90">/ 初月（税込）</span>
+                <span className="text-[2.1rem] font-black leading-none tracking-[-0.02em] text-white sm:text-[2.5rem]">{formatYen(packPrice)}</span>
+                <span className="text-[0.8rem] font-bold text-white/90">/ 買い切り（税込）</span>
               </p>
             </div>
           </div>
@@ -379,7 +386,7 @@ function CampaignBanner() {
               href="/apply"
               className="inline-flex min-h-[3.25rem] items-center justify-center gap-1.5 rounded-full bg-white px-8 text-[1rem] font-extrabold text-[#ea580c] shadow-[0_18px_34px_-16px_rgba(88,20,0,0.6)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_40px_-16px_rgba(88,20,0,0.7)]"
             >
-              初月半額ではじめる
+              教材を買って、はじめる
               <span aria-hidden="true">→</span>
             </Link>
             <ul className="flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 text-[0.74rem] font-bold text-white">
@@ -388,11 +395,11 @@ function CampaignBanner() {
               </li>
               <li aria-hidden="true" className="text-white/50">/</li>
               <li className="flex items-center gap-1">
-                <IconCheck className="h-3.5 w-3.5" />教材費0円
+                <IconCheck className="h-3.5 w-3.5" />追加費用0円
               </li>
               <li aria-hidden="true" className="text-white/50">/</li>
               <li className="flex items-center gap-1">
-                <IconCheck className="h-3.5 w-3.5" />いつでも解約OK
+                <IconCheck className="h-3.5 w-3.5" />買い切り・自動更新なし
               </li>
             </ul>
           </div>
@@ -406,10 +413,10 @@ function CampaignBanner() {
 /** 数字で価値を一気に見せる帯（訴求＋デザインのアクセント）。 */
 function StatsBand() {
   const stats = [
-    { n: "9", u: "科目", d: "物理・化学・数学・英語" },
-    { n: "¥4,980", u: "〜/月", d: "1教科・税込" },
+    { n: "9", u: "教材", d: "物理・化学・数学・英語" },
+    { n: formatYen(MATERIAL_PRICE), u: "〜買い切り", d: "1教材・税込" },
     { n: "毎日", u: "添削", d: "翌日までに返却" },
-    { n: "0", u: "円", d: "入会金・教材費" },
+    { n: "0", u: "円", d: "入会金・追加費用" },
   ];
   return (
     <section className="cv-defer relative overflow-hidden bg-white">
@@ -500,12 +507,12 @@ export default function Home() {
 
               <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0">
                 <CtaDoodle />
-                <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
+                <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
                 <SecondaryCta href="/apply#pricing">料金・科目を見る</SecondaryCta>
               </div>
               {/* トラストチップ */}
               <ul className="mt-6 flex flex-wrap justify-center gap-x-4 gap-y-2 lg:justify-start">
-                {["入会金・教材費0円", "初月半額", "いつでも解約OK"].map((t) => (
+                {["入会金・追加費用0円", "8/6まで開講記念パック割", "買い切り・自動更新なし"].map((t) => (
                   <li key={t} className="flex items-center gap-1.5 text-[0.82rem] font-semibold text-[#475569]">
                     <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
                       <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.3 4.3L19 7" /></svg>
@@ -609,7 +616,7 @@ export default function Home() {
             この二段構えのフィードバックが、毎日の学習を確実な伸びに変えます。
           </p>
           <div className="mt-8 flex justify-center">
-            <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
+            <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
           </div>
         </Container>
       </section>
@@ -755,47 +762,46 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ───────── POSITIONING（市場での立ち位置） ───────── */}
+      {/* ───────── MATERIALS（教材アピール・主役＝教材） ───────── */}
       <section className="cv-defer bg-white">
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
-              Positioning · ノビットの立ち位置
+              Materials · 教材のこと
             </p>
             <h2 className="mt-3 text-balance text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              続いて、直って、<Penned color="#1d4ed8">ちゃんと伸びる</Penned>。
+              武器は、著者が書き下ろした<Penned color="#1d4ed8">教材</Penned>。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              どの学び方にもある「物足りなさ」を、ノビットはすべて解消します。これが、毎日の学習のいちばんいい形です。
+              市販の寄せ集めではありません。16冊を刊行した開発者が「理解で解く」設計で書き下ろし、毎日サイズに分割。<strong className="font-bold text-[#0b1d4a]">この1冊を最後までやり切ること</strong>が、いちばんの近道です。
             </p>
           </div>
 
           <div className="mx-auto mt-10 max-w-4xl">
-            <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {alternatives.map((a) => (
-                <li key={a.label} className="rounded-[16px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.06)]">
-                  <p className="text-[0.96rem] font-bold text-[#64748b]">{a.label}</p>
-                  <p className="mt-2 flex gap-1.5 text-[0.86rem] leading-[1.8] text-[#94a3b8]">
-                    <span aria-hidden="true" className="mt-[0.1em] text-[#cbd5e1]">×</span>
-                    {a.lack}
+            <ul className="grid gap-3 sm:grid-cols-3">
+              {materialPoints.map((m, i) => (
+                <li key={m.label} className="rounded-[16px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.06)]">
+                  <p className="flex items-center gap-2 text-[0.98rem] font-extrabold text-[#0b1d4a]">
+                    <span aria-hidden="true" className="grid h-6 w-6 place-items-center rounded-full bg-[#1d4ed8] text-[0.74rem] font-black text-white">{i + 1}</span>
+                    {m.label}
                   </p>
+                  <p className="mt-2.5 text-[0.86rem] leading-[1.85] text-[#475569]">{m.body}</p>
                 </li>
               ))}
             </ul>
 
-            {/* 解決＝ノビット */}
+            {/* 教材 × 仕組み、両輪で1冊をやり切る */}
             <div className="relative mt-6 overflow-hidden rounded-[22px] bg-[linear-gradient(120deg,#0b1d4a_0%,#0f5e5e_100%)] p-7 text-white shadow-[0_34px_60px_-40px_rgba(11,29,74,0.7)] sm:p-9">
-              <p className="text-[0.72rem] font-extrabold uppercase tracking-[0.2em] text-[#5eead4]">そこで、ノビットスタディ</p>
+              <p className="text-[0.72rem] font-extrabold uppercase tracking-[0.2em] text-[#5eead4]">教材 × 仕組み、両輪で。</p>
               <p className="mt-3 text-balance text-[1.25rem] font-extrabold leading-[1.55] sm:text-[1.5rem]">
-                オリジナル教材を<span className="text-[#7dd3fc]">毎日</span>進め、
-                答案に<span className="text-[#fdba74]">毎日添削</span>。
-                習慣化アプリつきで、<span className="text-[#5eead4]">月¥4,980〜</span>。
+                「<span className="text-[#7dd3fc]">何をやるか</span>（教材）」と「<span className="text-[#fdba74]">やり切る仕組み</span>（習慣化＋毎日添削）」。
+                この両輪で、1冊を<span className="text-[#5eead4]">最後まで</span>終わらせます。
               </p>
               <ul className="mt-6 grid gap-3 sm:grid-cols-3">
                 {[
-                  { t: "続く", b: "毎日の課題＋アプリで習慣に。" },
                   { t: "手が動く", b: "自作教材で毎日書く。点に変わる。" },
-                  { t: "直る", b: "あなた専用の添削で軌道修正。" },
+                  { t: "続く", b: "毎日の課題＋アプリで習慣に。" },
+                  { t: "直る", b: "著者本人の添削で軌道修正。" },
                 ].map((c) => (
                   <li key={c.t} className="rounded-[14px] bg-white/[0.08] p-4 ring-1 ring-white/15">
                     <p className="flex items-center gap-1.5 text-[0.98rem] font-extrabold">
@@ -809,9 +815,9 @@ export default function Home() {
             </div>
           </div>
           <p className="mx-auto mt-6 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
-            授業や質問対応が必要な時期は、他のサービスと併用するのも手です。ノビットは「毎日続けて、毎日直す」役割に集中しています。
+            授業はしません。自分の手で解いて、著者本人に毎日見てもらう。だから「分かったつもり」で止まらず、1冊をやり切れます。
           </p>
-          <InlineCta note="必要な科目を選ぶだけ。いまなら初月半額ではじめられます。" />
+          <InlineCta note="必要な教材を選ぶだけ。8/6まで、2教材パック割でおトクにはじめられます。" />
         </Container>
       </section>
 
@@ -1036,7 +1042,7 @@ export default function Home() {
                 ))}
               </ul>
               <div className="mt-8 flex flex-wrap items-center gap-3">
-                <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
+                <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
                 <a
                   href={kdpAmazonUrl}
                   target="_blank"
@@ -1417,28 +1423,28 @@ export default function Home() {
                 Price · 料金
               </p>
               <h2 className="relative mt-3 text-balance text-[1.9rem] font-extrabold leading-[1.3] tracking-[-0.005em] sm:text-[2.4rem]">
-                教科ごとに選べて、<br className="sm:hidden" />月{" "}
-                <span className="text-[#fdba74]">¥4,980〜</span>。
+                1教材から、<br className="sm:hidden" />買い切り{" "}
+                <span className="text-[#fdba74]">{formatYen(MATERIAL_PRICE)}〜</span>。
               </h2>
               <p className="relative mx-auto mt-4 max-w-xl text-[0.98rem] leading-[1.9] text-white/85">
-                入会金・教材費は0円。理系を中心に9科目から、必要な分だけ選べます。
+                入会金・追加費用は0円。1教材＝約100日分の課題＋毎日添削込み。理系を中心に9教材から、やり切る分だけ選べます。
               </p>
               <p className="relative mt-6">
                 <span className="inline-flex -rotate-1 items-center gap-1.5 rounded-[12px] bg-[#f97316] px-4 py-2 text-[0.9rem] font-extrabold text-white shadow-[0_14px_28px_-14px_rgba(234,88,12,0.9)]">
                   <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
-                  いまなら初月半額キャンペーン中
+                  {CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割
                 </span>
               </p>
-              {/* 割引前→後の価格対比（申込直前の後押し） */}
+              {/* 割引前→後の価格対比（2教材パック・申込直前の後押し） */}
               <div className="relative mx-auto mt-6 inline-flex flex-wrap items-baseline justify-center gap-x-2.5 gap-y-1 rounded-[18px] bg-white/[0.08] px-6 py-4 ring-1 ring-white/15">
-                <span className="text-[0.84rem] font-bold text-white/85">初月なら 1科目</span>
-                <span className="text-[1rem] font-bold text-white/55 line-through decoration-2">{formatYen(monthlyTotal(1))}</span>
+                <span className="text-[0.84rem] font-bold text-white/85">2教材パック</span>
+                <span className="text-[1rem] font-bold text-white/55 line-through decoration-2">{formatYen(listTotal(2))}</span>
                 <span aria-hidden="true" className="text-[1.1rem] font-black text-white/80">→</span>
-                <span className="text-[2.1rem] font-black leading-none tracking-[-0.02em] text-[#fdba74] sm:text-[2.4rem]">{formatYen(firstMonthTotal(1))}</span>
-                <span className="text-[0.8rem] font-bold text-white/85">（税込）</span>
+                <span className="text-[2.1rem] font-black leading-none tracking-[-0.02em] text-[#fdba74] sm:text-[2.4rem]">{formatYen(buyoutTotal(2, true))}</span>
+                <span className="text-[0.8rem] font-bold text-white/85">（税込・買い切り）</span>
               </div>
               <div className="relative mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
-                <PrimaryCta href="/apply">料金を見て申し込む（初月半額）</PrimaryCta>
+                <PrimaryCta href="/apply">料金を見て申し込む（買い切り）</PrimaryCta>
                 <Link
                   href="/contact"
                   className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/40 px-7 text-[0.98rem] font-semibold text-white transition hover:bg-white hover:text-[#0b1d4a]"
@@ -1447,7 +1453,7 @@ export default function Home() {
                 </Link>
               </div>
               <p className="relative mt-5 text-[0.78rem] leading-[1.7] text-white/70">
-                申込ページで科目を選ぶと料金を自動計算。詳しい料金表・対応科目もそちらでご確認いただけます。
+                申込ページで教材を選ぶと買い切り価格を自動計算。詳しい料金表・対応教材もそちらでご確認いただけます。
               </p>
               <p className="relative mt-2 text-[0.7rem] leading-[1.7] text-white/45">
                 物理基礎・物理・化学基礎・化学・数学IA・数学IIBC・数学IIIC・英語長文・英文法
@@ -1552,10 +1558,10 @@ export default function Home() {
                 毎日の学習を、今日から仕組みに。
               </h2>
               <p className="mx-auto mt-5 max-w-xl text-[1rem] leading-[1.95] text-white/85 lg:mx-0">
-                必要な科目を選んで、初月半額ではじめられます。入会金・教材費は0円、面談や勧誘もありません。
+                必要な教材を選んで、買い切りではじめられます。入会金・追加費用は0円、面談や勧誘もありません。
               </p>
               <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:justify-start">
-                <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
+                <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
                 <Link
                   href="/contact"
                   className="inline-flex min-h-12 items-center justify-center rounded-full border border-white/40 px-7 text-[0.98rem] font-semibold text-white transition hover:bg-white hover:text-[#0b1d4a]"
@@ -1573,9 +1579,9 @@ export default function Home() {
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
             <p className="truncate text-[0.82rem] font-extrabold text-[#0b1d4a]">
-              毎日続く学習システム・月¥4,980〜
+              1教材 買い切り¥14,800〜・毎日添削込み
             </p>
-            <p className="truncate text-[0.68rem] text-[#64748b]">いまなら初月半額／入会金0円</p>
+            <p className="truncate text-[0.68rem] text-[#64748b]">8/6まで開講記念パック割／入会金0円</p>
           </div>
           <Link
             href="/apply"

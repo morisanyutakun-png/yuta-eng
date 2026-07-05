@@ -3,31 +3,17 @@ import Stripe from "stripe";
 
 import { siteConfig } from "@/data/site";
 import {
+  buyoutTotal,
   CURRENCY,
-  FIRST_MONTH_COUPON_ID,
+  isCampaignActive,
   isValidSubjectId,
-  monthlyTotal,
+  listTotal,
   subjectsByIds,
 } from "@/lib/pricing";
 
 // Stripe SDK は Node ランタイム必須。決済はリクエスト時に毎回実行する。
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-/** 初月半額クーポンを冪等に用意（無ければ作成）。 */
-async function ensureFirstMonthCoupon(stripe: Stripe): Promise<string> {
-  try {
-    await stripe.coupons.retrieve(FIRST_MONTH_COUPON_ID);
-  } catch {
-    await stripe.coupons.create({
-      id: FIRST_MONTH_COUPON_ID,
-      name: "初月半額",
-      percent_off: 50,
-      duration: "once",
-    });
-  }
-  return FIRST_MONTH_COUPON_ID;
-}
 
 export async function POST(req: NextRequest) {
   const secret = process.env.STRIPE_SECRET_KEY;
@@ -55,15 +41,20 @@ export async function POST(req: NextRequest) {
   }
 
   // 金額はサーバー側で必ず再計算（クライアントの値は信用しない）。
+  // 買い切り：サーバー時刻でキャンペーン（2教材以上パック割）を判定して合計を確定する。
   const count = ids.length;
-  const amount = monthlyTotal(count);
+  const campaign = isCampaignActive();
+  const amount = buyoutTotal(count, campaign);
+  const list = listTotal(count);
   const subjects = subjectsByIds(ids);
   const labels = subjects.map((s) => s.label);
   const metadata = {
     subjects: ids.join(","),
     subject_labels: labels.join("・"),
     subject_count: String(count),
-    monthly_amount: String(amount),
+    amount: String(amount),
+    list_amount: String(list),
+    campaign: campaign && count >= 2 ? "pack" : "",
   };
 
   const origin = siteConfig.url || new URL(req.url).origin;
@@ -77,28 +68,28 @@ export async function POST(req: NextRequest) {
     : `${origin}/apply/complete?session_id={CHECKOUT_SESSION_ID}`;
 
   try {
-    const couponId = await ensureFirstMonthCoupon(stripe);
-
     const session = await stripe.checkout.sessions.create({
-      mode: "subscription",
+      mode: "payment",
       line_items: [
         {
           quantity: 1,
           price_data: {
             currency: CURRENCY,
             unit_amount: amount,
-            recurring: { interval: "month" },
             product_data: {
-              name: `ノビットスタディ 中高部 月額（${count}教科）`,
+              name: `ノビットスタディ 中高部 教材 買い切り（${count}教材）`,
               description: labels.join("・"),
             },
           },
         },
       ],
-      discounts: [{ coupon: couponId }],
-      // 管理システム連携用。Webhook で session/subscription から読み取れる。
+      // 管理システム連携用。Webhook で session から読み取れる。
       metadata,
-      subscription_data: { metadata },
+      // 買い切り（一括）。顧客レコードを常に作成しておく（連携・領収書用）。
+      customer_creation: "always",
+      payment_intent_data: { metadata },
+      // 領収書メールを自動送付（買い切りの安心材料）。
+      invoice_creation: { enabled: true },
       custom_fields: [
         {
           key: "student_name",
@@ -120,11 +111,7 @@ export async function POST(req: NextRequest) {
           },
         },
       ],
-      // subscription モードでは顧客が常に自動作成されるため customer_creation は不要
-      // （指定すると "can only be used in payment mode" エラーになる）。
       phone_number_collection: { enabled: true },
-      // 初月半額クーポンを discounts で自動適用するため、allow_promotion_codes は
-      // 併用不可（Stripe 仕様）。プロモコード入力欄は出さない。
       locale: "ja",
       success_url: successUrl,
       cancel_url: `${origin}/apply?canceled=1`,
