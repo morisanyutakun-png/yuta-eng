@@ -433,7 +433,7 @@ function HandCircle({ className = "", color = "#ea580c" }: { className?: string;
 function StatsBand() {
   const stats = [
     { n: "9", u: "教材", d: "物理・化学・数学・英語", tilt: "-rotate-[1.2deg]" },
-    { n: formatYen(MATERIAL_PRICE), u: "〜買い切り", d: "1教材・税込", tilt: "rotate-[0.6deg]", pen: true },
+    { n: formatYen(MATERIAL_PRICE), u: "〜", d: "1教材 買い切り・税込", tilt: "rotate-[0.6deg]", pen: true },
     { n: "毎日", u: "添削", d: "翌日までに返却", tilt: "-rotate-[0.5deg]", check: true },
     { n: "0", u: "円", d: "入会金・追加費用", tilt: "rotate-[1deg]", circle: true },
   ];
@@ -467,7 +467,7 @@ function StatsBand() {
                     <span className="relative text-[1.9rem] font-extrabold leading-none tracking-[-0.02em] text-[#0b1d4a] sm:text-[2.2rem]">
                       {s.n}
                       {s.pen ? <PenUnderline color="#ea580c" className="absolute -bottom-1.5 left-0 h-[0.42em] w-full" /> : null}
-                      {s.circle ? <HandCircle className="absolute left-1/2 top-1/2 h-[2.5em] w-[2.9em] -translate-x-1/2 -translate-y-1/2" /> : null}
+                      {s.circle ? <HandCircle className="absolute left-1/2 top-1/2 h-[2.1em] w-[2.7em] -translate-x-1/2 -translate-y-[55%]" /> : null}
                     </span>
                     <span className="text-[0.84rem] font-bold text-[#0f766e]">{s.u}</span>
                   </p>
