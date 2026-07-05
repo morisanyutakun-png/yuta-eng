@@ -96,7 +96,7 @@ export default function HowItWorksPage() {
             </p>
             <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center lg:mt-16 lg:w-fit">
               <CtaDoodle />
-              <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
+              <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
               <SecondaryCta href="/app">公式アプリを見る</SecondaryCta>
             </div>
           </div>
@@ -290,47 +290,35 @@ export default function HowItWorksPage() {
         </Container>
       </section>
 
-      {/* 他の学び方との違い */}
+      {/* 主役＝教材 */}
       <section className="bg-[#f8fafc]">
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">Positioning · 他の学び方との違い</p>
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">Materials · 教材のこと</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
-              続いて、手が動いて、直る。
+              武器は、著者が書き下ろした教材。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              どの学び方にもある「物足りなさ」を、ノビットはひとつずつ解消します。
+              市販の寄せ集めではありません。16冊を刊行した開発者が「理解で解く」設計で書き下ろし、毎日サイズに分割。この1冊を最後までやり切ることが、いちばんの近道です。
             </p>
           </div>
-          <div className="mx-auto mt-10 max-w-4xl overflow-x-auto">
-            <table className="w-full min-w-[640px] border-collapse overflow-hidden rounded-[16px] bg-white text-left ring-1 ring-[rgba(15,29,74,0.1)]">
-              <thead>
-                <tr className="bg-[#0b1d4a] text-white">
-                  {["", "続けやすさ", "手を動かす", "自分専用の指摘", "教材"].map((h, i) => (
-                    <th key={i} className={`px-3 py-3 text-[0.76rem] font-bold sm:px-4 sm:text-[0.84rem] ${i === 0 ? "" : "text-center"}`}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="text-[0.82rem] sm:text-[0.88rem]">
-                {[
-                  { m: "参考書・独学", a: ["△ 続きにくい", "○", "×", "既製"] },
-                  { m: "映像授業", a: ["△ 見て満足", "×", "×", "既製"] },
-                  { m: "集団・個別塾", a: ["△ 通塾が必要", "△", "授業中心", "既製"] },
-                  { m: "一般的な通信教育", a: ["△ 受け身", "△", "数週間に一度", "既製"] },
-                  { m: "ノビット", a: ["◎ 毎日の仕組み", "◎ 毎日書く", "◎ 毎日返る", "自作オリジナル"], hl: true },
-                ].map((r) => (
-                  <tr key={r.m} className={r.hl ? "bg-[#eef6f6]" : "border-t border-[rgba(15,29,74,0.06)]"}>
-                    <th className={`px-3 py-3 text-left font-bold sm:px-4 ${r.hl ? "text-[#0f766e]" : "text-[#0b1d4a]"}`}>{r.m}</th>
-                    {r.a.map((c, i) => (
-                      <td key={i} className={`px-3 py-3 text-center sm:px-4 ${r.hl ? "font-semibold text-[#0b1d4a]" : "text-[#64748b]"}`}>{c}</td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="mx-auto mt-10 grid max-w-4xl gap-3 sm:grid-cols-3">
+            {[
+              { label: "自作オリジナル", body: "16冊を刊行した開発者が書き下ろし。市販の寄せ集めにはない、一貫した設計。" },
+              { label: "理解で解く", body: "暗記ではなく、現象・図・言葉・式を地続きに。初見の問題でも、自分で答案を組み立てられる。" },
+              { label: "毎日サイズ", body: "1回10〜20分に分割。約100日で1冊、無理なく最後までやり切れる大きさに。" },
+            ].map((m, i) => (
+              <div key={m.label} className="rounded-[16px] bg-white p-5 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_20px_38px_-34px_rgba(11,29,74,0.5)]">
+                <p className="flex items-center gap-2 text-[0.98rem] font-extrabold text-[#0b1d4a]">
+                  <span aria-hidden="true" className="grid h-6 w-6 place-items-center rounded-full bg-[#1d4ed8] text-[0.74rem] font-black text-white">{i + 1}</span>
+                  {m.label}
+                </p>
+                <p className="mt-2.5 text-[0.86rem] leading-[1.85] text-[#475569]">{m.body}</p>
+              </div>
+            ))}
           </div>
-          <p className="mx-auto mt-5 max-w-2xl text-center text-[0.84rem] leading-[1.8] text-[#475569]">
-            授業や質問対応が必要な時期は、他のサービスと併用するのも手です。ノビットは「毎日続けて、毎日直す」役割に集中しています。
+          <p className="mx-auto mt-6 max-w-2xl text-center text-[0.84rem] leading-[1.8] text-[#475569]">
+            授業はしません。自分の手で解いて、著者本人に毎日見てもらう。だから「分かったつもり」で止まらず、1冊をやり切れます。
           </p>
         </Container>
       </section>

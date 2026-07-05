@@ -1,5 +1,9 @@
-// 料金・対応科目の単一ソース。トップの料金表示・申込フォーム・Stripe API の
+// 料金・対応教材（講座）の単一ソース。トップの料金表示・申込フォーム・Stripe API の
 // すべてがここを参照する。金額の権威はサーバー（API）側でここから再計算する。
+//
+// 料金モデル：買い切り。1教材（講座）＝ 約100日分の毎日課題 ＋ 毎日添削 ＋ 習慣化アプリ。
+// 教材をやり切ったら修了（＝終わりがある）。添削は「その教材の全課題（約100回）」に込み。
+// 時間縛り（月額）ではなく、教材の分量で自然に上限が決まる。
 
 export type Subject = {
   id: string;
@@ -8,6 +12,7 @@ export type Subject = {
   color: string;
 };
 
+// 1教材（講座）＝ここでは1科目。数学IA → 数学IIBC … と買い進める。
 export const SUBJECTS: Subject[] = [
   { id: "physics-basic", label: "物理基礎", area: "物理", color: "#1d4ed8" },
   { id: "physics", label: "物理", area: "物理", color: "#1d4ed8" },
@@ -24,18 +29,44 @@ export const SUBJECT_AREAS: Subject["area"][] = ["物理", "化学", "数学", "
 
 export const CURRENCY = "jpy";
 
-/** 教科数に応じた月額（税込・円）。1=4,980 / 2=8,800 / 3=12,800 / 4教科以降は +3,000/教科。 */
-export function monthlyTotal(count: number): number {
-  if (count <= 0) return 0;
-  if (count === 1) return 4980;
-  if (count === 2) return 8800;
-  if (count === 3) return 12800;
-  return 12800 + (count - 3) * 3000;
+/** 1教材（約100日分・毎日添削込み・買い切り）の通常価格（税込・円）。 */
+export const MATERIAL_PRICE = 14800;
+
+/** 2教材以上「開講記念パック」の1教材あたり単価（税込・円）→ 2教材で24,800。 */
+export const PACK_UNIT_PRICE = 12400;
+
+/** 1教材あたりのおおよその添削回数（＝教材の分量）。値ごろ感の説明に使う。 */
+export const GRADING_COUNT = 100;
+
+/** 開講記念キャンペーン（2教材以上のパック割）の締切。JSTで判定。 */
+export const CAMPAIGN_DEADLINE_ISO = "2026-08-06T23:59:59+09:00";
+export const CAMPAIGN_NAME = "夏の開講記念";
+/** 画面表示用の締切ラベル。 */
+export const CAMPAIGN_DEADLINE_LABEL = "8/6";
+
+/** キャンペーン（パック割）が有効か。既定は現在時刻で判定。 */
+export function isCampaignActive(now: Date = new Date()): boolean {
+  return now.getTime() <= new Date(CAMPAIGN_DEADLINE_ISO).getTime();
 }
 
-/** 初月は半額。 */
-export function firstMonthTotal(count: number): number {
-  return Math.round(monthlyTotal(count) / 2);
+/** 定価合計（パック割なし・税込）＝ 教材数 × 単価。 */
+export function listTotal(count: number): number {
+  return Math.max(0, count) * MATERIAL_PRICE;
+}
+
+/**
+ * 実支払い合計（税込）。キャンペーン中は2教材以上でパック単価を適用。
+ * 金額の権威はサーバー側。API はサーバー時刻の campaign 判定でここを再計算する。
+ */
+export function buyoutTotal(count: number, campaign: boolean = isCampaignActive()): number {
+  if (count <= 0) return 0;
+  if (campaign && count >= 2) return count * PACK_UNIT_PRICE;
+  return count * MATERIAL_PRICE;
+}
+
+/** パック割の割引額（税込・0以上）。 */
+export function packSavings(count: number, campaign: boolean = isCampaignActive()): number {
+  return Math.max(0, listTotal(count) - buyoutTotal(count, campaign));
 }
 
 export function isValidSubjectId(id: unknown): id is string {
@@ -51,6 +82,3 @@ export function subjectsByIds(ids: string[]): Subject[] {
 export function formatYen(n: number): string {
   return "¥" + n.toLocaleString("ja-JP");
 }
-
-/** 初月半額クーポンの ID（Stripe 上で 50% off・duration once を使い回す）。 */
-export const FIRST_MONTH_COUPON_ID = "nobit-first-month-50";

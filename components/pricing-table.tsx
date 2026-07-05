@@ -1,18 +1,27 @@
 import Link from "next/link";
 
 import {
-  SUBJECTS,
-  firstMonthTotal,
+  buyoutTotal,
+  CAMPAIGN_DEADLINE_LABEL,
   formatYen,
-  monthlyTotal,
+  GRADING_COUNT,
+  isCampaignActive,
+  listTotal,
+  MATERIAL_PRICE,
+  packSavings,
+  PACK_UNIT_PRICE,
+  SUBJECTS,
 } from "@/lib/pricing";
 
-/** 教科ごとの月額（1〜3教科）。数値は lib/pricing から算出＝表と決済で一致。 */
+const campaign = isCampaignActive();
+
+/** 教材ごとの買い切り（1〜3教材）。数値は lib/pricing から算出＝表と決済で一致。 */
 const tiers = [1, 2, 3].map((n) => ({
-  count: `${n}教科`,
-  total: monthlyTotal(n),
-  per: Math.round(monthlyTotal(n) / n),
-  first: firstMonthTotal(n),
+  count: `${n}教材`,
+  total: buyoutTotal(n, campaign),
+  list: listTotal(n),
+  per: Math.round(buyoutTotal(n, campaign) / n),
+  savings: packSavings(n, campaign),
   popular: n === 2,
 }));
 
@@ -43,11 +52,11 @@ function PenUnderline({ className = "" }: { className?: string }) {
   );
 }
 
-/** 対応科目のチップ列。lib/pricing の SUBJECTS を単一ソースに描画。 */
+/** 対応教材のチップ列。lib/pricing の SUBJECTS を単一ソースに描画。 */
 export function SubjectChips({ className = "" }: { className?: string }) {
   return (
     <div className={`flex flex-wrap items-center justify-center gap-2 ${className}`}>
-      <span className="text-[0.74rem] font-bold text-[#64748b]">対応科目</span>
+      <span className="text-[0.74rem] font-bold text-[#64748b]">対応教材</span>
       {SUBJECTS.map((s) => (
         <span
           key={s.id}
@@ -67,6 +76,7 @@ export function SubjectChips({ className = "" }: { className?: string }) {
 
 /**
  * 料金表パネル（採点表ふう・方眼＋手書き注釈）。申込ページに掲載する。
+ * 買い切り：1教材＝約100日分の課題＋毎日添削。2教材以上は開講記念パック割。
  * cta を渡すとパネル内にボタンを出す（トップからは詳細を持たず、ここへ誘導）。
  */
 export function PricingTable({
@@ -79,7 +89,7 @@ export function PricingTable({
       <div className="overflow-hidden rounded-[24px] bg-white shadow-[0_44px_90px_-55px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.1)]">
         <div className="flex items-center justify-between bg-[linear-gradient(120deg,#0b1d4a_0%,#0f5e5e_100%)] px-5 py-4 text-white sm:px-7">
           <p className="text-[0.98rem] font-extrabold tracking-wide">料金表</p>
-          <p className="text-[0.74rem] text-white/80">教科ごとの月額・税込</p>
+          <p className="text-[0.74rem] text-white/80">教材ごとの買い切り・税込</p>
         </div>
 
         <div className="relative px-5 py-7 sm:px-8 sm:py-9">
@@ -94,22 +104,24 @@ export function PricingTable({
           />
 
           <div className="relative text-center">
-            <p className="text-[0.82rem] font-bold text-[#0f766e]">1教科から、必要な分だけ</p>
+            <p className="text-[0.82rem] font-bold text-[#0f766e]">1教材（約{GRADING_COUNT}日分）をやり切る</p>
             <p className="mt-1 flex items-end justify-center gap-1.5 text-[#0b1d4a]">
-              <span className="pb-2.5 text-[1.05rem] font-bold">月</span>
               <span className="relative inline-block">
                 <span className="text-[3.1rem] font-extrabold leading-none tracking-[-0.02em] sm:text-[3.6rem]">
-                  ¥4,980
+                  {formatYen(MATERIAL_PRICE)}
                 </span>
                 <PenUnderline className="absolute -bottom-1 left-0 h-[0.5em] w-full" />
               </span>
-              <span className="pb-2.5 text-[1.05rem] font-bold">〜</span>
+              <span className="pb-2.5 text-[1.05rem] font-bold">〜 買い切り</span>
             </p>
-            <p className="mt-3.5">
-              <span className="inline-flex -rotate-2 items-center rounded-[10px] bg-[#fff1e6] px-3 py-1 text-[0.78rem] font-extrabold text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">
-                いまなら初月はさらに半額
-              </span>
-            </p>
+            <p className="mt-2 text-[0.8rem] text-[#64748b]">毎日添削（約{GRADING_COUNT}回）＋習慣化アプリ込み</p>
+            {campaign ? (
+              <p className="mt-3.5">
+                <span className="inline-flex -rotate-2 items-center rounded-[10px] bg-[#fff1e6] px-3 py-1 text-[0.78rem] font-extrabold text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">
+                  {CAMPAIGN_DEADLINE_LABEL}まで 2教材以上でパック割
+                </span>
+              </p>
+            ) : null}
           </div>
 
           <ul className="relative mt-7 space-y-2.5">
@@ -131,17 +143,23 @@ export function PricingTable({
                 >
                   {t.count}
                 </span>
-                <span className="flex flex-1 items-baseline gap-1">
+                <span className="flex flex-1 items-baseline gap-1.5">
                   <span className="text-[1.7rem] font-extrabold leading-none tracking-[-0.02em] text-[#0b1d4a] sm:text-[2rem]">
                     {formatYen(t.total)}
                   </span>
-                  <span className="text-[0.76rem] font-semibold text-[#64748b]">/月</span>
+                  {t.savings > 0 ? (
+                    <span className="text-[0.76rem] font-semibold text-[#94a3b8] line-through">{formatYen(t.list)}</span>
+                  ) : null}
                 </span>
                 <span className="text-right">
                   <span className="block text-[0.74rem] font-semibold text-[#0f766e]">
-                    1教科 {formatYen(t.per)}
+                    1教材 {formatYen(t.per)}
                   </span>
-                  <span className="block text-[0.72rem] text-[#94a3b8]">初月 {formatYen(t.first)}</span>
+                  {t.savings > 0 ? (
+                    <span className="block text-[0.72rem] font-bold text-[#ea580c]">パック割 −{formatYen(t.savings)}</span>
+                  ) : (
+                    <span className="block text-[0.72rem] text-[#94a3b8]">買い切り・追加費用なし</span>
+                  )}
                 </span>
                 {t.popular ? (
                   <span className="absolute -right-2 -top-3 -rotate-6 rounded-[8px] bg-[#0b1d4a] px-2.5 py-1 text-[0.62rem] font-extrabold tracking-[0.04em] text-white shadow-[0_8px_16px_-8px_rgba(11,29,74,0.8)]">
@@ -153,17 +171,23 @@ export function PricingTable({
 
             <li className="flex items-center gap-3 rounded-[14px] border border-dashed border-[rgba(15,29,74,0.18)] bg-white/60 px-3.5 py-3 sm:gap-4 sm:px-4">
               <span className="grid h-11 w-14 shrink-0 place-items-center rounded-[10px] bg-white text-[0.8rem] font-extrabold text-[#475569] ring-1 ring-[rgba(15,29,74,0.1)]">
-                4教科〜
+                4教材〜
               </span>
               <span className="flex-1 text-[0.84rem] leading-[1.6] text-[#475569]">
-                ¥12,800 ＋ <strong className="font-bold text-[#0b1d4a]">1教科ごと +¥3,000</strong>
+                {campaign ? (
+                  <>パック割で <strong className="font-bold text-[#0b1d4a]">1教材 {formatYen(PACK_UNIT_PRICE)}</strong>（{CAMPAIGN_DEADLINE_LABEL}まで）</>
+                ) : (
+                  <>1教材 <strong className="font-bold text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}</strong> ×（必要な数だけ）</>
+                )}
               </span>
             </li>
           </ul>
 
-          <p className="relative mt-4 text-center text-[0.82rem] font-semibold text-[#0f766e]">
-            足すほど、<span className="text-[#ea580c]">1教科あたりはおトク</span>になります。
-          </p>
+          {campaign ? (
+            <p className="relative mt-4 text-center text-[0.82rem] font-semibold text-[#0f766e]">
+              まとめてやり切るほど、<span className="text-[#ea580c]">1教材あたりはおトク</span>になります。
+            </p>
+          ) : null}
 
           {cta ? (
             <div className="relative mt-6">
@@ -179,19 +203,19 @@ export function PricingTable({
           ) : null}
 
           <p className="relative mt-4 text-center text-[0.74rem] text-[#94a3b8]">
-            入会金・教材費0円／いつでも科目の追加・休会・解約OK。
+            入会金・追加費用0円／買い切り・自動更新なし。教材は修了まであなたのもの。
           </p>
         </div>
       </div>
 
-      {/* 費用感の比較 */}
+      {/* 教材・完走の価値（塾比較ではなく、教材をやり切る仕組みを訴求） */}
       <div className="mt-8 flex flex-col items-center gap-3 rounded-[18px] bg-[#eef6f6] p-5 text-center ring-1 ring-[rgba(13,148,136,0.18)] sm:flex-row sm:justify-center sm:gap-6 sm:text-left">
         <p className="text-[0.86rem] leading-[1.7] text-[#475569]">
-          大手の個別指導は <span className="font-bold text-[#0b1d4a]">1教科 週1で月¥15,000〜</span>。
+          問題集は独学だと、<span className="font-bold text-[#0b1d4a]">多くの人が途中で止まります</span>。
         </p>
         <span aria-hidden="true" className="hidden text-[#0d9488] sm:block">→</span>
         <p className="text-[0.95rem] font-extrabold leading-[1.5] text-[#0f766e]">
-          ノビットは毎日添削で <span className="text-[1.15rem]">月¥4,980〜</span>。
+          毎日の添削と習慣化で、<span className="text-[1.05rem]">1冊を最後までやり切る</span>。
         </p>
       </div>
     </div>

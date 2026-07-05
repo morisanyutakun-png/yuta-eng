@@ -10,16 +10,16 @@ import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createOrganizationJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "料金・お申し込み｜科目を選んで初月半額ではじめる",
+  title: "料金・お申し込み｜教材を選んで買い切りではじめる",
   description:
-    "ノビットスタディ 中高部の料金とお申し込み。教科ごとの月額（1教科 月¥4,980〜・初月半額・入会金/教材費0円）。物理・化学・数学・英語の9科目から必要な分だけ選ぶと料金が自動計算され、そのまま Stripe の安全な決済へ。いつでも解約できます。",
-  keywords: ["ノビットスタディ 料金", "オンライン添削 料金", "理系 添削 月額", "ノビットスタディ 申し込み"],
+    "ノビットスタディ 中高部の料金とお申し込み。教材ごとの買い切り（1教材 ¥14,800〜・約100日分の課題＋毎日添削込み・入会金/追加費用0円）。8/6まで2教材以上でパック割。物理・化学・数学・英語の9教材から選ぶと買い切り価格が自動計算され、そのまま Stripe の安全な決済（一括）へ。自動更新はありません。",
+  keywords: ["ノビットスタディ 料金", "オンライン添削 料金", "理系 添削 買い切り", "ノビットスタディ 申し込み"],
   path: "/apply",
 });
 
 const steps = [
-  { n: "1", t: "科目を選ぶ", b: "必要な科目だけ。あとから追加・解約もOK。" },
-  { n: "2", t: "決済（Stripe）", b: "金額が自動計算され、安全な決済画面へ。" },
+  { n: "1", t: "教材を選ぶ", b: "やり切りたい教材だけ。あとから追加もOK。" },
+  { n: "2", t: "決済（Stripe）", b: "買い切り価格が自動計算され、安全な決済画面へ。" },
   { n: "3", t: "アプリで開始", b: "登録後すぐ、公式アプリで学習を始められます。" },
 ];
 
@@ -54,13 +54,13 @@ export default async function ApplyPage({
           <div className="py-9 sm:py-12">
             <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.72rem] font-bold tracking-[0.06em] text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.3)]">
               <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
-              いまなら初月半額・入会金0円
+              8/6まで 開講記念パック割・入会金0円
             </p>
             <h1 className="mt-4 text-[2rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.6rem]">
-              科目を選んで、申し込む。
+              教材を選んで、申し込む。
             </h1>
             <p className="mt-4 max-w-2xl text-[0.98rem] leading-[1.9] text-[#334155]">
-              面談も勧誘もありません。必要な科目を選ぶと料金が自動で決まり、そのまま安全な決済に進めます。
+              面談も勧誘もありません。やり切る教材を選ぶと買い切り価格が自動で決まり、そのまま安全な決済（一括）に進めます。
             </p>
             <ol className="mt-6 grid gap-3 sm:grid-cols-3">
               {steps.map((s) => (
@@ -84,19 +84,19 @@ export default async function ApplyPage({
         <Container className="px-5 py-12 sm:px-6 sm:py-16">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
-              Price · 料金・対応科目
+              Price · 料金・対応教材
             </p>
             <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-              教科ごとの月額。必要な分だけ。
+              教材ごとの買い切り。やり切る分だけ。
             </h2>
             <p className="mt-3 text-[0.95rem] leading-[1.9] text-[#475569]">
-              入会金・教材費は0円。理系を中心に9科目から選べます。
-              <strong className="font-bold text-[#ea580c]">いまなら初月半額</strong>。
+              入会金・追加費用は0円。理系を中心に9教材から選べます。
+              <strong className="font-bold text-[#ea580c]">8/6まで、2教材以上でパック割</strong>。
             </p>
           </div>
           <SubjectChips className="mx-auto mt-8 max-w-3xl" />
           <div className="mt-10">
-            <PricingTable cta={{ href: "#form", label: "科目を選んで料金を確定する" }} />
+            <PricingTable cta={{ href: "#form", label: "教材を選んで買い切り価格を確定する" }} />
           </div>
         </Container>
       </section>

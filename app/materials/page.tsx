@@ -64,7 +64,7 @@ export default function MaterialsPage() {
               </p>
               <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center lg:mt-16 lg:w-fit">
                 <CtaDoodle />
-                <PrimaryCta href="/apply">初月半額ではじめる</PrimaryCta>
+                <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
                 <SecondaryCta href="/how-it-works">ノビットのしくみ</SecondaryCta>
               </div>
             </div>

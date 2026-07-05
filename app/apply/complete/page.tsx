@@ -29,7 +29,7 @@ export default function ApplyCompletePage() {
             ご案内とログイン情報をお送りします。届かない場合は迷惑メールフォルダもご確認ください。
           </p>
           <div className="mt-5 rounded-[16px] bg-white px-6 py-4 text-[0.86rem] leading-[1.8] text-[#475569] ring-1 ring-[rgba(15,29,74,0.08)]">
-            初月は半額です。翌月以降は通常月額となり、いつでも解約・科目の変更ができます。
+            買い切りのお申し込みです。自動更新や継続課金はありません。教材は、1教材につき約100日分の課題と毎日の添削を順次お届けします。
           </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link

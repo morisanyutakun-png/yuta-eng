@@ -68,7 +68,7 @@ export function SiteFooter() {
                   className="text-[#475569] transition hover:text-[#0d9488]"
                   href="/apply"
                 >
-                  お申し込み（初月半額）
+                  お申し込み（買い切り）
                 </Link>
               </li>
               <li>
@@ -102,7 +102,7 @@ export function SiteFooter() {
           {[
             { label: "特定商取引法に基づく表記", href: "/legal/tokushoho" },
             { label: "プライバシーポリシー", href: "/legal/privacy" },
-            { label: "返金・解約ポリシー", href: "/legal/refund" },
+            { label: "返金ポリシー", href: "/legal/refund" },
           ].map((item) => (
             <Link
               key={item.href}
