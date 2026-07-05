@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
   if (ids.length === 0) {
     return Response.json(
-      { error: "科目を1つ以上選んでください。" },
+      { error: "教材を1つ以上選んでください。" },
       { status: 400 },
     );
   }
