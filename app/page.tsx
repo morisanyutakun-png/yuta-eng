@@ -411,28 +411,71 @@ function CampaignBanner() {
 
 /** セクションに奥行きを出すやわらかい光（装飾）。overflow-hidden な relative 親に置く。 */
 /** 数字で価値を一気に見せる帯（訴求＋デザインのアクセント）。 */
+/** 赤ペンで囲んだ風の手描き楕円（採点の“ここ大事”の気配）。 */
+function HandCircle({ className = "", color = "#ea580c" }: { className?: string; color?: string }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 120 74" fill="none" preserveAspectRatio="none" className={className}>
+      <path
+        d="M64 7C98 3 116 22 112 40 108 60 74 69 44 66 17 63 6 47 10 31 14 14 42 6 78 9"
+        stroke={color}
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+/**
+ * 数字で価値を見せる帯。ただの KPI カード並べだと量産テンプレ感（AI感）が出るので、
+ * ブランドの添削・方眼モチーフに寄せた「先生の採点メモ」ふうに。手描きの囲み・
+ * マーカー下線・点線区切り・わずかな傾きで、人の手でメモした気配を出す。
+ */
 function StatsBand() {
   const stats = [
-    { n: "9", u: "教材", d: "物理・化学・数学・英語" },
-    { n: formatYen(MATERIAL_PRICE), u: "〜買い切り", d: "1教材・税込" },
-    { n: "毎日", u: "添削", d: "翌日までに返却" },
-    { n: "0", u: "円", d: "入会金・追加費用" },
+    { n: "9", u: "教材", d: "物理・化学・数学・英語", tilt: "-rotate-[1.2deg]" },
+    { n: formatYen(MATERIAL_PRICE), u: "〜買い切り", d: "1教材・税込", tilt: "rotate-[0.6deg]", pen: true },
+    { n: "毎日", u: "添削", d: "翌日までに返却", tilt: "-rotate-[0.5deg]", check: true },
+    { n: "0", u: "円", d: "入会金・追加費用", tilt: "rotate-[1deg]", circle: true },
   ];
   return (
     <section className="cv-defer relative overflow-hidden bg-white">
       <Container className="px-6 py-12 sm:py-16">
-        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-y-8 rounded-[24px] bg-[linear-gradient(120deg,#f8fbff_0%,#eef6f6_100%)] px-6 py-9 ring-1 ring-[rgba(15,29,74,0.06)] sm:grid-cols-4 sm:py-10">
-          {stats.map((s, i) => (
-            <div key={s.u} className={`text-center ${i > 0 ? "sm:border-l sm:border-[rgba(15,29,74,0.1)]" : ""}`}>
-              <p className="flex items-baseline justify-center gap-0.5">
-                <span className="bg-[linear-gradient(120deg,#1d4ed8,#0d9488)] bg-clip-text text-[1.9rem] font-extrabold leading-none tracking-[-0.02em] text-transparent sm:text-[2.3rem]">
-                  {s.n}
-                </span>
-                <span className="text-[0.86rem] font-bold text-[#0f766e]">{s.u}</span>
-              </p>
-              <p className="mt-1.5 text-[0.72rem] leading-[1.5] text-[#64748b]">{s.d}</p>
-            </div>
-          ))}
+        <div className="relative mx-auto max-w-3xl -rotate-[0.5deg]">
+          {/* マスキングテープ（紙を貼った気配） */}
+          <span aria-hidden="true" className="absolute -top-2.5 left-1/2 z-10 h-5 w-24 -translate-x-1/2 -rotate-2 rounded-[2px] bg-[rgba(94,234,212,0.55)] shadow-[0_4px_10px_-6px_rgba(11,29,74,0.5)]" />
+          {/* 方眼メモ紙 */}
+          <div className="relative overflow-hidden rounded-[18px] bg-[#fffdf6] px-5 py-8 shadow-[0_28px_54px_-34px_rgba(11,29,74,0.45)] ring-1 ring-[rgba(234,88,12,0.16)] sm:px-9 sm:py-9">
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 opacity-[0.5]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(13,148,136,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(13,148,136,0.1) 1px, transparent 1px)",
+                backgroundSize: "23px 23px",
+              }}
+            />
+            <ul className="relative grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4">
+              {stats.map((s, i) => (
+                <li
+                  key={s.u}
+                  className={`relative text-center ${i > 0 ? "sm:before:absolute sm:before:-left-2 sm:before:top-1/2 sm:before:h-12 sm:before:-translate-y-1/2 sm:before:border-l sm:before:border-dashed sm:before:border-[rgba(15,29,74,0.18)]" : ""}`}
+                >
+                  <p className={`relative inline-flex items-baseline gap-0.5 ${s.tilt}`}>
+                    {s.check ? (
+                      <span aria-hidden="true" className="absolute -left-4 -top-2 text-[1.1rem] font-black text-[#16a34a]">✓</span>
+                    ) : null}
+                    <span className="relative text-[1.9rem] font-extrabold leading-none tracking-[-0.02em] text-[#0b1d4a] sm:text-[2.2rem]">
+                      {s.n}
+                      {s.pen ? <PenUnderline color="#ea580c" className="absolute -bottom-1.5 left-0 h-[0.42em] w-full" /> : null}
+                      {s.circle ? <HandCircle className="absolute left-1/2 top-1/2 h-[2.5em] w-[2.9em] -translate-x-1/2 -translate-y-1/2" /> : null}
+                    </span>
+                    <span className="text-[0.84rem] font-bold text-[#0f766e]">{s.u}</span>
+                  </p>
+                  <p className="mt-2 text-[0.72rem] leading-[1.5] text-[#6b7280]">{s.d}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Container>
     </section>
