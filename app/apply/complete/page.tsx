@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { PurchaseEventTracker } from "@/components/analytics-events";
 import { Container } from "@/components/container";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -13,9 +14,27 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function ApplyCompletePage() {
+function firstParam(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function ApplyCompletePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ session_id?: string | string[]; setup?: string | string[] }>;
+}) {
+  const params = await searchParams;
+  const sessionId = firstParam(params.session_id) ?? null;
+  const setupRequested = firstParam(params.setup) === "1";
+  const appUrl = process.env.NOBIT_APP_URL?.replace(/\/$/, "");
+  const setupHref =
+    setupRequested && appUrl && sessionId
+      ? `${appUrl}/setup?session_id=${encodeURIComponent(sessionId)}`
+      : null;
+
   return (
     <section className="bg-[linear-gradient(180deg,#ffffff_0%,#eef6f6_100%)]">
+      <PurchaseEventTracker sessionId={sessionId} />
       <Container className="px-6">
         <div className="mx-auto flex max-w-xl flex-col items-center py-20 text-center sm:py-28">
           <span className="grid h-16 w-16 place-items-center rounded-full bg-[#16a34a] text-[1.8rem] text-white shadow-[0_18px_30px_-14px_rgba(22,163,74,0.6)]">
@@ -32,9 +51,21 @@ export default function ApplyCompletePage() {
             買い切りのお申し込みです。自動更新や継続課金はありません。教材は、1教材につき約100日分の課題と毎日の添削を順次お届けします。
           </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            {setupHref ? (
+              <a
+                href={setupHref}
+                className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#0b1d4a] px-7 text-[0.95rem] font-semibold text-white transition hover:bg-[#0f5e5e]"
+              >
+                公式アプリを設定する
+              </a>
+            ) : null}
             <Link
               href="/"
-              className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#0b1d4a] px-7 text-[0.95rem] font-semibold text-white transition hover:bg-[#0f5e5e]"
+              className={`inline-flex min-h-12 items-center justify-center rounded-full px-7 text-[0.95rem] font-semibold transition ${
+                setupHref
+                  ? "border border-[#0b1d4a] text-[#0b1d4a] hover:bg-[#0b1d4a] hover:text-white"
+                  : "bg-[#0b1d4a] text-white hover:bg-[#0f5e5e]"
+              }`}
             >
               トップへ戻る
             </Link>

@@ -42,7 +42,7 @@ const displayFont = Zen_Kaku_Gothic_New({
 import "./globals.css";
 
 const GA_MEASUREMENT_ID =
-  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-WT6BZVH9YJ";
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-W11S94CV6L";
 const GSC_VERIFICATION = Array.from(
   new Set(
     [

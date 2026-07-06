@@ -4,6 +4,13 @@ import { useEffect } from "react";
 
 type Props = { measurementId: string };
 
+type GoogleAnalyticsWindow = Window & {
+  dataLayer?: unknown[];
+  gtag?: (...args: unknown[]) => void;
+  __nobitGa4Configured?: boolean;
+  __nobitGa4PageViewQueued?: boolean;
+};
+
 /**
  * Loads GA4 (gtag) only after the first user interaction or 8 s of idle time
  * — whichever comes first. The `<script>` is ~150 KB and Lighthouse repeatedly
@@ -23,29 +30,35 @@ export function GoogleAnalyticsLoader({ measurementId }: Props) {
     if (typeof window === "undefined") return;
     let loaded = false;
 
+    const w = window as GoogleAnalyticsWindow;
+    w.dataLayer = w.dataLayer || [];
+    w.gtag =
+      w.gtag ||
+      function (...args: unknown[]) {
+        (w.dataLayer as unknown[]).push(args);
+      };
+    if (!w.__nobitGa4Configured) {
+      w.gtag("js", new Date());
+      w.__nobitGa4Configured = true;
+    }
+    if (!w.__nobitGa4PageViewQueued) {
+      w.gtag("config", measurementId, { send_page_view: true });
+      w.__nobitGa4PageViewQueued = true;
+    }
+
     function load() {
       if (loaded) return;
       loaded = true;
       cleanup();
 
-      // Initialize the dataLayer + gtag shim before the script arrives so any
-      // queued events from this page replay correctly once GA boots.
-      const w = window as unknown as {
-        dataLayer?: unknown[];
-        gtag?: (...args: unknown[]) => void;
-      };
-      w.dataLayer = w.dataLayer || [];
-      w.gtag =
-        w.gtag ||
-        function (...args: unknown[]) {
-          (w.dataLayer as unknown[]).push(args);
-        };
-      w.gtag("js", new Date());
-      w.gtag("config", measurementId, { send_page_view: true });
+      const src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+      if (Array.from(document.scripts).some((script) => script.src === src)) {
+        return;
+      }
 
       const s = document.createElement("script");
       s.async = true;
-      s.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+      s.src = src;
       document.head.appendChild(s);
     }
 

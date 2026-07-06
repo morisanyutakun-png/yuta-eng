@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { LpPageViewEvent } from "@/components/analytics-events";
 import { AppScreen } from "@/components/app-screens";
 import { Container } from "@/components/container";
 import { PrimaryCta, SecondaryCta } from "@/components/cta";
@@ -494,6 +495,7 @@ export default function Home() {
   return (
     <>
       <JsonLd data={homeJsonLd} />
+      <LpPageViewEvent />
 
       {/* ───────── HERO ───────── */}
       <section className="relative overflow-hidden">
