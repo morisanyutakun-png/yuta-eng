@@ -100,25 +100,59 @@ export function LpPageViewEvent() {
   return null;
 }
 
-export function PurchaseEventTracker({ sessionId }: { sessionId: string | null }) {
+export function PurchaseEventTracker({
+  sessionId,
+  redirectUrl,
+}: {
+  sessionId: string | null;
+  redirectUrl?: string | null;
+}) {
   useEffect(() => {
     if (!sessionId) return;
 
     const safeSessionId = sessionId;
     const storageKey = `nobit:ga4:purchase:${safeSessionId}`;
-    if (hasTracked(storageKey)) return;
+    if (hasTracked(storageKey)) {
+      if (redirectUrl) {
+        window.setTimeout(() => {
+          window.location.assign(redirectUrl);
+        }, 500);
+      }
+      return;
+    }
 
     let canceled = false;
+    let redirected = false;
+
+    function redirectAfterTracking() {
+      if (canceled || redirected || !redirectUrl) return;
+      redirected = true;
+      window.location.assign(redirectUrl);
+    }
+
+    function wait(ms: number) {
+      return new Promise((resolve) => {
+        window.setTimeout(resolve, ms);
+      });
+    }
 
     async function trackPurchase() {
-      const res = await fetch(
-        `/api/checkout/session?session_id=${encodeURIComponent(safeSessionId)}`,
-        { credentials: "same-origin" },
-      ).catch(() => null);
+      let purchase: PurchaseResponse | null = null;
 
-      if (!res?.ok || canceled) return;
+      for (let attempt = 0; attempt < 5 && !canceled; attempt++) {
+        const res = await fetch(
+          `/api/checkout/session?session_id=${encodeURIComponent(safeSessionId)}`,
+          { credentials: "same-origin" },
+        ).catch(() => null);
 
-      const purchase = (await res.json().catch(() => null)) as PurchaseResponse | null;
+        if (res?.ok) {
+          purchase = (await res.json().catch(() => null)) as PurchaseResponse | null;
+          if (purchase?.paid) break;
+        }
+
+        await wait(800);
+      }
+
       if (!purchase?.paid || canceled) return;
 
       const eventParams = {
@@ -128,6 +162,11 @@ export function PurchaseEventTracker({ sessionId }: { sessionId: string | null }
         affiliation: "ノビットスタディ 中高部",
         tax: 0,
         shipping: 0,
+        event_callback: () => {
+          markTracked(storageKey);
+          window.setTimeout(redirectAfterTracking, 150);
+        },
+        event_timeout: 3000,
         ...(GA_DEBUG_MODE ? { debug_mode: true } : {}),
         items: purchase.items,
       };
@@ -141,7 +180,15 @@ export function PurchaseEventTracker({ sessionId }: { sessionId: string | null }
           transaction_id: purchase.transactionId,
         });
       }
-      markTracked(storageKey);
+
+      if (redirectUrl) {
+        window.setTimeout(() => {
+          markTracked(storageKey);
+          redirectAfterTracking();
+        }, 3500);
+      } else {
+        markTracked(storageKey);
+      }
     }
 
     void trackPurchase();
@@ -149,7 +196,7 @@ export function PurchaseEventTracker({ sessionId }: { sessionId: string | null }
     return () => {
       canceled = true;
     };
-  }, [sessionId]);
+  }, [redirectUrl, sessionId]);
 
   return null;
 }

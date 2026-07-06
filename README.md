@@ -142,8 +142,10 @@ Googleタグは全ページに読み込み、`send_page_view: false` で自動 p
 2. `POST /api/stripe/webhook` の `checkout.session.completed` 後、アプリへの登録連携が
    成功したら GA4 Measurement Protocol で `purchase` を送信します。
 
-`NOBIT_APP_URL` を設定して決済後に `nobit-study.yuta-eng.com/setup` へ戻す運用でも、
-yuta-eng の webhook 側で `purchase` が飛ぶため、完了ページを開かなくても計測できます。
+`NOBIT_APP_URL` を設定している場合も、決済後はいったん
+`yuta-eng.com/apply/complete?session_id=...&setup=1` へ戻します。この完了ページで
+ブラウザの `purchase` を発火し、その後 `nobit-study.yuta-eng.com/setup` へ自動遷移します。
+Webhook 側からも同じ `transaction_id` でバックアップ送信します。
 GA4の重複対策として `transaction_id` には Stripe Checkout Session ID を使います。
 
 `non_personalized_ads` は使いません。広告同意を明示したい場合は

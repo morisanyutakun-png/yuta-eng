@@ -34,7 +34,7 @@ export default async function ApplyCompletePage({
 
   return (
     <section className="bg-[linear-gradient(180deg,#ffffff_0%,#eef6f6_100%)]">
-      <PurchaseEventTracker sessionId={sessionId} />
+      <PurchaseEventTracker sessionId={sessionId} redirectUrl={setupHref} />
       <Container className="px-6">
         <div className="mx-auto flex max-w-xl flex-col items-center py-20 text-center sm:py-28">
           <span className="grid h-16 w-16 place-items-center rounded-full bg-[#16a34a] text-[1.8rem] text-white shadow-[0_18px_30px_-14px_rgba(22,163,74,0.6)]">
@@ -46,6 +46,7 @@ export default async function ApplyCompletePage({
           <p className="mt-5 text-[0.98rem] leading-[1.95] text-[#334155]">
             決済が完了しました。ご登録のメールアドレス宛に、公式アプリ「ノビットスタディ」の
             ご案内とログイン情報をお送りします。届かない場合は迷惑メールフォルダもご確認ください。
+            {setupHref ? " このあと公式アプリの設定画面へ移動します。" : ""}
           </p>
           <div className="mt-5 rounded-[16px] bg-white px-6 py-4 text-[0.86rem] leading-[1.8] text-[#475569] ring-1 ring-[rgba(15,29,74,0.08)]">
             買い切りのお申し込みです。自動更新や継続課金はありません。教材は、1教材につき約100日分の課題と毎日の添削を順次お届けします。
