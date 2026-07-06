@@ -1064,8 +1064,8 @@ export default function Home() {
               <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
                 演習の土台は、ノビットのために書き下ろした
                 <strong className="font-bold text-[#0b1d4a]">公式教材</strong>。
-                いまは数学を先行公開し、物理・化学・英語など各分野へ
-                <strong className="font-bold text-[#0b1d4a]">順次拡大中</strong>。
+                数学（ⅠA・ⅡBC・ⅢC）に加えて、化学標準・英語長文・英文法まで
+                <strong className="font-bold text-[#0b1d4a]">毎日演習の形で公開中</strong>。
                 さらに開発者が制作する
                 <strong className="font-bold text-[#0b1d4a]">『考える力を育てる』シリーズ（全16冊）</strong>
                 も演習に活用します。
@@ -1075,7 +1075,7 @@ export default function Home() {
               <ul className="mt-6 grid gap-2 text-[0.92rem] leading-[1.85] text-[#334155]">
                 {[
                   "ノビット公式教材で、記述前提の演習を毎日積む",
-                  "公式教材は各分野で続々制作中（数学 → 物理・化学・英語…）",
+                  "数学・化学・英語の公式教材を、表紙つきで確認できる",
                   "『考える力を育てる』シリーズ16冊も演習に活用できる",
                 ].map((t) => (
                   <li key={t} className="flex gap-2.5">
@@ -1132,7 +1132,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* ノビット公式教材（先行公開：数学。各分野へ拡大予定） */}
+          {/* ノビット公式教材 */}
           <div className="mt-16 sm:mt-20">
             <div className="mx-auto max-w-3xl text-center">
               <p className="inline-flex items-center gap-1.5 rounded-full bg-[#0b1d4a] px-3 py-1 text-[0.68rem] font-extrabold tracking-[0.08em] text-white">
@@ -1142,13 +1142,13 @@ export default function Home() {
                 演習の土台は、公式教材から。
               </h3>
               <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569]">
-                ノビットのために書き下ろした公式教材。まずは
-                <strong className="font-bold text-[#0b1d4a]">数学（ⅠA・ⅡBC・ⅢC）</strong>
-                を公開中で、<strong className="font-bold text-[#0b1d4a]">物理・化学・英語など各分野へ順次拡大</strong>していきます。
+                ノビットのために書き下ろした公式教材。
+                <strong className="font-bold text-[#0b1d4a]">数学（ⅠA・ⅡBC・ⅢC）・化学標準・英語長文・英文法</strong>
+                まで、毎日の演習と添削に合わせて使える形でそろえています。
               </p>
             </div>
 
-            <ul className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-3">
+            <ul className="mx-auto mt-10 grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {officialBooks.map((b) => (
                 <li key={b.asin}>
                   <a
@@ -1158,7 +1158,7 @@ export default function Home() {
                     className="group/book flex h-full flex-col rounded-[16px] bg-[#f8fafc] p-4 ring-1 ring-[rgba(15,29,74,0.08)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-34px_rgba(11,29,74,0.45)]"
                   >
                     <div className="relative overflow-hidden rounded-[10px] bg-[#0b1d4a] shadow-[0_18px_30px_-18px_rgba(11,29,74,0.55)]">
-                      <span className="absolute left-2 top-2 z-10 rounded-full bg-[#16a34a] px-2 py-0.5 text-[0.6rem] font-extrabold text-white shadow-[0_6px_12px_-6px_rgba(22,163,74,0.8)]">
+                      <span className="absolute left-2 top-2 z-10 rounded-full px-2 py-0.5 text-[0.6rem] font-extrabold text-white shadow-[0_6px_12px_-6px_rgba(15,29,74,0.45)]" style={{ background: b.accent }}>
                         {b.subject}
                       </span>
                       <picture>
@@ -1189,7 +1189,7 @@ export default function Home() {
 
             <ul className="mx-auto mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-[0.74rem] font-semibold text-[#64748b]">
               <li className="text-[#475569]">続々制作中：</li>
-              {["物理 基礎・標準・発展", "化学基礎・化学", "英語長文・英文法"].map((s) => (
+              {["物理 基礎・標準・発展", "化学基礎"].map((s) => (
                 <li
                   key={s}
                   className="rounded-full bg-white px-3 py-1 text-[#94a3b8] ring-1 ring-dashed ring-[rgba(15,29,74,0.15)]"

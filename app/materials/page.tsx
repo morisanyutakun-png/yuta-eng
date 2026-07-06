@@ -15,8 +15,8 @@ import { createBreadcrumbJsonLd } from "@/lib/structured-data";
 export const metadata: Metadata = createPageMetadata({
   title: "教材｜ノビット公式教材と『考える力を育てる』シリーズ",
   description:
-    "ノビットスタディの教材を詳しく紹介。毎日の演習の土台となるノビット公式教材（数学ⅠA・ⅡBC・ⅢC 標準演習、各分野へ拡大中）と、開発者が刊行する『考える力を育てる』シリーズ全16冊。理解で解く設計思想と、実際の演習本ページも掲載しています。",
-  keywords: ["ノビット公式教材", "考える力を育てる 森祐太", "高校物理 教材", "数学 標準演習 問題集"],
+    "ノビットスタディの教材を詳しく紹介。毎日の演習の土台となるノビット公式教材（数学ⅠA・ⅡBC・ⅢC、化学標準、英語長文、英文法）と、開発者が制作する『考える力を育てる』シリーズ全16冊。理解で解く設計思想と、実際の演習本ページも掲載しています。",
+  keywords: ["ノビット公式教材", "考える力を育てる 森祐太", "高校物理 教材", "数学 標準演習 問題集", "化学 標準", "英語長文", "英文法"],
   path: "/materials",
 });
 
@@ -143,18 +143,18 @@ export default function MaterialsPage() {
               ノビット公式教材
             </p>
             <h2 className="mt-4 text-[1.6rem] font-extrabold leading-[1.4] sm:text-[2rem]">
-              まずは数学から。各分野へ拡大中。
+              数学・化学・英語まで、毎日演習の土台を用意。
             </h2>
             <p className="mt-4 text-[0.95rem] leading-[1.95] text-white/80">
-              ノビットのために書き下ろした公式教材。数学（ⅠA・ⅡBC・ⅢC）を公開中で、物理・化学・英語など各分野へ順次拡大していきます。
+              ノビットのために書き下ろした公式教材。数学（ⅠA・ⅡBC・ⅢC）に加えて、化学標準・英語長文・英文法も、毎日の添削に合わせて使える形でそろえています。
             </p>
           </div>
-          <ul className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-3">
+          <ul className="mx-auto mt-10 grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {officialBooks.map((b) => (
               <li key={b.asin}>
                 <a href={`https://www.amazon.co.jp/dp/${b.asin}`} target="_blank" rel="noreferrer noopener" className="group flex h-full flex-col rounded-[16px] bg-white p-4 ring-1 ring-[rgba(15,29,74,0.08)] transition hover:-translate-y-1 hover:shadow-[0_28px_50px_-34px_rgba(11,29,74,0.45)]">
                   <div className="relative overflow-hidden rounded-[10px] bg-[#0b1d4a] shadow-[0_18px_30px_-18px_rgba(11,29,74,0.55)]">
-                    <span className="absolute left-2 top-2 z-10 rounded-full bg-[#16a34a] px-2 py-0.5 text-[0.6rem] font-extrabold text-white">{b.subject}</span>
+                    <span className="absolute left-2 top-2 z-10 rounded-full px-2 py-0.5 text-[0.6rem] font-extrabold text-white" style={{ background: b.accent }}>{b.subject}</span>
                     <picture>
                       <source type="image/avif" srcSet={`/books/${b.asin}.avif`} />
                       <source type="image/webp" srcSet={`/books/${b.asin}.webp`} />
@@ -170,7 +170,7 @@ export default function MaterialsPage() {
           </ul>
           <ul className="mx-auto mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-[0.74rem] font-semibold">
             <li className="text-white/70">続々制作中：</li>
-            {["物理 基礎・標準・発展", "化学基礎・化学", "英語長文・英文法"].map((s) => (
+            {["物理 基礎・標準・発展", "化学基礎"].map((s) => (
               <li key={s} className="rounded-full bg-white/[0.08] px-3 py-1 text-white/70 ring-1 ring-dashed ring-white/25">{s}（準備中）</li>
             ))}
           </ul>
@@ -288,7 +288,7 @@ export default function MaterialsPage() {
             <ul className="mt-8 grid gap-3">
               {[
                 { q: "教材は別で買う必要がありますか？", a: "いいえ。毎日の演習に使うノビット公式教材はサービスに含まれ、教材費は0円です。学習は公式教材を中心に進めます（市販書籍は、さらに演習したい方向けの任意の選択肢です）。" },
-                { q: "どの科目の公式教材がありますか？", a: "現在は数学（ⅠA・ⅡBC・ⅢC）の標準演習を公開しています。物理（基礎・標準・発展）／化学基礎・化学／英語長文・英文法など、各分野へ順次拡大していきます。" },
+                { q: "どの科目の公式教材がありますか？", a: "数学（ⅠA・ⅡBC・ⅢC）の標準演習に加えて、化学標準、英語長文、英文法を公開しています。物理（基礎・標準・発展）や化学基礎も、サービス内の演習として順次整えていきます。" },
                 { q: "レベルはどのくらいですか？", a: "基礎から入試標準までをカバーします。段階的に難易度が上がる設計なので、苦手からでも積み上げられ、難関大・名大の記述対策まで対応します。" },
                 { q: "市販の『考える力を育てる』シリーズとの違いは？", a: "公式教材はノビットのために書き下ろした毎日演習用の教材、『考える力を育てる』シリーズは開発者が制作する市販書籍です。どちらも同じ設計思想で、あわせて演習に活用できます。" },
               ].map((item) => (
