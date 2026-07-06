@@ -48,7 +48,6 @@ export default async function ApplyCompletePage({
               <h1 className="mt-7 text-[1.75rem] font-extrabold leading-[1.25] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.15rem]">
                 お待ちください
               </h1>
-              <span className="sr-only">アプリの設定画面へ移動しています。</span>
             </div>
           </div>
         </Container>
