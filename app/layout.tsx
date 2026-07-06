@@ -153,11 +153,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className={`h-full antialiased ${displayFont.variable}`}>
-      <head />
-      <body className="flex min-h-full flex-col">
+      <head>
         {GA_MEASUREMENT_ID ? (
           <GoogleAnalyticsLoader measurementId={GA_MEASUREMENT_ID} />
         ) : null}
+      </head>
+      <body className="flex min-h-full flex-col">
         <JsonLd data={createWebsiteJsonLd()} />
         <JsonLd data={createOrganizationJsonLd()} />
         <JsonLd data={createPersonJsonLd()} />
