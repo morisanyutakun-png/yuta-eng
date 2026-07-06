@@ -32,8 +32,15 @@ export async function forwardRegistration(registration: Registration) {
         ...(process.env.NOBIT_REGISTER_SECRET
           ? { "x-nobit-secret": process.env.NOBIT_REGISTER_SECRET }
           : {}),
+        ...(process.env.NOBIT_APP_VERCEL_BYPASS_SECRET
+          ? {
+              "x-vercel-protection-bypass":
+                process.env.NOBIT_APP_VERCEL_BYPASS_SECRET,
+            }
+          : {}),
       },
       body: JSON.stringify(registration),
+      redirect: "manual",
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "request failed";
@@ -45,6 +52,16 @@ export async function forwardRegistration(registration: Registration) {
 
   if (res.status === 409) {
     return { status: res.status };
+  }
+
+  if (res.status >= 300 && res.status < 400) {
+    const location = res.headers.get("location");
+    throw new RegistrationForwardError(
+      `management system redirected ${res.status}${
+        location ? ` to ${location}` : ""
+      }`,
+      502,
+    );
   }
 
   if (!res.ok) {

@@ -58,6 +58,7 @@ STRIPE_WEBHOOK_SECRET=whsec_xxx         # Webhook 署名シークレット
 NOBIT_APP_URL=...                       # ノビットスタディ アプリ URL（決済後の戻り先 /setup）
 NOBIT_REGISTER_WEBHOOK_URL=...          # 支払い完了データの連携先（アプリの provision）
 NOBIT_REGISTER_SECRET=...               # 連携の共有シークレット（送信ヘッダ／照会APIの認証）
+# NOBIT_APP_VERCEL_BYPASS_SECRET=...     # アプリ側Vercel保護をWebhookだけ通す場合
 ```
 
 ## 申し込み・決済の流れ（Stripe）
@@ -98,6 +99,10 @@ Stripe の再試行に任せます。
    ユーザーがタブを閉じても確実にログインできる導線になり、ログも残る。
    Webhook 連携が失敗した場合は Stripe に失敗レスポンスを返し、Stripe の再試行に
    任せる。既に登録済みを表す `409` は成功扱い。
+   Vercel Deployment Protection がアプリ側に有効な場合、Webhook は
+   `NOBIT_APP_VERCEL_BYPASS_SECRET` を設定して `x-vercel-protection-bypass`
+   ヘッダで通す。ただし購入者が開く `/setup` はヘッダを付けられないため、
+   本番アプリURLは公開ドメインにするか、Production の保護を外す。
 
    既存の決済を再連携する場合：
 
