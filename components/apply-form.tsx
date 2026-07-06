@@ -26,7 +26,7 @@ type MaterialProfile = {
 
 const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
   "physics-basic": {
-    title: "高校物理 基礎教材",
+    title: "高校物理 入門演習",
     level: "基礎",
     target: "物理が苦手・初学者・共通テスト導入",
     coverage: "力学・熱・波動・電磁気・原子まで全分野収録。公式の意味と立式の土台を固めます。",
@@ -36,7 +36,7 @@ const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
     },
   },
   physics: {
-    title: "高校物理 標準教材",
+    title: "高校物理 標準演習",
     level: "標準",
     target: "共通テスト-国公立二次標準",
     coverage: "力学・熱・波動・電磁気・原子まで全分野収録。入試標準レベルを分野横断で鍛えます。",
@@ -46,7 +46,7 @@ const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
     },
   },
   "physics-advanced": {
-    title: "高校物理 発展教材",
+    title: "高校物理 発展演習",
     level: "発展",
     target: "難関大・記述対策",
     coverage: "力学・熱・波動・電磁気・原子まで全分野収録。応用問題で答案の組み立てを磨きます。",
@@ -56,46 +56,70 @@ const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
     },
   },
   "chemistry-basic": {
-    title: "化学基礎 全分野演習教材",
+    title: "化学基礎 全分野演習",
     level: "基礎",
     target: "高1-高2・共通テスト導入",
     coverage: "化学基礎の全分野を収録。物質量・酸塩基・酸化還元まで一通り確認します。",
   },
   chemistry: {
-    title: "高校化学 全分野演習教材",
-    level: "基礎-入試標準",
+    title: "ノビットの化学 標準",
+    level: "標準",
     target: "高2-受験生・理系化学",
     coverage: "理論・無機・有機・高分子まで全分野収録。計算過程と知識の使い方を添削で整えます。",
+    cover: {
+      asin: "B0H7RHT1NF",
+      alt: "ノビットの化学 標準の教材表紙",
+    },
   },
   "math-1a": {
-    title: "数学I・A 標準演習教材",
+    title: "ノビットの数学ⅠA 標準演習",
     level: "基礎-標準",
     target: "高1-受験基礎",
     coverage: "数と式・二次関数・三角比・場合の数など、数学I・Aの主要範囲を答案の型まで練習します。",
+    cover: {
+      asin: "B0H6ZRPLVJ",
+      alt: "ノビットの数学ⅠA 標準演習の教材表紙",
+    },
   },
   "math-2bc": {
-    title: "数学II・B・C 標準演習教材",
+    title: "ノビットの数学ⅡBC 標準演習",
     level: "標準",
     target: "高2-受験基礎",
     coverage: "数学II・B・Cの主要範囲を、途中式で伝わる答案づくりまで練習します。",
+    cover: {
+      asin: "B0H71TQJYY",
+      alt: "ノビットの数学ⅡBC 標準演習の教材表紙",
+    },
   },
   "math-3c": {
-    title: "数学III・C 標準演習教材",
+    title: "ノビットの数学ⅢC 標準演習",
     level: "標準-発展導入",
     target: "理系受験生",
     coverage: "極限・微積分・複素数平面など、理系入試につながる範囲を段階的に積みます。",
+    cover: {
+      asin: "B0H724CBBT",
+      alt: "ノビットの数学ⅢC 標準演習の教材表紙",
+    },
   },
   "english-reading": {
-    title: "英語長文 毎日読解教材",
+    title: "ノビットの英語・長文 Standard",
     level: "基礎-標準",
     target: "高1-受験基礎",
     coverage: "文構造・根拠・設問処理を押さえながら、読み方を毎日添削で整えます。",
+    cover: {
+      asin: "B0H7LPFKN1",
+      alt: "ノビットの英語・長文 Standardの教材表紙",
+    },
   },
   "english-grammar": {
-    title: "英文法 毎日演習教材",
+    title: "ノビットの英語・文法 Standard",
     level: "基礎-標準",
     target: "高校英文法の総点検",
     coverage: "高校英文法の主要事項を小さく確認し、英作文や読解に使える形にします。",
+    cover: {
+      asin: "B0H7LQW2W8",
+      alt: "ノビットの英語・文法 Standardの教材表紙",
+    },
   },
 };
 
