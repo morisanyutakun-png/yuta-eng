@@ -31,25 +31,35 @@ export default async function ApplyCompletePage({
     setupRequested && appUrl && sessionId
       ? `${appUrl}/setup?session_id=${encodeURIComponent(sessionId)}`
       : null;
+  const isRedirectingToSetup = Boolean(setupHref);
 
   return (
     <section className="bg-[linear-gradient(180deg,#ffffff_0%,#eef6f6_100%)]">
       <PurchaseEventTracker sessionId={sessionId} redirectUrl={setupHref} />
       <Container className="px-6">
         <div className="mx-auto flex max-w-xl flex-col items-center py-20 text-center sm:py-28">
-          <span className="grid h-16 w-16 place-items-center rounded-full bg-[#16a34a] text-[1.8rem] text-white shadow-[0_18px_30px_-14px_rgba(22,163,74,0.6)]">
-            ✓
-          </span>
+          {isRedirectingToSetup ? (
+            <span className="relative grid h-16 w-16 place-items-center rounded-full bg-[#0b1d4a] text-white shadow-[0_18px_30px_-14px_rgba(11,29,74,0.55)]">
+              <span className="absolute inset-0 rounded-full border-2 border-[#7dd3fc]/45 border-t-white animate-spin" />
+              <span className="h-2.5 w-2.5 rounded-full bg-white" />
+            </span>
+          ) : (
+            <span className="grid h-16 w-16 place-items-center rounded-full bg-[#16a34a] text-[1.8rem] text-white shadow-[0_18px_30px_-14px_rgba(22,163,74,0.6)]">
+              ✓
+            </span>
+          )}
           <h1 className="mt-6 text-[1.8rem] font-extrabold leading-[1.3] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.2rem]">
-            お申し込み、ありがとうございます！
+            {isRedirectingToSetup ? "アプリの設定画面へ移動しています" : "お申し込み、ありがとうございます！"}
           </h1>
           <p className="mt-5 text-[0.98rem] leading-[1.95] text-[#334155]">
-            決済が完了しました。ご登録のメールアドレス宛に、公式アプリ「ノビットスタディ」の
-            ご案内とログイン情報をお送りします。届かない場合は迷惑メールフォルダもご確認ください。
-            {setupHref ? " このあと公式アプリの設定画面へ移動します。" : ""}
+            {isRedirectingToSetup
+              ? "決済の確認が完了しました。ログイン情報の発行を進めていますので、このまま少しだけお待ちください。"
+              : "決済が完了しました。ご登録のメールアドレス宛に、公式アプリ「ノビットスタディ」のご案内とログイン情報をお送りします。届かない場合は迷惑メールフォルダもご確認ください。"}
           </p>
           <div className="mt-5 rounded-[16px] bg-white px-6 py-4 text-[0.86rem] leading-[1.8] text-[#475569] ring-1 ring-[rgba(15,29,74,0.08)]">
-            買い切りのお申し込みです。自動更新や継続課金はありません。教材は、1教材につき約100日分の課題と毎日の添削を順次お届けします。
+            {isRedirectingToSetup
+              ? "数秒でノビットスタディの初期設定画面が開きます。切り替わらない場合は、下のボタンから進めます。"
+              : "買い切りのお申し込みです。自動更新や継続課金はありません。教材は、1教材につき約100日分の課題と毎日の添削を順次お届けします。"}
           </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             {setupHref ? (
