@@ -18,7 +18,10 @@ type MaterialProfile = {
   level: string;
   target: string;
   coverage: string;
-  note?: string;
+  cover?: {
+    asin: string;
+    alt: string;
+  };
 };
 
 const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
@@ -27,21 +30,30 @@ const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
     level: "基礎",
     target: "物理が苦手・初学者・共通テスト導入",
     coverage: "力学・熱・波動・電磁気・原子まで全分野収録。公式の意味と立式の土台を固めます。",
-    note: "KDPの高校物理 入門演習に対応する基礎レベルです。",
+    cover: {
+      asin: "B0H4J34162",
+      alt: "高校物理 入門演習の教材表紙",
+    },
   },
   physics: {
     title: "高校物理 標準教材",
     level: "標準",
     target: "共通テスト-国公立二次標準",
     coverage: "力学・熱・波動・電磁気・原子まで全分野収録。入試標準レベルを分野横断で鍛えます。",
-    note: "KDPの高校物理 標準演習に対応する標準レベルです。",
+    cover: {
+      asin: "B0H3LLW1F2",
+      alt: "高校物理 標準演習の教材表紙",
+    },
   },
   "physics-advanced": {
     title: "高校物理 発展教材",
     level: "発展",
     target: "難関大・記述対策",
     coverage: "力学・熱・波動・電磁気・原子まで全分野収録。応用問題で答案の組み立てを磨きます。",
-    note: "KDPの高校物理 発展演習に対応する発展レベルです。",
+    cover: {
+      asin: "B0H639CPQW",
+      alt: "高校物理 発展演習の教材表紙",
+    },
   },
   "chemistry-basic": {
     title: "化学基礎 全分野演習教材",
@@ -211,26 +223,42 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                             ✓
                           </span>
                         </span>
-                        <span className="mt-3 block text-[1.03rem] font-extrabold leading-[1.45] text-[#0b1d4a]">
-                          {profile.title}
-                        </span>
-                        <span className="mt-2 flex flex-wrap gap-1.5">
-                          <span className="rounded-full bg-[#f1f5f9] px-2 py-1 text-[0.7rem] font-bold text-[#475569]">
-                            目安レベル：{profile.level}
+                        <span className={`mt-3 flex gap-3 ${profile.cover ? "items-start" : ""}`}>
+                          {profile.cover ? (
+                            <span className="block w-[4.7rem] shrink-0 overflow-hidden rounded-md bg-[#f8fafc] shadow-[0_16px_28px_-20px_rgba(11,29,74,0.7)] ring-1 ring-[rgba(15,29,74,0.08)]">
+                              <picture>
+                                <source type="image/avif" srcSet={`/books/${profile.cover.asin}.avif`} />
+                                <source type="image/webp" srcSet={`/books/${profile.cover.asin}.webp`} />
+                                <img
+                                  src={`/books/${profile.cover.asin}.webp`}
+                                  alt={profile.cover.alt}
+                                  width={320}
+                                  height={451}
+                                  loading="lazy"
+                                  decoding="async"
+                                  className="block aspect-[71/100] h-auto w-full object-cover"
+                                />
+                              </picture>
+                            </span>
+                          ) : null}
+                          <span className="block min-w-0 flex-1">
+                            <span className="block text-[1.03rem] font-extrabold leading-[1.45] text-[#0b1d4a]">
+                              {profile.title}
+                            </span>
+                            <span className="mt-2 flex flex-wrap gap-1.5">
+                              <span className="rounded-full bg-[#f1f5f9] px-2 py-1 text-[0.7rem] font-bold text-[#475569]">
+                                目安レベル：{profile.level}
+                              </span>
+                              <span className="rounded-full bg-[#fff7ed] px-2 py-1 text-[0.7rem] font-bold text-[#9a3412]">
+                                {profile.target}
+                              </span>
+                            </span>
+                            <span className="mt-3 block text-[0.78rem] leading-[1.7] text-[#64748b]">
+                              <span className="font-bold text-[#334155]">収録範囲：</span>
+                              {profile.coverage}
+                            </span>
                           </span>
-                          <span className="rounded-full bg-[#fff7ed] px-2 py-1 text-[0.7rem] font-bold text-[#9a3412]">
-                            {profile.target}
-                          </span>
                         </span>
-                        <span className="mt-3 block text-[0.78rem] leading-[1.7] text-[#64748b]">
-                          <span className="font-bold text-[#334155]">収録範囲：</span>
-                          {profile.coverage}
-                        </span>
-                        {profile.note ? (
-                          <span className="mt-2 block text-[0.72rem] font-semibold leading-[1.65] text-[#1d4ed8]">
-                            {profile.note}
-                          </span>
-                        ) : null}
                       </button>
                     );
                   })}

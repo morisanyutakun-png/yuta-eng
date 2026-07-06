@@ -240,7 +240,7 @@ export default function MaterialsPage() {
               『考える力を育てる』シリーズ（全16冊）
             </h2>
             <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569]">
-              公式教材に加え、開発者が KDP で刊行するこのシリーズも演習に活用できます。
+              公式教材に加え、開発者が制作するこのシリーズも演習に活用できます。
               <strong className="font-bold text-[#0b1d4a]">理論・演習・入試対策・総まとめ</strong>まで、学びはじめから合格までを切れ目なく支えます。
             </p>
           </div>
@@ -260,7 +260,7 @@ export default function MaterialsPage() {
                           <picture>
                             <source type="image/avif" srcSet={`/books/${b.asin}.avif`} />
                             <source type="image/webp" srcSet={`/books/${b.asin}.webp`} />
-                            <img src={`/books/${b.asin}.webp`} alt={`考える力を育てる ${b.title}（森祐太・KDP）の表紙`} width={320} height={451} loading="lazy" decoding="async" className="block aspect-[71/100] h-auto w-full object-cover" />
+                            <img src={`/books/${b.asin}.webp`} alt={`考える力を育てる ${b.title}（森祐太）の表紙`} width={320} height={451} loading="lazy" decoding="async" className="block aspect-[71/100] h-auto w-full object-cover" />
                           </picture>
                         </div>
                         <p className="mt-2.5 text-[0.84rem] font-bold leading-[1.4] text-[#0b1d4a] transition group-hover:text-[#0f766e]">{b.title}</p>
@@ -287,10 +287,10 @@ export default function MaterialsPage() {
             </div>
             <ul className="mt-8 grid gap-3">
               {[
-                { q: "教材は別で買う必要がありますか？", a: "いいえ。毎日の演習に使うノビット公式教材はサービスに含まれ、教材費は0円です。学習は公式教材を中心に進めます（KDPの市販書籍は、さらに演習したい方向けの任意の選択肢です）。" },
+                { q: "教材は別で買う必要がありますか？", a: "いいえ。毎日の演習に使うノビット公式教材はサービスに含まれ、教材費は0円です。学習は公式教材を中心に進めます（市販書籍は、さらに演習したい方向けの任意の選択肢です）。" },
                 { q: "どの科目の公式教材がありますか？", a: "現在は数学（ⅠA・ⅡBC・ⅢC）の標準演習を公開しています。物理（基礎・標準・発展）／化学基礎・化学／英語長文・英文法など、各分野へ順次拡大していきます。" },
                 { q: "レベルはどのくらいですか？", a: "基礎から入試標準までをカバーします。段階的に難易度が上がる設計なので、苦手からでも積み上げられ、難関大・名大の記述対策まで対応します。" },
-                { q: "市販の『考える力を育てる』シリーズとの違いは？", a: "公式教材はノビットのために書き下ろした毎日演習用の教材、『考える力を育てる』シリーズは開発者がKDPで刊行する書籍です。どちらも同じ設計思想で、あわせて演習に活用できます。" },
+                { q: "市販の『考える力を育てる』シリーズとの違いは？", a: "公式教材はノビットのために書き下ろした毎日演習用の教材、『考える力を育てる』シリーズは開発者が制作する市販書籍です。どちらも同じ設計思想で、あわせて演習に活用できます。" },
               ].map((item) => (
                 <li key={item.q} className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
                   <p className="flex items-start gap-2.5 text-[1rem] font-bold leading-[1.6] text-[#0b1d4a]">

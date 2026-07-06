@@ -1066,7 +1066,7 @@ export default function Home() {
                 <strong className="font-bold text-[#0b1d4a]">公式教材</strong>。
                 いまは数学を先行公開し、物理・化学・英語など各分野へ
                 <strong className="font-bold text-[#0b1d4a]">順次拡大中</strong>。
-                さらに開発者が KDP で刊行する
+                さらに開発者が制作する
                 <strong className="font-bold text-[#0b1d4a]">『考える力を育てる』シリーズ（全16冊）</strong>
                 も演習に活用します。
                 <strong className="font-bold text-[#0b1d4a]">教材が豊富だから、毎日の演習に困りません。</strong>
@@ -1076,7 +1076,7 @@ export default function Home() {
                 {[
                   "ノビット公式教材で、記述前提の演習を毎日積む",
                   "公式教材は各分野で続々制作中（数学 → 物理・化学・英語…）",
-                  "KDP『考える力を育てる』シリーズ16冊も演習に活用できる",
+                  "『考える力を育てる』シリーズ16冊も演習に活用できる",
                 ].map((t) => (
                   <li key={t} className="flex gap-2.5">
                     <span aria-hidden="true" className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d9488]" />
@@ -1210,8 +1210,8 @@ export default function Home() {
                 『考える力を育てる』シリーズ（全16冊）
               </h3>
               <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569]">
-                公式教材に加え、開発者が KDP で刊行するこのシリーズも演習に活用できます。
-                <strong className="font-bold text-[#0b1d4a]">理論・演習・入試対策・総まとめ</strong>まで、学びはじめから合格までを切れ目なく支えます。各表紙から Amazon（KDP）の商品ページへ。
+                公式教材に加え、開発者が制作するこのシリーズも演習に活用できます。
+                <strong className="font-bold text-[#0b1d4a]">理論・演習・入試対策・総まとめ</strong>まで、学びはじめから合格までを切れ目なく支えます。各表紙から Amazon の商品ページへ。
               </p>
             </div>
 
@@ -1242,7 +1242,7 @@ export default function Home() {
                               <source type="image/webp" srcSet={`/books/${b.asin}.webp`} />
                               <img
                                 src={`/books/${b.asin}.webp`}
-                                alt={`考える力を育てる ${b.title}（森祐太・KDP）の表紙`}
+                                alt={`考える力を育てる ${b.title}（森祐太）の表紙`}
                                 width={320}
                                 height={451}
                                 loading="lazy"

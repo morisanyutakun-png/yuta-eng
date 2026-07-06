@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = createPageMetadata({
   title: "塾について｜塾長・森 祐太と、ノビットスタディの考え方",
   description:
-    "ノビットスタディ 中高部の塾長・森 祐太のプロフィールと、塾の考え方。名古屋大学 工学部 電気電子情報系で学び、応用情報技術者を取得。KDP で『考える力を育てる高校物理』シリーズを刊行する教材開発者が、高校物理・数学・英語の記述答案を毎日添削します。面談や授業は行わない、添削専門の学習管理塾です。",
+    "ノビットスタディ 中高部の塾長・森 祐太のプロフィールと、塾の考え方。名古屋大学 工学部 電気電子情報系で学び、応用情報技術者を取得。『考える力を育てる高校物理』シリーズを制作する教材開発者が、高校物理・数学・英語の記述答案を毎日添削します。面談や授業は行わない、添削専門の学習管理塾です。",
   keywords: [
     "森 祐太",
     "ノビットスタディ 塾長",
@@ -52,8 +52,8 @@ const expertise = [
   },
   {
     label: "Materials",
-    title: "教材開発 / KDP 刊行",
-    body: "『考える力を育てる高校物理』シリーズを KDP で刊行。市販教材と同じ設計思想で、ノビット公式演習本を制作しています。",
+    title: "教材開発 / 市販教材",
+    body: "『考える力を育てる高校物理』シリーズを制作。市販教材と同じ設計思想で、ノビット公式演習本を制作しています。",
   },
   {
     label: "Marking",
@@ -128,7 +128,7 @@ export default function AboutPage() {
               >
                 <strong className="font-bold text-[#0b1d4a]">{siteConfig.author}</strong> は、
                 <strong className="font-bold text-[#0b1d4a]">名古屋大学 工学部 電気電子情報系</strong> で学んだ理系教育者です。
-                KDP で <strong className="font-bold text-[#0b1d4a]">『考える力を育てる高校物理』シリーズ</strong> を刊行し、
+                <strong className="font-bold text-[#0b1d4a]">『考える力を育てる高校物理』シリーズ</strong> を制作し、
                 その設計思想をそのままノビット公式演習本へ。高校物理を中心に、記述答案を毎日添削しています。
               </p>
 
@@ -152,7 +152,7 @@ export default function AboutPage() {
               </div>
 
               <ul className="mt-5 flex flex-wrap gap-2">
-                {["応用情報技術者", "KDP 教材開発", "高校物理 添削"].map((c) => (
+                {["応用情報技術者", "教材開発", "高校物理 添削"].map((c) => (
                   <li
                     key={c}
                     className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[0.78rem] font-semibold text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.1)]"
@@ -209,7 +209,7 @@ export default function AboutPage() {
                   rel="noreferrer noopener"
                   className="mt-6 inline-flex w-full min-h-12 items-center justify-center gap-2 rounded-full bg-[#0b1d4a] text-[0.92rem] font-bold tracking-[0.02em] text-white transition hover:bg-[#0f5e5e]"
                 >
-                  KDP の物理教材を見る <span aria-hidden="true">↗</span>
+                  物理教材を見る <span aria-hidden="true">↗</span>
                 </a>
               </div>
             </aside>
