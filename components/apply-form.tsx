@@ -17,63 +17,66 @@ type MaterialProfile = {
   title: string;
   level: string;
   target: string;
-  focus: string;
+  coverage: string;
+  note?: string;
 };
 
 const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
   "physics-basic": {
-    title: "物理基礎 毎日演習教材",
-    level: "基礎-標準",
+    title: "物理基礎 全分野演習教材",
+    level: "基礎",
     target: "高1-高2・共通テスト導入",
-    focus: "力学・波・電気の土台を、図と言葉で固める教材です。",
+    coverage: "物理基礎の全分野を収録。高校物理へつながる土台を毎日演習で固めます。",
+    note: "KDPの基礎（入門）・標準・発展教材へ接続できる設計です。",
   },
   physics: {
-    title: "物理 標準演習教材",
-    level: "標準-入試基礎",
-    target: "高2-受験生・理系基礎固め",
-    focus: "力学・電磁気を中心に、式の意味まで答案に残す練習をします。",
+    title: "高校物理 全分野演習教材",
+    level: "基礎・標準・発展",
+    target: "高2-受験生・難関大対策まで",
+    coverage: "力学・熱・波動・電磁気・原子まで全分野収録。分野を絞らず入試物理全体を扱います。",
+    note: "KDPの基礎（入門）・標準・発展・無双（全分野）を踏まえた教材設計です。",
   },
   "chemistry-basic": {
-    title: "化学基礎 毎日演習教材",
-    level: "基礎-標準",
+    title: "化学基礎 全分野演習教材",
+    level: "基礎",
     target: "高1-高2・共通テスト導入",
-    focus: "物質量・酸塩基・酸化還元を、毎日サイズで確認します。",
+    coverage: "化学基礎の全分野を収録。物質量・酸塩基・酸化還元まで一通り確認します。",
   },
   chemistry: {
-    title: "化学 標準演習教材",
-    level: "標準-入試基礎",
-    target: "高2-受験生・理系基礎固め",
-    focus: "理論化学を軸に、計算過程と知識の使い方を添削で整えます。",
+    title: "高校化学 全分野演習教材",
+    level: "基礎-入試標準",
+    target: "高2-受験生・理系化学",
+    coverage: "理論・無機・有機・高分子まで全分野収録。計算過程と知識の使い方を添削で整えます。",
   },
   "math-1a": {
     title: "数学I・A 標準演習教材",
     level: "基礎-標準",
     target: "高1-受験基礎",
-    focus: "数と式・二次関数・三角比・場合の数を、答案の型まで練習します。",
+    coverage: "数と式・二次関数・三角比・場合の数など、数学I・Aの主要範囲を答案の型まで練習します。",
   },
   "math-2bc": {
     title: "数学II・B・C 標準演習教材",
     level: "標準",
     target: "高2-受験基礎",
-    focus: "微積・数列・ベクトルを中心に、途中式で伝わる答案を作ります。",
+    coverage: "数学II・B・Cの主要範囲を、途中式で伝わる答案づくりまで練習します。",
   },
   "math-3c": {
     title: "数学III・C 標準演習教材",
     level: "標準-発展導入",
     target: "理系受験生",
-    focus: "極限・微積分・複素数平面を、理系入試につながる形で積みます。",
+    coverage: "極限・微積分・複素数平面など、理系入試につながる範囲を段階的に積みます。",
   },
   "english-reading": {
     title: "英語長文 毎日読解教材",
     level: "基礎-標準",
     target: "高1-受験基礎",
-    focus: "文構造と根拠を押さえながら、読み方を毎日添削で整えます。",
+    coverage: "文構造・根拠・設問処理を押さえながら、読み方を毎日添削で整えます。",
   },
   "english-grammar": {
     title: "英文法 毎日演習教材",
     level: "基礎-標準",
     target: "高校英文法の総点検",
-    focus: "文法事項を小さく確認し、英作文や読解に使える形にします。",
+    coverage: "高校英文法の主要事項を小さく確認し、英作文や読解に使える形にします。",
   },
 };
 
@@ -82,7 +85,7 @@ function getMaterialProfile(subject: (typeof SUBJECTS)[number]) {
     title: `${subject.label} 教材`,
     level: "標準",
     target: "高校生",
-    focus: "毎日サイズの演習と添削で、答案を整える教材です。",
+    coverage: "毎日サイズの演習と添削で、答案を整える教材です。",
   };
 }
 
@@ -170,7 +173,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                         type="button"
                         onClick={() => toggle(s.id)}
                         aria-pressed={on}
-                        className={`relative min-h-[11.25rem] rounded-lg p-4 text-left transition ${
+                        className={`relative min-h-[13.25rem] rounded-lg p-4 text-left transition ${
                           on
                             ? "bg-white shadow-[0_24px_42px_-30px_rgba(11,29,74,0.7)] ring-2"
                             : "bg-white text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.1)] hover:-translate-y-0.5 hover:ring-[rgba(15,29,74,0.24)]"
@@ -213,8 +216,14 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                           </span>
                         </span>
                         <span className="mt-3 block text-[0.78rem] leading-[1.7] text-[#64748b]">
-                          {profile.focus}
+                          <span className="font-bold text-[#334155]">収録範囲：</span>
+                          {profile.coverage}
                         </span>
+                        {profile.note ? (
+                          <span className="mt-2 block text-[0.72rem] font-semibold leading-[1.65] text-[#1d4ed8]">
+                            {profile.note}
+                          </span>
+                        ) : null}
                       </button>
                     );
                   })}
