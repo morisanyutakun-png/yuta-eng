@@ -5,6 +5,7 @@ import {
   forwardRegistration,
   RegistrationForwardError,
 } from "@/lib/registration-forwarding";
+import { sendGa4Purchase } from "@/lib/ga4";
 import { buildRegistration } from "@/lib/registration";
 
 export const runtime = "nodejs";
@@ -60,10 +61,12 @@ export async function POST(req: NextRequest) {
     }
 
     const forward = await forwardRegistration(registration);
+    const ga4 = await sendGa4Purchase(session);
 
     return Response.json({
       forwarded: true,
       forwardStatus: forward.status,
+      ga4,
       stripeSessionId: registration.stripeSessionId,
       email: registration.email,
     });

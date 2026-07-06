@@ -1,5 +1,7 @@
 import "server-only";
 
+import { createHash } from "node:crypto";
+
 import type Stripe from "stripe";
 
 const DEFAULT_GA_MEASUREMENT_ID = "G-W11S94CV6L";
@@ -22,6 +24,12 @@ export type PurchaseAnalytics = {
   value: number;
   currency: string;
   items: PurchaseAnalyticsItem[];
+};
+
+export type Ga4PurchaseResult = {
+  ok: boolean;
+  skipped?: string;
+  clientIdSource?: "metadata" | "fallback";
 };
 
 function splitMetadataList(value: string | undefined, separator: string) {
@@ -59,6 +67,22 @@ function measurementProtocolConsent() {
 
 function debugModeEnabled() {
   return process.env.GA4_DEBUG_MODE === "1";
+}
+
+function fallbackClientId(session: Stripe.Checkout.Session) {
+  const created = session.created || Math.floor(Date.now() / 1000);
+  const hash = createHash("sha256").update(session.id).digest("hex").slice(0, 8);
+  const tail = parseInt(hash, 16);
+  return `${created}.${tail.toString().padStart(10, "0")}`;
+}
+
+function gaClientId(session: Stripe.Checkout.Session) {
+  const metadataClientId = session.metadata?.ga_client_id?.trim();
+  if (metadataClientId) {
+    return { clientId: metadataClientId, source: "metadata" as const };
+  }
+
+  return { clientId: fallbackClientId(session), source: "fallback" as const };
 }
 
 export function ga4MeasurementId() {
@@ -126,7 +150,7 @@ export function buildPurchaseAnalytics(
 
 export async function sendGa4Purchase(
   session: Stripe.Checkout.Session,
-): Promise<{ ok: boolean; skipped?: string }> {
+): Promise<Ga4PurchaseResult> {
   const apiSecret =
     process.env.GA4_API_SECRET?.trim() ||
     process.env.GOOGLE_ANALYTICS_API_SECRET?.trim();
@@ -135,12 +159,7 @@ export async function sendGa4Purchase(
     return { ok: false, skipped: "missing_api_secret" };
   }
 
-  const clientId = session.metadata?.ga_client_id?.trim();
-  if (!clientId) {
-    console.warn("[ga4] ga_client_id がStripe metadataに無いため purchase 送信をスキップ");
-    return { ok: false, skipped: "missing_client_id" };
-  }
-
+  const { clientId, source: clientIdSource } = gaClientId(session);
   const purchase = buildPurchaseAnalytics(session);
   if (!purchase.paid) {
     return { ok: false, skipped: "unpaid" };
@@ -185,15 +204,17 @@ export async function sendGa4Purchase(
     if (!res.ok) {
       const body = (await res.text().catch(() => "")).slice(0, 300);
       console.error(`[ga4] purchase 送信失敗 status=${res.status} body=${body}`);
-      return { ok: false };
+      return { ok: false, clientIdSource };
     }
 
-    console.info(`[ga4] purchase 送信 transaction_id=${purchase.transactionId}`);
-    return { ok: true };
+    console.info(
+      `[ga4] purchase 送信 transaction_id=${purchase.transactionId} client_id_source=${clientIdSource}`,
+    );
+    return { ok: true, clientIdSource };
   } catch (err) {
     console.error(
       `[ga4] purchase 送信エラー: ${err instanceof Error ? err.message : "unknown"}`,
     );
-    return { ok: false };
+    return { ok: false, clientIdSource };
   }
 }

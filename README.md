@@ -137,7 +137,8 @@ Googleタグは全ページに読み込み、`send_page_view: false` で自動 p
 購入イベントは2段構えです。
 
 1. `POST /api/checkout` 時に、ブラウザの `_ga` Cookie から `ga_client_id` を取り出し、
-   Stripe Checkout Session の metadata に保存します。
+   Stripe Checkout Session の metadata に保存します。Cookie が取れない場合でも、
+   webhook 側で Stripe Session ID からフォールバック client_id を作り、purchase 自体は送信します。
 2. `POST /api/stripe/webhook` の `checkout.session.completed` 後、アプリへの登録連携が
    成功したら GA4 Measurement Protocol で `purchase` を送信します。
 
@@ -150,6 +151,10 @@ GA4の重複対策として `transaction_id` には Stripe Checkout Session ID �
 Measurement Protocol の `consent.ad_personalization` として送ります。
 DebugView で確認したい時だけ `GA4_DEBUG_MODE=1` / `NEXT_PUBLIC_GA_DEBUG_MODE=1`
 を設定します。通常運用では未設定のままで構いません。
+
+既存決済を再送したい場合は `/api/provision/replay` を使います。レスポンスの `ga4` が
+`ok: true` なら送信済み、`skipped: "missing_api_secret"` なら Vercel Production の
+`GA4_API_SECRET` が未設定です。
 
 Google Ads側は、GA4とGoogle Adsをリンクし、GA4の `purchase` をキーイベント/コンバージョン
 としてインポートする運用が基本です。Google Adsのイベントスニペットを直接使う場合だけ、
