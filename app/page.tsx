@@ -15,10 +15,8 @@ import {
   buyoutTotal,
   CAMPAIGN_DEADLINE_LABEL,
   formatYen,
-  isCampaignActive,
   listTotal,
   MATERIAL_PRICE,
-  PACK_UNIT_PRICE,
 } from "@/lib/pricing";
 import { createPageMetadata } from "@/lib/metadata";
 import {
@@ -1191,7 +1189,7 @@ export default function Home() {
 
             <ul className="mx-auto mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-[0.74rem] font-semibold text-[#64748b]">
               <li className="text-[#475569]">続々制作中：</li>
-              {["物理基礎・物理", "化学基礎・化学", "英語長文・英文法"].map((s) => (
+              {["物理 基礎・標準・発展", "化学基礎・化学", "英語長文・英文法"].map((s) => (
                 <li
                   key={s}
                   className="rounded-full bg-white px-3 py-1 text-[#94a3b8] ring-1 ring-dashed ring-[rgba(15,29,74,0.15)]"
@@ -1472,7 +1470,7 @@ export default function Home() {
                 <span className="text-[#fdba74]">{formatYen(MATERIAL_PRICE)}〜</span>。
               </h2>
               <p className="relative mx-auto mt-4 max-w-xl text-[0.98rem] leading-[1.9] text-white/85">
-                入会金・追加費用は0円。1教材＝約100日分の課題＋毎日添削込み。理系を中心に9教材から、やり切る分だけ選べます。
+                入会金・追加費用は0円。1教材＝約100日分の課題＋毎日添削込み。理系を中心に10教材から、やり切る分だけ選べます。
               </p>
               <p className="relative mt-6">
                 <span className="inline-flex -rotate-1 items-center gap-1.5 rounded-[12px] bg-[#f97316] px-4 py-2 text-[0.9rem] font-extrabold text-white shadow-[0_14px_28px_-14px_rgba(234,88,12,0.9)]">
@@ -1501,7 +1499,7 @@ export default function Home() {
                 申込ページで教材を選ぶと買い切り価格を自動計算。詳しい料金表・対応教材もそちらでご確認いただけます。
               </p>
               <p className="relative mt-2 text-[0.7rem] leading-[1.7] text-white/45">
-                物理基礎・物理・化学基礎・化学・数学IA・数学IIBC・数学IIIC・英語長文・英文法
+                物理 基礎・物理 標準・物理 発展・化学基礎・化学・数学IA・数学IIBC・数学IIIC・英語長文・英文法
               </p>
             </div>
           </div>

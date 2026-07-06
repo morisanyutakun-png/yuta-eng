@@ -23,18 +23,25 @@ type MaterialProfile = {
 
 const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
   "physics-basic": {
-    title: "物理基礎 全分野演習教材",
+    title: "高校物理 基礎教材",
     level: "基礎",
-    target: "高1-高2・共通テスト導入",
-    coverage: "物理基礎の全分野を収録。高校物理へつながる土台を毎日演習で固めます。",
-    note: "KDPの基礎（入門）・標準・発展教材へ接続できる設計です。",
+    target: "物理が苦手・初学者・共通テスト導入",
+    coverage: "力学・熱・波動・電磁気・原子まで全分野収録。公式の意味と立式の土台を固めます。",
+    note: "KDPの高校物理 入門演習に対応する基礎レベルです。",
   },
   physics: {
-    title: "高校物理 全分野演習教材",
-    level: "基礎・標準・発展",
-    target: "高2-受験生・難関大対策まで",
-    coverage: "力学・熱・波動・電磁気・原子まで全分野収録。分野を絞らず入試物理全体を扱います。",
-    note: "KDPの基礎（入門）・標準・発展・無双（全分野）を踏まえた教材設計です。",
+    title: "高校物理 標準教材",
+    level: "標準",
+    target: "共通テスト-国公立二次標準",
+    coverage: "力学・熱・波動・電磁気・原子まで全分野収録。入試標準レベルを分野横断で鍛えます。",
+    note: "KDPの高校物理 標準演習に対応する標準レベルです。",
+  },
+  "physics-advanced": {
+    title: "高校物理 発展教材",
+    level: "発展",
+    target: "難関大・記述対策",
+    coverage: "力学・熱・波動・電磁気・原子まで全分野収録。応用問題で答案の組み立てを磨きます。",
+    note: "KDPの高校物理 発展演習に対応する発展レベルです。",
   },
   "chemistry-basic": {
     title: "化学基礎 全分野演習教材",

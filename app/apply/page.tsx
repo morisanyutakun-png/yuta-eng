@@ -12,7 +12,7 @@ import { createBreadcrumbJsonLd, createOrganizationJsonLd } from "@/lib/structur
 export const metadata: Metadata = createPageMetadata({
   title: "料金・お申し込み｜教材を選んで買い切りではじめる",
   description:
-    "ノビットスタディ 中高部の料金とお申し込み。教材ごとの買い切り（1教材 ¥14,800〜・約100日分の課題＋毎日添削込み・入会金/追加費用0円）。8/6まで2教材以上でパック割。物理・化学・数学・英語の9教材から選ぶと買い切り価格が自動計算され、そのまま Stripe の安全な決済（一括）へ。自動更新はありません。",
+    "ノビットスタディ 中高部の料金とお申し込み。教材ごとの買い切り（1教材 ¥14,800〜・約100日分の課題＋毎日添削込み・入会金/追加費用0円）。8/6まで2教材以上でパック割。物理・化学・数学・英語の10教材から選ぶと買い切り価格が自動計算され、そのまま Stripe の安全な決済（一括）へ。自動更新はありません。",
   keywords: ["ノビットスタディ 料金", "オンライン添削 料金", "理系 添削 買い切り", "ノビットスタディ 申し込み"],
   path: "/apply",
 });
@@ -90,7 +90,7 @@ export default async function ApplyPage({
               教材ごとの買い切り。やり切る分だけ。
             </h2>
             <p className="mt-3 text-[0.95rem] leading-[1.9] text-[#475569]">
-              入会金・追加費用は0円。理系を中心に9教材から選べます。
+              入会金・追加費用は0円。理系を中心に10教材から選べます。
               <strong className="font-bold text-[#ea580c]">8/6まで、2教材以上でパック割</strong>。
             </p>
           </div>

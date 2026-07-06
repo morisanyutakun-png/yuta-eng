@@ -12,10 +12,11 @@ export type Subject = {
   color: string;
 };
 
-// 1教材（講座）＝ここでは1科目。数学IA → 数学IIBC … と買い進める。
+// 1教材（講座）＝ここでは1つの購入単位。物理は基礎・標準・発展に分ける。
 export const SUBJECTS: Subject[] = [
-  { id: "physics-basic", label: "物理基礎", area: "物理", color: "#1d4ed8" },
-  { id: "physics", label: "物理", area: "物理", color: "#1d4ed8" },
+  { id: "physics-basic", label: "物理 基礎", area: "物理", color: "#1d4ed8" },
+  { id: "physics", label: "物理 標準", area: "物理", color: "#1d4ed8" },
+  { id: "physics-advanced", label: "物理 発展", area: "物理", color: "#1d4ed8" },
   { id: "chemistry-basic", label: "化学基礎", area: "化学", color: "#0d9488" },
   { id: "chemistry", label: "化学", area: "化学", color: "#0d9488" },
   { id: "math-1a", label: "数学IA", area: "数学", color: "#16a34a" },
