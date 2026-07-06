@@ -30,6 +30,7 @@ type PurchaseResponse = {
 
 const GOOGLE_ADS_PURCHASE_SEND_TO =
   process.env.NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_SEND_TO ?? "";
+const GA_DEBUG_MODE = process.env.NEXT_PUBLIC_GA_DEBUG_MODE === "1";
 
 function getGtag() {
   const w = window as GtagWindow;
@@ -64,6 +65,7 @@ function pageEventParams() {
     page_title: document.title,
     page_location: window.location.href,
     page_path: window.location.pathname,
+    ...(GA_DEBUG_MODE ? { debug_mode: true } : {}),
   };
 }
 
@@ -126,6 +128,7 @@ export function PurchaseEventTracker({ sessionId }: { sessionId: string | null }
         affiliation: "ノビットスタディ 中高部",
         tax: 0,
         shipping: 0,
+        ...(GA_DEBUG_MODE ? { debug_mode: true } : {}),
         items: purchase.items,
       };
 

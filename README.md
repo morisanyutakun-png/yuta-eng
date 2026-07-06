@@ -55,6 +55,8 @@ NEXT_PUBLIC_GOOGLE_ADS_ID=AW-XXXXXXXXXX      # Google Ads ベースタグ（既�
 GA4_API_SECRET=xxxxxxxx                      # Stripe webhook → GA4 purchase 用
 # GA4_AD_USER_DATA_CONSENT=GRANTED           # 任意: Measurement Protocol consent
 # GA4_AD_PERSONALIZATION_CONSENT=GRANTED     # 任意: non_personalized_ads ではなく consent.ad_personalization を使う
+# GA4_DEBUG_MODE=1                           # 任意: webhook purchase をGA4 DebugViewで確認したい時だけ
+# NEXT_PUBLIC_GA_DEBUG_MODE=1                # 任意: ブラウザ発火イベントをDebugViewで確認したい時だけ
 # NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_SEND_TO=AW-XXXXXXXXXX/label  # 任意: 直接Ads conversionを使う場合
 
 # 申し込み・決済（Stripe）
@@ -146,6 +148,8 @@ GA4の重複対策として `transaction_id` には Stripe Checkout Session ID �
 `non_personalized_ads` は使いません。広告同意を明示したい場合は
 `GA4_AD_PERSONALIZATION_CONSENT=GRANTED` または `DENIED` を設定し、
 Measurement Protocol の `consent.ad_personalization` として送ります。
+DebugView で確認したい時だけ `GA4_DEBUG_MODE=1` / `NEXT_PUBLIC_GA_DEBUG_MODE=1`
+を設定します。通常運用では未設定のままで構いません。
 
 Google Ads側は、GA4とGoogle Adsをリンクし、GA4の `purchase` をキーイベント/コンバージョン
 としてインポートする運用が基本です。Google Adsのイベントスニペットを直接使う場合だけ、

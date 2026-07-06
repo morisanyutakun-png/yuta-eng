@@ -57,6 +57,10 @@ function measurementProtocolConsent() {
   };
 }
 
+function debugModeEnabled() {
+  return process.env.GA4_DEBUG_MODE === "1";
+}
+
 export function ga4MeasurementId() {
   return process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim() || DEFAULT_GA_MEASUREMENT_ID;
 }
@@ -168,6 +172,7 @@ export async function sendGa4Purchase(
                 tax: 0,
                 shipping: 0,
                 engagement_time_msec: 1,
+                ...(debugModeEnabled() ? { debug_mode: true } : {}),
                 ...(sessionId ? { session_id: sessionId } : {}),
                 items: purchase.items,
               },
