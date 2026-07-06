@@ -59,11 +59,12 @@ export async function POST(req: NextRequest) {
 
   const origin = siteConfig.url || new URL(req.url).origin;
 
-  // 決済完了後はいったん yuta-eng の完了ページを通す。
-  // GA4 purchase を確実に発火したうえで、アプリ初期設定への導線を出す。
+  // 決済完了後の戻り先。ノビットスタディアプリの初期設定ページ（/setup）が
+  // あればそこへ session_id 付きで送り、その場でパスワード設定→ログインさせる。
+  // 未設定なら yuta-eng 内の完了ページにフォールバック。
   const appUrl = process.env.NOBIT_APP_URL?.replace(/\/$/, "");
   const successUrl = appUrl
-    ? `${origin}/apply/complete?session_id={CHECKOUT_SESSION_ID}&setup=1`
+    ? `${appUrl}/setup?session_id={CHECKOUT_SESSION_ID}`
     : `${origin}/apply/complete?session_id={CHECKOUT_SESSION_ID}`;
 
   try {
