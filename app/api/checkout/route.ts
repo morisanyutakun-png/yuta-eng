@@ -53,6 +53,8 @@ export async function POST(req: NextRequest) {
     subject_labels: labels.join("・"),
     subject_count: String(count),
     amount: String(amount),
+    // 旧アプリ連携との後方互換。買い切り額を旧 monthly_amount 名でも渡す。
+    monthly_amount: String(amount),
     list_amount: String(list),
     campaign: campaign && count >= 2 ? "pack" : "",
   };

@@ -1,6 +1,10 @@
 import type { NextRequest } from "next/server";
 import Stripe from "stripe";
 
+import {
+  forwardRegistration,
+  RegistrationForwardError,
+} from "@/lib/registration-forwarding";
 import { buildRegistration } from "@/lib/registration";
 
 export const runtime = "nodejs";
@@ -11,7 +15,7 @@ export const dynamic = "force-dynamic";
  * 申込科目を取り出し、ノビットスタディの管理システムへ連携する入口。
  *
  * 連携先は環境変数 NOBIT_REGISTER_WEBHOOK_URL に管理システムのエンドポイントを
- * 設定すると、そこへ JSON を POST する（未設定ならログ出力のみ）。
+ * 設定し、そこへ JSON を POST する。失敗時は 2xx を返さず Stripe の再試行に任せる。
  */
 export async function POST(req: NextRequest) {
   const secret = process.env.STRIPE_SECRET_KEY;
@@ -35,27 +39,21 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === "checkout.session.completed") {
-    const registration = buildRegistration(event.data.object, event.created);
+    try {
+      const checkoutSession = await stripe.checkout.sessions.retrieve(
+        event.data.object.id,
+      );
+      const registration = buildRegistration(checkoutSession, event.created);
 
-    const forwardUrl = process.env.NOBIT_REGISTER_WEBHOOK_URL;
-    if (forwardUrl) {
-      try {
-        await fetch(forwardUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...(process.env.NOBIT_REGISTER_SECRET
-              ? { "x-nobit-secret": process.env.NOBIT_REGISTER_SECRET }
-              : {}),
-          },
-          body: JSON.stringify(registration),
-        });
-      } catch (err) {
-        console.error("[nobit] forward to management system failed", err);
-      }
-    } else {
-      // 連携先未設定。ログに残しておく（Vercel のログで確認可能）。
-      console.log("[nobit] new registration", registration);
+      await forwardRegistration(registration);
+    } catch (err) {
+      console.error("[nobit] registration forward failed", err);
+
+      const status =
+        err instanceof RegistrationForwardError ? err.status : 502;
+      const message =
+        err instanceof Error ? err.message : "registration forward failed";
+      return Response.json({ error: message }, { status });
     }
   }
 

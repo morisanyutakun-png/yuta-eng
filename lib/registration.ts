@@ -10,6 +10,8 @@ export type Registration = {
   stripeCustomerId: string | null;
   /** 買い切り（payment モード）の PaymentIntent ID。 */
   stripePaymentIntentId: string | null;
+  /** 旧アプリ連携との後方互換。買い切りでは PaymentIntent ID を入れる。 */
+  stripeSubscriptionId: string | null;
   stripeSessionId: string;
   email: string | null;
   name: string | null;
@@ -23,6 +25,8 @@ export type Registration = {
   subjectCount: string;
   /** 買い切り合計（税込・円）の文字列。 */
   amount: string;
+  /** 旧アプリ連携との後方互換。買い切り額を同じ値で返す。 */
+  monthlyAmount: string;
   createdAt: string;
 };
 
@@ -55,6 +59,7 @@ export function buildRegistration(
     paid: s.payment_status === "paid" || s.status === "complete",
     stripeCustomerId: idOf(s.customer),
     stripePaymentIntentId: idOf(s.payment_intent),
+    stripeSubscriptionId: idOf(s.subscription) ?? idOf(s.payment_intent),
     stripeSessionId: s.id,
     email: s.customer_details?.email ?? s.customer_email ?? null,
     name: s.customer_details?.name ?? null,
@@ -64,7 +69,8 @@ export function buildRegistration(
     subjects: s.metadata?.subjects ?? "",
     subjectLabels: s.metadata?.subject_labels ?? "",
     subjectCount: s.metadata?.subject_count ?? "",
-    amount: s.metadata?.amount ?? "",
+    amount: s.metadata?.amount ?? s.metadata?.monthly_amount ?? "",
+    monthlyAmount: s.metadata?.amount ?? s.metadata?.monthly_amount ?? "",
     createdAt: new Date(createdMs).toISOString(),
   };
 }

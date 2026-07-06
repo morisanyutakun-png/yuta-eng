@@ -55,20 +55,21 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX   # 任意
 # 申し込み・決済（Stripe）
 STRIPE_SECRET_KEY=sk_live_xxx           # API キー（シークレット）
 STRIPE_WEBHOOK_SECRET=whsec_xxx         # Webhook 署名シークレット
-# NOBIT_APP_URL=...                      # ノビットスタディ アプリ URL（決済後の戻り先 /setup）
-# NOBIT_REGISTER_WEBHOOK_URL=...         # 支払い完了データの連携先（アプリの provision）
-# NOBIT_REGISTER_SECRET=...              # 連携の共有シークレット（送信ヘッダ／照会APIの認証）
+NOBIT_APP_URL=...                       # ノビットスタディ アプリ URL（決済後の戻り先 /setup）
+NOBIT_REGISTER_WEBHOOK_URL=...          # 支払い完了データの連携先（アプリの provision）
+NOBIT_REGISTER_SECRET=...               # 連携の共有シークレット（送信ヘッダ／照会APIの認証）
 ```
 
 ## 申し込み・決済の流れ（Stripe）
 
 `/apply` で科目を選ぶと料金（`lib/pricing.ts`）が自動計算され、
-`POST /api/checkout` が **Stripe Checkout（サブスク・初月半額クーポン）** を作成、
+`POST /api/checkout` が **Stripe Checkout（教材の買い切り決済）** を作成、
 決済画面へリダイレクトします。申込科目・教科数は metadata に載せて Stripe へ。
 
 支払い完了は `POST /api/stripe/webhook`（`checkout.session.completed`）で受け取り、
 生徒の登録情報＋申込科目を `NOBIT_REGISTER_WEBHOOK_URL`（ノビットスタディ管理
-システムの受け口）へ POST します（未設定ならログ出力のみ）。
+システムの受け口）へ POST します。連携に失敗した場合は Stripe に失敗レスポンスを返し、
+Stripe の再試行に任せます。
 
 ### ノビットスタディ アプリとの連携（アカウント発行）
 
@@ -83,17 +84,27 @@ STRIPE_WEBHOOK_SECRET=whsec_xxx         # Webhook 署名シークレット
    GET https://yuta-eng.com/api/provision/session?session_id=cs_...
    ヘッダ: x-nobit-secret: <NOBIT_REGISTER_SECRET と同じ値>
    → { paid, email, name, phone, studentName, grade,
-       subjects, subjectLabels, subjectCount, monthlyAmount,
-       stripeCustomerId, stripeSubscriptionId, stripeSessionId }
+       subjects, subjectLabels, subjectCount, amount, monthlyAmount,
+       stripeCustomerId, stripePaymentIntentId, stripeSubscriptionId, stripeSessionId }
    ```
 
-   アプリはこの情報で users に本登録（パスワードは既存のハッシュ方式で保存）し、
-   そのままログインさせる。`paid:false`（未払い）の session_id は 402 を返す。
+   アプリはこの情報で `students` / `subscriptions` に発行情報を保存し、
+   ログインID＋PINでそのままログインできる状態にする。`paid:false`（未払い）の
+   session_id は 402 を返す。
 
 2. **メールでの設定リンク（保険）**：`NOBIT_REGISTER_WEBHOOK_URL` を設定すると、
    Webhook が同じ正規化データ（`lib/registration.ts`）を `x-nobit-secret` 付きで
    POST する。アプリは「仮登録＋設定用トークン発行＋設定メール送信」を行う。
    ユーザーがタブを閉じても確実にログインできる導線になり、ログも残る。
+   Webhook 連携が失敗した場合は Stripe に失敗レスポンスを返し、Stripe の再試行に
+   任せる。既に登録済みを表す `409` は成功扱い。
+
+   既存の決済を再連携する場合：
+
+   ```bash
+   curl -X POST "https://yuta-eng.com/api/provision/replay?session_id=cs_..." \
+     -H "x-nobit-secret: <NOBIT_REGISTER_SECRET と同じ値>"
+   ```
 
 `/setup` 照会 API と Webhook は **同じ `lib/registration.ts` の出力形** を返すので、
 アプリ側は片方の受け口だけ作れば両系統に対応できる。`NOBIT_REGISTER_SECRET` は
@@ -103,9 +114,7 @@ Stripe ダッシュボードでの準備：
 1. APIキー（シークレット）を `STRIPE_SECRET_KEY` に設定。
 2. Webhook で `https://yuta-eng.com/api/stripe/webhook` を登録し、イベント
    `checkout.session.completed` を購読。表示の `whsec_...` を `STRIPE_WEBHOOK_SECRET` に。
-3. 初月半額クーポン（id: `nobit-first-month-50` / 50%off・1回）は初回決済時に
-   自動作成されます（手動作成も可）。
-4. 料金・科目を変えるときは `lib/pricing.ts` の `SUBJECTS` と `monthlyTotal()` を編集。
+3. 料金・科目を変えるときは `lib/pricing.ts` の `SUBJECTS` と `buyoutTotal()` を編集。
 
 `NEXT_PUBLIC_SITE_URL` は metadata・canonical・sitemap・robots・JSON-LD の URL 生成に、
 `NEXT_PUBLIC_CONTACT_EMAIL` は Contact ページのメール導線に使います。
