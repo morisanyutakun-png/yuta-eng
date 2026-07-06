@@ -101,7 +101,7 @@ export default async function ApplyPage({
         </Container>
       </section>
 
-      {/* 申込フォーム（科目選択→自動計算→決済） */}
+      {/* 申込フォーム（教材選択→自動計算→決済） */}
       <section id="form" className="scroll-mt-24 bg-[#f8fafc]">
         <Container className="px-5 py-12 sm:px-6 sm:py-16">
           <div className="mx-auto mb-8 max-w-2xl text-center">

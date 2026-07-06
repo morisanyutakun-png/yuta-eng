@@ -1,16 +1,90 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { type CSSProperties, useMemo, useState } from "react";
 
 import {
   buyoutTotal,
   formatYen,
+  GRADING_COUNT,
   isCampaignActive,
   listTotal,
   packSavings,
   SUBJECT_AREAS,
   SUBJECTS,
 } from "@/lib/pricing";
+
+type MaterialProfile = {
+  title: string;
+  level: string;
+  target: string;
+  focus: string;
+};
+
+const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
+  "physics-basic": {
+    title: "物理基礎 毎日演習教材",
+    level: "基礎-標準",
+    target: "高1-高2・共通テスト導入",
+    focus: "力学・波・電気の土台を、図と言葉で固める教材です。",
+  },
+  physics: {
+    title: "物理 標準演習教材",
+    level: "標準-入試基礎",
+    target: "高2-受験生・理系基礎固め",
+    focus: "力学・電磁気を中心に、式の意味まで答案に残す練習をします。",
+  },
+  "chemistry-basic": {
+    title: "化学基礎 毎日演習教材",
+    level: "基礎-標準",
+    target: "高1-高2・共通テスト導入",
+    focus: "物質量・酸塩基・酸化還元を、毎日サイズで確認します。",
+  },
+  chemistry: {
+    title: "化学 標準演習教材",
+    level: "標準-入試基礎",
+    target: "高2-受験生・理系基礎固め",
+    focus: "理論化学を軸に、計算過程と知識の使い方を添削で整えます。",
+  },
+  "math-1a": {
+    title: "数学I・A 標準演習教材",
+    level: "基礎-標準",
+    target: "高1-受験基礎",
+    focus: "数と式・二次関数・三角比・場合の数を、答案の型まで練習します。",
+  },
+  "math-2bc": {
+    title: "数学II・B・C 標準演習教材",
+    level: "標準",
+    target: "高2-受験基礎",
+    focus: "微積・数列・ベクトルを中心に、途中式で伝わる答案を作ります。",
+  },
+  "math-3c": {
+    title: "数学III・C 標準演習教材",
+    level: "標準-発展導入",
+    target: "理系受験生",
+    focus: "極限・微積分・複素数平面を、理系入試につながる形で積みます。",
+  },
+  "english-reading": {
+    title: "英語長文 毎日読解教材",
+    level: "基礎-標準",
+    target: "高1-受験基礎",
+    focus: "文構造と根拠を押さえながら、読み方を毎日添削で整えます。",
+  },
+  "english-grammar": {
+    title: "英文法 毎日演習教材",
+    level: "基礎-標準",
+    target: "高校英文法の総点検",
+    focus: "文法事項を小さく確認し、英作文や読解に使える形にします。",
+  },
+};
+
+function getMaterialProfile(subject: (typeof SUBJECTS)[number]) {
+  return MATERIAL_PROFILES[subject.id] ?? {
+    title: `${subject.label} 教材`,
+    level: "標準",
+    target: "高校生",
+    focus: "毎日サイズの演習と添削で、答案を整える教材です。",
+  };
+}
 
 export function ApplyForm({ canceled }: { canceled?: boolean }) {
   const [selected, setSelected] = useState<string[]>([]);
@@ -22,6 +96,13 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
   const list = useMemo(() => listTotal(count), [count]);
   const total = useMemo(() => buyoutTotal(count, campaign), [count, campaign]);
   const savings = useMemo(() => packSavings(count, campaign), [count, campaign]);
+  const selectedMaterials = useMemo(
+    () =>
+      selected
+        .map((id) => SUBJECTS.find((subject) => subject.id === id))
+        .filter((subject): subject is (typeof SUBJECTS)[number] => Boolean(subject)),
+    [selected],
+  );
 
   function toggle(id: string) {
     setSelected((prev) =>
@@ -54,7 +135,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start lg:gap-10">
-      {/* 科目選択 */}
+      {/* 教材選択 */}
       <div>
         {canceled ? (
           <p className="mb-5 rounded-[14px] bg-[#fff7ed] px-4 py-3 text-[0.86rem] font-semibold text-[#9a3412] ring-1 ring-[rgba(234,88,12,0.2)]">
@@ -62,12 +143,12 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
           </p>
         ) : null}
 
-        <p className="text-[0.84rem] font-bold text-[#0b1d4a]">
-          ① やり切る教材を選ぶ
-          <span className="ml-2 text-[0.78rem] font-normal text-[#64748b]">
-            （1教材＝約100日分・2教材以上でパック割）
-          </span>
-        </p>
+        <div>
+          <p className="text-[0.84rem] font-bold text-[#0b1d4a]">① 購入する教材を選ぶ</p>
+          <p className="mt-1 text-[0.8rem] leading-[1.8] text-[#64748b]">
+            教材名・目安レベル・対象を確認して選べます。1教材＝約{GRADING_COUNT}日分、2教材以上でパック割です。
+          </p>
+        </div>
 
         <div className="mt-4 grid gap-4">
           {SUBJECT_AREAS.map((area) => {
@@ -77,26 +158,63 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
               <div key={area}>
                 <p className="mb-2 flex items-center gap-2 text-[0.78rem] font-bold text-[#475569]">
                   <span aria-hidden="true" className="h-2 w-2 rounded-full" style={{ background: color }} />
-                  {area}
+                  {area}の教材
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid gap-3 sm:grid-cols-2">
                   {items.map((s) => {
                     const on = selected.includes(s.id);
+                    const profile = getMaterialProfile(s);
                     return (
                       <button
                         key={s.id}
                         type="button"
                         onClick={() => toggle(s.id)}
                         aria-pressed={on}
-                        className={`min-h-11 rounded-full px-4 text-[0.9rem] font-semibold transition ${
+                        className={`relative min-h-[11.25rem] rounded-lg p-4 text-left transition ${
                           on
-                            ? "text-white shadow-[0_10px_22px_-12px_rgba(11,29,74,0.6)]"
-                            : "bg-white text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.12)] hover:ring-[rgba(15,29,74,0.3)]"
+                            ? "bg-white shadow-[0_24px_42px_-30px_rgba(11,29,74,0.7)] ring-2"
+                            : "bg-white text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.1)] hover:-translate-y-0.5 hover:ring-[rgba(15,29,74,0.24)]"
                         }`}
-                        style={on ? { background: color } : undefined}
+                        style={
+                          on
+                            ? ({
+                                "--tw-ring-color": color,
+                                boxShadow: `0 24px 42px -30px ${color}`,
+                              } as CSSProperties)
+                            : undefined
+                        }
                       >
-                        {on ? "✓ " : ""}
-                        {s.label}
+                        <span className="flex items-start justify-between gap-3">
+                          <span
+                            className="rounded-full px-2.5 py-1 text-[0.7rem] font-bold text-white"
+                            style={{ background: color }}
+                          >
+                            {s.label}
+                          </span>
+                          <span
+                            className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[0.78rem] font-extrabold ${
+                              on ? "text-white" : "text-transparent ring-1 ring-[rgba(15,29,74,0.14)]"
+                            }`}
+                            style={on ? { background: color } : undefined}
+                            aria-hidden="true"
+                          >
+                            ✓
+                          </span>
+                        </span>
+                        <span className="mt-3 block text-[1.03rem] font-extrabold leading-[1.45] text-[#0b1d4a]">
+                          {profile.title}
+                        </span>
+                        <span className="mt-2 flex flex-wrap gap-1.5">
+                          <span className="rounded-full bg-[#f1f5f9] px-2 py-1 text-[0.7rem] font-bold text-[#475569]">
+                            目安レベル：{profile.level}
+                          </span>
+                          <span className="rounded-full bg-[#fff7ed] px-2 py-1 text-[0.7rem] font-bold text-[#9a3412]">
+                            {profile.target}
+                          </span>
+                        </span>
+                        <span className="mt-3 block text-[0.78rem] leading-[1.7] text-[#64748b]">
+                          {profile.focus}
+                        </span>
                       </button>
                     );
                   })}
@@ -118,20 +236,21 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                 左から教材を選ぶと、買い切り価格が表示されます。
               </p>
             ) : (
-              <div className="flex flex-wrap gap-1.5">
-                {selected.map((id) => {
-                  const s = SUBJECTS.find((x) => x.id === id)!;
+              <ul className="grid gap-2">
+                {selectedMaterials.map((s) => {
+                  const profile = getMaterialProfile(s);
                   return (
-                    <span
-                      key={id}
-                      className="rounded-full px-2.5 py-0.5 text-[0.74rem] font-semibold text-white"
-                      style={{ background: s.color }}
+                    <li
+                      key={s.id}
+                      className="border-l-2 py-1 pl-3 text-[0.78rem]"
+                      style={{ borderColor: s.color }}
                     >
-                      {s.label}
-                    </span>
+                      <span className="block font-bold text-[#0b1d4a]">{profile.title}</span>
+                      <span className="mt-0.5 block text-[#64748b]">目安レベル：{profile.level}</span>
+                    </li>
                   );
                 })}
-              </div>
+              </ul>
             )}
           </div>
 
