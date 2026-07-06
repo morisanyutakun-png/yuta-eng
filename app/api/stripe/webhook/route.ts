@@ -5,6 +5,7 @@ import {
   forwardRegistration,
   RegistrationForwardError,
 } from "@/lib/registration-forwarding";
+import { sendGa4Purchase } from "@/lib/ga4";
 import { buildRegistration } from "@/lib/registration";
 
 export const runtime = "nodejs";
@@ -46,6 +47,7 @@ export async function POST(req: NextRequest) {
       const registration = buildRegistration(checkoutSession, event.created);
 
       await forwardRegistration(registration);
+      await sendGa4Purchase(checkoutSession);
     } catch (err) {
       console.error("[nobit] registration forward failed", err);
 

@@ -10,6 +10,11 @@ import {
   listTotal,
   subjectsByIds,
 } from "@/lib/pricing";
+import {
+  ga4SessionCookieName,
+  parseGaClientId,
+  parseGaSessionId,
+} from "@/lib/ga4";
 
 // Stripe SDK は Node ランタイム必須。決済はリクエスト時に毎回実行する。
 export const runtime = "nodejs";
@@ -48,6 +53,10 @@ export async function POST(req: NextRequest) {
   const list = listTotal(count);
   const subjects = subjectsByIds(ids);
   const labels = subjects.map((s) => s.label);
+  const gaClientId = parseGaClientId(req.cookies.get("_ga")?.value);
+  const gaSessionId = parseGaSessionId(
+    req.cookies.get(ga4SessionCookieName())?.value,
+  );
   const metadata = {
     subjects: ids.join(","),
     subject_labels: labels.join("・"),
@@ -57,6 +66,8 @@ export async function POST(req: NextRequest) {
     monthly_amount: String(amount),
     list_amount: String(list),
     campaign: campaign && count >= 2 ? "pack" : "",
+    ...(gaClientId ? { ga_client_id: gaClientId } : {}),
+    ...(gaSessionId ? { ga_session_id: gaSessionId } : {}),
   };
 
   const origin = siteConfig.url || new URL(req.url).origin;

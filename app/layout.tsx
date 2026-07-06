@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Zen_Kaku_Gothic_New } from "next/font/google";
 
 import { GoogleAnalyticsLoader } from "@/components/google-analytics-loader";
+import { PageViewEventTracker } from "@/components/analytics-events";
 import { JsonLd } from "@/components/json-ld";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
@@ -43,6 +44,12 @@ import "./globals.css";
 
 const GA_MEASUREMENT_ID =
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-W11S94CV6L";
+const GOOGLE_ADS_ID =
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? "AW-17966887751";
+const GOOGLE_CONSENT_DEFAULT =
+  process.env.NEXT_PUBLIC_GOOGLE_CONSENT_DEFAULT === "denied"
+    ? "denied"
+    : "granted";
 const GSC_VERIFICATION = Array.from(
   new Set(
     [
@@ -155,10 +162,15 @@ export default function RootLayout({
     <html lang="ja" className={`h-full antialiased ${displayFont.variable}`}>
       <head>
         {GA_MEASUREMENT_ID ? (
-          <GoogleAnalyticsLoader measurementId={GA_MEASUREMENT_ID} />
+          <GoogleAnalyticsLoader
+            measurementId={GA_MEASUREMENT_ID}
+            googleAdsId={GOOGLE_ADS_ID}
+            consentDefault={GOOGLE_CONSENT_DEFAULT}
+          />
         ) : null}
       </head>
       <body className="flex min-h-full flex-col">
+        <PageViewEventTracker />
         <JsonLd data={createWebsiteJsonLd()} />
         <JsonLd data={createOrganizationJsonLd()} />
         <JsonLd data={createPersonJsonLd()} />

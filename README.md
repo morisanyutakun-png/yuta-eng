@@ -50,7 +50,12 @@ scripts/          ビルド時の画像・favicon・critical CSS 生成
 ```bash
 NEXT_PUBLIC_SITE_URL=https://yuta-eng.com
 NEXT_PUBLIC_CONTACT_EMAIL=contact@yuta-eng.com
-NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX   # 任意
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX   # GA4（既定: G-W11S94CV6L）
+NEXT_PUBLIC_GOOGLE_ADS_ID=AW-XXXXXXXXXX      # Google Ads ベースタグ（既定: AW-17966887751）
+GA4_API_SECRET=xxxxxxxx                      # Stripe webhook → GA4 purchase 用
+# GA4_AD_USER_DATA_CONSENT=GRANTED           # 任意: Measurement Protocol consent
+# GA4_AD_PERSONALIZATION_CONSENT=GRANTED     # 任意: non_personalized_ads ではなく consent.ad_personalization を使う
+# NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_SEND_TO=AW-XXXXXXXXXX/label  # 任意: 直接Ads conversionを使う場合
 
 # 申し込み・決済（Stripe）
 STRIPE_SECRET_KEY=sk_live_xxx           # API キー（シークレット）
@@ -120,6 +125,32 @@ Stripe ダッシュボードでの準備：
 2. Webhook で `https://yuta-eng.com/api/stripe/webhook` を登録し、イベント
    `checkout.session.completed` を購読。表示の `whsec_...` を `STRIPE_WEBHOOK_SECRET` に。
 3. 料金・科目を変えるときは `lib/pricing.ts` の `SUBJECTS` と `buyoutTotal()` を編集。
+
+## GA4 / Google Ads イベント
+
+Googleタグは全ページに読み込み、`send_page_view: false` で自動 page_view を止めたうえで
+`PageViewEventTracker` が標準 `page_view` を手動送信します。トップLPでは追加で
+`lp_page_view` を1回送信します。
+
+購入イベントは2段構えです。
+
+1. `POST /api/checkout` 時に、ブラウザの `_ga` Cookie から `ga_client_id` を取り出し、
+   Stripe Checkout Session の metadata に保存します。
+2. `POST /api/stripe/webhook` の `checkout.session.completed` 後、アプリへの登録連携が
+   成功したら GA4 Measurement Protocol で `purchase` を送信します。
+
+`NOBIT_APP_URL` を設定して決済後に `nobit-study.yuta-eng.com/setup` へ戻す運用でも、
+yuta-eng の webhook 側で `purchase` が飛ぶため、完了ページを開かなくても計測できます。
+GA4の重複対策として `transaction_id` には Stripe Checkout Session ID を使います。
+
+`non_personalized_ads` は使いません。広告同意を明示したい場合は
+`GA4_AD_PERSONALIZATION_CONSENT=GRANTED` または `DENIED` を設定し、
+Measurement Protocol の `consent.ad_personalization` として送ります。
+
+Google Ads側は、GA4とGoogle Adsをリンクし、GA4の `purchase` をキーイベント/コンバージョン
+としてインポートする運用が基本です。Google Adsのイベントスニペットを直接使う場合だけ、
+Google Ads管理画面で発行される `AW-.../conversion_label` を
+`NEXT_PUBLIC_GOOGLE_ADS_PURCHASE_SEND_TO` に設定してください。
 
 `NEXT_PUBLIC_SITE_URL` は metadata・canonical・sitemap・robots・JSON-LD の URL 生成に、
 `NEXT_PUBLIC_CONTACT_EMAIL` は Contact ページのメール導線に使います。

@@ -1,23 +1,48 @@
-type Props = { measurementId: string };
+type ConsentDefault = "granted" | "denied";
 
-export function GoogleAnalyticsLoader({ measurementId }: Props) {
+type Props = {
+  measurementId: string;
+  googleAdsId?: string;
+  consentDefault?: ConsentDefault;
+};
+
+export function GoogleAnalyticsLoader({
+  measurementId,
+  googleAdsId,
+  consentDefault = "granted",
+}: Props) {
+  const config = {
+    measurementId,
+    googleAdsId,
+    consentDefault,
+  };
+
   return (
     <>
       <script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
-      />
-      <script
         dangerouslySetInnerHTML={{
           __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${measurementId}');
-          window.__nobitGa4Configured = true;
-          window.__nobitGa4PageViewQueued = true;
+          (function(config){
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = window.gtag || function(){dataLayer.push(arguments);}
+            if (window.__nobitGoogleTagConfigured) return;
+            gtag('consent', 'default', {
+              ad_storage: config.consentDefault,
+              analytics_storage: config.consentDefault,
+              ad_user_data: config.consentDefault,
+              ad_personalization: config.consentDefault
+            });
+            gtag('js', new Date());
+            gtag('config', config.measurementId, { send_page_view: false });
+            if (config.googleAdsId) gtag('config', config.googleAdsId);
+            window.__nobitGoogleTagConfigured = true;
+          })(${JSON.stringify(config)});
         `,
         }}
+      />
+      <script
+        async
+        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
       />
     </>
   );
