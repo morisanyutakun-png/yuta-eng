@@ -75,3 +75,14 @@ export function buildRegistration(
     createdAt: new Date(createdMs).toISOString(),
   };
 }
+
+export function isYutaCheckoutSession(s: Stripe.Checkout.Session): boolean {
+  if (s.metadata?.source === "yuta-eng") return true;
+
+  return Boolean(
+    s.metadata?.subjects?.trim() &&
+      s.metadata?.subject_labels?.trim() &&
+      s.metadata?.subject_count?.trim() &&
+      s.metadata?.amount?.trim(),
+  );
+}

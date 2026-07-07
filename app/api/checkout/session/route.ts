@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import Stripe from "stripe";
 
 import { buildPurchaseAnalytics } from "@/lib/ga4";
+import { isYutaCheckoutSession } from "@/lib/registration";
 
 // Stripe SDK は Node ランタイム必須。購入計測用に毎回最新のセッションを確認する。
 export const runtime = "nodejs";
@@ -25,6 +26,10 @@ export async function GET(req: NextRequest) {
 
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (!isYutaCheckoutSession(session)) {
+      return Response.json({ error: "not a yuta checkout session" }, { status: 404 });
+    }
+
     const paid = session.payment_status === "paid";
 
     if (!paid) {

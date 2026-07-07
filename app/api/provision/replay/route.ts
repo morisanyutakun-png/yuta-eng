@@ -6,7 +6,7 @@ import {
   RegistrationForwardError,
 } from "@/lib/registration-forwarding";
 import { sendGa4Purchase } from "@/lib/ga4";
-import { buildRegistration } from "@/lib/registration";
+import { buildRegistration, isYutaCheckoutSession } from "@/lib/registration";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -51,6 +51,10 @@ export async function POST(req: NextRequest) {
 
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (!isYutaCheckoutSession(session)) {
+      return Response.json({ error: "not a yuta checkout session" }, { status: 400 });
+    }
+
     const registration = buildRegistration(session, session.created);
 
     if (!registration.paid) {

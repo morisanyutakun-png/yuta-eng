@@ -60,6 +60,7 @@ export async function POST(req: NextRequest) {
     req.cookies.get(ga4SessionCookieName())?.value,
   );
   const metadata = {
+    source: "yuta-eng",
     subjects: ids.join(","),
     subject_labels: registrationLabels.join("・"),
     subject_count: String(count),

@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import Stripe from "stripe";
 
-import { buildRegistration } from "@/lib/registration";
+import { buildRegistration, isYutaCheckoutSession } from "@/lib/registration";
 
 // Stripe SDK は Node ランタイム必須。
 export const runtime = "nodejs";
@@ -41,6 +41,10 @@ export async function GET(req: NextRequest) {
   const stripe = new Stripe(secret);
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (!isYutaCheckoutSession(session)) {
+      return Response.json({ error: "not a yuta checkout session" }, { status: 404 });
+    }
+
     const registration = buildRegistration(session);
 
     if (!registration.paid) {
