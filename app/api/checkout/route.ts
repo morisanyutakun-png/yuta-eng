@@ -8,6 +8,7 @@ import {
   isCampaignActive,
   isValidSubjectId,
   listTotal,
+  registrationLabelsBySubjects,
   subjectsByIds,
 } from "@/lib/pricing";
 import {
@@ -53,13 +54,14 @@ export async function POST(req: NextRequest) {
   const list = listTotal(count);
   const subjects = subjectsByIds(ids);
   const labels = subjects.map((s) => s.label);
+  const registrationLabels = registrationLabelsBySubjects(subjects);
   const gaClientId = parseGaClientId(req.cookies.get("_ga")?.value);
   const gaSessionId = parseGaSessionId(
     req.cookies.get(ga4SessionCookieName())?.value,
   );
   const metadata = {
     subjects: ids.join(","),
-    subject_labels: labels.join("・"),
+    subject_labels: registrationLabels.join("・"),
     subject_count: String(count),
     amount: String(amount),
     // 旧アプリ連携との後方互換。買い切り額を旧 monthly_amount 名でも渡す。

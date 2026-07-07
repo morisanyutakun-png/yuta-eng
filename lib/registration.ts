@@ -20,7 +20,7 @@ export type Registration = {
   grade: string | null;
   /** 例: "physics,math-2bc"（lib/pricing の Subject.id をカンマ区切り） */
   subjects: string;
-  /** 例: "物理・数学IIBC" */
+  /** 例: "物理入門演習・数学IIBC" */
   subjectLabels: string;
   subjectCount: string;
   /** 買い切り合計（税込・円）の文字列。 */
@@ -53,6 +53,7 @@ export function buildRegistration(
   );
 
   const createdMs = (createdAtSec ?? Math.floor(Date.now() / 1000)) * 1000;
+  const studentName = (fields.student_name as string | undefined) ?? null;
 
   return {
     type: "new_purchase",
@@ -62,9 +63,9 @@ export function buildRegistration(
     stripeSubscriptionId: idOf(s.subscription) ?? idOf(s.payment_intent),
     stripeSessionId: s.id,
     email: s.customer_details?.email ?? s.customer_email ?? null,
-    name: s.customer_details?.name ?? null,
+    name: s.customer_details?.name ?? studentName,
     phone: s.customer_details?.phone ?? null,
-    studentName: (fields.student_name as string | undefined) ?? null,
+    studentName,
     grade: (fields.grade as string | undefined) ?? null,
     subjects: s.metadata?.subjects ?? "",
     subjectLabels: s.metadata?.subject_labels ?? "",
