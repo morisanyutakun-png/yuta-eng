@@ -186,7 +186,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
   return (
     <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start lg:gap-10">
       {/* 教材選択 */}
-      <div>
+      <div className="order-2 lg:order-1">
         {canceled ? (
           <p className="mb-5 rounded-[14px] bg-[#fff7ed] px-4 py-3 text-[0.86rem] font-semibold text-[#9a3412] ring-1 ring-[rgba(234,88,12,0.2)]">
             お支払いはキャンセルされました。教材を選び直して、いつでもやり直せます。
@@ -194,13 +194,20 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
         ) : null}
 
         <div>
-          <p className="text-[0.84rem] font-bold text-[#0b1d4a]">① 購入する教材を選ぶ</p>
+          <p className="text-[0.84rem] font-bold text-[#0b1d4a]">
+            <span className="hidden lg:inline">① </span>購入する教材を選ぶ
+          </p>
           <p className="mt-1 text-[0.8rem] leading-[1.8] text-[#64748b]">
-            教材名・目安レベル・対象を確認して選べます。1教材＝約{GRADING_COUNT}日分、2教材以上でパック割です。
+            <span className="lg:hidden">
+              教材名とレベルを見ながら、タップで選択できます。1教材＝約{GRADING_COUNT}日分、2教材以上でパック割です。
+            </span>
+            <span className="hidden lg:inline">
+              教材名・目安レベル・対象を確認して選べます。1教材＝約{GRADING_COUNT}日分、2教材以上でパック割です。
+            </span>
           </p>
         </div>
 
-        <div className="mt-4 grid gap-4">
+        <div className="mt-4 grid gap-3 sm:gap-4">
           {SUBJECT_AREAS.map((area) => {
             const items = SUBJECTS.filter((s) => s.area === area);
             const color = items[0]?.color ?? "#0b1d4a";
@@ -220,9 +227,9 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                         type="button"
                         onClick={() => toggle(s.id)}
                         aria-pressed={on}
-                        className={`relative min-h-[13.25rem] rounded-lg p-4 text-left transition ${
+                        className={`relative min-h-0 rounded-lg p-3 text-left transition sm:min-h-[13.25rem] sm:p-4 ${
                           on
-                            ? "bg-white shadow-[0_24px_42px_-30px_rgba(11,29,74,0.7)] ring-2"
+                            ? "bg-white shadow-[0_16px_30px_-26px_rgba(11,29,74,0.7)] ring-2 sm:shadow-[0_24px_42px_-30px_rgba(11,29,74,0.7)]"
                             : "bg-white text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.1)] hover:-translate-y-0.5 hover:ring-[rgba(15,29,74,0.24)]"
                         }`}
                         style={
@@ -236,7 +243,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                       >
                         <span className="flex items-start justify-between gap-3">
                           <span
-                            className="rounded-full px-2.5 py-1 text-[0.7rem] font-bold text-white"
+                            className="rounded-full px-2.5 py-1 text-[0.65rem] font-bold text-white sm:text-[0.7rem]"
                             style={{ background: color }}
                           >
                             {s.label}
@@ -251,9 +258,9 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                             ✓
                           </span>
                         </span>
-                        <span className={`mt-3 flex gap-3 ${profile.cover ? "items-start" : ""}`}>
+                        <span className={`mt-2 flex gap-3 sm:mt-3 ${profile.cover ? "items-start" : ""}`}>
                           {profile.cover ? (
-                            <span className="block w-[4.7rem] shrink-0 overflow-hidden rounded-md bg-[#f8fafc] shadow-[0_16px_28px_-20px_rgba(11,29,74,0.7)] ring-1 ring-[rgba(15,29,74,0.08)]">
+                            <span className="hidden w-[4.7rem] shrink-0 overflow-hidden rounded-md bg-[#f8fafc] shadow-[0_16px_28px_-20px_rgba(11,29,74,0.7)] ring-1 ring-[rgba(15,29,74,0.08)] sm:block">
                               <picture>
                                 <source type="image/avif" srcSet={`/books/${profile.cover.asin}.avif`} />
                                 <source type="image/webp" srcSet={`/books/${profile.cover.asin}.webp`} />
@@ -270,18 +277,18 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                             </span>
                           ) : null}
                           <span className="block min-w-0 flex-1">
-                            <span className="block text-[1.03rem] font-extrabold leading-[1.45] text-[#0b1d4a]">
+                            <span className="block text-[0.92rem] font-extrabold leading-[1.45] text-[#0b1d4a] sm:text-[1.03rem]">
                               {profile.title}
                             </span>
-                            <span className="mt-2 flex flex-wrap gap-1.5">
-                              <span className="rounded-full bg-[#f1f5f9] px-2 py-1 text-[0.7rem] font-bold text-[#475569]">
+                            <span className="mt-1.5 flex flex-wrap gap-1.5 sm:mt-2">
+                              <span className="rounded-full bg-[#f1f5f9] px-2 py-1 text-[0.64rem] font-bold text-[#475569] sm:text-[0.7rem]">
                                 目安レベル：{profile.level}
                               </span>
-                              <span className="rounded-full bg-[#fff7ed] px-2 py-1 text-[0.7rem] font-bold text-[#9a3412]">
+                              <span className="rounded-full bg-[#fff7ed] px-2 py-1 text-[0.64rem] font-bold text-[#9a3412] sm:text-[0.7rem]">
                                 {profile.target}
                               </span>
                             </span>
-                            <span className="mt-3 block text-[0.78rem] leading-[1.7] text-[#64748b]">
+                            <span className="mt-3 hidden text-[0.78rem] leading-[1.7] text-[#64748b] sm:block">
                               <span className="font-bold text-[#334155]">収録範囲：</span>
                               {profile.coverage}
                             </span>
@@ -298,14 +305,16 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
       </div>
 
       {/* 金額サマリー＋申込 */}
-      <div className="lg:sticky lg:top-24">
+      <div className="order-1 lg:sticky lg:top-24 lg:order-2">
         <div className="rounded-[22px] bg-white p-6 shadow-[0_30px_60px_-44px_rgba(15,29,74,0.45)] ring-1 ring-[rgba(15,29,74,0.1)]">
-          <p className="text-[0.8rem] font-bold text-[#0f766e]">② 内容を確認して申し込む</p>
+          <p className="text-[0.8rem] font-bold text-[#0f766e]">
+            <span className="hidden lg:inline">② </span>内容を確認して申し込む
+          </p>
 
           <div className="mt-3 min-h-[2.5rem]">
             {count === 0 ? (
               <p className="text-[0.86rem] text-[#94a3b8]">
-                左から教材を選ぶと、買い切り価格が表示されます。
+                下の教材をタップすると、ここに買い切り価格が表示されます。
               </p>
             ) : (
               <ul className="grid gap-2">

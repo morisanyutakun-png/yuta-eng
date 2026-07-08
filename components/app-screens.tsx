@@ -135,7 +135,7 @@ function AppChrome({
           <Tab label="成績" active={active === "grade"} />
         </nav>
       </header>
-      <main className="h-full bg-[#f3f6f9] px-3.5 py-4">{children}</main>
+      <main className="h-full min-w-0 overflow-hidden bg-[#f3f6f9] px-3.5 py-4">{children}</main>
     </div>
   );
 }
@@ -155,7 +155,7 @@ function Tab({ label, active, badge }: { label: string; active: boolean; badge?:
 }
 
 function AppPanel({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <section className={`border border-[#d8e1eb] bg-white p-3.5 ${className}`}>{children}</section>;
+  return <section className={`min-w-0 max-w-full overflow-hidden border border-[#d8e1eb] bg-white p-3.5 ${className}`}>{children}</section>;
 }
 
 function AppButton({ children, className = "" }: { children: React.ReactNode; className?: string }) {
@@ -252,7 +252,7 @@ function ScreenHome() {
 function ScreenSubmit() {
   return (
     <AppChrome active="none">
-      <div className="grid gap-2.5">
+      <div className="grid min-w-0 gap-2.5">
         <button className="w-fit rounded-[8px] border border-[#d8e1eb] bg-white px-2.5 py-1.5 text-[0.58rem] font-extrabold text-[#40536b]">
           ← 課題一覧へ
         </button>
@@ -265,11 +265,13 @@ function ScreenSubmit() {
 
         <AppPanel className="!p-2.5">
           <p className="text-[0.74rem] font-extrabold text-[#123657]">課題</p>
-          <div className="mt-2 grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-1.5 rounded-[10px] bg-[#f8fbfd] p-2 ring-1 ring-[#e4ebf2]">
+          <div className="mt-2 grid max-w-full grid-cols-[auto_minmax(0,1fr)] gap-1.5 overflow-hidden rounded-[10px] bg-[#f8fbfd] p-2 ring-1 ring-[#e4ebf2]">
             <span aria-hidden="true" className="grid h-6 w-6 shrink-0 place-items-center rounded-[7px] bg-white text-[0.72rem] ring-1 ring-[#e4ebf2]">📄</span>
             <p className="min-w-0 truncate text-[0.64rem] font-extrabold text-[#0f172a]">数と式 B-1.pdf</p>
-            <GhostButton className="px-2 py-1 text-[0.5rem]">開く</GhostButton>
-            <GhostButton className="px-2 py-1 text-[0.5rem]">保存</GhostButton>
+            <div className="col-span-2 grid grid-cols-2 gap-1.5">
+              <GhostButton className="min-w-0 px-1.5 py-1 text-[0.5rem]">開く</GhostButton>
+              <GhostButton className="min-w-0 px-1.5 py-1 text-[0.5rem]">保存</GhostButton>
+            </div>
           </div>
         </AppPanel>
 
