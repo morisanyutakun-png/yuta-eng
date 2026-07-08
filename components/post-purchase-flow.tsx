@@ -1,188 +1,356 @@
-import { AppScreen } from "@/components/app-screens";
 import { PrimaryCta, SecondaryCta } from "@/components/cta";
 import { cn } from "@/lib/utils";
 
 type FlowVariant = "lp" | "apply";
-type VisualKind = "credentials" | "login" | "home" | "submit";
+type VisualKind = "account" | "login" | "home" | "submit" | "returned" | "history";
 
-const flowSteps: Array<{
-  n: string;
+const steps: Array<{
+  no: string;
   title: string;
-  body: string;
+  body: React.ReactNode;
+  bullets: string[];
   visual: VisualKind;
 }> = [
   {
-    n: "01",
-    title: "ログイン情報を発行",
-    body: "決済完了後、生徒用のログインIDとPINを表示。同じ内容は申し込みメールにも届きます。",
-    visual: "credentials",
+    no: "1",
+    title: "決済完了後、ログイン情報が発行される",
+    body: (
+      <>
+        決済が完了すると、アカウント発行画面に進みます。ここで生徒用の
+        <strong className="font-extrabold">ログインID</strong>と<strong className="font-extrabold">PIN</strong>
+        が表示され、同じ内容がメールでも届きます。
+      </>
+    ),
+    bullets: [
+      "購入後の戻り先で、そのままログイン情報を確認。",
+      "ログインIDとPINは、メモまたはスクリーンショットで保存できます。",
+      "同じ決済を開き直しても、二重発行されないよう冪等に処理します。",
+    ],
+    visual: "account",
   },
   {
-    n: "02",
-    title: "アプリにログイン",
-    body: "発行されたIDとPINで、生徒専用の学習画面へ。購入者メールとは別に管理されます。",
+    no: "2",
+    title: "ログインする",
+    body: "発行されたログインIDとPINを入力して、生徒専用の学習画面に入ります。メールから開いても、保存した情報から入力しても同じです。",
+    bullets: [
+      "生徒はログインIDとPINだけで開始できます。",
+      "購入者メールとは別に、生徒ごとの学習アカウントとして管理されます。",
+      "ログイン後は、購入した教材が自動でホームに表示されます。",
+    ],
     visual: "login",
   },
   {
-    n: "03",
-    title: "教材が自動で届く",
-    body: "選んだ教材がホームに反映。先生の手配を待たず、最初の範囲へ進めます。",
+    no: "3",
+    title: "購入教材が自動で割り当たる",
+    body: (
+      <>
+        ログインすると、購入した科目に対応する教材が
+        <strong className="font-extrabold">今日の課題</strong>と
+        <strong className="font-extrabold">教材の進み具合</strong>に表示されます。先生が手動で配るのを待たず、すぐ最初の範囲へ進めます。
+      </>
+    ),
+    bullets: [
+      "例：physics の購入で、物理標準演習が自動割り当て。",
+      "「次：演習1」のように、今どこを解くかが見えます。",
+      "合格数・採点待ち・再提出ありも、教材別に追えます。",
+    ],
     visual: "home",
   },
   {
-    n: "04",
-    title: "PDFで実施・提出",
-    body: "PDFに取り組んで提出。解答解説が開き、同時に次の範囲が追加されます。",
+    no: "4",
+    title: "PDFに取り組んで提出する",
+    body: (
+      <>
+        課題を開くと、<strong className="font-extrabold">問題PDF</strong>と実施範囲が表示されます。
+        アプリ内で直接書いても、GoodNotesなど別アプリで書いたPDFを添付しても提出できます。
+      </>
+    ),
+    bullets: [
+      "問題PDFを開いて確認。必要なら保存して紙で解いてもOK。",
+      "「一画面で書き込んで解く」から、タッチペン・指で直接記入。",
+      "GoodNotesなどで書き込んだPDFや、紙に解いた答案写真も添付できます。",
+      "提出すると、解答解説PDFが見られるようになり、同時に次の範囲が追加されます。",
+    ],
     visual: "submit",
+  },
+  {
+    no: "5",
+    title: "返却・再提出も「並行」して進む",
+    body: "提出後は自己採点しながら次へ進み、先生の添削返却は返却タブに届きます。やり直しが必要なものもここで確認できます。",
+    bullets: [
+      "採点待ち、先生から返却、再提出が必要を分けて表示。",
+      "不合格や再テストは再提出として戻り、同じ範囲をもう一度実施。",
+      "先生のコメントや添削済みPDFを見ながら、次の範囲と復習を並行できます。",
+    ],
+    visual: "returned",
+  },
+  {
+    no: "6",
+    title: "合格状況が「記録」される",
+    body: "取り組みは成績としてすべて残ります。いま何が合格済みで、どこに戻るべきかを数値で振り返れます。",
+    bullets: [
+      "合格率・平均点・合格数・連続学習をひと目で確認。",
+      "教科別の成績と「採点・返却の履歴」（合否・点数・コメント・日付）を一覧。",
+      "全範囲が返却済みかつ合格になると教材終了。一冊分PDFも受け取れます。",
+    ],
+    visual: "history",
   },
 ];
 
-const flowLabels = ["決済完了", "ログイン情報", "ログイン", "教材自動割り当て", "PDF提出"];
-
 function CheckIcon({ className = "" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M5 12.5l4.3 4.3L19 7" />
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 12.5l4.2 4.2L20 5.5" />
     </svg>
   );
 }
 
-function ArrowIcon({ className = "" }: { className?: string }) {
+function LogoMark({ className = "h-4 w-auto" }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M5 12h14" />
-      <path d="M13 6l6 6-6 6" />
-    </svg>
+    <picture>
+      <source type="image/avif" srcSet="/brand/nobit-logo-480.avif" />
+      <source type="image/webp" srcSet="/brand/nobit-logo-480.webp" />
+      <img
+        src="/brand/nobit-logo-480.webp"
+        alt="ノビットスタディ"
+        width={1970}
+        height={375}
+        loading="lazy"
+        decoding="async"
+        className={className}
+      />
+    </picture>
   );
 }
 
-function MiniPhone({
+function ScreenshotFrame({
   children,
-  className = "",
+  caption = "実際のアプリ画面",
 }: {
   children: React.ReactNode;
-  className?: string;
+  caption?: string;
 }) {
   return (
-    <div className={cn("relative mx-auto w-[210px] shrink-0", className)}>
-      <div className="rounded-[2rem] bg-[#0b1d4a] p-2 shadow-[0_34px_56px_-36px_rgba(11,29,74,0.75)] ring-1 ring-white/10">
-        <div className="relative h-[378px] overflow-hidden rounded-[1.45rem] bg-[#f4f8fc]">
-          <div className="pointer-events-none absolute left-1/2 top-2 z-20 h-3 w-14 -translate-x-1/2 rounded-full bg-[#0b1d4a]" />
+    <figure className="mx-auto w-[11.4rem] shrink-0 text-center sm:w-[14rem] lg:mx-0">
+      <div className="grid h-[14.8rem] place-items-center overflow-hidden bg-[#eef2f6] p-3 ring-1 ring-[#d8e1eb] sm:h-[17.2rem] sm:p-4">
+        <div className="h-full w-[9.25rem] overflow-hidden bg-white shadow-[0_18px_30px_-24px_rgba(15,29,74,0.5)] ring-1 ring-[#d8e1eb] sm:w-[10.8rem]">
           {children}
         </div>
       </div>
-    </div>
+      <figcaption className="mt-3 text-[0.78rem] leading-none text-[#8b98aa] sm:mt-4">{caption}</figcaption>
+    </figure>
   );
 }
 
-function MiniHeader() {
+function AccountVisual() {
   return (
-    <header className="border-b-2 border-[#25a8df] bg-white px-3.5 pb-3 pt-7">
-      <picture>
-        <source type="image/avif" srcSet="/brand/nobit-logo-480.avif" />
-        <source type="image/webp" srcSet="/brand/nobit-logo-480.webp" />
-        <img
-          src="/brand/nobit-logo-480.webp"
-          alt="ノビットスタディ"
-          width={1970}
-          height={375}
-          loading="lazy"
-          decoding="async"
-          className="h-5 w-auto"
-        />
-      </picture>
+    <ScreenshotFrame>
+      <div className="px-4 py-5 text-center">
+        <LogoMark className="mx-auto h-4 w-auto" />
+        <p className="mt-4 text-[0.66rem] font-extrabold text-[#0f172a]">アカウント発行</p>
+        <p className="mx-auto mt-3 max-w-[8.5rem] text-[0.44rem] leading-relaxed text-[#64748b]">
+          決済が完了しました。以下の情報でログインできます。
+        </p>
+        <div className="mt-4 rounded-[6px] bg-[#f8fafc] p-3 text-left ring-1 ring-[#d8e1eb]">
+          <p className="text-[0.42rem] font-bold text-[#64748b]">ログインID</p>
+          <p className="mt-1 font-mono text-[0.7rem] font-black tracking-[0.04em] text-[#0b1d4a]">st1234</p>
+          <p className="mt-2 text-[0.42rem] font-bold text-[#64748b]">パスワード（PIN）</p>
+          <p className="mt-1 font-mono text-[0.7rem] font-black tracking-[0.08em] text-[#0b1d4a]">2468</p>
+        </div>
+        <div className="mt-3 grid min-h-7 place-items-center bg-[#25a8df] text-[0.48rem] font-extrabold text-white">
+          ログインする
+        </div>
+        <p className="mt-3 text-[0.38rem] leading-relaxed text-[#8b98aa]">
+          ログインIDとパスワード（PIN）はメールでも送信されています。
+        </p>
+      </div>
+    </ScreenshotFrame>
+  );
+}
+
+function LoginVisual() {
+  return (
+    <ScreenshotFrame>
+      <div className="px-4 py-5 text-center">
+        <LogoMark className="mx-auto h-4 w-auto" />
+        <p className="mt-5 text-[0.68rem] font-extrabold text-[#0f172a]">ログイン</p>
+        <div className="mt-4 grid gap-2 text-left">
+          <label className="grid gap-1">
+            <span className="text-[0.4rem] font-bold text-[#64748b]">ログインID</span>
+            <span className="min-h-6 border border-[#d8e1eb] bg-white px-2 py-1 font-mono text-[0.48rem] font-bold text-[#0b1d4a]">st1234</span>
+          </label>
+          <label className="grid gap-1">
+            <span className="text-[0.4rem] font-bold text-[#64748b]">パスワード（PIN）</span>
+            <span className="min-h-6 border border-[#d8e1eb] bg-white px-2 py-1 font-mono text-[0.48rem] font-bold tracking-[0.16em] text-[#0b1d4a]">••••</span>
+          </label>
+        </div>
+        <div className="mt-3 grid min-h-7 place-items-center bg-[#25a8df] text-[0.48rem] font-extrabold text-white">
+          ログイン
+        </div>
+        <p className="mt-4 text-[0.36rem] leading-relaxed text-[#8b98aa]">
+          ログイン情報がわからないときは、登録メールをご確認ください。
+        </p>
+        <p className="mt-4 text-[0.34rem] text-[#94a3b8]">© 2026 Nobit Study</p>
+      </div>
+    </ScreenshotFrame>
+  );
+}
+
+function AppHeader({ active = "課題" }: { active?: "課題" | "返却" | "成績" }) {
+  return (
+    <header className="border-b border-[#25a8df] bg-white px-2.5 pt-2">
+      <LogoMark className="h-3.5 w-auto" />
+      <div className="mt-3 flex items-center gap-1.5">
+        <span className="text-[0.5rem] font-extrabold text-[#123657]">山田太郎</span>
+        <span className="border border-[#d8e1eb] px-1.5 py-0.5 text-[0.34rem] font-bold text-[#607289]">生徒・中高部</span>
+        <span className="border border-[#d8e1eb] px-1.5 py-0.5 text-[0.34rem] font-bold text-[#40536b]">ログアウト</span>
+      </div>
+      <nav className="mt-2 flex gap-4 text-[0.48rem] font-extrabold text-[#607289]">
+        {(["課題", "返却", "成績"] as const).map((item) => (
+          <span key={item} className={cn("relative pb-1.5", active === item && "text-[#25a8df]")}>
+            {item}
+            {item === "返却" ? (
+              <span className="ml-1 inline-grid h-3.5 w-3.5 place-items-center rounded-full bg-[#ef4444] align-middle text-[0.34rem] text-white">1</span>
+            ) : null}
+            {active === item ? <span className="absolute bottom-0 left-0 h-0.5 w-full bg-[#25a8df]" /> : null}
+          </span>
+        ))}
+      </nav>
     </header>
   );
 }
 
-function CredentialsScreen() {
+function HomeVisual() {
   return (
-    <MiniPhone>
-      <MiniHeader />
-      <main className="px-3.5 py-4">
-        <div className="rounded-[18px] bg-white p-4 shadow-[0_20px_36px_-28px_rgba(15,29,74,0.65)] ring-1 ring-[#d8e1eb]">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ecfdf5] px-2.5 py-1 text-[0.58rem] font-extrabold text-[#0f766e]">
-            <CheckIcon className="h-3 w-3" />
-            決済完了
-          </span>
-          <p className="mt-3 text-[0.95rem] font-extrabold leading-snug text-[#123657]">
-            ログイン情報が
-            <br />
-            発行されました
-          </p>
-          <p className="mt-2 text-[0.58rem] leading-relaxed text-[#607289]">
-            画面を閉じる前に、IDとPINを保存してください。
-          </p>
-          <dl className="mt-4 grid gap-2">
-            <div className="rounded-[12px] bg-[#f3f6f9] p-3 ring-1 ring-[#e4ebf2]">
-              <dt className="text-[0.52rem] font-extrabold text-[#607289]">ログインID</dt>
-              <dd className="mt-1 font-mono text-[0.92rem] font-black tracking-[0.06em] text-[#0b1d4a]">NBT-482913</dd>
-            </div>
-            <div className="rounded-[12px] bg-[#fff7ed] p-3 ring-1 ring-[#fed7aa]">
-              <dt className="text-[0.52rem] font-extrabold text-[#9a3412]">PIN</dt>
-              <dd className="mt-1 font-mono text-[1.15rem] font-black tracking-[0.16em] text-[#ea580c]">7394</dd>
-            </div>
-          </dl>
-        </div>
-        <div className="mt-3 rounded-[14px] bg-[#eef6f6] px-3 py-2.5 text-[0.56rem] font-bold leading-relaxed text-[#0f5e5e] ring-1 ring-[#cdece7]">
-          同じ内容をメールにも送信済みです。
-        </div>
+    <ScreenshotFrame>
+      <AppHeader active="課題" />
+      <main className="bg-[#f3f6f9] px-2.5 py-2.5">
+        <section className="bg-[#182957] px-3 py-3 text-white">
+          <p className="text-[0.58rem] font-extrabold leading-tight">こんにちは、山田太郎さん</p>
+          <p className="mt-1 text-[0.38rem] leading-relaxed text-white/80">目標から逆算して、今日の一歩を踏み出そう。</p>
+          <div className="mt-2 grid grid-cols-3 gap-1">
+            {["0日連続", "合格 2", "はじめの一歩"].map((label) => (
+              <span key={label} className="border border-white/30 py-1 text-center text-[0.32rem] font-bold text-white/90">{label}</span>
+            ))}
+          </div>
+        </section>
+        <section className="mt-2 border border-[#d8e1eb] bg-white p-2.5">
+          <p className="text-[0.42rem] font-extrabold text-[#25a8df]">今日の課題</p>
+          <p className="mt-1 text-[0.62rem] font-extrabold text-[#123657]">数学IA標準</p>
+          <p className="mt-1 text-[0.38rem] text-[#607289]">数学・数と式 A-3</p>
+          <div className="mt-2 grid min-h-7 place-items-center bg-[#25a8df] text-[0.42rem] font-extrabold text-white">取り組む →</div>
+        </section>
+        <section className="mt-2 border border-[#d8e1eb] bg-white p-2.5">
+          <p className="text-[0.5rem] font-extrabold text-[#123657]">教材の進み具合</p>
+          <div className="mt-2 rounded bg-[#eef6f6] p-2">
+            <p className="text-[0.42rem] font-bold text-[#123657]">数学IA標準</p>
+            <p className="mt-1 text-[0.34rem] text-[#607289]">合格 2/100 ・ 次：数学A-4</p>
+          </div>
+        </section>
       </main>
-    </MiniPhone>
+    </ScreenshotFrame>
   );
 }
 
-function LoginScreen() {
+function SubmitVisual() {
   return (
-    <MiniPhone>
-      <MiniHeader />
-      <main className="px-3.5 py-4">
-        <p className="text-[1.05rem] font-extrabold text-[#123657]">ログイン</p>
-        <p className="mt-1.5 text-[0.58rem] leading-relaxed text-[#607289]">
-          発行されたIDとPINで、生徒専用の画面に入ります。
-        </p>
-        <div className="mt-4 grid gap-3 rounded-[18px] bg-white p-4 ring-1 ring-[#d8e1eb]">
-          <label className="grid gap-1.5">
-            <span className="text-[0.56rem] font-extrabold text-[#607289]">ログインID</span>
-            <span className="rounded-[10px] border border-[#d8e1eb] bg-[#f8fbfd] px-3 py-2 font-mono text-[0.72rem] font-black tracking-[0.04em] text-[#0b1d4a]">
-              NBT-482913
-            </span>
-          </label>
-          <label className="grid gap-1.5">
-            <span className="text-[0.56rem] font-extrabold text-[#607289]">PIN</span>
-            <span className="rounded-[10px] border border-[#d8e1eb] bg-[#f8fbfd] px-3 py-2 font-mono text-[0.72rem] font-black tracking-[0.24em] text-[#0b1d4a]">
-              7394
-            </span>
-          </label>
-          <button className="mt-1 min-h-10 rounded-[10px] bg-[#25a8df] px-3 text-[0.72rem] font-extrabold text-white">
-            学習画面へ
-          </button>
-        </div>
-        <div className="mt-3 grid grid-cols-2 gap-2">
-          {["メールから確認", "保存して入力"].map((label) => (
-            <span key={label} className="rounded-[10px] bg-white px-2 py-2 text-center text-[0.5rem] font-extrabold text-[#607289] ring-1 ring-[#d8e1eb]">
-              {label}
-            </span>
+    <ScreenshotFrame>
+      <AppHeader active="課題" />
+      <main className="bg-[#f3f6f9] px-2.5 py-2.5">
+        <button className="border border-[#d8e1eb] bg-white px-2 py-1 text-[0.38rem] font-bold text-[#40536b]">← 課題一覧へ</button>
+        <p className="mt-2 text-[0.58rem] font-extrabold text-[#123657]">物理標準演習 <span className="border border-[#d8e1eb] px-1 text-[0.34rem] text-[#607289]">未提出</span></p>
+        <p className="mt-1 text-[0.34rem] text-[#607289]">山田太郎・物理・範囲 波と式 B-1・4回目</p>
+        <section className="mt-2 border border-[#d8e1eb] bg-white p-2.5">
+          <p className="text-[0.48rem] font-extrabold text-[#123657]">課題</p>
+          <div className="mt-2 grid grid-cols-[1fr_auto_auto] gap-1 border border-[#e4ebf2] bg-[#f8fbfd] p-2">
+            <span className="truncate text-[0.4rem] font-bold text-[#123657]">問題PDF</span>
+            <span className="border border-[#d8e1eb] bg-white px-1 text-[0.34rem]">開く</span>
+            <span className="border border-[#d8e1eb] bg-white px-1 text-[0.34rem]">保存</span>
+          </div>
+        </section>
+        <section className="mt-2 border border-[#d8e1eb] bg-white p-2.5">
+          <p className="text-[0.48rem] font-extrabold text-[#123657]">この課題を解く</p>
+          <div className="mt-2 grid min-h-7 place-items-center bg-[#25a8df] text-[0.38rem] font-extrabold text-white">一画面で書き込んで解く</div>
+          <div className="mt-3 border border-dashed border-[#bae6fd] bg-[#f0f9ff] p-3 text-center text-[0.36rem] font-bold text-[#0284c7]">
+            PDF・写真を添付して提出
+          </div>
+        </section>
+      </main>
+    </ScreenshotFrame>
+  );
+}
+
+function ReturnedVisual() {
+  return (
+    <ScreenshotFrame>
+      <AppHeader active="返却" />
+      <main className="bg-[#f3f6f9] px-2.5 py-2.5">
+        <h4 className="text-[0.62rem] font-extrabold text-[#123657]">返却・答え合わせ</h4>
+        <p className="mt-1 text-[0.36rem] leading-relaxed text-[#607289]">提出した課題の自己採点と、先生からの返却をここで確認します。</p>
+        <p className="mt-3 text-[0.54rem] font-extrabold text-[#123657]">再提出が必要 <span className="bg-[#25a8df] px-2 py-1 text-white">1</span></p>
+        <section className="mt-2 border border-[#d8e1eb] bg-white p-2.5">
+          <div className="flex gap-2">
+            <span className="grid h-8 w-8 shrink-0 place-items-center bg-[#25a8df] text-[0.5rem] font-bold text-white">数</span>
+            <div>
+              <p className="text-[0.48rem] font-extrabold text-[#123657]">数学IA標準</p>
+              <span className="mt-1 inline-block border border-[#fecdd3] bg-[#fff1f2] px-1.5 py-0.5 text-[0.32rem] font-bold text-[#e11d48]">再提出依頼</span>
+              <p className="mt-2 text-[0.34rem] text-[#607289]">数学・数と式 A-3</p>
+            </div>
+          </div>
+          <div className="mt-3 grid min-h-7 place-items-center bg-[#25a8df] text-[0.42rem] font-extrabold text-white">再提出する</div>
+        </section>
+      </main>
+    </ScreenshotFrame>
+  );
+}
+
+function HistoryVisual() {
+  return (
+    <ScreenshotFrame>
+      <AppHeader active="成績" />
+      <main className="bg-[#f3f6f9] px-2.5 py-2.5">
+        <h4 className="text-[0.62rem] font-extrabold text-[#123657]">成績</h4>
+        <p className="mt-1 text-[0.36rem] text-[#607289]">あなたの成績・高3です。</p>
+        <div className="mt-3 grid grid-cols-2 gap-1.5">
+          {[
+            ["合格率", "67%", "2/3課題"],
+            ["平均点", "75%", "得点率の平均"],
+            ["合格数", "2", "はじめの一歩"],
+            ["連続学習", "0", "日"],
+          ].map(([title, value, sub]) => (
+            <div key={title} className="rounded border border-[#d8e1eb] bg-white p-2">
+              <p className="text-[0.34rem] font-bold text-[#607289]">{title}</p>
+              <p className="mt-1 text-[0.72rem] font-extrabold text-[#059669]">{value}</p>
+              <p className="text-[0.3rem] text-[#8aa0b8]">{sub}</p>
+            </div>
           ))}
         </div>
+        <section className="mt-2 border border-[#d8e1eb] bg-white p-2.5">
+          <p className="text-[0.46rem] font-extrabold text-[#123657]">教科別の成績</p>
+          <div className="mt-2 flex justify-between text-[0.38rem] text-[#607289]">
+            <span>数学</span>
+            <span>合格 2/3・平均75%</span>
+          </div>
+          <div className="mt-2 h-1.5 bg-[#e7eef6]"><div className="h-full w-[67%] bg-[#25a8df]" /></div>
+        </section>
+        <section className="mt-2 border border-[#d8e1eb] bg-white p-2.5">
+          <p className="text-[0.46rem] font-extrabold text-[#123657]">得点率の推移</p>
+          <svg viewBox="0 0 120 42" className="mt-2 h-12 w-full bg-[#e9f6fb]" aria-hidden>
+            <path d="M8 16 L60 16 L112 32" fill="none" stroke="#25a8df" strokeWidth="2" />
+          </svg>
+        </section>
       </main>
-    </MiniPhone>
+    </ScreenshotFrame>
   );
 }
 
-function AppScreenClip({ variant }: { variant: "home" | "submit" }) {
-  return (
-    <div className="relative mx-auto h-[408px] w-[230px] overflow-hidden">
-      <AppScreen variant={variant} className="origin-top scale-[0.85]" />
-    </div>
-  );
-}
-
-function FlowVisual({ kind }: { kind: VisualKind }) {
-  if (kind === "credentials") return <CredentialsScreen />;
-  if (kind === "login") return <LoginScreen />;
-  if (kind === "home") return <AppScreenClip variant="home" />;
-  return <AppScreenClip variant="submit" />;
+function StepVisual({ kind }: { kind: VisualKind }) {
+  if (kind === "account") return <AccountVisual />;
+  if (kind === "login") return <LoginVisual />;
+  if (kind === "home") return <HomeVisual />;
+  if (kind === "submit") return <SubmitVisual />;
+  if (kind === "returned") return <ReturnedVisual />;
+  return <HistoryVisual />;
 }
 
 export function PostPurchaseFlow({
@@ -194,107 +362,86 @@ export function PostPurchaseFlow({
   className?: string;
   showCta?: boolean;
 }) {
-  const isLp = variant === "lp";
-  const shouldShowCta = showCta ?? isLp;
+  const shouldShowCta = showCta ?? variant === "lp";
 
   return (
-    <div
-      className={cn(
-        "relative overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#f8fbfd_0%,#ffffff_55%,#eef6f6_100%)] p-5 ring-1 ring-[rgba(15,29,74,0.08)] sm:p-7 lg:p-9",
-        isLp && "shadow-[0_34px_80px_-58px_rgba(15,29,74,0.65)]",
-        className,
-      )}
-    >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.5]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(15,29,74,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(15,29,74,0.04) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-          maskImage: "radial-gradient(ellipse 78% 70% at 76% 35%, #000 18%, transparent 78%)",
-          WebkitMaskImage: "radial-gradient(ellipse 78% 70% at 76% 35%, #000 18%, transparent 78%)",
-        }}
-      />
-      <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#25a8df]/10 blur-2xl" />
-      <div aria-hidden="true" className="pointer-events-none absolute -bottom-28 -left-20 h-72 w-72 rounded-full bg-[#f97316]/10 blur-2xl" />
-
-      <div className="relative">
-        <div className="grid gap-7 lg:grid-cols-[0.9fr_1.1fr] lg:items-end lg:gap-10">
+    <div className={cn("mx-auto max-w-6xl", className)}>
+      <div className="bg-[linear-gradient(115deg,#071328_0%,#12326f_62%,#1f3f95_100%)] px-6 py-8 text-white sm:px-10 sm:py-10">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.2em] text-[#0f766e]">
-              After purchase
-            </p>
-            <h2 className="mt-3 text-[1.55rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-              購入後も、最初の一問まで迷わない。
+            <p className="text-[0.86rem] font-extrabold text-[#facc15]">アプリの実画面で見る</p>
+            <h2 className="mt-2 text-[1.7rem] font-extrabold leading-[1.32] tracking-[-0.01em] sm:text-[2.35rem]">
+              購入後も、決済完了から学習開始まで迷わない。
             </h2>
-            <p className="mt-3 max-w-xl text-[0.94rem] leading-[1.9] text-[#475569]">
-              決済完了からログイン情報の発行、購入教材の自動割り当て、PDFでの実施・提出まで。生徒がすぐ学習に入れる流れを画面に沿って案内します。
-            </p>
           </div>
-
-          <ol className="flex flex-wrap items-center gap-2 lg:justify-end">
-            {flowLabels.map((label, i) => (
-              <li key={label} className="flex items-center gap-2">
-                <span className="inline-flex min-h-8 items-center rounded-full bg-white px-3 text-[0.72rem] font-extrabold text-[#0b1d4a] shadow-[0_10px_22px_-18px_rgba(15,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.08)]">
-                  {label}
-                </span>
-                {i < flowLabels.length - 1 ? <ArrowIcon className="hidden h-4 w-4 text-[#0f766e] sm:block" /> : null}
-              </li>
-            ))}
-          </ol>
+          <p className="shrink-0 text-[0.95rem] font-extrabold tracking-[0.06em] text-white/95">
+            ノビットスタディ｜高校部
+          </p>
         </div>
-
-        <div className="-mx-5 mt-8 flex snap-x gap-4 overflow-x-auto px-5 pb-5 sm:-mx-7 sm:px-7 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-4 lg:overflow-visible lg:px-0 lg:pb-0">
-          {flowSteps.map((step) => (
-            <article
-              key={step.n}
-              className="min-w-[17rem] snap-center rounded-[22px] bg-white p-4 shadow-[0_24px_56px_-42px_rgba(15,29,74,0.62)] ring-1 ring-[rgba(15,29,74,0.08)] lg:min-w-0"
-            >
-              <div className="relative flex h-[26.5rem] items-start justify-center overflow-hidden rounded-[18px] bg-[#eef6f8] pt-4 ring-1 ring-[rgba(15,29,74,0.06)]">
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute right-3 top-2 text-[4.8rem] font-black leading-none tracking-[-0.08em] text-[#0b1d4a]/[0.045]"
-                >
-                  {step.n}
-                </span>
-                <FlowVisual kind={step.visual} />
-              </div>
-              <div className="mt-4">
-                <p className="flex items-center gap-2 text-[0.72rem] font-extrabold tracking-[0.14em] text-[#0f766e]">
-                  STEP {step.n}
-                  {step.n === "01" ? (
-                    <span className="rounded-full bg-[#fff7ed] px-2 py-0.5 text-[0.62rem] tracking-normal text-[#ea580c]">
-                      メールにも届く
-                    </span>
-                  ) : null}
-                </p>
-                <h3 className="mt-2 text-[1.02rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{step.title}</h3>
-                <p className="mt-1.5 text-[0.8rem] leading-[1.75] text-[#64748b]">{step.body}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div className="mt-7 grid gap-4 border-t border-dashed border-[rgba(15,29,74,0.12)] pt-6 lg:grid-cols-[1fr_auto] lg:items-center">
-          <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-            {["ログイン情報を画面とメールで確認", "教材は購入内容から自動反映", "返却待ちで学習が止まらない", "提出後に次の範囲へ進む"].map((item) => (
-              <li key={item} className="flex items-start gap-2 text-[0.78rem] font-semibold leading-[1.65] text-[#475569]">
-                <span aria-hidden="true" className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[#0d9488] text-white">
-                  <CheckIcon className="h-2.5 w-2.5" />
-                </span>
-                {item}
-              </li>
-            ))}
-          </ul>
-          {shouldShowCta ? (
-            <div className="flex flex-col gap-2 sm:flex-row lg:flex-col">
-              <PrimaryCta href="/apply">教材を選んではじめる</PrimaryCta>
-              <SecondaryCta href="/app">アプリ画面を見る</SecondaryCta>
-            </div>
-          ) : null}
-        </div>
+        <p className="mt-4 max-w-5xl font-serif text-[0.95rem] leading-[2] text-white/90 sm:text-[1.03rem]">
+          決済完了 → ログイン情報の発行 → ログイン → 購入教材の自動割り当て → PDFで実施・提出へ。生徒が最初の一問に入るまでを、実際の画面に沿って案内します。
+        </p>
       </div>
+
+      <ol className="mt-8 grid gap-7">
+        {steps.map((step) => (
+          <li
+            key={step.no}
+            className="grid gap-6 rounded-[18px] border border-[#d8e1eb] bg-white px-5 py-6 shadow-[0_18px_44px_-38px_rgba(15,29,74,0.45)] sm:px-8 lg:grid-cols-[14rem_1fr] lg:gap-10 lg:px-9"
+          >
+            <StepVisual kind={step.visual} />
+            <div className="min-w-0 self-center">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <span className="inline-flex min-h-7 items-center bg-[#1f3f95] px-3 text-[0.9rem] font-extrabold tracking-[0.04em] text-white">
+                  STEP {step.no}
+                </span>
+                <h3 className="text-[1.25rem] font-extrabold leading-[1.45] tracking-[-0.005em] text-[#0f172a] sm:text-[1.45rem]">
+                  {step.title}
+                </h3>
+              </div>
+              <p className="mt-4 font-serif text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.08rem]">
+                {step.body}
+              </p>
+              <ul className="mt-3 grid gap-1.5">
+                {step.bullets.map((bullet) => (
+                  <li key={bullet} className="flex gap-3 font-serif text-[0.96rem] leading-[1.8] text-[#0f172a] sm:text-[1.04rem]">
+                    <CheckIcon className="mt-[0.28em] h-5 w-5 shrink-0 text-[#1f3f95]" />
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div className="mt-8 rounded-[16px] bg-[linear-gradient(115deg,#071328_0%,#12326f_64%,#1f3f95_100%)] px-6 py-7 text-white sm:px-10">
+        <h3 className="text-[1.35rem] font-extrabold leading-[1.5] sm:text-[1.65rem]">
+          この6画面で、購入直後から学習の習慣化までつながる。
+        </h3>
+        <p className="mt-3 font-serif text-[0.95rem] leading-[1.9] text-white/88">
+          購入後に迷わずログインでき、購入教材が自動で届き、提出後はすぐ解答解説で振り返って次へ進めます。返却・再提出は別タブで追えるので、生徒も先生も自分のタイミングで学習と添削を進められます。
+        </p>
+        <ul className="mt-5 flex flex-wrap gap-3">
+          {["返却待ちで止まらない", "PDF添付OK", "再提出も見える", "完了PDFを受け取れる"].map((label) => (
+            <li key={label} className="rounded-full border border-white/70 px-4 py-1.5 text-[0.82rem] font-extrabold text-white">
+              {label}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {shouldShowCta ? (
+        <div className="mt-8 rounded-[18px] bg-[linear-gradient(115deg,#1f3f95_0%,#071328_100%)] px-6 py-8 text-center text-white sm:px-10">
+          <h3 className="text-[1.5rem] font-extrabold leading-[1.5] sm:text-[1.9rem]">
+            「出す → 振り返る → 次へ進む」を、今日から。
+          </h3>
+          <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
+            <PrimaryCta href="/apply">教材を選んではじめる</PrimaryCta>
+            <SecondaryCta href="/app" tone="dark">アプリ画面を見る</SecondaryCta>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
