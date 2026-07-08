@@ -87,16 +87,16 @@ export default async function ApplyPage({
               Price · 料金・対応教材
             </p>
             <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-              教材ごとの買い切り。やり切る分だけ。
+              8/6まで、期間限定パック割。
             </h2>
             <p className="mt-3 text-[0.95rem] leading-[1.9] text-[#475569]">
-              入会金・追加費用は0円。理系を中心に10教材から選べます。
-              <strong className="font-bold text-[#ea580c]">8/6まで、2教材以上でパック割</strong>。
+              入会金・追加費用は0円。理系を中心に10教材から、必要な教材だけ選べます。
+              <strong className="font-bold text-[#ea580c]">2教材以上なら、期間限定のパック割が適用されます</strong>。
             </p>
           </div>
           <SubjectChips className="mx-auto mt-8 max-w-3xl" />
           <div className="mt-10">
-            <PricingTable cta={{ href: "#form", label: "教材を選んで買い切り価格を確定する" }} />
+            <PricingTable cta={{ href: "#form", label: "教材を選んでパック割を確認する" }} />
           </div>
         </Container>
       </section>
