@@ -14,24 +14,24 @@ import { siteConfig } from "@/data/site";
 export const metadata: Metadata = createPageMetadata({
   title: "公式アプリ「ノビットスタディ」｜課題配信・添削返却・進捗の見える化",
   description:
-    "学習管理アプリ「ノビットスタディ」の詳しい説明。提出・合格に合わせた課題配信、答案の提出、翌日までの添削返却、連続記録・はなまる・称号で続く習慣化、保護者も同じ画面で進捗を確認。課題・提出・添削・進捗がアプリひとつで完結します。",
+    "学習管理アプリ「ノビットスタディ」の詳しい説明。教材ごとの課題表示、PDFへの書き込み提出、提出直後の解答解説と次の範囲、添削返却・再提出・進捗の見える化まで、アプリひとつで完結します。",
   keywords: ["ノビットスタディ アプリ", "学習管理アプリ", "添削 アプリ", "学習習慣 アプリ 保護者"],
   path: "/app",
 });
 
 const features = [
-  { title: "次の1枚が届く", body: "提出・合格に合わせて次の教材が届きます。「何をやろう」と迷わず、座ったらすぐ始められます。" },
-  { title: "その場で提出", body: "解いた答案を、アプリからそのまま提出。途中式・考え方ごと、まるごと見てもらえます。" },
-  { title: "解答・解説が即届く", body: "提出と同時に解答・解説が届くので、その場で自己採点。間違いをすぐ確認できます。" },
-  { title: "翌日までに添削が返る", body: "先生の添削が翌日までに返却。途中式・減点ポイントまで、スマホで何度でも見返せます。" },
-  { title: "がんばりメーター", body: "提出数・添削完了・連続日数を見える化。積み上がりが目に見えて、続けたくなります。" },
+  { title: "今日の範囲が見える", body: "教材ごとに、いま取り組む範囲・採点待ち・再提出あり・合格数が分かります。" },
+  { title: "PDFに書き込んで提出", body: "問題PDFを開いて、そのまま書き込み。スマホ・タブレット・紙、好きな形で提出できます。" },
+  { title: "解答解説が即届く", body: "提出と同時に解答解説PDFと次の範囲が届くので、その場で自己採点しながら先へ進めます。" },
+  { title: "添削・再提出を管理", body: "先生の添削返却、再提出が必要な範囲、コメントや点数をタブで分けて確認できます。" },
+  { title: "がんばりメーター", body: "提出数・添削完了・合格数・連続日数を見える化。積み上がりが目に見えて、続けたくなります。" },
   { title: "はなまる・称号", body: "続けるほどはなまるや称号がたまるゲーミフィケーション。学習が自然と習慣に。" },
 ];
 
 const habitPoints = [
-  { title: "「次にやること」が決まっている", body: "提出して合格ラインに届くと次の教材が届くから、計画を立てる負担がありません。迷いをなくすことが、継続の第一歩です。" },
-  { title: "小さな達成を積む", body: "連続記録・はなまる・称号で、小さな「できた」を可視化。手応えが次の1枚のモチベーションになります。" },
-  { title: "出せば、必ず返ってくる", body: "提出した答案には必ず添削が返る。この往復があるから、独学のような「やりっぱなし」になりません。" },
+  { title: "「次にやること」が決まっている", body: "提出すると次の範囲が届くから、返却待ちで学習が止まりません。迷いをなくすことが、継続の第一歩です。" },
+  { title: "小さな達成を積む", body: "連続記録・はなまる・称号で、小さな「できた」を可視化。手応えが次の範囲へのモチベーションになります。" },
+  { title: "出せば、必ず返ってくる", body: "提出した答案には添削が返る。次へ進む流れと直す流れが両方あるから、独学のような「やりっぱなし」になりません。" },
 ];
 
 export default function AppPage() {
@@ -39,7 +39,7 @@ export default function AppPage() {
     name: "ノビットスタディ（学習管理アプリ）",
     alternateName: ["Nobit Study App"],
     description:
-      "提出・合格に合わせた課題配信・答案の提出・翌日までの添削返却・進捗の見える化を行う、ノビットスタディ 中高部の学習管理アプリ。保護者も同じ画面で進捗を確認できる。",
+      "教材ごとの課題表示・PDF提出・提出直後の解答解説と次の範囲・添削返却・再提出・進捗の見える化を行う、ノビットスタディ 中高部の学習管理アプリ。保護者も同じ画面で進捗を確認できる。",
     url: new URL("/app", siteConfig.url).toString(),
     audience: "student",
   });
@@ -134,12 +134,12 @@ export default function AppPage() {
               <AppScreen variant="home" className="relative z-10 float-slow" />
               {/* フローティング吹き出し（ガラス調で上質に） */}
               <div className="absolute -left-4 top-8 hidden -rotate-[5deg] rounded-[14px] bg-white/80 px-3.5 py-2.5 shadow-[0_22px_44px_-20px_rgba(11,29,74,0.55)] ring-1 ring-white/70 backdrop-blur-md sm:block">
-                <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#7c3aed]" />次の1枚、届く</p>
+                <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#7c3aed]" />今日の範囲</p>
                 <p className="mt-0.5 text-[0.62rem] text-[#64748b]">迷う時間はゼロ</p>
               </div>
               <div className="absolute -right-4 top-1/2 hidden rotate-[5deg] rounded-[14px] bg-white/80 px-3.5 py-2.5 shadow-[0_22px_44px_-20px_rgba(11,29,74,0.55)] ring-1 ring-white/70 backdrop-blur-md sm:block">
-                <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#16a34a]" />翌日までに添削</p>
-                <p className="mt-0.5 text-[0.62rem] text-[#64748b]">合否・点数・コメント</p>
+                <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#16a34a]" />返却・再提出</p>
+                <p className="mt-0.5 text-[0.62rem] text-[#64748b]">点数・コメント</p>
               </div>
               <div className="absolute -bottom-1 left-6 hidden -rotate-3 rounded-[14px] bg-white/80 px-3.5 py-2.5 shadow-[0_22px_44px_-20px_rgba(11,29,74,0.55)] ring-1 ring-white/70 backdrop-blur-md sm:block">
                 <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#1d4ed8]" />保護者も見れる</p>
@@ -222,7 +222,7 @@ export default function AppPage() {
               アプリの中を、のぞいてみよう。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              次の教材が届く → 好きな時に解いて写真で提出 → 採点者が添削して返却 → すべて記録。実際の画面でご紹介します。
+              今日の範囲を開く → PDFに書き込んで提出 → 解答解説で自己採点 → 返却・再提出も記録。実際の画面でご紹介します。
             </p>
           </div>
 

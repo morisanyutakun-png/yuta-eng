@@ -145,7 +145,7 @@ export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
                 : "添削（約100回）＋アプリ込み"}
             </p>
             <ul className="mt-4 grid gap-2 border-t border-dashed border-[rgba(15,29,74,0.18)] pt-4 text-left">
-              {["入会金・追加費用 0円", "買い切り・自動更新なし", "毎日、講師の添削つき"].map((t) => (
+              {["入会金・追加費用 0円", "買い切り・自動更新なし", "提出ごとに講師の添削つき"].map((t) => (
                 <li key={t} className="flex items-center gap-2 text-[0.82rem] font-semibold text-[#334155]">
                   <span aria-hidden="true" className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[#0d9488] text-white">
                     <CtaCheck className="h-2.5 w-2.5" />

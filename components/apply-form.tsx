@@ -56,10 +56,14 @@ const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
     },
   },
   "chemistry-basic": {
-    title: "化学基礎 全分野演習",
+    title: "ノビットの化学基礎 標準演習",
     level: "基礎",
     target: "高1-高2・共通テスト導入",
     coverage: "化学基礎の全分野を収録。物質量・酸塩基・酸化還元まで一通り確認します。",
+    cover: {
+      asin: "B0H7YWLDJJ",
+      alt: "ノビットの化学基礎 標準演習の教材表紙",
+    },
   },
   chemistry: {
     title: "ノビットの化学 標準",

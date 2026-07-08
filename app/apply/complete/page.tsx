@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { PurchaseEventTracker } from "@/components/analytics-events";
 import { Container } from "@/components/container";
@@ -11,7 +12,14 @@ export const metadata: Metadata = {
     description: "ノビットスタディ 中高部のお申し込みが完了しました。",
     path: "/apply/complete",
   }),
-  robots: { index: false, follow: false },
+  robots: {
+    index: false,
+    follow: true,
+    googleBot: {
+      index: false,
+      follow: true,
+    },
+  },
 };
 
 function firstParam(value: string | string[] | undefined) {
@@ -25,6 +33,10 @@ export default async function ApplyCompletePage({
 }) {
   const params = await searchParams;
   const sessionId = firstParam(params.session_id) ?? null;
+  if (!sessionId) {
+    redirect("/apply");
+  }
+
   const setupRequested = firstParam(params.setup) === "1";
   const appUrl = process.env.NOBIT_APP_URL?.replace(/\/$/, "");
   const setupHref =

@@ -13,6 +13,25 @@ const nextConfig: NextConfig = {
     // optimizer cold starts and keeps CDN caches warm for SEO.
     minimumCacheTTL: 60 * 60 * 24 * 365,
   },
+  async redirects() {
+    return [
+      { source: "/home", destination: "/", permanent: true },
+      { source: "/lp", destination: "/", permanent: true },
+      { source: "/nobit", destination: "/", permanent: true },
+      { source: "/pricing", destination: "/apply", permanent: true },
+      { source: "/price", destination: "/apply", permanent: true },
+      { source: "/subjects", destination: "/apply", permanent: true },
+      { source: "/courses", destination: "/apply", permanent: true },
+      { source: "/course", destination: "/apply", permanent: true },
+      { source: "/books", destination: "/materials", permanent: true },
+      { source: "/book", destination: "/materials", permanent: true },
+      { source: "/faq", destination: "/", permanent: true },
+      { source: "/privacy", destination: "/legal/privacy", permanent: true },
+      { source: "/refund", destination: "/legal/refund", permanent: true },
+      { source: "/tokushoho", destination: "/legal/tokushoho", permanent: true },
+      { source: "/terms", destination: "/legal/tokushoho", permanent: true },
+    ];
+  },
   // Long-cache the pre-built static OG card variants and brand SVGs that
   // never change between builds. immutable means CDNs/browsers will skip
   // revalidation entirely until the next deploy.
@@ -38,6 +57,12 @@ const nextConfig: NextConfig = {
       },
       // Book cover and its AVIF/WebP variants — same immutable policy as other
       // never-changing public assets so CDNs cache aggressively.
+      {
+        source: "/books/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
       {
         source: "/denjikigaku-cover:rest(.*)",
         headers: [

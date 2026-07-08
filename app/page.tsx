@@ -29,7 +29,7 @@ export const metadata: Metadata = createPageMetadata({
   title:
     "毎日の学習を、仕組みにする。デジタル通信添削 - ノビットスタディ 中高部",
   description:
-    "ノビットスタディ 中高部は、自作教材を好きなタイミングで1枚ずつ進める、買い切りのデジタル通信添削。提出した答案は著者本人が添削し、合格ラインに届くと次の教材が届きます。保護者も進捗を確認できます。物理・化学・数学・英語、1教材（約100日分・添削込み）買い切り¥14,800〜、8/6まで開講記念パック割、入会金・追加費用0円。",
+    "ノビットスタディ 中高部は、自作教材を好きなタイミングで1枚ずつ進める、買い切りのデジタル通信添削。提出すると解答解説PDFと次の範囲が届き、先生の添削・再提出は並行して進みます。物理・化学・数学・英語、1教材（約100日分・添削込み）買い切り¥14,800〜、8/6まで開講記念パック割、入会金・追加費用0円。",
   path: "/",
 });
 
@@ -40,7 +40,7 @@ const problems = [
   { title: "参考書は買った。でも、三日で開かなくなった。", body: "続かないのは、あなたの意志が弱いからじゃない。「続く仕組み」が無いだけです。" },
   { title: "解いて丸つけ。それで、やりっぱなし。", body: "どこがなぜ違うのか、誰も直してくれない。だから同じ失点を、何度もくり返す。" },
   { title: "映像授業は「見て、分かった気」になる。", body: "でも手を動かさないと、分かった“つもり”のまま。点には変わりません。" },
-  { title: "そもそも、今日“何を”やればいいの？", body: "毎日の計画づくりに疲れて、勉強そのものが止まってしまう。" },
+  { title: "そもそも、今日“何を”やればいいの？", body: "学習計画づくりに疲れて、勉強そのものが止まってしまう。" },
 ];
 
 // ノビットの価値＝3本柱。教材 × 習慣化 × 添削。
@@ -51,7 +51,7 @@ const pillars = [
     icon: "pillar-materials",
     color: "#1d4ed8",
     title: "自作のオリジナル教材を、取り組みサイズで。",
-    body: "16冊を刊行した開発者が「理解で解く」設計で書き下ろし。毎日少しずつ進む大きさに分割します。",
+    body: "16冊を刊行した開発者が「理解で解く」設計で書き下ろし。少しずつ進む大きさに分割します。",
   },
   {
     no: "02",
@@ -59,14 +59,14 @@ const pillars = [
     icon: "pillar-habit",
     color: "#0d9488",
     title: "提出すると次が届くから、迷わない。",
-    body: "専用アプリが提出・合格に合わせて次の1枚を配信。連続記録・はなまる・称号で、勉強が生活のリズムになります。",
+    body: "専用アプリが提出と同時に解答解説PDFと次の範囲を配信。返却待ちでも学習が止まらず、勉強が生活のリズムになります。",
   },
   {
     no: "03",
     tag: "添削",
     icon: "pillar-correction",
     color: "#ea580c",
-    title: "出した答案に、毎日あなた専用の指摘。",
+    title: "出した答案に、あなた専用の指摘。",
     body: "教材を書いた本人が添削。途中式・考え方・減点ポイントまで、直し方が分かる形で返します。",
   },
 ];
@@ -84,8 +84,8 @@ type Step = {
 const steps: Step[] = [
   { no: "01", verb: "解く", caption: "プリント教材で答案をつくる", base: "print-problem", tilt: "-rotate-2" },
   { no: "02", verb: "出す", caption: "提出と同時に解答・解説が届く（その場で自己採点）", base: "print-solution", tilt: "rotate-2", tag: "解答・解説" },
-  { no: "03", verb: "返る", caption: "翌日までに、先生の添削が返ってくる", base: "print-problem", tilt: "-rotate-2", stamp: "添削" },
-  { no: "04", verb: "進む", caption: "8割合格で、次の教材へ", base: "print-cover", tilt: "-rotate-1", stamp: "合格" },
+  { no: "03", verb: "返る", caption: "運用日程に沿って、先生の添削が返ってくる", base: "print-problem", tilt: "-rotate-2", stamp: "添削" },
+  { no: "04", verb: "進む", caption: "次の範囲へ進み、全範囲合格で修了", base: "print-cover", tilt: "-rotate-1", stamp: "合格" },
 ];
 
 // 1日のサイクル（習慣ループ）。
@@ -95,8 +95,8 @@ const flow = [
     verb: "届く",
     color: "#1d4ed8",
     glyph: "M4 6h16v11H4z M4 6l8 6 8-6", // 通知が届く（封筒）
-    title: "次の1枚が届く",
-    body: "提出して合格ラインに届くと、次の教材がアプリに届きます。「何をやろう」と迷う時間はゼロ。座ったらすぐ始められます。",
+    title: "今日の範囲が見える",
+    body: "アプリを開くと、いま取り組む教材と範囲が分かります。「何をやろう」と迷う時間はゼロ。座ったらすぐ始められます。",
   },
   {
     step: "STEP 2",
@@ -104,23 +104,23 @@ const flow = [
     color: "#0d9488",
     glyph: "M4 20l1-4L16 5l3 3L8 19zM14 7l3 3", // 鉛筆で書く
     title: "解いて、出す",
-    body: "自作教材で理解して書く。好きなタイミングで取り組み、提出と同時に解答・解説が届くので、その場で自己採点まで完了します。",
+    body: "自作教材で理解して書く。好きなタイミングで取り組み、提出と同時に解答解説PDFと次の範囲が届きます。",
   },
   {
     step: "STEP 3",
     verb: "返る",
     color: "#ea580c",
     glyph: "M9 7L4 12l5 5M4 12h10a6 6 0 0 1 6 6", // 添削が返ってくる（返信矢印）
-    title: "翌日までに添削が返る",
-    body: "自己採点だけで終わりません。翌日までに、あなた専用の添削が返却。スマホでそのまま見返せます。",
+    title: "添削が返る",
+    body: "自己採点だけで終わりません。先生の添削が返却されたら、コメントや添削PDFをスマホでそのまま見返せます。",
   },
   {
     step: "STEP 4",
     verb: "進む",
     color: "#16a34a",
     glyph: "M20 7a8 8 0 1 0 1.5 5M20 4v4h-4", // くりかえす（ループ矢印）
-    title: "提出したら、次へ",
-    body: "指摘をもとに直し、合格ライン（8割）を超えたら次の教材へ。全課題が合格になったら、その教材は修了です。",
+    title: "返却・再提出も並行",
+    body: "再提出が必要な範囲は戻って確認。次の範囲と復習を並行して進め、全範囲が8割合格になったら教材修了です。",
   },
 ];
 
@@ -139,12 +139,12 @@ const correctionPoints = [
   {
     mark: "③",
     title: "「見てくれている」実感",
-    body: "提出を続けるほど、頑張りが伝わる。認めてもらえる一言が、次の1枚へのやる気になります。",
+    body: "提出を続けるほど、頑張りが伝わる。認めてもらえる一言が、次の範囲へのやる気になります。",
   },
   {
     mark: "④",
     title: "次まで、いっしょに",
-    body: "弱点に合わせて次の課題を提示。ひとりで抱え込まず、必要な順番で積み上げられます。",
+    body: "返却・再提出・次の範囲をアプリで整理。ひとりで抱え込まず、必要な順番で積み上げられます。",
   },
 ];
 
@@ -152,14 +152,14 @@ const correctionPoints = [
 const materialPoints = [
   { label: "自作オリジナル", body: "16冊を刊行した開発者が書き下ろし。市販の寄せ集めにはない、一貫した設計。" },
   { label: "理解で解く", body: "暗記ではなく、現象・図・言葉・式を地続きに。初見の問題でも、自分で答案を組み立てられる。" },
-  { label: "取り組みサイズ", body: "1回10〜20分に分割。約100回で1冊、無理なく最後までやり切れる大きさに。" },
+  { label: "取り組みサイズ", body: "1回10〜20分に分割。約100回で1冊、自分のペースで最後までやり切れる大きさに。" },
 ];
 
 // あらゆる段階の生徒に「自分のことだ」と思ってもらえるよう、入門〜難関までを広く。
 // img は用意されたイラスト（連番は section の逆順で生成されているため明示的に対応づけ）。
 const forYouFit = [
   { title: "何から手をつければいいか分からない", body: "次に取り組む1枚が届くから、迷わず始められます。", img: "foryou-6" },
-  { title: "毎日続けられる自信が、まだない", body: "続ける仕組みごとお渡しします。続け方から一緒に。", img: "foryou-5" },
+  { title: "続けられる自信が、まだない", body: "続ける仕組みごとお渡しします。続け方から一緒に。", img: "foryou-5" },
   { title: "解けるのに、記述答案に自信がない", body: "途中式・考え方まで、提出ごとの添削で仕上げます。", img: "foryou-4" },
   { title: "部活や習い事で、時間が取りにくい", body: "1回10〜20分から。スキマ時間で積み上がります。", img: "foryou-3" },
   { title: "難関大・名大の記述まで本気で伸ばしたい", body: "基礎から入試レベルまで、切れ目なく対応します。", img: "foryou-2" },
@@ -168,7 +168,7 @@ const forYouFit = [
 
 // アプリ「ノビットスタディ」＝習慣化のエンジン。
 const appPoints = [
-  { title: "次の1枚が届く", body: "提出・合格に合わせて次の教材が届くので、迷わず始められ、勉強が習慣に変わります。" },
+  { title: "次の範囲が届く", body: "提出すると解答解説PDFと次の範囲が届くので、返却待ちで止まらず、迷わず進められます。" },
   { title: "添削がそのまま返る", body: "提出した答案に、途中式・減点ポイントまでの添削が返却。スマホで見返せます。" },
   { title: "保護者も進捗を確認", body: "提出数・添削完了・連続日数を見える化。保護者も同じ画面で見守れて安心です。" },
   { title: "続けたくなる仕組み", body: "はなまる・称号・連続記録で、学習が自然と積み上がります。" },
@@ -181,9 +181,9 @@ const marqueeItems = [
   "物理・化学・数学・英語",
   "好きな時に提出 × 添削",
   "提出と同時に解答・解説",
-  "翌日までにプロの添削",
+  "プロの添削が返る",
   "自作オリジナル教材",
-  "習慣化アプリで毎日続く",
+  "習慣化アプリで続く",
   "保護者も進捗を確認",
   "入会金・追加費用 0円",
   "8/6まで 開講記念パック割",
@@ -433,7 +433,7 @@ function StatsBand() {
   const stats = [
     { n: "9", u: "教材", d: "物理・化学・数学・英語", tilt: "-rotate-[1.2deg]" },
     { n: formatYen(MATERIAL_PRICE), u: "〜", d: "1教材 買い切り・税込", tilt: "rotate-[0.6deg]", pen: true },
-    { n: "毎日", u: "添削", d: "翌日までに返却", tilt: "-rotate-[0.5deg]", check: true },
+    { n: "提出", u: "添削", d: "答案ごとに返却", tilt: "-rotate-[0.5deg]", check: true },
     { n: "0", u: "円", d: "入会金・追加費用", tilt: "rotate-[1deg]", circle: true },
   ];
   return (
@@ -524,14 +524,14 @@ export default function Home() {
         />
 
         <Container className="relative px-6">
-          <div className="grid grid-cols-1 items-center gap-10 py-14 sm:py-20 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12 lg:py-24">
+          <div className="grid grid-cols-1 items-center gap-7 py-8 sm:gap-10 sm:py-20 lg:grid-cols-[1.02fr_0.98fr] lg:gap-12 lg:py-24">
             <div className="min-w-0 text-center lg:text-left">
               <p className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3.5 py-1.5 text-[0.7rem] font-bold tracking-[0.06em] text-[#0f766e] shadow-[0_8px_20px_-12px_rgba(13,148,136,0.5)] ring-1 ring-[rgba(13,148,136,0.22)] backdrop-blur sm:text-[0.76rem]">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
                 デジタル通信添削
               </p>
 
-              <h1 className="mt-5 text-[2.6rem] font-extrabold leading-[1.1] tracking-[-0.035em] text-[#0b1d4a] sm:text-[3.2rem] lg:text-[3.6rem]">
+              <h1 className="mt-4 text-[2.35rem] font-extrabold leading-[1.08] tracking-[-0.035em] text-[#0b1d4a] sm:mt-5 sm:text-[3.2rem] lg:text-[3.6rem]">
                 解いて、出して、
                 <br />
                 <Penned color="#f97316">
@@ -541,20 +541,29 @@ export default function Home() {
                 </Penned>
               </h1>
 
-              <p className="mx-auto mt-6 max-w-md text-[1.08rem] leading-[1.85] text-[#334155] sm:text-[1.15rem] lg:mx-0">
-                好きな時に1枚、出すだけ。その場で<strong className="font-bold text-[#0b1d4a]">解答・解説</strong>、
-                翌日までに<strong className="font-bold text-[#0b1d4a]">先生の添削</strong>。
-                <br className="hidden sm:block" />
-                「続ける」も「直す」も、まるごと仕組みにしました。
+              <p className="mx-auto mt-4 max-w-md text-[0.98rem] leading-[1.75] text-[#334155] sm:mt-6 sm:text-[1.15rem] lg:mx-0">
+                <span className="sm:hidden">
+                  好きな時に1枚、出すだけ。
+                  <br />
+                  出すと、<strong className="font-bold text-[#0b1d4a]">解答解説</strong>と<strong className="font-bold text-[#0b1d4a]">次の範囲</strong>へ。
+                  <br />
+                  添削・再提出は並行して進みます。
+                </span>
+                <span className="hidden sm:inline">
+                  好きな時に1枚、出すだけ。提出した瞬間に<strong className="font-bold text-[#0b1d4a]">解答解説</strong>と
+                  <strong className="font-bold text-[#0b1d4a]">次の範囲</strong>へ。
+                  <br className="hidden sm:block" />
+                  先生の添削・再提出は、学習と並行して進みます。
+                </span>
               </p>
 
-              <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0">
+              <div className="relative mt-7 hidden flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0 lg:flex">
                 <CtaDoodle />
                 <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
                 <SecondaryCta href="/apply#pricing">料金・科目を見る</SecondaryCta>
               </div>
               {/* トラストチップ */}
-              <ul className="mt-6 flex flex-wrap justify-center gap-x-4 gap-y-2 lg:justify-start">
+              <ul className="mt-6 hidden flex-wrap justify-center gap-x-4 gap-y-2 lg:flex lg:justify-start">
                 {["入会金・追加費用0円", "8/6まで開講記念パック割", "買い切り・自動更新なし"].map((t) => (
                   <li key={t} className="flex items-center gap-1.5 text-[0.82rem] font-semibold text-[#475569]">
                     <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
@@ -570,14 +579,28 @@ export default function Home() {
               <PhoneBackdrop />
               {/* 実アプリ画面（主役）＋演習本プリント（背面） */}
               <div className="relative mx-auto flex w-fit items-center justify-center">
-                <div className="absolute -left-14 top-10 z-0 w-[42%] max-w-[160px] -rotate-[9deg] overflow-hidden rounded-[12px] bg-white shadow-[0_30px_50px_-30px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.1)] sm:-left-20">
+                <div className="absolute -left-14 top-10 z-0 hidden w-[42%] max-w-[160px] -rotate-[9deg] overflow-hidden rounded-[12px] bg-white shadow-[0_30px_50px_-30px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.1)] sm:-left-20 sm:block">
                   <PrintImage base="print-problem" alt="ノビット公式演習本の問題ページ" sizes="160px" className="block h-auto w-full" priority />
                 </div>
-                <AppScreen variant="home" className="relative z-10 float-slow" />
+                <AppScreen variant="home" className="relative z-10 origin-center scale-[0.9] float-slow sm:scale-100" />
                 {/* 手書きメモ風の付箋（正直なひとことで、人の手作り感を出す） */}
                 <div className="absolute -bottom-3 right-0 z-20 hidden -rotate-[5deg] rounded-[12px] bg-white/85 px-3.5 py-2.5 text-[0.74rem] font-bold leading-snug text-[#9a3412] shadow-[0_20px_40px_-18px_rgba(154,52,18,0.5)] ring-1 ring-white/70 backdrop-blur-md sm:block">
                   教材も添削も、<br />つくった本人が担当。
                 </div>
+              </div>
+              <div className="relative -mt-2 grid gap-3 lg:hidden">
+                <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
+                <SecondaryCta href="/apply#pricing">料金・教材を見る</SecondaryCta>
+                <ul className="flex flex-wrap justify-center gap-x-3 gap-y-2">
+                  {["返却待ちで止まらない", "解答解説PDFつき", "買い切り"].map((t) => (
+                    <li key={t} className="flex items-center gap-1.5 text-[0.74rem] font-semibold text-[#475569]">
+                      <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
+                        <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.3 4.3L19 7" /></svg>
+                      </span>
+                      {t}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
@@ -603,7 +626,7 @@ export default function Home() {
               <Penned color="#ea580c">進む</Penned>。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.9] text-[#475569]">
-              出した瞬間に解答・解説、翌日までに先生の添削。この流れを毎日くりかえすだけです。
+              出した瞬間に解答・解説と次の範囲。先生の添削・再提出は、学習と並行して進みます。
             </p>
           </div>
 
@@ -655,8 +678,8 @@ export default function Home() {
           </ol>
 
           <p className="mx-auto mt-10 max-w-2xl text-center text-[0.92rem] leading-[1.8] text-[#475569]">
-            <strong className="font-bold text-[#0b1d4a]">出した瞬間に自己採点、翌日までにプロの添削。</strong>
-            この二段構えのフィードバックが、日々の学習を確実な伸びに変えます。
+            <strong className="font-bold text-[#0b1d4a]">出した瞬間に自己採点、返却後にプロの添削。</strong>
+            次へ進む流れと直す流れを分けることで、学習を止めずに積み上げられます。
           </p>
           <div className="mt-8 flex justify-center">
             <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
@@ -842,8 +865,8 @@ export default function Home() {
               </p>
               <ul className="mt-6 grid gap-3 sm:grid-cols-3">
                 {[
-                  { t: "手が動く", b: "自作教材で毎日書く。点に変わる。" },
-                  { t: "続く", b: "毎日の課題＋アプリで習慣に。" },
+                  { t: "手が動く", b: "自作教材で答案を書く。点に変わる。" },
+                  { t: "続く", b: "今日の範囲＋アプリで習慣に。" },
                   { t: "直る", b: "著者本人の添削で軌道修正。" },
                 ].map((c) => (
                   <li key={c.t} className="rounded-[14px] bg-white/[0.08] p-4 ring-1 ring-white/15">
@@ -864,17 +887,17 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* ───────── FLOW（1日のサイクル） ───────── */}
+      {/* ───────── FLOW（学習サイクル） ───────── */}
       <section id="flow" className="cv-defer relative overflow-hidden scroll-mt-24 bg-white">
         <SectionGlow className="-right-24 top-0" color="rgba(13,148,136,0.12)" />
         <SectionGlow className="-left-28 bottom-10" color="rgba(29,78,216,0.08)" />
         <Container className="relative px-6 py-16 sm:py-24 lg:pb-44">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
-              Daily Loop · 1日のサイクル
+              Learning Loop · 学習サイクル
             </p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.2rem]">
-              届く → 解く → 返る → 直す。<Penned color="#0d9488">毎日</Penned>くりかえす。
+              出す → 振り返る → 次へ。<Penned color="#0d9488">好きな時に</Penned>くりかえす。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
               1回10〜20分から。シンプルなループだから、無理なく続いて積み上がります。
@@ -885,7 +908,7 @@ export default function Home() {
             <div aria-hidden="true" className="pointer-events-none absolute inset-x-[22%] inset-y-2 hidden rounded-full border-2 border-dashed border-[rgba(13,148,136,0.28)] lg:block" />
             <div aria-hidden="true" className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 flex-col items-center lg:flex">
               <span className="grid h-24 w-24 place-items-center rounded-full bg-[linear-gradient(135deg,#0b1d4a,#0f5e5e)] text-center text-white shadow-[0_24px_44px_-24px_rgba(11,29,74,0.8)]">
-                <span className="text-[0.7rem] font-bold leading-tight">毎日<br />くりかえす</span>
+                <span className="text-[0.7rem] font-bold leading-tight">好きな時に<br />くりかえす</span>
               </span>
             </div>
 
@@ -1008,7 +1031,7 @@ export default function Home() {
                 />
               </div>
               <span className="absolute -right-3 -top-3 -rotate-6 rounded-full bg-[#ea580c] px-3.5 py-1.5 text-[0.78rem] font-extrabold text-white shadow-[0_14px_26px_-12px_rgba(234,88,12,0.9)]">
-                毎日、返ってくる
+                提出ごとに返る
               </span>
             </div>
 
@@ -1021,7 +1044,7 @@ export default function Home() {
                 答案の向こうに、いつも<Penned>人がいる</Penned>。
               </h2>
               <p className="mt-4 max-w-lg text-[0.96rem] leading-[1.95] text-[#475569]">
-                答案には、講師が目を通してコメントを返します。ただの丸つけと違い、やり取りが生まれ、進み具合まで見てもらえる。「ちゃんと見てくれている」——その手ごたえが、毎日のやる気を支えます。
+                答案には、講師が目を通してコメントを返します。ただの丸つけと違い、やり取りが生まれ、進み具合まで見てもらえる。「ちゃんと見てくれている」——その手ごたえが、次に進む力を支えます。
               </p>
               <ul className="mt-7 grid gap-3">
                 {correctionPoints.map((c) => (
@@ -1042,7 +1065,7 @@ export default function Home() {
             </div>
           </div>
           <p className="mx-auto mt-10 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
-            見てくれる人がいて、やり取りが続く。ひとりにしないから、「分かったつもり」で止まらない。<strong className="font-bold text-[#0b1d4a]">毎日の見守りと伴走そのもの</strong>——それが、ノビットの添削です。
+            見てくれる人がいて、やり取りが続く。ひとりにしないから、「分かったつもり」で止まらない。<strong className="font-bold text-[#0b1d4a]">学習を止めない見守りと伴走そのもの</strong>——それが、ノビットの添削です。
           </p>
           <InlineCta note="提出ごとの添削を、今日から。教材ごとに選べます。" />
         </Container>
@@ -1064,12 +1087,12 @@ export default function Home() {
               <p className="mt-6 max-w-lg text-[1rem] leading-[1.95] text-[#334155]">
                 演習の土台は、ノビットのために書き下ろした
                 <strong className="font-bold text-[#0b1d4a]">公式教材</strong>。
-                数学（ⅠA・ⅡBC・ⅢC）に加えて、化学標準・英語長文・英文法まで
+                数学（ⅠA・ⅡBC・ⅢC）に加えて、化学基礎・化学標準・英語長文・英文法まで
                 <strong className="font-bold text-[#0b1d4a]">演習教材として公開中</strong>。
                 さらに開発者が制作する
                 <strong className="font-bold text-[#0b1d4a]">『考える力を育てる』シリーズ（全16冊）</strong>
                 も演習に活用します。
-                <strong className="font-bold text-[#0b1d4a]">教材が豊富だから、毎日の演習に困りません。</strong>
+                <strong className="font-bold text-[#0b1d4a]">教材が豊富だから、日々の演習に困りません。</strong>
                 そのすべてを、つくった本人が添削します。
               </p>
               <ul className="mt-6 grid gap-2 text-[0.92rem] leading-[1.85] text-[#334155]">
@@ -1127,7 +1150,7 @@ export default function Home() {
                 </figure>
               </div>
               <p className="mt-3 text-center text-[0.78rem] leading-[1.7] text-[#64748b]">
-                毎日取り組むノビット公式演習本（数値違いの並行類題＋方針つき解答解説）。
+                アプリで取り組むノビット公式演習本（数値違いの並行類題＋方針つき解答解説）。
               </p>
             </div>
           </div>
@@ -1143,8 +1166,8 @@ export default function Home() {
               </h3>
               <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#475569]">
                 ノビットのために書き下ろした公式教材。
-                <strong className="font-bold text-[#0b1d4a]">数学（ⅠA・ⅡBC・ⅢC）・化学標準・英語長文・英文法</strong>
-                まで、毎日の演習と添削に合わせて使える形でそろえています。
+                <strong className="font-bold text-[#0b1d4a]">数学（ⅠA・ⅡBC・ⅢC）・化学基礎・化学標準・英語長文・英文法</strong>
+                まで、提出・解答解説・添削に合わせて使える形でそろえています。
               </p>
             </div>
 
@@ -1189,7 +1212,7 @@ export default function Home() {
 
             <ul className="mx-auto mt-6 flex max-w-3xl flex-wrap items-center justify-center gap-2 text-[0.74rem] font-semibold text-[#64748b]">
               <li className="text-[#475569]">続々制作中：</li>
-              {["物理 基礎・標準・発展", "化学基礎"].map((s) => (
+              {["物理 基礎・標準・発展"].map((s) => (
                 <li
                   key={s}
                   className="rounded-full bg-white px-3 py-1 text-[#94a3b8] ring-1 ring-dashed ring-[rgba(15,29,74,0.15)]"
@@ -1354,16 +1377,16 @@ export default function Home() {
               <div className="mt-5 grid gap-4 text-[0.96rem] leading-[2] text-[#334155]">
                 <p>
                   私自身、公式暗記で物理に苦しみ、解説を読んでは「分かったつもり」で止まっていました。
-                  本当に力がついたのは、毎日自分で答案を書き、どこが足りないかを一枚ずつ直してもらえたときでした。
+                  本当に力がついたのは、自分で答案を書き、どこが足りないかを一枚ずつ直してもらえたときでした。
                 </p>
                 <p>
-                  だからノビットは、授業をしません。私が書いた教材で毎日手を動かし、その答案を私が添削する。
+                  だからノビットは、授業をしません。私が書いた教材で自分のペースで手を動かし、その答案を私が添削する。
                   <strong className="font-bold text-[#0b1d4a]">途中式・考え方・減点ポイント</strong>まで踏み込み、
                   「次にどう直すか」が分かる形でお返しします。
                 </p>
                 <p>
-                  派手さはありません。でも、毎日続く仕組みと毎日のフィードバックこそが、いちばん確実に伸びる道だと信じています。
-                  自分のペースで、毎日少しずつ。一緒に積み上げていきましょう。
+                  派手さはありません。でも、続く仕組みと提出ごとのフィードバックこそが、いちばん確実に伸びる道だと信じています。
+                  自分のペースで、少しずつ。一緒に積み上げていきましょう。
                 </p>
               </div>
               {/* 手書きサイン風（人の手の気配） */}
@@ -1387,7 +1410,7 @@ export default function Home() {
               得意でも、苦手でも。<Penned color="#0d9488">あなたのペース</Penned>で。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              今の成績も、得意・苦手も問いません。「毎日少しずつ続けたい」——その気持ちさえあれば、十分です。
+              今の成績も、得意・苦手も問いません。「自分のペースで続けたい」——その気持ちさえあれば、十分です。
             </p>
           </div>
 
@@ -1425,7 +1448,7 @@ export default function Home() {
               <IconChat className="h-6 w-6" />
             </span>
             <p className="text-[0.92rem] leading-[1.9] text-[#334155]">
-              いまは対面授業やその場での質問対応は行わず、<strong className="font-bold text-[#0b1d4a]">「自分のペースで毎日進める」</strong>ことに集中しています。
+              いまは対面授業やその場での質問対応は行わず、<strong className="font-bold text-[#0b1d4a]">「自分のペースで進める」</strong>ことに集中しています。
               「うちの子に合うかな？」と迷ったら、どんな小さなことでも気軽にご相談ください。
             </p>
             <Link
