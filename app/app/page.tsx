@@ -212,7 +212,7 @@ export default function AppPage() {
       </section>
 
       {/* 実画面で見る 4ステップ */}
-      <section className="relative overflow-hidden bg-white">
+      <section id="screens" className="relative scroll-mt-24 overflow-hidden bg-white">
         <SectionGlow className="-right-24 top-24" color="rgba(124,58,237,0.08)" />
         <SectionGlow className="-left-28 bottom-24" color="rgba(13,148,136,0.1)" />
         <Container className="relative px-6 py-16 sm:py-24">
@@ -226,31 +226,54 @@ export default function AppPage() {
             </p>
           </div>
 
-          <div className="mx-auto mt-14 grid max-w-4xl gap-y-16">
+          <div className="mx-auto mt-14 grid max-w-5xl gap-7">
             {appSteps.map((s, i) => (
-              <div
+              <article
                 key={s.no}
-                className={`grid items-center gap-8 lg:grid-cols-[auto_1fr] lg:gap-12 ${i % 2 === 1 ? "lg:grid-cols-[1fr_auto]" : ""}`}
+                className={`relative overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#f8fbfd_0%,#ffffff_58%,#eef6f6_100%)] p-5 shadow-[0_28px_70px_-54px_rgba(15,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.08)] sm:p-8 lg:grid lg:min-h-[34rem] lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-10 ${i % 2 === 1 ? "lg:grid-cols-[1.1fr_0.9fr]" : ""}`}
               >
-                <div className={`flex justify-center ${i % 2 === 1 ? "lg:order-2" : ""}`}>
-                  <AppScreen variant={s.variant} />
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#25a8df]/10"
+                />
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -bottom-12 left-8 h-44 w-44 rounded-full bg-[#f97316]/[0.07]"
+                />
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute right-6 top-4 text-[5rem] font-black leading-none tracking-[-0.08em] text-[#0b1d4a]/[0.035] sm:text-[6.5rem]"
+                >
+                  {s.no}
+                </span>
+
+                <div className={`relative flex justify-center ${i % 2 === 1 ? "lg:order-2" : ""}`}>
+                  <div className="relative">
+                    <div
+                      aria-hidden="true"
+                      className="absolute left-1/2 top-1/2 h-[19rem] w-[19rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(37,168,223,0.16),transparent)] blur-md"
+                    />
+                    <AppScreen variant={s.variant} className="relative z-10 origin-center scale-[0.92] sm:scale-95 lg:scale-[0.96]" />
+                  </div>
                 </div>
-                <div className={i % 2 === 1 ? "lg:order-1" : ""}>
-                  <span className="inline-flex items-center gap-2 rounded-full bg-[#0b1d4a] px-3 py-1 text-[0.72rem] font-extrabold tracking-[0.08em] text-white">
+
+                <div className={`relative mt-1 ${i % 2 === 1 ? "lg:order-1" : ""}`}>
+                  <span className="inline-flex items-center gap-2 rounded-full bg-[#0b1d4a] px-3.5 py-1.5 text-[0.72rem] font-extrabold tracking-[0.08em] text-white shadow-[0_12px_24px_-18px_rgba(15,29,74,0.8)]">
+                    <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#5eead4]" />
                     STEP {s.no}
                   </span>
-                  <p className="mt-3 text-[1.3rem] font-extrabold leading-[1.4] text-[#0b1d4a] sm:text-[1.5rem]">{s.title}</p>
-                  <p className="mt-2 text-[0.95rem] leading-[1.95] text-[#334155]">{s.lead}</p>
-                  <ul className="mt-4 grid gap-2">
+                  <p className="mt-4 text-[1.38rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.65rem]">{s.title}</p>
+                  <p className="mt-3 max-w-xl text-[0.95rem] leading-[1.95] text-[#334155]">{s.lead}</p>
+                  <ul className="mt-5 grid gap-2.5">
                     {s.facts.map((f) => (
-                      <li key={f} className="flex gap-2.5 text-[0.9rem] leading-[1.8] text-[#475569]">
-                        <span aria-hidden="true" className="mt-[0.4em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#0d9488]" />
+                      <li key={f} className="flex gap-2.5 rounded-[14px] bg-white/78 px-3.5 py-2.5 text-[0.88rem] leading-[1.65] text-[#475569] ring-1 ring-[rgba(15,29,74,0.06)]">
+                        <span aria-hidden="true" className="mt-[0.45em] h-2 w-2 shrink-0 rounded-full bg-[#0d9488] shadow-[0_0_0_4px_rgba(13,148,136,0.1)]" />
                         {f}
                       </li>
                     ))}
                   </ul>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
           <p className="mx-auto mt-14 max-w-2xl text-center text-[0.82rem] leading-[1.8] text-[#94a3b8]">

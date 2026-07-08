@@ -166,8 +166,8 @@ function AppButton({ children, className = "" }: { children: React.ReactNode; cl
   );
 }
 
-function GhostButton({ children }: { children: React.ReactNode }) {
-  return <button className="rounded-[8px] border border-[#d8e1eb] bg-white px-2.5 py-1.5 text-[0.58rem] font-extrabold text-[#40536b]">{children}</button>;
+function GhostButton({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  return <button className={`rounded-[8px] border border-[#d8e1eb] bg-white px-2.5 py-1.5 text-[0.58rem] font-extrabold text-[#40536b] ${className}`}>{children}</button>;
 }
 
 function StatChip({ children, icon }: { children: React.ReactNode; icon: React.ReactNode }) {
@@ -252,32 +252,32 @@ function ScreenHome() {
 function ScreenSubmit() {
   return (
     <AppChrome active="none">
-      <div className="grid gap-3">
-        <button className="w-fit rounded-[8px] border border-[#d8e1eb] bg-white px-2.5 py-1.5 text-[0.62rem] font-extrabold text-[#40536b]">
+      <div className="grid gap-2.5">
+        <button className="w-fit rounded-[8px] border border-[#d8e1eb] bg-white px-2.5 py-1.5 text-[0.58rem] font-extrabold text-[#40536b]">
           ← 課題一覧へ
         </button>
         <div>
-          <p className="text-[1rem] font-extrabold leading-tight tracking-[-0.02em] text-[#123657]">
+          <p className="text-[0.9rem] font-extrabold leading-tight tracking-[-0.02em] text-[#123657]">
             数学IA標準 <StatusBadge>未提出</StatusBadge>
           </p>
-          <p className="mt-2 text-[0.62rem] leading-relaxed text-[#607289]">山田太郎 ・ 数学 ・ 範囲 数と式 B-1 ・ 4回目</p>
+          <p className="mt-1.5 text-[0.56rem] leading-relaxed text-[#607289]">山田太郎 ・ 数学 ・ 範囲 数と式 B-1 ・ 4回目</p>
         </div>
 
-        <AppPanel>
-          <p className="text-[0.82rem] font-extrabold text-[#123657]">課題</p>
-          <div className="mt-4 flex items-center gap-2">
-            <span aria-hidden="true" className="text-[0.82rem]">📄</span>
-            <p className="min-w-0 flex-1 truncate text-[0.82rem] font-extrabold text-[#0f172a]">数と式 B-1.pdf</p>
-            <GhostButton>開く</GhostButton>
-            <GhostButton>保存する</GhostButton>
+        <AppPanel className="!p-2.5">
+          <p className="text-[0.74rem] font-extrabold text-[#123657]">課題</p>
+          <div className="mt-2 grid grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-1.5 rounded-[10px] bg-[#f8fbfd] p-2 ring-1 ring-[#e4ebf2]">
+            <span aria-hidden="true" className="grid h-6 w-6 shrink-0 place-items-center rounded-[7px] bg-white text-[0.72rem] ring-1 ring-[#e4ebf2]">📄</span>
+            <p className="min-w-0 truncate text-[0.64rem] font-extrabold text-[#0f172a]">数と式 B-1.pdf</p>
+            <GhostButton className="px-2 py-1 text-[0.5rem]">開く</GhostButton>
+            <GhostButton className="px-2 py-1 text-[0.5rem]">保存</GhostButton>
           </div>
         </AppPanel>
 
-        <AppPanel>
-          <p className="text-[0.82rem] font-extrabold text-[#123657]">この課題を解く</p>
-          <AppButton className="mt-4">✏️ 一画面で書き込んで解く</AppButton>
-          <p className="mt-3 text-[0.62rem] leading-[1.8] text-[#607289]">
-            タッチペン・指で直接書き込めます。書いた内容は自動保存され、提出するまで消えません。
+        <AppPanel className="!p-2.5">
+          <p className="text-[0.74rem] font-extrabold text-[#123657]">この課題を解く</p>
+          <AppButton className="mt-2 min-h-8 text-[0.62rem]">✏️ 一画面で書き込んで解く</AppButton>
+          <p className="mt-1.5 text-[0.52rem] leading-[1.55] text-[#607289]">
+            書いた内容は自動保存。提出するまで消えません。
           </p>
         </AppPanel>
       </div>
