@@ -76,7 +76,7 @@ export function SubjectChips({ className = "" }: { className?: string }) {
 
 /**
  * 料金表パネル（採点表ふう・方眼＋手書き注釈）。申込ページに掲載する。
- * 買い切り：1教材＝約100日分の課題＋毎日添削。2教材以上は開講記念パック割。
+ * 買い切り：1教材＝約100回分の課題＋添削。2教材以上は開講記念パック割。
  * cta を渡すとパネル内にボタンを出す（トップからは詳細を持たず、ここへ誘導）。
  */
 export function PricingTable({
@@ -114,7 +114,7 @@ export function PricingTable({
               </span>
               <span className="pb-2.5 text-[1.05rem] font-bold">〜 買い切り</span>
             </p>
-            <p className="mt-2 text-[0.8rem] text-[#64748b]">毎日添削（約{GRADING_COUNT}回）＋習慣化アプリ込み</p>
+            <p className="mt-2 text-[0.8rem] text-[#64748b]">添削（約{GRADING_COUNT}回）＋習慣化アプリ込み</p>
             {campaign ? (
               <p className="mt-3.5">
                 <span className="inline-flex -rotate-2 items-center rounded-[10px] bg-[#fff1e6] px-3 py-1 text-[0.78rem] font-extrabold text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">
@@ -215,7 +215,7 @@ export function PricingTable({
         </p>
         <span aria-hidden="true" className="hidden text-[#0d9488] sm:block">→</span>
         <p className="text-[0.95rem] font-extrabold leading-[1.5] text-[#0f766e]">
-          毎日の添削と習慣化で、<span className="text-[1.05rem]">1冊を最後までやり切る</span>。
+          提出ごとの添削と習慣化で、<span className="text-[1.05rem]">1冊を最後までやり切る</span>。
         </p>
       </div>
     </div>

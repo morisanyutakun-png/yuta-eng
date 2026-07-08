@@ -23,7 +23,7 @@ export const metadata: Metadata = createPageMetadata({
 const principles = [
   { title: "公式暗記ではなく、理解で解く", body: "現象・図・言葉・式を地続きにつなぎ、構造で理解する。初見の問題でも自分で答案を組み立てられる力を育てます。" },
   { title: "記述前提の演習設計", body: "答えだけでなく、途中式・考え方を書く前提の設計。だから提出した答案を、そのまま添削で仕上げられます。" },
-  { title: "毎日サイズに分割", body: "1回10〜20分で取り組める大きさに分割。毎日少しずつ、無理なく積み上がるカリキュラムです。" },
+  { title: "取り組みサイズに分割", body: "1回10〜20分で取り組める大きさに分割。生活に合わせて、無理なく積み上がるカリキュラムです。" },
 ];
 
 export default function MaterialsPage() {
@@ -60,7 +60,7 @@ export default function MaterialsPage() {
               <p className="mt-4 max-w-2xl text-[1rem] leading-[1.95] text-[#334155]">
                 ノビットのために書き下ろした<strong className="font-bold text-[#0b1d4a]">公式教材</strong>と、開発者が刊行する
                 <strong className="font-bold text-[#0b1d4a]">『考える力を育てる』シリーズ（全16冊）</strong>。
-                教材が豊富だから、毎日の演習に困りません。そのすべてを、つくった本人が毎日添削します。
+                教材が豊富だから、演習に困りません。そのすべてを、つくった本人が添削します。
               </p>
               <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center lg:mt-16 lg:w-fit">
                 <CtaDoodle />
@@ -74,7 +74,7 @@ export default function MaterialsPage() {
                 widths={[560, 1120]}
                 width={1448}
                 height={1086}
-                alt="スマホと教材で毎日演習する高校生のイラスト"
+                alt="スマホと教材で演習する高校生のイラスト"
                 sizes="(min-width: 1024px) 440px, 80vw"
                 priority
                 className="relative block h-auto w-full drop-shadow-[0_30px_50px_-30px_rgba(11,29,74,0.4)]"
@@ -143,10 +143,10 @@ export default function MaterialsPage() {
               ノビット公式教材
             </p>
             <h2 className="mt-4 text-[1.6rem] font-extrabold leading-[1.4] sm:text-[2rem]">
-              数学・化学・英語まで、毎日演習の土台を用意。
+              数学・化学・英語まで、演習の土台を用意。
             </h2>
             <p className="mt-4 text-[0.95rem] leading-[1.95] text-white/80">
-              ノビットのために書き下ろした公式教材。数学（ⅠA・ⅡBC・ⅢC）に加えて、化学標準・英語長文・英文法も、毎日の添削に合わせて使える形でそろえています。
+              ノビットのために書き下ろした公式教材。数学（ⅠA・ⅡBC・ⅢC）に加えて、化学標準・英語長文・英文法も、添削に合わせて使える形でそろえています。
             </p>
           </div>
           <ul className="mx-auto mt-10 grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -192,7 +192,7 @@ export default function MaterialsPage() {
           </div>
           <ol className="mx-auto mt-10 grid max-w-4xl gap-5 sm:grid-cols-2">
             {[
-              { n: "01", t: "その日の1枚に取り組む", b: "教材から毎日サイズに切り出された課題を、途中式・考え方まで書いて解きます。" },
+              { n: "01", t: "次の1枚に取り組む", b: "教材から取り組みやすく切り出された課題を、途中式・考え方まで書いて解きます。" },
               { n: "02", t: "並行類題で定着させる", b: "数値違いの並行類題を用意。同じ考え方を手を変えて反復し、「解ける」を「いつでも解ける」に。" },
               { n: "03", t: "方針つき解答で確認する", b: "解答・解説は答えだけでなく“なぜその方針か”まで。提出と同時に届くので、その場で自己採点できます。" },
               { n: "04", t: "添削で仕上げる", b: "書いた答案を開発者本人が添削。教材と添削が地続きだから、直し方まで一貫しています。" },
@@ -290,7 +290,7 @@ export default function MaterialsPage() {
                 { q: "教材は別で買う必要がありますか？", a: "いいえ。毎日の演習に使うノビット公式教材はサービスに含まれ、教材費は0円です。学習は公式教材を中心に進めます（市販書籍は、さらに演習したい方向けの任意の選択肢です）。" },
                 { q: "どの科目の公式教材がありますか？", a: "数学（ⅠA・ⅡBC・ⅢC）の標準演習に加えて、化学標準、英語長文、英文法を公開しています。物理（基礎・標準・発展）や化学基礎も、サービス内の演習として順次整えていきます。" },
                 { q: "レベルはどのくらいですか？", a: "基礎から入試標準までをカバーします。段階的に難易度が上がる設計なので、苦手からでも積み上げられ、難関大・名大の記述対策まで対応します。" },
-                { q: "市販の『考える力を育てる』シリーズとの違いは？", a: "公式教材はノビットのために書き下ろした毎日演習用の教材、『考える力を育てる』シリーズは開発者が制作する市販書籍です。どちらも同じ設計思想で、あわせて演習に活用できます。" },
+                { q: "市販の『考える力を育てる』シリーズとの違いは？", a: "公式教材はノビットのために書き下ろした演習教材、『考える力を育てる』シリーズは開発者が制作する市販書籍です。どちらも同じ設計思想で、あわせて演習に活用できます。" },
               ].map((item) => (
                 <li key={item.q} className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
                   <p className="flex items-start gap-2.5 text-[1rem] font-bold leading-[1.6] text-[#0b1d4a]">
@@ -304,7 +304,7 @@ export default function MaterialsPage() {
           </div>
 
           <div className="mx-auto mt-14 max-w-3xl">
-            <PageCtaRow title="毎日の1枚が、いちばんの近道。" note="教材はサービスとセット。買い足しは不要で、毎日演習して毎日添削で仕上げます。" />
+            <PageCtaRow title="次の1枚が、いちばんの近道。" note="教材はサービスとセット。買い足しは不要で、提出ごとの添削で仕上げます。" />
           </div>
         </Container>
       </section>

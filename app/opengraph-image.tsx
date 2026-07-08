@@ -102,7 +102,7 @@ export default async function Image() {
             教材 × 習慣化 × 添削のデジタル通信添削。
           </div>
           <div style={{ display: "flex", gap: 14 }}>
-            {["買い切り¥14,800〜", "入会金・追加費用0円", "毎日添削"].map((t) => (
+            {["買い切り¥14,800〜", "入会金・追加費用0円", "添削込み"].map((t) => (
               <div
                 key={t}
                 style={{

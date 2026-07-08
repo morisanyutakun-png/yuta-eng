@@ -13,8 +13,8 @@ import { createBreadcrumbJsonLd } from "@/lib/structured-data";
 export const metadata: Metadata = createPageMetadata({
   title: "ノビットのしくみ｜教材 × 習慣化 × 添削で毎日続く学習システム",
   description:
-    "ノビットスタディ 中高部のしくみを詳しく解説。塾でも参考書でもない「続く学習システム」。自作教材を毎日1枚ずつ進め、提出と同時に解答・解説、翌日までにプロの添削。3本柱（教材・習慣化・添削）と1日のサイクル、添削の中身までを紹介します。",
-  keywords: ["ノビットスタディ しくみ", "デジタル通信添削 とは", "毎日添削 学習法", "学習習慣化"],
+    "ノビットスタディ 中高部のしくみを詳しく解説。塾でも参考書でもない「続く学習システム」。自作教材を好きなタイミングで1枚ずつ進め、提出と同時に解答・解説、翌日までにプロの添削。3本柱（教材・習慣化・添削）と学習サイクル、添削の中身までを紹介します。",
+  keywords: ["ノビットスタディ しくみ", "デジタル通信添削 とは", "添削 学習法", "学習習慣化"],
   path: "/how-it-works",
 });
 
@@ -24,16 +24,16 @@ const pillars = [
     icon: "pillar-materials",
     color: "#1d4ed8",
     title: "自作のオリジナル教材",
-    body: "市販の一般教材ではありません。16冊を刊行した開発者が「理解で解く」設計で書き下ろし、毎日少しずつ進む大きさに分割。今日やる分がいつも目の前にあります。",
-    points: ["理解で解く設計思想", "毎日サイズに分割", "各分野へ順次拡大中"],
+    body: "市販の一般教材ではありません。16冊を刊行した開発者が「理解で解く」設計で書き下ろし、1回分ずつ進む大きさに分割。次にやる分がいつも目の前にあります。",
+    points: ["理解で解く設計思想", "取り組みサイズに分割", "各分野へ順次拡大中"],
   },
   {
     tag: "習慣化",
     icon: "pillar-habit",
     color: "#0d9488",
     title: "続く仕組みを、まるごと",
-    body: "専用アプリが毎日1枚の課題を配信。連続記録・はなまる・称号で、勉強が自然と生活のリズムになります。「今日やること」が決まっているから続きます。",
-    points: ["毎日1枚の課題配信", "連続記録・はなまる・称号", "保護者も進捗を確認"],
+    body: "専用アプリが提出・合格に合わせて次の1枚を配信。連続記録・はなまる・称号で、勉強が自然と生活のリズムになります。「次にやること」が決まっているから続きます。",
+    points: ["提出後に次の教材が届く", "連続記録・はなまる・称号", "保護者も進捗を確認"],
   },
   {
     tag: "添削",
@@ -46,10 +46,10 @@ const pillars = [
 ];
 
 const steps = [
-  { no: "01", title: "今日の1枚が届く", body: "その日やる課題がアプリに配信。「何をやろう」と迷う時間はゼロ。座ったらすぐ始められます。" },
+  { no: "01", title: "次の1枚が届く", body: "提出して合格ラインに届くと、次の教材がアプリに配信。「何をやろう」と迷う時間はゼロ。座ったらすぐ始められます。" },
   { no: "02", title: "解いて、出す", body: "自作教材で理解して書く。1回10〜20分から。提出と同時に解答・解説が届くので、その場で自己採点まで完了します。" },
   { no: "03", title: "翌日までに添削が返る", body: "自己採点だけで終わりません。翌日までに、あなた専用の添削が返却。スマホでそのまま見返せます。" },
-  { no: "04", title: "直して、また明日へ", body: "指摘をもとに直し、合格したら次の教材へ。連続記録を1日のばす。この小さなループが力を積み上げます。" },
+  { no: "04", title: "提出したら、次へ", body: "指摘をもとに直し、合格ライン（8割）を超えたら次の教材へ。全課題が合格になったら、その教材は修了です。" },
 ];
 
 const correction = [
@@ -90,7 +90,7 @@ export default function HowItWorksPage() {
               毎日の学習を、仕組みにする。
             </h1>
             <p className="mt-4 max-w-2xl text-[1rem] leading-[1.95] text-[#334155]">
-              ノビットは、塾でも参考書でもありません。自作教材を<strong className="font-bold text-[#0b1d4a]">毎日1枚ずつ</strong>進め、
+              ノビットは、塾でも参考書でもありません。自作教材を<strong className="font-bold text-[#0b1d4a]">好きなタイミングで1枚ずつ</strong>進め、
               提出と同時に解答・解説、翌日までにプロの添削が返る——
               <strong className="font-bold text-[#0b1d4a]">「教材 × 習慣化 × 添削」</strong>で回す、続く学習システムです。
             </p>
@@ -173,7 +173,7 @@ export default function HowItWorksPage() {
             <div className="text-center">
               <AppScreen variant="home" />
               <p className="mt-4 text-[0.9rem] font-bold text-[#0b1d4a]">課題が届く（ホーム）</p>
-              <p className="mt-1 text-[0.8rem] text-[#64748b]">今日の1枚・やること・がんばりメーター</p>
+              <p className="mt-1 text-[0.8rem] text-[#64748b]">次の1枚・やること・がんばりメーター</p>
             </div>
             <div className="text-center">
               <AppScreen variant="returned" />
@@ -250,11 +250,11 @@ export default function HowItWorksPage() {
         </Container>
       </section>
 
-      {/* 1日の流れ（具体例） */}
+      {/* 学習の流れ（具体例） */}
       <section className="bg-white">
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">Example · 1日の流れ</p>
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">Example · 学習の流れ</p>
             <h2 className="mt-3 text-[1.7rem] font-extrabold leading-[1.35] text-[#0b1d4a] sm:text-[2.2rem]">
               たとえば、夜の30分。
             </h2>
@@ -264,11 +264,11 @@ export default function HowItWorksPage() {
           </div>
           <ol className="mx-auto mt-10 max-w-2xl space-y-3">
             {[
-              { time: "20:00", title: "アプリに「今日の課題」が届く", body: "通知が来たら開くだけ。何をやるか迷う時間はありません。" },
-              { time: "20:05", title: "プリントで解く（10〜20分）", body: "その日の1枚を、途中式・考え方まで書いて答案に。" },
+              { time: "20:00", title: "アプリに「次の教材」が届く", body: "提出して合格ラインに届くと、次の教材が届きます。何をやるか迷う時間はありません。" },
+              { time: "20:05", title: "プリントで解く（10〜20分）", body: "手元の1枚を、途中式・考え方まで書いて答案に。" },
               { time: "20:20", title: "提出 → その場で解答・解説", body: "出した瞬間に模範解答が届くので、すぐ自己採点できます。" },
               { time: "翌20:00", title: "先生の添削が返ってくる", body: "翌日までに、あなた専用の添削が返却。指摘をもとに直します。" },
-              { time: "そして", title: "合格したら、次の1枚へ", body: "連続記録が1日のびる。この小さなループを毎日くりかえします。" },
+              { time: "そして", title: "8割合格で、次の1枚へ", body: "好きなタイミングで提出し、全課題が合格になったら、その教材は修了です。" },
             ].map((s, i, arr) => (
               <li key={s.time} className="relative flex gap-4 rounded-[16px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.06)]">
                 <div className="flex flex-col items-center">
@@ -285,7 +285,7 @@ export default function HowItWorksPage() {
             ))}
           </ol>
           <p className="mx-auto mt-6 max-w-2xl text-center text-[0.86rem] leading-[1.8] text-[#475569]">
-            合計 <strong className="font-bold text-[#0b1d4a]">1日20〜30分</strong> ほど。部活や習い事があっても、スキマ時間で続けられます。
+            合計 <strong className="font-bold text-[#0b1d4a]">1回20〜30分</strong> ほど。部活や習い事があっても、スキマ時間で続けられます。
           </p>
         </Container>
       </section>
@@ -299,14 +299,14 @@ export default function HowItWorksPage() {
               武器は、著者が書き下ろした教材。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              市販の寄せ集めではありません。16冊を刊行した開発者が「理解で解く」設計で書き下ろし、毎日サイズに分割。この1冊を最後までやり切ることが、いちばんの近道です。
+              市販の寄せ集めではありません。16冊を刊行した開発者が「理解で解く」設計で書き下ろし、取り組みやすいサイズに分割。この1冊を最後までやり切ることが、いちばんの近道です。
             </p>
           </div>
           <div className="mx-auto mt-10 grid max-w-4xl gap-3 sm:grid-cols-3">
             {[
               { label: "自作オリジナル", body: "16冊を刊行した開発者が書き下ろし。市販の寄せ集めにはない、一貫した設計。" },
               { label: "理解で解く", body: "暗記ではなく、現象・図・言葉・式を地続きに。初見の問題でも、自分で答案を組み立てられる。" },
-              { label: "毎日サイズ", body: "1回10〜20分に分割。約100日で1冊、無理なく最後までやり切れる大きさに。" },
+              { label: "取り組みサイズ", body: "1回10〜20分に分割。約100回で1冊、無理なく最後までやり切れる大きさに。" },
             ].map((m, i) => (
               <div key={m.label} className="rounded-[16px] bg-white p-5 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_20px_38px_-34px_rgba(11,29,74,0.5)]">
                 <p className="flex items-center gap-2 text-[0.98rem] font-extrabold text-[#0b1d4a]">
@@ -318,7 +318,7 @@ export default function HowItWorksPage() {
             ))}
           </div>
           <p className="mx-auto mt-6 max-w-2xl text-center text-[0.84rem] leading-[1.8] text-[#475569]">
-            授業はしません。自分の手で解いて、著者本人に毎日見てもらう。だから「分かったつもり」で止まらず、1冊をやり切れます。
+            授業はしません。自分の手で解いて、提出するたびに著者本人に見てもらう。だから「分かったつもり」で止まらず、1冊をやり切れます。
           </p>
         </Container>
       </section>
@@ -334,10 +334,10 @@ export default function HowItWorksPage() {
             <ul className="mt-10 grid gap-3">
               {[
                 { q: "1日どのくらいの時間がかかりますか？", a: "1回10〜20分で取り組める大きさに課題を分割しています。提出後の自己採点や、翌日の添削の見直しを含めても、1日20〜30分ほどが目安です。部活や習い事があっても続けやすい設計です。" },
-                { q: "提出はどのくらいの頻度ですか？", a: "毎日1枚の提出を基本にしています。ペースは生活に合わせて調整でき、忙しい日は休んでも、連続記録の仕組みで自然と戻ってこられます。" },
+                { q: "提出はどのくらいの頻度ですか？", a: "好きなタイミングで提出できます。提出して合格ライン（8割）に届くと次の教材が届くので、生活に合わせて進めながら、全課題合格で修了を目指せます。" },
                 { q: "添削はいつ返ってきますか？", a: "提出と同時に解答・解説が届くのでその場で自己採点でき、先生の添削は翌日までに返却することを基本にしています（運用日程の詳細は申し込み時にご案内します）。" },
-                { q: "面談や授業（ライブ指導）はありますか？", a: "現状、対面・オンラインの面談や授業は行っていません。自分のペースで教材を進め、提出した答案に毎日の添削が入る——その繰り返しに集中しています。" },
-                { q: "続けられるか不安です。", a: "「続けられない」を設計で解くのがノビットです。毎日1枚の自動配信で迷いをなくし、連続記録・はなまる・称号で小さな達成を可視化。出せば必ず返ってくる往復が、継続を後押しします。" },
+                { q: "面談や授業（ライブ指導）はありますか？", a: "現状、対面・オンラインの面談や授業は行っていません。自分のペースで教材を進め、提出した答案に添削が入る——その繰り返しに集中しています。" },
+                { q: "続けられるか不安です。", a: "「続けられない」を設計で解くのがノビットです。提出すれば次が届く流れで迷いをなくし、連続記録・はなまる・称号で小さな達成を可視化。出せば必ず返ってくる往復が、継続を後押しします。" },
               ].map((item) => (
                 <li key={item.q} className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
                   <p className="flex items-start gap-2.5 text-[1rem] font-bold leading-[1.6] text-[#0b1d4a]">

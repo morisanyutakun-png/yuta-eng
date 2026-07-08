@@ -13,7 +13,7 @@ import {
 export const metadata: Metadata = createPageMetadata({
   title: "塾について｜塾長・森 祐太と、ノビットスタディの考え方",
   description:
-    "ノビットスタディ 中高部の塾長・森 祐太のプロフィールと、塾の考え方。名古屋大学 工学部 電気電子情報系で学び、応用情報技術者を取得。『考える力を育てる高校物理』シリーズを制作する教材開発者が、高校物理・数学・英語の記述答案を毎日添削します。面談や授業は行わない、添削専門の学習管理塾です。",
+    "ノビットスタディ 中高部の塾長・森 祐太のプロフィールと、塾の考え方。名古屋大学 工学部 電気電子情報系で学び、応用情報技術者を取得。『考える力を育てる高校物理』シリーズを制作する教材開発者が、高校物理・数学・英語の記述答案を添削します。面談や授業は行わない、添削専門の学習管理塾です。",
   keywords: [
     "森 祐太",
     "ノビットスタディ 塾長",
@@ -30,7 +30,7 @@ const principles = [
   {
     label: "01",
     title: "答案を、毎日プロが見る",
-    text: "「解いて終わり」にしない。途中式・考え方・答案の組み立てまで、毎日の添削で具体的に指摘します。独学では気づけない弱点を、見える化します。",
+    text: "「解いて終わり」にしない。途中式・考え方・答案の組み立てまで、提出ごとの添削で具体的に指摘します。独学では気づけない弱点を、見える化します。",
   },
   {
     label: "02",
@@ -129,7 +129,7 @@ export default function AboutPage() {
                 <strong className="font-bold text-[#0b1d4a]">{siteConfig.author}</strong> は、
                 <strong className="font-bold text-[#0b1d4a]">名古屋大学 工学部 電気電子情報系</strong> で学んだ理系教育者です。
                 <strong className="font-bold text-[#0b1d4a]">『考える力を育てる高校物理』シリーズ</strong> を制作し、
-                その設計思想をそのままノビット公式演習本へ。高校物理を中心に、記述答案を毎日添削しています。
+                その設計思想をそのままノビット公式演習本へ。高校物理を中心に、記述答案を添削しています。
               </p>
 
               <div
@@ -225,13 +225,13 @@ export default function AboutPage() {
               Mission
             </p>
             <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-              「考える力」を、毎日の添削で育てる。
+              「考える力」を、添削で育てる。
             </h2>
             <div className="mt-7 grid gap-5 text-[1rem] leading-[2.05] text-[#334155] sm:text-[1.04rem]">
               <p>
                 高校物理や電磁気を中心に、<strong className="font-bold text-[#0b1d4a]">現象・図・言葉・式</strong> を結びつけ、
                 公式暗記に依存しない <strong className="font-bold text-[#0b1d4a]">構造的な理解</strong> を支える教材を作ってきました。
-                その教材で演習し、答案を毎日添削する——それがノビットスタディの形です。
+                その教材で演習し、答案を添削する——それがノビットスタディの形です。
               </p>
               <p>
                 ノビットは<strong className="font-bold text-[#0b1d4a]">添削専門の学習管理塾</strong>です。
@@ -241,7 +241,7 @@ export default function AboutPage() {
               </p>
               <p>
                 目指すのは、塾としては手の届きやすい料金で、毎日プロの添削が受けられる環境です。
-                質問対応や面談は将来的に拡充する予定ですが、現在は「毎日演習・毎日添削」に集中しています。
+                質問対応や面談は将来的に拡充する予定ですが、現在は「教材演習・提出ごとの添削」に集中しています。
               </p>
             </div>
           </div>

@@ -105,7 +105,7 @@ const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
     title: "ノビットの英語・長文 Standard",
     level: "基礎-標準",
     target: "高1-受験基礎",
-    coverage: "文構造・根拠・設問処理を押さえながら、読み方を毎日添削で整えます。",
+    coverage: "文構造・根拠・設問処理を押さえながら、読み方を提出ごとの添削で整えます。",
     cover: {
       asin: "B0H7LPFKN1",
       alt: "ノビットの英語・長文 Standardの教材表紙",
@@ -128,7 +128,7 @@ function getMaterialProfile(subject: (typeof SUBJECTS)[number]) {
     title: `${subject.label} 教材`,
     level: "標準",
     target: "高校生",
-    coverage: "毎日サイズの演習と添削で、答案を整える教材です。",
+    coverage: "取り組みサイズの演習と添削で、答案を整える教材です。",
   };
 }
 

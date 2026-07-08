@@ -96,7 +96,7 @@ export const metadata: Metadata = {
   publisher: siteConfig.name,
   category: "education",
   classification:
-    "高校物理 添削、記述答案 添削、オンライン添削塾、毎日添削、学習管理、高校数学、高校英語、大学受験 物理、教材開発、自立学習",
+    "高校物理 添削、記述答案 添削、オンライン添削塾、答案添削、学習管理、高校数学、高校英語、大学受験 物理、教材開発、自立学習",
   alternates: {
     canonical: siteConfig.url,
   },

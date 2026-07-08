@@ -142,7 +142,7 @@ export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
             <p className="mt-1.5 text-[0.74rem] font-bold text-[#ea580c]">
               {campaign
                 ? `2教材パックなら 1教材 ${formatYen(PACK_UNIT_PRICE)}（${CAMPAIGN_DEADLINE_LABEL}まで）`
-                : "毎日添削（約100回）＋アプリ込み"}
+                : "添削（約100回）＋アプリ込み"}
             </p>
             <ul className="mt-4 grid gap-2 border-t border-dashed border-[rgba(15,29,74,0.18)] pt-4 text-left">
               {["入会金・追加費用 0円", "買い切り・自動更新なし", "毎日、講師の添削つき"].map((t) => (

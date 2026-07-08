@@ -157,7 +157,7 @@ export function AppMock({ className = "" }: { className?: string }) {
             <div className="relative overflow-hidden rounded-[16px] bg-[linear-gradient(120deg,#1d4ed8_0%,#0d9488_100%)] p-3.5 text-white">
               <div className="pr-12">
                 <p className="text-[0.82rem] font-extrabold leading-tight">こんにちは、ユウタさん！</p>
-                <p className="mt-1 text-[0.6rem] leading-snug text-white/85">今日の課題が2件 届いています。</p>
+                <p className="mt-1 text-[0.6rem] leading-snug text-white/85">次の課題が2件 届いています。</p>
               </div>
               <img
                 src="/brand/nobit-kun-wave-240.webp"
@@ -190,9 +190,9 @@ export function AppMock({ className = "" }: { className?: string }) {
               </p>
             </div>
 
-            {/* 今日の課題 */}
+            {/* 次の課題 */}
             <div className="mt-2.5 rounded-[12px] bg-white p-3 ring-1 ring-[rgba(15,29,74,0.06)]">
-              <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">今日の課題</p>
+              <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">次の課題</p>
               <ul className="mt-2 grid gap-1.5">
                 {[
                   { s: "物理", t: "力学・運動方程式", c: "#1d4ed8" },

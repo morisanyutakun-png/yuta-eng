@@ -1,7 +1,7 @@
 /**
  * 実際のノビットスタディ 高校部アプリ（kumon-app）の画面を、電話フレームで忠実に再現。
  * 実物のUI（紫アクセント／あいさつカード＋実績チップ／学習状況カード／
- * 今日の課題・未提出は右ボタンの横並び）に合わせている。題材は 数学ⅠA 三角関数（万人受け）。
+ * 次の課題・未提出は右ボタンの横並び）に合わせている。題材は 数学ⅠA 三角関数（万人受け）。
  * 実スクリーンショット（public/app-screens/*.png）が用意できたら差し替え可能。
  */
 
@@ -19,10 +19,10 @@ export const appSteps: {
   {
     no: "01",
     variant: "home",
-    title: "今日の課題が「届く」",
+    title: "次の課題が「届く」",
     lead: "ログインするとまず表示されるホーム画面。その日に取り組む課題が自動で並びます。",
     facts: [
-      "「今日の課題」に教材名と範囲が表示（例：数学ⅠA 三角関数）",
+      "「次の課題」に教材名と範囲が表示（例：数学ⅠA 三角関数）",
       "「未提出」に取り組む課題、返却済みは「へんきゃく・かくにん」へ",
       "「学習状況」で合格数・完了・今週の提出を見える化",
     ],
@@ -128,11 +128,11 @@ function ScreenHome() {
         </div>
       </div>
 
-      {/* 今日の課題（横並び・紫左線） */}
+      {/* 次の課題（横並び・紫左線） */}
       <Card className="border-l-[3px] border-l-[#7c3aed]">
         <div className="flex items-center justify-between gap-2">
           <div className="min-w-0">
-            <p className="text-[0.5rem] font-bold" style={{ color: P }}>今日の課題</p>
+            <p className="text-[0.5rem] font-bold" style={{ color: P }}>次の課題</p>
             <p className="mt-0.5 truncate text-[0.72rem] font-extrabold text-[#0b1d4a]">三角関数</p>
             <p className="text-[0.48rem] text-[#64748b]">数学ⅠA</p>
           </div>

@@ -14,23 +14,23 @@ import { siteConfig } from "@/data/site";
 export const metadata: Metadata = createPageMetadata({
   title: "公式アプリ「ノビットスタディ」｜課題配信・添削返却・進捗の見える化",
   description:
-    "学習管理アプリ「ノビットスタディ」の詳しい説明。毎日の課題配信、答案の提出、翌日までの添削返却、連続記録・はなまる・称号で続く習慣化、保護者も同じ画面で進捗を確認。課題・提出・添削・進捗がアプリひとつで完結します。",
+    "学習管理アプリ「ノビットスタディ」の詳しい説明。提出・合格に合わせた課題配信、答案の提出、翌日までの添削返却、連続記録・はなまる・称号で続く習慣化、保護者も同じ画面で進捗を確認。課題・提出・添削・進捗がアプリひとつで完結します。",
   keywords: ["ノビットスタディ アプリ", "学習管理アプリ", "添削 アプリ", "学習習慣 アプリ 保護者"],
   path: "/app",
 });
 
 const features = [
-  { title: "今日の1枚が届く", body: "その日やる課題が毎日配信。「何をやろう」と迷わず、座ったらすぐ始められます。" },
+  { title: "次の1枚が届く", body: "提出・合格に合わせて次の教材が届きます。「何をやろう」と迷わず、座ったらすぐ始められます。" },
   { title: "その場で提出", body: "解いた答案を、アプリからそのまま提出。途中式・考え方ごと、まるごと見てもらえます。" },
   { title: "解答・解説が即届く", body: "提出と同時に解答・解説が届くので、その場で自己採点。間違いをすぐ確認できます。" },
   { title: "翌日までに添削が返る", body: "先生の添削が翌日までに返却。途中式・減点ポイントまで、スマホで何度でも見返せます。" },
   { title: "がんばりメーター", body: "提出数・添削完了・連続日数を見える化。積み上がりが目に見えて、続けたくなります。" },
-  { title: "はなまる・称号", body: "続けるほどはなまるや称号がたまるゲーミフィケーション。毎日の学習が自然と習慣に。" },
+  { title: "はなまる・称号", body: "続けるほどはなまるや称号がたまるゲーミフィケーション。学習が自然と習慣に。" },
 ];
 
 const habitPoints = [
-  { title: "「今日やること」が決まっている", body: "毎日1枚の課題が自動で届くから、計画を立てる負担がありません。迷いをなくすことが、継続の第一歩です。" },
-  { title: "小さな達成を、毎日積む", body: "連続記録・はなまる・称号で、小さな「できた」を可視化。手応えが次の1枚のモチベーションになります。" },
+  { title: "「次にやること」が決まっている", body: "提出して合格ラインに届くと次の教材が届くから、計画を立てる負担がありません。迷いをなくすことが、継続の第一歩です。" },
+  { title: "小さな達成を積む", body: "連続記録・はなまる・称号で、小さな「できた」を可視化。手応えが次の1枚のモチベーションになります。" },
   { title: "出せば、必ず返ってくる", body: "提出した答案には必ず添削が返る。この往復があるから、独学のような「やりっぱなし」になりません。" },
 ];
 
@@ -39,7 +39,7 @@ export default function AppPage() {
     name: "ノビットスタディ（学習管理アプリ）",
     alternateName: ["Nobit Study App"],
     description:
-      "毎日の課題配信・答案の提出・翌日までの添削返却・進捗の見える化を行う、ノビットスタディ 中高部の学習管理アプリ。保護者も同じ画面で進捗を確認できる。",
+      "提出・合格に合わせた課題配信・答案の提出・翌日までの添削返却・進捗の見える化を行う、ノビットスタディ 中高部の学習管理アプリ。保護者も同じ画面で進捗を確認できる。",
     url: new URL("/app", siteConfig.url).toString(),
     audience: "student",
   });
@@ -119,7 +119,7 @@ export default function AppPage() {
               </div>
               {/* トラストチップ（安心・信頼） */}
               <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-2">
-                {["入会金・追加費用0円", "買い切り・自動更新なし", "毎日添削つき"].map((t) => (
+                {["入会金・追加費用0円", "買い切り・自動更新なし", "添削つき"].map((t) => (
                   <li key={t} className="flex items-center gap-1.5 text-[0.82rem] font-semibold text-[#475569]">
                     <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
                       <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.3 4.3L19 7" /></svg>
@@ -134,7 +134,7 @@ export default function AppPage() {
               <AppScreen variant="home" className="relative z-10 float-slow" />
               {/* フローティング吹き出し（ガラス調で上質に） */}
               <div className="absolute -left-4 top-8 hidden -rotate-[5deg] rounded-[14px] bg-white/80 px-3.5 py-2.5 shadow-[0_22px_44px_-20px_rgba(11,29,74,0.55)] ring-1 ring-white/70 backdrop-blur-md sm:block">
-                <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#7c3aed]" />毎日1枚、届く</p>
+                <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#7c3aed]" />次の1枚、届く</p>
                 <p className="mt-0.5 text-[0.62rem] text-[#64748b]">迷う時間はゼロ</p>
               </div>
               <div className="absolute -right-4 top-1/2 hidden rotate-[5deg] rounded-[14px] bg-white/80 px-3.5 py-2.5 shadow-[0_22px_44px_-20px_rgba(11,29,74,0.55)] ring-1 ring-white/70 backdrop-blur-md sm:block">
@@ -222,7 +222,7 @@ export default function AppPage() {
               アプリの中を、のぞいてみよう。
             </h2>
             <p className="mt-3 text-[0.96rem] leading-[1.95] text-[#475569]">
-              課題が届く → 解いて写真で提出 → 採点者が添削して返却 → すべて記録。実際の画面でご紹介します。
+              次の教材が届く → 好きな時に解いて写真で提出 → 採点者が添削して返却 → すべて記録。実際の画面でご紹介します。
             </p>
           </div>
 
@@ -273,7 +273,7 @@ export default function AppPage() {
             {[
               { t: "アプリのインストール不要", b: "Webブラウザで動くので、面倒な設定なし。決済後の案内に沿ってログインすれば、すぐに使い始められます。" },
               { t: "スマホ・タブレット・PC対応", b: "iPhone / Android / パソコンの最新ブラウザに対応。移動中はスマホ、家ではPCと、使い分けられます。" },
-              { t: "課題・添削のお知らせ", b: "今日の課題や添削の返却をお知らせ。「やり忘れ」を防ぎ、毎日のリズムづくりを助けます。" },
+              { t: "課題・添削のお知らせ", b: "次の課題や添削の返却をお知らせ。「やり忘れ」を防ぎ、学習リズムづくりを助けます。" },
             ].map((c) => (
               <div key={c.t} className="rounded-[20px] bg-white p-7 ring-1 ring-[rgba(15,29,74,0.06)]">
                 <p className="text-[1.05rem] font-extrabold leading-[1.5] text-[#0b1d4a]">{c.t}</p>
@@ -348,7 +348,7 @@ export default function AppPage() {
           </div>
 
           <div className="mx-auto mt-14 max-w-3xl">
-            <PageCtaRow title="アプリひとつで、毎日が続く。" note="課題・提出・添削・進捗まで、これひとつ。教材ごとに選べて、買い切り・自動更新なし。" />
+            <PageCtaRow title="アプリひとつで、学習が続く。" note="課題・提出・添削・進捗まで、これひとつ。教材ごとに選べて、買い切り・自動更新なし。" />
           </div>
         </Container>
       </section>
