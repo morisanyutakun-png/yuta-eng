@@ -5,6 +5,7 @@ import { ApplyForm } from "@/components/apply-form";
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
 import { PaymentTrust } from "@/components/payment-trust";
+import { PostPurchaseFlow } from "@/components/post-purchase-flow";
 import { PricingTable, SubjectChips } from "@/components/pricing-table";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createOrganizationJsonLd } from "@/lib/structured-data";
@@ -21,29 +22,6 @@ const steps = [
   { n: "1", t: "教材を選ぶ", b: "やり切りたい教材だけ。あとから追加もOK。" },
   { n: "2", t: "決済（Stripe）", b: "買い切り価格が自動計算され、安全な決済画面へ。" },
   { n: "3", t: "アプリで開始", b: "登録後すぐ、公式アプリで学習を始められます。" },
-];
-
-const afterPurchaseSteps = [
-  {
-    n: "01",
-    t: "ログイン情報を発行",
-    b: "決済完了後、生徒用のログインIDとPINが表示されます。同じ内容はメールでも届きます。",
-  },
-  {
-    n: "02",
-    t: "アプリにログイン",
-    b: "発行されたIDとPINで、生徒専用の学習画面に入れます。購入者メールとは別に管理されます。",
-  },
-  {
-    n: "03",
-    t: "教材を自動割り当て",
-    b: "選んだ教材が今日の課題と進み具合に反映され、先生の手配を待たずに始められます。",
-  },
-  {
-    n: "04",
-    t: "PDFで実施・提出",
-    b: "PDFに書き込んで提出。提出後は解答解説が開き、同時に次の範囲が追加されます。",
-  },
 ];
 
 export default async function ApplyPage({
@@ -121,32 +99,7 @@ export default async function ApplyPage({
           <div className="mt-10">
             <PricingTable cta={{ href: "#form", label: "教材を選んでパック割を確認する" }} />
           </div>
-          <div className="mx-auto mt-9 max-w-4xl rounded-[22px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.08)] sm:p-6">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#0f766e]">
-                  After purchase
-                </p>
-                <h3 className="mt-2 text-[1.25rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a]">
-                  購入後の流れ
-                </h3>
-              </div>
-              <p className="max-w-md text-[0.82rem] leading-[1.75] text-[#64748b]">
-                決済完了からログイン情報の発行、教材の自動割り当て、PDF提出まで迷わず進めます。
-              </p>
-            </div>
-            <ol className="mt-5 grid gap-3 sm:grid-cols-4">
-              {afterPurchaseSteps.map((step) => (
-                <li key={step.n} className="rounded-[16px] bg-white p-4 ring-1 ring-[rgba(15,29,74,0.06)]">
-                  <span className="text-[0.68rem] font-extrabold tracking-[0.14em] text-[#0f766e]">
-                    {step.n}
-                  </span>
-                  <span className="mt-2 block text-[0.92rem] font-extrabold text-[#0b1d4a]">{step.t}</span>
-                  <span className="mt-1.5 block text-[0.76rem] leading-[1.65] text-[#64748b]">{step.b}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
+          <PostPurchaseFlow variant="apply" className="mt-10" />
         </Container>
       </section>
 

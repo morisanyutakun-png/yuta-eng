@@ -8,6 +8,7 @@ import { PrimaryCta, SecondaryCta } from "@/components/cta";
 import { Blob, CtaDoodle, CurveDivider, DarkSectionDecor, PhoneBackdrop, SectionGlow } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { GroundedMascot, Illust, Mascot, PrintImage } from "@/components/nobit-media";
+import { PostPurchaseFlow } from "@/components/post-purchase-flow";
 import { bookGroups, officialBooks } from "@/data/books";
 import { homeFaq } from "@/data/home";
 import { kdpAmazonUrl } from "@/data/site";
@@ -613,6 +614,13 @@ export default function Home() {
 
       {/* ───────── CAMPAIGN（初月半額・toC の主役オファー） ───────── */}
       <CampaignBanner />
+
+      {/* ───────── AFTER PURCHASE（購入後の安心導線） ───────── */}
+      <section id="after-purchase" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
+        <Container className="px-6 py-16 sm:py-24">
+          <PostPurchaseFlow variant="lp" />
+        </Container>
+      </section>
 
       {/* ───────── STEPS（やることはこれだけ・実物プリントで見せる） ───────── */}
       <section id="steps" className="cv-defer scroll-mt-24 bg-white">
