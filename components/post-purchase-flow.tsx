@@ -445,3 +445,115 @@ export function PostPurchaseFlow({
     </div>
   );
 }
+
+function FlowSeal({ className = "" }: { className?: string }) {
+  const spikes = 18;
+  const pts: string[] = [];
+  for (let i = 0; i < spikes * 2; i += 1) {
+    const r = i % 2 === 0 ? 49 : 39;
+    const a = (Math.PI / spikes) * i - Math.PI / 2;
+    pts.push(`${(50 + r * Math.cos(a)).toFixed(2)},${(50 + r * Math.sin(a)).toFixed(2)}`);
+  }
+
+  return (
+    <div aria-hidden="true" className={cn("relative", className)}>
+      <svg viewBox="0 0 100 100" className="h-full w-full drop-shadow-[0_14px_24px_rgba(124,25,0,0.32)]">
+        <polygon points={pts.join(" ")} fill="#f97316" />
+        <circle cx="50" cy="50" r="34" fill="none" stroke="#ffedd5" strokeWidth="1.4" strokeDasharray="2 3" />
+      </svg>
+      <div className="absolute inset-0 grid place-items-center">
+        <div className="text-center leading-none text-white">
+          <p className="text-[0.52rem] font-extrabold tracking-[0.12em]">決済後</p>
+          <p className="mt-0.5 text-[0.95rem] font-black">すぐ発行</p>
+          <p className="mt-0.5 text-[0.48rem] font-black tracking-[0.08em]">ID/PIN</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FlowMiniSteps() {
+  const miniSteps = ["決済完了", "ID/PIN発行", "教材が届く", "最初の一問へ"];
+
+  return (
+    <ol className="grid gap-2">
+      {miniSteps.map((label, index) => (
+        <li key={label} className="flex items-center gap-3 rounded-[14px] bg-white/86 px-3.5 py-3 shadow-[0_12px_24px_-20px_rgba(15,29,74,0.45)] ring-1 ring-white/80">
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#0b1d4a] text-[0.72rem] font-black text-white">
+            {index + 1}
+          </span>
+          <span className="text-[0.9rem] font-extrabold text-[#0b1d4a]">{label}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+export function PostPurchaseTeaser({
+  className = "",
+  tone = "light",
+}: {
+  className?: string;
+  tone?: "light" | "warm";
+}) {
+  const warm = tone === "warm";
+
+  return (
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-[26px] border border-[rgba(15,29,74,0.08)] px-5 py-7 shadow-[0_28px_70px_-46px_rgba(15,29,74,0.55)] sm:px-8 sm:py-9",
+        warm
+          ? "bg-[linear-gradient(135deg,#fff7ed_0%,#ffffff_44%,#eff6ff_100%)]"
+          : "bg-[linear-gradient(135deg,#eef6ff_0%,#ffffff_48%,#ecfdf5_100%)]",
+        className,
+      )}
+    >
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.42]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(15,29,74,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(15,29,74,0.07) 1px, transparent 1px)",
+          backgroundSize: "26px 26px",
+          maskImage: "radial-gradient(ellipse 72% 74% at 20% 18%, #000 16%, transparent 72%)",
+          WebkitMaskImage: "radial-gradient(ellipse 72% 74% at 20% 18%, #000 16%, transparent 72%)",
+        }}
+      />
+      <FlowSeal className="absolute -right-4 -top-5 h-24 w-24 rotate-12 sm:-right-3 sm:-top-4 sm:h-28 sm:w-28" />
+
+      <div className="relative grid items-center gap-7 lg:grid-cols-[1fr_18rem] lg:gap-10">
+        <div className="min-w-0">
+          <p className="inline-flex items-center gap-2 rounded-full bg-white/82 px-3.5 py-1.5 text-[0.72rem] font-extrabold tracking-[0.08em] text-[#ea580c] shadow-[0_8px_20px_-14px_rgba(234,88,12,0.55)] ring-1 ring-[rgba(234,88,12,0.18)]">
+            <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
+            購入後の流れ
+          </p>
+          <h2 className="mt-4 max-w-2xl text-balance text-[1.75rem] font-extrabold leading-[1.28] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.25rem]">
+            購入後も、最初の一問まで迷わない。
+          </h2>
+          <p className="mt-4 max-w-2xl text-[0.98rem] leading-[1.9] text-[#334155]">
+            決済完了後はログイン情報を発行し、購入教材をアプリへ自動で反映。
+            PDFでの実施・提出まで、生徒がすぐ学習に入れる流れを画面に沿って確認できます。
+          </p>
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {["メールにも届く", "教材自動割り当て", "PDF提出まで案内"].map((label) => (
+              <li key={label} className="rounded-full bg-white px-3 py-1.5 text-[0.78rem] font-extrabold text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.16)]">
+                {label}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <PrimaryCta href="/after-purchase">購入後の流れを見る</PrimaryCta>
+            <SecondaryCta href="/apply#pricing">料金・教材を確認</SecondaryCta>
+          </div>
+        </div>
+
+        <div className="relative mx-auto w-full max-w-[18rem]">
+          <div className="absolute -left-3 top-4 h-16 w-16 rounded-full bg-[#38bdf8]/18 blur-2xl" />
+          <div className="relative rounded-[22px] bg-[#0b1d4a] p-3 shadow-[0_32px_58px_-34px_rgba(11,29,74,0.65)]">
+            <FlowMiniSteps />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -61,6 +61,7 @@ export const siteConfig = {
 export const navItems = [
   { label: "しくみ", href: "/how-it-works" },
   { label: "アプリ", href: "/app" },
+  { label: "購入後の流れ", href: "/after-purchase" },
   { label: "教材", href: "/materials" },
   { label: "料金・科目", href: "/apply#pricing" },
   { label: "よくある質問", href: "/#faq" },
@@ -70,6 +71,7 @@ export const navItems = [
 export const footerNavItems = [
   { label: "ノビットのしくみ", href: "/how-it-works" },
   { label: "公式アプリ", href: "/app" },
+  { label: "購入後の流れ", href: "/after-purchase" },
   { label: "教材", href: "/materials" },
   { label: "料金・対応教材", href: "/apply#pricing" },
   { label: "よくある質問", href: "/#faq" },

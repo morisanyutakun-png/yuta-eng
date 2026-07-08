@@ -5,7 +5,7 @@ import { ApplyForm } from "@/components/apply-form";
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
 import { PaymentTrust } from "@/components/payment-trust";
-import { PostPurchaseFlow } from "@/components/post-purchase-flow";
+import { PostPurchaseTeaser } from "@/components/post-purchase-flow";
 import { PricingTable, SubjectChips } from "@/components/pricing-table";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createOrganizationJsonLd } from "@/lib/structured-data";
@@ -99,7 +99,7 @@ export default async function ApplyPage({
           <div className="mt-10">
             <PricingTable cta={{ href: "#form", label: "教材を選んでパック割を確認する" }} />
           </div>
-          <PostPurchaseFlow variant="apply" className="mt-10" />
+          <PostPurchaseTeaser className="mt-10" tone="warm" />
         </Container>
       </section>
 
