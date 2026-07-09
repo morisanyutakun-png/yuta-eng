@@ -221,6 +221,58 @@ const subjectAreas = SUBJECTS.reduce(
   {} as Record<string, string[]>,
 );
 
+const subjectGuideGroups = [
+  {
+    area: "物理",
+    lead: "公式暗記で苦しくなりやすい科目。いまの理解度で、基礎・標準・発展を選びます。",
+    items: [
+      { id: "physics-basic", badge: "初学・苦手", fit: "物理が不安／教科書の式の意味から固めたい", start: "まずはここ" },
+      { id: "physics", badge: "標準", fit: "典型問題を解けるようにして、入試の土台を作りたい", start: "迷ったらここ" },
+      { id: "physics-advanced", badge: "難関・記述", fit: "二次試験・難関大の記述答案まで仕上げたい", start: "得意を伸ばす" },
+    ],
+  },
+  {
+    area: "化学",
+    lead: "暗記で押し切らず、考え方と答案の書き方を一緒に整えます。",
+    items: [
+      { id: "chemistry-basic", badge: "基礎", fit: "化学基礎から不安／理論の見方を固めたい", start: "土台づくり" },
+      { id: "chemistry", badge: "標準", fit: "理論・無機・有機を入試演習として積みたい", start: "受験演習" },
+    ],
+  },
+  {
+    area: "数学",
+    lead: "学年や受験範囲に合わせて選びます。答案の途中式まで見てもらいたい人向けです。",
+    items: [
+      { id: "math-1a", badge: "高1・土台", fit: "数と式・場合の数・図形など、IAを固めたい", start: "最初の一冊" },
+      { id: "math-2bc", badge: "高2・受験基礎", fit: "数列・ベクトル・微積など、受験数学の中心を進めたい", start: "優先度高" },
+      { id: "math-3c", badge: "理系", fit: "理系入試の微積・複素数平面まで取り組みたい", start: "理系向け" },
+    ],
+  },
+  {
+    area: "英語",
+    lead: "読解と文法を分けて選べます。長文で点を取りたいか、文法の穴を埋めたいかで決めます。",
+    items: [
+      { id: "english-reading", badge: "読解", fit: "長文の読み方・根拠の取り方を鍛えたい", start: "読解強化" },
+      { id: "english-grammar", badge: "文法", fit: "文法問題や英文の構造把握に不安がある", start: "穴埋め" },
+    ],
+  },
+];
+
+const guideShortcuts = [
+  {
+    title: "まず1教材だけなら",
+    body: "いま一番「答案を見てもらいたい」科目から。続けられるか不安な人も、1教材で始められます。",
+  },
+  {
+    title: "2教材パックで始めるなら",
+    body: "主科目＋弱点補強がおすすめ。例：数学IIBC＋物理 標準、英語長文＋英文法。",
+  },
+  {
+    title: "難関大の記述を意識するなら",
+    body: "得点源にしたい科目は発展・理系範囲まで。添削で途中式と説明の精度を上げます。",
+  },
+];
+
 const faqItems = homeFaq;
 
 // 流れる帯（マーキー）のフレーズ。視覚的なリズム＋SEO のキーワードを兼ねる。
@@ -491,7 +543,7 @@ function QuickAnswerSection() {
 
         <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
           <PrimaryCta href="/apply#form">教材を選んで申し込む</PrimaryCta>
-          <SecondaryCta href="/#steps">しくみを30秒で見る</SecondaryCta>
+          <SecondaryCta href="/#guide">教材選びガイドを見る</SecondaryCta>
         </div>
       </Container>
     </section>
@@ -612,6 +664,102 @@ function PurchaseShelfSection() {
             <p className="mt-4 text-[0.78rem] leading-[1.7] text-[#64748b]">
               面談や電話勧誘はありません。購入後は登録情報をもとにアプリ利用を案内します。
             </p>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+function SubjectGuideSection() {
+  return (
+    <section id="guide" className="cv-defer scroll-mt-24 bg-white">
+      <Container className="px-6 py-16 sm:py-24">
+        <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+          <div className="lg:sticky lg:top-28">
+            <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#1d4ed8]">
+              Guide · 教材選び
+            </p>
+            <h2 className="mt-3 text-balance text-[1.75rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.25rem]">
+              迷ったら、<br className="hidden lg:block" />
+              いま一番困っている教材から。
+            </h2>
+            <p className="mt-4 text-[0.96rem] leading-[1.9] text-[#475569]">
+              最初から全部そろえる必要はありません。まずは「答案を見てもらいたい科目」を1つ選び、続けられそうなら追加するのが自然です。
+            </p>
+
+            <div className="mt-6 rounded-[20px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.07)]">
+              <p className="text-[0.78rem] font-extrabold uppercase tracking-[0.14em] text-[#0f766e]">
+                Quick rule
+              </p>
+              <ul className="mt-4 grid gap-3">
+                {guideShortcuts.map((item, i) => (
+                  <li key={item.title} className="flex gap-3">
+                    <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#0b1d4a] text-[0.78rem] font-extrabold text-white">
+                      {i + 1}
+                    </span>
+                    <span>
+                      <span className="block text-[0.94rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{item.title}</span>
+                      <span className="mt-1 block text-[0.82rem] leading-[1.75] text-[#64748b]">{item.body}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center lg:flex-col lg:items-start">
+              <PrimaryCta href="/apply#form">教材を選んで申し込む</PrimaryCta>
+              <SecondaryCta href="/contact">迷うので相談する</SecondaryCta>
+            </div>
+          </div>
+
+          <div className="grid gap-8">
+            {subjectGuideGroups.map((group) => (
+              <section key={group.area} aria-labelledby={`guide-${group.area}`}>
+                <div className="flex flex-col gap-2 border-b border-[rgba(15,29,74,0.08)] pb-4 sm:flex-row sm:items-end sm:justify-between">
+                  <div>
+                    <p
+                      className="inline-flex rounded-full px-3 py-1 text-[0.72rem] font-extrabold tracking-[0.08em] text-white"
+                      style={{ background: SUBJECTS.find((s) => s.area === group.area)?.color ?? "#0d9488" }}
+                    >
+                      {group.area}
+                    </p>
+                    <h3 id={`guide-${group.area}`} className="mt-3 text-[1.25rem] font-extrabold leading-[1.4] text-[#0b1d4a]">
+                      {group.area}は、こう選ぶ
+                    </h3>
+                  </div>
+                  <p className="text-[0.86rem] leading-[1.75] text-[#64748b] sm:max-w-md">{group.lead}</p>
+                </div>
+
+                <ul className="mt-4 grid gap-3">
+                  {group.items.map((item) => {
+                    const subject = SUBJECTS.find((s) => s.id === item.id);
+                    if (!subject) return null;
+
+                    return (
+                      <li
+                        key={subject.id}
+                        className="grid gap-3 rounded-[16px] bg-[#f8fafc] p-4 ring-1 ring-[rgba(15,29,74,0.06)] sm:grid-cols-[10rem_1fr_auto] sm:items-center"
+                      >
+                        <div>
+                          <span
+                            className="inline-flex rounded-full px-2.5 py-1 text-[0.68rem] font-extrabold text-white"
+                            style={{ background: subject.color }}
+                          >
+                            {item.badge}
+                          </span>
+                          <p className="mt-2 text-[1.02rem] font-extrabold leading-[1.35] text-[#0b1d4a]">{subject.label}</p>
+                        </div>
+                        <p className="text-[0.88rem] leading-[1.8] text-[#475569]">{item.fit}</p>
+                        <span className="w-fit rounded-full bg-white px-3 py-1.5 text-[0.76rem] font-extrabold text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.18)]">
+                          {item.start}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            ))}
           </div>
         </div>
       </Container>
@@ -840,6 +988,9 @@ export default function Home() {
 
       {/* ───────── PURCHASE SHELF（商品棚・教材選択） ───────── */}
       <PurchaseShelfSection />
+
+      {/* ───────── SUBJECT GUIDE（迷わず教材を選ぶ） ───────── */}
+      <SubjectGuideSection />
 
       {/* ───────── AFTER PURCHASE TEASER（購入後の安心導線） ───────── */}
       <section id="after-purchase" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
