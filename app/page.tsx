@@ -16,8 +16,13 @@ import {
   buyoutTotal,
   CAMPAIGN_DEADLINE_LABEL,
   formatYen,
+  GRADING_COUNT,
   listTotal,
   MATERIAL_PRICE,
+  PACK_UNIT_PRICE,
+  packSavings,
+  SUBJECT_AREAS,
+  SUBJECTS,
 } from "@/lib/pricing";
 import { createPageMetadata } from "@/lib/metadata";
 import {
@@ -174,6 +179,47 @@ const appPoints = [
   { title: "保護者も進捗を確認", body: "提出数・添削完了・連続日数を見える化。保護者も同じ画面で見守れて安心です。" },
   { title: "続けたくなる仕組み", body: "はなまる・称号・連続記録で、学習が自然と積み上がります。" },
 ];
+
+// 広告・検索から来た人が、最初の数十秒で購入判断できるようにする要約。
+const quickAnswers = [
+  {
+    label: "これは何？",
+    title: "買い切りのデジタル通信添削",
+    body: "物理・化学・数学・英語のオリジナル教材を、1枚ずつ解いてアプリで提出します。",
+  },
+  {
+    label: "何が届く？",
+    title: "解答解説PDFと次の範囲",
+    body: "提出した瞬間に自己採点へ。先生の添削返却を待たずに、次の学習へ進めます。",
+  },
+  {
+    label: "誰が見る？",
+    title: "教材を書いた本人が添削",
+    body: "途中式・考え方・減点ポイントまで読み、直し方が分かるコメントで返します。",
+  },
+  {
+    label: "いくら？",
+    title: `1教材 ${formatYen(MATERIAL_PRICE)}〜`,
+    body: `約${GRADING_COUNT}回分の課題＋添削込み。入会金・追加費用0円、自動更新なし。`,
+  },
+];
+
+const purchaseIncludes = [
+  `約${GRADING_COUNT}回分の分割課題`,
+  "提出ごとの添削",
+  "解答解説PDF",
+  "次の範囲の配信",
+  "再提出・合格管理",
+  "保護者の進捗確認",
+];
+
+const subjectAreas = SUBJECTS.reduce(
+  (acc, subject) => {
+    acc[subject.area] = [...(acc[subject.area] ?? []), subject.label];
+    return acc;
+  },
+  {} as Record<string, string[]>,
+);
 
 const faqItems = homeFaq;
 
@@ -347,7 +393,7 @@ function Starburst({ className = "" }: { className?: string }) {
 }
 
 /**
- * キャンペーン告知バンド（toC の主役）。実在するオファー（初月半額・入会/教材費0円）を
+ * キャンペーン告知バンド（toC の主役）。実在するオファー（開講記念パック割・入会/追加費用0円）を
  * 大きな数字と割引前→後の対比で一気に見せ、購買行動の背中を押す。虚偽の実績は載せない。
  */
 function CampaignBanner() {
@@ -409,6 +455,170 @@ function CampaignBanner() {
   );
 }
 
+function QuickAnswerSection() {
+  return (
+    <section id="quick-view" className="cv-defer scroll-mt-24 bg-white">
+      <Container className="px-6 py-12 sm:py-16">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
+            First View · 30秒で分かる
+          </p>
+          <h2 className="mt-3 text-balance text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.05rem]">
+            ノビットは「教材を買って、答案を見てもらう」サービスです。
+          </h2>
+          <p className="mt-3 text-[0.94rem] leading-[1.9] text-[#475569]">
+            まず購入前に知りたいことだけ、先にまとめます。くわしい仕組みはその後で確認できます。
+          </p>
+        </div>
+
+        <ul className="mx-auto mt-8 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {quickAnswers.map((item, i) => (
+            <li
+              key={item.label}
+              className="relative overflow-hidden rounded-[18px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.07)] shadow-[0_20px_42px_-36px_rgba(11,29,74,0.42)]"
+            >
+              <span
+                aria-hidden="true"
+                className="absolute -right-6 -top-6 h-20 w-20 rounded-full opacity-[0.1]"
+                style={{ background: ["#1d4ed8", "#0d9488", "#ea580c", "#16a34a"][i] }}
+              />
+              <p className="text-[0.68rem] font-extrabold uppercase tracking-[0.16em] text-[#64748b]">{item.label}</p>
+              <p className="mt-2 text-[1.02rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{item.title}</p>
+              <p className="mt-2 text-[0.84rem] leading-[1.85] text-[#475569]">{item.body}</p>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-8 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+          <PrimaryCta href="/apply#form">教材を選んで申し込む</PrimaryCta>
+          <SecondaryCta href="/#steps">しくみを30秒で見る</SecondaryCta>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+function PurchaseShelfSection() {
+  const packCount = 2;
+  const packPrice = buyoutTotal(packCount, true);
+  const savings = packSavings(packCount, true);
+
+  return (
+    <section id="buy" className="cv-defer relative overflow-hidden bg-[#f8fafc]">
+      <SectionGlow className="-left-28 top-8" color="rgba(29,78,216,0.1)" />
+      <SectionGlow className="-right-24 bottom-0" color="rgba(249,115,22,0.1)" />
+      <Container className="relative px-6 py-14 sm:py-20">
+        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
+          <div className="relative overflow-hidden rounded-[24px] bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] p-7 text-white shadow-[0_38px_82px_-52px_rgba(11,29,74,0.8)] sm:p-9">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 opacity-[0.07]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
+                backgroundSize: "26px 26px",
+              }}
+            />
+            <div className="relative">
+              <p className="inline-flex items-center gap-1.5 rounded-full bg-white/12 px-3 py-1 text-[0.68rem] font-extrabold tracking-[0.12em] text-[#5eead4] ring-1 ring-white/15">
+                BUYOUT · 教材単位で購入
+              </p>
+              <h2 className="mt-4 text-balance text-[1.75rem] font-extrabold leading-[1.3] tracking-[-0.005em] sm:text-[2.2rem]">
+                買うものは、1教材。
+                <br />
+                中身は、約{GRADING_COUNT}回分＋添削。
+              </h2>
+              <p className="mt-4 text-[0.95rem] leading-[1.9] text-white/82">
+                月謝ではなく、教材を最後までやり切るための買い切りです。必要な分だけ選べて、修了まで自分のものになります。
+              </p>
+
+              <div className="mt-7 grid gap-3 rounded-[18px] bg-white/[0.08] p-4 ring-1 ring-white/15 sm:grid-cols-2">
+                <div>
+                  <p className="text-[0.72rem] font-bold tracking-[0.08em] text-white/65">1教材・通常</p>
+                  <p className="mt-1 flex items-baseline gap-1.5">
+                    <span className="text-[2.3rem] font-black leading-none tracking-[-0.02em] text-white">{formatYen(MATERIAL_PRICE)}</span>
+                    <span className="text-[0.82rem] font-bold text-white/75">〜 税込</span>
+                  </p>
+                </div>
+                <div className="border-t border-white/15 pt-3 sm:border-l sm:border-t-0 sm:pl-4 sm:pt-0">
+                  <p className="text-[0.72rem] font-bold tracking-[0.08em] text-[#fdba74]">{CAMPAIGN_DEADLINE_LABEL}まで・2教材パック</p>
+                  <p className="mt-1 flex items-baseline gap-1.5">
+                    <span className="text-[2.3rem] font-black leading-none tracking-[-0.02em] text-[#fdba74]">{formatYen(packPrice)}</span>
+                    <span className="text-[0.78rem] font-bold text-white/75">税込</span>
+                  </p>
+                  <p className="mt-1 text-[0.74rem] font-bold text-white/72">
+                    1教材 {formatYen(PACK_UNIT_PRICE)}・{formatYen(savings)}おトク
+                  </p>
+                </div>
+              </div>
+
+              <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+                {purchaseIncludes.map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-[0.84rem] font-semibold text-white/86">
+                    <span aria-hidden="true" className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[#5eead4] text-[#0b1d4a]">
+                      <IconCheck className="h-2.5 w-2.5" />
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="rounded-[24px] bg-white p-6 shadow-[0_30px_64px_-48px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.08)] sm:p-8">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
+                  Lineup · 対応教材
+                </p>
+                <h3 className="mt-3 text-[1.45rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[1.8rem]">
+                  {SUBJECTS.length}教材から、必要なものだけ。
+                </h3>
+              </div>
+              <p className="text-[0.86rem] leading-[1.75] text-[#64748b] sm:max-w-[17rem]">
+                申込ページで選ぶと、買い切り価格とパック割が自動で反映されます。
+              </p>
+            </div>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              {SUBJECT_AREAS.map((area) => (
+                <section key={area} className="rounded-[16px] bg-[#f8fafc] p-4 ring-1 ring-[rgba(15,29,74,0.06)]">
+                  <p className="flex items-center gap-2 text-[1rem] font-extrabold text-[#0b1d4a]">
+                    <span
+                      aria-hidden="true"
+                      className="h-2.5 w-2.5 rounded-full"
+                      style={{ background: SUBJECTS.find((s) => s.area === area)?.color ?? "#0d9488" }}
+                    />
+                    {area}
+                  </p>
+                  <ul className="mt-3 flex flex-wrap gap-2">
+                    {(subjectAreas[area] ?? []).map((label) => (
+                      <li
+                        key={label}
+                        className="rounded-full bg-white px-3 py-1.5 text-[0.78rem] font-bold text-[#334155] ring-1 ring-[rgba(15,29,74,0.08)]"
+                      >
+                        {label}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+            </div>
+
+            <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+              <PrimaryCta href="/apply#form">教材を選んで申し込む</PrimaryCta>
+              <SecondaryCta href="/apply#pricing">料金表を見る</SecondaryCta>
+            </div>
+            <p className="mt-4 text-[0.78rem] leading-[1.7] text-[#64748b]">
+              面談や電話勧誘はありません。購入後は登録情報をもとにアプリ利用を案内します。
+            </p>
+          </div>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 /** セクションに奥行きを出すやわらかい光（装飾）。overflow-hidden な relative 親に置く。 */
 /** 数字で価値を一気に見せる帯（訴求＋デザインのアクセント）。 */
 /** 赤ペンで囲んだ風の手描き楕円（採点の“ここ大事”の気配）。 */
@@ -432,7 +642,7 @@ function HandCircle({ className = "", color = "#ea580c" }: { className?: string;
  */
 function StatsBand() {
   const stats = [
-    { n: "9", u: "教材", d: "物理・化学・数学・英語", tilt: "-rotate-[1.2deg]" },
+    { n: String(SUBJECTS.length), u: "教材", d: "物理・化学・数学・英語", tilt: "-rotate-[1.2deg]" },
     { n: formatYen(MATERIAL_PRICE), u: "〜", d: "1教材 買い切り・税込", tilt: "rotate-[0.6deg]", pen: true },
     { n: "提出", u: "添削", d: "答案ごとに返却", tilt: "-rotate-[0.5deg]", check: true },
     { n: "0", u: "円", d: "入会金・追加費用", tilt: "rotate-[1deg]", circle: true },
@@ -529,43 +739,53 @@ export default function Home() {
             <div className="min-w-0 text-center lg:text-left">
               <p className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3.5 py-1.5 text-[0.7rem] font-bold tracking-[0.06em] text-[#0f766e] shadow-[0_8px_20px_-12px_rgba(13,148,136,0.5)] ring-1 ring-[rgba(13,148,136,0.22)] backdrop-blur sm:text-[0.76rem]">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
-                デジタル通信添削
+                中高生向け・買い切りデジタル通信添削
               </p>
 
               <h1 className="mt-4 text-[2.35rem] font-extrabold leading-[1.08] tracking-[-0.035em] text-[#0b1d4a] sm:mt-5 sm:text-[3.2rem] lg:text-[3.6rem]">
-                解いて、出して、
+                教材を買って、
                 <br />
                 <Penned color="#f97316">
                   <span className="bg-[linear-gradient(95deg,#1d4ed8_0%,#0d9488_55%,#16a34a_100%)] bg-clip-text text-transparent">
-                    進む。
+                    答案を見てもらう。
                   </span>
                 </Penned>
               </h1>
 
               <p className="mx-auto mt-4 max-w-md text-[0.98rem] leading-[1.75] text-[#334155] sm:mt-6 sm:text-[1.15rem] lg:mx-0">
                 <span className="sm:hidden">
-                  好きな時に1枚、出すだけ。
+                  物理・化学・数学・英語の教材を、1枚ずつ解いて提出。
                   <br />
-                  出すと、<strong className="font-bold text-[#0b1d4a]">解答解説</strong>と<strong className="font-bold text-[#0b1d4a]">次の範囲</strong>へ。
+                  出すと、<strong className="font-bold text-[#0b1d4a]">解答解説</strong>と<strong className="font-bold text-[#0b1d4a]">次の範囲</strong>が届きます。
                   <br />
-                  添削・再提出は並行して進みます。
+                  後から先生の添削も返ります。
                 </span>
                 <span className="hidden sm:inline">
-                  好きな時に1枚、出すだけ。提出した瞬間に<strong className="font-bold text-[#0b1d4a]">解答解説</strong>と
-                  <strong className="font-bold text-[#0b1d4a]">次の範囲</strong>へ。
+                  ノビットスタディは、物理・化学・数学・英語のオリジナル教材を1枚ずつ進める
+                  <strong className="font-bold text-[#0b1d4a]">買い切りの通信添削</strong>です。
                   <br className="hidden sm:block" />
-                  先生の添削・再提出は、学習と並行して進みます。
+                  提出直後に解答解説PDFと次の範囲、後から先生の添削が返ります。
                 </span>
               </p>
 
               <div className="relative mt-7 hidden flex-col items-stretch gap-3 sm:mx-auto sm:max-w-md sm:flex-row sm:items-center lg:mx-0 lg:flex">
                 <CtaDoodle />
-                <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
-                <SecondaryCta href="/apply#pricing">料金・科目を見る</SecondaryCta>
+                <PrimaryCta href="/apply#form">教材を選んで申し込む</PrimaryCta>
+                <SecondaryCta href="/apply#pricing">料金・教材を見る</SecondaryCta>
+              </div>
+              <div className="mt-5 hidden max-w-xl items-center gap-3 rounded-[18px] bg-white/74 p-3 text-left shadow-[0_18px_38px_-30px_rgba(11,29,74,0.45)] ring-1 ring-[rgba(15,29,74,0.08)] backdrop-blur lg:flex">
+                <div className="shrink-0 rounded-[14px] bg-[#0b1d4a] px-4 py-3 text-white">
+                  <p className="text-[0.66rem] font-bold tracking-[0.12em] text-white/65">1教材</p>
+                  <p className="mt-0.5 text-[1.45rem] font-black leading-none">{formatYen(MATERIAL_PRICE)}〜</p>
+                </div>
+                <p className="min-w-0 text-[0.84rem] font-semibold leading-[1.75] text-[#475569]">
+                  約{GRADING_COUNT}回分の課題＋添削込み。{CAMPAIGN_DEADLINE_LABEL}まで2教材パックは
+                  <strong className="font-extrabold text-[#ea580c]"> {formatYen(buyoutTotal(2, true))}</strong>。
+                </p>
               </div>
               {/* トラストチップ */}
               <ul className="mt-6 hidden flex-wrap justify-center gap-x-4 gap-y-2 lg:flex lg:justify-start">
-                {["入会金・追加費用0円", "8/6まで開講記念パック割", "買い切り・自動更新なし"].map((t) => (
+                {["入会金・追加費用0円", `${SUBJECTS.length}教材から選べる`, "買い切り・自動更新なし"].map((t) => (
                   <li key={t} className="flex items-center gap-1.5 text-[0.82rem] font-semibold text-[#475569]">
                     <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
                       <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.3 4.3L19 7" /></svg>
@@ -586,14 +806,14 @@ export default function Home() {
                 <AppScreen variant="home" className="relative z-10 origin-center scale-[0.9] float-slow sm:scale-100" />
                 {/* 手書きメモ風の付箋（正直なひとことで、人の手作り感を出す） */}
                 <div className="absolute -bottom-3 right-0 z-20 hidden -rotate-[5deg] rounded-[12px] bg-white/85 px-3.5 py-2.5 text-[0.74rem] font-bold leading-snug text-[#9a3412] shadow-[0_20px_40px_-18px_rgba(154,52,18,0.5)] ring-1 ring-white/70 backdrop-blur-md sm:block">
-                  教材も添削も、<br />つくった本人が担当。
+                  1教材＝約{GRADING_COUNT}回分。<br />添削込みで買い切り。
                 </div>
               </div>
               <div className="relative -mt-2 grid gap-3 lg:hidden">
-                <PrimaryCta href="/apply">買い切りではじめる</PrimaryCta>
+                <PrimaryCta href="/apply#form">教材を選んで申し込む</PrimaryCta>
                 <SecondaryCta href="/apply#pricing">料金・教材を見る</SecondaryCta>
                 <ul className="flex flex-wrap justify-center gap-x-3 gap-y-2">
-                  {["返却待ちで止まらない", "解答解説PDFつき", "買い切り"].map((t) => (
+                  {[`1教材 ${formatYen(MATERIAL_PRICE)}〜`, "解答解説PDFつき", "買い切り"].map((t) => (
                     <li key={t} className="flex items-center gap-1.5 text-[0.74rem] font-semibold text-[#475569]">
                       <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
                         <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.3 4.3L19 7" /></svg>
@@ -609,11 +829,17 @@ export default function Home() {
         </Container>
       </section>
 
+      {/* ───────── QUICK ANSWER（広告・検索流入の購入判断） ───────── */}
+      <QuickAnswerSection />
+
       {/* ───────── 流れるキーワード帯（リズム＋SEO） ───────── */}
       <MarqueeBand />
 
-      {/* ───────── CAMPAIGN（初月半額・toC の主役オファー） ───────── */}
+      {/* ───────── CAMPAIGN（開講記念パック割・toC の主役オファー） ───────── */}
       <CampaignBanner />
+
+      {/* ───────── PURCHASE SHELF（商品棚・教材選択） ───────── */}
+      <PurchaseShelfSection />
 
       {/* ───────── AFTER PURCHASE TEASER（購入後の安心導線） ───────── */}
       <section id="after-purchase" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
@@ -1479,7 +1705,7 @@ export default function Home() {
           <div className="relative mx-auto max-w-3xl overflow-hidden rounded-[26px] bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] text-white shadow-[0_44px_90px_-55px_rgba(11,29,74,0.6)]">
             <Blob fill="#ffffff" className="pointer-events-none absolute -left-20 -top-16 h-64 w-64 opacity-[0.06]" />
             <Blob fill="#5eead4" className="pointer-events-none absolute -bottom-20 -right-12 h-64 w-64 opacity-[0.12]" />
-            {/* 初月半額シール（キャンペーンと統一） */}
+            {/* パック割シール（キャンペーンと統一） */}
             <div aria-hidden="true" className="pointer-events-none absolute -right-4 -top-4 z-10 hidden rotate-12 sm:block">
               <Starburst className="h-24 w-24 drop-shadow-[0_12px_22px_rgba(0,0,0,0.35)]" />
             </div>

@@ -276,7 +276,7 @@ export function createContactPageJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "ContactPage",
-    name: `${FULL_NAME} お申し込み・ご相談（初月半額）`,
+    name: `${FULL_NAME} お申し込み・ご相談（開講記念パック割）`,
     url,
     inLanguage: "ja",
     isPartOf: {
@@ -296,7 +296,7 @@ export function createContactPageJsonLd() {
           email: siteConfig.email,
           areaServed: "JP",
           availableLanguage: ["ja"],
-          description: "お申し込み（初月半額）・受講相談・教材に関するお問い合わせ",
+          description: "お申し込み（開講記念パック割）・受講相談・教材に関するお問い合わせ",
         },
       ],
     },
