@@ -33,7 +33,7 @@ const pillars = [
     color: "#0d9488",
     title: "続く仕組みを、まるごと",
     body: "専用アプリが提出と同時に解答解説PDFと次の範囲を配信。連続記録・はなまる・称号で、勉強が自然と生活のリズムになります。「次にやること」が決まっているから続きます。",
-    points: ["提出後に次の範囲が届く", "連続記録・はなまる・称号", "保護者も進捗を確認"],
+    points: ["提出後に次の範囲が届く", "連続記録・はなまる・称号", "家でも進捗を確認"],
   },
   {
     tag: "添削",
@@ -49,7 +49,7 @@ const steps = [
   { no: "01", title: "今日の範囲が見える", body: "アプリを開くと、いま取り組む教材と範囲が分かります。「何をやろう」と迷う時間はゼロ。座ったらすぐ始められます。" },
   { no: "02", title: "解いて、出す", body: "自作教材で理解して書く。1回10〜20分から。提出と同時に解答解説PDFと次の範囲が届き、その場で自己採点できます。" },
   { no: "03", title: "添削・再提出が返る", body: "先生の添削が返却されたら、コメントや添削PDFを確認。再提出が必要な範囲も、次の学習と並行して進めます。" },
-  { no: "04", title: "全範囲合格で修了", body: "合格ラインは8割。全範囲が返却済みかつ合格になったら、その教材は修了です。一冊分PDFも受け取れます。" },
+  { no: "04", title: "全範囲合格で修了", body: "8割を合格目安に先生が採点。全範囲が返却済みかつ合格になったら、その教材は修了です。一冊分PDFも受け取れます。" },
 ];
 
 const correction = [
@@ -268,7 +268,7 @@ export default function HowItWorksPage() {
               { time: "20:05", title: "プリントで解く（10〜20分）", body: "手元の1枚を、途中式・考え方まで書いて答案に。" },
               { time: "20:20", title: "提出 → 解答解説と次の範囲", body: "出した瞬間に解答解説PDFが届き、次の範囲も追加されます。すぐ自己採点できます。" },
               { time: "返却後", title: "先生の添削を確認", body: "あなた専用の添削が返却。再提出が必要な範囲は、次の学習と並行して直します。" },
-              { time: "修了", title: "全範囲8割合格で完了", body: "好きなタイミングで提出し、全範囲が合格になったら、その教材は修了です。" },
+              { time: "修了", title: "全範囲合格で完了", body: "好きなタイミングで提出し、8割を合格目安に先生が採点。全範囲が合格になったら、その教材は修了です。" },
             ].map((s, i, arr) => (
               <li key={s.time} className="relative flex gap-4 rounded-[16px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.06)]">
                 <div className="flex flex-col items-center">
@@ -334,7 +334,7 @@ export default function HowItWorksPage() {
             <ul className="mt-10 grid gap-3">
               {[
                 { q: "1日どのくらいの時間がかかりますか？", a: "1回10〜20分で取り組める大きさに課題を分割しています。提出後の自己採点や、翌日の添削の見直しを含めても、1日20〜30分ほどが目安です。部活や習い事があっても続けやすい設計です。" },
-                { q: "提出はどのくらいの頻度ですか？", a: "好きなタイミングで提出できます。提出すると解答解説PDFと次の範囲が届くので、生活に合わせて進めながら、全範囲8割合格で修了を目指せます。" },
+                { q: "提出はどのくらいの頻度ですか？", a: "好きなタイミングで提出できます。提出すると解答解説PDFと次の範囲が届くので、生活に合わせて進めながら、8割を合格目安に全範囲の修了を目指せます。" },
                 { q: "添削はいつ返ってきますか？", a: "提出と同時に解答・解説が届くのでその場で自己採点できます。先生の添削は運用日程に沿って返却します（詳細は申し込み時にご案内します）。" },
                 { q: "面談や授業（ライブ指導）はありますか？", a: "現状、対面・オンラインの面談や授業は行っていません。自分のペースで教材を進め、提出した答案に添削が入る——その繰り返しに集中しています。" },
                 { q: "続けられるか不安です。", a: "「続けられない」を設計で解くのがノビットです。提出すれば解答解説と次の範囲が届く流れで迷いをなくし、連続記録・はなまる・称号で小さな達成を可視化。出せば必ず返ってくる添削が、継続を後押しします。" },
@@ -360,7 +360,7 @@ export default function HowItWorksPage() {
               <Link href="/app" className="group rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_44px_-34px_rgba(15,29,74,0.4)]">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#0f766e]">App</p>
                 <p className="mt-1 text-[1.05rem] font-extrabold text-[#0b1d4a] group-hover:text-[#0f766e]">公式アプリのくわしい説明 →</p>
-                <p className="mt-1.5 text-[0.86rem] leading-[1.8] text-[#475569]">習慣化のエンジン。課題配信・添削返却・保護者ビューまで。</p>
+                <p className="mt-1.5 text-[0.86rem] leading-[1.8] text-[#475569]">習慣化のエンジン。課題配信・添削返却・家での進捗確認まで。</p>
               </Link>
               <Link href="/materials" className="group rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_44px_-34px_rgba(15,29,74,0.4)]">
                 <p className="text-[0.72rem] font-bold uppercase tracking-[0.18em] text-[#f97316]">Materials</p>

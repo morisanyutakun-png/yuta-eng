@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { LpPageViewEvent } from "@/components/analytics-events";
@@ -126,7 +127,7 @@ const flow = [
     color: "#16a34a",
     glyph: "M20 7a8 8 0 1 0 1.5 5M20 4v4h-4", // くりかえす（ループ矢印）
     title: "返却・再提出も並行",
-    body: "再提出が必要な範囲は戻って確認。次の範囲と復習を並行して進め、全範囲が8割合格になったら教材修了です。",
+    body: "再提出が必要な範囲は戻って確認。次の範囲と復習を並行して進め、8割を合格目安に先生が採点。全範囲が合格になったら教材修了です。",
   },
 ];
 
@@ -169,14 +170,14 @@ const forYouFit = [
   { title: "解けるのに、記述答案に自信がない", body: "途中式・考え方まで、提出ごとの添削で仕上げます。", img: "foryou-4" },
   { title: "部活や習い事で、時間が取りにくい", body: "1回10〜20分から。スキマ時間で積み上がります。", img: "foryou-3" },
   { title: "難関大・名大の記述まで本気で伸ばしたい", body: "基礎から入試レベルまで、切れ目なく対応します。", img: "foryou-2" },
-  { title: "子どもの学習を、そっと見守りたい", body: "保護者も同じアプリで進捗を確認できて安心です。", img: "foryou-1" },
+  { title: "子どもの学習を、そっと見守りたい", body: "生徒アカウントの画面を家でも確認でき、提出・返却・連続日数を一緒に見守れます。", img: "foryou-1" },
 ];
 
 // アプリ「ノビットスタディ」＝習慣化のエンジン。
 const appPoints = [
   { title: "次の範囲が届く", body: "提出すると解答解説PDFと次の範囲が届くので、返却待ちで止まらず、迷わず進められます。" },
   { title: "添削がそのまま返る", body: "提出した答案に、途中式・減点ポイントまでの添削が返却。スマホで見返せます。" },
-  { title: "保護者も進捗を確認", body: "提出数・添削完了・連続日数を見える化。保護者も同じ画面で見守れて安心です。" },
+  { title: "家でも進捗を確認", body: "生徒アカウントの画面を家でも共有して、提出数・添削完了・連続日数を見守れます。" },
   { title: "続けたくなる仕組み", body: "はなまる・称号・連続記録で、学習が自然と積み上がります。" },
 ];
 
@@ -210,7 +211,58 @@ const purchaseIncludes = [
   "解答解説PDF",
   "次の範囲の配信",
   "再提出・合格管理",
-  "保護者の進捗確認",
+  "家での進捗確認",
+];
+
+const sampleScreens = [
+  {
+    title: "購入後に何が届くか",
+    body: "購入した教材がダッシュボードに入り、今日やる課題・自己採点・返却が分かれて表示されます。",
+    bullets: ["未提出件数を強調", "教材別の進捗も確認"],
+    src: "/samples/after-purchase-dashboard.png",
+    width: 724,
+    height: 835,
+  },
+  {
+    title: "教材PDFの一部",
+    body: "問題PDFはアプリ内で表示され、タブレットで縦スクロールしながら確認できます。",
+    bullets: ["図・数式つきPDFも閲覧", "ペンで書き込んで保存"],
+    src: "/samples/material-pdf-sample.png",
+    width: 1180,
+    height: 980,
+  },
+  {
+    title: "提出画面",
+    body: "保存したPDFや途中式の写真を添付して提出できます。",
+    bullets: ["PDF・写真は最大3件", "提出前に添付内容を確認"],
+    src: "/samples/submit-screen-sample.png",
+    width: 732,
+    height: 796,
+  },
+  {
+    title: "解答解説PDFの見え方",
+    body: "提出済み答案と解答解説を左右に並べ、先生の返却を待たずに自己採点できます。",
+    bullets: ["答案と解答を同時に見比べ", "解答PDFを表示"],
+    src: "/samples/answer-key-sample.png",
+    width: 586,
+    height: 797,
+  },
+  {
+    title: "返却画面",
+    body: "先生の採点コメント、添削PDF、再提出の指示を返却タブで確認します。",
+    bullets: ["自己採点とは別画面", "再提出が必要なものを確認"],
+    src: "/samples/returned-screen-sample.png",
+    width: 411,
+    height: 362,
+  },
+  {
+    title: "レポート画面",
+    body: "合格率・平均点・教科別の成績・返却履歴をひとつの画面で振り返れます。",
+    bullets: ["数値と履歴で確認", "返却コメントや再提出依頼も残る"],
+    src: "/samples/report-screen-sample.png",
+    width: 980,
+    height: 1180,
+  },
 ];
 
 const subjectAreas = SUBJECTS.reduce(
@@ -283,7 +335,7 @@ const marqueeItems = [
   "プロの添削が返る",
   "自作オリジナル教材",
   "習慣化アプリで続く",
-  "保護者も進捗を確認",
+  "家でも進捗を確認",
   "入会金・追加費用 0円",
   "8/6まで 開講記念パック割",
 ];
@@ -767,6 +819,71 @@ function SubjectGuideSection() {
   );
 }
 
+function SampleScreensSection() {
+  return (
+    <section id="samples" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
+      <Container className="px-6 py-16 sm:py-24">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
+            Sample · 購入前に見える安心材料
+          </p>
+          <h2 className="mt-3 text-balance text-[1.75rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.25rem]">
+            買ったあとに届くものを、画面で確認できます。
+          </h2>
+          <p className="mt-3 text-[0.96rem] leading-[1.9] text-[#475569]">
+            教材PDF・解答解説PDF・提出画面・返却画面・レポート画面まで。
+            申し込み前に、購入後の学習の流れを具体的にイメージできます。
+          </p>
+        </div>
+
+        <div className="mt-10 grid gap-5 lg:grid-cols-2">
+          {sampleScreens.map((sample, i) => (
+            <article
+              key={sample.title}
+              className="overflow-hidden rounded-[8px] bg-white shadow-[0_24px_56px_-46px_rgba(11,29,74,0.45)] ring-1 ring-[rgba(15,29,74,0.08)]"
+            >
+              <div className="bg-[#eef4f8]">
+                <Image
+                  src={sample.src}
+                  alt={`${sample.title}の画面サンプル`}
+                  width={sample.width}
+                  height={sample.height}
+                  sizes="(min-width: 1024px) 48vw, 92vw"
+                  className="h-auto w-full"
+                />
+              </div>
+              <div className="p-5 sm:p-6">
+                <p className="text-[0.68rem] font-extrabold tracking-[0.16em] text-[#0d9488]">
+                  SAMPLE {String(i + 1).padStart(2, "0")}
+                </p>
+                <h3 className="mt-2 text-[1.12rem] font-extrabold leading-[1.45] text-[#0b1d4a]">
+                  {sample.title}
+                </h3>
+                <p className="mt-2 text-[0.9rem] leading-[1.85] text-[#475569]">{sample.body}</p>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {sample.bullets.map((bullet) => (
+                    <li
+                      key={bullet}
+                      className="rounded-full bg-[#f8fafc] px-3 py-1.5 text-[0.76rem] font-bold text-[#334155] ring-1 ring-[rgba(15,29,74,0.08)]"
+                    >
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-9 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+          <PrimaryCta href="/apply#form">教材を選んで申し込む</PrimaryCta>
+          <SecondaryCta href="/after-purchase">購入後の流れを詳しく見る</SecondaryCta>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
 /** セクションに奥行きを出すやわらかい光（装飾）。overflow-hidden な relative 親に置く。 */
 /** 数字で価値を一気に見せる帯（訴求＋デザインのアクセント）。 */
 /** 赤ペンで囲んだ風の手描き楕円（採点の“ここ大事”の気配）。 */
@@ -998,6 +1115,9 @@ export default function Home() {
           <PostPurchaseTeaser />
         </Container>
       </section>
+
+      {/* ───────── SAMPLES（購入後に届くもの・見る画面） ───────── */}
+      <SampleScreensSection />
 
       {/* ───────── STEPS（やることはこれだけ・実物プリントで見せる） ───────── */}
       <section id="steps" className="cv-defer scroll-mt-24 bg-white">
@@ -1332,7 +1452,7 @@ export default function Home() {
         <GroundedMascot variant="point" position="bottom-4 right-[4%] xl:right-[7%]" sizeClass="h-36 xl:h-40" />
       </section>
 
-      {/* ───────── APP（習慣化のエンジン・保護者も安心） ───────── */}
+      {/* ───────── APP（習慣化のエンジン） ───────── */}
       <section id="app" className="cv-defer scroll-mt-24 bg-white">
         <Container className="px-6 py-16 sm:py-24">
           <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
@@ -1356,7 +1476,7 @@ export default function Home() {
               </h2>
               <p className="mt-4 max-w-lg text-[0.98rem] leading-[1.9] text-[#334155]">
                 課題・提出・添削・進捗を、専用アプリ「ノビットスタディ」に集約。連続記録やはなまるで、続けるほど楽しくなる。
-                <strong className="font-bold text-[#0b1d4a]">保護者も同じ画面で進捗を確認</strong>できるから、安心して任せられます。
+                <strong className="font-bold text-[#0b1d4a]">生徒アカウントの画面を家でも確認</strong>できるので、提出・返却・連続日数を見守れます。
               </p>
               <ul className="mt-6 grid gap-3 sm:grid-cols-2">
                 {appPoints.map((p) => (
@@ -1370,7 +1490,7 @@ export default function Home() {
                 ))}
               </ul>
 
-              {/* 保護者も安心（イラストで見せる） */}
+              {/* 家での進捗確認（イラストで見せる） */}
               <figure className="mt-5 flex items-center gap-4 rounded-[18px] bg-[#eef6f6] p-4 ring-1 ring-[rgba(13,148,136,0.2)]">
                 <Illust
                   base="parent-child"
@@ -1383,10 +1503,10 @@ export default function Home() {
                 />
                 <figcaption>
                   <p className="text-[0.98rem] font-extrabold leading-[1.45] text-[#0b1d4a]">
-                    保護者も、同じ画面で見守れる。
+                    家でも、同じ画面で見守れる。
                   </p>
                   <p className="mt-1 text-[0.84rem] leading-[1.8] text-[#475569]">
-                    提出・添削・連続日数がひと目で。声をかけるタイミングまで分かるから、無理なく応援できます。
+                    生徒アカウントの画面を共有すれば、提出・添削・連続日数がひと目で。声をかけるタイミングまで分かるから、無理なく応援できます。
                   </p>
                 </figcaption>
               </figure>

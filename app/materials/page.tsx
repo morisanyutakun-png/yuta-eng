@@ -209,7 +209,7 @@ export default function MaterialsPage() {
             <div className="text-center">
               <AppScreen variant="submit" />
               <p className="mt-4 text-[0.9rem] font-bold text-[#0b1d4a]">答案を写真で提出</p>
-              <p className="mt-1 text-[0.8rem] text-[#64748b]">紙でもタブレットでも。何枚でもOK</p>
+              <p className="mt-1 text-[0.8rem] text-[#64748b]">紙でもタブレットでも。PDF・写真を最大3件まで</p>
             </div>
             <div className="text-center">
               <AppScreen variant="returned" />

@@ -39,7 +39,7 @@ export default function AppPage() {
     name: "ノビットスタディ（学習管理アプリ）",
     alternateName: ["Nobit Study App"],
     description:
-      "教材ごとの課題表示・PDF提出・提出直後の解答解説と次の範囲・添削返却・再提出・進捗の見える化を行う、ノビットスタディ 中高部の学習管理アプリ。保護者も同じ画面で進捗を確認できる。",
+      "教材ごとの課題表示・PDF提出・提出直後の解答解説と次の範囲・添削返却・再提出・進捗の見える化を行う、ノビットスタディ 中高部の学習管理アプリ。ご家庭でも生徒アカウントの画面で進捗を確認できる。",
     url: new URL("/app", siteConfig.url).toString(),
     audience: "student",
   });
@@ -109,7 +109,7 @@ export default function AppPage() {
               <p className="mt-6 max-w-lg text-[1.05rem] leading-[1.95] text-[#334155]">
                 やること・提出・添削・成績、ぜんぶスマホの中に。
                 <strong className="font-bold text-[#0b1d4a]">続けるのは、あなたの根性じゃなくてアプリの役目</strong>。
-                おうちの人も、同じ画面でそっと見守れます。
+                おうちの人も、生徒アカウントの画面でそっと見守れます。
               </p>
               <div className="relative mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 {/* 手描きの誘導（人の手の気配） */}
@@ -142,7 +142,7 @@ export default function AppPage() {
                 <p className="mt-0.5 text-[0.62rem] text-[#64748b]">点数・コメント</p>
               </div>
               <div className="absolute -bottom-1 left-6 hidden -rotate-3 rounded-[14px] bg-white/80 px-3.5 py-2.5 shadow-[0_22px_44px_-20px_rgba(11,29,74,0.55)] ring-1 ring-white/70 backdrop-blur-md sm:block">
-                <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#1d4ed8]" />保護者も見れる</p>
+                <p className="flex items-center gap-1.5 text-[0.72rem] font-extrabold text-[#0b1d4a]"><span className="h-1.5 w-1.5 rounded-full bg-[#1d4ed8]" />家でも見れる</p>
               </div>
             </div>
           </div>
@@ -319,7 +319,7 @@ export default function AppPage() {
               {[
                 { q: "アプリのダウンロードは必要ですか？", a: "いいえ。Webブラウザで動くので、アプリストアからのインストールは不要です。決済後のご案内に沿ってログインするだけで使い始められます。" },
                 { q: "どの端末で使えますか？", a: "iPhone・Android のスマホ／タブレット、パソコンの最新ブラウザに対応しています。移動中はスマホ、家ではPCなど、使い分けられます。" },
-                { q: "保護者も見られますか？", a: "はい。提出数・添削完了・連続日数などを、保護者の方も同じ画面で確認できます。面談がなくても、お子さまの取り組みをそっと見守れます。" },
+                { q: "保護者も見られますか？", a: "はい。生徒アカウントの画面を共有すれば、提出数・添削完了・連続日数などを家でも確認できます。面談がなくても、お子さまの取り組みをそっと見守れます。" },
                 { q: "提出した答案や学習データはどう扱われますか？", a: "答案・進捗などの学習データは、サービスの提供と品質向上のために適切に管理します。詳しくはプライバシーポリシーをご確認ください。" },
               ].map((item) => (
                 <li key={item.q} className="rounded-[18px] bg-[#f8fafc] p-6 ring-1 ring-[rgba(15,29,74,0.06)]">
@@ -335,7 +335,7 @@ export default function AppPage() {
         </Container>
       </section>
 
-      {/* 保護者も安心 */}
+      {/* 家での進捗確認 */}
       <section className="bg-[#f8fafc]">
         <Container className="px-6 py-16 sm:py-24">
           <div className="mx-auto grid max-w-4xl items-center gap-8 rounded-[24px] bg-[#eef6f6] p-8 ring-1 ring-[rgba(13,148,136,0.18)] sm:p-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-12">
@@ -345,7 +345,7 @@ export default function AppPage() {
                 同じ画面で、そっと見守れる。
               </h2>
               <p className="mt-4 text-[0.96rem] leading-[1.95] text-[#334155]">
-                面談がなくても大丈夫。提出数・添削完了・連続日数を、保護者も同じアプリで確認できます。
+                面談がなくても大丈夫。生徒アカウントの画面を共有すれば、提出数・添削完了・連続日数を家でも確認できます。
                 「今日はちゃんと出したかな？」が一目で分かるから、口を出しすぎずに見守れます。
               </p>
               <ul className="mt-5 grid gap-2 text-[0.92rem] leading-[1.85] text-[#334155] sm:grid-cols-2">

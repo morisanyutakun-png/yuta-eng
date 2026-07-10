@@ -142,7 +142,7 @@ export function GroundedMascot({
 
 /**
  * 添削管理アプリ「ノビットスタディ」の画面を、電話フレームで再現したモック。
- * 進捗・連続日数・添削の返却・課題が一目で分かり、保護者も同じ画面で見守れる。
+ * 進捗・連続日数・添削の返却・課題が一目で分かり、家庭でも同じ画面を確認できる。
  */
 export function AppMock({ className = "" }: { className?: string }) {
   return (

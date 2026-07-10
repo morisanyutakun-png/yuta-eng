@@ -45,7 +45,7 @@ const steps: Array<{
     body: (
       <>
         ログインすると、購入した科目に対応する教材が
-        <strong className="font-extrabold">今日の課題</strong>と
+        <strong className="font-extrabold">今日の学習</strong>と
         <strong className="font-extrabold">教材の進み具合</strong>に表示されます。先生が手動で配るのを待たず、すぐ最初の範囲へ進めます。
       </>
     ),
@@ -235,7 +235,7 @@ function HomeVisual() {
           </div>
         </section>
         <section className="mt-2 border border-[#d8e1eb] bg-white p-2.5">
-          <p className="text-[0.42rem] font-extrabold text-[#25a8df]">今日の課題</p>
+          <p className="text-[0.42rem] font-extrabold text-[#25a8df]">今日の学習</p>
           <p className="mt-1 text-[0.62rem] font-extrabold text-[#123657]">数学IA標準</p>
           <p className="mt-1 text-[0.38rem] text-[#607289]">数学・数と式 A-3</p>
           <div className="mt-2 grid min-h-7 place-items-center bg-[#25a8df] text-[0.42rem] font-extrabold text-white">取り組む →</div>
@@ -375,7 +375,7 @@ export function PostPurchaseFlow({
             </h2>
           </div>
           <p className="shrink-0 text-[0.95rem] font-extrabold tracking-[0.06em] text-white/95">
-            ノビットスタディ｜高校部
+            ノビットスタディ｜中高部
           </p>
         </div>
         <p className="mt-4 max-w-5xl font-serif text-[0.95rem] leading-[2] text-white/90 sm:text-[1.03rem]">
@@ -423,7 +423,7 @@ export function PostPurchaseFlow({
           購入後に迷わずログインでき、購入教材が自動で届き、提出後はすぐ解答解説で振り返って次へ進めます。返却・再提出は別タブで追えるので、生徒も先生も自分のタイミングで学習と添削を進められます。
         </p>
         <ul className="mt-5 flex flex-wrap gap-3">
-          {["返却待ちで止まらない", "PDF添付OK", "再提出も見える", "完了PDFを受け取れる"].map((label) => (
+          {["返却待ちで止まらない", "PDF・写真は最大3件", "再提出も見える", "完了PDFを受け取れる"].map((label) => (
             <li key={label} className="rounded-full border border-white/70 px-4 py-1.5 text-[0.82rem] font-extrabold text-white">
               {label}
             </li>
