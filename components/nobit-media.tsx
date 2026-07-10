@@ -156,8 +156,8 @@ export function AppMock({ className = "" }: { className?: string }) {
             {/* ヘッダーカード */}
             <div className="relative overflow-hidden rounded-[16px] bg-[linear-gradient(120deg,#1d4ed8_0%,#0d9488_100%)] p-3.5 text-white">
               <div className="pr-12">
-                <p className="text-[0.82rem] font-extrabold leading-tight">こんにちは、ユウタさん！</p>
-                <p className="mt-1 text-[0.6rem] leading-snug text-white/85">次の課題が2件 届いています。</p>
+                <p className="text-[0.82rem] font-extrabold leading-tight">こんにちは、山田太郎 さん</p>
+                <p className="mt-1 text-[0.6rem] leading-snug text-white/85">未提出の課題が2件あります。</p>
               </div>
               <img
                 src="/brand/nobit-kun-wave-240.webp"
@@ -170,9 +170,9 @@ export function AppMock({ className = "" }: { className?: string }) {
               />
               <div className="mt-3 flex gap-1.5">
                 {[
-                  { t: "🔥 12日", s: "れんぞく" },
-                  { t: "⭐ 48", s: "はなまる" },
-                  { t: "🏅 努力家", s: "称号" },
+                  { t: "1日", s: "れんぞく" },
+                  { t: "合格 2", s: "記録" },
+                  { t: "はじめ", s: "称号" },
                 ].map((c) => (
                   <div key={c.s} className="flex-1 rounded-[8px] bg-white/15 px-1.5 py-1 text-center ring-1 ring-white/20">
                     <p className="text-[0.6rem] font-bold leading-none">{c.t}</p>
@@ -182,21 +182,21 @@ export function AppMock({ className = "" }: { className?: string }) {
               </div>
             </div>
 
-            {/* 添削が返ってきた通知 */}
+            {/* 返却の通知 */}
             <div className="mt-2.5 flex items-center gap-2 rounded-[12px] border-l-[3px] border-[#16a34a] bg-[#eafaf0] px-2.5 py-2">
               <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#16a34a] text-[0.7rem] text-white">✓</span>
               <p className="text-[0.62rem] font-bold leading-snug text-[#0b1d4a]">
-                先生から添削が2件 返ってきました
+                返却タブに添削が2件届いています
               </p>
             </div>
 
-            {/* 次の課題 */}
+            {/* 今日の学習 */}
             <div className="mt-2.5 rounded-[12px] bg-white p-3 ring-1 ring-[rgba(15,29,74,0.06)]">
-              <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">次の課題</p>
+              <p className="text-[0.66rem] font-extrabold text-[#0b1d4a]">今日の学習</p>
               <ul className="mt-2 grid gap-1.5">
                 {[
-                  { s: "物理", t: "力学・運動方程式", c: "#1d4ed8" },
-                  { s: "数学IIBC", t: "複素数平面", c: "#0d9488" },
+                  { s: "課題", t: "物理入門演習", c: "#1d4ed8" },
+                  { s: "自己採点", t: "解答解説を確認", c: "#0d9488" },
                 ].map((q) => (
                   <li key={q.s} className="flex items-center gap-2 rounded-[8px] bg-[#f8fafc] px-2 py-1.5">
                     <span
@@ -206,7 +206,7 @@ export function AppMock({ className = "" }: { className?: string }) {
                       {q.s}
                     </span>
                     <span className="min-w-0 flex-1 truncate text-[0.6rem] font-semibold text-[#334155]">{q.t}</span>
-                    <span className="shrink-0 rounded-full bg-[#f97316] px-2 py-0.5 text-[0.5rem] font-bold text-white">提出</span>
+                    <span className="shrink-0 rounded-full bg-[#f97316] px-2 py-0.5 text-[0.5rem] font-bold text-white">開く</span>
                   </li>
                 ))}
               </ul>
@@ -223,9 +223,9 @@ export function AppMock({ className = "" }: { className?: string }) {
               </div>
               <div className="mt-2.5 grid grid-cols-3 gap-1.5 text-center">
                 {[
-                  { n: "48", l: "はなまる", c: "#ea580c" },
-                  { n: "31", l: "添削完了", c: "#16a34a" },
-                  { n: "6", l: "今週の提出", c: "#1d4ed8" },
+                  { n: "2", l: "合格", c: "#ea580c" },
+                  { n: "2", l: "完了", c: "#16a34a" },
+                  { n: "4", l: "今週の提出", c: "#1d4ed8" },
                 ].map((s) => (
                   <div key={s.l} className="rounded-[8px] bg-[#f8fafc] py-1.5">
                     <p className="text-[0.86rem] font-extrabold leading-none" style={{ color: s.c }}>

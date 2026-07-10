@@ -222,6 +222,13 @@ const sampleScreens = [
     src: "/samples/after-purchase-dashboard.png",
     width: 724,
     height: 835,
+    overlays: [
+      {
+        text: "こんにちは、山田太郎 さん",
+        className:
+          "left-[4.9%] top-[8.6%] h-[5.8%] w-[49%] bg-[#1c2d5c] px-[0.8%] text-[clamp(0.92rem,3.8vw,1.8rem)] font-black leading-none text-white sm:text-[clamp(1.05rem,2vw,1.7rem)]",
+      },
+    ],
   },
   {
     title: "教材PDFの一部",
@@ -238,6 +245,13 @@ const sampleScreens = [
     src: "/samples/submit-screen-sample.png",
     width: 732,
     height: 796,
+    overlays: [
+      {
+        text: "山田太郎",
+        className:
+          "left-0 top-[9.7%] h-[3.2%] w-[9.5%] bg-[#f3f7fb] text-[clamp(0.42rem,1.65vw,0.68rem)] font-semibold text-[#607289]",
+      },
+    ],
   },
   {
     title: "解答解説PDFの見え方",
@@ -262,6 +276,13 @@ const sampleScreens = [
     src: "/samples/report-screen-sample.png",
     width: 980,
     height: 1180,
+    overlays: [
+      {
+        text: "山田太郎",
+        className:
+          "left-[75.8%] top-[1.25%] h-[3.1%] w-[7.2%] bg-white text-[clamp(0.36rem,1.25vw,0.72rem)] font-extrabold text-[#123657]",
+      },
+    ],
   },
 ];
 
@@ -820,20 +841,43 @@ function SubjectGuideSection() {
 }
 
 function SampleScreensSection() {
+  const sampleFlow = ["教材PDF", "提出", "解答解説", "返却", "レポート", "修了PDF"];
+
   return (
-    <section id="samples" className="cv-defer scroll-mt-24 bg-[#f8fafc]">
-      <Container className="px-6 py-16 sm:py-24">
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
+    <section id="samples" className="cv-defer relative scroll-mt-24 overflow-hidden bg-[#f8fafc]">
+      <SectionGlow className="-left-24 top-6" color="rgba(29,78,216,0.08)" />
+      <SectionGlow className="-right-24 top-32" color="rgba(13,148,136,0.12)" />
+      <Container className="relative px-6 py-16 sm:py-24">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-[#0f766e] shadow-[0_14px_30px_-24px_rgba(11,29,74,0.45)] ring-1 ring-[rgba(13,148,136,0.18)]">
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#f97316]" />
             Sample · 購入前に見える安心材料
           </p>
-          <h2 className="mt-3 text-balance text-[1.75rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.25rem]">
-            買ったあとに届くものを、画面で確認できます。
+          <h2 className="mt-4 text-balance text-[1.85rem] font-extrabold leading-[1.28] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.45rem]">
+            申し込む前に、
+            <br className="hidden sm:block" />
+            学習スタート後の画面まで見えます。
           </h2>
-          <p className="mt-3 text-[0.96rem] leading-[1.9] text-[#475569]">
+          <p className="mx-auto mt-4 max-w-2xl text-[0.96rem] leading-[1.9] text-[#475569]">
             教材PDF・解答解説PDF・提出画面・返却画面・レポート画面まで。
-            申し込み前に、購入後の学習の流れを具体的にイメージできます。
+            購入後に「どこで何を見るのか」を、先に具体的に確認できます。
           </p>
+
+          <ol className="mx-auto mt-7 flex max-w-3xl flex-wrap justify-center gap-2">
+            {sampleFlow.map((item, i) => (
+              <li key={item} className="flex items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[0.74rem] font-extrabold text-[#334155] ring-1 ring-[rgba(15,29,74,0.08)]">
+                  <span className="grid h-5 w-5 place-items-center rounded-full bg-[#0b1d4a] text-[0.62rem] text-white">
+                    {i + 1}
+                  </span>
+                  {item}
+                </span>
+                {i < sampleFlow.length - 1 ? (
+                  <span aria-hidden="true" className="hidden h-px w-5 bg-[rgba(15,29,74,0.18)] sm:block" />
+                ) : null}
+              </li>
+            ))}
+          </ol>
         </div>
 
         <div className="mt-10 grid gap-5 lg:grid-cols-2">
@@ -842,7 +886,7 @@ function SampleScreensSection() {
               key={sample.title}
               className="overflow-hidden rounded-[8px] bg-white shadow-[0_24px_56px_-46px_rgba(11,29,74,0.45)] ring-1 ring-[rgba(15,29,74,0.08)]"
             >
-              <div className="bg-[#eef4f8]">
+              <div className="relative overflow-hidden bg-[#eef4f8]">
                 <Image
                   src={sample.src}
                   alt={`${sample.title}の画面サンプル`}
@@ -851,6 +895,15 @@ function SampleScreensSection() {
                   sizes="(min-width: 1024px) 48vw, 92vw"
                   className="h-auto w-full"
                 />
+                {sample.overlays?.map((overlay) => (
+                  <span
+                    key={overlay.text}
+                    aria-hidden="true"
+                    className={`absolute flex items-center whitespace-nowrap ${overlay.className}`}
+                  >
+                    {overlay.text}
+                  </span>
+                ))}
               </div>
               <div className="p-5 sm:p-6">
                 <p className="text-[0.68rem] font-extrabold tracking-[0.16em] text-[#0d9488]">
