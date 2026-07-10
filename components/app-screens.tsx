@@ -239,19 +239,34 @@ function ActionCard({
   count: string;
   tone: "blue" | "green" | "red";
 }) {
-  const styles = {
-    blue: "border-l-[#25a8df] bg-[#f2faff] text-[#0284c7]",
-    green: "border-l-[#10a37f] bg-[#effbf6] text-[#059669]",
-    red: "border-l-[#c81046] bg-[#fff1f4] text-[#c81046]",
+  const styles: Record<"blue" | "green" | "red", { card: string; action: string }> = {
+    blue: {
+      card: "border-l-[#25a8df] bg-[#f2faff] text-[#0284c7]",
+      action: "bg-[#25a8df] text-white",
+    },
+    green: {
+      card: "border-l-[#10a37f] bg-[#effbf6] text-[#059669]",
+      action: "bg-[#10a37f] text-white",
+    },
+    red: {
+      card: "border-l-[#c81046] bg-[#fff1f4] text-[#c81046]",
+      action: "bg-[#c81046] text-white",
+    },
   };
+  const actionLabel = tone === "green" ? "採点" : tone === "red" ? "確認" : "取組";
+
   return (
-    <div className={`relative overflow-hidden border border-[#d8e1eb] border-l-[3px] p-3 ${styles[tone]}`}>
-      <span aria-hidden="true" className="absolute -right-5 -top-4 h-14 w-14 rotate-45 bg-white/55" />
-      <p className="text-[0.72rem] font-extrabold text-[#123657]">{title}</p>
-      <p className="mt-1 text-[0.48rem] font-bold text-[#607289]">{label}</p>
-      <div className="mt-3 flex items-center justify-between">
-        <span className="grid h-7 w-7 place-items-center border border-current bg-white/70 text-[0.86rem] font-black">{count}</span>
-        <MiniButton tone={tone === "red" ? "red" : "blue"}>{tone === "green" ? "採点" : tone === "red" ? "確認" : "取組"}</MiniButton>
+    <div className={`relative min-w-0 overflow-hidden rounded-[6px] border border-[#d8e1eb] border-l-[3px] px-2 py-2.5 ${styles[tone].card}`}>
+      <span aria-hidden="true" className="absolute -right-4 -top-5 h-12 w-12 rotate-45 bg-white/55" />
+      <p className="relative truncate whitespace-nowrap text-[0.64rem] font-extrabold leading-tight text-[#123657]">{title}</p>
+      <p className="relative mt-0.5 truncate text-[0.43rem] font-bold leading-tight text-[#607289]">{label}</p>
+      <div className="relative mt-2 grid grid-cols-[1.45rem_1fr] items-stretch gap-1.5">
+        <span className="grid h-6 min-w-0 place-items-center rounded-[4px] border border-current bg-white/78 text-[0.78rem] font-black leading-none">
+          {count}
+        </span>
+        <span className={`grid min-h-6 min-w-0 place-items-center rounded-[4px] px-1 text-[0.45rem] font-extrabold leading-none ${styles[tone].action}`}>
+          {actionLabel}
+        </span>
       </div>
     </div>
   );
@@ -264,7 +279,7 @@ function ScreenHome() {
         <span className="inline-flex border border-white/35 px-2 py-1 text-[0.4rem] font-black tracking-[0.18em] text-white/90">
           LEARNING DASHBOARD
         </span>
-        <p className="mt-3 text-[1rem] font-black leading-tight">こんにちは、山田太郎 さん</p>
+        <p className="mt-3 whitespace-nowrap text-[0.92rem] font-black leading-tight">こんにちは、山田太郎さん</p>
         <p className="mt-2 text-[0.5rem] leading-relaxed text-white/82">復習で定着、演習で得点。着実に積み上げよう。</p>
         <div className="mt-3 grid grid-cols-3 gap-1.5">
           {["1日連続", "合格 2", "はじめのいっぽ"].map((label) => (
@@ -283,7 +298,7 @@ function ScreenHome() {
         </span>
       </div>
 
-      <div className="mt-3 grid grid-cols-3 gap-2">
+      <div className="mt-3 grid grid-cols-3 gap-1.5">
         <ActionCard title="課題" label="未提出" count="2" tone="blue" />
         <ActionCard title="自己採点" label="即確認" count="2" tone="green" />
         <ActionCard title="返却" label="添削" count="0" tone="red" />
@@ -321,9 +336,9 @@ function ScreenSubmit() {
         ← 課題一覧へ
       </button>
       <p className="mt-3 text-[0.94rem] font-extrabold leading-tight tracking-[-0.02em] text-[#123657]">
-        物理入門演習 <StatusPill>未提出</StatusPill>
+        数学IA標準 <StatusPill>未提出</StatusPill>
       </p>
-      <p className="mt-1.5 text-[0.5rem] leading-relaxed text-[#607289]">山田太郎 ・ 物理 ・ 範囲 演習2 すれ違いと出会いの時刻 ・ 2回目</p>
+      <p className="mt-1.5 text-[0.5rem] leading-relaxed text-[#607289]">山田太郎 ・ 数学 ・ 範囲 数と式 A-1 ・ 2回目</p>
 
       <section className="mt-3 border border-[#d8e1eb] bg-white p-3">
         <p className="text-[0.68rem] font-extrabold text-[#123657]">課題</p>
@@ -332,7 +347,7 @@ function ScreenSubmit() {
         </p>
         <div className="mt-3 flex items-center gap-2">
           <span className="text-[0.9rem]" aria-hidden="true">📄</span>
-          <span className="min-w-0 flex-1 truncate text-[0.54rem] font-extrabold text-[#0f172a]">演習2 問題.pdf</span>
+          <span className="min-w-0 flex-1 truncate text-[0.54rem] font-extrabold text-[#0f172a]">数と式 A-1 問題.pdf</span>
           <MiniButton tone="white">開く</MiniButton>
           <MiniButton tone="white">保存</MiniButton>
         </div>

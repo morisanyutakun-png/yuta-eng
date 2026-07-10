@@ -50,7 +50,7 @@ const steps: Array<{
       </>
     ),
     bullets: [
-      "例：physics の購入で、物理標準演習が自動割り当て。",
+      "例：math-1a の購入で、数学IA標準が自動割り当て。",
       "「次：演習1」のように、今どこを解くかが見えます。",
       "合格数・採点待ち・再提出ありも、教材別に追えます。",
     ],
@@ -258,8 +258,8 @@ function SubmitVisual() {
       <AppHeader active="課題" />
       <main className="bg-[#f3f6f9] px-2.5 py-2.5">
         <button className="border border-[#d8e1eb] bg-white px-2 py-1 text-[0.38rem] font-bold text-[#40536b]">← 課題一覧へ</button>
-        <p className="mt-2 text-[0.58rem] font-extrabold text-[#123657]">物理標準演習 <span className="border border-[#d8e1eb] px-1 text-[0.34rem] text-[#607289]">未提出</span></p>
-        <p className="mt-1 text-[0.34rem] text-[#607289]">山田太郎・物理・範囲 波と式 B-1・4回目</p>
+        <p className="mt-2 text-[0.58rem] font-extrabold text-[#123657]">数学IA標準 <span className="border border-[#d8e1eb] px-1 text-[0.34rem] text-[#607289]">未提出</span></p>
+        <p className="mt-1 text-[0.34rem] text-[#607289]">山田太郎・数学・範囲 数と式 A-1・2回目</p>
         <section className="mt-2 border border-[#d8e1eb] bg-white p-2.5">
           <p className="text-[0.48rem] font-extrabold text-[#123657]">課題</p>
           <div className="mt-2 grid grid-cols-[1fr_auto_auto] gap-1 border border-[#e4ebf2] bg-[#f8fbfd] p-2">

@@ -224,7 +224,7 @@ const sampleScreens = [
     height: 835,
     overlays: [
       {
-        text: "こんにちは、山田太郎 さん",
+        text: "こんにちは、山田太郎さん",
         className:
           "left-[4.9%] top-[8.6%] h-[5.8%] w-[49%] bg-[#1c2d5c] px-[0.8%] text-[clamp(0.92rem,3.8vw,1.8rem)] font-black leading-none text-white sm:text-[clamp(1.05rem,2vw,1.7rem)]",
       },
@@ -232,11 +232,11 @@ const sampleScreens = [
   },
   {
     title: "教材PDFの一部",
-    body: "問題PDFはアプリ内で表示され、タブレットで縦スクロールしながら確認できます。",
-    bullets: ["図・数式つきPDFも閲覧", "ペンで書き込んで保存"],
+    body: "数学IA標準の問題PDFを、アプリ内やタブレットで縦スクロールしながら確認できます。",
+    bullets: ["数式つきPDFも閲覧", "ペンで書き込んで保存"],
     src: "/samples/material-pdf-sample.png",
-    width: 1180,
-    height: 980,
+    width: 1075,
+    height: 1518,
   },
   {
     title: "提出画面",
@@ -255,11 +255,11 @@ const sampleScreens = [
   },
   {
     title: "解答解説PDFの見え方",
-    body: "提出済み答案と解答解説を左右に並べ、先生の返却を待たずに自己採点できます。",
-    bullets: ["答案と解答を同時に見比べ", "解答PDFを表示"],
+    body: "提出後に同じ範囲の解答解説PDFを開き、考え方と途中式を見ながら自己採点できます。",
+    bullets: ["数学IA標準 A-1", "考え方・途中式つき"],
     src: "/samples/answer-key-sample.png",
-    width: 586,
-    height: 797,
+    width: 1075,
+    height: 1518,
   },
   {
     title: "返却画面",

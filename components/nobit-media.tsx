@@ -156,7 +156,7 @@ export function AppMock({ className = "" }: { className?: string }) {
             {/* ヘッダーカード */}
             <div className="relative overflow-hidden rounded-[16px] bg-[linear-gradient(120deg,#1d4ed8_0%,#0d9488_100%)] p-3.5 text-white">
               <div className="pr-12">
-                <p className="text-[0.82rem] font-extrabold leading-tight">こんにちは、山田太郎 さん</p>
+                <p className="text-[0.82rem] font-extrabold leading-tight">こんにちは、山田太郎さん</p>
                 <p className="mt-1 text-[0.6rem] leading-snug text-white/85">未提出の課題が2件あります。</p>
               </div>
               <img
