@@ -56,6 +56,9 @@ export const MATERIAL_PRICE = 14800;
 /** 2教材以上「開講記念パック」の1教材あたり単価（税込・円）→ 2教材で24,800。 */
 export const PACK_UNIT_PRICE = 12400;
 
+/** パック割での1教材あたり割引額（税込・円）。 */
+export const PACK_UNIT_SAVINGS = MATERIAL_PRICE - PACK_UNIT_PRICE;
+
 /** 1教材あたりのおおよその添削回数（＝教材の分量）。値ごろ感の説明に使う。 */
 export const GRADING_COUNT = 100;
 
@@ -76,7 +79,8 @@ export const PER_DAY_PRICE = Math.round(MATERIAL_PRICE / GRADING_COUNT);
 export const CAMPAIGN_DEADLINE_ISO = "2026-08-06T23:59:59+09:00";
 export const CAMPAIGN_NAME = "夏の開講記念";
 /** 画面表示用の締切ラベル。 */
-export const CAMPAIGN_DEADLINE_LABEL = "8/6";
+export const CAMPAIGN_DEADLINE_LABEL = "2026年8月6日";
+export const CAMPAIGN_DEADLINE_SHORT_LABEL = "2026年8/6";
 
 /** キャンペーン（パック割）が有効か。既定は現在時刻で判定。 */
 export function isCampaignActive(now: Date = new Date()): boolean {

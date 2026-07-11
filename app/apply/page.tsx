@@ -9,11 +9,12 @@ import { PostPurchaseTeaser } from "@/components/post-purchase-flow";
 import { PricingTable, SubjectChips } from "@/components/pricing-table";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createOrganizationJsonLd } from "@/lib/structured-data";
+import { CAMPAIGN_DEADLINE_LABEL, formatYen, packSavings } from "@/lib/pricing";
 
 export const metadata: Metadata = createPageMetadata({
   title: "料金・お申し込み｜教材を選んで買い切りではじめる",
   description:
-    "ノビットスタディ 中高部の料金とお申し込み。教材ごとの買い切り（1教材 ¥14,800〜・約100回分の課題＋添削込み・入会金/追加費用0円）。8/6まで2教材以上でパック割。物理・化学・数学・英語の10教材から選ぶと買い切り価格が自動計算され、そのまま Stripe の安全な決済（一括）へ。自動更新はありません。",
+    `ノビットスタディ 中高部の料金とお申し込み。教材ごとの買い切り（1教材 ¥14,800〜・約100回分の課題＋添削込み・入会金/追加費用0円）。${CAMPAIGN_DEADLINE_LABEL}まで2教材以上でパック割。物理・化学・数学・英語の10教材から選ぶと買い切り価格が自動計算され、そのまま Stripe の安全な決済（一括）へ。自動更新はありません。`,
   keywords: ["ノビットスタディ 料金", "オンライン添削 料金", "理系 添削 買い切り", "ノビットスタディ 申し込み"],
   path: "/apply",
 });
@@ -55,7 +56,7 @@ export default async function ApplyPage({
           <div className="py-9 sm:py-12">
             <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.72rem] font-bold tracking-[0.06em] text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.3)]">
               <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
-              8/6まで 開講記念パック割・入会金0円
+              {CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割・入会金0円
             </p>
             <h1 className="mt-4 text-[2rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.6rem]">
               教材を選んで、申し込む。
@@ -88,7 +89,7 @@ export default async function ApplyPage({
               Price · 料金・対応教材
             </p>
             <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-              8/6まで、期間限定パック割。
+              {CAMPAIGN_DEADLINE_LABEL}まで、2教材で{formatYen(packSavings(2, true))}おトク。
             </h2>
             <p className="mt-3 text-[0.95rem] leading-[1.9] text-[#475569]">
               入会金・追加費用は0円。理系を中心に10教材から、必要な教材だけ選べます。

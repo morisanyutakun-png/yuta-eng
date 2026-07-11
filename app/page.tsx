@@ -16,11 +16,12 @@ import { kdpAmazonUrl } from "@/data/site";
 import {
   buyoutTotal,
   CAMPAIGN_DEADLINE_LABEL,
+  CAMPAIGN_DEADLINE_SHORT_LABEL,
   formatYen,
   GRADING_COUNT,
   listTotal,
   MATERIAL_PRICE,
-  PACK_UNIT_PRICE,
+  PACK_UNIT_SAVINGS,
   packSavings,
   PER_DAY_PRICE,
   PROGRAM_DAYS,
@@ -38,7 +39,7 @@ export const metadata: Metadata = createPageMetadata({
   title:
     "毎日の学習を、仕組みにする。デジタル通信添削 - ノビットスタディ 中高部",
   description:
-    "ノビットスタディ 中高部は、自作教材を好きなタイミングで1枚ずつ進める、買い切りのデジタル通信添削。提出すると解答解説PDFと次の範囲が届き、先生の添削・再提出は並行して進みます。物理・化学・数学・英語、1教材（約100日分・添削込み）買い切り¥14,800〜、8/6まで開講記念パック割、入会金・追加費用0円。",
+    `ノビットスタディ 中高部は、自作教材を好きなタイミングで1枚ずつ進める、買い切りのデジタル通信添削。提出すると解答解説PDFと次の範囲が届き、先生の添削・再提出は並行して進みます。物理・化学・数学・英語、1教材（約100日分・添削込み）買い切り¥14,800〜、${CAMPAIGN_DEADLINE_LABEL}まで開講記念パック割、入会金・追加費用0円。`,
   path: "/",
 });
 
@@ -341,7 +342,7 @@ const marqueeItems = [
   "習慣化アプリで続く",
   "家でも進捗を確認",
   "入会金・追加費用 0円",
-  "8/6まで 開講記念パック割",
+  `${CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割`,
 ];
 
 /* ───────────────────────── reusable bits ───────────────────────── */
@@ -493,7 +494,7 @@ function Starburst({ className = "" }: { className?: string }) {
         <div className="text-center leading-none">
           <p className="text-[0.58rem] font-extrabold tracking-[0.12em] text-[#ea580c]">開講記念</p>
           <p className="mt-1 text-[1.15rem] font-black text-[#ea580c]">パック割</p>
-          <p className="mt-1 text-[0.58rem] font-black tracking-[0.06em] text-[#f97316]">{CAMPAIGN_DEADLINE_LABEL}まで</p>
+          <p className="mt-1 text-[0.54rem] font-black tracking-[0.03em] text-[#f97316]">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで</p>
         </div>
       </div>
     </div>
@@ -507,6 +508,7 @@ function Starburst({ className = "" }: { className?: string }) {
 function CampaignBanner() {
   const packList = listTotal(2);
   const packPrice = buyoutTotal(2, true);
+  const savings = packSavings(2, true);
   return (
     <section className="cv-defer relative overflow-hidden bg-[linear-gradient(120deg,#fb7185_0%,#f97316_56%,#fbbf24_100%)]">
       <Blob fill="#ffffff" className="pointer-events-none absolute -left-24 -top-20 h-80 w-80 opacity-[0.16]" />
@@ -524,7 +526,7 @@ function CampaignBanner() {
                 CAMPAIGN · 夏の開講記念（{CAMPAIGN_DEADLINE_LABEL}まで）
               </p>
               <p className="mt-2.5 text-[1.55rem] font-black leading-[1.15] tracking-[-0.01em] text-white sm:text-[2.05rem]">
-                2教材パックで、もっとおトク。
+                2教材パックで、{formatYen(savings)}おトク。
               </p>
               <p className="mt-2 flex flex-wrap items-baseline justify-center gap-x-2 gap-y-1 lg:justify-start">
                 <span className="text-[0.8rem] font-bold text-white/90">2教材パック</span>
@@ -532,6 +534,9 @@ function CampaignBanner() {
                 <span aria-hidden="true" className="text-[1.1rem] font-black text-white/85">→</span>
                 <span className="text-[2.1rem] font-black leading-none tracking-[-0.02em] text-white sm:text-[2.5rem]">{formatYen(packPrice)}</span>
                 <span className="text-[0.8rem] font-bold text-white/90">/ 買い切り（税込）</span>
+              </p>
+              <p className="mt-1.5 inline-flex items-center rounded-full bg-white px-3 py-1 text-[0.76rem] font-extrabold text-[#ea580c] shadow-[0_10px_20px_-16px_rgba(88,20,0,0.7)]">
+                1教材あたり {formatYen(PACK_UNIT_SAVINGS)} OFF
               </p>
             </div>
           </div>
@@ -667,7 +672,7 @@ function PurchaseShelfSection() {
                     <span className="text-[0.78rem] font-bold text-white/75">税込</span>
                   </p>
                   <p className="mt-1 text-[0.74rem] font-bold text-white/72">
-                    1教材 {formatYen(PACK_UNIT_PRICE)}・{formatYen(savings)}おトク
+                    通常より1教材あたり{formatYen(PACK_UNIT_SAVINGS)}OFF・合計{formatYen(savings)}おトク
                   </p>
                 </div>
               </div>
@@ -1433,7 +1438,7 @@ export default function Home() {
           <p className="mx-auto mt-6 max-w-2xl text-center text-[0.86rem] leading-[1.85] text-[#475569]">
             授業はしません。自分の手で解いて、提出するたびに著者本人に見てもらう。だから「分かったつもり」で止まらず、1冊をやり切れます。
           </p>
-          <InlineCta note="必要な教材を選ぶだけ。8/6まで、2教材パック割でおトクにはじめられます。" />
+          <InlineCta note={`必要な教材を選ぶだけ。${CAMPAIGN_DEADLINE_LABEL}まで、2教材パック割でおトクにはじめられます。`} />
         </Container>
       </section>
 
@@ -2094,6 +2099,9 @@ export default function Home() {
                 <span aria-hidden="true" className="text-[1.1rem] font-black text-white/80">→</span>
                 <span className="text-[2.1rem] font-black leading-none tracking-[-0.02em] text-[#fdba74] sm:text-[2.4rem]">{formatYen(buyoutTotal(2, true))}</span>
                 <span className="text-[0.8rem] font-bold text-white/85">（税込・買い切り）</span>
+                <span className="basis-full text-[0.82rem] font-extrabold text-[#fdba74]">
+                  通常より {formatYen(packSavings(2, true))} おトク
+                </span>
               </div>
               <div className="relative mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
                 <PrimaryCta href="/apply">料金を見て申し込む（買い切り）</PrimaryCta>
@@ -2233,7 +2241,7 @@ export default function Home() {
             <p className="truncate text-[0.82rem] font-extrabold text-[#0b1d4a]">
               1教材 買い切り¥14,800〜・添削込み
             </p>
-            <p className="truncate text-[0.68rem] text-[#64748b]">8/6まで開講記念パック割／入会金0円</p>
+            <p className="truncate text-[0.68rem] text-[#64748b]">{CAMPAIGN_DEADLINE_SHORT_LABEL}までパック割／入会金0円</p>
           </div>
           <Link
             href="/apply"

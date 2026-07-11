@@ -4,11 +4,13 @@ import { type CSSProperties, useMemo, useState } from "react";
 
 import {
   buyoutTotal,
+  CAMPAIGN_DEADLINE_LABEL,
   formatYen,
   GRADING_COUNT,
   isCampaignActive,
   listTotal,
   packSavings,
+  PACK_UNIT_SAVINGS,
   SUBJECT_AREAS,
   SUBJECTS,
 } from "@/lib/pricing";
@@ -199,10 +201,10 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
           </p>
           <p className="mt-1 text-[0.8rem] leading-[1.8] text-[#64748b]">
             <span className="lg:hidden">
-              教材名とレベルを見ながら、タップで選択できます。1教材＝約{GRADING_COUNT}日分、2教材以上でパック割です。
+              教材名とレベルを見ながら、タップで選択できます。1教材＝約{GRADING_COUNT}日分、2教材以上は{CAMPAIGN_DEADLINE_LABEL}までパック割です。
             </span>
             <span className="hidden lg:inline">
-              教材名・目安レベル・対象を確認して選べます。1教材＝約{GRADING_COUNT}日分、2教材以上でパック割です。
+              教材名・目安レベル・対象を確認して選べます。1教材＝約{GRADING_COUNT}日分、2教材以上は{CAMPAIGN_DEADLINE_LABEL}までパック割です。
             </span>
           </p>
         </div>
@@ -346,9 +348,12 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                   <dt>定価</dt>
                   <dd className="font-semibold line-through">{formatYen(list)}</dd>
                 </div>
-                <div className="flex items-center justify-between text-[#0d9488]">
+                <div className="grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 rounded-[12px] bg-[#ecfdf5] px-3 py-2 text-[#0d9488] ring-1 ring-[rgba(13,148,136,0.14)]">
                   <dt className="font-bold">開講記念パック割</dt>
                   <dd className="font-bold">−{formatYen(savings)}</dd>
+                  <dd className="col-span-2 text-[0.72rem] font-semibold text-[#0f766e]">
+                    {CAMPAIGN_DEADLINE_LABEL}まで・1教材あたり{formatYen(PACK_UNIT_SAVINGS)}OFF
+                  </dd>
                 </div>
               </>
             ) : null}

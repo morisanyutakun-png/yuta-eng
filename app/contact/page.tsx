@@ -5,6 +5,7 @@ import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
 import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
+import { CAMPAIGN_DEADLINE_LABEL, formatYen, packSavings, PACK_UNIT_SAVINGS } from "@/lib/pricing";
 import {
   createBreadcrumbJsonLd,
   createContactPageJsonLd,
@@ -15,7 +16,7 @@ import {
 export const metadata: Metadata = createPageMetadata({
   title: "お申し込み・ご相談｜買い切りではじめる",
   description:
-    "ノビットスタディ 中高部のお申し込み・ご相談ページ。物理・化学・数学・英語の答案を添削する、授業をしないオンライン添削塾です。教材ごとの買い切り（1教材 ¥14,800〜・約100回分の課題＋添削込み・入会金0円）、8/6まで2教材以上でパック割。面談や勧誘は一切ありません。お気軽にお申し込み・ご相談ください。",
+    `ノビットスタディ 中高部のお申し込み・ご相談ページ。物理・化学・数学・英語の答案を添削する、授業をしないオンライン添削塾です。教材ごとの買い切り（1教材 ¥14,800〜・約100回分の課題＋添削込み・入会金0円）、${CAMPAIGN_DEADLINE_LABEL}まで2教材以上でパック割。面談や勧誘は一切ありません。お気軽にお申し込み・ご相談ください。`,
   keywords: [
     "ノビットスタディ 申し込み",
     "オンライン添削塾 申し込み",
@@ -45,7 +46,7 @@ const trust = [
   { label: "サービス形態", value: "オンライン添削・学習管理塾（添削専門）" },
   { label: "塾長", value: siteConfig.author },
   { label: "対応教材", value: "物理・化学・数学・英語（10教材／教材ごとに選択）" },
-  { label: "料金", value: "1教材 買い切り¥14,800〜・8/6まで開講記念パック割・入会金/追加費用0円" },
+  { label: "料金", value: `1教材 買い切り¥14,800〜・${CAMPAIGN_DEADLINE_LABEL}までパック割・入会金/追加費用0円` },
   { label: "対象", value: "高校生・高卒生（中高一貫の高校範囲も相談可）" },
   { label: "返信目安", value: "1〜2 営業日以内（面談・勧誘なし）" },
 ];
@@ -54,7 +55,7 @@ const contactFaq = [
   {
     question: "開講記念パック割とは？ どのくらいで始められますか？",
     answer:
-      "2教材以上を同時にお申し込みの場合、1教材あたり ¥12,400（例：2教材 ¥24,800）になる開講記念のパック割です（2026年8月6日まで）。入会金・追加費用はかかりません。お申し込み後、購入した教材からすぐに学習を開始できます。",
+      `2教材以上を同時にお申し込みの場合、1教材あたり ¥12,400（通常より1教材あたり ${formatYen(PACK_UNIT_SAVINGS)} OFF、例：2教材 ¥24,800）になる開講記念のパック割です（${CAMPAIGN_DEADLINE_LABEL}まで）。入会金・追加費用はかかりません。お申し込み後、購入した教材からすぐに学習を開始できます。`,
   },
   {
     question: "面談や授業はありますか？ 勧誘されませんか？",
@@ -64,7 +65,7 @@ const contactFaq = [
   {
     question: "料金と対応教材は？",
     answer:
-      "料金は教材（講座）ごとの買い切りです。1教材 ¥14,800（約100回分の課題＋添削込み）。2教材以上は開講記念パック割で1教材あたり ¥12,400（例：2教材 ¥24,800、8/6まで）。対応教材は物理 基礎・物理 標準・物理 発展・化学基礎・化学・数学IA・IIBC・IIIC・英語長文・英文法です。",
+      `料金は教材（講座）ごとの買い切りです。1教材 ¥14,800（約100回分の課題＋添削込み）。${CAMPAIGN_DEADLINE_LABEL}まで、2教材以上は開講記念パック割で1教材あたり ¥12,400（2教材で${formatYen(packSavings(2, true))}おトク、例：2教材 ¥24,800）。対応教材は物理 基礎・物理 標準・物理 発展・化学基礎・化学・数学IA・IIBC・IIIC・英語長文・英文法です。`,
   },
   {
     question: "保護者も進捗を確認できますか？",
@@ -109,7 +110,7 @@ export default function ContactPage() {
           <div className="py-10 sm:py-14 lg:py-16">
             <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.3)]">
               <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
-              8/6まで 開講記念パック割・入会金0円
+              {CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割・入会金0円
             </p>
             <h1 className="mt-5 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3rem]">
               買い切りで、

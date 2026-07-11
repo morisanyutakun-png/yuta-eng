@@ -10,6 +10,7 @@ import {
   MATERIAL_PRICE,
   packSavings,
   PACK_UNIT_PRICE,
+  PACK_UNIT_SAVINGS,
   PER_DAY_PRICE,
   PROGRAM_DAYS,
   SUBJECTS,
@@ -122,9 +123,12 @@ export function PricingTable({
               買い切り <span className="font-bold text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}〜</span>（税込・添削約{GRADING_COUNT}回＋習慣化アプリ込み）を約{GRADING_COUNT}回分でならすと1日{PER_DAY_PRICE}円。
             </p>
             {campaign ? (
-              <p className="mt-3.5">
+              <p className="mt-3.5 flex flex-wrap items-center justify-center gap-2">
                 <span className="inline-flex -rotate-2 items-center rounded-[10px] bg-[#fff1e6] px-3 py-1 text-[0.78rem] font-extrabold text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">
                   {CAMPAIGN_DEADLINE_LABEL}まで 2教材以上でパック割
+                </span>
+                <span className="inline-flex rotate-1 items-center rounded-[10px] bg-[#0b1d4a] px-3 py-1 text-[0.78rem] font-extrabold text-white shadow-[0_10px_18px_-14px_rgba(11,29,74,0.8)]">
+                  1教材あたり {formatYen(PACK_UNIT_SAVINGS)} OFF
                 </span>
               </p>
             ) : null}
@@ -162,14 +166,14 @@ export function PricingTable({
                     1教材 {formatYen(t.per)}
                   </span>
                   {t.savings > 0 ? (
-                    <span className="block text-[0.72rem] font-bold text-[#ea580c]">パック割 −{formatYen(t.savings)}</span>
+                    <span className="block text-[0.72rem] font-bold text-[#ea580c]">{formatYen(t.savings)}おトク</span>
                   ) : (
                     <span className="block text-[0.72rem] text-[#94a3b8]">買い切り・追加費用なし</span>
                   )}
                 </span>
                 {t.popular ? (
                   <span className="absolute -right-2 -top-3 -rotate-6 rounded-[8px] bg-[#0b1d4a] px-2.5 py-1 text-[0.62rem] font-extrabold tracking-[0.04em] text-white shadow-[0_8px_16px_-8px_rgba(11,29,74,0.8)]">
-                    いちばん人気
+                    {formatYen(t.savings)}おトク
                   </span>
                 ) : null}
               </li>
@@ -181,7 +185,7 @@ export function PricingTable({
               </span>
               <span className="flex-1 text-[0.84rem] leading-[1.6] text-[#475569]">
                 {campaign ? (
-                  <>パック割で <strong className="font-bold text-[#0b1d4a]">1教材 {formatYen(PACK_UNIT_PRICE)}</strong>（{CAMPAIGN_DEADLINE_LABEL}まで）</>
+                  <>パック割で <strong className="font-bold text-[#0b1d4a]">1教材 {formatYen(PACK_UNIT_PRICE)}</strong>（通常より1教材あたり{formatYen(PACK_UNIT_SAVINGS)}OFF・{CAMPAIGN_DEADLINE_LABEL}まで）</>
                 ) : (
                   <>1教材 <strong className="font-bold text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}</strong> ×（必要な数だけ）</>
                 )}
@@ -191,7 +195,7 @@ export function PricingTable({
 
           {campaign ? (
             <p className="relative mt-4 text-center text-[0.82rem] font-semibold text-[#0f766e]">
-              まとめてやり切るほど、<span className="text-[#ea580c]">1教材あたりはおトク</span>になります。
+              まとめて始めるほど、<span className="text-[#ea580c]">1教材あたり{formatYen(PACK_UNIT_SAVINGS)}おトク</span>になります。
             </p>
           ) : null}
 

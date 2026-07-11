@@ -3,10 +3,12 @@ import Link from "next/link";
 import { Blob } from "@/components/decor";
 import {
   CAMPAIGN_DEADLINE_LABEL,
+  CAMPAIGN_DEADLINE_SHORT_LABEL,
   formatYen,
   isCampaignActive,
   MATERIAL_PRICE,
   PACK_UNIT_PRICE,
+  PACK_UNIT_SAVINGS,
 } from "@/lib/pricing";
 
 export function PrimaryCta({ href, children }: { href: string; children: React.ReactNode }) {
@@ -75,7 +77,7 @@ function CampaignSeal({ className = "" }: { className?: string }) {
         <div className="text-center leading-none text-white">
           <p className="text-[0.5rem] font-extrabold tracking-[0.12em]">開講記念</p>
           <p className="mt-0.5 text-[0.98rem] font-black">パック割</p>
-          <p className="mt-0.5 text-[0.5rem] font-black tracking-[0.06em]">{CAMPAIGN_DEADLINE_LABEL}まで</p>
+          <p className="mt-0.5 text-[0.48rem] font-black tracking-[0.03em]">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで</p>
         </div>
       </div>
     </div>
@@ -141,9 +143,14 @@ export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
             </div>
             <p className="mt-1.5 text-[0.74rem] font-bold text-[#ea580c]">
               {campaign
-                ? `2教材パックなら 1教材 ${formatYen(PACK_UNIT_PRICE)}（${CAMPAIGN_DEADLINE_LABEL}まで）`
+                ? `2教材以上で 1教材あたり${formatYen(PACK_UNIT_SAVINGS)}OFF`
                 : "添削（約100回）＋アプリ込み"}
             </p>
+            {campaign ? (
+              <p className="mt-1 text-[0.7rem] font-bold text-[#0f766e]">
+                1教材 {formatYen(PACK_UNIT_PRICE)}・{CAMPAIGN_DEADLINE_SHORT_LABEL}まで
+              </p>
+            ) : null}
             <ul className="mt-4 grid gap-2 border-t border-dashed border-[rgba(15,29,74,0.18)] pt-4 text-left">
               {["入会金・追加費用 0円", "買い切り・自動更新なし", "提出ごとに講師の添削つき"].map((t) => (
                 <li key={t} className="flex items-center gap-2 text-[0.82rem] font-semibold text-[#334155]">
