@@ -11,8 +11,8 @@ const nextConfig: NextConfig = {
     qualities: [70, 75, 90],
     localPatterns: [
       { pathname: "/**", search: "" },
-      { pathname: "/app-screens/**", search: "?v=20260711" },
-      { pathname: "/samples/**", search: "?v=20260711" },
+      { pathname: "/app-screens/**", search: "?v=20260711b" },
+      { pathname: "/samples/**", search: "?v=20260711b" },
     ],
     // 1 year — OG images and brand assets rarely change; longer TTL reduces
     // optimizer cold starts and keeps CDN caches warm for SEO.

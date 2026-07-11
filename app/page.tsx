@@ -216,7 +216,7 @@ const purchaseIncludes = [
   "アプリで進捗管理（家でも確認）",
 ];
 
-const sampleAssetVersion = "20260711";
+const sampleAssetVersion = "20260711b";
 
 const sampleScreens = [
   {
@@ -225,7 +225,7 @@ const sampleScreens = [
     bullets: ["表紙と範囲名で確認", "合格数・採点待ちも教材別に確認"],
     src: `/samples/after-purchase-dashboard-v2.png?v=${sampleAssetVersion}`,
     width: 724,
-    height: 204,
+    height: 203,
   },
   {
     title: "教材PDFの一部",
@@ -256,23 +256,16 @@ const sampleScreens = [
     body: "先生の採点コメント、添削PDF、再提出の指示を返却タブで確認します。",
     bullets: ["自己採点とは別画面", "再提出が必要なものを確認"],
     src: `/samples/returned-screen-v2.png?v=${sampleAssetVersion}`,
-    width: 411,
-    height: 362,
+    width: 526,
+    height: 170,
   },
   {
     title: "レポート画面",
     body: "合格率・平均点・教科別の成績・返却履歴をひとつの画面で振り返れます。",
     bullets: ["数値と履歴で確認", "返却コメントや再提出依頼も残る"],
     src: `/samples/report-screen-v2.png?v=${sampleAssetVersion}`,
-    width: 980,
-    height: 1180,
-    overlays: [
-      {
-        text: "山田太郎",
-        className:
-          "left-[75.8%] top-[1.25%] h-[3.1%] w-[7.2%] bg-white text-[clamp(0.36rem,1.25vw,0.72rem)] font-extrabold text-[#123657]",
-      },
-    ],
+    width: 724,
+    height: 634,
   },
 ];
 
@@ -898,15 +891,6 @@ function SampleScreensSection() {
                   sizes="(min-width: 1024px) 48vw, 92vw"
                   className="h-auto w-full"
                 />
-                {sample.overlays?.map((overlay) => (
-                  <span
-                    key={overlay.text}
-                    aria-hidden="true"
-                    className={`absolute flex items-center whitespace-nowrap ${overlay.className}`}
-                  >
-                    {overlay.text}
-                  </span>
-                ))}
               </div>
               <div className="p-5 sm:p-6">
                 <p className="text-[0.68rem] font-extrabold tracking-[0.16em] text-[#0d9488]">

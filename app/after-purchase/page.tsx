@@ -9,9 +9,9 @@ import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createOrganizationJsonLd } from "@/lib/structured-data";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "購入後の流れ｜決済完了からログイン情報発行・教材自動割り当てまで",
+  title: "購入後の流れ｜提出・自己採点・返却まで迷わない",
   description:
-    "ノビットスタディ 中高部の購入後の流れ。Stripe決済完了後、ログインIDとPINが発行され、メールにも届きます。購入教材はアプリへ自動割り当てされ、PDFで実施・提出、返却・再提出、成績記録まで進められます。",
+    "ノビットスタディ 中高部の購入後の流れ。Stripe決済完了後、ログインIDとPINが発行され、購入教材がアプリへ自動割り当てされます。PDFで実施・提出、提出後の自己採点、返却・再提出、レポートまで画面で確認できます。",
   keywords: ["ノビットスタディ 購入後", "ログイン情報 発行", "教材 自動割り当て", "PDF 提出 添削"],
   path: "/after-purchase",
 });
@@ -23,11 +23,11 @@ const assurancePoints = [
   },
   {
     title: "購入教材がアプリに反映",
-    body: "選んだ教材に合わせて、最初の課題がホームに表示されます。先生の手動配布を待たずに始められます。",
+    body: "選んだ教材に合わせて、最初の課題と教材別の現在地がダッシュボードに表示されます。",
   },
   {
-    title: "提出後も止まらない",
-    body: "提出すると解答解説PDFと次の範囲へ。先生の添削・再提出は返却タブで並行して確認できます。",
+    title: "提出後すぐ振り返れる",
+    body: "提出すると解答解説PDFで自己採点へ。先生の添削・再提出は返却タブで並行して確認できます。",
   },
 ];
 
@@ -74,13 +74,13 @@ export default function AfterPurchasePage() {
                 After purchase · 購入後の流れ
               </p>
               <h1 className="mt-5 text-balance text-[2.25rem] font-extrabold leading-[1.13] tracking-[-0.025em] text-[#0b1d4a] sm:text-[3rem]">
-                決済完了から、
+                購入後も、
                 <br />
-                最初の一問まで。
+                画面の案内で進める。
               </h1>
               <p className="mt-5 max-w-2xl text-[1rem] leading-[1.95] text-[#334155]">
                 購入したあとに「何をすればいいか」で止まらないように。
-                ログイン情報の発行、購入教材の自動割り当て、PDFでの実施・提出までを、実際のアプリ画面に沿って案内します。
+                ログイン情報の発行、購入教材の自動割り当て、PDFでの実施・提出、自己採点、返却確認までを、実際のアプリ画面に沿って案内します。
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <PrimaryCta href="/apply">教材を選んではじめる</PrimaryCta>

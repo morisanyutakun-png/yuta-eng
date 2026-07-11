@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const screenAssetVersion = "20260711";
+const screenAssetVersion = "20260711b";
 
 /**
  * ノビットスタディ 中高部アプリの実画面に寄せたスマホ表示。
@@ -43,7 +43,7 @@ export const appSteps: {
     no: "03",
     variant: "home",
     title: "ダッシュボードに購入教材が自動で届く",
-    lead: "購入した科目に対応する教材が、ダッシュボードの今日の学習と教材別の現在地に表示されます。",
+    lead: "購入した科目に対応する教材がダッシュボードに届きます。画面上部では、いま最初にやることだけを強調します。",
     facts: [
       "例: 数学IAの購入で、数学IA標準が自動割り当て",
       "教材表紙と範囲名で、どの本を進めているか確認",
@@ -67,7 +67,7 @@ export const appSteps: {
     no: "05",
     variant: "returned",
     title: "返却・再提出も「並行」して進む",
-    lead: "提出後は自己採点しながら次へ進み、先生の添削返却は返却タブに届きます。",
+    lead: "提出後は自己採点しながら次へ進み、先生の添削返却は返却タブに届きます。合格済み・再提出が必要なものを分けて確認できます。",
     facts: [
       "採点待ち、先生から返却、再提出が必要を分けて表示",
       "不合格や再テストは再提出として戻る",
@@ -122,15 +122,15 @@ export const appScreenImages: Record<AppScreenVariant, AppScreenImage> = {
   },
   login: {
     src: `/app-screens/login.png?v=${screenAssetVersion}`,
-    width: 392,
-    height: 554,
+    width: 404,
+    height: 526,
     alt: "ログインIDとPINを入力するログイン画面",
     imageClassName: "w-full",
   },
   home: {
     src: `/app-screens/dashboard.png?v=${screenAssetVersion}`,
-    width: 724,
-    height: 204,
+    width: 860,
+    height: 1640,
     alt: "購入教材が届いたダッシュボード画面",
     imageClassName: "w-full",
     footer: {
@@ -161,8 +161,8 @@ export const appScreenImages: Record<AppScreenVariant, AppScreenImage> = {
   },
   returned: {
     src: `/app-screens/returned.png?v=${screenAssetVersion}`,
-    width: 411,
-    height: 362,
+    width: 423,
+    height: 379,
     alt: "先生から返却された添削結果の画面",
     imageClassName: "w-full",
     footer: {
@@ -177,8 +177,8 @@ export const appScreenImages: Record<AppScreenVariant, AppScreenImage> = {
   },
   history: {
     src: `/app-screens/report.png?v=${screenAssetVersion}`,
-    width: 980,
-    height: 1180,
+    width: 724,
+    height: 634,
     alt: "学習レポートと採点履歴の画面",
     imageClassName: "w-full",
     footer: {
@@ -213,6 +213,42 @@ function LogoMark({ className = "h-4 w-auto" }: { className?: string }) {
   );
 }
 
+function MaterialCover({
+  kind = "math",
+  className = "",
+}: {
+  kind?: "math" | "physics";
+  className?: string;
+}) {
+  const cover =
+    kind === "math"
+      ? {
+          src: "/books/B0H6ZRPLVJ.webp",
+          alt: "ノビットの数学IA標準演習の教材表紙",
+          width: 355,
+          height: 500,
+        }
+      : {
+          src: "/books/B0H4J34162.webp",
+          alt: "物理入門演習の教材表紙",
+          width: 320,
+          height: 451,
+        };
+
+  return (
+    <span className={`relative block shrink-0 overflow-hidden rounded-[5px] bg-white shadow-[0_5px_14px_-12px_rgba(15,29,74,0.6)] ring-1 ring-[#cbd7e4] ${className}`}>
+      <Image
+        src={cover.src}
+        alt={cover.alt}
+        width={cover.width}
+        height={cover.height}
+        sizes="42px"
+        className="h-full w-full object-cover"
+      />
+    </span>
+  );
+}
+
 function MobileShell({
   active,
   children,
@@ -222,26 +258,26 @@ function MobileShell({
 }) {
   return (
     <div className="h-full overflow-hidden bg-[#f3f6f9] text-[#123657]">
-      <header className="border-b border-[#25a8df] bg-white px-3 pt-7">
-        <LogoMark className="h-4 w-auto" />
-        <div className="mt-2.5 flex min-w-0 items-center gap-1.5">
-          <span className="shrink-0 text-[0.56rem] font-black leading-none">山田太郎</span>
-          <span className="shrink-0 border border-[#d8e1eb] bg-[#f7f9fc] px-1.5 py-1 text-[0.36rem] font-extrabold leading-none text-[#607289]">
+      <header className="border-b border-[#25a8df] bg-white px-3 pt-4">
+        <LogoMark className="h-3.5 w-auto" />
+        <div className="mt-1.5 flex min-w-0 items-center gap-1.5">
+          <span className="shrink-0 text-[0.52rem] font-black leading-none">山田太郎</span>
+          <span className="shrink-0 border border-[#d8e1eb] bg-[#f7f9fc] px-1.5 py-0.5 text-[0.34rem] font-extrabold leading-none text-[#607289]">
             生徒・中高部
           </span>
-          <span className="shrink-0 border border-[#d8e1eb] bg-white px-1.5 py-1 text-[0.36rem] font-extrabold leading-none text-[#40536b]">
+          <span className="ml-auto shrink-0 border border-[#d8e1eb] bg-white px-1.5 py-0.5 text-[0.34rem] font-extrabold leading-none text-[#40536b]">
             ログアウト
           </span>
         </div>
-        <nav aria-label="アプリ画面タブ" className="mt-2.5 grid grid-cols-4 text-center text-[0.43rem] font-black">
+        <nav aria-label="アプリ画面タブ" className="mt-1.5 grid grid-cols-4 text-center text-[0.39rem] font-black">
           {(["ダッシュボード", "課題", "自己採点", "返却"] as const).map((tab) => (
             <span
               key={tab}
-              className={`relative pb-2 leading-none ${active === tab ? "text-[#25a8df]" : "text-[#607289]"}`}
+              className={`relative pb-1.5 leading-none ${active === tab ? "text-[#25a8df]" : "text-[#607289]"}`}
             >
               {tab}
               {tab === "課題" || tab === "自己採点" ? (
-                <span className="ml-1 inline-grid h-3.5 w-3.5 place-items-center rounded-full bg-[#ef4444] align-middle text-[0.36rem] leading-none text-white">
+                <span className="ml-0.5 inline-grid h-3 w-3 place-items-center rounded-full bg-[#ef4444] align-middle text-[0.32rem] leading-none text-white">
                   2
                 </span>
               ) : null}
@@ -250,7 +286,7 @@ function MobileShell({
           ))}
         </nav>
       </header>
-      <main className="h-[calc(100%-6.25rem)] overflow-hidden px-3 py-3">{children}</main>
+      <main className="h-[calc(100%-4.65rem)] overflow-hidden px-2.5 py-2.5">{children}</main>
     </div>
   );
 }
@@ -315,21 +351,21 @@ function ActionTile({
 
   return (
     <div
-      className="flex items-center gap-1.5 rounded-[9px] border border-[#dbe4ee] bg-white py-1.5 pl-1.5 pr-1.5 shadow-[0_1px_2px_rgba(18,54,87,0.06)]"
+      className="flex min-h-[1.72rem] items-center gap-1 rounded-[8px] border border-[#dbe4ee] bg-white py-0.5 pl-1 pr-1 shadow-[0_1px_2px_rgba(18,54,87,0.06)]"
       style={{ borderLeft: `3px solid ${s.accent}` }}
     >
-      <span className="grid h-6 w-6 shrink-0 place-items-center rounded-[6px] text-white" style={{ background: s.accent }}>
+      <span className="grid h-4.5 w-4.5 shrink-0 place-items-center rounded-[5px] text-white" style={{ background: s.accent }}>
         <TileGlyph kind={kind} />
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-[0.52rem] font-black leading-tight text-[#123657]">{label}</span>
-        <span className="block truncate text-[0.34rem] font-bold leading-none text-[#8194a8]">{caption}</span>
+        <span className="block truncate text-[0.44rem] font-black leading-tight text-[#123657]">{label}</span>
+        <span className="block truncate text-[0.28rem] font-bold leading-none text-[#8194a8]">{caption}</span>
       </span>
-      <span className={`grid h-[1.05rem] min-w-[1.05rem] shrink-0 place-items-center rounded-[5px] px-1 text-[0.6rem] font-black leading-none tabular-nums ${s.chip}`}>
+      <span className={`grid h-[0.88rem] min-w-[0.88rem] shrink-0 place-items-center rounded-[5px] px-1 text-[0.5rem] font-black leading-none tabular-nums ${s.chip}`}>
         {value}
       </span>
       <span
-        className="inline-flex shrink-0 items-center gap-0.5 rounded-[6px] py-1 pl-1.5 pr-1 text-[0.42rem] font-black leading-none text-white"
+        className="inline-flex shrink-0 items-center gap-0.5 rounded-[6px] py-0.5 pl-1.5 pr-1 text-[0.32rem] font-black leading-none text-white"
         style={{ background: s.accent }}
       >
         {cta}
@@ -344,58 +380,69 @@ function ActionTile({
 function ScreenHomeMobile() {
   return (
     <MobileShell active="ダッシュボード">
-      <section className="relative overflow-hidden rounded-[8px] bg-[linear-gradient(125deg,#182653_0%,#173a79_54%,#0f766e_100%)] px-3 py-3 text-white">
-        <span className="inline-flex border border-white/35 px-2 py-1 text-[0.36rem] font-black tracking-[0.18em] text-white/90">
-          LEARNING DASHBOARD
-        </span>
-        <p className="mt-2 whitespace-nowrap text-[0.86rem] font-black leading-tight">こんにちは、山田太郎さん</p>
-        <p className="mt-1.5 text-[0.46rem] leading-relaxed text-white/82">復習で定着、演習で得点。着実に積み上げよう。</p>
-        <div className="mt-2.5 grid grid-cols-3 gap-1.5">
-          {["1日連続", "合格 2", "はじめのいっぽ"].map((label) => (
-            <span key={label} className="border border-white/30 py-1.5 text-center text-[0.34rem] font-bold leading-none text-white/90">
-              {label}
+      <section className="relative overflow-hidden rounded-[9px] bg-[linear-gradient(125deg,#172653_0%,#16417f_56%,#0f766e_100%)] px-2.5 py-2 text-white shadow-[0_12px_28px_-22px_rgba(11,29,74,0.8)]">
+        <span aria-hidden="true" className="absolute -right-8 -top-12 h-28 w-28 rounded-full border border-white/10" />
+        <div className="relative flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <span className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-1.5 py-0.5 text-[0.32rem] font-black tracking-[0.12em] text-[#99f6e4]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#2dd4bf]" />
+              TODAY FOCUS
             </span>
-          ))}
+            <p className="mt-1 text-[0.64rem] font-black leading-snug">
+              未提出の課題が <span className="text-[#facc15]">2件</span> あります
+            </p>
+            <p className="mt-0.5 text-[0.36rem] font-bold leading-tight text-white/76">まずは答案を保存して提出へ。</p>
+          </div>
+          <div className="shrink-0 rounded-[8px] border border-white/15 bg-white/10 px-2 py-1.5 text-center">
+            <p className="text-[0.32rem] font-black leading-none text-white/65">合格</p>
+            <p className="mt-1 text-[0.76rem] font-black leading-none text-white">2</p>
+          </div>
+        </div>
+        <div className="relative mt-1.5 inline-flex w-full items-center justify-center gap-1 rounded-[8px] bg-white px-2 py-1 text-[0.46rem] font-black leading-none text-[#123657]">
+          今日の課題に取り組む
+          <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" aria-hidden="true">
+            <path fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
         </div>
       </section>
 
-      <div className="mt-3 flex items-end justify-between gap-2">
+      <div className="mt-2 flex items-end justify-between gap-2">
         <div>
           <p className="text-[0.36rem] font-black uppercase tracking-[0.18em] text-[#1d4ed8]">Next Actions</p>
-          <p className="text-[0.84rem] font-black leading-tight text-[#123657]">今日の学習</p>
+          <p className="text-[0.72rem] font-black leading-tight text-[#123657]">今日の学習</p>
         </div>
-        <span className="rounded-full bg-white px-2 py-1 text-[0.34rem] font-black leading-none text-[#1d4ed8] ring-1 ring-[#d8e1eb]">
+        <span className="rounded-full bg-white px-2 py-1 text-[0.31rem] font-black leading-none text-[#0f766e] ring-1 ring-[#d8e1eb]">
           提出 → 自己採点 → 返却
         </span>
       </div>
 
-      <div className="mt-2 grid gap-1.5">
+      <div className="mt-1.5 grid gap-1">
         <ActionTile label="課題" caption="未提出" value="2" cta="取り組む" tone="blue" kind="tasks" />
         <ActionTile label="自己採点" caption="即確認" value="2" cta="答え合わせ" tone="green" kind="self" />
         <ActionTile label="返却" caption="添削" value="0" cta="確認" tone="rose" kind="returned" />
       </div>
 
-      <section className="mt-3 rounded-[9px] border border-[#d8e1eb] bg-white p-2.5">
-        <div className="mb-2 flex items-center gap-1.5">
-          <p className="text-[0.62rem] font-black leading-none text-[#123657]">教材別の現在地</p>
-          <span className="grid h-4 w-4 place-items-center bg-[#123657] text-[0.42rem] font-black leading-none text-white">2</span>
+      <section className="mt-1.5 rounded-[9px] border border-[#d8e1eb] bg-white p-1.5">
+        <div className="mb-1.5 flex items-center gap-1.5">
+          <p className="text-[0.54rem] font-black leading-none text-[#123657]">教材別の現在地</p>
+          <span className="grid h-3.5 w-3.5 place-items-center bg-[#123657] text-[0.36rem] font-black leading-none text-white">2</span>
         </div>
         {[
-          ["数学", "数学IA標準", "採点待ち: 数と式 B-1", "合格 2 / 全90　採点待ち 1", "blue"],
-          ["物理", "物理入門演習", "採点待ち: 演習2 すれ違いと出会いの時刻", "合格 0 / 全89　採点待ち 1", "green"],
-        ].map(([subject, title, range, meta, tone]) => (
-          <div key={title} className={`mb-1.5 grid grid-cols-[2.35rem_1fr_auto] gap-2 rounded-[7px] border border-[#d8e1eb] border-l-[3px] ${tone === "blue" ? "border-l-[#25a8df]" : "border-l-[#10a37f]"} bg-white p-2 last:mb-0`}>
-            <div className="h-10 rounded-[4px] bg-[linear-gradient(180deg,#f8fafc_0%,#d7f2ef_100%)] ring-1 ring-[#d8e1eb]" />
+          { subject: "数学", title: "数学IA標準", range: "数と式 B-1", meta: "合格 2 / 全90　採点待ち 1", tone: "blue", cover: "math" },
+          { subject: "物理", title: "物理入門演習", range: "演習2 すれ違いと出会いの時刻", meta: "合格 0 / 全89　採点待ち 1", tone: "green", cover: "physics" },
+        ].map((item) => (
+          <div key={item.title} className={`mb-1 grid grid-cols-[1.55rem_1fr_auto] gap-1.5 rounded-[7px] border border-[#d8e1eb] border-l-[3px] ${item.tone === "blue" ? "border-l-[#25a8df]" : "border-l-[#10a37f]"} bg-white p-1 last:mb-0`}>
+            <MaterialCover kind={item.cover as "math" | "physics"} className="h-8 w-[1.38rem]" />
             <div className="min-w-0">
-              <p className="text-[0.36rem] font-bold leading-none text-[#607289]">{subject}</p>
-              <p className="mt-1 truncate text-[0.54rem] font-black leading-none text-[#123657]">{title}</p>
-              <p className="mt-1 truncate text-[0.36rem] font-bold leading-none text-[#607289]">{range}</p>
-              <div className="mt-1.5 h-1.5 rounded-full bg-[#e7eef6]">
-                <div className={`h-full rounded-full ${tone === "blue" ? "w-[38%] bg-[#25a8df]" : "w-[16%] bg-[#10a37f]"}`} />
+              <p className="text-[0.31rem] font-bold leading-none text-[#607289]">{item.subject}</p>
+              <p className="mt-0.5 truncate text-[0.46rem] font-black leading-none text-[#123657]">{item.title}</p>
+              <p className="mt-0.5 truncate text-[0.31rem] font-bold leading-none text-[#607289]">採点待ち: {item.range}</p>
+              <div className="mt-0.5 h-1 rounded-full bg-[#e7eef6]">
+                <div className={`h-full rounded-full ${item.tone === "blue" ? "w-[38%] bg-[#25a8df]" : "w-[16%] bg-[#10a37f]"}`} />
               </div>
-              <p className="mt-1 text-[0.32rem] font-bold leading-none text-[#607289]">{meta}</p>
+              <p className="mt-0.5 text-[0.28rem] font-bold leading-none text-[#607289]">{item.meta}</p>
             </div>
-            <span className="h-fit rounded-full border border-[#fde68a] bg-[#fff7ed] px-1.5 py-0.5 text-[0.32rem] font-black leading-none text-[#d97706]">
+            <span className="h-fit rounded-full border border-[#fde68a] bg-[#fff7ed] px-1 py-0.5 text-[0.28rem] font-black leading-none text-[#d97706]">
               採点待ち
             </span>
           </div>
@@ -410,7 +457,7 @@ function ScreenSubmitMobile() {
     <MobileShell active="課題">
       <section className="rounded-[9px] border border-[#d8e1eb] border-l-[3px] border-l-[#25a8df] bg-white p-3">
         <div className="grid grid-cols-[3.1rem_1fr] gap-2.5">
-          <div className="h-[4.3rem] rounded-[5px] bg-[linear-gradient(180deg,#f8fafc_0%,#d7f2ef_100%)] shadow-[0_8px_18px_-14px_rgba(11,29,74,0.5)] ring-1 ring-[#d8e1eb]" />
+          <MaterialCover className="h-[4.3rem] w-[3.05rem]" />
           <div className="min-w-0">
             <div className="flex flex-wrap gap-1.5">
               <StatusBadge>今回の教材</StatusBadge>
@@ -483,9 +530,7 @@ function ScreenReturnedMobile() {
         {["数と式 A-2", "数と式 A-1"].map((range) => (
           <section key={range} className="rounded-[9px] border border-[#d8e1eb] bg-white p-3">
             <div className="flex items-center gap-2.5">
-              <div className="grid h-11 w-9 shrink-0 place-items-center rounded-[5px] bg-[linear-gradient(180deg,#f8fafc,#d6f5ef)] text-center text-[0.36rem] font-black leading-tight text-[#123657] ring-1 ring-[#d8e1eb]">
-                数学<br />IA
-              </div>
+              <MaterialCover className="h-11 w-8" />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-[0.66rem] font-black leading-tight text-[#123657]">数学IA標準 <StatusBadge tone="purple">完了</StatusBadge></p>
                 <p className="mt-1 text-[0.46rem] font-bold leading-none text-[#607289]">数学 ・ {range}</p>

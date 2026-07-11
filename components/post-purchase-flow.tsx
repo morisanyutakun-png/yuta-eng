@@ -45,13 +45,13 @@ const steps: Array<{
     title: "ダッシュボードに購入教材が自動で届く",
     body: (
       <>
-        ログインすると、購入した科目に対応する教材が
-        <strong className="font-extrabold">今日の学習</strong>と
-        <strong className="font-extrabold">教材別の現在地</strong>に表示されます。先生が手動で配るのを待たず、すぐ最初の範囲へ進めます。
+        ログインすると、購入した科目に対応する教材がダッシュボードに届きます。画面上部では
+        <strong className="font-extrabold">いま最初にやること</strong>だけを強調し、
+        <strong className="font-extrabold">教材別の現在地</strong>では表紙と範囲名で進み具合を確認できます。
       </>
     ),
     bullets: [
-      "例：数学IAの購入で、数学IA標準が自動割り当て。",
+      "例：math-1aの購入で、数学IA標準が自動割り当て。",
       "教材表紙と範囲名で、どの本を進めているか分かります。",
       "未提出・自己採点・返却がボタンとして分かれ、次の行動がすぐ分かります。",
       "合格数・採点待ち・再提出ありも、教材別に追えます。",
@@ -78,7 +78,7 @@ const steps: Array<{
   {
     no: "5",
     title: "返却・再提出も「並行」して進む",
-    body: "提出後は自己採点しながら次へ進み、先生の添削返却は返却タブに届きます。やり直しが必要なものもここで確認できます。",
+    body: "提出後は自己採点しながら次へ進み、先生の添削返却は返却タブに届きます。合格済み・再提出が必要なものを分けて確認できます。",
     bullets: [
       "採点待ち、先生から返却、再提出が必要を分けて表示。",
       "不合格や再テストは再提出として戻り、同じ範囲をもう一度実施。",
@@ -109,10 +109,10 @@ function CheckIcon({ className = "" }: { className?: string }) {
 
 function StepVisual({ kind }: { kind: VisualKind }) {
   return (
-    <figure className="mx-auto w-[13.7rem] shrink-0 text-center lg:mx-0">
-      <AppScreen variant={kind} size="sm" className="mx-auto" />
-      <figcaption className="mt-3 text-[0.78rem] leading-none text-[#8b98aa] sm:mt-4">
-        実際のアプリ画面
+    <figure className="mx-auto w-[17rem] shrink-0 text-center lg:mx-0">
+      <AppScreen variant={kind} size="md" className="mx-auto" />
+      <figcaption className="mt-3 text-[0.78rem] font-bold leading-none text-[#8b98aa] sm:mt-4">
+        実際のアプリ画面（スマホ）
       </figcaption>
     </figure>
   );
@@ -152,7 +152,7 @@ export function PostPurchaseFlow({
         {steps.map((step) => (
           <li
             key={step.no}
-            className="grid gap-6 rounded-[18px] border border-[#d8e1eb] bg-white px-5 py-6 shadow-[0_18px_44px_-38px_rgba(15,29,74,0.45)] sm:px-8 lg:grid-cols-[14rem_1fr] lg:gap-10 lg:px-9"
+            className="grid gap-7 rounded-[22px] border border-[#d8e1eb] bg-[linear-gradient(135deg,#ffffff_0%,#f8fbff_100%)] px-5 py-7 shadow-[0_22px_54px_-42px_rgba(15,29,74,0.52)] sm:px-8 lg:grid-cols-[18rem_1fr] lg:gap-10 lg:px-9"
           >
             <StepVisual kind={step.visual} />
             <div className="min-w-0 self-center">
