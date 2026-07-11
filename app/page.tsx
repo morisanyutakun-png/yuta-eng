@@ -188,7 +188,7 @@ const appPoints = [
 const quickAnswers = [
   {
     label: "これは何？",
-    title: "買い切りのデジタル通信添削",
+    title: "買い切り通信添削",
     body: "物理・化学・数学・英語のオリジナル教材を、1枚ずつ解いてアプリで提出します。",
   },
   {
@@ -583,7 +583,11 @@ function QuickAnswerSection() {
               <br />
               答案を見てもらう。
             </span>
-            <span className="hidden sm:inline">ノビットは「教材を買って、答案を見てもらう」サービスです。</span>
+            <span className="hidden sm:inline">
+              ノビットは「教材を買って、
+              <br className="hidden lg:block" />
+              答案を見てもらう」サービスです。
+            </span>
           </h2>
           <p className="mt-3 text-[0.9rem] leading-[1.75] text-[#475569] sm:text-[0.94rem] sm:leading-[1.9]">
             <span className="sm:hidden">買うもの・届くもの・料金を、先に短く確認できます。</span>
@@ -1105,10 +1109,14 @@ export default function Home() {
                   後から先生の添削も返ります。
                 </span>
                 <span className="hidden sm:inline">
-                  ノビットスタディは、物理・化学・数学・英語のオリジナル教材を1枚ずつ進める
+                  ノビットスタディは、物理・化学・数学・英語の教材を、
+                  <br className="hidden lg:block" />
+                  1枚ずつ進める
                   <strong className="font-bold text-[#0b1d4a]">買い切りの通信添削</strong>です。
-                  <br className="hidden sm:block" />
-                  提出直後に解答解説PDFと次の範囲、後から先生の添削が返ります。
+                  <br className="hidden lg:block" />
+                  提出直後に解答解説PDFと次の範囲、
+                  <br className="hidden lg:block" />
+                  後から先生の添削が返ります。
                 </span>
               </p>
 
@@ -2125,7 +2133,11 @@ export default function Home() {
               </p>
               <p className="relative mx-auto mt-3 max-w-xl text-[0.86rem] leading-[1.7] text-white/75 sm:text-[0.94rem] sm:leading-[1.9]">
                 <span className="sm:hidden">買い切り{formatYen(MATERIAL_PRICE)}〜。入会金・追加費用は0円です。</span>
-                <span className="hidden sm:inline">買い切り{formatYen(MATERIAL_PRICE)}〜（税込）を約{GRADING_COUNT}回分でならすと1日{PER_DAY_PRICE}円。入会金・追加費用は0円、理系を中心に10教材から、やり切る分だけ選べます。</span>
+                <span className="hidden sm:inline">
+                  買い切り{formatYen(MATERIAL_PRICE)}〜（税込）を約{GRADING_COUNT}回分でならすと1日{PER_DAY_PRICE}円。
+                  <br className="hidden lg:block" />
+                  入会金・追加費用は0円、理系を中心に10教材から、やり切る分だけ選べます。
+                </span>
               </p>
 
               {/* 約100日後に目指せること（成果イメージ） */}

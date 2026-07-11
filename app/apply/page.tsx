@@ -64,7 +64,11 @@ export default async function ApplyPage({
             </h1>
             <p className="mt-4 max-w-2xl text-[0.9rem] leading-[1.75] text-[#334155] sm:text-[0.98rem] sm:leading-[1.9]">
               <span className="sm:hidden">教材を選ぶと、合計金額が自動で分かります。面談・勧誘はありません。</span>
-              <span className="hidden sm:inline">面談も勧誘もありません。やり切る教材を選ぶと買い切り価格が自動で決まり、そのまま安全な決済（一括）に進めます。</span>
+              <span className="hidden sm:inline">
+                面談も勧誘もありません。やり切る教材を選ぶと買い切り価格が自動で決まり、
+                <br className="hidden lg:block" />
+                そのまま<span className="whitespace-nowrap">安全な決済（一括）</span>に進めます。
+              </span>
             </p>
             <ol className="mt-6 grid gap-3 sm:grid-cols-3">
               {steps.map((s) => (
@@ -98,6 +102,7 @@ export default async function ApplyPage({
               <span className="sm:hidden">入会金・追加費用は0円。必要な教材だけ選べます。</span>
               <span className="hidden sm:inline">
                 入会金・追加費用は0円。理系を中心に10教材から、必要な教材だけ選べます。
+                <br className="hidden lg:block" />
                 <strong className="font-bold text-[#ea580c]">2教材以上なら、期間限定のパック割が適用されます</strong>。
               </span>
             </p>
