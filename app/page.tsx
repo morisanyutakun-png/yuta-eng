@@ -1505,7 +1505,11 @@ export default function Home() {
               Learning Loop · 学習サイクル
             </p>
             <h2 className="mt-3 text-[1.52rem] font-extrabold leading-[1.42] tracking-[0] text-[#0b1d4a] sm:text-[2.2rem] sm:leading-[1.35] sm:tracking-[-0.005em]">
-              出す → 振り返る → 次へ。<Penned color="#0d9488">好きな時に</Penned>くりかえす。
+              <span className="inline-block">出す → 振り返る → 次へ。</span>
+              <br className="hidden lg:block" />
+              <span className="inline-block whitespace-nowrap sm:ml-2 lg:ml-0">
+                <Penned color="#0d9488">好きな時に</Penned>くりかえす。
+              </span>
             </h2>
             <p className="mt-3 text-[0.9rem] leading-[1.75] text-[#475569] sm:text-[0.96rem] sm:leading-[1.95]">
               <span className="sm:hidden">短い提出をくり返して、止まらず積み上げます。</span>
