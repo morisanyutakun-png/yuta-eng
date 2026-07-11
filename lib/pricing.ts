@@ -59,6 +59,19 @@ export const PACK_UNIT_PRICE = 12400;
 /** 1教材あたりのおおよその添削回数（＝教材の分量）。値ごろ感の説明に使う。 */
 export const GRADING_COUNT = 100;
 
+/**
+ * 1日1回ペースで進めた場合の目安の日数（＝約100回分）。
+ * 「約100日ぶん」「100日プログラム」など、期間としての値ごろ感の説明に使う。
+ * 実際は自分のペースで進められる（毎日でなくてもよい）。
+ */
+export const PROGRAM_DAYS = GRADING_COUNT;
+
+/**
+ * 1日あたりの目安額（税込・円）＝ 買い切り価格 ÷ 約100回分。
+ * 14,800 ÷ 100 = 148円。総額を分量で割った参考値で、追加課金ではない。
+ */
+export const PER_DAY_PRICE = Math.round(MATERIAL_PRICE / GRADING_COUNT);
+
 /** 開講記念キャンペーン（2教材以上のパック割）の締切。JSTで判定。 */
 export const CAMPAIGN_DEADLINE_ISO = "2026-08-06T23:59:59+09:00";
 export const CAMPAIGN_NAME = "夏の開講記念";

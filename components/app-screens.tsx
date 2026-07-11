@@ -267,31 +267,76 @@ function StatusBadge({ children, tone = "blue" }: { children: React.ReactNode; t
   return <span className={`inline-flex items-center px-1.5 py-0.5 text-[0.42rem] font-black leading-none ${styles[tone]}`}>{children}</span>;
 }
 
+function TileGlyph({ kind }: { kind: "tasks" | "self" | "returned" }) {
+  const common = { fill: "none", stroke: "currentColor", strokeWidth: 2.2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  if (kind === "self") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-[0.62rem] w-[0.62rem]" aria-hidden="true">
+        <path {...common} fill="currentColor" stroke="none" d="M12 3.4l2.5 5.1 5.6.8-4.05 3.95.96 5.6L12 16.3 6.98 18.85l.96-5.6L3.9 9.3l5.6-.8z" />
+      </svg>
+    );
+  }
+  if (kind === "returned") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-[0.62rem] w-[0.62rem]" aria-hidden="true">
+        <path {...common} d="M3.5 8.5a8 8 0 1 1-1 5" />
+        <path {...common} d="M3 4v4.5h4.5" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24" className="h-[0.62rem] w-[0.62rem]" aria-hidden="true">
+      <path {...common} d="M5 12.5l4.2 4.2L19 7" />
+    </svg>
+  );
+}
+
 function ActionTile({
   label,
   caption,
   value,
+  cta,
   tone,
+  kind,
 }: {
   label: string;
   caption: string;
   value: string;
+  cta: string;
   tone: "blue" | "green" | "rose";
+  kind: "tasks" | "self" | "returned";
 }) {
   const styles = {
-    blue: "border-l-[#25a8df] bg-[#f2faff] text-[#0284c7]",
-    green: "border-l-[#10a37f] bg-[#effbf6] text-[#059669]",
-    rose: "border-l-[#c81046] bg-[#fff1f4] text-[#c81046]",
+    blue: { accent: "#1d8bd1", chip: "bg-[#e7f3fb] text-[#0d6ba6]" },
+    green: { accent: "#0f9e74", chip: "bg-[#e3f6ee] text-[#0a7d5a]" },
+    rose: { accent: "#be123c", chip: "bg-[#fce7ec] text-[#a30f34]" },
   } as const;
+  const s = styles[tone];
 
   return (
-    <div className={`min-w-0 rounded-[7px] border border-[#d8e1eb] border-l-[3px] px-2 py-2 ${styles[tone]}`}>
-      <p className="truncate text-[0.56rem] font-black leading-tight text-[#123657]">{label}</p>
-      <p className="mt-0.5 truncate text-[0.36rem] font-bold leading-none text-[#607289]">{caption}</p>
-      <div className="mt-2 grid grid-cols-[1.25rem_1fr] items-center gap-1.5">
-        <span className="grid h-5 place-items-center border border-current bg-white/75 text-[0.68rem] font-black leading-none">{value}</span>
-        <span className="truncate text-[0.4rem] font-black leading-none">{tone === "green" ? "採点" : tone === "rose" ? "確認" : "取組"}</span>
-      </div>
+    <div
+      className="flex items-center gap-1.5 rounded-[9px] border border-[#dbe4ee] bg-white py-1.5 pl-1.5 pr-1.5 shadow-[0_1px_2px_rgba(18,54,87,0.06)]"
+      style={{ borderLeft: `3px solid ${s.accent}` }}
+    >
+      <span className="grid h-6 w-6 shrink-0 place-items-center rounded-[6px] text-white" style={{ background: s.accent }}>
+        <TileGlyph kind={kind} />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-[0.52rem] font-black leading-tight text-[#123657]">{label}</span>
+        <span className="block truncate text-[0.34rem] font-bold leading-none text-[#8194a8]">{caption}</span>
+      </span>
+      <span className={`grid h-[1.05rem] min-w-[1.05rem] shrink-0 place-items-center rounded-[5px] px-1 text-[0.6rem] font-black leading-none tabular-nums ${s.chip}`}>
+        {value}
+      </span>
+      <span
+        className="inline-flex shrink-0 items-center gap-0.5 rounded-[6px] py-1 pl-1.5 pr-1 text-[0.42rem] font-black leading-none text-white"
+        style={{ background: s.accent }}
+      >
+        {cta}
+        <svg viewBox="0 0 24 24" className="h-[0.5rem] w-[0.5rem]" aria-hidden="true">
+          <path fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </span>
     </div>
   );
 }
@@ -325,9 +370,9 @@ function ScreenHomeMobile() {
       </div>
 
       <div className="mt-2 grid gap-1.5">
-        <ActionTile label="課題" caption="未提出" value="2" tone="blue" />
-        <ActionTile label="自己採点" caption="即確認" value="2" tone="green" />
-        <ActionTile label="返却" caption="添削" value="0" tone="rose" />
+        <ActionTile label="課題" caption="未提出" value="2" cta="取り組む" tone="blue" kind="tasks" />
+        <ActionTile label="自己採点" caption="即確認" value="2" cta="答え合わせ" tone="green" kind="self" />
+        <ActionTile label="返却" caption="添削" value="0" cta="確認" tone="rose" kind="returned" />
       </div>
 
       <section className="mt-3 rounded-[9px] border border-[#d8e1eb] bg-white p-2.5">

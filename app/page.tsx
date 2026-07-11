@@ -22,6 +22,8 @@ import {
   MATERIAL_PRICE,
   PACK_UNIT_PRICE,
   packSavings,
+  PER_DAY_PRICE,
+  PROGRAM_DAYS,
   SUBJECT_AREAS,
   SUBJECTS,
 } from "@/lib/pricing";
@@ -200,18 +202,18 @@ const quickAnswers = [
   },
   {
     label: "いくら？",
-    title: `1教材 ${formatYen(MATERIAL_PRICE)}〜`,
-    body: `約${GRADING_COUNT}回分の課題＋添削込み。入会金・追加費用0円、自動更新なし。`,
+    title: `1日あたり${PER_DAY_PRICE}円`,
+    body: `約${PROGRAM_DAYS}日ぶん・毎回添削で、買い切り${formatYen(MATERIAL_PRICE)}〜。入会金・追加費用0円、自動更新なし。`,
   },
 ];
 
 const purchaseIncludes = [
-  `約${GRADING_COUNT}回分の分割課題`,
-  "提出ごとの添削",
-  "解答解説PDF",
-  "次の範囲の配信",
+  `オリジナル教材（約${GRADING_COUNT}回分の分割課題）`,
+  "毎日提出できる（自分のペースでOK）",
+  "毎回そのつど添削",
+  "解答解説PDF・次の範囲の配信",
   "再提出・合格管理",
-  "家での進捗確認",
+  "アプリで進捗管理（家でも確認）",
 ];
 
 const sampleAssetVersion = "20260711";
@@ -645,12 +647,24 @@ function PurchaseShelfSection() {
                 月謝ではなく、教材を最後までやり切るための買い切りです。必要な分だけ選べて、修了まで自分のものになります。
               </p>
 
-              <div className="mt-7 grid gap-3 rounded-[18px] bg-white/[0.08] p-4 ring-1 ring-white/15 sm:grid-cols-2">
+              <div className="mt-7 rounded-[18px] bg-white/[0.08] p-4 ring-1 ring-white/15">
+                <p className="text-[0.72rem] font-bold tracking-[0.08em] text-[#5eead4]">1日あたり（約{PROGRAM_DAYS}日ぶんで割ると）</p>
+                <p className="mt-1 flex items-baseline gap-1.5">
+                  <span className="text-[3rem] font-black leading-none tracking-[-0.02em] text-white sm:text-[3.4rem]">{PER_DAY_PRICE}</span>
+                  <span className="text-[1rem] font-extrabold text-white">円</span>
+                  <span className="text-[0.8rem] font-bold text-white/70">／ 毎回そのつど添削</span>
+                </p>
+                <p className="mt-2 text-[0.78rem] font-semibold leading-[1.7] text-white/70">
+                  買い切り <span className="font-extrabold text-white/90">{formatYen(MATERIAL_PRICE)}〜</span>（税込）を、約{GRADING_COUNT}回分でならすと1日{PER_DAY_PRICE}円。追加課金ではありません。
+                </p>
+              </div>
+
+              <div className="mt-3 grid gap-3 rounded-[18px] bg-white/[0.08] p-4 ring-1 ring-white/15 sm:grid-cols-2">
                 <div>
-                  <p className="text-[0.72rem] font-bold tracking-[0.08em] text-white/65">1教材・通常</p>
+                  <p className="text-[0.72rem] font-bold tracking-[0.08em] text-white/65">1教材・買い切り（税込）</p>
                   <p className="mt-1 flex items-baseline gap-1.5">
                     <span className="text-[2.3rem] font-black leading-none tracking-[-0.02em] text-white">{formatYen(MATERIAL_PRICE)}</span>
-                    <span className="text-[0.82rem] font-bold text-white/75">〜 税込</span>
+                    <span className="text-[0.82rem] font-bold text-white/75">〜</span>
                   </p>
                 </div>
                 <div className="border-t border-white/15 pt-3 sm:border-l sm:border-t-0 sm:pl-4 sm:pt-0">
@@ -665,7 +679,8 @@ function PurchaseShelfSection() {
                 </div>
               </div>
 
-              <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+              <p className="mt-6 text-[0.72rem] font-bold tracking-[0.12em] text-white/60">この価格に、ぜんぶ含まれます</p>
+              <ul className="mt-2.5 grid gap-2 sm:grid-cols-2">
                 {purchaseIncludes.map((item) => (
                   <li key={item} className="flex items-center gap-2 text-[0.84rem] font-semibold text-white/86">
                     <span aria-hidden="true" className="grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[#5eead4] text-[#0b1d4a]">
@@ -949,7 +964,7 @@ function HandCircle({ className = "", color = "#ea580c" }: { className?: string;
 function StatsBand() {
   const stats = [
     { n: String(SUBJECTS.length), u: "教材", d: "物理・化学・数学・英語", tilt: "-rotate-[1.2deg]" },
-    { n: formatYen(MATERIAL_PRICE), u: "〜", d: "1教材 買い切り・税込", tilt: "rotate-[0.6deg]", pen: true },
+    { n: `${PER_DAY_PRICE}`, u: "円/日", d: `約${PROGRAM_DAYS}日ぶん・買い切り${formatYen(MATERIAL_PRICE)}〜`, tilt: "rotate-[0.6deg]", pen: true },
     { n: "提出", u: "添削", d: "答案ごとに返却", tilt: "-rotate-[0.5deg]", check: true },
     { n: "0", u: "円", d: "入会金・追加費用", tilt: "rotate-[1deg]", circle: true },
   ];
@@ -1081,11 +1096,16 @@ export default function Home() {
               </div>
               <div className="mt-5 hidden max-w-xl items-center gap-3 rounded-[18px] bg-white/74 p-3 text-left shadow-[0_18px_38px_-30px_rgba(11,29,74,0.45)] ring-1 ring-[rgba(15,29,74,0.08)] backdrop-blur lg:flex">
                 <div className="shrink-0 rounded-[14px] bg-[#0b1d4a] px-4 py-3 text-white">
-                  <p className="text-[0.66rem] font-bold tracking-[0.12em] text-white/65">1教材</p>
-                  <p className="mt-0.5 text-[1.45rem] font-black leading-none">{formatYen(MATERIAL_PRICE)}〜</p>
+                  <p className="text-[0.66rem] font-bold tracking-[0.12em] text-white/65">1日あたり</p>
+                  <p className="mt-0.5 flex items-baseline gap-0.5">
+                    <span className="text-[1.9rem] font-black leading-none">{PER_DAY_PRICE}</span>
+                    <span className="text-[0.9rem] font-extrabold">円</span>
+                  </p>
                 </div>
                 <p className="min-w-0 text-[0.84rem] font-semibold leading-[1.75] text-[#475569]">
-                  約{GRADING_COUNT}回分の課題＋添削込み。{CAMPAIGN_DEADLINE_LABEL}まで2教材パックは
+                  約{PROGRAM_DAYS}日ぶん・毎回そのつど添削。
+                  <br />
+                  買い切り<strong className="font-extrabold text-[#0b1d4a]"> {formatYen(MATERIAL_PRICE)}〜</strong>（税込）／{CAMPAIGN_DEADLINE_LABEL}まで2教材パックは
                   <strong className="font-extrabold text-[#ea580c]"> {formatYen(buyoutTotal(2, true))}</strong>。
                 </p>
               </div>
@@ -1112,14 +1132,14 @@ export default function Home() {
                 <AppScreen variant="home" className="relative z-10 origin-center scale-[0.9] float-slow sm:scale-100" />
                 {/* 手書きメモ風の付箋（正直なひとことで、人の手作り感を出す） */}
                 <div className="absolute -bottom-3 right-0 z-20 hidden -rotate-[5deg] rounded-[12px] bg-white/85 px-3.5 py-2.5 text-[0.74rem] font-bold leading-snug text-[#9a3412] shadow-[0_20px_40px_-18px_rgba(154,52,18,0.5)] ring-1 ring-white/70 backdrop-blur-md sm:block">
-                  1教材＝約{GRADING_COUNT}回分。<br />添削込みで買い切り。
+                  1日あたり{PER_DAY_PRICE}円。<br />約{PROGRAM_DAYS}日ぶん・毎回添削。
                 </div>
               </div>
               <div className="relative -mt-2 grid gap-3 lg:hidden">
                 <PrimaryCta href="/apply#form">教材を選んで申し込む</PrimaryCta>
                 <SecondaryCta href="/apply#pricing">料金・教材を見る</SecondaryCta>
                 <ul className="flex flex-wrap justify-center gap-x-3 gap-y-2">
-                  {[`1教材 ${formatYen(MATERIAL_PRICE)}〜`, "解答解説PDFつき", "買い切り"].map((t) => (
+                  {[`1日あたり${PER_DAY_PRICE}円`, `約${PROGRAM_DAYS}日ぶん・毎回添削`, `買い切り${formatYen(MATERIAL_PRICE)}〜`].map((t) => (
                     <li key={t} className="flex items-center gap-1.5 text-[0.74rem] font-semibold text-[#475569]">
                       <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
                         <svg viewBox="0 0 24 24" className="h-2.5 w-2.5" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.5l4.3 4.3L19 7" /></svg>
@@ -2034,13 +2054,49 @@ export default function Home() {
               <p className="relative text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#5eead4]">
                 Price · 料金
               </p>
-              <h2 className="relative mt-3 text-balance text-[1.9rem] font-extrabold leading-[1.3] tracking-[-0.005em] sm:text-[2.4rem]">
-                1教材から、<br className="sm:hidden" />買い切り{" "}
-                <span className="text-[#fdba74]">{formatYen(MATERIAL_PRICE)}〜</span>。
+              <h2 className="relative mt-3 text-balance text-[2.4rem] font-extrabold leading-[1.15] tracking-[-0.01em] sm:text-[3.1rem]">
+                1日たった{" "}
+                <span className="text-[#fdba74]">{PER_DAY_PRICE}円</span>。
               </h2>
-              <p className="relative mx-auto mt-4 max-w-xl text-[0.98rem] leading-[1.9] text-white/85">
-                入会金・追加費用は0円。1教材＝約100回分の課題＋添削込み。理系を中心に10教材から、やり切る分だけ選べます。
+              <p className="relative mx-auto mt-3 max-w-xl text-[1.02rem] font-bold leading-[1.7] text-white/90">
+                約{PROGRAM_DAYS}日ぶん・毎回そのつど添削つき。
               </p>
+              <p className="relative mx-auto mt-3 max-w-xl text-[0.94rem] leading-[1.9] text-white/75">
+                買い切り{formatYen(MATERIAL_PRICE)}〜（税込）を約{GRADING_COUNT}回分でならすと1日{PER_DAY_PRICE}円。入会金・追加費用は0円、理系を中心に10教材から、やり切る分だけ選べます。
+              </p>
+
+              {/* 約100日後に目指せること（成果イメージ） */}
+              <div className="relative mx-auto mt-7 max-w-xl">
+                <p className="text-[0.72rem] font-bold tracking-[0.16em] text-[#5eead4]">約{PROGRAM_DAYS}日、続けたその先に</p>
+                <ul className="mt-3 grid gap-2 text-left sm:grid-cols-3">
+                  {[
+                    "記述力を、毎回の添削で鍛える",
+                    "毎日机に向かう習慣がつく",
+                    "自分の弱点が、はっきり見える",
+                  ].map((t) => (
+                    <li key={t} className="flex items-start gap-2 rounded-[14px] bg-white/[0.07] px-3 py-2.5 text-[0.82rem] font-semibold leading-[1.55] text-white/88 ring-1 ring-white/12">
+                      <span aria-hidden="true" className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full bg-[#5eead4] text-[#0b1d4a]">
+                        <IconCheck className="h-2.5 w-2.5" />
+                      </span>
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* 今はじめる理由（誇張なし・今日から始められる／夏休み／パック割の締切） */}
+              <ul className="relative mx-auto mt-5 flex max-w-xl flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-[0.78rem] font-bold text-white/85">
+                {["申し込んだその日から始められる", "夏休みのうちにまとまった量を進められる", `パック割は${CAMPAIGN_DEADLINE_LABEL}まで`].map((t, i, a) => (
+                  <li key={t} className="flex items-center gap-2.5">
+                    <span className="flex items-center gap-1.5">
+                      <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#fdba74]" />
+                      {t}
+                    </span>
+                    {i < a.length - 1 && <span aria-hidden="true" className="text-white/30">/</span>}
+                  </li>
+                ))}
+              </ul>
+
               <p className="relative mt-6">
                 <span className="inline-flex -rotate-1 items-center gap-1.5 rounded-[12px] bg-[#f97316] px-4 py-2 text-[0.9rem] font-extrabold text-white shadow-[0_14px_28px_-14px_rgba(234,88,12,0.9)]">
                   <span aria-hidden="true" className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />

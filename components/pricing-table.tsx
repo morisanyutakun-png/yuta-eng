@@ -10,6 +10,8 @@ import {
   MATERIAL_PRICE,
   packSavings,
   PACK_UNIT_PRICE,
+  PER_DAY_PRICE,
+  PROGRAM_DAYS,
   SUBJECTS,
 } from "@/lib/pricing";
 
@@ -104,17 +106,21 @@ export function PricingTable({
           />
 
           <div className="relative text-center">
-            <p className="text-[0.82rem] font-bold text-[#0f766e]">1教材（約{GRADING_COUNT}日分）をやり切る</p>
+            <p className="text-[0.82rem] font-bold text-[#0f766e]">1教材（約{PROGRAM_DAYS}日ぶん）をやり切る</p>
             <p className="mt-1 flex items-end justify-center gap-1.5 text-[#0b1d4a]">
+              <span className="pb-2 text-[1.05rem] font-bold">1日たった</span>
               <span className="relative inline-block">
                 <span className="text-[3.1rem] font-extrabold leading-none tracking-[-0.02em] sm:text-[3.6rem]">
-                  {formatYen(MATERIAL_PRICE)}
+                  {PER_DAY_PRICE}
                 </span>
                 <PenUnderline className="absolute -bottom-1 left-0 h-[0.5em] w-full" />
               </span>
-              <span className="pb-2.5 text-[1.05rem] font-bold">〜 買い切り</span>
+              <span className="pb-2.5 text-[1.05rem] font-bold">円</span>
             </p>
-            <p className="mt-2 text-[0.8rem] text-[#64748b]">添削（約{GRADING_COUNT}回）＋習慣化アプリ込み</p>
+            <p className="mt-2 text-[0.84rem] font-semibold text-[#0f766e]">約{PROGRAM_DAYS}日ぶん・毎回そのつど添削つき</p>
+            <p className="mt-1 text-[0.8rem] text-[#64748b]">
+              買い切り <span className="font-bold text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}〜</span>（税込・添削約{GRADING_COUNT}回＋習慣化アプリ込み）を約{GRADING_COUNT}回分でならすと1日{PER_DAY_PRICE}円。
+            </p>
             {campaign ? (
               <p className="mt-3.5">
                 <span className="inline-flex -rotate-2 items-center rounded-[10px] bg-[#fff1e6] px-3 py-1 text-[0.78rem] font-extrabold text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">
