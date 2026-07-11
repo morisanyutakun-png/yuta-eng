@@ -96,10 +96,11 @@ export default function AppPage() {
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#7c3aed]" />
                 公式アプリ「ノビットスタディ」
               </p>
-              <h1 className="mt-5 text-[2.55rem] font-extrabold leading-[1.1] tracking-[-0.035em] text-[#0b1d4a] sm:text-[3.35rem]">
+              <h1 className="mt-5 text-[2.28rem] font-extrabold leading-[1.14] tracking-normal text-[#0b1d4a] sm:text-[3.35rem] sm:leading-[1.1]">
                 「今日、何やろう」
                 <br />
                 から、
+                <br className="sm:hidden" />
                 <span className="relative inline-block whitespace-nowrap">
                   <span className="bg-[linear-gradient(100deg,#7c3aed_0%,#1d4ed8_55%,#0d9488_100%)] bg-clip-text text-transparent">解放</span>
                   <span aria-hidden="true" className="absolute -bottom-1 left-0 h-[0.18em] w-full rounded-full bg-[linear-gradient(100deg,#7c3aed,#0d9488)] opacity-80" />

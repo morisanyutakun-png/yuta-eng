@@ -42,17 +42,18 @@ const steps: Array<{
   },
   {
     no: "3",
-    title: "購入教材が自動で割り当たる",
+    title: "ダッシュボードに購入教材が自動で届く",
     body: (
       <>
         ログインすると、購入した科目に対応する教材が
         <strong className="font-extrabold">今日の学習</strong>と
-        <strong className="font-extrabold">教材の進み具合</strong>に表示されます。先生が手動で配るのを待たず、すぐ最初の範囲へ進めます。
+        <strong className="font-extrabold">教材別の現在地</strong>に表示されます。先生が手動で配るのを待たず、すぐ最初の範囲へ進めます。
       </>
     ),
     bullets: [
-      "例：数学IA標準の購入で、対応教材が自動割り当て。",
-      "「今日の学習」に、課題・自己採点・返却が分かれて表示されます。",
+      "例：数学IAの購入で、数学IA標準が自動割り当て。",
+      "教材表紙と範囲名で、どの本を進めているか分かります。",
+      "未提出・自己採点・返却がボタンとして分かれ、次の行動がすぐ分かります。",
       "合格数・採点待ち・再提出ありも、教材別に追えます。",
     ],
     visual: "home",
@@ -68,8 +69,8 @@ const steps: Array<{
     ),
     bullets: [
       "問題PDFを開いて確認。必要なら保存して紙で解いてもOK。",
-      "「一画面で書き込んで解く」から、タッチペン・指で直接記入。",
-      "GoodNotesなどで書き込んだPDFや、紙に解いた答案写真も添付できます。",
+      "「画面で解く」から、タッチペン・指で直接記入し、PDFとして保存。",
+      "保存したPDF、GoodNotesのPDF、紙に解いた答案写真を最大3件まで添付できます。",
       "提出すると、解答解説PDFが見られるようになり、同時に次の範囲が追加されます。",
     ],
     visual: "submit",
@@ -87,8 +88,8 @@ const steps: Array<{
   },
   {
     no: "6",
-    title: "合格状況が「記録」される",
-    body: "取り組みは成績としてすべて残ります。いま何が合格済みで、どこに戻るべきかを数値で振り返れます。",
+    title: "合格状況がレポートに残る",
+    body: "取り組みはダッシュボードの学習レポートとして残ります。いま何が合格済みで、どこに戻るべきかを数値で振り返れます。",
     bullets: [
       "合格率・平均点・合格数・連続学習をひと目で確認。",
       "教科別の成績と「採点・返却の履歴」（合否・点数・コメント・日付）を一覧。",
@@ -135,7 +136,7 @@ export function PostPurchaseFlow({
           <div>
             <p className="text-[0.86rem] font-extrabold text-[#facc15]">アプリの実画面で見る</p>
             <h2 className="mt-2 text-[1.7rem] font-extrabold leading-[1.32] tracking-[-0.01em] sm:text-[2.35rem]">
-              購入後も、決済完了から学習開始まで迷わない。
+              購入後も、提出・自己採点・返却まで迷わない。
             </h2>
           </div>
           <p className="shrink-0 text-[0.95rem] font-extrabold tracking-[0.06em] text-white/95">
@@ -143,7 +144,7 @@ export function PostPurchaseFlow({
           </p>
         </div>
         <p className="mt-4 max-w-5xl font-serif text-[0.95rem] leading-[2] text-white/90 sm:text-[1.03rem]">
-          決済完了 → ログイン情報の発行 → ログイン → 購入教材の自動割り当て → PDFで実施・提出へ。生徒が最初の一問に入るまでを、実際の画面に沿って案内します。
+          決済完了 → ログイン情報の発行 → 購入教材の自動割り当て → PDFで実施 → 提出後すぐ自己採点 → 返却確認へ。生徒が次の一問へ進むまでを、実際の画面に沿って案内します。
         </p>
       </div>
 

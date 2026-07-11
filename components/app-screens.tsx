@@ -1,5 +1,7 @@
 import Image from "next/image";
 
+const screenAssetVersion = "20260711";
+
 /**
  * ノビットスタディ 中高部アプリの実画面に寄せたスマホ表示。
  * 2026-07 の新パンフレットから切り出した画面画像を使い、購入後のアカウント発行、
@@ -18,7 +20,7 @@ export const appSteps: {
   {
     no: "01",
     variant: "account",
-    title: "決済後、ログイン情報が発行される",
+    title: "決済完了後、ログイン情報が発行される",
     lead: "決済が完了すると、生徒用のログインIDとPINが表示されます。同じ内容はメールでも届きます。",
     facts: [
       "購入後の戻り先で、そのままログイン情報を確認",
@@ -40,10 +42,11 @@ export const appSteps: {
   {
     no: "03",
     variant: "home",
-    title: "購入教材がダッシュボードに届く",
+    title: "ダッシュボードに購入教材が自動で届く",
     lead: "購入した科目に対応する教材が、ダッシュボードの今日の学習と教材別の現在地に表示されます。",
     facts: [
-      "購入教材が自動で割り当てられ、すぐ最初の範囲へ進める",
+      "例: 数学IAの購入で、数学IA標準が自動割り当て",
+      "教材表紙と範囲名で、どの本を進めているか確認",
       "未提出・自己採点・返却が分かれ、次の行動が見える",
       "合格数・採点待ち・再提出ありも、教材別に追える",
     ],
@@ -55,8 +58,8 @@ export const appSteps: {
     lead: "課題を開くと、問題PDFと実施範囲が表示されます。PDFや写真を添付して提出できます。",
     facts: [
       "問題PDFを開いて確認。必要なら保存して紙で解いてもOK",
-      "アプリ内で直接書くか、GoodNotesなどのPDFを添付",
-      "保存したPDFや答案写真を最大3件まで添付",
+      "「画面で解く」から、タッチペン・指で直接記入してPDF保存",
+      "保存したPDF、GoodNotesのPDF、紙に解いた答案写真を最大3件まで添付",
       "提出すると解答解説PDFが見られ、同時に次の範囲が追加",
     ],
   },
@@ -79,7 +82,7 @@ export const appSteps: {
     facts: [
       "合格率・平均点・合格数・連続学習をひと目で確認",
       "教科別の成績と採点・返却の履歴を一覧",
-      "全範囲が返却済みかつ合格になると教材終了",
+      "全範囲が返却済みかつ合格になると教材終了。一冊分PDFも受け取れる",
     ],
   },
 ];
@@ -111,32 +114,25 @@ type AppScreenImage = {
 
 export const appScreenImages: Record<AppScreenVariant, AppScreenImage> = {
   account: {
-    src: "/app-screens/account.png",
+    src: `/app-screens/account.png?v=${screenAssetVersion}`,
     width: 392,
     height: 566,
     alt: "購入後に発行されるログイン情報の画面",
     imageClassName: "w-full",
   },
   login: {
-    src: "/app-screens/login.png",
+    src: `/app-screens/login.png?v=${screenAssetVersion}`,
     width: 392,
     height: 554,
     alt: "ログインIDとPINを入力するログイン画面",
     imageClassName: "w-full",
   },
   home: {
-    src: "/app-screens/dashboard.png",
+    src: `/app-screens/dashboard.png?v=${screenAssetVersion}`,
     width: 724,
-    height: 835,
+    height: 204,
     alt: "購入教材が届いたダッシュボード画面",
     imageClassName: "w-full",
-    overlays: [
-      {
-        text: "こんにちは、山田太郎さん",
-        className:
-          "left-[4.9%] top-[8.6%] flex h-[4.9%] w-[49%] items-center whitespace-nowrap bg-[#23345f] pr-[0.5%] text-[clamp(0.7rem,2.4vw,1rem)] font-black leading-none text-white",
-      },
-    ],
     footer: {
       eyebrow: "NEXT ACTIONS",
       title: "今日の学習",
@@ -148,18 +144,11 @@ export const appScreenImages: Record<AppScreenVariant, AppScreenImage> = {
     },
   },
   submit: {
-    src: "/app-screens/submit.png",
-    width: 732,
-    height: 796,
+    src: `/app-screens/submit.png?v=${screenAssetVersion}`,
+    width: 666,
+    height: 387,
     alt: "数学IA標準の課題提出画面",
     imageClassName: "w-full",
-    overlays: [
-      {
-        text: "山田太郎 ・ 数学",
-        className:
-          "left-[3.1%] top-[15.45%] flex h-[2.2%] w-[14.2%] items-center bg-[#f3f7fb] text-[clamp(0.3rem,1.02vw,0.48rem)] font-bold leading-none text-[#607289]",
-      },
-    ],
     footer: {
       eyebrow: "SUBMIT",
       title: "PDF・写真を添付して提出",
@@ -171,9 +160,9 @@ export const appScreenImages: Record<AppScreenVariant, AppScreenImage> = {
     },
   },
   returned: {
-    src: "/app-screens/returned.png",
-    width: 423,
-    height: 430,
+    src: `/app-screens/returned.png?v=${screenAssetVersion}`,
+    width: 411,
+    height: 362,
     alt: "先生から返却された添削結果の画面",
     imageClassName: "w-full",
     footer: {
@@ -187,9 +176,9 @@ export const appScreenImages: Record<AppScreenVariant, AppScreenImage> = {
     },
   },
   history: {
-    src: "/app-screens/report.png",
-    width: 724,
-    height: 688,
+    src: `/app-screens/report.png?v=${screenAssetVersion}`,
+    width: 980,
+    height: 1180,
     alt: "学習レポートと採点履歴の画面",
     imageClassName: "w-full",
     footer: {
@@ -228,14 +217,14 @@ function MobileShell({
   active,
   children,
 }: {
-  active: "課題" | "返却" | "成績";
+  active: "ダッシュボード" | "課題" | "自己採点" | "返却";
   children: React.ReactNode;
 }) {
   return (
     <div className="h-full overflow-hidden bg-[#f3f6f9] text-[#123657]">
       <header className="border-b border-[#25a8df] bg-white px-3 pt-7">
         <LogoMark className="h-4 w-auto" />
-        <div className="mt-3 flex min-w-0 items-center gap-1.5">
+        <div className="mt-2.5 flex min-w-0 items-center gap-1.5">
           <span className="shrink-0 text-[0.56rem] font-black leading-none">山田太郎</span>
           <span className="shrink-0 border border-[#d8e1eb] bg-[#f7f9fc] px-1.5 py-1 text-[0.36rem] font-extrabold leading-none text-[#607289]">
             生徒・中高部
@@ -244,16 +233,16 @@ function MobileShell({
             ログアウト
           </span>
         </div>
-        <nav aria-label="アプリ画面タブ" className="mt-3 grid grid-cols-3 text-center text-[0.58rem] font-black">
-          {(["課題", "返却", "成績"] as const).map((tab) => (
+        <nav aria-label="アプリ画面タブ" className="mt-2.5 grid grid-cols-4 text-center text-[0.43rem] font-black">
+          {(["ダッシュボード", "課題", "自己採点", "返却"] as const).map((tab) => (
             <span
               key={tab}
               className={`relative pb-2 leading-none ${active === tab ? "text-[#25a8df]" : "text-[#607289]"}`}
             >
               {tab}
-              {tab === "返却" ? (
+              {tab === "課題" || tab === "自己採点" ? (
                 <span className="ml-1 inline-grid h-3.5 w-3.5 place-items-center rounded-full bg-[#ef4444] align-middle text-[0.36rem] leading-none text-white">
-                  1
+                  2
                 </span>
               ) : null}
               {active === tab ? <span aria-hidden="true" className="absolute bottom-0 left-2 right-2 h-0.5 bg-[#25a8df]" /> : null}
@@ -261,7 +250,7 @@ function MobileShell({
           ))}
         </nav>
       </header>
-      <main className="h-[calc(100%-6.55rem)] overflow-hidden px-3 py-3">{children}</main>
+      <main className="h-[calc(100%-6.25rem)] overflow-hidden px-3 py-3">{children}</main>
     </div>
   );
 }
@@ -309,7 +298,7 @@ function ActionTile({
 
 function ScreenHomeMobile() {
   return (
-    <MobileShell active="課題">
+    <MobileShell active="ダッシュボード">
       <section className="relative overflow-hidden rounded-[8px] bg-[linear-gradient(125deg,#182653_0%,#173a79_54%,#0f766e_100%)] px-3 py-3 text-white">
         <span className="inline-flex border border-white/35 px-2 py-1 text-[0.36rem] font-black tracking-[0.18em] text-white/90">
           LEARNING DASHBOARD
@@ -331,36 +320,41 @@ function ScreenHomeMobile() {
           <p className="text-[0.84rem] font-black leading-tight text-[#123657]">今日の学習</p>
         </div>
         <span className="rounded-full bg-white px-2 py-1 text-[0.34rem] font-black leading-none text-[#1d4ed8] ring-1 ring-[#d8e1eb]">
-          提出 → 採点 → 返却
+          提出 → 自己採点 → 返却
         </span>
       </div>
 
-      <div className="mt-2 grid grid-cols-3 gap-1.5">
+      <div className="mt-2 grid gap-1.5">
         <ActionTile label="課題" caption="未提出" value="2" tone="blue" />
         <ActionTile label="自己採点" caption="即確認" value="2" tone="green" />
         <ActionTile label="返却" caption="添削" value="0" tone="rose" />
       </div>
 
-      <section className="mt-3 rounded-[9px] border border-[#d8e1eb] bg-white p-3">
-        <div className="flex items-center justify-between">
-          <p className="text-[0.66rem] font-black leading-none text-[#123657]">学習状況</p>
-          <span className="text-[0.42rem] font-black leading-none text-[#d97706]">はじめのいっぽ</span>
+      <section className="mt-3 rounded-[9px] border border-[#d8e1eb] bg-white p-2.5">
+        <div className="mb-2 flex items-center gap-1.5">
+          <p className="text-[0.62rem] font-black leading-none text-[#123657]">教材別の現在地</p>
+          <span className="grid h-4 w-4 place-items-center bg-[#123657] text-[0.42rem] font-black leading-none text-white">2</span>
         </div>
-        <div className="mt-3 h-2 rounded-full bg-[#e7eef6]">
-          <div className="h-full w-[67%] rounded-full bg-[linear-gradient(90deg,#25a8df,#22c55e)]" />
-        </div>
-        <div className="mt-2 grid grid-cols-3 gap-1.5">
-          {[
-            ["2", "合格", "#ea580c"],
-            ["2", "完了", "#059669"],
-            ["4", "今週の提出", "#0284c7"],
-          ].map(([value, label, color]) => (
-            <div key={label} className="rounded-[8px] border border-[#d8e1eb] bg-[#f8fafc] px-1 py-2 text-center">
-              <p className="text-[0.86rem] font-black leading-none" style={{ color }}>{value}</p>
-              <p className="mt-1 truncate text-[0.34rem] font-bold leading-none text-[#607289]">{label}</p>
+        {[
+          ["数学", "数学IA標準", "採点待ち: 数と式 B-1", "合格 2 / 全90　採点待ち 1", "blue"],
+          ["物理", "物理入門演習", "採点待ち: 演習2 すれ違いと出会いの時刻", "合格 0 / 全89　採点待ち 1", "green"],
+        ].map(([subject, title, range, meta, tone]) => (
+          <div key={title} className={`mb-1.5 grid grid-cols-[2.35rem_1fr_auto] gap-2 rounded-[7px] border border-[#d8e1eb] border-l-[3px] ${tone === "blue" ? "border-l-[#25a8df]" : "border-l-[#10a37f]"} bg-white p-2 last:mb-0`}>
+            <div className="h-10 rounded-[4px] bg-[linear-gradient(180deg,#f8fafc_0%,#d7f2ef_100%)] ring-1 ring-[#d8e1eb]" />
+            <div className="min-w-0">
+              <p className="text-[0.36rem] font-bold leading-none text-[#607289]">{subject}</p>
+              <p className="mt-1 truncate text-[0.54rem] font-black leading-none text-[#123657]">{title}</p>
+              <p className="mt-1 truncate text-[0.36rem] font-bold leading-none text-[#607289]">{range}</p>
+              <div className="mt-1.5 h-1.5 rounded-full bg-[#e7eef6]">
+                <div className={`h-full rounded-full ${tone === "blue" ? "w-[38%] bg-[#25a8df]" : "w-[16%] bg-[#10a37f]"}`} />
+              </div>
+              <p className="mt-1 text-[0.32rem] font-bold leading-none text-[#607289]">{meta}</p>
             </div>
-          ))}
-        </div>
+            <span className="h-fit rounded-full border border-[#fde68a] bg-[#fff7ed] px-1.5 py-0.5 text-[0.32rem] font-black leading-none text-[#d97706]">
+              採点待ち
+            </span>
+          </div>
+        ))}
       </section>
     </MobileShell>
   );
@@ -369,40 +363,61 @@ function ScreenHomeMobile() {
 function ScreenSubmitMobile() {
   return (
     <MobileShell active="課題">
-      <button className="rounded-[8px] border border-[#d8e1eb] bg-white px-2.5 py-1.5 text-[0.48rem] font-black leading-none text-[#40536b]">
-        ← 課題一覧へ
-      </button>
-      <div className="mt-3 flex items-center gap-2">
-        <h3 className="min-w-0 flex-1 truncate text-[0.98rem] font-black leading-tight tracking-[-0.01em] text-[#123657]">数学IA標準</h3>
-        <StatusBadge>未提出</StatusBadge>
-      </div>
-      <p className="mt-1 text-[0.46rem] font-bold leading-relaxed text-[#607289]">山田太郎 ・ 数学 ・ 数と式 A-1 ・ 2回目</p>
-
-      <section className="mt-3 rounded-[9px] border border-[#d8e1eb] bg-white p-3">
-        <p className="text-[0.62rem] font-black leading-none text-[#123657]">課題</p>
-        <p className="mt-2 text-[0.44rem] font-bold leading-relaxed text-[#607289]">問題PDFと解答解説PDFを分離。提出後に同じ範囲の解答解説PDFを確認できます。</p>
-        <div className="mt-2 grid grid-cols-[1fr_auto_auto] items-center gap-1.5 rounded-[8px] border border-[#e4ebf2] bg-[#f8fbfd] p-2">
-          <span className="truncate text-[0.5rem] font-black text-[#123657]">数と式 A-1 問題.pdf</span>
-          <span className="rounded-[6px] border border-[#d8e1eb] bg-white px-2 py-1 text-[0.38rem] font-black text-[#40536b]">開く</span>
-          <span className="rounded-[6px] border border-[#d8e1eb] bg-white px-2 py-1 text-[0.38rem] font-black text-[#40536b]">保存</span>
+      <section className="rounded-[9px] border border-[#d8e1eb] border-l-[3px] border-l-[#25a8df] bg-white p-3">
+        <div className="grid grid-cols-[3.1rem_1fr] gap-2.5">
+          <div className="h-[4.3rem] rounded-[5px] bg-[linear-gradient(180deg,#f8fafc_0%,#d7f2ef_100%)] shadow-[0_8px_18px_-14px_rgba(11,29,74,0.5)] ring-1 ring-[#d8e1eb]" />
+          <div className="min-w-0">
+            <div className="flex flex-wrap gap-1.5">
+              <StatusBadge>今回の教材</StatusBadge>
+              <StatusBadge tone="blue">未提出</StatusBadge>
+            </div>
+            <h3 className="mt-2 truncate text-[0.98rem] font-black leading-tight tracking-[-0.01em] text-[#123657]">数学IA標準</h3>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {["数学", "数と式 B-1", "4回目"].map((label) => (
+                <span key={label} className="rounded-full bg-[#f2f6fa] px-2 py-1 text-[0.38rem] font-black leading-none text-[#607289]">
+                  {label}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
-      </section>
 
-      <section className="mt-3 rounded-[9px] border border-[#d8e1eb] bg-white p-3">
-        <p className="text-[0.62rem] font-black leading-none text-[#123657]">この課題を進める</p>
-        <div className="mt-2 grid min-h-9 place-items-center rounded-[7px] bg-[#25a8df] text-[0.54rem] font-black leading-none text-white">
-          一画面で書き込んで解く
+        <div className="mt-3 grid grid-cols-[1.65rem_1fr_auto] items-center gap-2 rounded-[8px] border border-[#d8e1eb] bg-[#fbfdff] p-2">
+          <span className="grid h-7 w-7 place-items-center rounded-[6px] bg-[#e0f2fe] text-[0.34rem] font-black leading-none text-[#0284c7]">
+            PDF
+          </span>
+          <div className="min-w-0">
+            <p className="truncate text-[0.54rem] font-black leading-none text-[#123657]">数と式 B-1.pdf</p>
+            <p className="mt-1 text-[0.34rem] font-bold leading-none text-[#607289]">問題PDF</p>
+          </div>
+          <div className="flex gap-1">
+            <span className="rounded-[6px] border border-[#d8e1eb] bg-white px-1.5 py-1 text-[0.34rem] font-black leading-none text-[#40536b]">開く</span>
+            <span className="rounded-[6px] border border-[#d8e1eb] bg-white px-1.5 py-1 text-[0.34rem] font-black leading-none text-[#40536b]">保存</span>
+          </div>
         </div>
-        <div className="mt-2 grid grid-cols-3 gap-1.5">
-          {["問題を開く", "答案を添付", "提出する"].map((label) => (
-            <span key={label} className="rounded-[7px] border border-[#cfe5f2] bg-[#f2fbff] px-1 py-1.5 text-center text-[0.36rem] font-black leading-none text-[#0284c7]">
-              {label}
+
+        <div className="mt-3 grid grid-cols-[1fr_1.12fr] gap-2">
+          <div className="grid min-h-[5.25rem] content-center gap-2 rounded-[8px] border border-[#9bd4ef] bg-[#eaf7fd] p-3">
+            <span className="grid h-8 w-8 place-items-center rounded-[7px] bg-[#25a8df] text-white" aria-hidden="true">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-3-3L5 17v3z" />
+                <path d="M13.5 8.5l2 2" />
+              </svg>
             </span>
-          ))}
-        </div>
-        <div className="mt-2 rounded-[10px] border border-dashed border-[#9bd4ef] bg-[#f0f9ff] p-3 text-center">
-          <p className="text-[0.58rem] font-black leading-none text-[#123657]">PDF・写真を添付する</p>
-          <p className="mt-1 text-[0.4rem] font-bold leading-relaxed text-[#607289]">GoodNotesのPDF、途中式の写真も最大3件まで</p>
+            <p className="text-[0.66rem] font-black leading-none text-[#123657]">画面で解く</p>
+          </div>
+          <div className="rounded-[8px] border border-[#d8e1eb] bg-white p-2">
+            <div className="flex items-center justify-between gap-1">
+              <p className="text-[0.52rem] font-black leading-none text-[#123657]">答案を提出</p>
+              <span className="rounded-full bg-[#f2f6fa] px-1.5 py-1 text-[0.3rem] font-black leading-none text-[#607289]">
+                最大3件
+              </span>
+            </div>
+            <div className="mt-2 rounded-[7px] border border-dashed border-[#9bd4ef] bg-[#f8fbff] p-2 text-center">
+              <p className="text-[0.46rem] font-black leading-tight text-[#123657]">答案ファイルを選ぶ</p>
+              <p className="mt-1 text-[0.32rem] font-bold leading-tight text-[#607289]">PDF・写真・GoodNotes</p>
+            </div>
+          </div>
         </div>
       </section>
     </MobileShell>
@@ -457,7 +472,7 @@ function MetricCard({ title, value, sub, tone }: { title: string; value: string;
 
 function ScreenHistoryMobile() {
   return (
-    <MobileShell active="成績">
+    <MobileShell active="ダッシュボード">
       <h3 className="text-[1rem] font-black leading-tight tracking-[-0.01em] text-[#123657]">学習レポート</h3>
       <p className="mt-1 text-[0.46rem] font-bold leading-none text-[#607289]">あなたの成績 ・ 高3です。</p>
 

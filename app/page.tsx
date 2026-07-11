@@ -214,50 +214,38 @@ const purchaseIncludes = [
   "家での進捗確認",
 ];
 
+const sampleAssetVersion = "20260711";
+
 const sampleScreens = [
   {
     title: "購入後に何が届くか",
-    body: "購入した教材がダッシュボードに入り、今日やる課題・自己採点・返却が分かれて表示されます。",
-    bullets: ["未提出件数を強調", "教材別の進捗も確認"],
-    src: "/samples/after-purchase-dashboard-v2.png",
+    body: "購入した教材がダッシュボードに自動で入り、教材表紙つきで現在地が表示されます。",
+    bullets: ["表紙と範囲名で確認", "合格数・採点待ちも教材別に確認"],
+    src: `/samples/after-purchase-dashboard-v2.png?v=${sampleAssetVersion}`,
     width: 724,
-    height: 835,
-    overlays: [
-      {
-        text: "こんにちは、山田太郎さん",
-        className:
-          "left-[4.9%] top-[8.6%] flex h-[5.1%] w-[50%] items-center whitespace-nowrap bg-[#23345f] pr-[0.5%] text-[clamp(0.82rem,3.2vw,1.54rem)] font-black leading-none text-white sm:text-[clamp(1rem,1.8vw,1.55rem)]",
-      },
-    ],
+    height: 204,
   },
   {
     title: "教材PDFの一部",
     body: "数学IA標準の問題PDFを、アプリ内やタブレットで縦スクロールしながら確認できます。",
     bullets: ["数式つきPDFも閲覧", "ペンで書き込んで保存"],
-    src: "/samples/material-pdf-math-sample.png",
+    src: `/samples/material-pdf-math-sample.png?v=${sampleAssetVersion}`,
     width: 1075,
     height: 1518,
   },
   {
     title: "提出画面",
-    body: "保存したPDFや途中式の写真を添付して提出できます。",
-    bullets: ["PDF・写真は最大3件", "提出前に添付内容を確認"],
-    src: "/samples/submit-screen-math-sample.png",
-    width: 732,
-    height: 796,
-    overlays: [
-      {
-        text: "山田太郎 ・ 数学",
-        className:
-          "left-[3.1%] top-[15.45%] flex h-[2.2%] w-[14.2%] items-center bg-[#f3f7fb] text-[clamp(0.36rem,1.18vw,0.58rem)] font-semibold text-[#607289]",
-      },
-    ],
+    body: "教材の表紙・範囲・問題PDFを確認し、そのまま画面で解くか、答案ファイルを添付して提出できます。",
+    bullets: ["画面で解く", "PDF・写真は最大3件", "提出前に添付内容を確認"],
+    src: `/samples/submit-screen-math-sample.png?v=${sampleAssetVersion}`,
+    width: 666,
+    height: 387,
   },
   {
     title: "解答解説PDFの見え方",
     body: "提出後に同じ範囲の解答解説PDFを開き、考え方と途中式を見ながら自己採点できます。",
     bullets: ["数学IA標準 A-1", "考え方・途中式つき"],
-    src: "/samples/answer-key-math-sample.png",
+    src: `/samples/answer-key-math-sample.png?v=${sampleAssetVersion}`,
     width: 1075,
     height: 1518,
   },
@@ -265,7 +253,7 @@ const sampleScreens = [
     title: "返却画面",
     body: "先生の採点コメント、添削PDF、再提出の指示を返却タブで確認します。",
     bullets: ["自己採点とは別画面", "再提出が必要なものを確認"],
-    src: "/samples/returned-screen-v2.png",
+    src: `/samples/returned-screen-v2.png?v=${sampleAssetVersion}`,
     width: 411,
     height: 362,
   },
@@ -273,7 +261,7 @@ const sampleScreens = [
     title: "レポート画面",
     body: "合格率・平均点・教科別の成績・返却履歴をひとつの画面で振り返れます。",
     bullets: ["数値と履歴で確認", "返却コメントや再提出依頼も残る"],
-    src: "/samples/report-screen-v2.png",
+    src: `/samples/report-screen-v2.png?v=${sampleAssetVersion}`,
     width: 980,
     height: 1180,
     overlays: [
