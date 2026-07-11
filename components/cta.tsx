@@ -15,14 +15,14 @@ export function PrimaryCta({ href, children }: { href: string; children: React.R
   return (
     <Link
       href={href}
-      className="group/cta relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-full px-7 text-[0.98rem] font-bold tracking-[0.01em] text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px hover:shadow-[0_22px_44px_-14px_rgba(234,88,12,0.8)]"
+      className="group/cta relative inline-flex min-h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-full px-5 text-center text-[0.94rem] font-bold leading-snug tracking-[0] text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px hover:shadow-[0_22px_44px_-14px_rgba(234,88,12,0.8)] sm:w-auto sm:px-7 sm:text-[0.98rem] sm:tracking-[0.01em]"
     >
       <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
       <span
         aria-hidden="true"
         className="absolute -inset-x-1 -inset-y-1 -translate-x-full bg-[linear-gradient(110deg,transparent_30%,rgba(255,255,255,0.5)_50%,transparent_70%)] transition duration-700 group-hover/cta:translate-x-full"
       />
-      <span className="relative">{children}</span>
+      <span className="relative min-w-0">{children}</span>
     </Link>
   );
 }
@@ -43,7 +43,7 @@ export function SecondaryCta({
   return (
     <Link
       href={href}
-      className={`inline-flex min-h-12 items-center justify-center rounded-full border px-7 text-[0.98rem] font-semibold tracking-[0.01em] transition ${styles}`}
+      className={`inline-flex min-h-12 w-full items-center justify-center rounded-full border px-5 text-center text-[0.94rem] font-semibold leading-snug tracking-[0] transition sm:w-auto sm:px-7 sm:text-[0.98rem] sm:tracking-[0.01em] ${styles}`}
     >
       {children}
     </Link>
@@ -115,9 +115,14 @@ export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
       <div className="relative grid items-center gap-9 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12">
         {/* 左：メッセージ＋アクション */}
         <div className="text-center lg:text-left">
-          <p className="inline-flex items-center gap-1.5 rounded-full bg-[#f97316] px-3.5 py-1 text-[0.72rem] font-bold tracking-[0.04em] text-white shadow-[0_10px_24px_-10px_rgba(234,88,12,0.9)]">
+          <p className="inline-flex max-w-full items-center gap-1.5 rounded-full bg-[#f97316] px-3 py-1 text-center text-[0.68rem] font-bold leading-snug tracking-[0] text-white shadow-[0_10px_24px_-10px_rgba(234,88,12,0.9)] sm:px-3.5 sm:text-[0.72rem] sm:tracking-[0.04em]">
             <span aria-hidden="true">🎁</span>
-            {campaign ? `${CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割` : "教材は、修了までずっと自分のもの"}
+            {campaign ? (
+              <>
+                <span className="sm:hidden">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで パック割</span>
+                <span className="hidden sm:inline">{CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割</span>
+              </>
+            ) : "教材は、修了までずっと自分のもの"}
           </p>
           <h2 className="mt-4 text-[1.55rem] font-extrabold leading-[1.32] tracking-[-0.01em] text-white sm:text-[2rem]">
             {title ?? "1冊を、最後までやり切る。"}

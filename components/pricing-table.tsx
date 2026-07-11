@@ -3,6 +3,7 @@ import Link from "next/link";
 import {
   buyoutTotal,
   CAMPAIGN_DEADLINE_LABEL,
+  CAMPAIGN_DEADLINE_SHORT_LABEL,
   formatYen,
   GRADING_COUNT,
   isCampaignActive,
@@ -90,7 +91,7 @@ export function PricingTable({
   return (
     <div className="mx-auto max-w-2xl">
       <div className="overflow-hidden rounded-[24px] bg-white shadow-[0_44px_90px_-55px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.1)]">
-        <div className="flex items-center justify-between bg-[linear-gradient(120deg,#0b1d4a_0%,#0f5e5e_100%)] px-5 py-4 text-white sm:px-7">
+        <div className="flex flex-col gap-1 bg-[linear-gradient(120deg,#0b1d4a_0%,#0f5e5e_100%)] px-5 py-4 text-white sm:flex-row sm:items-center sm:justify-between sm:px-7">
           <p className="text-[0.98rem] font-extrabold tracking-wide">料金表</p>
           <p className="text-[0.74rem] text-white/80">教材ごとの買い切り・税込</p>
         </div>
@@ -119,15 +120,21 @@ export function PricingTable({
               <span className="pb-2.5 text-[1.05rem] font-bold">円</span>
             </p>
             <p className="mt-2 text-[0.84rem] font-semibold text-[#0f766e]">約{PROGRAM_DAYS}日ぶん・毎回そのつど添削つき</p>
-            <p className="mt-1 text-[0.8rem] text-[#64748b]">
-              買い切り <span className="font-bold text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}〜</span>（税込・添削約{GRADING_COUNT}回＋習慣化アプリ込み）を約{GRADING_COUNT}回分でならすと1日{PER_DAY_PRICE}円。
+            <p className="mt-1 text-[0.8rem] leading-[1.65] text-[#64748b]">
+              <span className="sm:hidden">
+                買い切り <span className="font-bold text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}〜</span>。約{GRADING_COUNT}回分で1日{PER_DAY_PRICE}円。
+              </span>
+              <span className="hidden sm:inline">
+                買い切り <span className="font-bold text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}〜</span>（税込・添削約{GRADING_COUNT}回＋習慣化アプリ込み）を約{GRADING_COUNT}回分でならすと1日{PER_DAY_PRICE}円。
+              </span>
             </p>
             {campaign ? (
               <p className="mt-3.5 flex flex-wrap items-center justify-center gap-2">
-                <span className="inline-flex -rotate-2 items-center rounded-[10px] bg-[#fff1e6] px-3 py-1 text-[0.78rem] font-extrabold text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">
-                  {CAMPAIGN_DEADLINE_LABEL}まで 2教材以上でパック割
+                <span className="inline-flex items-center rounded-[10px] bg-[#fff1e6] px-3 py-1 text-center text-[0.76rem] font-extrabold leading-snug text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)] sm:-rotate-2 sm:text-[0.78rem]">
+                  <span className="sm:hidden">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで パック割</span>
+                  <span className="hidden sm:inline">{CAMPAIGN_DEADLINE_LABEL}まで 2教材以上でパック割</span>
                 </span>
-                <span className="inline-flex rotate-1 items-center rounded-[10px] bg-[#0b1d4a] px-3 py-1 text-[0.78rem] font-extrabold text-white shadow-[0_10px_18px_-14px_rgba(11,29,74,0.8)]">
+                <span className="inline-flex items-center rounded-[10px] bg-[#0b1d4a] px-3 py-1 text-[0.76rem] font-extrabold text-white shadow-[0_10px_18px_-14px_rgba(11,29,74,0.8)] sm:rotate-1 sm:text-[0.78rem]">
                   1教材あたり {formatYen(PACK_UNIT_SAVINGS)} OFF
                 </span>
               </p>
@@ -172,7 +179,7 @@ export function PricingTable({
                   )}
                 </span>
                 {t.popular ? (
-                  <span className="absolute -right-2 -top-3 -rotate-6 rounded-[8px] bg-[#0b1d4a] px-2.5 py-1 text-[0.62rem] font-extrabold tracking-[0.04em] text-white shadow-[0_8px_16px_-8px_rgba(11,29,74,0.8)]">
+                  <span className="absolute right-2 top-1 rounded-[8px] bg-[#0b1d4a] px-2.5 py-1 text-[0.62rem] font-extrabold tracking-[0.04em] text-white shadow-[0_8px_16px_-8px_rgba(11,29,74,0.8)] sm:-right-2 sm:-top-3 sm:-rotate-6">
                     {formatYen(t.savings)}おトク
                   </span>
                 ) : null}
@@ -185,7 +192,10 @@ export function PricingTable({
               </span>
               <span className="flex-1 text-[0.84rem] leading-[1.6] text-[#475569]">
                 {campaign ? (
-                  <>パック割で <strong className="font-bold text-[#0b1d4a]">1教材 {formatYen(PACK_UNIT_PRICE)}</strong>（通常より1教材あたり{formatYen(PACK_UNIT_SAVINGS)}OFF・{CAMPAIGN_DEADLINE_LABEL}まで）</>
+                  <>
+                    <span className="sm:hidden">パック割で <strong className="font-bold text-[#0b1d4a]">1教材 {formatYen(PACK_UNIT_PRICE)}</strong>。{CAMPAIGN_DEADLINE_SHORT_LABEL}まで。</span>
+                    <span className="hidden sm:inline">パック割で <strong className="font-bold text-[#0b1d4a]">1教材 {formatYen(PACK_UNIT_PRICE)}</strong>（通常より1教材あたり{formatYen(PACK_UNIT_SAVINGS)}OFF・{CAMPAIGN_DEADLINE_LABEL}まで）</span>
+                  </>
                 ) : (
                   <>1教材 <strong className="font-bold text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}</strong> ×（必要な数だけ）</>
                 )}

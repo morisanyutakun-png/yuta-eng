@@ -5,7 +5,7 @@ import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
 import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
-import { CAMPAIGN_DEADLINE_LABEL, formatYen, packSavings, PACK_UNIT_SAVINGS } from "@/lib/pricing";
+import { CAMPAIGN_DEADLINE_LABEL, CAMPAIGN_DEADLINE_SHORT_LABEL, formatYen, packSavings, PACK_UNIT_SAVINGS } from "@/lib/pricing";
 import {
   createBreadcrumbJsonLd,
   createContactPageJsonLd,
@@ -108,18 +108,22 @@ export default function ContactPage() {
             </ol>
           </nav>
           <div className="py-10 sm:py-14 lg:py-16">
-            <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.72rem] font-bold uppercase tracking-[0.12em] text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.3)]">
+            <p className="inline-flex max-w-full items-center gap-2 rounded-full bg-white px-3 py-1.5 text-center text-[0.68rem] font-bold uppercase leading-snug tracking-[0] text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.3)] sm:px-3.5 sm:text-[0.72rem] sm:tracking-[0.12em]">
               <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
-              {CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割・入会金0円
+              <span className="sm:hidden">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで パック割・入会金0円</span>
+              <span className="hidden sm:inline">{CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割・入会金0円</span>
             </p>
-            <h1 className="mt-5 text-balance text-[2.05rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.7rem] sm:leading-[1.18] lg:text-[3rem]">
+            <h1 className="mt-5 text-[1.8rem] font-extrabold leading-[1.3] tracking-[0] text-[#0b1d4a] sm:text-balance sm:text-[2.7rem] sm:leading-[1.18] sm:tracking-[-0.01em] lg:text-[3rem]">
               買い切りで、
               <br className="hidden sm:block" />
               ノビットを始める。
             </h1>
-            <p className="mt-6 max-w-2xl text-pretty text-[1rem] leading-[1.95] text-[#334155] sm:text-[1.06rem]">
-              物理・化学・数学・英語の答案を、添削する授業をしないオンライン塾です。
-              面談や勧誘は一切ありません。下記から、希望の教材を添えてお気軽にお申し込み・ご相談ください。
+            <p className="mt-5 max-w-2xl text-[0.9rem] leading-[1.75] text-[#334155] sm:mt-6 sm:text-pretty sm:text-[1.06rem] sm:leading-[1.95]">
+              <span className="sm:hidden">希望教材を添えて、メールで申し込み・相談できます。面談や勧誘はありません。</span>
+              <span className="hidden sm:inline">
+                物理・化学・数学・英語の答案を、添削する授業をしないオンライン塾です。
+                面談や勧誘は一切ありません。下記から、希望の教材を添えてお気軽にお申し込み・ご相談ください。
+              </span>
             </p>
             <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
               <a

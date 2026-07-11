@@ -9,7 +9,7 @@ import { PostPurchaseTeaser } from "@/components/post-purchase-flow";
 import { PricingTable, SubjectChips } from "@/components/pricing-table";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createOrganizationJsonLd } from "@/lib/structured-data";
-import { CAMPAIGN_DEADLINE_LABEL, formatYen, packSavings } from "@/lib/pricing";
+import { CAMPAIGN_DEADLINE_LABEL, CAMPAIGN_DEADLINE_SHORT_LABEL, formatYen, packSavings } from "@/lib/pricing";
 
 export const metadata: Metadata = createPageMetadata({
   title: "料金・お申し込み｜教材を選んで買い切りではじめる",
@@ -54,15 +54,17 @@ export default async function ApplyPage({
             </ol>
           </nav>
           <div className="py-9 sm:py-12">
-            <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.72rem] font-bold tracking-[0.06em] text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.3)]">
+            <p className="inline-flex max-w-full items-center gap-2 rounded-full bg-white px-3 py-1.5 text-center text-[0.68rem] font-bold leading-snug tracking-[0] text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.3)] sm:px-3.5 sm:text-[0.72rem] sm:tracking-[0.06em]">
               <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
-              {CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割・入会金0円
+              <span className="sm:hidden">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで パック割・入会金0円</span>
+              <span className="hidden sm:inline">{CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割・入会金0円</span>
             </p>
-            <h1 className="mt-4 text-[2rem] font-extrabold leading-[1.22] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.6rem]">
+            <h1 className="mt-4 text-[1.75rem] font-extrabold leading-[1.3] tracking-[0] text-[#0b1d4a] sm:text-[2.6rem] sm:leading-[1.22] sm:tracking-[-0.01em]">
               教材を選んで、申し込む。
             </h1>
-            <p className="mt-4 max-w-2xl text-[0.98rem] leading-[1.9] text-[#334155]">
-              面談も勧誘もありません。やり切る教材を選ぶと買い切り価格が自動で決まり、そのまま安全な決済（一括）に進めます。
+            <p className="mt-4 max-w-2xl text-[0.9rem] leading-[1.75] text-[#334155] sm:text-[0.98rem] sm:leading-[1.9]">
+              <span className="sm:hidden">教材を選ぶと、合計金額が自動で分かります。面談・勧誘はありません。</span>
+              <span className="hidden sm:inline">面談も勧誘もありません。やり切る教材を選ぶと買い切り価格が自動で決まり、そのまま安全な決済（一括）に進めます。</span>
             </p>
             <ol className="mt-6 grid gap-3 sm:grid-cols-3">
               {steps.map((s) => (
@@ -88,12 +90,16 @@ export default async function ApplyPage({
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#ea580c]">
               Price · 料金・対応教材
             </p>
-            <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
-              {CAMPAIGN_DEADLINE_LABEL}まで、2教材で{formatYen(packSavings(2, true))}おトク。
+            <h2 className="mt-3 text-[1.42rem] font-extrabold leading-[1.45] tracking-[0] text-[#0b1d4a] sm:text-[2rem] sm:leading-[1.35] sm:tracking-[-0.005em]">
+              <span className="sm:hidden">2教材で{formatYen(packSavings(2, true))}おトク。</span>
+              <span className="hidden sm:inline">{CAMPAIGN_DEADLINE_LABEL}まで、2教材で{formatYen(packSavings(2, true))}おトク。</span>
             </h2>
-            <p className="mt-3 text-[0.95rem] leading-[1.9] text-[#475569]">
-              入会金・追加費用は0円。理系を中心に10教材から、必要な教材だけ選べます。
-              <strong className="font-bold text-[#ea580c]">2教材以上なら、期間限定のパック割が適用されます</strong>。
+            <p className="mt-3 text-[0.88rem] leading-[1.75] text-[#475569] sm:text-[0.95rem] sm:leading-[1.9]">
+              <span className="sm:hidden">入会金・追加費用は0円。必要な教材だけ選べます。</span>
+              <span className="hidden sm:inline">
+                入会金・追加費用は0円。理系を中心に10教材から、必要な教材だけ選べます。
+                <strong className="font-bold text-[#ea580c]">2教材以上なら、期間限定のパック割が適用されます</strong>。
+              </span>
             </p>
           </div>
           <SubjectChips className="mx-auto mt-8 max-w-3xl" />
@@ -111,7 +117,7 @@ export default async function ApplyPage({
             <p className="text-[0.72rem] font-bold uppercase tracking-[0.22em] text-[#0f766e]">
               Apply · 教材を選んで申し込む
             </p>
-            <h2 className="mt-3 text-[1.6rem] font-extrabold leading-[1.35] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2rem]">
+            <h2 className="mt-3 text-[1.42rem] font-extrabold leading-[1.45] tracking-[0] text-[#0b1d4a] sm:text-[2rem] sm:leading-[1.35] sm:tracking-[-0.005em]">
               やり切る教材を選ぶと、買い切り価格が決まります。
             </h2>
           </div>
