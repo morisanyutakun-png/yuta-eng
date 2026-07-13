@@ -10,7 +10,9 @@ import {
   GRADING_COUNT,
   isCampaignActive,
   listTotal,
+  MATERIAL_PRICE,
   packSavings,
+  PACK_UNIT_PRICE,
   PACK_UNIT_SAVINGS,
   SUBJECT_AREAS,
   SUBJECTS,
@@ -130,6 +132,8 @@ const MATERIAL_PROFILES: Record<string, MaterialProfile> = {
   },
 };
 
+const PRODUCT_LIST_ID = "apply-product-list";
+
 function getMaterialProfile(subject: (typeof SUBJECTS)[number]) {
   return MATERIAL_PROFILES[subject.id] ?? {
     title: `${subject.label} 教材`,
@@ -184,11 +188,22 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
         .filter((subject): subject is (typeof SUBJECTS)[number] => Boolean(subject)),
     [selected],
   );
+  const selectedSummary = useMemo(
+    () =>
+      selectedMaterials
+        .map((subject) => subject.label)
+        .join("・"),
+    [selectedMaterials],
+  );
 
   function toggle(id: string) {
     setSelected((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
     );
+  }
+
+  function scrollToProducts() {
+    document.getElementById(PRODUCT_LIST_ID)?.scrollIntoView({ block: "start" });
   }
 
   async function submit() {
@@ -216,7 +231,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
 
   return (
     <>
-    <div className="grid gap-8 pb-28 lg:grid-cols-[1.2fr_0.8fr] lg:items-start lg:gap-10 lg:pb-0">
+    <div className="grid gap-8 pb-40 lg:grid-cols-[1.2fr_0.8fr] lg:items-start lg:gap-10 lg:pb-0">
       {/* 教材選択 */}
       <div className="order-1">
         {canceled ? (
@@ -225,17 +240,23 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
           </p>
         ) : null}
 
-        <div>
-          <p className="text-[0.84rem] font-bold text-[#0b1d4a]">
-            <span className="hidden lg:inline">① </span>購入する教材を選ぶ
+        <div id={PRODUCT_LIST_ID}>
+          <p className="text-[0.78rem] font-extrabold uppercase tracking-[0.16em] text-[#0f766e]">
+            商品一覧
+          </p>
+          <p className="mt-1 text-[1.02rem] font-extrabold text-[#0b1d4a]">
+            <span className="hidden lg:inline">① </span>購入する教材をカートに入れる
           </p>
           <p className="mt-1 text-[0.8rem] leading-[1.8] text-[#64748b]">
             <span className="lg:hidden">
-              タップで教材を選ぶと、画面下のカートに合計金額が出ます。2教材以上は{CAMPAIGN_DEADLINE_SHORT_LABEL}までパック割。
+              下のカードが購入できる商品です。教材をタップすると、画面下のカートに入り、合計金額が変わります。
             </span>
             <span className="hidden lg:inline">
               教材名・目安レベル・対象を確認して選べます。1教材＝約{GRADING_COUNT}日分、2教材以上は{CAMPAIGN_DEADLINE_LABEL}までパック割です。
             </span>
+          </p>
+          <p className="mt-3 inline-flex max-w-full items-center rounded-[12px] bg-white px-3 py-2 text-[0.78rem] font-bold leading-snug text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]">
+            1教材 {formatYen(MATERIAL_PRICE)} ／ 2教材以上は1教材 {formatYen(PACK_UNIT_PRICE)}
           </p>
         </div>
 
@@ -280,6 +301,9 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                           <span className="block min-w-0 flex-1">
                             <span className="flex items-start justify-between gap-2">
                               <span className="flex min-w-0 flex-wrap items-center gap-1.5">
+                                <span className="rounded-full bg-[#0b1d4a] px-2.5 py-1 text-[0.65rem] font-bold text-white sm:text-[0.7rem]">
+                                  商品
+                                </span>
                                 <span
                                   className="rounded-full px-2.5 py-1 text-[0.65rem] font-bold text-white sm:text-[0.7rem]"
                                   style={{ background: color }}
@@ -310,6 +334,23 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                               <span className="font-bold text-[#334155]">収録範囲：</span>
                               <span className="hidden sm:inline">{profile.coverage}</span>
                               <span className="sm:hidden">約{GRADING_COUNT}回分・提出ごとに添削つき。</span>
+                            </span>
+                            <span className="mt-3 flex items-center justify-between gap-2 border-t border-[rgba(15,29,74,0.08)] pt-3">
+                              <span className="min-w-0">
+                                <span className="block text-[0.68rem] font-bold text-[#64748b]">買い切り</span>
+                                <span className="block text-[0.98rem] font-extrabold leading-none text-[#0b1d4a]">
+                                  {formatYen(MATERIAL_PRICE)}
+                                </span>
+                              </span>
+                              <span
+                                className={`inline-flex min-h-9 shrink-0 items-center justify-center rounded-full px-3 text-[0.76rem] font-extrabold ${
+                                  on
+                                    ? "bg-[#ecfdf5] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.22)]"
+                                    : "bg-[#fff7ed] text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.22)]"
+                                }`}
+                              >
+                                {on ? "追加済み" : "カートに追加"}
+                              </span>
                             </span>
                           </span>
                         </span>
@@ -406,8 +447,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
         </div>
       </div>
     </div>
-    {count > 0 ? (
-      <div className="fixed inset-x-0 bottom-0 z-50 lg:hidden" role="region" aria-label="選択中の教材カート">
+      <div className="fixed inset-x-0 bottom-0 z-50 lg:hidden" role="region" aria-label="購入カート">
         <div className="mx-auto max-w-[40rem] px-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
           <div className="rounded-[18px] bg-white/95 p-3 shadow-[0_18px_50px_-18px_rgba(11,29,74,0.45)] ring-1 ring-[rgba(15,29,74,0.12)] backdrop-blur">
             {error ? (
@@ -417,35 +457,47 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
             ) : null}
             <div className="flex items-center gap-3">
               <span className="flex w-[4.8rem] shrink-0 items-center -space-x-2" aria-hidden="true">
-                {selectedMaterials.slice(0, 3).map((s) => {
-                  const cover = getMaterialProfile(s).cover;
-                  return cover ? (
-                    <MaterialCoverFrame
-                      key={s.id}
-                      cover={cover}
-                      className="h-12 w-[2.15rem] rounded-[5px] ring-2 ring-white"
-                      imageClassName="h-full"
-                    />
-                  ) : (
-                    <span
-                      key={s.id}
-                      className="grid h-12 w-[2.15rem] place-items-center rounded-[5px] bg-[#f1f5f9] text-[0.68rem] font-extrabold text-[#0b1d4a] ring-2 ring-white"
-                    >
-                      {s.label.slice(0, 1)}
-                    </span>
-                  );
-                })}
-                {count > 3 ? (
-                  <span className="grid h-12 w-[2.15rem] place-items-center rounded-[5px] bg-[#0b1d4a] text-[0.7rem] font-extrabold text-white ring-2 ring-white">
-                    +{count - 3}
+                {count === 0 ? (
+                  <span className="grid h-12 w-[3rem] place-items-center rounded-[10px] bg-[#f8fafc] text-[0.7rem] font-extrabold leading-tight text-[#94a3b8] ring-1 ring-[rgba(15,29,74,0.08)]">
+                    空
                   </span>
-                ) : null}
+                ) : (
+                  <>
+                    {selectedMaterials.slice(0, 3).map((s) => {
+                      const cover = getMaterialProfile(s).cover;
+                      return cover ? (
+                        <MaterialCoverFrame
+                          key={s.id}
+                          cover={cover}
+                          className="h-12 w-[2.15rem] rounded-[5px] ring-2 ring-white"
+                          imageClassName="h-full"
+                        />
+                      ) : (
+                        <span
+                          key={s.id}
+                          className="grid h-12 w-[2.15rem] place-items-center rounded-[5px] bg-[#f1f5f9] text-[0.68rem] font-extrabold text-[#0b1d4a] ring-2 ring-white"
+                        >
+                          {s.label.slice(0, 1)}
+                        </span>
+                      );
+                    })}
+                    {count > 3 ? (
+                      <span className="grid h-12 w-[2.15rem] place-items-center rounded-[5px] bg-[#0b1d4a] text-[0.7rem] font-extrabold text-white ring-2 ring-white">
+                        +{count - 3}
+                      </span>
+                    ) : null}
+                  </>
+                )}
               </span>
               <div className="min-w-0 flex-1" aria-live="polite">
                 <p className="truncate text-[0.74rem] font-bold text-[#0f766e]">
-                  カートに{count}教材
+                  購入カート：{count}教材
+                </p>
+                <p className="mt-0.5 truncate text-[0.68rem] font-semibold text-[#64748b]">
+                  {count === 0 ? "商品カードをタップして追加" : selectedSummary}
                 </p>
                 <p className="mt-0.5 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                  <span className="text-[0.7rem] font-bold text-[#475569]">合計</span>
                   <span className="text-[1.18rem] font-extrabold leading-none text-[#0b1d4a]">
                     {formatYen(total)}
                   </span>
@@ -462,20 +514,19 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
               </div>
               <button
                 type="button"
-                onClick={submit}
+                onClick={count === 0 ? scrollToProducts : submit}
                 disabled={loading}
-                className="relative inline-flex min-h-11 shrink-0 items-center justify-center overflow-hidden rounded-full px-4 text-[0.86rem] font-bold text-white shadow-[0_12px_24px_-14px_rgba(234,88,12,0.85)] transition enabled:active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60"
+                className="relative inline-flex min-h-11 shrink-0 items-center justify-center overflow-hidden rounded-full px-4 text-[0.86rem] font-bold text-white shadow-[0_12px_24px_-14px_rgba(234,88,12,0.85)] transition enabled:active:translate-y-px disabled:cursor-not-allowed disabled:opacity-55"
               >
                 <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
                 <span className="relative whitespace-nowrap">
-                  {loading ? "移動中..." : "会計へ"}
+                  {loading ? "移動中..." : count === 0 ? "商品を見る" : "会計へ"}
                 </span>
               </button>
             </div>
           </div>
         </div>
       </div>
-    ) : null}
     </>
   );
 }
