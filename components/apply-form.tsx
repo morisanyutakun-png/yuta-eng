@@ -146,14 +146,14 @@ function getMaterialProfile(subject: (typeof SUBJECTS)[number]) {
 function MaterialCoverFrame({
   cover,
   className = "",
-  imageClassName = "aspect-[71/100] h-auto",
+  imageClassName = "scale-[1.06]",
 }: {
   cover: NonNullable<MaterialProfile["cover"]>;
   className?: string;
   imageClassName?: string;
 }) {
   return (
-    <span className={`block shrink-0 overflow-hidden rounded-md bg-[#f8fafc] shadow-[0_16px_28px_-20px_rgba(11,29,74,0.7)] ring-1 ring-[rgba(15,29,74,0.08)] ${className}`}>
+    <span className={`block aspect-[71/100] shrink-0 overflow-hidden rounded-md bg-[#f8fafc] shadow-[0_16px_28px_-20px_rgba(11,29,74,0.7)] ring-1 ring-[rgba(15,29,74,0.08)] ${className}`}>
       <picture className="block h-full w-full">
         <source type="image/avif" srcSet={`/books/${cover.asin}.avif`} />
         <source type="image/webp" srcSet={`/books/${cover.asin}.webp`} />
@@ -164,7 +164,7 @@ function MaterialCoverFrame({
           height={451}
           loading="lazy"
           decoding="async"
-          className={`block w-full object-cover ${imageClassName}`}
+          className={`block h-full w-full object-cover ${imageClassName}`}
         />
       </picture>
     </span>
@@ -296,7 +296,14 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                       >
                         <span className="flex min-w-0 gap-3 sm:gap-3.5">
                           {profile.cover ? (
-                            <MaterialCoverFrame cover={profile.cover} className="w-[4.15rem] sm:w-[4.7rem]" />
+                            <span
+                              className="flex w-[5.25rem] shrink-0 self-stretch rounded-[10px] p-1.5 ring-1 ring-[rgba(15,29,74,0.06)] sm:w-[5.85rem] sm:p-2"
+                              style={{
+                                background: `linear-gradient(180deg, ${color}22 0%, rgba(248,250,252,0.9) 100%)`,
+                              }}
+                            >
+                              <MaterialCoverFrame cover={profile.cover} className="w-full self-start rounded-[7px] sm:rounded-lg" />
+                            </span>
                           ) : null}
                           <span className="block min-w-0 flex-1">
                             <span className="flex items-start justify-between gap-2">
@@ -470,7 +477,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                           key={s.id}
                           cover={cover}
                           className="h-12 w-[2.15rem] rounded-[5px] ring-2 ring-white"
-                          imageClassName="h-full"
+                          imageClassName="scale-[1.06]"
                         />
                       ) : (
                         <span
