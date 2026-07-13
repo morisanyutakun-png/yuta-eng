@@ -139,6 +139,34 @@ function getMaterialProfile(subject: (typeof SUBJECTS)[number]) {
   };
 }
 
+function MaterialCoverFrame({
+  cover,
+  className = "",
+  imageClassName = "aspect-[71/100] h-auto",
+}: {
+  cover: NonNullable<MaterialProfile["cover"]>;
+  className?: string;
+  imageClassName?: string;
+}) {
+  return (
+    <span className={`block shrink-0 overflow-hidden rounded-md bg-[#f8fafc] shadow-[0_16px_28px_-20px_rgba(11,29,74,0.7)] ring-1 ring-[rgba(15,29,74,0.08)] ${className}`}>
+      <picture className="block h-full w-full">
+        <source type="image/avif" srcSet={`/books/${cover.asin}.avif`} />
+        <source type="image/webp" srcSet={`/books/${cover.asin}.webp`} />
+        <img
+          src={`/books/${cover.asin}.webp`}
+          alt={cover.alt}
+          width={320}
+          height={451}
+          loading="lazy"
+          decoding="async"
+          className={`block w-full object-cover ${imageClassName}`}
+        />
+      </picture>
+    </span>
+  );
+}
+
 export function ApplyForm({ canceled }: { canceled?: boolean }) {
   const [selected, setSelected] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -187,9 +215,10 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
   }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start lg:gap-10">
+    <>
+    <div className="grid gap-8 pb-28 lg:grid-cols-[1.2fr_0.8fr] lg:items-start lg:gap-10 lg:pb-0">
       {/* 教材選択 */}
-      <div className="order-2 lg:order-1">
+      <div className="order-1">
         {canceled ? (
           <p className="mb-5 rounded-[14px] bg-[#fff7ed] px-4 py-3 text-[0.86rem] font-semibold text-[#9a3412] ring-1 ring-[rgba(234,88,12,0.2)]">
             お支払いはキャンセルされました。教材を選び直して、いつでもやり直せます。
@@ -202,7 +231,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
           </p>
           <p className="mt-1 text-[0.8rem] leading-[1.8] text-[#64748b]">
             <span className="lg:hidden">
-              タップで教材を選ぶと、合計金額が出ます。2教材以上は{CAMPAIGN_DEADLINE_SHORT_LABEL}までパック割。
+              タップで教材を選ぶと、画面下のカートに合計金額が出ます。2教材以上は{CAMPAIGN_DEADLINE_SHORT_LABEL}までパック割。
             </span>
             <span className="hidden lg:inline">
               教材名・目安レベル・対象を確認して選べます。1教材＝約{GRADING_COUNT}日分、2教材以上は{CAMPAIGN_DEADLINE_LABEL}までパック割です。
@@ -230,7 +259,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                         type="button"
                         onClick={() => toggle(s.id)}
                         aria-pressed={on}
-                        className={`relative min-h-0 rounded-lg p-3 text-left transition sm:min-h-[13.25rem] sm:p-4 ${
+                        className={`relative min-h-0 overflow-hidden rounded-lg p-3 text-left transition sm:min-h-[13.25rem] sm:p-4 ${
                           on
                             ? "bg-white shadow-[0_16px_30px_-26px_rgba(11,29,74,0.7)] ring-2 sm:shadow-[0_24px_42px_-30px_rgba(11,29,74,0.7)]"
                             : "bg-white text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.1)] hover:-translate-y-0.5 hover:ring-[rgba(15,29,74,0.24)]"
@@ -244,56 +273,43 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                             : undefined
                         }
                       >
-                        <span className="flex items-start justify-between gap-3">
-                          <span
-                            className="rounded-full px-2.5 py-1 text-[0.65rem] font-bold text-white sm:text-[0.7rem]"
-                            style={{ background: color }}
-                          >
-                            {s.label}
-                          </span>
-                          <span
-                            className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[0.78rem] font-extrabold ${
-                              on ? "text-white" : "text-transparent ring-1 ring-[rgba(15,29,74,0.14)]"
-                            }`}
-                            style={on ? { background: color } : undefined}
-                            aria-hidden="true"
-                          >
-                            ✓
-                          </span>
-                        </span>
-                        <span className={`mt-2 flex gap-3 sm:mt-3 ${profile.cover ? "items-start" : ""}`}>
+                        <span className="flex min-w-0 gap-3 sm:gap-3.5">
                           {profile.cover ? (
-                            <span className="hidden w-[4.7rem] shrink-0 overflow-hidden rounded-md bg-[#f8fafc] shadow-[0_16px_28px_-20px_rgba(11,29,74,0.7)] ring-1 ring-[rgba(15,29,74,0.08)] sm:block">
-                              <picture>
-                                <source type="image/avif" srcSet={`/books/${profile.cover.asin}.avif`} />
-                                <source type="image/webp" srcSet={`/books/${profile.cover.asin}.webp`} />
-                                <img
-                                  src={`/books/${profile.cover.asin}.webp`}
-                                  alt={profile.cover.alt}
-                                  width={320}
-                                  height={451}
-                                  loading="lazy"
-                                  decoding="async"
-                                  className="block aspect-[71/100] h-auto w-full object-cover"
-                                />
-                              </picture>
-                            </span>
+                            <MaterialCoverFrame cover={profile.cover} className="w-[4.15rem] sm:w-[4.7rem]" />
                           ) : null}
                           <span className="block min-w-0 flex-1">
-                            <span className="block text-[0.9rem] font-extrabold leading-[1.42] text-[#0b1d4a] sm:text-[1.03rem] sm:leading-[1.45]">
+                            <span className="flex items-start justify-between gap-2">
+                              <span className="flex min-w-0 flex-wrap items-center gap-1.5">
+                                <span
+                                  className="rounded-full px-2.5 py-1 text-[0.65rem] font-bold text-white sm:text-[0.7rem]"
+                                  style={{ background: color }}
+                                >
+                                  {s.label}
+                                </span>
+                                <span className="rounded-full bg-[#f1f5f9] px-2 py-1 text-[0.64rem] font-bold text-[#475569] sm:text-[0.7rem]">
+                                  {profile.level}
+                                </span>
+                              </span>
+                              <span
+                                className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[0.78rem] font-extrabold ${
+                                  on ? "text-white" : "text-transparent ring-1 ring-[rgba(15,29,74,0.14)]"
+                                }`}
+                                style={on ? { background: color } : undefined}
+                                aria-hidden="true"
+                              >
+                                ✓
+                              </span>
+                            </span>
+                            <span className="mt-2 block text-[0.9rem] font-extrabold leading-[1.42] text-[#0b1d4a] sm:text-[1.03rem] sm:leading-[1.45]">
                               {profile.title}
                             </span>
-                            <span className="mt-1.5 flex flex-wrap gap-1.5 sm:mt-2">
-                              <span className="rounded-full bg-[#f1f5f9] px-2 py-1 text-[0.64rem] font-bold text-[#475569] sm:text-[0.7rem]">
-                                目安レベル：{profile.level}
-                              </span>
-                              <span className="rounded-full bg-[#fff7ed] px-2 py-1 text-[0.64rem] font-bold text-[#9a3412] sm:text-[0.7rem]">
-                                {profile.target}
-                              </span>
+                            <span className="mt-1.5 block text-[0.72rem] font-semibold leading-[1.55] text-[#475569] sm:mt-2 sm:text-[0.74rem]">
+                              {profile.target}
                             </span>
-                            <span className="mt-3 hidden text-[0.78rem] leading-[1.7] text-[#64748b] sm:block">
+                            <span className="mt-2 block text-[0.72rem] leading-[1.6] text-[#64748b] sm:mt-3 sm:text-[0.78rem] sm:leading-[1.7]">
                               <span className="font-bold text-[#334155]">収録範囲：</span>
-                              {profile.coverage}
+                              <span className="hidden sm:inline">{profile.coverage}</span>
+                              <span className="sm:hidden">約{GRADING_COUNT}回分・提出ごとに添削つき。</span>
                             </span>
                           </span>
                         </span>
@@ -308,7 +324,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
       </div>
 
       {/* 金額サマリー＋申込 */}
-      <div className="order-1 lg:sticky lg:top-24 lg:order-2">
+      <div className="hidden lg:sticky lg:top-24 lg:order-2 lg:block">
         <div className="rounded-[22px] bg-white p-6 shadow-[0_30px_60px_-44px_rgba(15,29,74,0.45)] ring-1 ring-[rgba(15,29,74,0.1)]">
           <p className="text-[0.8rem] font-bold text-[#0f766e]">
             <span className="hidden lg:inline">② </span>内容を確認して申し込む
@@ -317,7 +333,7 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
           <div className="mt-3 min-h-[2.5rem]">
             {count === 0 ? (
               <p className="text-[0.86rem] text-[#94a3b8]">
-                下の教材をタップすると、ここに買い切り価格が表示されます。
+                左の教材を選ぶと、ここに買い切り価格が表示されます。
               </p>
             ) : (
               <ul className="grid gap-2">
@@ -390,5 +406,76 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
         </div>
       </div>
     </div>
+    {count > 0 ? (
+      <div className="fixed inset-x-0 bottom-0 z-50 lg:hidden" role="region" aria-label="選択中の教材カート">
+        <div className="mx-auto max-w-[40rem] px-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
+          <div className="rounded-[18px] bg-white/95 p-3 shadow-[0_18px_50px_-18px_rgba(11,29,74,0.45)] ring-1 ring-[rgba(15,29,74,0.12)] backdrop-blur">
+            {error ? (
+              <p className="mb-2 rounded-[10px] bg-[#fef2f2] px-3 py-2 text-[0.76rem] font-semibold leading-[1.45] text-[#b91c1c]">
+                {error}
+              </p>
+            ) : null}
+            <div className="flex items-center gap-3">
+              <span className="flex w-[4.8rem] shrink-0 items-center -space-x-2" aria-hidden="true">
+                {selectedMaterials.slice(0, 3).map((s) => {
+                  const cover = getMaterialProfile(s).cover;
+                  return cover ? (
+                    <MaterialCoverFrame
+                      key={s.id}
+                      cover={cover}
+                      className="h-12 w-[2.15rem] rounded-[5px] ring-2 ring-white"
+                      imageClassName="h-full"
+                    />
+                  ) : (
+                    <span
+                      key={s.id}
+                      className="grid h-12 w-[2.15rem] place-items-center rounded-[5px] bg-[#f1f5f9] text-[0.68rem] font-extrabold text-[#0b1d4a] ring-2 ring-white"
+                    >
+                      {s.label.slice(0, 1)}
+                    </span>
+                  );
+                })}
+                {count > 3 ? (
+                  <span className="grid h-12 w-[2.15rem] place-items-center rounded-[5px] bg-[#0b1d4a] text-[0.7rem] font-extrabold text-white ring-2 ring-white">
+                    +{count - 3}
+                  </span>
+                ) : null}
+              </span>
+              <div className="min-w-0 flex-1" aria-live="polite">
+                <p className="truncate text-[0.74rem] font-bold text-[#0f766e]">
+                  カートに{count}教材
+                </p>
+                <p className="mt-0.5 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                  <span className="text-[1.18rem] font-extrabold leading-none text-[#0b1d4a]">
+                    {formatYen(total)}
+                  </span>
+                  {savings > 0 ? (
+                    <span className="text-[0.68rem] font-bold text-[#ea580c]">
+                      {formatYen(savings)}おトク
+                    </span>
+                  ) : (
+                    <span className="text-[0.68rem] font-semibold text-[#64748b]">
+                      買い切り
+                    </span>
+                  )}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={submit}
+                disabled={loading}
+                className="relative inline-flex min-h-11 shrink-0 items-center justify-center overflow-hidden rounded-full px-4 text-[0.86rem] font-bold text-white shadow-[0_12px_24px_-14px_rgba(234,88,12,0.85)] transition enabled:active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
+                <span className="relative whitespace-nowrap">
+                  {loading ? "移動中..." : "会計へ"}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : null}
+    </>
   );
 }
