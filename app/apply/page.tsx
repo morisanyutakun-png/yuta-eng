@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/json-ld";
 import { PaymentTrust } from "@/components/payment-trust";
 import { PostPurchaseTeaser } from "@/components/post-purchase-flow";
 import { PricingTable, SubjectChips } from "@/components/pricing-table";
+import { TrialSection } from "@/components/trial-section";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createOrganizationJsonLd } from "@/lib/structured-data";
 import { CAMPAIGN_DEADLINE_LABEL, CAMPAIGN_DEADLINE_SHORT_LABEL, formatYen, packSavings } from "@/lib/pricing";
@@ -14,7 +15,7 @@ import { CAMPAIGN_DEADLINE_LABEL, CAMPAIGN_DEADLINE_SHORT_LABEL, formatYen, pack
 export const metadata: Metadata = createPageMetadata({
   title: "料金・お申し込み｜教材を選んで買い切りではじめる",
   description:
-    `ノビットスタディ 中高部の料金とお申し込み。教材ごとの買い切り（1教材 ¥14,800〜・約100回分の課題＋添削込み・入会金/追加費用0円）。${CAMPAIGN_DEADLINE_LABEL}まで2教材以上でパック割。物理・化学・数学・英語の10教材から選ぶと買い切り価格が自動計算され、そのまま Stripe の安全な決済（一括）へ。自動更新はありません。`,
+    `ノビットスタディ 中高部の料金とお申し込み。教材ごとの買い切り（開講記念 1教材 ¥9,800／通常 ¥14,800・約100回分の課題＋添削込み・入会金/追加費用0円）。${CAMPAIGN_DEADLINE_LABEL}まで開講記念価格、2教材以上はパック割。物理・化学・数学・英語の10教材から選ぶと買い切り価格が自動計算され、そのまま Stripe の安全な決済（一括）へ。自動更新はありません。`,
   keywords: ["ノビットスタディ 料金", "オンライン添削 料金", "理系 添削 買い切り", "ノビットスタディ 申し込み"],
   path: "/apply",
 });
@@ -28,9 +29,9 @@ const steps = [
 export default async function ApplyPage({
   searchParams,
 }: {
-  searchParams: Promise<{ canceled?: string }>;
+  searchParams: Promise<{ canceled?: string; u?: string }>;
 }) {
-  const { canceled } = await searchParams;
+  const { canceled, u: upgradeToken } = await searchParams;
   const breadcrumb = createBreadcrumbJsonLd([
     { name: "ホーム", path: "/" },
     { name: "お申し込み", path: "/apply" },
@@ -127,7 +128,11 @@ export default async function ApplyPage({
             </h2>
           </div>
 
-          <ApplyForm canceled={Boolean(canceled)} />
+          <ApplyForm canceled={Boolean(canceled)} upgradeToken={upgradeToken ?? null} />
+
+          <div id="trial" className="mt-12 scroll-mt-24">
+            <TrialSection />
+          </div>
 
           <div className="mt-10">
             <PaymentTrust />

@@ -4,11 +4,11 @@ import { Blob } from "@/components/decor";
 import {
   CAMPAIGN_DEADLINE_LABEL,
   CAMPAIGN_DEADLINE_SHORT_LABEL,
+  currentSinglePrice,
   formatYen,
   isCampaignActive,
   MATERIAL_PRICE,
   PACK_UNIT_PRICE,
-  PACK_UNIT_SAVINGS,
 } from "@/lib/pricing";
 
 export function PrimaryCta({ href, children }: { href: string; children: React.ReactNode }) {
@@ -76,7 +76,7 @@ function CampaignSeal({ className = "" }: { className?: string }) {
       <div className="absolute inset-0 grid place-items-center">
         <div className="text-center leading-none text-white">
           <p className="text-[0.5rem] font-extrabold tracking-[0.12em]">開講記念</p>
-          <p className="mt-0.5 text-[0.98rem] font-black">パック割</p>
+          <p className="mt-0.5 text-[0.98rem] font-black">価格</p>
           <p className="mt-0.5 text-[0.48rem] font-black tracking-[0.03em]">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで</p>
         </div>
       </div>
@@ -87,11 +87,12 @@ function CampaignSeal({ className = "" }: { className?: string }) {
 /**
  * ページ下部の申込・料金への誘導ブロック（詳細ページ共通）。
  * 申込直前の最後のひと押し。パンフレットの裏表紙のように、実在するオファー
- * （買い切り¥14,800〜・入会金/追加費用0円・自動更新なし・開講記念パック割）を封緘シールで見せ、
+ * （開講記念¥9,800・通常¥14,800・入会金/追加費用0円・自動更新なし）を封緘シールで見せ、
  * 濃紺×方眼テクスチャのカードで最後にアクションへ視線を集める。虚偽の実績は載せない。
  */
 export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
   const campaign = isCampaignActive();
+  const single = currentSinglePrice(campaign);
   return (
     <div className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0b1d4a_0%,#0f3b5a_55%,#0f5e5e_100%)] px-6 py-11 shadow-[0_44px_90px_-46px_rgba(11,29,74,0.75)] ring-1 ring-white/10 sm:px-11 sm:py-14">
       {/* 方眼ノートのテクスチャ（ブランドの演習モチーフ／左上に集めてにじませる） */}
@@ -119,8 +120,8 @@ export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
             <span aria-hidden="true">🎁</span>
             {campaign ? (
               <>
-                <span className="sm:hidden">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで パック割</span>
-                <span className="hidden sm:inline">{CAMPAIGN_DEADLINE_LABEL}まで 開講記念パック割</span>
+                <span className="sm:hidden">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで 開講記念価格</span>
+                <span className="hidden sm:inline">{CAMPAIGN_DEADLINE_LABEL}まで 開講記念価格</span>
               </>
             ) : "教材は、修了までずっと自分のもの"}
           </p>
@@ -141,19 +142,21 @@ export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
         <div className="relative mx-auto w-full max-w-[19rem]">
           <CampaignSeal className="absolute -right-4 -top-6 z-10 h-[4.6rem] w-[4.6rem] rotate-[10deg]" />
           <div className="rounded-[22px] bg-white p-6 text-center shadow-[0_36px_70px_-34px_rgba(0,0,0,0.6)] ring-1 ring-white/70">
-            <p className="text-[0.72rem] font-bold tracking-[0.08em] text-[#0f766e]">1教材（約100日分）・買い切り（税込）</p>
+            <p className="text-[0.72rem] font-bold tracking-[0.08em] text-[#0f766e]">
+              {campaign ? "開講記念価格・1教材 買い切り（税込）" : "1教材 買い切り（税込）"}
+            </p>
             <div className="mt-2.5 flex items-baseline justify-center gap-1.5">
-              <span className="text-[2.55rem] font-black leading-none tracking-[-0.02em] text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}</span>
-              <span className="pb-1 text-[0.9rem] font-bold text-[#475569]">〜</span>
+              {campaign ? (
+                <span className="text-[1.05rem] font-bold text-[#94a3b8] line-through">{formatYen(MATERIAL_PRICE)}</span>
+              ) : null}
+              <span className="text-[2.55rem] font-black leading-none tracking-[-0.02em] text-[#0b1d4a]">{formatYen(single)}</span>
             </div>
             <p className="mt-1.5 text-[0.74rem] font-bold text-[#ea580c]">
-              {campaign
-                ? `2教材以上で 1教材あたり${formatYen(PACK_UNIT_SAVINGS)}OFF`
-                : "添削（約100回）＋アプリ込み"}
+              教材・解答解説・添削（約100回）・アプリ込み
             </p>
             {campaign ? (
               <p className="mt-1 text-[0.7rem] font-bold text-[#0f766e]">
-                1教材 {formatYen(PACK_UNIT_PRICE)}・{CAMPAIGN_DEADLINE_SHORT_LABEL}まで
+                2教材パックは1教材 {formatYen(PACK_UNIT_PRICE)}・{CAMPAIGN_DEADLINE_SHORT_LABEL}まで
               </p>
             ) : null}
             <ul className="mt-4 grid gap-2 border-t border-dashed border-[rgba(15,29,74,0.18)] pt-4 text-left">

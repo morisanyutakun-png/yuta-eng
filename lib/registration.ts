@@ -18,7 +18,7 @@ export type Registration = {
   phone: string | null;
   studentName: string | null;
   grade: string | null;
-  /** 例: "physics,math-2bc"（lib/pricing の Subject.id をカンマ区切り） */
+  /** 例: "physics,math-2bc"（lib/pricing の Subject.id をカンマ区切り）。お試しは "math-1a-trial" 等。 */
   subjects: string;
   /** 例: "物理入門演習・数学IIBC" */
   subjectLabels: string;
@@ -27,6 +27,19 @@ export type Registration = {
   amount: string;
   /** 旧アプリ連携との後方互換。買い切り額を同じ値で返す。 */
   monthlyAmount: string;
+  /**
+   * 購入の種別。
+   *   "full"    … 通常の買い切り
+   *   "trial"   … お試し（3課題・添削3回）。subjects は *-trial、trialOf に対応フル教材id。
+   *   "upgrade" … お試し→本契約（−credit の値引き適用済み）。
+   */
+  plan: string;
+  /** お試しに対応するフル教材id（plan="trial" のとき）。例 "math-1a"。 */
+  trialOf: string;
+  /** アップグレードで値引きした金額（税込・円）の文字列（plan="upgrade" のとき）。 */
+  creditAmount: string;
+  /** アップグレード対象のフル教材id（plan="upgrade" のとき）。 */
+  upgradeOf: string;
   createdAt: string;
 };
 
@@ -72,6 +85,10 @@ export function buildRegistration(
     subjectCount: s.metadata?.subject_count ?? "",
     amount: s.metadata?.amount ?? s.metadata?.monthly_amount ?? "",
     monthlyAmount: s.metadata?.amount ?? s.metadata?.monthly_amount ?? "",
+    plan: s.metadata?.plan ?? "full",
+    trialOf: s.metadata?.trial_of ?? "",
+    creditAmount: s.metadata?.credit_amount ?? "",
+    upgradeOf: s.metadata?.upgrade_of ?? "",
     createdAt: new Date(createdMs).toISOString(),
   };
 }

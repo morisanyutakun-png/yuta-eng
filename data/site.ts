@@ -18,7 +18,7 @@ export const siteConfig = {
   title:
     "ノビットスタディ 中高部｜毎日の学習を仕組みにするデジタル通信添削（物理・化学・数学・英語）",
   description:
-    "ノビットスタディ 中高部は、自作教材を好きなタイミングで1枚ずつ進める、買い切りのデジタル通信添削。提出すると解答解説PDFと次の範囲が届き、先生の添削・再提出は並行して進みます。教材×習慣化×添削。物理・化学・数学・英語、1教材（約100日分・添削込み）買い切り¥14,800〜、2026年8月6日まで開講記念パック割、入会金・追加費用0円。",
+    "ノビットスタディ 中高部は、高校生向けの買い切り通信添削。1回10〜20分の教材を解いて答案を提出すると、途中式や考え方まで人が添削し、解答解説PDFと次の範囲が届きます。物理・化学・数学・英語、1教材（約100回分・添削込み）通常¥14,800／2026年8月6日まで開講記念¥9,800、入会金・月額料金・追加費用0円。",
   url: siteUrl,
   author: "森 祐太",
   email: contactEmail,
@@ -59,13 +59,11 @@ export const siteConfig = {
 // グローバルナビ。ノビットスタディ中心のため、トップページ内の各セクションへの
 // アンカーと、無料体験・相談（/contact）への CTA に絞る。
 export const navItems = [
-  { label: "しくみ", href: "/how-it-works" },
-  { label: "アプリ", href: "/app" },
-  { label: "購入後の流れ", href: "/after-purchase" },
-  { label: "教材", href: "/materials" },
-  { label: "料金・科目", href: "/apply#pricing" },
+  { label: "仕組み", href: "/#how" },
+  { label: "添削例", href: "/#samples" },
+  { label: "料金", href: "/#pricing" },
   { label: "よくある質問", href: "/#faq" },
-  { label: "申し込む", href: "/apply", highlight: true },
+  { label: "教材を選ぶ", href: "/apply#form", highlight: true },
 ];
 
 export const footerNavItems = [

@@ -4,6 +4,8 @@ import {
   buyoutTotal,
   CAMPAIGN_DEADLINE_LABEL,
   CAMPAIGN_DEADLINE_SHORT_LABEL,
+  currentPerRound,
+  currentSinglePrice,
   formatYen,
   GRADING_COUNT,
   isCampaignActive,
@@ -12,12 +14,12 @@ import {
   packSavings,
   PACK_UNIT_PRICE,
   PACK_UNIT_SAVINGS,
-  PER_DAY_PRICE,
-  PROGRAM_DAYS,
   SUBJECTS,
 } from "@/lib/pricing";
 
 const campaign = isCampaignActive();
+const single = currentSinglePrice(campaign);
+const perRound = currentPerRound(campaign);
 
 /** 教材ごとの買い切り（1〜3教材）。数値は lib/pricing から算出＝表と決済で一致。 */
 const tiers = [1, 2, 3].map((n) => ({
@@ -108,24 +110,24 @@ export function PricingTable({
           />
 
           <div className="relative text-center">
-            <p className="text-[0.82rem] font-bold text-[#0f766e]">1教材（約{PROGRAM_DAYS}日ぶん）をやり切る</p>
+            <p className="text-[0.82rem] font-bold text-[#0f766e]">1教材（約{GRADING_COUNT}回分）をやり切る</p>
             <p className="mt-1 flex items-end justify-center gap-1.5 text-[#0b1d4a]">
-              <span className="pb-2 text-[1.05rem] font-bold">1日たった</span>
+              <span className="pb-2 text-[1.05rem] font-bold">1回あたり</span>
               <span className="relative inline-block">
                 <span className="text-[3.1rem] font-extrabold leading-none tracking-[-0.02em] sm:text-[3.6rem]">
-                  {PER_DAY_PRICE}
+                  {perRound}
                 </span>
                 <PenUnderline className="absolute -bottom-1 left-0 h-[0.5em] w-full" />
               </span>
               <span className="pb-2.5 text-[1.05rem] font-bold">円</span>
             </p>
-            <p className="mt-2 text-[0.84rem] font-semibold text-[#0f766e]">約{PROGRAM_DAYS}日ぶん・毎回そのつど添削つき</p>
+            <p className="mt-2 text-[0.84rem] font-semibold text-[#0f766e]">約{GRADING_COUNT}回分・提出ごとに添削つき</p>
             <p className="mt-1 text-[0.8rem] leading-[1.65] text-[#64748b]">
               <span className="sm:hidden">
-                買い切り <span className="font-bold text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}〜</span>。約{GRADING_COUNT}回分で1日{PER_DAY_PRICE}円。
+                {campaign ? "開講記念 " : ""}買い切り <span className="font-bold text-[#0b1d4a]">{formatYen(single)}</span>{campaign ? <span className="text-[#94a3b8] line-through">（通常{formatYen(MATERIAL_PRICE)}）</span> : "〜"}。約{GRADING_COUNT}回分で1回{perRound}円。
               </span>
               <span className="hidden sm:inline">
-                買い切り <span className="font-bold text-[#0b1d4a]">{formatYen(MATERIAL_PRICE)}〜</span>（税込・添削約{GRADING_COUNT}回＋習慣化アプリ込み）を約{GRADING_COUNT}回分でならすと1日{PER_DAY_PRICE}円。
+                {campaign ? "開講記念 " : ""}買い切り <span className="font-bold text-[#0b1d4a]">{formatYen(single)}</span>{campaign ? <span className="text-[#94a3b8] line-through">（通常{formatYen(MATERIAL_PRICE)}）</span> : "〜"}（税込・教材＋解答解説＋添削約{GRADING_COUNT}回＋アプリ込み）を約{GRADING_COUNT}回分でならすと1回{perRound}円。
               </span>
             </p>
             {campaign ? (

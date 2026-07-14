@@ -99,10 +99,10 @@ export default async function Image() {
               textShadow: "0 2px 14px rgba(80,16,0,0.5)",
             }}
           >
-            教材 × 習慣化 × 添削のデジタル通信添削。
+            高校生向け・買い切りの通信添削。
           </div>
           <div style={{ display: "flex", gap: 14 }}>
-            {["買い切り¥14,800〜", "入会金・追加費用0円", "添削込み"].map((t) => (
+            {["開講記念¥9,800", "入会金・月額0円", "教材＋添削＋アプリ"].map((t) => (
               <div
                 key={t}
                 style={{

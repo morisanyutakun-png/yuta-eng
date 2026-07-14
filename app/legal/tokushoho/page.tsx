@@ -6,6 +6,15 @@ import { LegalPage, LegalRow } from "@/components/legal-page";
 import { legalInfo } from "@/data/legal";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd } from "@/lib/structured-data";
+import {
+  buyoutTotal,
+  CAMPAIGN_DEADLINE_LABEL,
+  currentSinglePrice,
+  formatYen,
+  isCampaignActive,
+  MATERIAL_PRICE,
+  PACK_UNIT_PRICE,
+} from "@/lib/pricing";
 
 export const metadata: Metadata = createPageMetadata({
   title: "特定商取引法に基づく表記",
@@ -45,8 +54,10 @@ export default function TokushohoPage() {
             </a>
           </LegalRow>
           <LegalRow label="販売価格">
-            教材（講座）ごとの買い切りです。1教材 ¥14,800（約100回分の課題と添削、習慣化アプリの利用を含む）。
-            2教材以上を同時にお申し込みの場合は開講記念パック割が適用され、1教材あたり ¥12,400（例：2教材 ¥24,800）となります。
+            教材（講座）ごとの買い切りです。1教材 通常 {formatYen(MATERIAL_PRICE)}（約100回分の課題と添削、学習アプリの利用を含む）。
+            {isCampaignActive()
+              ? `${CAMPAIGN_DEADLINE_LABEL}まで開講記念価格として1教材 ${formatYen(currentSinglePrice())}、2教材以上はパック割で1教材あたり ${formatYen(PACK_UNIT_PRICE)}（例：2教材 ${formatYen(buyoutTotal(2, true))}）となります。`
+              : ""}
             表示価格はすべて消費税を含む総額です。最新の料金は
             <Link className="text-[#0f766e] underline" href="/#pricing">
               料金・対応教材
@@ -67,7 +78,7 @@ export default function TokushohoPage() {
           </LegalRow>
           <LegalRow label="役務の提供時期">
             決済完了後、ご案内に従ってアカウント登録（パスワード設定）が完了した時点から、
-            速やかにサービスをご利用いただけます。教材は、1教材につき約100日分の課題と添削を順次提供します。
+            速やかにサービスをご利用いただけます。教材は、1教材につき約100回分の課題と添削を順次提供します。
           </LegalRow>
           <LegalRow label="解約・返金について">
             買い切りのため、継続課金や解約手続きはありません。役務（デジタル教材・添削）の性質上、

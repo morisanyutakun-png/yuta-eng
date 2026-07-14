@@ -261,9 +261,9 @@ function MobileShell({
       <header className="border-b border-[#25a8df] bg-white px-3 pt-4">
         <LogoMark className="h-3.5 w-auto" />
         <div className="mt-1.5 flex min-w-0 items-center gap-1.5">
-          <span className="shrink-0 text-[0.52rem] font-black leading-none">山田太郎</span>
+          <span className="shrink-0 text-[0.52rem] font-black leading-none">デモ生徒</span>
           <span className="shrink-0 border border-[#d8e1eb] bg-[#f7f9fc] px-1.5 py-0.5 text-[0.34rem] font-extrabold leading-none text-[#607289]">
-            生徒・中高部
+            デモ画面
           </span>
           <span className="ml-auto shrink-0 border border-[#d8e1eb] bg-white px-1.5 py-0.5 text-[0.34rem] font-extrabold leading-none text-[#40536b]">
             ログアウト

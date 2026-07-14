@@ -3,9 +3,10 @@ import Link from "next/link";
 
 import { Container } from "@/components/container";
 import { JsonLd } from "@/components/json-ld";
+import { LeadLink } from "@/components/lp-tracking";
 import { siteConfig } from "@/data/site";
 import { createPageMetadata } from "@/lib/metadata";
-import { CAMPAIGN_DEADLINE_LABEL, CAMPAIGN_DEADLINE_SHORT_LABEL, formatYen, packSavings, PACK_UNIT_SAVINGS } from "@/lib/pricing";
+import { buyoutTotal, CAMPAIGN_DEADLINE_LABEL, CAMPAIGN_DEADLINE_SHORT_LABEL, currentSinglePrice, formatYen, MATERIAL_PRICE, packSavings, PACK_UNIT_PRICE } from "@/lib/pricing";
 import {
   createBreadcrumbJsonLd,
   createContactPageJsonLd,
@@ -16,7 +17,7 @@ import {
 export const metadata: Metadata = createPageMetadata({
   title: "お申し込み・ご相談｜買い切りではじめる",
   description:
-    `ノビットスタディ 中高部のお申し込み・ご相談ページ。物理・化学・数学・英語の答案を添削する、授業をしないオンライン添削塾です。教材ごとの買い切り（1教材 ¥14,800〜・約100回分の課題＋添削込み・入会金0円）、${CAMPAIGN_DEADLINE_LABEL}まで2教材以上でパック割。面談や勧誘は一切ありません。お気軽にお申し込み・ご相談ください。`,
+    `ノビットスタディ 中高部のお申し込み・ご相談ページ。高校生向けの買い切り通信添削です。教材ごとの買い切り（開講記念 1教材 ¥9,800／通常 ¥14,800・約100回分の課題＋添削込み・入会金0円）、${CAMPAIGN_DEADLINE_LABEL}まで開講記念価格。面談や勧誘は一切ありません。お気軽にお申し込み・ご相談ください。`,
   keywords: [
     "ノビットスタディ 申し込み",
     "オンライン添削塾 申し込み",
@@ -46,16 +47,16 @@ const trust = [
   { label: "サービス形態", value: "オンライン添削・学習管理塾（添削専門）" },
   { label: "塾長", value: siteConfig.author },
   { label: "対応教材", value: "物理・化学・数学・英語（10教材／教材ごとに選択）" },
-  { label: "料金", value: `1教材 買い切り¥14,800〜・${CAMPAIGN_DEADLINE_LABEL}までパック割・入会金/追加費用0円` },
+  { label: "料金", value: `1教材 買い切り（${CAMPAIGN_DEADLINE_LABEL}まで開講記念${formatYen(currentSinglePrice())}／通常${formatYen(MATERIAL_PRICE)}）・入会金/追加費用0円` },
   { label: "対象", value: "高校生・高卒生（中高一貫の高校範囲も相談可）" },
   { label: "返信目安", value: "1〜2 営業日以内（面談・勧誘なし）" },
 ];
 
 const contactFaq = [
   {
-    question: "開講記念パック割とは？ どのくらいで始められますか？",
+    question: "開講記念価格とは？ どのくらいで始められますか？",
     answer:
-      `2教材以上を同時にお申し込みの場合、1教材あたり ¥12,400（通常より1教材あたり ${formatYen(PACK_UNIT_SAVINGS)} OFF、例：2教材 ¥24,800）になる開講記念のパック割です（${CAMPAIGN_DEADLINE_LABEL}まで）。入会金・追加費用はかかりません。お申し込み後、購入した教材からすぐに学習を開始できます。`,
+      `${CAMPAIGN_DEADLINE_LABEL}まで、1教材が開講記念価格 ${formatYen(currentSinglePrice())}（通常 ${formatYen(MATERIAL_PRICE)}）になります。2教材以上はパック割で1教材あたり ${formatYen(PACK_UNIT_PRICE)}（例：2教材 ${formatYen(buyoutTotal(2, true))}）。入会金・追加費用はかかりません。お申し込み後、購入した教材からすぐに学習を開始できます。`,
   },
   {
     question: "面談や授業はありますか？ 勧誘されませんか？",
@@ -65,7 +66,7 @@ const contactFaq = [
   {
     question: "料金と対応教材は？",
     answer:
-      `料金は教材（講座）ごとの買い切りです。1教材 ¥14,800（約100回分の課題＋添削込み）。${CAMPAIGN_DEADLINE_LABEL}まで、2教材以上は開講記念パック割で1教材あたり ¥12,400（2教材で${formatYen(packSavings(2, true))}おトク、例：2教材 ¥24,800）。対応教材は物理 基礎・物理 標準・物理 発展・化学基礎・化学・数学IA・IIBC・IIIC・英語長文・英文法です。`,
+      `料金は教材（講座）ごとの買い切りです。1教材 通常 ${formatYen(MATERIAL_PRICE)}（約100回分の課題＋解答解説＋添削込み）。${CAMPAIGN_DEADLINE_LABEL}まで開講記念価格 ${formatYen(currentSinglePrice())}、2教材以上はパック割で1教材あたり ${formatYen(PACK_UNIT_PRICE)}（2教材で${formatYen(packSavings(2, true))}おトク、例：2教材 ${formatYen(buyoutTotal(2, true))}）。対応教材は物理 基礎・物理 標準・物理 発展・化学基礎・化学・数学IA・IIBC・IIIC・英語長文・英文法です。`,
   },
   {
     question: "保護者も進捗を確認できますか？",
@@ -126,13 +127,14 @@ export default function ContactPage() {
               </span>
             </p>
             <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-              <a
+              <LeadLink
                 href={mailHref}
+                location="contact_hero"
                 className="group/cta relative inline-flex min-h-12 items-center justify-center gap-2 overflow-hidden rounded-full px-7 text-[0.98rem] font-bold text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px"
               >
                 <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
                 <span className="relative">メールで申し込む（買い切り）</span>
-              </a>
+              </LeadLink>
               <a
                 href={`mailto:${siteConfig.email}`}
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-7 text-[0.98rem] font-semibold text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"
@@ -235,13 +237,14 @@ export default function ContactPage() {
             </ol>
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:justify-center">
-              <a
+              <LeadLink
+                location="contact_faq"
                 className="group/cta relative inline-flex min-h-12 items-center justify-center overflow-hidden rounded-full px-8 text-[0.96rem] font-bold text-white shadow-[0_18px_38px_-14px_rgba(234,88,12,0.7)] transition hover:-translate-y-px"
                 href={mailHref}
               >
                 <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
                 <span className="relative">買い切りで申し込む</span>
-              </a>
+              </LeadLink>
               <Link
                 href="/"
                 className="inline-flex min-h-12 items-center justify-center rounded-full border border-[#0b1d4a] px-8 text-[0.96rem] font-semibold text-[#0b1d4a] transition hover:bg-[#0b1d4a] hover:text-white"

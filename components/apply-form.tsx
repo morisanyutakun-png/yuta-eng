@@ -6,6 +6,7 @@ import {
   buyoutTotal,
   CAMPAIGN_DEADLINE_LABEL,
   CAMPAIGN_DEADLINE_SHORT_LABEL,
+  currentSinglePrice,
   formatYen,
   GRADING_COUNT,
   isCampaignActive,
@@ -13,10 +14,12 @@ import {
   MATERIAL_PRICE,
   packSavings,
   PACK_UNIT_PRICE,
-  PACK_UNIT_SAVINGS,
   SUBJECT_AREAS,
   SUBJECTS,
+  TRIAL_CREDIT,
 } from "@/lib/pricing";
+import { gtagEvent } from "@/components/lp-tracking";
+import { subjectToItem } from "@/lib/ga4-items";
 
 type MaterialProfile = {
   title: string;
@@ -171,15 +174,25 @@ function MaterialCoverFrame({
   );
 }
 
-export function ApplyForm({ canceled }: { canceled?: boolean }) {
+export function ApplyForm({
+  canceled,
+  upgradeToken,
+}: {
+  canceled?: boolean;
+  upgradeToken?: string | null;
+}) {
   const [selected, setSelected] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const count = selected.length;
   const campaign = isCampaignActive();
+  const unitPrice = currentSinglePrice(campaign);
   const list = useMemo(() => listTotal(count), [count]);
-  const total = useMemo(() => buyoutTotal(count, campaign), [count, campaign]);
+  const rawTotal = useMemo(() => buyoutTotal(count, campaign), [count, campaign]);
+  const isUpgrade = Boolean(upgradeToken) && count > 0;
+  // 本契約特典（−¥1,980）は表示上の見込み。最終額は決済画面（Stripe）で確定する。
+  const total = isUpgrade ? Math.max(0, rawTotal - TRIAL_CREDIT) : rawTotal;
   const savings = useMemo(() => packSavings(count, campaign), [count, campaign]);
   const selectedMaterials = useMemo(
     () =>
@@ -197,9 +210,20 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
   );
 
   function toggle(id: string) {
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-    );
+    setSelected((prev) => {
+      const adding = !prev.includes(id);
+      if (adding) {
+        const subject = SUBJECTS.find((s) => s.id === id);
+        if (subject) {
+          gtagEvent("select_item", {
+            item_list_id: "apply_materials",
+            item_list_name: "ノビットスタディ 対応教材",
+            items: [subjectToItem(subject, currentSinglePrice(campaign))],
+          });
+        }
+      }
+      return adding ? [...prev, id] : prev.filter((x) => x !== id);
+    });
   }
 
   function scrollToProducts() {
@@ -210,11 +234,21 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
     if (count === 0 || loading) return;
     setLoading(true);
     setError(null);
+    // 決済ページ（Stripe）へ遷移する直前に begin_checkout を送る。
+    gtagEvent("begin_checkout", {
+      currency: "JPY",
+      value: total,
+      coupon: isUpgrade ? "trial-upgrade" : savings > 0 ? "opening-campaign" : undefined,
+      items: selectedMaterials.map((s) => subjectToItem(s, count >= 2 ? PACK_UNIT_PRICE : unitPrice)),
+    });
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subjects: selected }),
+        body: JSON.stringify({
+          subjects: selected,
+          ...(upgradeToken ? { upgrade: upgradeToken } : {}),
+        }),
       });
       const data = (await res.json()) as { url?: string; error?: string };
       if (!res.ok || !data.url) {
@@ -240,6 +274,13 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
           </p>
         ) : null}
 
+        {upgradeToken ? (
+          <p className="mb-5 flex items-start gap-2 rounded-[14px] bg-[#ecfdf5] px-4 py-3 text-[0.86rem] font-semibold text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.22)]">
+            <span aria-hidden="true" className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#0d9488] text-white">✓</span>
+            お試しからの本契約特典として <strong className="mx-1 font-extrabold">{formatYen(TRIAL_CREDIT)} 値引き</strong> を適用します（最終金額は決済画面でご確認ください）。
+          </p>
+        ) : null}
+
         <div id={PRODUCT_LIST_ID}>
           <p className="text-[0.78rem] font-extrabold uppercase tracking-[0.16em] text-[#0f766e]">
             商品一覧
@@ -255,8 +296,16 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
               教材名・目安レベル・対象を確認して選べます。1教材＝約{GRADING_COUNT}日分、2教材以上は{CAMPAIGN_DEADLINE_LABEL}までパック割です。
             </span>
           </p>
-          <p className="mt-3 inline-flex max-w-full items-center rounded-[12px] bg-white px-3 py-2 text-[0.78rem] font-bold leading-snug text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]">
-            1教材 {formatYen(MATERIAL_PRICE)} ／ 2教材以上は1教材 {formatYen(PACK_UNIT_PRICE)}
+          <p className="mt-3 inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-[12px] bg-white px-3 py-2 text-[0.78rem] font-bold leading-snug text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]">
+            {campaign ? (
+              <>
+                <span className="text-[0.72rem] font-semibold text-[#94a3b8] line-through">{formatYen(MATERIAL_PRICE)}</span>
+                <span className="text-[#ea580c]">開講記念 1教材 {formatYen(unitPrice)}</span>
+                <span className="text-[#64748b]">／ 2教材以上は1教材 {formatYen(PACK_UNIT_PRICE)}</span>
+              </>
+            ) : (
+              <span>1教材 {formatYen(MATERIAL_PRICE)}</span>
+            )}
           </p>
         </div>
 
@@ -344,9 +393,18 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                             </span>
                             <span className="mt-3 flex items-center justify-between gap-2 border-t border-[rgba(15,29,74,0.08)] pt-3">
                               <span className="min-w-0">
-                                <span className="block text-[0.68rem] font-bold text-[#64748b]">買い切り</span>
-                                <span className="block text-[0.98rem] font-extrabold leading-none text-[#0b1d4a]">
-                                  {formatYen(MATERIAL_PRICE)}
+                                <span className="block text-[0.68rem] font-bold text-[#64748b]">
+                                  {campaign ? "開講記念・買い切り" : "買い切り"}
+                                </span>
+                                <span className="flex items-baseline gap-1.5">
+                                  {campaign ? (
+                                    <span className="text-[0.72rem] font-semibold text-[#94a3b8] line-through">
+                                      {formatYen(MATERIAL_PRICE)}
+                                    </span>
+                                  ) : null}
+                                  <span className="block text-[0.98rem] font-extrabold leading-none text-[#0b1d4a]">
+                                    {formatYen(unitPrice)}
+                                  </span>
                                 </span>
                               </span>
                               <span
@@ -414,14 +472,20 @@ export function ApplyForm({ canceled }: { canceled?: boolean }) {
                   <dd className="font-semibold line-through">{formatYen(list)}</dd>
                 </div>
                 <div className="grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 rounded-[12px] bg-[#ecfdf5] px-3 py-2 text-[#0d9488] ring-1 ring-[rgba(13,148,136,0.14)]">
-                  <dt className="font-bold">開講記念パック割</dt>
+                  <dt className="font-bold">{count >= 2 ? "開講記念パック割" : "開講記念価格"}</dt>
                   <dd className="font-bold">−{formatYen(savings)}</dd>
                   <dd className="col-span-2 text-[0.72rem] font-semibold leading-[1.45] text-[#0f766e]">
-                    <span className="sm:hidden">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで・1教材{formatYen(PACK_UNIT_SAVINGS)}OFF</span>
-                    <span className="hidden sm:inline">{CAMPAIGN_DEADLINE_LABEL}まで・1教材あたり{formatYen(PACK_UNIT_SAVINGS)}OFF</span>
+                    <span className="sm:hidden">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで</span>
+                    <span className="hidden sm:inline">{CAMPAIGN_DEADLINE_LABEL}まで・{count >= 2 ? `1教材 ${formatYen(PACK_UNIT_PRICE)}` : `1教材 ${formatYen(unitPrice)}`}</span>
                   </dd>
                 </div>
               </>
+            ) : null}
+            {isUpgrade ? (
+              <div className="flex items-center justify-between rounded-[12px] bg-[#ecfdf5] px-3 py-2 text-[#0d9488] ring-1 ring-[rgba(13,148,136,0.14)]">
+                <dt className="font-bold">本契約特典（お試し分）</dt>
+                <dd className="font-bold">−{formatYen(TRIAL_CREDIT)}</dd>
+              </div>
             ) : null}
             <div className="flex items-baseline justify-between border-t border-dashed border-[rgba(15,29,74,0.14)] pt-2">
               <dt className="text-[0.86rem] font-bold text-[#ea580c]">買い切り合計</dt>
