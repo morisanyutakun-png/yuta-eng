@@ -288,7 +288,7 @@ function HeroVisual() {
         </div>
 
         <p className="mt-2.5 text-center text-[0.7rem] font-semibold text-[#94a3b8]">
-          添削のイメージ（実際の画面は「添削例」で見られます）
+          赤ペン添削のイメージ図です
         </p>
       </div>
 
@@ -502,7 +502,7 @@ export default function HomePage() {
               </figure>
             ))}
           </div>
-          <p className="mt-4 text-center text-[0.72rem] font-semibold text-[#94a3b8]">※ 画面はデモです。氏名・内容はサンプルです。</p>
+          <p className="mt-4 text-center text-[0.72rem] font-semibold text-[#94a3b8]">※ 画面と添削内容は、アプリの機能を示す見本（サンプル）です。実在する生徒の提出データではありません。</p>
           <div className="mt-8 flex justify-center">
             <PrimaryCta location="samples_primary">この添削を受けられる教材を見る</PrimaryCta>
           </div>
