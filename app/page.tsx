@@ -3,7 +3,9 @@ import Image from "next/image";
 
 import { LpPageViewEvent } from "@/components/analytics-events";
 import { Container } from "@/components/container";
+import { Blob } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
+import { Illust, Mascot } from "@/components/nobit-media";
 import { ViewItemBeacon, TrackedLink, LeadLink } from "@/components/lp-tracking";
 import { subjectToItem } from "@/lib/ga4-items";
 import { homeFaq } from "@/data/home";
@@ -246,48 +248,55 @@ function BookCover({ asin, title }: { asin: string; title: string }) {
   );
 }
 
-/** ファーストビューの実物画像カード。compact（モバイル）は添削返却画面1枚で軽く見せる。 */
-function HeroVisual({ compact = false }: { compact?: boolean }) {
+/**
+ * ファーストビューのメインビジュアル。手書き答案が赤ペンで添削され、合格スタンプと
+ * 励ましコメントで返る——というサービスの中身を、1枚のイラストで直感的に伝える。
+ * 背景のブロブ・発光とマスコットで、右脳に届くアート面を作る。
+ */
+function HeroVisual() {
   return (
-    <div className="overflow-hidden rounded-[20px] bg-white p-3 shadow-[0_40px_80px_-44px_rgba(11,29,74,0.6)] ring-1 ring-[rgba(15,29,74,0.08)]">
-      {compact ? (
-        <div className="mb-2 flex items-center gap-1.5 px-0.5">
-          <span aria-hidden="true" className="grid h-5 w-5 place-items-center rounded-full bg-[#ea580c] text-white">
-            <Check className="h-3 w-3" />
-          </span>
-          <span className="text-[0.78rem] font-extrabold text-[#0b1d4a]">先生の添削が返ってくる画面</span>
+    <div className="relative">
+      {/* 背景の有機ブロブ＋発光（にじませてアート感を出す）。DOM順で card の背面に置く。 */}
+      <span aria-hidden="true" className="pointer-events-none absolute -inset-5">
+        <Blob fill="#5eead4" className="absolute -left-4 -top-6 h-40 w-40 opacity-45 blur-2xl sm:h-48 sm:w-48" />
+        <Blob fill="#fdba74" className="absolute -right-6 bottom-2 h-44 w-44 opacity-50 blur-2xl sm:h-52 sm:w-52" />
+        <Blob fill="#93c5fd" className="absolute left-8 bottom-[-2rem] h-28 w-28 opacity-40 blur-2xl" />
+      </span>
+
+      <div className="relative overflow-hidden rounded-[26px] bg-[linear-gradient(160deg,#ffffff_0%,#f5f9ff_52%,#eef8f4_100%)] p-4 shadow-[0_48px_96px_-46px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.06)] sm:p-5">
+        {/* サービスの流れを一目で（提出→赤ペン添削→合格で返却） */}
+        <div className="mb-3 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 text-[0.72rem] font-extrabold sm:text-[0.76rem]">
+          <span className="rounded-full bg-white px-2.5 py-1 text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]">答案を提出</span>
+          <span aria-hidden="true" className="text-[#f97316]">→</span>
+          <span className="rounded-full bg-[#fff1e6] px-2.5 py-1 text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">赤ペンで添削</span>
+          <span aria-hidden="true" className="text-[#0d9488]">→</span>
+          <span className="rounded-full bg-[#ecfdf5] px-2.5 py-1 text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.22)]">合格で返却</span>
         </div>
-      ) : null}
-      <Image
-        src={`/samples/returned-screen-v2.png?v=${sampleV}`}
-        alt="提出した答案に講師の添削が返却されたアプリ画面（デモ）"
-        width={526}
-        height={170}
-        priority
-        sizes="(max-width: 1024px) 92vw, 460px"
-        className="h-auto w-full rounded-[12px]"
+
+        {/* 添削イラスト（紙を少し傾けてアナログな手添削の質感） */}
+        <div className="relative mx-auto max-w-[27rem] -rotate-[1.5deg]">
+          <Illust
+            base="correction-graded"
+            widths={[560, 1120]}
+            width={1448}
+            height={1086}
+            alt="手書きの数学答案が赤ペンで添削され、合格スタンプと励ましのコメントが返ってきたイメージ"
+            sizes="(max-width: 1024px) 86vw, 440px"
+            priority
+            className="h-auto w-full rounded-[16px] shadow-[0_24px_48px_-26px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.06)]"
+          />
+        </div>
+
+        <p className="mt-2.5 text-center text-[0.7rem] font-semibold text-[#94a3b8]">
+          添削のイメージ（実際の画面は「添削例」で見られます）
+        </p>
+      </div>
+
+      {/* マスコット：答案を差し出すように、カード左下からのぞかせる */}
+      <Mascot
+        variant="wave"
+        className="pointer-events-none absolute -bottom-4 -left-3 w-[4.5rem] drop-shadow-[0_12px_18px_rgba(11,29,74,0.28)] sm:-left-5 sm:w-[5.5rem]"
       />
-      {!compact ? (
-        <div className="mt-3 grid grid-cols-2 gap-3">
-          <Image
-            src={`/samples/submit-screen-math-sample.png?v=${sampleV}`}
-            alt="教材を確認して答案を提出するアプリ画面（デモ）"
-            width={666}
-            height={387}
-            sizes="220px"
-            className="h-auto w-full rounded-[10px] ring-1 ring-[rgba(15,29,74,0.06)]"
-          />
-          <Image
-            src={`/samples/report-screen-v2.png?v=${sampleV}`}
-            alt="合格数や返却履歴を確認するレポート画面（デモ）"
-            width={724}
-            height={634}
-            sizes="220px"
-            className="h-auto w-full rounded-[10px] object-cover ring-1 ring-[rgba(15,29,74,0.06)]"
-          />
-        </div>
-      ) : null}
-      <p className="mt-2 text-center text-[0.68rem] font-semibold text-[#94a3b8]">アプリ画面（デモ）</p>
     </div>
   );
 }
@@ -335,9 +344,9 @@ export default function HomePage() {
                 1回10〜20分の教材を解いて提出。作った本人が途中式や考え方まで確認し、アプリで返却します。
               </p>
 
-              {/* モバイル専用：見出し直後に実物ビジュアルを差し込む（デスクトップは右カラムに表示） */}
-              <div className="mt-6 lg:hidden">
-                <HeroVisual compact />
+              {/* モバイル専用：見出し直後にメインビジュアルを差し込む（デスクトップは右カラムに表示） */}
+              <div className="mt-7 lg:hidden">
+                <HeroVisual />
               </div>
 
               <ul className="mt-6 flex flex-wrap gap-2">
