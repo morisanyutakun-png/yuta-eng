@@ -126,6 +126,20 @@ const correctionShots = [
   },
 ];
 
+// §7 教材カードの表紙（ASIN）。apply-form の MATERIAL_PROFILES と同じ表紙に対応。
+const subjectCovers: Record<string, string> = {
+  "physics-basic": "B0H4J34162",
+  physics: "B0H3LLW1F2",
+  "physics-advanced": "B0H639CPQW",
+  "chemistry-basic": "B0H7YWLDJJ",
+  chemistry: "B0H7RHT1NF",
+  "math-1a": "B0H6ZRPLVJ",
+  "math-2bc": "B0H71TQJYY",
+  "math-3c": "B0H724CBBT",
+  "english-reading": "B0H7LPFKN1",
+  "english-grammar": "B0H7LQW2W8",
+};
+
 // §7 教材カード用の「対象」ラベル（教科タブごと）。
 const subjectTargets: Record<string, string> = {
   "physics-basic": "物理が苦手・初学者",
@@ -232,6 +246,67 @@ function BookCover({ asin, title }: { asin: string; title: string }) {
   );
 }
 
+/** ファーストビューの実物画像カード。compact（モバイル）は添削返却画面1枚で軽く見せる。 */
+function HeroVisual({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className="overflow-hidden rounded-[20px] bg-white p-3 shadow-[0_40px_80px_-44px_rgba(11,29,74,0.6)] ring-1 ring-[rgba(15,29,74,0.08)]">
+      {compact ? (
+        <div className="mb-2 flex items-center gap-1.5 px-0.5">
+          <span aria-hidden="true" className="grid h-5 w-5 place-items-center rounded-full bg-[#ea580c] text-white">
+            <Check className="h-3 w-3" />
+          </span>
+          <span className="text-[0.78rem] font-extrabold text-[#0b1d4a]">先生の添削が返ってくる画面</span>
+        </div>
+      ) : null}
+      <Image
+        src={`/samples/returned-screen-v2.png?v=${sampleV}`}
+        alt="提出した答案に講師の添削が返却されたアプリ画面（デモ）"
+        width={526}
+        height={170}
+        priority
+        sizes="(max-width: 1024px) 92vw, 460px"
+        className="h-auto w-full rounded-[12px]"
+      />
+      {!compact ? (
+        <div className="mt-3 grid grid-cols-2 gap-3">
+          <Image
+            src={`/samples/submit-screen-math-sample.png?v=${sampleV}`}
+            alt="教材を確認して答案を提出するアプリ画面（デモ）"
+            width={666}
+            height={387}
+            sizes="220px"
+            className="h-auto w-full rounded-[10px] ring-1 ring-[rgba(15,29,74,0.06)]"
+          />
+          <Image
+            src={`/samples/report-screen-v2.png?v=${sampleV}`}
+            alt="合格数や返却履歴を確認するレポート画面（デモ）"
+            width={724}
+            height={634}
+            sizes="220px"
+            className="h-auto w-full rounded-[10px] object-cover ring-1 ring-[rgba(15,29,74,0.06)]"
+          />
+        </div>
+      ) : null}
+      <p className="mt-2 text-center text-[0.68rem] font-semibold text-[#94a3b8]">アプリ画面（デモ）</p>
+    </div>
+  );
+}
+
+/** ファーストビュー等に置く「高い？→お試し」への誘導ライン。 */
+function HeroTrialLink({ location }: { location: string }) {
+  return (
+    <TrackedLink
+      href="/apply#trial"
+      location={location}
+      className="mt-3 flex items-center gap-2 rounded-full bg-[#fff1e6] px-4 py-2.5 text-[0.83rem] font-bold text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.3)] transition hover:bg-[#ffe4d1]"
+    >
+      <span aria-hidden="true" className="shrink-0 rounded-full bg-[#ea580c] px-2 py-0.5 text-[0.66rem] font-extrabold text-white">お試し</span>
+      <span className="leading-snug">まずは添削3回・{formatYen(TRIAL_PRICE)}から。本契約で全額値引き。</span>
+      <span aria-hidden="true" className="ml-auto">→</span>
+    </TrackedLink>
+  );
+}
+
 /* ───────────────────────── ページ ───────────────────────── */
 
 export default function HomePage() {
@@ -243,9 +318,10 @@ export default function HomePage() {
       {/* 2. ファーストビュー */}
       <section className="bg-[linear-gradient(180deg,#ffffff_0%,#f3f8ff_100%)]">
         <Container className="px-5 py-10 sm:px-6 sm:py-16">
-          <div className="grid items-center gap-9 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
-            <div>
-              <p className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.74rem] font-bold text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.22)]">
+          <div className="lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-12">
+            {/* 左カラム（デスクトップ）。モバイルはこの中で 見出し→ビジュアル→価格 の順に並ぶ */}
+            <div className="flex flex-col">
+              <p className="inline-flex w-fit items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[0.74rem] font-bold text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.22)]">
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
                 高校生向け・買い切り通信添削
               </p>
@@ -259,7 +335,12 @@ export default function HomePage() {
                 1回10〜20分の教材を解いて提出。作った本人が途中式や考え方まで確認し、アプリで返却します。
               </p>
 
-              <ul className="mt-5 flex flex-wrap gap-2">
+              {/* モバイル専用：見出し直後に実物ビジュアルを差し込む（デスクトップは右カラムに表示） */}
+              <div className="mt-6 lg:hidden">
+                <HeroVisual compact />
+              </div>
+
+              <ul className="mt-6 flex flex-wrap gap-2">
                 {heroChips.map((t) => (
                   <li key={t} className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[0.78rem] font-bold text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]">
                     <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
@@ -286,6 +367,8 @@ export default function HomePage() {
                 <p className="mt-1.5 text-[0.8rem] font-semibold text-[#0f766e]">
                   約{GRADING_COUNT}回分でならすと<span className="text-[#ea580c]">1回あたり約{perRound}円</span>／買い切り・自動更新なし
                 </p>
+                {/* 「高い？」への即レス：価格のすぐ下にお試し導線 */}
+                <HeroTrialLink location="hero_trial" />
               </div>
 
               <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
@@ -297,38 +380,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* ファーストビューの実物画像（返却＝添削画面） */}
-            <div className="relative">
-              <div className="overflow-hidden rounded-[20px] bg-white p-3 shadow-[0_40px_80px_-44px_rgba(11,29,74,0.6)] ring-1 ring-[rgba(15,29,74,0.08)]">
-                <Image
-                  src={`/samples/returned-screen-v2.png?v=${sampleV}`}
-                  alt="提出した答案に講師の添削が返却されたアプリ画面（デモ）"
-                  width={526}
-                  height={170}
-                  priority
-                  sizes="(max-width: 1024px) 92vw, 460px"
-                  className="h-auto w-full rounded-[12px]"
-                />
-                <div className="mt-3 grid grid-cols-2 gap-3">
-                  <Image
-                    src={`/samples/submit-screen-math-sample.png?v=${sampleV}`}
-                    alt="教材を確認して答案を提出するアプリ画面（デモ）"
-                    width={666}
-                    height={387}
-                    sizes="(max-width: 1024px) 45vw, 220px"
-                    className="h-auto w-full rounded-[10px] ring-1 ring-[rgba(15,29,74,0.06)]"
-                  />
-                  <Image
-                    src={`/samples/report-screen-v2.png?v=${sampleV}`}
-                    alt="合格数や返却履歴を確認するレポート画面（デモ）"
-                    width={724}
-                    height={634}
-                    sizes="(max-width: 1024px) 45vw, 220px"
-                    className="h-auto w-full rounded-[10px] object-cover ring-1 ring-[rgba(15,29,74,0.06)]"
-                  />
-                </div>
-                <p className="mt-2 text-center text-[0.68rem] font-semibold text-[#94a3b8]">アプリ画面（デモ）</p>
-              </div>
+            {/* 右カラム：デスクトップの実物画像（返却＝添削画面）。モバイルは上に出すので非表示 */}
+            <div className="relative hidden lg:block">
+              <HeroVisual />
             </div>
           </div>
         </Container>
@@ -472,25 +526,46 @@ export default function HomePage() {
                   </p>
                   <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {items.map((s) => (
-                      <li key={s.id} className="flex flex-col rounded-[14px] bg-[#f8fafc] p-4 ring-1 ring-[rgba(15,29,74,0.06)]">
-                        <span className="inline-flex w-fit rounded-full px-2.5 py-1 text-[0.7rem] font-extrabold text-white" style={{ background: s.color }}>
-                          {s.label}
-                        </span>
-                        <p className="mt-2 text-[0.82rem] font-semibold text-[#475569]">対象：{subjectTargets[s.id] ?? "高校生"}</p>
-                        <p className="mt-1 text-[0.78rem] text-[#64748b]">約{GRADING_COUNT}回分・提出ごとに添削</p>
-                        <p className="mt-2 flex items-baseline gap-1.5">
-                          {campaign ? (
-                            <span className="text-[0.76rem] font-semibold text-[#94a3b8] line-through">{formatYen(MATERIAL_PRICE)}</span>
-                          ) : null}
-                          <span className="text-[1.1rem] font-extrabold text-[#0b1d4a]">{formatYen(single)}</span>
-                          <span className="text-[0.72rem] font-semibold text-[#475569]">税込</span>
-                        </p>
+                      <li
+                        key={s.id}
+                        className="flex flex-col overflow-hidden rounded-[16px] bg-white ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_22px_46px_-40px_rgba(11,29,74,0.55)]"
+                      >
+                        <div className="flex gap-3.5 p-4">
+                          {/* 表紙 */}
+                          <span
+                            className="w-[4.6rem] shrink-0 self-start rounded-[9px] p-1.5 ring-1 ring-[rgba(15,29,74,0.06)]"
+                            style={{ background: `linear-gradient(180deg, ${s.color}1f 0%, rgba(248,250,252,0.9) 100%)` }}
+                          >
+                            {subjectCovers[s.id] ? (
+                              <BookCover asin={subjectCovers[s.id]} title={s.label} />
+                            ) : null}
+                          </span>
+                          {/* 情報 */}
+                          <div className="min-w-0 flex-1">
+                            <span className="inline-flex w-fit rounded-full px-2.5 py-1 text-[0.7rem] font-extrabold text-white" style={{ background: s.color }}>
+                              {s.label}
+                            </span>
+                            <p className="mt-2 text-[0.8rem] font-semibold leading-[1.5] text-[#475569]">対象：{subjectTargets[s.id] ?? "高校生"}</p>
+                            <p className="mt-1 text-[0.74rem] leading-[1.5] text-[#64748b]">約{GRADING_COUNT}回分・提出ごとに添削</p>
+                            <p className="mt-2 flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
+                              {campaign ? (
+                                <span className="text-[0.74rem] font-semibold text-[#94a3b8] line-through">{formatYen(MATERIAL_PRICE)}</span>
+                              ) : null}
+                              <span className="text-[1.2rem] font-black leading-none tracking-[-0.01em] text-[#0b1d4a]">{formatYen(single)}</span>
+                              <span className="text-[0.7rem] font-semibold text-[#475569]">税込</span>
+                            </p>
+                          </div>
+                        </div>
+                        {/* 押しやすい大きめCTA：押すと該当教材がカートに入った状態で申込へ */}
                         <TrackedLink
-                          href="/apply#form"
+                          href={`/apply?add=${s.id}#form`}
                           location={`material_card_${s.id}`}
-                          className="mt-3 inline-flex min-h-10 items-center justify-center rounded-full bg-[#0b1d4a] px-4 text-[0.82rem] font-bold text-white transition hover:bg-[#12295f]"
+                          ariaLabel={`${s.label}をカートに入れて申し込む`}
+                          className="group/mc relative m-3 mt-0 inline-flex min-h-[3rem] items-center justify-center gap-1.5 overflow-hidden rounded-full px-4 text-[0.92rem] font-extrabold text-white shadow-[0_16px_30px_-14px_rgba(234,88,12,0.85)] transition hover:-translate-y-px active:translate-y-0"
                         >
-                          この教材ではじめる
+                          <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
+                          <span aria-hidden="true" className="relative">＋</span>
+                          <span className="relative">カートに入れる</span>
                         </TrackedLink>
                       </li>
                     ))}
@@ -573,20 +648,35 @@ export default function HomePage() {
             <SecondaryCta location="pricing_lead" href="/contact">教材選びを相談する</SecondaryCta>
           </div>
 
-          {/* お試し導線 */}
-          <div className="mx-auto mt-6 flex max-w-4xl flex-col items-center justify-between gap-3 rounded-[16px] bg-white p-4 text-center ring-1 ring-[rgba(15,29,74,0.08)] sm:flex-row sm:p-5 sm:text-left">
-            <p className="text-[0.88rem] leading-[1.7] text-[#475569]">
-              いきなりは不安な方へ。
-              <span className="font-bold text-[#0b1d4a]">添削{TRIAL_GRADING_COUNT}回のお試し（{formatYen(TRIAL_PRICE)}）</span>
-              もあります。本契約で{formatYen(TRIAL_PRICE)}値引き。
-            </p>
-            <TrackedLink
-              href="/apply#trial"
-              location="pricing_trial"
-              className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-full border border-[#ea580c] px-5 text-[0.86rem] font-bold text-[#ea580c] transition hover:bg-[#ea580c] hover:text-white"
-            >
-              お試しを見る
-            </TrackedLink>
+          {/* お試し導線（「高い？」への即レスとして目立たせる） */}
+          <div className="mx-auto mt-6 max-w-4xl overflow-hidden rounded-[20px] bg-[linear-gradient(135deg,#fff7ed_0%,#ffe8d1_100%)] ring-1 ring-[rgba(234,88,12,0.3)] shadow-[0_28px_60px_-46px_rgba(234,88,12,0.6)]">
+            <div className="flex flex-col items-center gap-5 p-6 text-center sm:flex-row sm:justify-between sm:gap-6 sm:p-7 sm:text-left">
+              <div className="flex items-center gap-4">
+                <span className="grid h-14 w-14 shrink-0 -rotate-6 place-items-center rounded-2xl bg-[#ea580c] text-center text-[0.7rem] font-black leading-tight text-white shadow-[0_10px_20px_-8px_rgba(234,88,12,0.8)]">
+                  お試し
+                </span>
+                <div>
+                  <p className="text-[0.94rem] font-extrabold text-[#9a3412]">高いと感じたら、まず3回だけ。</p>
+                  <p className="mt-1 flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
+                    <span className="text-[0.82rem] font-bold text-[#7c2d12]">添削{TRIAL_GRADING_COUNT}回お試し</span>
+                    <span className="text-[2rem] font-black leading-none tracking-[-0.02em] text-[#ea580c]">{formatYen(TRIAL_PRICE)}</span>
+                    <span className="text-[0.76rem] font-bold text-[#9a3412]">（税込）</span>
+                  </p>
+                  <p className="mt-1.5 inline-flex items-center rounded-full bg-white/70 px-2.5 py-0.5 text-[0.76rem] font-bold text-[#0f766e]">
+                    本契約に進めば、お試し代{formatYen(TRIAL_PRICE)}はそのまま値引き
+                  </p>
+                </div>
+              </div>
+              <TrackedLink
+                href="/apply#trial"
+                location="pricing_trial"
+                className="group/tr relative inline-flex min-h-12 w-full shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-full px-6 text-[0.92rem] font-extrabold text-white shadow-[0_16px_30px_-14px_rgba(234,88,12,0.85)] transition hover:-translate-y-px sm:w-auto"
+              >
+                <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
+                <span className="relative">お試しを申し込む</span>
+                <span aria-hidden="true" className="relative">→</span>
+              </TrackedLink>
+            </div>
           </div>
         </Container>
       </section>

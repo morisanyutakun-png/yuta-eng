@@ -177,11 +177,16 @@ function MaterialCoverFrame({
 export function ApplyForm({
   canceled,
   upgradeToken,
+  initialSubjects = [],
 }: {
   canceled?: boolean;
   upgradeToken?: string | null;
+  /** トップの教材カードから渡る事前選択（?add=）。カートに入った状態で開く。 */
+  initialSubjects?: string[];
 }) {
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>(() =>
+    Array.from(new Set(initialSubjects.filter((id) => SUBJECTS.some((s) => s.id === id)))),
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

@@ -10,7 +10,7 @@ import { PricingTable, SubjectChips } from "@/components/pricing-table";
 import { TrialSection } from "@/components/trial-section";
 import { createPageMetadata } from "@/lib/metadata";
 import { createBreadcrumbJsonLd, createOrganizationJsonLd } from "@/lib/structured-data";
-import { CAMPAIGN_DEADLINE_LABEL, CAMPAIGN_DEADLINE_SHORT_LABEL, formatYen, packSavings } from "@/lib/pricing";
+import { CAMPAIGN_DEADLINE_LABEL, CAMPAIGN_DEADLINE_SHORT_LABEL, formatYen, isValidSubjectId, packSavings } from "@/lib/pricing";
 
 export const metadata: Metadata = createPageMetadata({
   title: "料金・お申し込み｜教材を選んで買い切りではじめる",
@@ -29,9 +29,19 @@ const steps = [
 export default async function ApplyPage({
   searchParams,
 }: {
-  searchParams: Promise<{ canceled?: string; u?: string }>;
+  searchParams: Promise<{ canceled?: string; u?: string; add?: string | string[] }>;
 }) {
-  const { canceled, u: upgradeToken } = await searchParams;
+  const { canceled, u: upgradeToken, add } = await searchParams;
+
+  // トップの教材カード「カートに入れる」から渡る事前選択（?add=math-1a など）。
+  const initialSubjects = Array.from(
+    new Set(
+      (Array.isArray(add) ? add : add ? [add] : [])
+        .flatMap((v) => v.split(","))
+        .map((v) => v.trim())
+        .filter(isValidSubjectId),
+    ),
+  );
   const breadcrumb = createBreadcrumbJsonLd([
     { name: "ホーム", path: "/" },
     { name: "お申し込み", path: "/apply" },
@@ -128,7 +138,11 @@ export default async function ApplyPage({
             </h2>
           </div>
 
-          <ApplyForm canceled={Boolean(canceled)} upgradeToken={upgradeToken ?? null} />
+          <ApplyForm
+            canceled={Boolean(canceled)}
+            upgradeToken={upgradeToken ?? null}
+            initialSubjects={initialSubjects}
+          />
 
           <div id="trial" className="mt-12 scroll-mt-24">
             <TrialSection />
