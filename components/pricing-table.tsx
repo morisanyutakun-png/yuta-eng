@@ -237,7 +237,7 @@ export function PricingTable({
         </p>
         <span aria-hidden="true" className="hidden text-[#0d9488] sm:block">→</span>
         <p className="text-[0.95rem] font-extrabold leading-[1.5] text-[#0f766e]">
-          提出ごとの添削と習慣化で、<span className="text-[1.05rem]">1冊を最後までやり切る</span>。
+          提出ごとの答案添削で、<span className="text-[1.05rem]">1冊を最後までやり切る</span>。
         </p>
       </div>
     </div>

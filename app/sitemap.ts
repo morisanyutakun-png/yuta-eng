@@ -3,14 +3,9 @@ import path from "node:path";
 
 import type { MetadataRoute } from "next";
 
-import { officialBooks } from "@/data/books";
 import { siteConfig } from "@/data/site";
 
 const SITE_URL = siteConfig.url;
-
-const officialBookImages = officialBooks.map((book) =>
-  new URL(`/books/${book.asin}.webp`, SITE_URL).toString(),
-);
 
 /**
  * Static-route lastmod: file mtime of the corresponding page.tsx. This
@@ -36,25 +31,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: pageMtime("", now),
       changeFrequency: "weekly",
       priority: 1,
-    },
-    {
-      url: `${SITE_URL}/how-it-works`,
-      lastModified: pageMtime("/how-it-works", now),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/app`,
-      lastModified: pageMtime("/app", now),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${SITE_URL}/materials`,
-      lastModified: pageMtime("/materials", now),
-      changeFrequency: "monthly",
-      priority: 0.8,
-      images: officialBookImages,
     },
     {
       url: `${SITE_URL}/about`,

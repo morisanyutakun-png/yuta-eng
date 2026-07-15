@@ -182,7 +182,7 @@ export function PostPurchaseFlow({
 
       <div className="mt-8 rounded-[16px] bg-[linear-gradient(115deg,#071328_0%,#12326f_64%,#1f3f95_100%)] px-6 py-7 text-white sm:px-10">
         <h3 className="text-[1.35rem] font-extrabold leading-[1.5] sm:text-[1.65rem]">
-          この6画面で、購入直後から学習の習慣化までつながる。
+          この6画面で、購入直後から最初の一問、そして修了までつながる。
         </h3>
         <p className="mt-3 font-serif text-[0.95rem] leading-[1.9] text-white/88">
           購入後に迷わずログインでき、購入教材が自動で届き、提出後はすぐ解答解説で振り返って次へ進めます。返却・再提出は別タブで追えるので、生徒も先生も自分のタイミングで学習と添削を進められます。
@@ -203,7 +203,7 @@ export function PostPurchaseFlow({
           </h3>
           <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
             <PrimaryCta href="/apply">教材を選んではじめる</PrimaryCta>
-            <SecondaryCta href="/app" tone="dark">アプリ画面を見る</SecondaryCta>
+            <SecondaryCta href="/#samples" tone="dark">添削例を見る</SecondaryCta>
           </div>
         </div>
       ) : null}

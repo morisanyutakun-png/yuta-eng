@@ -6,7 +6,7 @@ export const officialBooks = [
   { asin: "B0H724CBBT", title: "ノビットの数学ⅢC 標準演習", sub: "基礎から入試標準まで。9分野・類題演習・詳しい解説。", subject: "数学IIIC", accent: "#16a34a" },
   { asin: "B0H7YWLDJJ", title: "ノビットの化学基礎 標準演習", sub: "全10分野・各3セット。物質量、酸塩基、酸化還元まで基礎を固める。", subject: "化学基礎", accent: "#7c3aed" },
   { asin: "B0H7RHT1NF", title: "ノビットの化学 標準", sub: "理論・無機・有機・高分子まで。全12分野を類題反復で固める。", subject: "化学", accent: "#0d9488" },
-  { asin: "B0H7LPFKN1", title: "ノビットの英語・長文 Standard", sub: "全12テーマ・36題。構文把握から全訳、設問処理まで毎日練習。", subject: "英語長文", accent: "#ea580c" },
+  { asin: "B0H7LPFKN1", title: "ノビットの英語・長文 Standard", sub: "全12テーマ・36題。構文把握から全訳、設問処理まで反復練習。", subject: "英語長文", accent: "#ea580c" },
   { asin: "B0H7LQW2W8", title: "ノビットの英語・文法 Standard", sub: "高校英文法の主要14分野を、類題反復と詳しい解説で総点検。", subject: "英文法", accent: "#ea580c" },
 ];
 
