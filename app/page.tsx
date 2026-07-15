@@ -74,33 +74,33 @@ const heroChips = [
 ];
 
 const problems = [
-  { title: "問題集を買っても途中で止まる", body: "続かないのは意志ではなく、続く仕組みがないから。" },
-  { title: "解答を読んでも、自分の答案の悪い所が分からない", body: "正解は分かっても、自分の書き方のどこが減点かは見えない。" },
-  { title: "塾へ通う時間はないが、答案は見てもらいたい", body: "通わずに、提出した答案だけ人に見てほしい。" },
+  { icon: "stall", text: "問題集を買っても、\n途中で止まる" },
+  { icon: "mark", text: "解答を読んでも、\n直し方が分からない" },
+  { icon: "clock", text: "塾に通う時間はないが、\n答案は見てほしい" },
 ];
 
 const flow = [
-  { n: "1", title: "教材を選ぶ", body: "答案を見てもらいたい科目から1教材。" },
-  { n: "2", title: "1回10〜20分の問題を解く", body: "スキマ時間で、少しずつ進めます。" },
-  { n: "3", title: "写真またはPDFで答案を提出する", body: "画面で解くか、写真・PDF（最大3件）を添付。" },
-  { n: "4", title: "添削を確認し、次の範囲へ進む", body: "返却された添削を見て、次へ。" },
+  { n: "1", title: "教材を選ぶ", verb: "選ぶ" },
+  { n: "2", title: "10〜20分で解く", verb: "解く" },
+  { n: "3", title: "写真やPDFで出す", verb: "出す" },
+  { n: "4", title: "添削を見て進む", verb: "進む" },
 ];
 
 // 購入後の流れ（決済のあとは自動で始まる＝安心して申し込める）。
 const afterSteps = [
-  { n: "1", title: "決済（一括）", body: "クレジットカードで購入。面談・電話勧誘はありません。" },
-  { n: "2", title: "ログイン情報が自動発行", body: "決済後すぐにIDとPINが発行され、メールにも届きます。" },
-  { n: "3", title: "教材が自動で届く", body: "買った教材がダッシュボードに自動で割り当て。手続きは不要です。" },
-  { n: "4", title: "その日から提出できる", body: "1回目を解いて提出。すぐに学習と添削が始まります。" },
+  { n: "1", title: "決済（一括）", body: "面談・電話勧誘なし。" },
+  { n: "2", title: "ログイン情報が自動発行", body: "IDとPINがメールで届く。" },
+  { n: "3", title: "教材が自動で届く", body: "手続き不要で自動割り当て。" },
+  { n: "4", title: "その日から提出", body: "1回目を解いて提出。" },
 ];
 
 const included = [
-  { title: "約100回分の演習教材", body: "取り組みサイズに分割した教材PDF。" },
-  { title: "詳しい解答・解説", body: "提出直後に届き、その場で自己採点。" },
-  { title: "提出ごとの答案添削", body: "教材を書いた本人が答案を確認。" },
-  { title: "専用学習アプリ", body: "課題・提出・返却をひとつに。" },
-  { title: "進捗・返却履歴", body: "合格・再提出・履歴を見返せます。" },
-  { title: "教材修了までの利用権", body: "買い切り。修了まであなたのもの。" },
+  "約100回分の演習教材",
+  "詳しい解答・解説",
+  "提出ごとの答案添削",
+  "専用学習アプリ",
+  "進捗・返却の履歴",
+  "修了までの利用権",
 ];
 
 // 添削例に使う実物スクリーン（public/samples）。
@@ -108,28 +108,28 @@ const sampleV = "20260711b";
 const correctionShots = [
   {
     title: "提出画面",
-    body: "教材の範囲を確認し、画面で解くか答案を添付して提出します。",
+    body: "画面で解くか、答案を添付して提出。",
     src: `/samples/submit-screen-math-sample.png?v=${sampleV}`,
     width: 666,
     height: 387,
   },
   {
     title: "解答解説PDF",
-    body: "提出直後に同じ範囲の解答解説が届き、考え方と途中式で自己採点できます。",
+    body: "提出直後に届き、考え方と途中式で自己採点。",
     src: `/samples/answer-key-math-sample.png?v=${sampleV}`,
     width: 1075,
     height: 1518,
   },
   {
     title: "返却・講師コメント",
-    body: "先生の採点コメント・添削・再提出の指示を返却タブで確認します。",
+    body: "採点コメント・添削・再提出の指示を確認。",
     src: `/samples/returned-screen-v2.png?v=${sampleV}`,
     width: 526,
     height: 170,
   },
   {
     title: "合格・進捗の記録",
-    body: "合格数・再提出・返却履歴をレポートで振り返れます。",
+    body: "合格数・再提出・履歴を振り返る。",
     src: `/samples/report-screen-v2.png?v=${sampleV}`,
     width: 724,
     height: 634,
@@ -175,6 +175,38 @@ const authorBooks = [
 const viewItems = SUBJECTS.map((s) => subjectToItem(s, single));
 
 /* ───────────────────────── 小物 ───────────────────────── */
+
+/** §悩み で使う線画アイコン（右脳的に一目で伝える）。 */
+function ProblemIcon({ kind, className = "" }: { kind: string; className?: string }) {
+  const common = { className, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
+  if (kind === "stall") {
+    // 途中で閉じた本
+    return (
+      <svg {...common}>
+        <path d="M12 6.5C10.5 5.3 8.5 5 4 5v12c4.5 0 6.5.3 8 1.5" />
+        <path d="M12 6.5C13.5 5.3 15.5 5 20 5v12c-4.5 0-6.5.3-8 1.5" />
+        <path d="M12 6.5v12" />
+      </svg>
+    );
+  }
+  if (kind === "mark") {
+    // はてな（分からない）
+    return (
+      <svg {...common}>
+        <path d="M9.2 9a2.8 2.8 0 1 1 4 2.5c-.9.5-1.7 1.1-1.7 2.3" />
+        <path d="M11.5 17.5h.01" />
+        <circle cx="12" cy="12" r="9" />
+      </svg>
+    );
+  }
+  // clock（時間がない）
+  return (
+    <svg {...common}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </svg>
+  );
+}
 
 function Check({ className = "" }: { className?: string }) {
   return (
@@ -348,8 +380,10 @@ export default function HomePage() {
                 約{GRADING_COUNT}回の演習を、
                 <span className="text-[#ea580c]">答案添削つき</span>で最後まで。
               </h1>
-              <p className="mt-4 text-[0.94rem] leading-[1.9] text-[#334155] sm:text-[1rem]">
-                1回10〜20分の教材を解いて提出。作った本人が途中式や考え方まで確認し、アプリで返却します。
+              <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#334155] sm:text-[1rem]">
+                1回10〜20分の教材を解いて、提出。
+                <br />
+                作った本人が<span className="font-bold text-[#0b1d4a]">途中式や考え方まで添削</span>して、アプリで返します。
               </p>
 
               {/* モバイル専用：見出し直後にメインビジュアルを差し込む（デスクトップは右カラムに表示） */}
@@ -416,9 +450,11 @@ export default function HomePage() {
           </div>
           <ul className="mx-auto mt-8 grid max-w-4xl gap-4 sm:grid-cols-3">
             {problems.map((p) => (
-              <li key={p.title} className="rounded-[16px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.06)]">
-                <p className="text-[1rem] font-extrabold leading-[1.5] text-[#0b1d4a]">{p.title}</p>
-                <p className="mt-2 text-[0.84rem] leading-[1.8] text-[#475569]">{p.body}</p>
+              <li key={p.text} className="flex flex-col items-center gap-4 rounded-[18px] bg-[#f8fafc] p-6 text-center ring-1 ring-[rgba(15,29,74,0.06)]">
+                <span className="grid h-14 w-14 place-items-center rounded-full bg-white text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.18)]">
+                  <ProblemIcon kind={p.icon} className="h-7 w-7" />
+                </span>
+                <p className="whitespace-pre-line text-[0.98rem] font-bold leading-[1.7] text-[#0b1d4a]">{p.text}</p>
               </li>
             ))}
           </ul>
@@ -434,17 +470,18 @@ export default function HomePage() {
               解いて、出して、進む。4ステップ。
             </h2>
           </div>
-          <ol className="mx-auto mt-8 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="mx-auto mt-8 grid max-w-4xl grid-cols-2 gap-4 lg:grid-cols-4">
             {flow.map((s) => (
-              <li key={s.n} className="rounded-[16px] bg-white p-5 ring-1 ring-[rgba(15,29,74,0.06)]">
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-[#0b1d4a] text-[0.95rem] font-extrabold text-white">{s.n}</span>
-                <p className="mt-3 text-[0.98rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{s.title}</p>
-                <p className="mt-1.5 text-[0.82rem] leading-[1.75] text-[#475569]">{s.body}</p>
+              <li key={s.n} className="rounded-[18px] bg-white p-5 text-center ring-1 ring-[rgba(15,29,74,0.06)]">
+                <span className="mx-auto grid h-10 w-10 place-items-center rounded-full bg-[#0b1d4a] text-[0.9rem] font-black text-white">{s.n}</span>
+                <p className="mt-3 text-[1.15rem] font-black leading-none text-[#0b1d4a]">{s.verb}</p>
+                <p className="mt-2 text-[0.8rem] font-semibold leading-[1.5] text-[#475569]">{s.title}</p>
               </li>
             ))}
           </ol>
-          <p className="mx-auto mt-6 max-w-3xl text-center text-[0.84rem] leading-[1.8] text-[#64748b]">
-            提出直後に<span className="font-bold text-[#0f766e]">自己採点用の解答解説</span>が届きます。先生の<span className="font-bold text-[#0f766e]">添削の返却を待たずに、次の範囲へ進めます</span>。
+          <p className="mx-auto mt-6 max-w-2xl text-center text-[0.86rem] leading-[1.9] text-[#64748b]">
+            提出した瞬間に<span className="font-bold text-[#0f766e]">解答解説</span>が届き、
+            <span className="font-bold text-[#0f766e]">添削を待たずに次へ</span>進めます。
           </p>
         </Container>
       </section>
@@ -455,22 +492,18 @@ export default function HomePage() {
           <div className="mx-auto max-w-2xl text-center">
             <SectionLabel>What you get</SectionLabel>
             <h2 className="mt-3 text-[1.5rem] font-extrabold leading-[1.4] text-[#0b1d4a] sm:text-[2rem]">
-              教材・添削・アプリをまとめた、1つの買い切り。
+              教材・添削・アプリが、
+              <br className="sm:hidden" />
+              まとめて1つの買い切り。
             </h2>
-            <p className="mt-3 text-[0.9rem] leading-[1.85] text-[#475569]">
-              「教材だけ」「添削だけ」ではありません。約{GRADING_COUNT}回分の演習に、答案添削と専用アプリが込みです。
-            </p>
           </div>
-          <ul className="mx-auto mt-8 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mx-auto mt-8 grid max-w-3xl gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {included.map((item) => (
-              <li key={item.title} className="flex gap-3 rounded-[14px] bg-[#f8fafc] p-4 ring-1 ring-[rgba(15,29,74,0.06)]">
-                <span aria-hidden="true" className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[#0d9488] text-white">
-                  <Check className="h-3 w-3" />
+              <li key={item} className="flex items-center gap-2.5 rounded-[14px] bg-[#f8fafc] px-4 py-3.5 ring-1 ring-[rgba(15,29,74,0.06)]">
+                <span aria-hidden="true" className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#0d9488] text-white">
+                  <Check className="h-3.5 w-3.5" />
                 </span>
-                <span>
-                  <span className="block text-[0.92rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{item.title}</span>
-                  <span className="mt-1 block text-[0.8rem] leading-[1.7] text-[#64748b]">{item.body}</span>
-                </span>
+                <span className="text-[0.92rem] font-bold leading-[1.4] text-[#0b1d4a]">{item}</span>
               </li>
             ))}
           </ul>
@@ -706,8 +739,10 @@ export default function HomePage() {
             <h2 className="mt-3 text-[1.5rem] font-extrabold leading-[1.4] text-[#0b1d4a] sm:text-[2rem]">
               買ったら、あとは<span className="text-[#ea580c]">自動で</span>始まります。
             </h2>
-            <p className="mt-3 text-[0.9rem] leading-[1.85] text-[#475569]">
-              申込後に、あなたがやる面倒な手続きはありません。決済が終わると、購入した教材が自動でアプリに入り、その日から始められます。
+            <p className="mt-3 text-[0.9rem] leading-[1.9] text-[#475569]">
+              面倒な手続きは、ありません。
+              <br className="sm:hidden" />
+              決済が終わると教材が自動で入り、その日から始められます。
             </p>
           </div>
 
