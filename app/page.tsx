@@ -86,6 +86,14 @@ const flow = [
   { n: "4", title: "添削を確認し、次の範囲へ進む", body: "返却された添削を見て、次へ。" },
 ];
 
+// 購入後の流れ（決済のあとは自動で始まる＝安心して申し込める）。
+const afterSteps = [
+  { n: "1", title: "決済（一括）", body: "クレジットカードで購入。面談・電話勧誘はありません。" },
+  { n: "2", title: "ログイン情報が自動発行", body: "決済後すぐにIDとPINが発行され、メールにも届きます。" },
+  { n: "3", title: "教材が自動で届く", body: "買った教材がダッシュボードに自動で割り当て。手続きは不要です。" },
+  { n: "4", title: "その日から提出できる", body: "1回目を解いて提出。すぐに学習と添削が始まります。" },
+];
+
 const included = [
   { title: "約100回分の演習教材", body: "取り組みサイズに分割した教材PDF。" },
   { title: "詳しい解答・解説", body: "提出直後に届き、その場で自己採点。" },
@@ -690,8 +698,73 @@ export default function HomePage() {
         </Container>
       </section>
 
+      {/* 8.5 購入後の流れ（決済後は自動で始まる＝安心） */}
+      <section id="after" className="scroll-mt-20 bg-white">
+        <Container className="px-5 py-12 sm:px-6 sm:py-20">
+          <div className="mx-auto max-w-2xl text-center">
+            <SectionLabel>After purchase · 購入後の流れ</SectionLabel>
+            <h2 className="mt-3 text-[1.5rem] font-extrabold leading-[1.4] text-[#0b1d4a] sm:text-[2rem]">
+              買ったら、あとは<span className="text-[#ea580c]">自動で</span>始まります。
+            </h2>
+            <p className="mt-3 text-[0.9rem] leading-[1.85] text-[#475569]">
+              申込後に、あなたがやる面倒な手続きはありません。決済が終わると、購入した教材が自動でアプリに入り、その日から始められます。
+            </p>
+          </div>
+
+          {/* 自動割り当ての見本（ダッシュボード） */}
+          <figure className="mx-auto mt-8 max-w-3xl overflow-hidden rounded-[18px] bg-[#f8fafc] p-3 ring-1 ring-[rgba(15,29,74,0.07)] shadow-[0_28px_60px_-48px_rgba(11,29,74,0.5)]">
+            <Image
+              src={`/samples/after-purchase-dashboard-v2.png?v=${sampleV}`}
+              alt="購入した教材が自動でダッシュボードに入った画面（見本）"
+              width={724}
+              height={203}
+              sizes="(max-width: 768px) 92vw, 720px"
+              className="h-auto w-full rounded-[10px] ring-1 ring-[rgba(15,29,74,0.06)]"
+            />
+            <figcaption className="mt-2 text-center text-[0.72rem] font-semibold text-[#94a3b8]">
+              購入教材が自動で入ったダッシュボード（見本）
+            </figcaption>
+          </figure>
+
+          {/* 4ステップ */}
+          <ol className="mx-auto mt-8 grid max-w-4xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {afterSteps.map((s) => (
+              <li key={s.n} className="rounded-[16px] bg-[#f8fafc] p-5 ring-1 ring-[rgba(15,29,74,0.06)]">
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-[#0d9488] text-[0.95rem] font-extrabold text-white">{s.n}</span>
+                <p className="mt-3 text-[0.98rem] font-extrabold leading-[1.45] text-[#0b1d4a]">{s.title}</p>
+                <p className="mt-1.5 text-[0.82rem] leading-[1.75] text-[#475569]">{s.body}</p>
+              </li>
+            ))}
+          </ol>
+
+          {/* 安心の一言＋バッジ */}
+          <div className="mx-auto mt-6 max-w-3xl rounded-[18px] bg-[linear-gradient(135deg,#0b1d4a_0%,#0f5e5e_100%)] p-6 text-center text-white shadow-[0_30px_64px_-48px_rgba(11,29,74,0.7)]">
+            <p className="text-[0.98rem] font-bold leading-[1.8] sm:text-[1.05rem]">
+              決済のあと、あなたがやる手続きはありません。
+              <br className="hidden sm:block" />
+              だから、思い立った日にそのまま始められます。
+            </p>
+            <ul className="mt-4 flex flex-wrap justify-center gap-2">
+              {["面談・勧誘なし", "教材は自動で割り当て", "ログイン情報はメールでも届く", "その日から提出OK"].map((t) => (
+                <li key={t} className="inline-flex items-center gap-1.5 rounded-full bg-white/12 px-3 py-1.5 text-[0.78rem] font-bold text-white ring-1 ring-white/20">
+                  <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#5eead4] text-[#0b1d4a]">
+                    <Check className="h-2.5 w-2.5" />
+                  </span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <PrimaryCta location="after_primary">教材を選んで申し込む</PrimaryCta>
+            <SecondaryCta location="after_detail" href="/after-purchase">購入後の流れをくわしく見る</SecondaryCta>
+          </div>
+        </Container>
+      </section>
+
       {/* 9. 運営者の信頼 */}
-      <section id="about" className="scroll-mt-20 bg-white">
+      <section id="about" className="scroll-mt-20 bg-[linear-gradient(180deg,#ffffff_0%,#f5f9ff_100%)]">
         <Container className="px-5 py-12 sm:px-6 sm:py-20">
           <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12">
             <div>

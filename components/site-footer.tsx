@@ -34,9 +34,9 @@ export function SiteFooter() {
               </picture>
             </Link>
             <p className="mt-5 max-w-sm text-[0.9rem] leading-[1.95] text-[#475569]">
-              物理・化学・数学・英語を中心に、自作教材 × 習慣化 × 添削で
-              「考える力」を育てるデジタル通信添削サービス。授業はせず、
-              毎日続く学習システムで自立した学びを支えます。
+              高校生向けの買い切り通信添削。1回10〜20分の教材を解いて答案を提出すると、
+              教材を作った本人が途中式や考え方まで添削し、アプリで返却します。
+              物理・化学・数学・英語に対応。面談・授業はありません。
             </p>
           </div>
 
@@ -116,7 +116,7 @@ export function SiteFooter() {
 
         <div className="mt-5 flex flex-col gap-2 text-[0.8rem] text-[#475569] sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} {siteConfig.name} {siteConfig.division}</p>
-          <p>教材 × 習慣化 × 添削のデジタル通信添削（面談・授業は行いません）</p>
+          <p>高校生向け・買い切りの通信添削（面談・授業は行いません）</p>
         </div>
       </Container>
     </footer>

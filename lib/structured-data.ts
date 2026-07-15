@@ -38,7 +38,7 @@ export function createOrganizationJsonLd() {
     alternateName: ["ノビットスタディ", "Nobit Study", "ノビット 通信添削"],
     url: siteConfig.url,
     description: siteConfig.description,
-    slogan: "毎日の学習を、仕組みにする。教材 × 習慣化 × 添削。",
+    slogan: "高校生向け・買い切りの通信添削。教材と答案添削。",
     email: siteConfig.email,
     logo: LOGO_URL,
     image: LOGO_URL,
@@ -76,7 +76,7 @@ export function createPersonJsonLd() {
     image: LOGO_URL,
     jobTitle: "ノビットスタディ 教材開発・添削担当",
     description:
-      "名古屋大学 工学部 電気電子情報系で学んだ理系教育者。高校物理・電磁気を中心に、現象・図・言葉・式を結びつけた構造的理解を育てる教材シリーズを制作。ノビットスタディ 中高部では、自作オリジナル教材・習慣化アプリ・提出ごとの添削で高校生の記述答案力と自立した学びを支える。",
+      "名古屋大学 工学部で学んだ理系教育者。高校物理・電磁気を中心に、現象・図・言葉・式を結びつけた構造的理解を育てる教材シリーズを制作。ノビットスタディ 中高部では、自作オリジナル教材・専用アプリ・提出ごとの答案添削で高校生の記述答案力と自立した学びを支える。",
     alumniOf: {
       "@type": "CollegeOrUniversity",
       name: "名古屋大学",
@@ -124,9 +124,9 @@ export function createHomePageJsonLd() {
       "デジタル通信添削",
       "記述答案 添削",
       "提出ごとの添削",
-      "学習習慣化",
+      "高校生 添削",
       "オリジナル教材",
-      "考える力",
+      "買い切り 通信添削",
     ],
     isPartOf: {
       "@type": "WebSite",
@@ -143,11 +143,11 @@ export function createEducationalServiceJsonLd() {
     name: FULL_NAME,
     url: siteConfig.url,
     description:
-      "物理・化学・数学・英語を中心に、自作オリジナル教材を好きなタイミングで進め、提出した答案に添削を返すデジタル通信添削サービス。専用アプリで学習を習慣化し、ご家庭でも生徒アカウントの画面で進捗を確認できる。授業や面談は行わず、教材 × 習慣化 × 添削で自立した学びを支える。",
+      "高校生向けの買い切り通信添削。物理・化学・数学・英語のオリジナル教材を1回10〜20分で解いて答案を提出すると、教材を作った本人が途中式や考え方まで添削し、専用アプリで返却する。解答解説PDF・専用アプリ込みの買い切りで、授業や面談は行わない。",
     serviceType: [
       "デジタル通信添削",
       "記述答案の添削指導",
-      "学習習慣化アプリ",
+      "専用学習アプリ",
       "教材提供",
     ],
     provider: {

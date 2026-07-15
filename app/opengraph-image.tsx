@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "ノビットスタディ 中高部 — 毎日の学習を、仕組みにする。教材 × 習慣化 × 添削のデジタル通信添削。";
+  "ノビットスタディ 中高部 — 高校生向け・買い切りの通信添削。教材と答案添削。";
 
 export const size = {
   width: 1200,
@@ -87,7 +87,7 @@ export default async function Image() {
               textShadow: "0 4px 24px rgba(80,16,0,0.45)",
             }}
           >
-            毎日の学習を、仕組みにする。
+            問題集を、最後までやり切る。
           </div>
           <div
             style={{

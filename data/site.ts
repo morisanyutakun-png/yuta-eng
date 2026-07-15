@@ -14,9 +14,9 @@ export const siteConfig = {
   shortName: "ノビットスタディ",
   latinName: "Nobit Study",
   division: "中高部",
-  brandTagline: "毎日の学習を、仕組みにする。",
+  brandTagline: "問題集を、最後までやり切る。",
   title:
-    "ノビットスタディ 中高部｜毎日の学習を仕組みにするデジタル通信添削（物理・化学・数学・英語）",
+    "ノビットスタディ 中高部｜高校生向け・買い切りの通信添削（物理・化学・数学・英語）",
   description:
     "ノビットスタディ 中高部は、高校生向けの買い切り通信添削。1回10〜20分の教材を解いて答案を提出すると、途中式や考え方まで人が添削し、解答解説PDFと次の範囲が届きます。物理・化学・数学・英語、1教材（約100回分・添削込み）通常¥14,800／2026年8月6日まで開講記念¥9,800、入会金・月額料金・追加費用0円。",
   url: siteUrl,
@@ -26,11 +26,12 @@ export const siteConfig = {
   kdpAmazonUrl,
   keywords: [
     // primary — 検索意図の主軸
+    "高校生 添削",
     "通信添削",
     "デジタル通信添削",
     "答案添削",
     "記述答案 添削",
-    "学習習慣 アプリ",
+    "大学受験 添削",
     "オリジナル教材 添削",
     "高校物理 添削",
     "高校化学 添削",
@@ -38,8 +39,7 @@ export const siteConfig = {
     "高校 英語 添削",
     // supporting — サービス特徴
     "添削 アプリ",
-    "学習管理 アプリ 保護者",
-    "勉強 習慣化",
+    "買い切り 通信添削",
     "考える力を育てる",
     "自立学習 オンライン",
     "難関大 記述 対策",
@@ -62,18 +62,19 @@ export const navItems = [
   { label: "仕組み", href: "/#how" },
   { label: "添削例", href: "/#samples" },
   { label: "料金", href: "/#pricing" },
+  { label: "購入後の流れ", href: "/#after" },
   { label: "よくある質問", href: "/#faq" },
   { label: "教材を選ぶ", href: "/apply#form", highlight: true },
 ];
 
+// フッターのメニュー列。ヘッダー（LP内アンカー）と表記・遷移先をそろえ、
+// 加えて詳細ページ（運営者・購入後の流れの詳細）と相談窓口を並べる。
 export const footerNavItems = [
-  { label: "ノビットのしくみ", href: "/how-it-works" },
-  { label: "公式アプリ", href: "/app" },
-  { label: "購入後の流れ", href: "/after-purchase" },
-  { label: "教材", href: "/materials" },
-  { label: "料金・対応教材", href: "/apply#pricing" },
+  { label: "仕組み", href: "/#how" },
+  { label: "添削例", href: "/#samples" },
+  { label: "料金・教材", href: "/#pricing" },
+  { label: "購入後の流れ", href: "/#after" },
   { label: "よくある質問", href: "/#faq" },
   { label: "運営者について", href: "/about" },
-  { label: "お申し込み（買い切り）", href: "/apply" },
   { label: "質問・相談", href: "/contact" },
 ];
