@@ -60,7 +60,7 @@ export const siteConfig = {
 // アンカーと、無料体験・相談（/contact）への CTA に絞る。
 export const navItems = [
   { label: "仕組み", href: "/#how" },
-  { label: "添削例", href: "/#samples" },
+  { label: "アプリ画面", href: "/#samples" },
   { label: "料金", href: "/#pricing" },
   { label: "購入後の流れ", href: "/#after" },
   { label: "よくある質問", href: "/#faq" },
@@ -71,7 +71,7 @@ export const navItems = [
 // 加えて詳細ページ（運営者・購入後の流れの詳細）と相談窓口を並べる。
 export const footerNavItems = [
   { label: "仕組み", href: "/#how" },
-  { label: "添削例", href: "/#samples" },
+  { label: "アプリ画面", href: "/#samples" },
   { label: "料金・教材", href: "/#pricing" },
   { label: "購入後の流れ", href: "/#after" },
   { label: "よくある質問", href: "/#faq" },

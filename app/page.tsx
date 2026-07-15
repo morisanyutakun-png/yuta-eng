@@ -103,7 +103,7 @@ const included = [
   "修了までの利用権",
 ];
 
-// 添削例に使う実物スクリーン（public/samples）。
+// 提出〜返却のアプリ画面（public/samples）。
 const sampleV = "20260711b";
 const correctionShots = [
   {
@@ -424,7 +424,7 @@ export default function HomePage() {
 
               <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <PrimaryCta location="hero_primary">対応教材を見て申し込む</PrimaryCta>
-                <SecondaryCta location="hero_samples" href="#samples">実際の添削を見る</SecondaryCta>
+                <SecondaryCta location="hero_samples" href="#samples">アプリ画面を見る</SecondaryCta>
               </div>
               <p className="mt-3 text-[0.78rem] leading-[1.7] text-[#64748b]">
                 クレジットカード決済／追加料金なし／決済後すぐに開始のご案内をお送りします。
@@ -510,16 +510,18 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* 6. 添削例（信頼の中心） */}
+      {/* 6. 提出から返却まで（アプリ画面・信頼の中心） */}
       <section id="samples" className="scroll-mt-20 bg-[#f8fafc]">
         <Container className="px-5 py-12 sm:px-6 sm:py-20">
           <div className="mx-auto max-w-2xl text-center">
-            <SectionLabel>Sample · 添削例</SectionLabel>
+            <SectionLabel>Screens · 提出から返却まで</SectionLabel>
             <h2 className="mt-3 text-[1.5rem] font-extrabold leading-[1.4] text-[#0b1d4a] sm:text-[2rem]">
-              丸つけではなく、次に直す場所が分かる添削。
+              提出すると、
+              <br className="sm:hidden" />
+              こう返ってきます。
             </h2>
             <p className="mt-3 text-[0.9rem] leading-[1.85] text-[#475569]">
-              途中式、考え方、減点されやすい書き方まで確認します。
+              丸つけで終わりにしない。途中式・考え方・減点されやすい書き方まで確認します。
             </p>
           </div>
           <div className="mx-auto mt-8 grid max-w-5xl gap-4 sm:grid-cols-2">
@@ -545,7 +547,7 @@ export default function HomePage() {
           </div>
           <p className="mt-4 text-center text-[0.72rem] font-semibold text-[#94a3b8]">※ 画面と添削内容は、アプリの機能を示す見本（サンプル）です。実在する生徒の提出データではありません。</p>
           <div className="mt-8 flex justify-center">
-            <PrimaryCta location="samples_primary">この添削を受けられる教材を見る</PrimaryCta>
+            <PrimaryCta location="samples_primary">教材を見て申し込む</PrimaryCta>
           </div>
         </Container>
       </section>

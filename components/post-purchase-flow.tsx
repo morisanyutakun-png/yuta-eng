@@ -203,7 +203,7 @@ export function PostPurchaseFlow({
           </h3>
           <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
             <PrimaryCta href="/apply">教材を選んではじめる</PrimaryCta>
-            <SecondaryCta href="/#samples" tone="dark">添削例を見る</SecondaryCta>
+            <SecondaryCta href="/#samples" tone="dark">アプリ画面を見る</SecondaryCta>
           </div>
         </div>
       ) : null}
