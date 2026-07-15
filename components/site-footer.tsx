@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Container } from "@/components/container";
-import { footerNavItems, kdpAmazonUrl, siteConfig } from "@/data/site";
+import { appLoginUrl, footerNavItems, kdpAmazonUrl, siteConfig } from "@/data/site";
 
 export function SiteFooter() {
   return (
@@ -70,6 +70,17 @@ export function SiteFooter() {
                 >
                   お申し込み（買い切り）
                 </Link>
+              </li>
+              <li>
+                <a
+                  className="inline-flex items-center gap-1 text-[#475569] transition hover:text-[#0d9488]"
+                  href={appLoginUrl}
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  受講生ログイン（公式アプリ）
+                  <span aria-hidden="true" className="text-[0.7rem]">↗</span>
+                </a>
               </li>
               <li>
                 <a

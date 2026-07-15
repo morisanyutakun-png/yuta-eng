@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Container } from "@/components/container";
 import { MobileMenu } from "@/components/mobile-menu";
-import { navItems } from "@/data/site";
+import { appLoginUrl, navItems } from "@/data/site";
 
 type NavItem = (typeof navItems)[number];
 
@@ -75,6 +75,18 @@ export function SiteHeader() {
 
             <nav aria-label="Global navigation" className="hidden md:block">
               <ul className="flex flex-wrap items-center justify-end gap-0.5">
+                {/* 受講生ログイン（公式アプリ）。未購入者にはアプリ実在の信頼材料として控えめに掲示。 */}
+                <li>
+                  <a
+                    className="inline-flex min-h-10 items-center rounded-full px-3.5 py-2 text-[0.86rem] font-medium tracking-[0.02em] text-[#475569] transition hover:bg-[#f1f5f9] hover:text-[#0b1d4a]"
+                    href={appLoginUrl}
+                    rel="noreferrer noopener"
+                    target="_blank"
+                  >
+                    ログイン
+                    <span aria-hidden="true" className="ml-1 text-[0.7rem] text-[#94a3b8]">↗</span>
+                  </a>
+                </li>
                 {navItems.map((item) => {
                   const external = isExternal(item);
                   const highlight = isHighlight(item);

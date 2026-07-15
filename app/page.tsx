@@ -9,7 +9,7 @@ import { Illust, Mascot } from "@/components/nobit-media";
 import { ViewItemBeacon, TrackedLink, LeadLink } from "@/components/lp-tracking";
 import { subjectToItem } from "@/lib/ga4-items";
 import { homeFaq } from "@/data/home";
-import { kdpAmazonUrl } from "@/data/site";
+import { appLoginUrl, kdpAmazonUrl } from "@/data/site";
 import {
   buyoutTotal,
   CAMPAIGN_DEADLINE_LABEL,
@@ -514,6 +514,18 @@ export default function HomePage() {
             ))}
           </div>
           <p className="mt-4 text-center text-[0.72rem] font-semibold text-[#94a3b8]">※ 画面と添削内容は、アプリの機能を示す見本（サンプル）です。実在する生徒の提出データではありません。</p>
+          <p className="mt-2 text-center text-[0.78rem] text-[#64748b]">
+            購入後は公式アプリ{" "}
+            <a
+              href={appLoginUrl}
+              rel="noreferrer noopener"
+              target="_blank"
+              className="font-bold text-[#0f766e] underline underline-offset-2"
+            >
+              nobit-study.yuta-eng.com
+            </a>{" "}
+            にログインして使います（受講生用）。
+          </p>
           <div className="mt-8 flex justify-center">
             <PrimaryCta location="samples_primary">教材を見て申し込む</PrimaryCta>
           </div>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { navItems } from "@/data/site";
+import { appLoginUrl, navItems } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 type NavItem = (typeof navItems)[number];
@@ -132,7 +132,7 @@ export function MobileMenu() {
                             {item.label}
                           </span>
                           <span className="text-[0.66rem] font-medium tracking-[0.18em] text-[#ffedd5]">
-                            まずは無料で
+                            ¥1,980からお試し可
                           </span>
                         </span>
                         <span aria-hidden="true" className="relative text-[#ffedd5]">→</span>
@@ -179,6 +179,24 @@ export function MobileMenu() {
                 );
               })}
             </ul>
+            {/* 受講生ログイン（購入後の本体アプリ）。未購入者向けには「実在の証拠」として明示。 */}
+            <div className="border-t border-[rgba(15,29,74,0.08)] p-3">
+              <a
+                className="flex min-h-11 items-center justify-between gap-3 rounded-[12px] bg-[#f8fafc] px-4 py-2.5 text-[#0b1d4a] transition hover:bg-[#eef2f7]"
+                href={appLoginUrl}
+                rel="noreferrer noopener"
+                target="_blank"
+                onClick={close}
+              >
+                <span className="flex flex-col">
+                  <span className="text-[0.9rem] font-bold">受講生ログイン</span>
+                  <span className="text-[0.66rem] font-medium tracking-[0.06em] text-[#94a3b8]">
+                    公式アプリ・購入者用
+                  </span>
+                </span>
+                <span aria-hidden="true" className="text-[#94a3b8]">↗</span>
+              </a>
+            </div>
           </nav>
         </div>
       ) : null}

@@ -9,6 +9,12 @@ const contactEmail =
 export const kdpAmazonUrl =
   "https://www.amazon.co.jp/s?k=" + encodeURIComponent("考える力を育てる 森祐太");
 
+// 受講生用の公式アプリ（購入後にログインする本体）。未購入者はログインできないが、
+// 「実在するアプリ」の信頼材料として、ログイン導線として明示的に掲示する。
+export const appLoginUrl = (
+  process.env.NEXT_PUBLIC_NOBIT_APP_URL?.trim() || "https://nobit-study.yuta-eng.com"
+).replace(/\/+$/, "");
+
 export const siteConfig = {
   name: "ノビットスタディ",
   shortName: "ノビットスタディ",
@@ -57,7 +63,7 @@ export const siteConfig = {
 };
 
 // グローバルナビ。ノビットスタディ中心のため、トップページ内の各セクションへの
-// アンカーと、無料体験・相談（/contact）への CTA に絞る。
+// アンカーと、相談（/contact）・申込への導線に絞る。
 export const navItems = [
   { label: "仕組み", href: "/#how" },
   { label: "アプリ画面", href: "/#samples" },
