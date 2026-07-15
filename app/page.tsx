@@ -65,14 +65,6 @@ const pack2List = listTotal(2); // 2教材 通常合計（29,600）
 
 /* ───────────────────────── コンテンツ ───────────────────────── */
 
-const heroChips = [
-  `約${GRADING_COUNT}回分`,
-  "教材PDF込み",
-  "提出ごとの添削",
-  "専用アプリ込み",
-  "入会金・月額料金なし",
-];
-
 const problems = [
   { icon: "stall", text: "問題集を買っても、\n途中で止まる" },
   { icon: "mark", text: "解答を読んでも、\n直し方が分からない" },
@@ -341,21 +333,6 @@ function HeroVisual() {
   );
 }
 
-/** ファーストビュー等に置く「高い？→お試し」への誘導ライン。 */
-function HeroTrialLink({ location }: { location: string }) {
-  return (
-    <TrackedLink
-      href="/apply#trial"
-      location={location}
-      className="mt-3 flex items-center gap-2 rounded-full bg-[#fff1e6] px-4 py-2.5 text-[0.83rem] font-bold text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.3)] transition hover:bg-[#ffe4d1]"
-    >
-      <span aria-hidden="true" className="shrink-0 rounded-full bg-[#ea580c] px-2 py-0.5 text-[0.66rem] font-extrabold text-white">お試し</span>
-      <span className="leading-snug">まずは添削3回・{formatYen(TRIAL_PRICE)}から。本契約で全額値引き。</span>
-      <span aria-hidden="true" className="ml-auto">→</span>
-    </TrackedLink>
-  );
-}
-
 /* ───────────────────────── ページ ───────────────────────── */
 
 export default function HomePage() {
@@ -374,60 +351,48 @@ export default function HomePage() {
                 <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#f97316]" />
                 高校生向け・買い切り通信添削
               </p>
-              <h1 className="mt-4 text-[1.72rem] font-extrabold leading-[1.32] tracking-[-0.005em] text-[#0b1d4a] sm:text-[2.4rem] sm:leading-[1.25]">
-                問題集を買って終わりにしない。
-                <br />
-                約{GRADING_COUNT}回の演習を、
-                <span className="text-[#ea580c]">答案添削つき</span>で最後まで。
+              <h1 className="mt-4 text-[1.72rem] font-extrabold leading-[1.32] tracking-[-0.01em] text-[#0b1d4a] sm:text-[2.4rem] sm:leading-[1.2]">
+                <span className="block">問題集を、最後まで。</span>
+                <span className="block">
+                  <span className="text-[#ea580c]">答案添削</span>つきで。
+                </span>
               </h1>
-              <p className="mt-4 text-[0.95rem] leading-[1.95] text-[#334155] sm:text-[1rem]">
-                1回10〜20分の教材を解いて、提出。
-                <br />
-                作った本人が<span className="font-bold text-[#0b1d4a]">途中式や考え方まで添削</span>して、アプリで返します。
+              <p className="mt-3.5 text-[0.92rem] leading-[1.9] text-[#334155] sm:mt-4 sm:text-[1rem]">
+                解いて出すと、作った本人が<span className="font-bold text-[#0b1d4a]">赤ペンで添削</span>して返します。
               </p>
 
               {/* モバイル専用：見出し直後にメインビジュアルを差し込む（デスクトップは右カラムに表示） */}
-              <div className="mt-7 lg:hidden">
+              <div className="mt-6 lg:hidden">
                 <HeroVisual />
               </div>
 
-              <ul className="mt-6 flex flex-wrap gap-2">
-                {heroChips.map((t) => (
-                  <li key={t} className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[0.78rem] font-bold text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]">
-                    <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#0d9488] text-white">
-                      <Check className="h-2.5 w-2.5" />
-                    </span>
-                    {t}
-                  </li>
-                ))}
-              </ul>
-
-              {/* 価格 */}
-              <div className="mt-6 rounded-[18px] bg-white p-4 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_24px_50px_-40px_rgba(11,29,74,0.5)] sm:p-5">
-                <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                  {campaign ? (
-                    <span className="rounded-full bg-[#fff1e6] px-2.5 py-0.5 text-[0.72rem] font-extrabold text-[#ea580c]">開講記念価格</span>
-                  ) : null}
-                  <span className="text-[0.82rem] font-bold text-[#475569]">1教材</span>
-                  {campaign ? (
-                    <span className="text-[0.9rem] font-semibold text-[#94a3b8] line-through">{formatYen(MATERIAL_PRICE)}</span>
-                  ) : null}
-                  <span className="text-[2.1rem] font-black leading-none tracking-[-0.02em] text-[#0b1d4a]">{formatYen(single)}</span>
+              {/* 価格：安いお試しを前面に出してハードルを下げる */}
+              <div className="mt-6 rounded-[20px] bg-white p-5 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_24px_50px_-40px_rgba(11,29,74,0.5)]">
+                <div className="flex items-center gap-2.5">
+                  <span className="shrink-0 rounded-full bg-[#ea580c] px-2.5 py-1 text-[0.68rem] font-extrabold text-white">お試し</span>
+                  <p className="text-[0.88rem] font-bold text-[#9a3412]">まずは添削{TRIAL_GRADING_COUNT}回だけ</p>
+                </div>
+                <p className="mt-2 flex items-baseline gap-1.5">
+                  <span className="text-[2.8rem] font-black leading-none tracking-[-0.02em] text-[#ea580c] sm:text-[3.1rem]">{formatYen(TRIAL_PRICE)}</span>
                   <span className="text-[0.82rem] font-bold text-[#475569]">（税込）</span>
                 </p>
-                <p className="mt-1.5 text-[0.8rem] font-semibold text-[#0f766e]">
-                  約{GRADING_COUNT}回分でならすと<span className="text-[#ea580c]">1回あたり約{perRound}円</span>／買い切り・自動更新なし
+                <p className="mt-2 inline-flex items-center rounded-full bg-[#ecfdf5] px-2.5 py-0.5 text-[0.76rem] font-bold text-[#0f766e]">
+                  本契約に進めば、この{formatYen(TRIAL_PRICE)}は全額値引き
                 </p>
-                {/* 「高い？」への即レス：価格のすぐ下にお試し導線 */}
-                <HeroTrialLink location="hero_trial" />
+                <p className="mt-3 border-t border-dashed border-[rgba(15,29,74,0.12)] pt-3 text-[0.82rem] leading-[1.75] text-[#475569]">
+                  1教材まるごとは{" "}
+                  <span className="font-extrabold text-[#0b1d4a]">{formatYen(single)}〜</span>
+                  {campaign ? <span className="text-[0.78rem] text-[#94a3b8]">（通常{formatYen(MATERIAL_PRICE)}）</span> : null}
+                  <span className="whitespace-nowrap">・1回あたり約{perRound}円</span>
+                </p>
               </div>
 
-              <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-                <PrimaryCta location="hero_primary">対応教材を見て申し込む</PrimaryCta>
-                <SecondaryCta location="hero_samples" href="#samples">アプリ画面を見る</SecondaryCta>
+              <div className="mt-5 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+                <PrimaryCta location="hero_trial_primary" href="/apply#trial">{formatYen(TRIAL_PRICE)}でお試しをはじめる</PrimaryCta>
+                <SecondaryCta location="hero_full" href="/apply#form">教材を買い切る（{formatYen(single)}〜）</SecondaryCta>
               </div>
               <p className="mt-3 text-[0.78rem] leading-[1.7] text-[#64748b]">
-                クレジットカード決済／追加料金なし／決済後すぐに開始のご案内をお送りします。
+                クレジットカード決済／追加料金なし・自動更新なし。
               </p>
             </div>
 
@@ -910,15 +875,27 @@ export default function HomePage() {
       <div className="h-20 lg:hidden" aria-hidden="true" />
       <div className="fixed inset-x-0 bottom-0 z-40 lg:hidden">
         <div className="mx-auto max-w-[40rem] px-3 pb-[calc(env(safe-area-inset-bottom)+0.6rem)]">
-          <TrackedLink
-            href="/apply#form"
-            location="mobile_sticky"
-            className="relative flex min-h-[3.25rem] w-full items-center justify-center gap-2 overflow-hidden rounded-full px-5 py-3.5 text-[0.98rem] font-extrabold text-white shadow-[0_18px_40px_-14px_rgba(234,88,12,0.85)]"
-          >
-            <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
-            <span className="relative">{formatYen(single)}で教材を選ぶ</span>
-            <span aria-hidden="true" className="relative">→</span>
-          </TrackedLink>
+          <div className="flex items-stretch gap-2 rounded-full bg-white/95 p-1.5 shadow-[0_18px_40px_-16px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.12)] backdrop-blur">
+            {/* 低ハードルのお試しを主役に */}
+            <TrackedLink
+              href="/apply#trial"
+              location="mobile_sticky"
+              className="relative flex min-h-[3rem] flex-1 items-center justify-center gap-1.5 overflow-hidden rounded-full px-4 text-[0.94rem] font-extrabold text-white"
+            >
+              <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
+              <span className="relative">{formatYen(TRIAL_PRICE)}でお試し</span>
+              <span aria-hidden="true" className="relative">→</span>
+            </TrackedLink>
+            {/* 本コースへも */}
+            <TrackedLink
+              href="/apply#form"
+              location="mobile_sticky_full"
+              className="flex shrink-0 flex-col items-center justify-center rounded-full px-3.5 text-center leading-tight text-[#0b1d4a]"
+            >
+              <span className="text-[0.8rem] font-extrabold">教材を選ぶ</span>
+              <span className="text-[0.64rem] font-semibold text-[#64748b]">{formatYen(single)}〜</span>
+            </TrackedLink>
+          </div>
         </div>
       </div>
     </>
