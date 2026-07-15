@@ -74,7 +74,9 @@ const GSC_VERIFICATION = Array.from(
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5,
+  // ズームイン/アウト（ピンチ・ダブルタップ）を無効化してUXを安定させる。
+  maximumScale: 1,
+  userScalable: false,
   viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },

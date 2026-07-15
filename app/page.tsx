@@ -285,7 +285,7 @@ function BookCover({ asin, title }: { asin: string; title: string }) {
  * 励ましコメントで返る——というサービスの中身を、1枚のイラストで直感的に伝える。
  * 背景のブロブ・発光とマスコットで、右脳に届くアート面を作る。
  */
-function HeroVisual() {
+function HeroVisual({ compact = false }: { compact?: boolean }) {
   return (
     <div className="relative">
       {/* 背景の有機ブロブ＋発光（にじませてアート感を出す）。DOM順で card の背面に置く。 */}
@@ -296,31 +296,33 @@ function HeroVisual() {
       </span>
 
       <div className="relative overflow-hidden rounded-[26px] bg-[linear-gradient(160deg,#ffffff_0%,#f5f9ff_52%,#eef8f4_100%)] p-4 shadow-[0_48px_96px_-46px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.06)] sm:p-5">
-        {/* サービスの流れを一目で（提出→赤ペン添削→合格で返却） */}
-        <div className="mb-3 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 text-[0.72rem] font-extrabold sm:text-[0.76rem]">
-          <span className="rounded-full bg-white px-2.5 py-1 text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]">答案を提出</span>
-          <span aria-hidden="true" className="text-[#f97316]">→</span>
-          <span className="rounded-full bg-[#fff1e6] px-2.5 py-1 text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">赤ペンで添削</span>
-          <span aria-hidden="true" className="text-[#0d9488]">→</span>
-          <span className="rounded-full bg-[#ecfdf5] px-2.5 py-1 text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.22)]">合格で返却</span>
-        </div>
+        {/* サービスの流れを一目で（提出→赤ペン添削→合格で返却）。情報量を抑えるためモバイルでは省く。 */}
+        {!compact ? (
+          <div className="mb-3 flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 text-[0.72rem] font-extrabold sm:text-[0.76rem]">
+            <span className="rounded-full bg-white px-2.5 py-1 text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]">答案を提出</span>
+            <span aria-hidden="true" className="text-[#f97316]">→</span>
+            <span className="rounded-full bg-[#fff1e6] px-2.5 py-1 text-[#ea580c] ring-1 ring-[rgba(234,88,12,0.25)]">赤ペンで添削</span>
+            <span aria-hidden="true" className="text-[#0d9488]">→</span>
+            <span className="rounded-full bg-[#ecfdf5] px-2.5 py-1 text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.22)]">合格で返却</span>
+          </div>
+        ) : null}
 
         {/* 添削イラスト（紙を少し傾けてアナログな手添削の質感） */}
-        <div className="relative mx-auto max-w-[27rem] -rotate-[1.5deg]">
+        <div className={`relative mx-auto -rotate-[1.5deg] ${compact ? "max-w-[20rem]" : "max-w-[27rem]"}`}>
           <Illust
             base="correction-graded"
             widths={[560, 1120]}
             width={1448}
             height={1086}
             alt="手書きの数学答案が赤ペンで添削され、合格スタンプと励ましのコメントが返ってきたイメージ"
-            sizes="(max-width: 1024px) 86vw, 440px"
+            sizes="(max-width: 1024px) 78vw, 440px"
             priority
             className="h-auto w-full rounded-[16px] shadow-[0_24px_48px_-26px_rgba(11,29,74,0.55)] ring-1 ring-[rgba(15,29,74,0.06)]"
           />
         </div>
 
-        <p className="mt-2.5 text-center text-[0.7rem] font-semibold text-[#94a3b8]">
-          赤ペン添削のイメージ図です
+        <p className="mt-2.5 text-center text-[0.68rem] font-semibold text-[#94a3b8]">
+          赤ペン添削のイメージ図
         </p>
       </div>
 
@@ -357,13 +359,14 @@ export default function HomePage() {
                   <span className="text-[#ea580c]">答案添削</span>つきで。
                 </span>
               </h1>
-              <p className="mt-3.5 text-[0.92rem] leading-[1.9] text-[#334155] sm:mt-4 sm:text-[1rem]">
+              {/* サブ文はデスクトップのみ（モバイルは情報量を絞る） */}
+              <p className="mt-4 hidden text-[#334155] lg:block lg:text-[1rem] lg:leading-[1.9]">
                 解いて出すと、作った本人が<span className="font-bold text-[#0b1d4a]">赤ペンで添削</span>して返します。
               </p>
 
-              {/* モバイル専用：見出し直後にメインビジュアルを差し込む（デスクトップは右カラムに表示） */}
-              <div className="mt-6 lg:hidden">
-                <HeroVisual />
+              {/* モバイル専用：見出し直後にメインビジュアル（流れチップ等は省いた compact 版） */}
+              <div className="mt-5 lg:hidden">
+                <HeroVisual compact />
               </div>
 
               {/* 価格：安いお試しを前面に出してハードルを下げる */}
