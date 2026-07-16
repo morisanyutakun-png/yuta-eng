@@ -304,7 +304,7 @@ export function ApplyForm({
     }
   }
 
-  // お試し（*-trial）をカートに出し入れ。買い切りと同じカートに入るが、決済は一方のみ。
+  // お試し（*-trial）をカートに出し入れ。買い切りとは混在不可だが、お試し同士は複数教科OK。
   function toggleTrial(fullId: string) {
     const trial = trialByFullId.get(fullId);
     if (!trial) return;
@@ -360,7 +360,7 @@ export function ApplyForm({
               各カードで選べます。<span className="font-bold text-[#0b1d4a]">買い切り</span>は教材をタップしてカートへ、<span className="font-bold text-[#ea580c]">お試し</span>はカード下の「お試し」ボタンから。
             </span>
             <span className="hidden lg:inline">
-              各教材で「買い切り」か「お試し」を選べます。買い切りは教材を選んでカートへ（2教材以上は{CAMPAIGN_DEADLINE_LABEL}までパック割）。まず試すなら各カード下の<span className="font-bold text-[#ea580c]">「お試し（{formatYen(TRIAL_PRICE)}・添削{TRIAL_GRADING_COUNT}回）」</span>から。
+              各教材で「買い切り」か「お試し」を選べます。買い切りは教材を選んでカートへ（2教材以上は{CAMPAIGN_DEADLINE_LABEL}までパック割）。まず試すなら各カード下の<span className="font-bold text-[#ea580c]">「お試し（{formatYen(TRIAL_PRICE)}・添削{TRIAL_GRADING_COUNT}回）」</span>から（複数教科まとめてもOK）。
             </span>
           </p>
           <p className="mt-3 inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-[12px] bg-white px-3 py-2 text-[0.78rem] font-bold leading-snug text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]">

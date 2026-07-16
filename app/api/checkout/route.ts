@@ -125,7 +125,7 @@ export async function POST(req: NextRequest) {
   };
 
   try {
-    /* ───────────── お試し（3課題・添削3回・1,980円） ───────────── */
+    /* ───────────── お試し（3課題・添削3回・1,980円／複数教科可） ───────────── */
     if (trialIds.length > 0) {
       const trials = trialSubjectsByIds(trialIds);
       const count = trials.length;
