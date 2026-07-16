@@ -230,6 +230,8 @@ export async function POST(req: NextRequest) {
 
     const session = await stripe.checkout.sessions.create({
       ...commonParams,
+      // 本コースのカゴは /order。キャンセル時はカゴへ戻す。
+      cancel_url: `${origin}/order?canceled=1`,
       line_items: [
         {
           quantity: 1,

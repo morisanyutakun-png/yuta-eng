@@ -70,7 +70,7 @@ export const navItems = [
   { label: "料金", href: "/#pricing" },
   { label: "購入後の流れ", href: "/#after" },
   { label: "よくある質問", href: "/#faq" },
-  { label: "教材を選ぶ", href: "/apply#form", highlight: true },
+  { label: "教材を選ぶ", href: "/order", highlight: true },
 ];
 
 // フッターのメニュー列。ヘッダー（LP内アンカー）と表記・遷移先をそろえ、

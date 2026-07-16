@@ -218,7 +218,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 function PrimaryCta({
   location,
   children,
-  href = "/apply#form",
+  href = "/order",
   className = "",
 }: {
   location: string;
@@ -392,7 +392,7 @@ export default function HomePage() {
 
               <div className="mt-5 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <PrimaryCta location="hero_trial_primary" href="/apply#trial">{formatYen(TRIAL_PRICE)}でお試しをはじめる</PrimaryCta>
-                <SecondaryCta location="hero_full" href="/apply#form">教材を買い切る（{formatYen(single)}〜）</SecondaryCta>
+                <SecondaryCta location="hero_full" href="/order">教材を買い切る（{formatYen(single)}〜）</SecondaryCta>
               </div>
               <p className="mt-3 text-[0.78rem] leading-[1.7] text-[#64748b]">
                 クレジットカード決済／追加料金なし・自動更新なし。
@@ -590,7 +590,7 @@ export default function HomePage() {
                         </div>
                         {/* 押しやすい大きめCTA：押すと該当教材がカートに入った状態で申込へ */}
                         <TrackedLink
-                          href={`/apply?add=${s.id}#form`}
+                          href={`/order?add=${s.id}`}
                           location={`material_card_${s.id}`}
                           ariaLabel={`${s.label}をカートに入れて申し込む`}
                           className="group/mc relative m-3 mt-0 inline-flex min-h-[3rem] items-center justify-center gap-1.5 overflow-hidden rounded-full px-4 text-[0.92rem] font-extrabold text-white shadow-[0_16px_30px_-14px_rgba(234,88,12,0.85)] transition hover:-translate-y-px active:translate-y-0"
@@ -903,7 +903,7 @@ export default function HomePage() {
             </TrackedLink>
             {/* 本コースへも */}
             <TrackedLink
-              href="/apply#form"
+              href="/order"
               location="mobile_sticky_full"
               className="flex shrink-0 flex-col items-center justify-center rounded-full px-3.5 text-center leading-tight text-[#0b1d4a]"
             >

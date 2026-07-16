@@ -131,9 +131,9 @@ export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
           {note ? <p className="mt-3 text-[0.95rem] leading-[1.85] text-white/85">{note}</p> : null}
 
           <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:flex-col lg:items-start">
-            <PrimaryCta href="/apply">教材を買って、はじめる</PrimaryCta>
-            <SecondaryCta href="/apply#pricing" tone="dark">
-              料金・教材を見る
+            <PrimaryCta href="/order">教材を買って、はじめる</PrimaryCta>
+            <SecondaryCta href="/apply" tone="dark">
+              料金・お試しを見る
             </SecondaryCta>
           </div>
         </div>

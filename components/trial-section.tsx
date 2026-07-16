@@ -159,7 +159,8 @@ export function TrialSection() {
         {!loading && selected ? <span aria-hidden="true" className="relative">→</span> : null}
       </button>
       <p className="mt-3 text-[0.76rem] leading-[1.7] text-[#94a3b8]">
-        無料体験ではありません。お支払いは Stripe の安全な決済画面（一括）です。本契約時の{formatYen(TRIAL_PRICE)}値引きは、アプリの「本契約はこちら」からお進みください。
+        無料体験ではありません（Stripe の安全な決済・一括）。お試し後に本コースへ進むときは、
+        <span className="font-semibold text-[#64748b]">アプリ内の「本契約はこちら」ボタン</span>から進むと{formatYen(TRIAL_PRICE)}が自動で値引きされます（そのボタンは購入後のアプリに表示されます）。
       </p>
     </div>
   );
