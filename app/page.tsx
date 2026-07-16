@@ -6,19 +6,18 @@ import { Container } from "@/components/container";
 import { Blob } from "@/components/decor";
 import { JsonLd } from "@/components/json-ld";
 import { Illust, Mascot } from "@/components/nobit-media";
+import { PricingTable } from "@/components/pricing-table";
 import { ViewItemBeacon, TrackedLink, LeadLink } from "@/components/lp-tracking";
 import { subjectToItem } from "@/lib/ga4-items";
 import { homeFaq } from "@/data/home";
 import { appLoginUrl, kdpAmazonUrl } from "@/data/site";
 import {
-  buyoutTotal,
   CAMPAIGN_DEADLINE_LABEL,
   currentPerRound,
   currentSinglePrice,
   formatYen,
   GRADING_COUNT,
   isCampaignActive,
-  listTotal,
   MATERIAL_PRICE,
   SUBJECT_AREAS,
   SUBJECTS,
@@ -60,8 +59,6 @@ export const metadata: Metadata = {
 const campaign = isCampaignActive();
 const single = currentSinglePrice(campaign); // 1教材（開講記念 9,800 / 通常 14,800）
 const perRound = currentPerRound(campaign); // 1回あたり（約98円）
-const pack2 = buyoutTotal(2, campaign); // 2教材パック（17,800）
-const pack2List = listTotal(2); // 2教材 通常合計（29,600）
 
 /* ───────────────────────── コンテンツ ───────────────────────── */
 
@@ -391,7 +388,7 @@ export default function HomePage() {
               </div>
 
               <div className="mt-5 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-                <PrimaryCta location="hero_trial_primary" href="/order#trial">{formatYen(TRIAL_PRICE)}でお試しをはじめる</PrimaryCta>
+                <PrimaryCta location="hero_trial_primary" href="/order">{formatYen(TRIAL_PRICE)}でお試しをはじめる</PrimaryCta>
                 <SecondaryCta location="hero_full" href="/order">教材を買い切る（{formatYen(single)}〜）</SecondaryCta>
               </div>
               <p className="mt-3 text-[0.78rem] leading-[1.7] text-[#64748b]">
@@ -627,52 +624,9 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="mx-auto mt-8 grid max-w-4xl gap-4 lg:grid-cols-2">
-            {/* 1教材 */}
-            <div className="rounded-[20px] bg-white p-6 ring-1 ring-[rgba(15,29,74,0.08)] shadow-[0_30px_64px_-50px_rgba(11,29,74,0.5)]">
-              <p className="text-[0.82rem] font-bold text-[#0f766e]">1教材（約{GRADING_COUNT}回分）</p>
-              <p className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                {campaign ? (
-                  <span className="text-[1rem] font-semibold text-[#94a3b8] line-through">通常{formatYen(MATERIAL_PRICE)}</span>
-                ) : null}
-                <span className="text-[2.4rem] font-black leading-none tracking-[-0.02em] text-[#0b1d4a]">{formatYen(single)}</span>
-                <span className="text-[0.86rem] font-bold text-[#475569]">（税込）</span>
-              </p>
-              {campaign ? (
-                <p className="mt-1.5 inline-flex rounded-full bg-[#fff1e6] px-3 py-1 text-[0.76rem] font-extrabold text-[#ea580c]">
-                  {CAMPAIGN_DEADLINE_LABEL}まで 開講記念価格
-                </p>
-              ) : null}
-              <p className="mt-4 text-[0.78rem] font-bold tracking-[0.06em] text-[#64748b]">含まれるもの</p>
-              <ul className="mt-2 flex flex-wrap gap-2">
-                {["教材", "解答解説", "添削", "専用アプリ"].map((t) => (
-                  <li key={t} className="rounded-full bg-[#f1f5f9] px-3 py-1 text-[0.8rem] font-bold text-[#334155]">{t}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* 2教材パック */}
-            <div className="rounded-[20px] bg-[linear-gradient(135deg,#0b1d4a_0%,#0f5e5e_100%)] p-6 text-white shadow-[0_30px_64px_-46px_rgba(11,29,74,0.7)]">
-              <p className="text-[0.82rem] font-bold text-[#5eead4]">2教材パック</p>
-              <p className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                {campaign ? (
-                  <span className="text-[1rem] font-semibold text-white/60 line-through">通常{formatYen(pack2List)}</span>
-                ) : null}
-                <span className="text-[2.4rem] font-black leading-none tracking-[-0.02em]">{formatYen(pack2)}</span>
-                <span className="text-[0.86rem] font-bold text-white/80">（税込）</span>
-              </p>
-              <p className="mt-3 text-[0.84rem] leading-[1.8] text-white/85">
-                主科目＋弱点補強にどうぞ。2教材以上はパック割で、1教材あたりさらにおトクです。
-              </p>
-              <ul className="mt-4 grid gap-1.5 text-[0.82rem] font-semibold text-white/90">
-                {["入会金0円", "月額料金0円", "自動更新なし", "追加費用なし"].map((t) => (
-                  <li key={t} className="flex items-center gap-2">
-                    <span aria-hidden="true" className="grid h-4 w-4 place-items-center rounded-full bg-[#5eead4] text-[#0b1d4a]"><Check className="h-2.5 w-2.5" /></span>
-                    {t}
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* 料金表（1〜3教材の買い切り・パック割）＝数値は lib/pricing 由来で決済と一致 */}
+          <div className="mt-8">
+            <PricingTable />
           </div>
 
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
@@ -700,7 +654,7 @@ export default function HomePage() {
                 </div>
               </div>
               <TrackedLink
-                href="/order#trial"
+                href="/order"
                 location="pricing_trial"
                 className="group/tr relative inline-flex min-h-12 w-full shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-full px-6 text-[0.92rem] font-extrabold text-white shadow-[0_16px_30px_-14px_rgba(234,88,12,0.85)] transition hover:-translate-y-px sm:w-auto"
               >
@@ -893,7 +847,7 @@ export default function HomePage() {
           <div className="flex items-stretch gap-2 rounded-full bg-white/95 p-1.5 shadow-[0_18px_40px_-16px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.12)] backdrop-blur">
             {/* 低ハードルのお試しを主役に */}
             <TrackedLink
-              href="/order#trial"
+              href="/order"
               location="mobile_sticky"
               className="relative flex min-h-[3rem] flex-1 items-center justify-center gap-1.5 overflow-hidden rounded-full px-4 text-[0.94rem] font-extrabold text-white"
             >

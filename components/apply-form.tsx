@@ -17,9 +17,16 @@ import {
   SUBJECT_AREAS,
   SUBJECTS,
   TRIAL_CREDIT,
+  TRIAL_GRADING_COUNT,
+  TRIAL_PRICE,
+  TRIAL_SUBJECTS,
 } from "@/lib/pricing";
 import { gtagEvent } from "@/components/lp-tracking";
 import { subjectToItem } from "@/lib/ga4-items";
+
+// お試し（*-trial）を、対応するフル教材の id から引ける表。商品棚の各カードに
+// 「お試し」ボタンを出すために使う。
+const trialByFullId = new Map(TRIAL_SUBJECTS.map((t) => [t.trialOf, t]));
 
 type MaterialProfile = {
   title: string;
@@ -268,6 +275,47 @@ export function ApplyForm({
     }
   }
 
+  // お試し（1教材・添削3回・1,980円）を即決済へ。買い切りカゴとは独立した単品フロー。
+  async function startTrial(fullId: string) {
+    if (loading) return;
+    const trial = trialByFullId.get(fullId);
+    if (!trial) return;
+    setLoading(true);
+    setError(null);
+    gtagEvent("begin_checkout", {
+      currency: "JPY",
+      value: TRIAL_PRICE,
+      coupon: "trial",
+      items: [
+        {
+          item_id: trial.id,
+          item_name: trial.registrationLabel,
+          item_brand: "ノビットスタディ",
+          item_category: "お試し",
+          price: TRIAL_PRICE,
+          quantity: 1,
+        },
+      ],
+    });
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subjects: [trial.id] }),
+      });
+      const data = (await res.json()) as { url?: string; error?: string };
+      if (!res.ok || !data.url) {
+        setError(data.error ?? "お試しの申し込みに失敗しました。時間をおいて再度お試しください。");
+        setLoading(false);
+        return;
+      }
+      window.location.href = data.url;
+    } catch {
+      setError("通信に失敗しました。電波の良い場所で再度お試しください。");
+      setLoading(false);
+    }
+  }
+
   return (
     <>
     <div className="grid gap-8 pb-40 lg:grid-cols-[1.2fr_0.8fr] lg:items-start lg:gap-10 lg:pb-0">
@@ -291,14 +339,14 @@ export function ApplyForm({
             商品一覧
           </p>
           <p className="mt-1 text-[1.02rem] font-extrabold text-[#0b1d4a]">
-            <span className="hidden lg:inline">① </span>購入する教材をカートに入れる
+            <span className="hidden lg:inline">① </span>教材を選ぶ（お試し／買い切り）
           </p>
           <p className="mt-1 text-[0.8rem] leading-[1.8] text-[#64748b]">
             <span className="lg:hidden">
-              下のカードが購入できる商品です。教材をタップすると、画面下のカートに入り、合計金額が変わります。
+              各カードで選べます。<span className="font-bold text-[#0b1d4a]">買い切り</span>は教材をタップしてカートへ、<span className="font-bold text-[#ea580c]">お試し</span>はカード下の「お試し」ボタンから。
             </span>
             <span className="hidden lg:inline">
-              教材名・目安レベル・対象を確認して選べます。1教材＝約{GRADING_COUNT}日分、2教材以上は{CAMPAIGN_DEADLINE_LABEL}までパック割です。
+              各教材で「買い切り」か「お試し」を選べます。買い切りは教材を選んでカートへ（2教材以上は{CAMPAIGN_DEADLINE_LABEL}までパック割）。まず試すなら各カード下の<span className="font-bold text-[#ea580c]">「お試し（{formatYen(TRIAL_PRICE)}・添削{TRIAL_GRADING_COUNT}回）」</span>から。
             </span>
           </p>
           <p className="mt-3 inline-flex max-w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-[12px] bg-white px-3 py-2 text-[0.78rem] font-bold leading-snug text-[#0b1d4a] ring-1 ring-[rgba(15,29,74,0.08)]">
@@ -328,9 +376,10 @@ export function ApplyForm({
                   {items.map((s) => {
                     const on = selected.includes(s.id);
                     const profile = getMaterialProfile(s);
+                    const trial = trialByFullId.get(s.id);
                     return (
+                      <div key={s.id} className="flex flex-col gap-1.5">
                       <button
-                        key={s.id}
                         type="button"
                         onClick={() => toggle(s.id)}
                         aria-pressed={on}
@@ -425,6 +474,26 @@ export function ApplyForm({
                           </span>
                         </span>
                       </button>
+                      {/* この教材の「お試し（¥1,980・添削3回）」＝棚の中で買い切りと並ぶ選択肢 */}
+                      {trial ? (
+                        <button
+                          type="button"
+                          onClick={() => startTrial(s.id)}
+                          disabled={loading}
+                          data-cta-location={`shelf_trial_${s.id}`}
+                          className="flex items-center justify-between gap-2 rounded-lg border border-dashed border-[rgba(234,88,12,0.45)] bg-[#fff7ed] px-3 py-2.5 text-left transition hover:bg-[#ffedd5] disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          <span className="flex items-center gap-1.5">
+                            <span className="rounded-full bg-[#ea580c] px-1.5 py-0.5 text-[0.6rem] font-extrabold text-white">お試し</span>
+                            <span className="text-[0.76rem] font-bold text-[#9a3412]">まず添削{TRIAL_GRADING_COUNT}回だけ</span>
+                          </span>
+                          <span className="flex items-center gap-1 text-[0.84rem] font-extrabold text-[#ea580c]">
+                            {formatYen(TRIAL_PRICE)}
+                            <span aria-hidden="true">→</span>
+                          </span>
+                        </button>
+                      ) : null}
+                      </div>
                     );
                   })}
                 </div>
