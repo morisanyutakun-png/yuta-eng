@@ -66,7 +66,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   className="text-[#475569] transition hover:text-[#0d9488]"
-                  href="/apply"
+                  href="/order"
                 >
                   お申し込み（買い切り）
                 </Link>

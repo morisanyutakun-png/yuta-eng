@@ -120,7 +120,8 @@ export async function POST(req: NextRequest) {
     phone_number_collection: { enabled: true },
     locale: "ja",
     success_url: successUrl,
-    cancel_url: `${origin}/apply?canceled=1`,
+    // お試し・買い切りとも申込は /order。キャンセル時はそこへ戻す。
+    cancel_url: `${origin}/order?canceled=1`,
   };
 
   try {

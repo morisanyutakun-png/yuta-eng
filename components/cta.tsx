@@ -132,7 +132,7 @@ export function PageCtaRow({ title, note }: { title?: string; note?: string }) {
 
           <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center lg:flex-col lg:items-start">
             <PrimaryCta href="/order">教材を買って、はじめる</PrimaryCta>
-            <SecondaryCta href="/apply" tone="dark">
+            <SecondaryCta href="/order" tone="dark">
               料金・お試しを見る
             </SecondaryCta>
           </div>

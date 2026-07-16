@@ -328,7 +328,7 @@ export default function AboutPage() {
               </h2>
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <Link
-                  href="/apply"
+                  href="/order"
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#f97316] px-7 text-[0.95rem] font-bold tracking-[0.02em] text-white transition hover:-translate-y-0.5 hover:bg-[#ea580c]"
                 >
                   買い切りではじめる <span aria-hidden="true">→</span>

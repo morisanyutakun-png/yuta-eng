@@ -202,7 +202,7 @@ export function PostPurchaseFlow({
             「出す → 振り返る → 次へ進む」を、今日から。
           </h3>
           <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
-            <PrimaryCta href="/apply">教材を選んではじめる</PrimaryCta>
+            <PrimaryCta href="/order">教材を選んではじめる</PrimaryCta>
             <SecondaryCta href="/#samples" tone="dark">アプリ画面を見る</SecondaryCta>
           </div>
         </div>
@@ -308,7 +308,7 @@ export function PostPurchaseTeaser({
           </ul>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <PrimaryCta href="/after-purchase">購入後の流れを見る</PrimaryCta>
-            <SecondaryCta href="/apply#pricing">料金・教材を確認</SecondaryCta>
+            <SecondaryCta href="/#pricing">料金・教材を確認</SecondaryCta>
           </div>
         </div>
 

@@ -83,8 +83,8 @@ export default function AfterPurchasePage() {
                 ログイン情報の発行、購入教材の自動割り当て、PDFでの実施・提出、自己採点、返却確認までを、実際のアプリ画面に沿って案内します。
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <PrimaryCta href="/apply">教材を選んではじめる</PrimaryCta>
-                <SecondaryCta href="/apply#pricing">料金・教材を見る</SecondaryCta>
+                <PrimaryCta href="/order">教材を選んではじめる</PrimaryCta>
+                <SecondaryCta href="/order#full">料金・教材を見る</SecondaryCta>
               </div>
             </div>
 

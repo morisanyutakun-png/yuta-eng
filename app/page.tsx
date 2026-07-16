@@ -391,7 +391,7 @@ export default function HomePage() {
               </div>
 
               <div className="mt-5 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
-                <PrimaryCta location="hero_trial_primary" href="/apply#trial">{formatYen(TRIAL_PRICE)}でお試しをはじめる</PrimaryCta>
+                <PrimaryCta location="hero_trial_primary" href="/order#trial">{formatYen(TRIAL_PRICE)}でお試しをはじめる</PrimaryCta>
                 <SecondaryCta location="hero_full" href="/order">教材を買い切る（{formatYen(single)}〜）</SecondaryCta>
               </div>
               <p className="mt-3 text-[0.78rem] leading-[1.7] text-[#64748b]">
@@ -700,7 +700,7 @@ export default function HomePage() {
                 </div>
               </div>
               <TrackedLink
-                href="/apply#trial"
+                href="/order#trial"
                 location="pricing_trial"
                 className="group/tr relative inline-flex min-h-12 w-full shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-full px-6 text-[0.92rem] font-extrabold text-white shadow-[0_16px_30px_-14px_rgba(234,88,12,0.85)] transition hover:-translate-y-px sm:w-auto"
               >
@@ -893,7 +893,7 @@ export default function HomePage() {
           <div className="flex items-stretch gap-2 rounded-full bg-white/95 p-1.5 shadow-[0_18px_40px_-16px_rgba(11,29,74,0.5)] ring-1 ring-[rgba(15,29,74,0.12)] backdrop-blur">
             {/* 低ハードルのお試しを主役に */}
             <TrackedLink
-              href="/apply#trial"
+              href="/order#trial"
               location="mobile_sticky"
               className="relative flex min-h-[3rem] flex-1 items-center justify-center gap-1.5 overflow-hidden rounded-full px-4 text-[0.94rem] font-extrabold text-white"
             >
