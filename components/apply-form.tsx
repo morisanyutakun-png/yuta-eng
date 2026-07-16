@@ -197,29 +197,47 @@ export function ApplyForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const count = selected.length;
   const campaign = isCampaignActive();
   const unitPrice = currentSinglePrice(campaign);
-  const list = useMemo(() => listTotal(count), [count]);
-  const rawTotal = useMemo(() => buyoutTotal(count, campaign), [count, campaign]);
-  const isUpgrade = Boolean(upgradeToken) && count > 0;
-  // 本契約特典（−¥1,980）は表示上の見込み。最終額は決済画面（Stripe）で確定する。
-  const total = isUpgrade ? Math.max(0, rawTotal - TRIAL_CREDIT) : rawTotal;
-  const savings = useMemo(() => packSavings(count, campaign), [count, campaign]);
-  const selectedMaterials = useMemo(
+
+  // カートは買い切り（フル）とお試し（*-trial）を両方持てる。ただし決済は「どちらか一方」。
+  const fullIds = useMemo(() => selected.filter((id) => SUBJECTS.some((s) => s.id === id)), [selected]);
+  const trialIds = useMemo(() => selected.filter((id) => TRIAL_SUBJECTS.some((t) => t.id === id)), [selected]);
+  const fullCount = fullIds.length;
+  const trialCount = trialIds.length;
+  const count = selected.length;
+  const isMixed = fullCount > 0 && trialCount > 0;
+
+  const list = useMemo(() => listTotal(fullCount), [fullCount]);
+  const rawTotal = useMemo(() => buyoutTotal(fullCount, campaign), [fullCount, campaign]);
+  // 本契約特典（−¥1,980）は「買い切りのみ・お試し無し」のときの見込み。最終額は決済画面で確定。
+  const isUpgrade = Boolean(upgradeToken) && fullCount > 0 && trialCount === 0;
+  const total = (isUpgrade ? Math.max(0, rawTotal - TRIAL_CREDIT) : rawTotal) + trialCount * TRIAL_PRICE;
+  const savings = useMemo(() => packSavings(fullCount, campaign), [fullCount, campaign]);
+
+  // 買い切り＋お試しをまとめたカート表示用アイテム。
+  const cartItems = useMemo(
     () =>
       selected
-        .map((id) => SUBJECTS.find((subject) => subject.id === id))
-        .filter((subject): subject is (typeof SUBJECTS)[number] => Boolean(subject)),
-    [selected],
+        .map((id) => {
+          const full = SUBJECTS.find((s) => s.id === id);
+          if (full) {
+            const p = getMaterialProfile(full);
+            return { id, kind: "full" as const, title: p.title, short: full.label, level: p.level, price: unitPrice, color: full.color, cover: p.cover };
+          }
+          const trial = TRIAL_SUBJECTS.find((t) => t.id === id);
+          if (trial) {
+            const fullSub = SUBJECTS.find((s) => s.id === trial.trialOf);
+            const cover = fullSub ? getMaterialProfile(fullSub).cover : undefined;
+            const nm = trial.label.replace(`（添削${TRIAL_GRADING_COUNT}回）`, "");
+            return { id, kind: "trial" as const, title: `${nm}（お試し・添削${TRIAL_GRADING_COUNT}回）`, short: `${nm} お試し`, level: "お試し", price: TRIAL_PRICE, color: trial.color, cover };
+          }
+          return null;
+        })
+        .filter((x): x is NonNullable<typeof x> => Boolean(x)),
+    [selected, unitPrice],
   );
-  const selectedSummary = useMemo(
-    () =>
-      selectedMaterials
-        .map((subject) => subject.label)
-        .join("・"),
-    [selectedMaterials],
-  );
+  const selectedSummary = cartItems.map((i) => i.short).join("・");
 
   function toggle(id: string) {
     setSelected((prev) => {
@@ -244,14 +262,25 @@ export function ApplyForm({
 
   async function submit() {
     if (count === 0 || loading) return;
+    if (isMixed) {
+      setError("お試しと買い切りは、分けてお申し込みください（どちらか一方にしてください）。");
+      return;
+    }
     setLoading(true);
     setError(null);
     // 決済ページ（Stripe）へ遷移する直前に begin_checkout を送る。
     gtagEvent("begin_checkout", {
       currency: "JPY",
       value: total,
-      coupon: isUpgrade ? "trial-upgrade" : savings > 0 ? "opening-campaign" : undefined,
-      items: selectedMaterials.map((s) => subjectToItem(s, count >= 2 ? PACK_UNIT_PRICE : unitPrice)),
+      coupon: isUpgrade ? "trial-upgrade" : trialCount > 0 ? "trial" : savings > 0 ? "opening-campaign" : undefined,
+      items: cartItems.map((i) => ({
+        item_id: i.id,
+        item_name: i.short,
+        item_brand: "ノビットスタディ",
+        item_category: i.kind === "trial" ? "お試し" : "教材",
+        price: i.price,
+        quantity: 1,
+      })),
     });
     try {
       const res = await fetch("/api/checkout", {
@@ -259,7 +288,7 @@ export function ApplyForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           subjects: selected,
-          ...(upgradeToken ? { upgrade: upgradeToken } : {}),
+          ...(isUpgrade && upgradeToken ? { upgrade: upgradeToken } : {}),
         }),
       });
       const data = (await res.json()) as { url?: string; error?: string };
@@ -275,45 +304,30 @@ export function ApplyForm({
     }
   }
 
-  // お試し（1教材・添削3回・1,980円）を即決済へ。買い切りカゴとは独立した単品フロー。
-  async function startTrial(fullId: string) {
-    if (loading) return;
+  // お試し（*-trial）をカートに出し入れ。買い切りと同じカートに入るが、決済は一方のみ。
+  function toggleTrial(fullId: string) {
     const trial = trialByFullId.get(fullId);
     if (!trial) return;
-    setLoading(true);
-    setError(null);
-    gtagEvent("begin_checkout", {
-      currency: "JPY",
-      value: TRIAL_PRICE,
-      coupon: "trial",
-      items: [
-        {
-          item_id: trial.id,
-          item_name: trial.registrationLabel,
-          item_brand: "ノビットスタディ",
-          item_category: "お試し",
-          price: TRIAL_PRICE,
-          quantity: 1,
-        },
-      ],
-    });
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ subjects: [trial.id] }),
-      });
-      const data = (await res.json()) as { url?: string; error?: string };
-      if (!res.ok || !data.url) {
-        setError(data.error ?? "お試しの申し込みに失敗しました。時間をおいて再度お試しください。");
-        setLoading(false);
-        return;
+    setSelected((prev) => {
+      const adding = !prev.includes(trial.id);
+      if (adding) {
+        gtagEvent("select_item", {
+          item_list_id: "apply_trial",
+          item_list_name: "ノビットスタディ お試し",
+          items: [
+            {
+              item_id: trial.id,
+              item_name: trial.registrationLabel,
+              item_brand: "ノビットスタディ",
+              item_category: "お試し",
+              price: TRIAL_PRICE,
+              quantity: 1,
+            },
+          ],
+        });
       }
-      window.location.href = data.url;
-    } catch {
-      setError("通信に失敗しました。電波の良い場所で再度お試しください。");
-      setLoading(false);
-    }
+      return adding ? [...prev, trial.id] : prev.filter((x) => x !== trial.id);
+    });
   }
 
   return (
@@ -474,25 +488,37 @@ export function ApplyForm({
                           </span>
                         </span>
                       </button>
-                      {/* この教材の「お試し（¥1,980・添削3回）」＝棚の中で買い切りと並ぶ選択肢 */}
-                      {trial ? (
-                        <button
-                          type="button"
-                          onClick={() => startTrial(s.id)}
-                          disabled={loading}
-                          data-cta-location={`shelf_trial_${s.id}`}
-                          className="flex items-center justify-between gap-2 rounded-lg border border-dashed border-[rgba(234,88,12,0.45)] bg-[#fff7ed] px-3 py-2.5 text-left transition hover:bg-[#ffedd5] disabled:cursor-not-allowed disabled:opacity-50"
-                        >
-                          <span className="flex items-center gap-1.5">
-                            <span className="rounded-full bg-[#ea580c] px-1.5 py-0.5 text-[0.6rem] font-extrabold text-white">お試し</span>
-                            <span className="text-[0.76rem] font-bold text-[#9a3412]">まず添削{TRIAL_GRADING_COUNT}回だけ</span>
-                          </span>
-                          <span className="flex items-center gap-1 text-[0.84rem] font-extrabold text-[#ea580c]">
-                            {formatYen(TRIAL_PRICE)}
-                            <span aria-hidden="true">→</span>
-                          </span>
-                        </button>
-                      ) : null}
+                      {/* この教材の「お試し（¥1,980・添削3回）」＝棚の中で買い切りと並ぶ、カートに入る選択肢 */}
+                      {trial ? (() => {
+                        const trialOn = selected.includes(trial.id);
+                        return (
+                          <button
+                            type="button"
+                            onClick={() => toggleTrial(s.id)}
+                            aria-pressed={trialOn}
+                            data-cta-location={`shelf_trial_${s.id}`}
+                            className={`flex items-center justify-between gap-2 rounded-lg border px-3 py-2.5 text-left transition ${
+                              trialOn
+                                ? "border-[#ea580c] bg-[#fff1e6]"
+                                : "border-dashed border-[rgba(234,88,12,0.45)] bg-[#fff7ed] hover:bg-[#ffedd5]"
+                            }`}
+                          >
+                            <span className="flex items-center gap-1.5">
+                              <span className="rounded-full bg-[#ea580c] px-1.5 py-0.5 text-[0.6rem] font-extrabold text-white">お試し</span>
+                              <span className="text-[0.76rem] font-bold text-[#9a3412]">添削{TRIAL_GRADING_COUNT}回 {formatYen(TRIAL_PRICE)}</span>
+                            </span>
+                            <span
+                              className={`inline-flex min-h-8 shrink-0 items-center justify-center rounded-full px-2.5 text-[0.72rem] font-extrabold ${
+                                trialOn
+                                  ? "bg-[#ecfdf5] text-[#0f766e] ring-1 ring-[rgba(13,148,136,0.22)]"
+                                  : "bg-[#ea580c] text-white"
+                              }`}
+                            >
+                              {trialOn ? "追加済み" : "カートに追加"}
+                            </span>
+                          </button>
+                        );
+                      })() : null}
                       </div>
                     );
                   })}
@@ -513,44 +539,50 @@ export function ApplyForm({
           <div className="mt-3 min-h-[2.5rem]">
             {count === 0 ? (
               <p className="text-[0.86rem] text-[#94a3b8]">
-                左の教材を選ぶと、ここに買い切り価格が表示されます。
+                左で教材（お試し／買い切り）を選ぶと、ここに合計が表示されます。
               </p>
             ) : (
               <ul className="grid gap-2">
-                {selectedMaterials.map((s) => {
-                  const profile = getMaterialProfile(s);
-                  return (
-                    <li
-                      key={s.id}
-                      className="border-l-2 py-1 pl-3 text-[0.78rem]"
-                      style={{ borderColor: s.color }}
-                    >
-                      <span className="block font-bold text-[#0b1d4a]">{profile.title}</span>
-                      <span className="mt-0.5 block text-[#64748b]">目安レベル：{profile.level}</span>
-                    </li>
-                  );
-                })}
+                {cartItems.map((i) => (
+                  <li
+                    key={i.id}
+                    className="flex items-center justify-between gap-2 border-l-2 py-1 pl-3 text-[0.78rem]"
+                    style={{ borderColor: i.color }}
+                  >
+                    <span className="min-w-0">
+                      <span className="block font-bold text-[#0b1d4a]">{i.title}</span>
+                      <span className="mt-0.5 block text-[#64748b]">
+                        {i.kind === "trial" ? `お試し・添削${TRIAL_GRADING_COUNT}回` : `目安レベル：${i.level}`}
+                      </span>
+                    </span>
+                    <span className="shrink-0 text-[0.8rem] font-bold text-[#0b1d4a]">{formatYen(i.price)}</span>
+                  </li>
+                ))}
               </ul>
             )}
           </div>
 
           <dl className="mt-4 grid gap-2 border-t border-[rgba(15,29,74,0.08)] pt-4 text-[0.9rem]">
             <div className="flex items-center justify-between text-[#475569]">
-              <dt>選択した教材</dt>
-              <dd className="font-bold text-[#0b1d4a]">{count}教材</dd>
+              <dt>選択した内容</dt>
+              <dd className="font-bold text-[#0b1d4a]">
+                {fullCount > 0 ? `買い切り${fullCount}教材` : ""}
+                {fullCount > 0 && trialCount > 0 ? "／" : ""}
+                {trialCount > 0 ? `お試し${trialCount}件` : ""}
+              </dd>
             </div>
-            {savings > 0 ? (
+            {savings > 0 && !isMixed ? (
               <>
                 <div className="flex items-center justify-between text-[#94a3b8]">
                   <dt>定価</dt>
                   <dd className="font-semibold line-through">{formatYen(list)}</dd>
                 </div>
                 <div className="grid grid-cols-[1fr_auto] gap-x-3 gap-y-1 rounded-[12px] bg-[#ecfdf5] px-3 py-2 text-[#0d9488] ring-1 ring-[rgba(13,148,136,0.14)]">
-                  <dt className="font-bold">{count >= 2 ? "開講記念パック割" : "開講記念価格"}</dt>
+                  <dt className="font-bold">{fullCount >= 2 ? "開講記念パック割" : "開講記念価格"}</dt>
                   <dd className="font-bold">−{formatYen(savings)}</dd>
                   <dd className="col-span-2 text-[0.72rem] font-semibold leading-[1.45] text-[#0f766e]">
                     <span className="sm:hidden">{CAMPAIGN_DEADLINE_SHORT_LABEL}まで</span>
-                    <span className="hidden sm:inline">{CAMPAIGN_DEADLINE_LABEL}まで・{count >= 2 ? `1教材 ${formatYen(PACK_UNIT_PRICE)}` : `1教材 ${formatYen(unitPrice)}`}</span>
+                    <span className="hidden sm:inline">{CAMPAIGN_DEADLINE_LABEL}まで・{fullCount >= 2 ? `1教材 ${formatYen(PACK_UNIT_PRICE)}` : `1教材 ${formatYen(unitPrice)}`}</span>
                   </dd>
                 </div>
               </>
@@ -561,8 +593,13 @@ export function ApplyForm({
                 <dd className="font-bold">−{formatYen(TRIAL_CREDIT)}</dd>
               </div>
             ) : null}
+            {isMixed ? (
+              <p className="rounded-[10px] bg-[#fff7ed] px-3 py-2 text-[0.76rem] font-semibold leading-[1.5] text-[#9a3412] ring-1 ring-[rgba(234,88,12,0.22)]">
+                お試しと買い切りは分けてのお申し込みになります。どちらか一方にしてください。
+              </p>
+            ) : null}
             <div className="flex items-baseline justify-between border-t border-dashed border-[rgba(15,29,74,0.14)] pt-2">
-              <dt className="text-[0.86rem] font-bold text-[#ea580c]">買い切り合計</dt>
+              <dt className="text-[0.86rem] font-bold text-[#ea580c]">合計</dt>
               <dd className="text-[1.6rem] font-extrabold leading-none text-[#0b1d4a]">
                 {formatYen(total)}
               </dd>
@@ -578,12 +615,18 @@ export function ApplyForm({
           <button
             type="button"
             onClick={submit}
-            disabled={count === 0 || loading}
+            disabled={count === 0 || loading || isMixed}
             className="group/cta relative mt-4 inline-flex min-h-12 w-full items-center justify-center overflow-hidden rounded-full px-6 text-[0.98rem] font-bold text-white transition enabled:hover:-translate-y-px disabled:cursor-not-allowed disabled:opacity-50"
           >
             <span aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,#f97316_0%,#ea580c_100%)]" />
             <span className="relative">
-              {loading ? "決済ページへ移動中…" : "この教材を申し込む（買い切り）"}
+              {loading
+                ? "決済ページへ移動中…"
+                : isMixed
+                  ? "どちらか一方にしてください"
+                  : trialCount > 0
+                    ? `お試しを申し込む（${formatYen(total)}）`
+                    : `買い切りで申し込む（${formatYen(total)}）`}
             </span>
           </button>
           <p className="mt-3 text-center text-[0.74rem] leading-[1.7] text-[#94a3b8]">
@@ -608,24 +651,23 @@ export function ApplyForm({
                   </span>
                 ) : (
                   <>
-                    {selectedMaterials.slice(0, 3).map((s) => {
-                      const cover = getMaterialProfile(s).cover;
-                      return cover ? (
+                    {cartItems.slice(0, 3).map((i) =>
+                      i.cover ? (
                         <MaterialCoverFrame
-                          key={s.id}
-                          cover={cover}
+                          key={i.id}
+                          cover={i.cover}
                           className="h-12 w-[2.15rem] rounded-[5px] ring-2 ring-white"
                           imageClassName="scale-[1.06]"
                         />
                       ) : (
                         <span
-                          key={s.id}
+                          key={i.id}
                           className="grid h-12 w-[2.15rem] place-items-center rounded-[5px] bg-[#f1f5f9] text-[0.68rem] font-extrabold text-[#0b1d4a] ring-2 ring-white"
                         >
-                          {s.label.slice(0, 1)}
+                          {i.short.slice(0, 1)}
                         </span>
-                      );
-                    })}
+                      ),
+                    )}
                     {count > 3 ? (
                       <span className="grid h-12 w-[2.15rem] place-items-center rounded-[5px] bg-[#0b1d4a] text-[0.7rem] font-extrabold text-white ring-2 ring-white">
                         +{count - 3}
@@ -636,7 +678,7 @@ export function ApplyForm({
               </span>
               <div className="min-w-0 flex-1" aria-live="polite">
                 <p className="truncate text-[0.74rem] font-bold text-[#0f766e]">
-                  購入カート：{count}教材
+                  カート：{count}件
                 </p>
                 <p className="mt-0.5 truncate text-[0.68rem] font-semibold text-[#64748b]">
                   {count === 0 ? "商品カードをタップして追加" : selectedSummary}
@@ -646,14 +688,18 @@ export function ApplyForm({
                   <span className="text-[1.18rem] font-extrabold leading-none text-[#0b1d4a]">
                     {formatYen(total)}
                   </span>
-                  {savings > 0 ? (
+                  {isMixed ? (
+                    <span className="text-[0.66rem] font-bold text-[#ea580c]">
+                      ※お試しと買い切りは分けて
+                    </span>
+                  ) : savings > 0 ? (
                     <span className="text-[0.68rem] font-bold text-[#ea580c]">
                       {formatYen(savings)}おトク
                     </span>
+                  ) : trialCount > 0 ? (
+                    <span className="text-[0.68rem] font-semibold text-[#64748b]">お試し</span>
                   ) : (
-                    <span className="text-[0.68rem] font-semibold text-[#64748b]">
-                      買い切り
-                    </span>
+                    <span className="text-[0.68rem] font-semibold text-[#64748b]">買い切り</span>
                   )}
                 </p>
               </div>
