@@ -1,116 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Critical CSS inlining is handled in `scripts/inline-critical-css.mjs`
-  // (postbuild step). Next.js' `experimental.optimizeCss` was a no-op on the
-  // Turbopack pipeline used here, so we run beasties ourselves to inline
-  // above-the-fold rules and async-swap the rest. This eliminated the ~2.6s
-  // render-blocking CSS on slow 4G that was driving FCP/LCP up to 4 seconds.
-  images: {
-    formats: ["image/avif", "image/webp"],
-    qualities: [70, 75, 90],
-    localPatterns: [
-      { pathname: "/**", search: "" },
-      { pathname: "/app-screens/**", search: "?v=20260711b" },
-      { pathname: "/samples/**", search: "?v=20260711b" },
-    ],
-    // 1 year — OG images and brand assets rarely change; longer TTL reduces
-    // optimizer cold starts and keeps CDN caches warm for SEO.
-    minimumCacheTTL: 60 * 60 * 24 * 365,
-  },
-  async redirects() {
-    return [
-      { source: "/home", destination: "/", permanent: true },
-      { source: "/lp", destination: "/", permanent: true },
-      { source: "/nobit", destination: "/", permanent: true },
-      { source: "/pricing", destination: "/order", permanent: true },
-      { source: "/price", destination: "/order", permanent: true },
-      { source: "/subjects", destination: "/order", permanent: true },
-      { source: "/courses", destination: "/order", permanent: true },
-      { source: "/course", destination: "/order", permanent: true },
-      { source: "/books", destination: "/order", permanent: true },
-      { source: "/book", destination: "/order", permanent: true },
-      // お試しと買い切りは /order に集約。旧 /apply は /order へ（?u= 等のクエリは自動で引き継ぐ）。
-      { source: "/apply", destination: "/order", permanent: true },
-      // 統廃合：しくみ/アプリ/教材の詳細ページはLP・/after-purchase・/orderへ集約。
-      { source: "/how-it-works", destination: "/#how", permanent: true },
-      { source: "/app", destination: "/after-purchase", permanent: true },
-      { source: "/materials", destination: "/order", permanent: true },
-      { source: "/faq", destination: "/", permanent: true },
-      { source: "/privacy", destination: "/legal/privacy", permanent: true },
-      { source: "/refund", destination: "/legal/refund", permanent: true },
-      { source: "/tokushoho", destination: "/legal/tokushoho", permanent: true },
-      { source: "/terms", destination: "/legal/tokushoho", permanent: true },
-    ];
-  },
-  // Long-cache the pre-built static OG card variants and brand SVGs that
-  // never change between builds. immutable means CDNs/browsers will skip
-  // revalidation entirely until the next deploy.
+  poweredByHeader: false,
   async headers() {
     return [
       {
-        source: "/og/:path*",
+        source: "/:path*",
         headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      {
-        source: "/brand/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      {
-        source: "/fonts/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      // Book cover and its AVIF/WebP variants — same immutable policy as other
-      // never-changing public assets so CDNs cache aggressively.
-      {
-        source: "/books/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      {
-        source: "/denjikigaku-cover:rest(.*)",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      // PageSpeed flagged "効率的なキャッシュ保存期間": ensure favicon, manifest,
-      // and other root static files have a meaningful TTL.
-      {
-        source: "/favicon.svg",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      {
-        source: "/mask-icon.svg",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-        ],
-      },
-      {
-        source: "/site.webmanifest",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=86400" },
-        ],
-      },
-      // Static HTML pages are SSG; allow a short cache + long stale-while-revalidate
-      // so repeat visits skip the network entirely until the next deploy. The
-      // negative lookahead excludes paths with a file extension so static asset
-      // headers above stay effective.
-      {
-        source: "/:path((?!.*\\.[a-zA-Z0-9]+$|_next|api).*)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400",
-          },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         ],
       },
     ];

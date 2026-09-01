@@ -1,18 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="ノビットスタディ Nobit Study">
-  <defs>
-    <linearGradient id="ic-bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0b1d4a"/>
-      <stop offset="1" stop-color="#0f5e5e"/>
-    </linearGradient>
-  </defs>
-
-  <rect width="512" height="512" rx="116" fill="url(#ic-bg)"/>
-
-  <path d="M120 366 Q 198 402 270 332 Q 350 252 392 158"
-        fill="none" stroke="#ffffff" stroke-width="62"
-        stroke-linecap="round" stroke-linejoin="round"/>
-
-  <path d="M300 150 L400 138 L392 238"
-        fill="none" stroke="#f97316" stroke-width="62"
-        stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="大学別 数学入試分析">
+  <rect width="64" height="64" rx="12" fill="#0c4a6e" />
+  <g fill="none" stroke="#7dd3fc" stroke-width="4" stroke-linecap="round">
+    <path d="M14 46 L24 22 L34 38 L44 18" />
+  </g>
+  <circle cx="44" cy="18" r="5" fill="#fbbf24" />
 </svg>

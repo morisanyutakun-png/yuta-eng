@@ -1,253 +1,27 @@
 @import "tailwindcss";
+@import "katex/dist/katex.min.css";
 
-:root {
-  --background: #fbf9f4;
-  --foreground: #1a1a1a;
-  --surface: #ffffff;
-  --muted: #f5f1e8;
-  --border: #e5dfd1;
-  --accent: #1f6feb;
-  --accent-deep: #0f3d8c;
-  --accent-warm: #c89211;
-  --line: #d8cfb8;
-  --ink: #1a1a1a;
-  --ink-soft: #4a4a4a;
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Hiragino Kaku Gothic ProN",
+    "Hiragino Sans", Meiryo, sans-serif;
 }
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  /* System-only font stacks. JP devices ship Hiragino (iOS/macOS), Noto Sans
-   * CJK JP (Android, built into the OS), or Yu Gothic / Meiryo (Windows) by
-   * default — all visually equivalent to Noto Sans JP for body copy, with
-   * zero network cost. Saves ~440 KB on first visit on slow 4G. */
-  --font-sans:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Hiragino Sans",
-    "Hiragino Kaku Gothic ProN",
-    "Yu Gothic Medium",
-    "Yu Gothic",
-    "Meiryo",
-    "Noto Sans CJK JP",
-    sans-serif;
-  --font-serif:
-    "Hiragino Mincho ProN",
-    "Yu Mincho",
-    "YuMincho",
-    "MS PMincho",
-    serif;
-  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-}
-
-/*
- * `.cv-defer` is now only a hook for the reveal-on-scroll effect
- * (components/scroll-reveal.tsx). We removed `content-visibility: auto`:
- * it deferred paint of below-fold sections, but with anchor/hash navigation
- * (e.g. arriving on `/#features` from another page) the browser scrolled
- * using the *estimated* heights of unrendered sections and could land on a
- * blank area. Correct navigation matters more than the ~400ms paint saving.
- */
 
 html {
-  font-size: 16px;
   -webkit-text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--ink);
-  font-family:
-    var(--font-sans-jp),
-    "Hiragino Kaku Gothic ProN",
-    "Hiragino Sans",
-    "Yu Gothic Medium",
-    "Yu Gothic",
-    "Meiryo",
-    sans-serif;
-  font-feature-settings: "palt", "kern";
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  overflow-x: clip;
-  text-rendering: optimizeLegibility;
-  -webkit-tap-highlight-color: rgba(29, 78, 216, 0.12);
+  font-feature-settings: "palt";
 }
 
-/* Mobile-first defaults */
-@media (min-width: 480px) {
-  html {
-    font-size: 16.25px;
-  }
+/* 本文中の数式は行の高さを崩さない程度に抑える。 */
+.katex {
+  font-size: 1em;
 }
 
-/*
- * ── Scroll-driven polish (zero-JS, progressive enhancement) ──────────
- * Both effects are pure CSS scroll-/view-timelines: no JS, no hydration,
- * no layout cost. They light up only on supporting browsers (Chromium,
- * Safari 26+) and only when the user hasn't asked to reduce motion.
- * Everything degrades to "fully visible, no animation" elsewhere.
- */
-
-/* Top reading-progress bar — grows as the page scrolls. */
-.scroll-progress {
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: 3px;
-  z-index: 60;
-  background: rgba(15, 29, 74, 0.06);
-  pointer-events: none;
+/* 表の中の数式は折り返させない。 */
+td .katex,
+th .katex {
+  white-space: nowrap;
 }
-.scroll-progress > span {
-  display: block;
-  height: 100%;
-  transform-origin: 0 50%;
-  transform: scaleX(1); /* fallback: looks like a static brand hairline */
-  background: linear-gradient(90deg, #1d4ed8 0%, #0d9488 42%, #16a34a 70%, #f97316 100%);
-}
-@supports (animation-timeline: scroll()) {
-  .scroll-progress > span {
-    transform: scaleX(0);
-    animation: scroll-progress-grow linear both;
-    animation-timeline: scroll(root);
-  }
-  @keyframes scroll-progress-grow {
-    to {
-      transform: scaleX(1);
-    }
-  }
-}
-
-/*
- * Reveal-on-scroll was removed: hiding sections with opacity:0 until an
- * IntersectionObserver revealed them occasionally left content invisible
- * (blank page) on Safari and on hash navigation. Content correctness beats
- * the fade-in. Motion is still provided by the marquee bands, hero float,
- * and the scroll-progress bar — none of which can hide content.
- */
-
-/* Infinite keyword band (marquee). Edges fade out; pauses on hover and for
- * reduced-motion. The text is real DOM content, so it also adds crawlable
- * keywords for SEO. */
-.marquee {
-  display: flex;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-}
-.marquee__track {
-  display: inline-flex;
-  flex: 0 0 auto;
-  align-items: center;
-  min-width: 100%;
-  animation: marquee-scroll 34s linear infinite;
-}
-@keyframes marquee-scroll {
-  to {
-    transform: translateX(-50%);
-  }
-}
-.marquee__track--reverse {
-  animation-direction: reverse;
-}
-.marquee:hover .marquee__track {
-  animation-play-state: paused;
-}
-@media (prefers-reduced-motion: reduce) {
-  .marquee__track {
-    animation: none;
-  }
-}
-
-/* Gentle floating motion for hero artwork (disabled for reduced-motion). */
-@media (prefers-reduced-motion: no-preference) {
-  .float-slow {
-    animation: float-slow 6.5s ease-in-out infinite;
-  }
-  @keyframes float-slow {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: rgba(29, 78, 216, 0.16);
-  touch-action: manipulation;
-}
-
-/* Ensure interactive elements meet 44x44 minimum touch target */
-a[role="button"],
-button,
-[role="button"] {
-  min-height: 44px;
-}
-
-/* Anchor scroll offset for sticky header */
-:target,
-.scroll-mt-24,
-[id]:not(body) {
-  scroll-margin-top: 5rem;
-}
-
-@media (min-width: 768px) {
-  :target,
-  .scroll-mt-24,
-  [id]:not(body) {
-    scroll-margin-top: 6rem;
-  }
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16.5px;
-  }
-}
-
-@media (min-width: 1280px) {
-  html {
-    font-size: 17px;
-  }
-}
-
-.font-serif,
-[class*="font-serif"] {
-  font-family: var(--font-serif-jp), "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
-  font-feature-settings: "palt", "kern";
-}
-
-/* 見出しはブランドフォント（Zen Kaku Gothic New）。読み込み前は端末標準で表示。 */
-h1,
-h2,
-.font-display {
-  font-family:
-    var(--font-display),
-    -apple-system,
-    BlinkMacSystemFont,
-    "Hiragino Sans",
-    "Hiragino Kaku Gothic ProN",
-    "Yu Gothic Medium",
-    "Yu Gothic",
-    "Meiryo",
-    "Noto Sans CJK JP",
-    sans-serif;
-  font-feature-settings: "palt", "kern";
-}
-
-::selection {
-  background: #d6e4ff;
-  color: #0f3d8c;
-}
-
-a {
-  text-underline-offset: 0.18em;
-}
-
-
