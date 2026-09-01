@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { UniversityCard } from "@/components/university-card";
-import { byGroup, universities } from "@/lib/data";
+import { UniversityFinder, type FinderItem } from "@/components/university-finder";
+import { universities } from "@/lib/data";
 import { groupOrder, site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -12,8 +11,20 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const groups = byGroup(groupOrder);
   const bookCount = universities.reduce((a, u) => a + u.books.length, 0);
+  const usedGroups = groupOrder.filter((g) => universities.some((u) => u.group === g));
+
+  const items: FinderItem[] = universities.map((u) => ({
+    slug: u.slug,
+    name: u.name,
+    university: u.university,
+    course: u.course,
+    group: u.group,
+    keywords: [u.name, u.university, u.course, u.group, u.kana].join(" "),
+    examTime: u.facts.examTime ?? null,
+    questions: u.facts.questions ?? null,
+    books: u.books.length,
+  }));
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -28,43 +39,54 @@ export default function HomePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-4xl px-4">
-        <section className="border-b border-slate-200 py-12 dark:border-slate-800 sm:py-16">
-          <h1 className="text-2xl font-bold leading-snug tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl">
-            大学別 数学入試分析
+      <div className="mx-auto max-w-3xl px-5 sm:px-6">
+        <section className="pb-7 pt-10 sm:pt-14">
+          <h1 className="head-ja text-[1.7rem] font-bold leading-[1.4] tracking-tight text-slate-900 dark:text-slate-100 sm:text-[2.25rem]">
+            大学別
+            <br className="sm:hidden" />
+            数学入試分析
           </h1>
-          <p className="mt-4 max-w-2xl text-[0.95rem] leading-[1.9] text-slate-700 dark:text-slate-300">
-            {universities.length}大学の数学について、過去8年分の出題を年度別・分野別の表に整理しました。
-            試験時間と大問数、どの分野が何回出ているか、小問の型と目標点まで、
-            <strong className="font-semibold text-slate-900 dark:text-slate-100">
-              対策を決めるのに必要な事実
+          <p className="prose-ja mt-4 text-[0.95rem] text-slate-600 dark:text-slate-400">
+            {universities.length}大学の数学を、過去8年分の出題から
+            <strong className="font-semibold text-slate-900 dark:text-slate-200">
+              年度別・分野別の表
             </strong>
-            だけを載せています。
+            に整理しました。試験時間、大問の構成、どの分野が何回出ているか、目標点まで。
           </p>
-          <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
+          <dl className="mt-6 flex gap-6 border-y border-slate-200 py-4 dark:border-slate-800">
+            <div>
+              <dt className="text-[0.7rem] text-slate-500 dark:text-slate-400">分析大学</dt>
+              <dd className="text-xl font-bold tabular-nums text-slate-900 dark:text-slate-100">
+                {universities.length}
+                <span className="ml-0.5 text-xs font-medium text-slate-500">大学</span>
+              </dd>
+            </div>
+            <div>
+              <dt className="text-[0.7rem] text-slate-500 dark:text-slate-400">予想問題集</dt>
+              <dd className="text-xl font-bold tabular-nums text-slate-900 dark:text-slate-100">
+                {bookCount}
+                <span className="ml-0.5 text-xs font-medium text-slate-500">冊</span>
+              </dd>
+            </div>
+            <div>
+              <dt className="text-[0.7rem] text-slate-500 dark:text-slate-400">分析年度</dt>
+              <dd className="text-xl font-bold tabular-nums text-slate-900 dark:text-slate-100">
+                8<span className="ml-0.5 text-xs font-medium text-slate-500">年分</span>
+              </dd>
+            </div>
+          </dl>
+        </section>
+
+        <UniversityFinder items={items} groups={usedGroups} />
+
+        <section className="mt-14 rounded-2xl bg-slate-50 p-5 dark:bg-slate-900/60">
+          <h2 className="text-base font-bold text-slate-900 dark:text-slate-100">このサイトについて</h2>
+          <p className="prose-ja mt-2.5 text-sm text-slate-600 dark:text-slate-400">
+            各大学の公表資料と、実際の問題冊子8年分にあたって作成した分析です。
+            出題形式・分野構成を調べたものであり、問題文の転載はしていません。
             分析にもとづく予想問題集「{site.seriesName}」全{bookCount}冊も各ページから辿れます。
           </p>
         </section>
-
-        {groups.map(([group, list]) => (
-          <section key={group} className="border-b border-slate-200 py-8 last:border-0 dark:border-slate-800">
-            <h2 className="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100">
-              {group}
-              <span className="ml-2 text-sm font-normal text-slate-500 dark:text-slate-400">{list.length}件</span>
-            </h2>
-            <div className="mt-4 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-              {list.map((u) => (
-                <UniversityCard key={u.slug} u={u} />
-              ))}
-            </div>
-          </section>
-        ))}
-
-        <p className="py-8 text-sm">
-          <Link href="/universities" className="text-sky-700 underline underline-offset-4 dark:text-sky-400">
-            大学一覧をまとめて見る
-          </Link>
-        </p>
       </div>
     </>
   );

@@ -24,16 +24,29 @@ export type Book = {
   amazonUrl: string;
 };
 
+/** 原稿の導入文から拾った要点。取れなかった項目は入らない。 */
+export type Facts = {
+  examTime?: number;
+  questions?: number;
+  style?: string;
+  points?: number;
+};
+
 export type University = {
   slug: string;
   name: string;
   university: string;
   course: string;
   group: string;
+  /** 検索用の読み・略称 */
+  kana: string;
   folder: string;
   analysisTitle: string;
   /** ["2019", "2026"] のような分析対象年度。取れないこともある。 */
   years: string[];
+  facts: Facts;
+  /** 冒頭に出す1〜2文 */
+  summary: string;
   lead: Block[];
   sections: Section[];
   yearTable: { head: Cell[]; rows: Cell[][] } | null;
@@ -73,10 +86,31 @@ export function yearRange(u: University): string | null {
 
 /** 検索・一覧に出す 1 行の要約。分析本文の先頭から作る。 */
 export function summarize(u: University, max = 110): string {
+  const text = (u.summary || "").replace(/\$[^$]*\$/g, "").replace(/\s+/g, "");
+  if (text) return text.length > max ? `${text.slice(0, max)}…` : text;
+
   const first =
     u.lead.find((b) => b.type === "p") ??
     u.sections.flatMap((s) => s.blocks).find((b) => b.type === "p");
   if (!first || first.type !== "p") return "";
-  const text = spanText(first.spans).replace(/\s+/g, "");
-  return text.length > max ? `${text.slice(0, max)}…` : text;
+  const raw = spanText(first.spans).replace(/\s+/g, "");
+  return raw.length > max ? `${raw.slice(0, max)}…` : raw;
+}
+
+/** 見出しの通し番号（「1.2 」など）を落とす。 */
+export function cleanHeading(title: string): string {
+  return title.replace(/^\d+(\.\d+)?[.．\s　]*/, "").trim();
+}
+
+/** 見出しからアンカー用の id を作る。 */
+export function sectionId(index: number): string {
+  return `s${index + 1}`;
+}
+
+/** 要点を「120分・大問5題・完全記述式」のような1行にする。 */
+export function factsLine(u: University): string {
+  const { examTime, questions, style } = u.facts;
+  return [examTime ? `${examTime}分` : null, questions ? `大問${questions}題` : null, style]
+    .filter(Boolean)
+    .join("・");
 }

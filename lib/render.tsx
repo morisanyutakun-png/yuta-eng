@@ -12,6 +12,12 @@ const MACROS: Record<string, string> = {
   "\\dsp": "\\displaystyle",
   "\\ans": "\\underline{#1}",
   "\\underLine": "\\underline{#1}",
+  "\\Pt": "\\mathrm{#1}", // 点の名前
+  "\\Vec": "\\overrightarrow{\\mathrm{#1}}",
+  "\\Cb": "{}_{#1}\\mathrm{C}_{#2}", // 組合せ
+  "\\MF": "\\frac{#1}{#2}",
+  "\\Ma": "\\boxed{#1}", // マーク欄
+  "\\ansheet": "\\boxed{\\textbf{#1}}", // 解答用紙番号
 };
 
 const CJK_RUN = /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ々〆ー]+/g;
@@ -72,7 +78,8 @@ export function Spans({ spans }: { spans: Span[] }) {
           return (
             <em
               key={i}
-              className="not-italic font-semibold text-sky-800 underline decoration-sky-300 decoration-2 underline-offset-2 dark:text-sky-300 dark:decoration-sky-700"
+              className="not-italic font-semibold text-slate-900 [background:linear-gradient(transparent_62%,var(--mark)_62%)] dark:text-slate-100"
+              style={{ "--mark": "color-mix(in oklch, oklch(0.85 0.14 95) 55%, transparent)" } as React.CSSProperties}
             >
               {s.v}
             </em>
@@ -85,17 +92,28 @@ export function Spans({ spans }: { spans: Span[] }) {
 }
 
 function Table({ head, rows }: { head: Cell[]; rows: Cell[][] }) {
+  // 列が多い表はモバイルで横に溢れるので、スクロールできることを明示する
+  const wide = head.length > 3;
   return (
-    <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
-      <table className="w-full min-w-[38rem] border-collapse text-left text-[0.8rem] leading-relaxed">
+    <div>
+      {wide && (
+        <p className="mb-1.5 flex items-center gap-1 text-[0.7rem] text-slate-400 sm:hidden">
+          <svg aria-hidden="true" viewBox="0 0 20 20" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M3 10h14M13 6l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          横にスクロールできます
+        </p>
+      )}
+      <div className="scroll-hint -mx-5 overflow-x-auto px-5 sm:mx-0 sm:px-0">
+      <table className="w-full min-w-[34rem] border-collapse text-left text-[0.8rem] leading-relaxed">
         <thead>
-          <tr className="border-b-2 border-slate-300 dark:border-slate-600">
+          <tr className="border-b border-slate-300 bg-slate-50 dark:border-slate-600 dark:bg-slate-900">
             {head.map((c, i) => (
               <th
                 key={i}
                 colSpan={c.colSpan > 1 ? c.colSpan : undefined}
                 scope="col"
-                className="px-2.5 py-2 align-bottom font-semibold text-slate-700 dark:text-slate-200"
+                className="whitespace-nowrap px-3 py-2.5 align-bottom text-[0.72rem] font-bold tracking-wide text-slate-600 dark:text-slate-300"
               >
                 <Spans spans={c.spans} />
               </th>
@@ -104,15 +122,15 @@ function Table({ head, rows }: { head: Cell[]; rows: Cell[][] }) {
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={i} className="border-b border-slate-200 last:border-0 dark:border-slate-800">
+            <tr key={i} className="border-b border-slate-100 last:border-0 dark:border-slate-800/70">
               {r.map((c, j) => (
                 <td
                   key={j}
                   colSpan={c.colSpan > 1 ? c.colSpan : undefined}
                   className={
                     j === 0
-                      ? "whitespace-nowrap px-2.5 py-2 align-top font-medium text-slate-800 dark:text-slate-200"
-                      : "px-2.5 py-2 align-top text-slate-600 dark:text-slate-300"
+                      ? "whitespace-nowrap px-3 py-2.5 align-top font-semibold text-slate-800 dark:text-slate-200"
+                      : "px-3 py-2.5 align-top leading-relaxed text-slate-700 dark:text-slate-300"
                   }
                 >
                   <Spans spans={c.spans} />
@@ -121,7 +139,8 @@ function Table({ head, rows }: { head: Cell[]; rows: Cell[][] }) {
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
   );
 }
@@ -132,7 +151,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
       {blocks.map((b, i) => {
         if (b.type === "p") {
           return (
-            <p key={i} className="text-[0.94rem] leading-[1.9] text-slate-700 dark:text-slate-300">
+            <p key={i} className="text-[0.95rem] text-slate-800 dark:text-slate-300">
               <Spans spans={b.spans} />
             </p>
           );
@@ -142,7 +161,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
           return (
             <List
               key={i}
-              className={`space-y-1.5 pl-5 text-[0.94rem] leading-[1.9] text-slate-700 marker:text-slate-400 dark:text-slate-300 ${
+              className={`space-y-2 rounded-xl bg-slate-50 py-4 pl-9 pr-4 text-[0.95rem] text-slate-800 marker:text-slate-400 dark:bg-slate-900/60 dark:text-slate-300 ${
                 b.ordered ? "list-decimal" : "list-disc"
               }`}
             >

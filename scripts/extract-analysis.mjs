@@ -173,8 +173,18 @@ function parseSpans(tex) {
   }
   flush();
 
-  // 空白の正規化
-  for (const s of out) if (s.t !== "math") s.v = s.v.replace(/\s+/g, " ");
+  // 空白と約物の正規化
+  for (const s of out) {
+    if (s.t === "math") continue;
+    s.v = s.v
+      .replace(/\s+/g, " ")
+      // 原稿は理数系の慣習で全角カンマ・ピリオドを使う。web の読み物としては読点・句点に直す。
+      // 「1．形式」のような見出し番号は壊さないよう、数字の直後のピリオドは残す。
+      .replace(/，/g, "、")
+      .replace(/(?<!\d)．/g, "。")
+      // 和文どうしの間に入った改行由来の空白を詰める
+      .replace(/([^\x00-\x7F])[ ]+(?=[^\x00-\x7F])/g, "$1");
+  }
   const trimmed = out.filter((s) => s.v.trim() !== "" || s.t === "text");
   if (trimmed.length) {
     trimmed[0].v = trimmed[0].v.replace(/^\s+/, "");
@@ -274,33 +284,109 @@ function parseLists(tex) {
   return lists;
 }
 
-// 書籍の中身に言及する文（サイトでは意味をなさない）
-const BOOK_SENTENCE = /本書|本巻|第[０-９0-9一二三四五六七八九]+巻|付録[A-Z]|収録し|併載/;
+/*
+ * 書籍の中身への言及（サイトでは意味をなさない）。
+ * 「第1回目」は東京理科大の“試験の実施回”なので、回目は除外する。
+ */
+const BOOK_SENTENCE = /本書|本巻|第[０-９0-9一二三四五六七八九]+巻|第[０-９0-9]+回(?!目)|付録[A-Z]|収録し|併載/;
+
+const MATH_MARK = "\uE001"; // 数式1つを表す1文字（文の区切り判定に使う）
+
+/** spans を「1文字＝1原子」に開く。数式は分割できないので1原子として扱う。 */
+function toAtoms(spans) {
+  const atoms = [];
+  for (const s of spans) {
+    if (s.t === "math") atoms.push({ span: s, ch: MATH_MARK });
+    else for (const ch of s.v) atoms.push({ span: s, ch });
+  }
+  return atoms;
+}
+
+/** 原子列を span 列に畳み直す。 */
+function fromAtoms(atoms) {
+  const out = [];
+  let cur = null;
+  let buf = "";
+  const flush = () => {
+    if (cur && buf) out.push({ t: cur.t, v: buf });
+    buf = "";
+  };
+  for (const a of atoms) {
+    if (a.span.t === "math") {
+      flush();
+      cur = null;
+      out.push({ t: "math", v: a.span.v });
+      continue;
+    }
+    if (a.span !== cur) { flush(); cur = a.span; }
+    buf += a.ch;
+  }
+  flush();
+  return out.filter((s) => s.v !== "");
+}
 
 /**
- * 段落から「本書では〜」の類の文だけを落とす。
+ * 段落から書籍への言及だけを落とす。
+ * ① 「（第2回 大問2 が典型で…）」のような括弧書きは括弧ごと
+ * ② それでも残る「本書では〜」の文は文ごと
  * 分析そのものの文は残す。全部落ちたら段落ごと捨てる。
  */
 function dropBookSentences(spans) {
-  // 文の区切り（。）で span 列を分割する
-  const sentences = [];
-  let cur = [];
-  for (const s of spans) {
-    if (s.t === "math") { cur.push(s); continue; }
-    let rest = s.v;
-    let idx;
-    while ((idx = rest.indexOf("。")) !== -1) {
-      cur.push({ ...s, v: rest.slice(0, idx + 1) });
-      sentences.push(cur);
-      cur = [];
-      rest = rest.slice(idx + 1);
-    }
-    if (rest) cur.push({ ...s, v: rest });
-  }
-  if (cur.length) sentences.push(cur);
+  const atoms = toAtoms(spans);
+  const text = atoms.map((a) => a.ch).join("");
+  const dead = new Array(atoms.length).fill(false);
 
-  const kept = sentences.filter((sent) => !BOOK_SENTENCE.test(spansToText(sent)));
-  return kept.flat();
+  // ① 書籍に触れている括弧書きを、括弧ごと落とす
+  const OPEN = "（(";
+  const CLOSE = "）)";
+  const stack = [];
+  for (let i = 0; i < text.length; i++) {
+    if (OPEN.includes(text[i])) stack.push(i);
+    else if (CLOSE.includes(text[i]) && stack.length) {
+      const start = stack.pop();
+      if (BOOK_SENTENCE.test(text.slice(start, i + 1))) {
+        for (let k = start; k <= i; k++) dead[k] = true;
+      }
+    }
+  }
+
+  // ② 残った本文を文（。区切り）に分け、書籍に触れている文を落とす
+  let from = 0;
+  for (let i = 0; i <= text.length; i++) {
+    if (i === text.length || text[i] === "。") {
+      const alive = [];
+      for (let k = from; k <= Math.min(i, text.length - 1); k++) if (!dead[k]) alive.push(text[k]);
+      if (BOOK_SENTENCE.test(alive.join(""))) {
+        for (let k = from; k <= Math.min(i, text.length - 1); k++) dead[k] = true;
+      }
+      from = i + 1;
+    }
+  }
+
+  return tidy(fromAtoms(atoms.filter((_, i) => !dead[i])));
+}
+
+/**
+ * 組版由来の余分な空白を落とす。
+ * LaTeX の改行や、括弧書きを取り除いたあとに残る空きを詰める。
+ */
+function tidy(spans) {
+  const out = spans.map((s) => (s.t === "math" ? s : { ...s }));
+  for (const s of out) {
+    if (s.t === "math") continue;
+    s.v = s.v
+      .replace(/[ ]{2,}/g, " ")
+      .replace(/[ ]+([。、）」』】\]])/g, "$1")
+      .replace(/([。、])[ ]+/g, "$1")
+      .replace(/([（「『【\[])[ ]+/g, "$1");
+  }
+  // 先頭と末尾の空白を落とす
+  const first = out.find((s) => s.t !== "math");
+  if (first) first.v = first.v.replace(/^[ 　]+/, "");
+  for (let i = out.length - 1; i >= 0; i--) {
+    if (out[i].t !== "math") { out[i].v = out[i].v.replace(/[ 　]+$/, ""); break; }
+  }
+  return out.filter((s) => s.t === "math" || s.v !== "");
 }
 
 const BOOK_COL = /本書|本巻/;
@@ -407,6 +493,62 @@ const isYearTable = (t) => t.rows.filter((r) => /^(19|20)\d\d/.test(cellText(r[0
 // 「分野 / 回数 / 特徴」の表＝分野別頻度
 const isFieldTable = (t) => /分野|項目|単元/.test(cellText(t.head[0])) && !isYearTable(t);
 
+/* ─────────────── 要点の抽出 ─────────────── */
+
+/**
+ * 「試験時間120分，大問5題，完全記述式」のような導入文から、
+ * ページ冒頭に出す要点を拾う。取れなかった項目は載せない（推測はしない）。
+ */
+function extractFacts(blocks) {
+  // 形式の説明は先頭の数段落に集中している。他大学との比較文を拾わないよう範囲を絞る。
+  const text = blocks
+    .filter((b) => b.type === "p")
+    .slice(0, 3)
+    .map((b) => spansToText(b.spans))
+    .join(" ");
+
+  const facts = {};
+
+  const time =
+    text.match(/試験時間(?:は)?\s*(\d{2,3})\s*分/) ||
+    text.match(/数学は\s*(\d{2,3})\s*分/) ||
+    text.match(/数学\s*[（(]\s*(\d{2,3})\s*分/) ||
+    text.match(/(\d{2,3})\s*分\s*[，、,・･]\s*大問/);
+  if (time) facts.examTime = Number(time[1]);
+
+  const dai = text.match(/大問\s*(\d+)\s*題/) || text.match(/(\d+)\s*題\s*[，、,]\s*完全記述/);
+  if (dai) facts.questions = Number(dai[1]);
+
+  if (/完全記述式/.test(text)) facts.style = "完全記述式";
+  else if (/空欄補充/.test(text)) facts.style = "空欄補充";
+  else if (/マークシート/.test(text) && /記述/.test(text)) facts.style = "マーク＋記述";
+  else if (/マークシート/.test(text)) facts.style = "マークシート";
+  else if (/記述式/.test(text)) facts.style = "記述式";
+
+  const pts =
+    text.match(/合計\s*(\d{2,4})\s*点/) ||
+    text.match(/計\s*(\d{2,4})\s*点/) ||
+    text.match(/配点は\s*\$?(\d{2,4})\$?\s*点/);
+  if (pts) facts.points = Number(pts[1]);
+
+  return facts;
+}
+
+/** 冒頭に出すリード文。最初の段落の1〜2文だけを使う。 */
+function leadSentences(blocks, maxLen = 120) {
+  const p = blocks.find((b) => b.type === "p");
+  if (!p) return "";
+  const text = spansToText(p.spans).replace(/\s+/g, "");
+  const out = [];
+  let total = 0;
+  for (const s of text.split(/(?<=。)/)) {
+    if (total + s.length > maxLen && out.length) break;
+    out.push(s);
+    total += s.length;
+  }
+  return out.join("");
+}
+
 /* ─────────────── 実行 ─────────────── */
 
 // 本書の構成に関する節はサイトには載せない（分析だけを出す）。
@@ -460,12 +602,15 @@ for (const [folder, rawBooks] of byFolder) {
   if (!best) { skipped.push({ title: folder, why: "分析セクションを取得できず" }); continue; }
 
   const { data, tables } = best;
+  const allBlocks = [...data.lead, ...data.sections.flatMap((s) => s.blocks)];
   items.push({
     ...meta,
     folder,
     analysisTitle: data.analysisTitle,
     // 分析対象年度（「（2019--2026年度）」等）を見出しから拾う
     years: (data.analysisTitle.match(/((?:19|20)\d\d)\s*[-–—]+\s*((?:19|20)\d\d)/) || []).slice(1),
+    facts: extractFacts(allBlocks),
+    summary: leadSentences(allBlocks),
     lead: data.lead,
     sections: data.sections.filter((s) => !BOOK_ONLY.test(s.title)),
     yearTable: tables.find(isYearTable) ?? null,
