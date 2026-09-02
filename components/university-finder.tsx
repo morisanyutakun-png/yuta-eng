@@ -7,6 +7,7 @@ import { useDeferredValue, useMemo, useState } from "react";
 export type FinderItem = {
   slug: string;
   name: string;
+  short: string;
   university: string;
   course: string;
   group: string;
@@ -52,8 +53,8 @@ export function UniversityFinder({ items, groups }: { items: FinderItem[]; group
 
   return (
     <div>
-      {/* 検索。画面に貼りついたまま絞り込める */}
-      <div className="sticky top-0 z-20 -mx-4 border-b border-slate-200 bg-white/95 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
+      {/* 絞り込み。スクロールしても画面上部に残す */}
+      <div className="sticky top-0 z-20 -mx-5 border-b border-rule bg-paper/95 px-5 pb-2.5 pt-3 backdrop-blur sm:-mx-6 sm:px-6">
         <label htmlFor="univ-search" className="sr-only">
           大学名で絞り込む
         </label>
@@ -61,7 +62,7 @@ export function UniversityFinder({ items, groups }: { items: FinderItem[]; group
           <svg
             aria-hidden="true"
             viewBox="0 0 20 20"
-            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400"
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-3"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -77,14 +78,14 @@ export function UniversityFinder({ items, groups }: { items: FinderItem[]; group
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="大学名・かなで探す"
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-10 text-base outline-none placeholder:text-slate-400 focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+            className="w-full border border-rule bg-white py-3 pl-10 pr-10 text-base text-ink outline-none placeholder:text-ink-3 focus:border-navy"
           />
           {query && (
             <button
               type="button"
               onClick={() => setQuery("")}
               aria-label="検索を消す"
-              className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
+              className="absolute right-1.5 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center text-ink-3 hover:text-ink"
             >
               <svg viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" />
@@ -93,8 +94,7 @@ export function UniversityFinder({ items, groups }: { items: FinderItem[]; group
           )}
         </div>
 
-        {/* 区分の絞り込み。横スクロールで親指が届く位置に置く */}
-        <div className="scroll-hint -mx-4 mt-2.5 flex gap-2 overflow-x-auto px-4 pb-0.5">
+        <div className="scroll-hint -mx-5 mt-2 flex gap-1.5 overflow-x-auto px-5 sm:-mx-6 sm:px-6">
           {[ALL, ...groups].map((g) => {
             const active = group === g;
             const count = g === ALL ? items.length : items.filter((i) => i.group === g).length;
@@ -104,46 +104,46 @@ export function UniversityFinder({ items, groups }: { items: FinderItem[]; group
                 type="button"
                 onClick={() => setGroup(g)}
                 aria-pressed={active}
-                className={`shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                className={`min-h-9 shrink-0 border px-3 text-[0.82rem] transition-colors ${
                   active
-                    ? "border-sky-700 bg-sky-700 text-white"
-                    : "border-slate-200 bg-white text-slate-600 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                    ? "border-navy bg-navy text-white"
+                    : "border-rule bg-white text-ink-2 hover:border-ink-3"
                 }`}
               >
                 {g}
-                <span className={`ml-1.5 text-xs ${active ? "text-white/70" : "text-slate-400"}`}>{count}</span>
+                <span className={`ml-1.5 text-[0.7rem] tabular-nums ${active ? "text-white/70" : "text-ink-3"}`}>
+                  {count}
+                </span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* 結果 */}
-      <p aria-live="polite" className="pt-4 text-xs text-slate-500 dark:text-slate-400">
-        {filtered.length}件
-        {query && <span className="ml-1">「{query}」の検索結果</span>}
+      <p aria-live="polite" className="pt-4 text-[0.72rem] text-ink-3">
+        {filtered.length}件{query && <span className="ml-1">「{query}」の検索結果</span>}
       </p>
 
       {filtered.length === 0 ? (
-        <p className="py-10 text-center text-sm text-slate-500 dark:text-slate-400">
+        <p className="py-12 text-center text-[0.85rem] text-ink-3">
           該当する大学がありません。別の言い方でお試しください。
         </p>
       ) : (
         grouped.map(([g, list]) => (
-          <section key={g} className="mt-6">
-            <h3 className="text-xs font-bold tracking-wide text-slate-500 dark:text-slate-400">{g}</h3>
-            <ul className="mt-2 grid gap-2 sm:grid-cols-2">
+          <section key={g} className="mt-7">
+            <h3 className="serif border-b border-rule pb-1.5 text-[0.92rem] text-ink">{g}</h3>
+            <ul className="divide-y divide-rule">
               {list.map((it) => (
                 <li key={it.slug}>
                   <Link
                     href={`/univ/${it.slug}`}
-                    className="flex min-h-14 items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 transition-colors hover:border-sky-400 hover:bg-sky-50/60 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-sky-700 dark:hover:bg-sky-950/40"
+                    className="group flex min-h-[3.4rem] items-center justify-between gap-3 py-3"
                   >
                     <span className="min-w-0">
-                      <span className="block truncate text-[0.95rem] font-semibold text-slate-900 dark:text-slate-100">
-                        {it.name}
+                      <span className="block truncate text-[0.95rem] font-medium text-ink transition-colors group-hover:text-navy">
+                        {it.short}数学
                       </span>
-                      <span className="mt-0.5 block truncate text-xs text-slate-500 dark:text-slate-400">
+                      <span className="mt-0.5 block truncate text-[0.72rem] tabular-nums text-ink-3">
                         {[
                           it.examTime ? `${it.examTime}分` : null,
                           it.questions ? `大問${it.questions}題` : null,
@@ -156,7 +156,7 @@ export function UniversityFinder({ items, groups }: { items: FinderItem[]; group
                     <svg
                       aria-hidden="true"
                       viewBox="0 0 20 20"
-                      className="size-4 shrink-0 text-slate-300 dark:text-slate-600"
+                      className="size-3.5 shrink-0 text-ink-3 transition-transform group-hover:translate-x-0.5"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="2"

@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { BookCta } from "@/components/book-cta";
+import { BookCta, InlineCta } from "@/components/book-cta";
 import { FactsCard } from "@/components/facts-card";
+import { FaqSection } from "@/components/faq";
+import { FieldChart } from "@/components/field-chart";
 import { Toc } from "@/components/toc";
 import {
   cleanHeading,
@@ -16,6 +18,7 @@ import {
   yearRange,
 } from "@/lib/data";
 import { Blocks } from "@/lib/render";
+import { buildFaq, keywords, shortName } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -32,23 +35,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!u) return {};
 
   const years = yearRange(u);
-  const title = `${u.name}の出題傾向と対策${years ? `｜${years}の分析` : ""}`;
+  const short = shortName(u);
+  const title = `${short}数学の傾向と対策｜${years ?? "過去8年"}の出題分析`;
   const line = factsLine(u);
+  const top = u.fieldChart?.items.slice(0, 3).map((i) => i.label.replace(/（.*?）/g, "")) ?? [];
+
   const description =
-    `${u.university}${u.course ? `（${u.course}）` : ""}の数学を${years ?? "過去8年分"}にわたって分析。` +
-    `${line ? `${line}。` : ""}年度別の出題一覧、分野ごとの頻度、小問の型と目標点までまとめています。`;
+    `${u.university}${u.course ? `（${u.course}）` : ""}の数学の傾向と対策。` +
+    `${line ? `${line}。` : ""}${years ?? "過去8年"}の過去問を年度別・分野別に分析し、` +
+    `${top.length ? `頻出は${top.join("・")}。` : ""}時間配分と目標点までまとめました。`;
 
   return {
     title,
     description,
-    keywords: [
-      `${u.university} 数学`,
-      `${u.name} 傾向`,
-      `${u.university} 過去問 分析`,
-      `${u.university} 数学 対策`,
-    ],
+    keywords: keywords(u),
     alternates: { canonical: `/univ/${u.slug}` },
-    openGraph: { title, description, url: `/univ/${u.slug}`, type: "article" },
+    openGraph: {
+      title,
+      description,
+      url: `/univ/${u.slug}`,
+      type: "article",
+      images: [
+        { url: `/covers/${u.books[0].asin}.webp`, width: 620, height: 876, alt: `${u.books[0].title}の表紙` },
+      ],
+    },
   };
 }
 
@@ -57,14 +67,20 @@ export default async function UniversityPage({ params }: Props) {
   const u = getUniversity(slug);
   if (!u) notFound();
 
+  const years = yearRange(u);
   const siblings = related(u);
+  const short = shortName(u);
+  const faq = buildFaq(u);
+
+  // 記事が長いので、本文の途中にも導線を1つ挟む
+  const midpoint = Math.min(2, Math.max(1, Math.floor(u.sections.length / 2)));
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Article",
-        headline: `${u.name}の出題傾向と対策`,
+        headline: `${short}数学の傾向と対策｜${years ?? "過去8年"}の出題分析`,
         description: summarize(u, 200),
         inLanguage: "ja",
         author: { "@type": "Person", name: site.author },
@@ -72,15 +88,28 @@ export default async function UniversityPage({ params }: Props) {
         mainEntityOfPage: `${site.url}/univ/${u.slug}`,
         about: { "@type": "CollegeOrUniversity", name: u.university },
         articleSection: u.sections.map((s) => cleanHeading(s.title)),
+        image: `${site.url}/covers/${u.books[0].asin}.webp`,
       },
       {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "トップ", item: site.url },
           { "@type": "ListItem", position: 2, name: "大学一覧", item: `${site.url}/universities` },
-          { "@type": "ListItem", position: 3, name: u.name, item: `${site.url}/univ/${u.slug}` },
+          { "@type": "ListItem", position: 3, name: `${short}数学`, item: `${site.url}/univ/${u.slug}` },
         ],
       },
+      ...(faq.length
+        ? [
+            {
+              "@type": "FAQPage",
+              mainEntity: faq.map((f) => ({
+                "@type": "Question",
+                name: f.q,
+                acceptedAnswer: { "@type": "Answer", text: f.a },
+              })),
+            },
+          ]
+        : []),
       ...u.books.map((b) => ({
         "@type": "Book",
         name: b.title,
@@ -88,6 +117,7 @@ export default async function UniversityPage({ params }: Props) {
         inLanguage: "ja",
         author: { "@type": "Person", name: site.author },
         numberOfPages: b.pages ?? undefined,
+        image: `${site.url}/covers/${b.asin}.webp`,
         isPartOf: { "@type": "BookSeries", name: site.seriesName },
       })),
     ],
@@ -97,79 +127,87 @@ export default async function UniversityPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <article className="mx-auto max-w-2xl px-5 sm:px-6">
-        <nav aria-label="パンくず" className="pt-5 text-xs text-slate-500 dark:text-slate-400">
-          <Link href="/" className="hover:text-sky-700 dark:hover:text-sky-400">
+      <article className="mx-auto max-w-[38rem] px-5 sm:px-6">
+        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+          <Link href="/" className="hover:text-navy">
             トップ
           </Link>
-          <span className="mx-1.5 text-slate-300">/</span>
-          <Link href="/universities" className="hover:text-sky-700 dark:hover:text-sky-400">
+          <span className="mx-1.5 text-rule">／</span>
+          <Link href="/universities" className="hover:text-navy">
             大学一覧
           </Link>
         </nav>
 
-        <header className="pb-8 pt-4">
-          <p className="text-xs font-semibold tracking-wide text-sky-700 dark:text-sky-400">
+        <header className="pb-7 pt-4">
+          <p className="text-[0.72rem] font-semibold tracking-wide text-navy">
             {u.university}
             {u.course && `・${u.course}`}
           </p>
-          <h1 className="head-ja mt-2 text-[1.6rem] font-bold leading-[1.45] tracking-tight text-slate-900 dark:text-slate-100 sm:text-[2rem]">
-            {u.name}の
-            <br className="sm:hidden" />
-            出題傾向と対策
+          <h1 className="serif mt-2.5 text-[1.75rem] leading-[1.4] text-ink sm:text-[2.15rem]">
+            {short}数学の
+            <br />
+            傾向と対策
           </h1>
-          {u.summary && (
-            <p className="prose-ja mt-4 text-[0.95rem] text-slate-600 dark:text-slate-400">
-              {summarize(u, 130)}
-            </p>
-          )}
+          <p className="mt-3 text-[0.78rem] text-ink-3">
+            {years ? `${years}の過去問8年分を分析` : "過去問を分析"}
+          </p>
+          {u.summary && <p className="prose-ja mt-5 text-[0.95rem] text-ink-2">{summarize(u, 140)}</p>}
         </header>
 
-        <div className="space-y-4">
-          <FactsCard u={u} />
-          <Toc titles={u.sections.map((s) => s.title)} />
-        </div>
+        <FactsCard u={u} />
+        <Toc titles={u.sections.map((s) => s.title)} />
+
+        {u.fieldChart && <FieldChart data={u.fieldChart} name={short} />}
 
         {u.lead.length > 0 && (
-          <div className="prose-ja mt-9 space-y-5">
+          <div className="prose-ja mt-11 space-y-5 text-[0.95rem] text-ink-2">
             <Blocks blocks={u.lead} />
           </div>
         )}
 
         {u.sections.map((s, i) => (
-          <section key={s.title} id={sectionId(i)} className="mt-11 scroll-mt-20">
-            <h2 className="head-ja border-l-4 border-sky-600 pl-3.5 text-[1.15rem] font-bold leading-[1.5] text-slate-900 dark:border-sky-500 dark:text-slate-100 sm:text-[1.3rem]">
-              {cleanHeading(s.title)}
-            </h2>
-            <div className="prose-ja mt-5 space-y-5">
-              <Blocks blocks={s.blocks} />
-            </div>
-          </section>
+          <div key={s.title}>
+            {i === midpoint && <InlineCta u={u} />}
+            <section id={sectionId(i)} className="mt-11 scroll-mt-20">
+              <h2 className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
+                {cleanHeading(s.title)}
+              </h2>
+              <div className="prose-ja mt-4 space-y-5 text-[0.95rem] text-ink-2">
+                <Blocks blocks={s.blocks} />
+              </div>
+            </section>
+          </div>
         ))}
+
+        <FaqSection items={faq} name={short} />
 
         <div className="mt-14">
           <BookCta u={u} />
         </div>
 
         {siblings.length > 0 && (
-          <section className="mt-12 border-t border-slate-200 pt-7 dark:border-slate-800">
-            <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100">同じ区分の他大学</h2>
-            <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+          <section className="mt-14 border-t border-rule pt-7">
+            <h2 className="serif text-[1.05rem] text-ink">同じ区分の他大学</h2>
+            <ul className="mt-3 divide-y divide-rule border-y border-rule">
               {siblings.map((s) => (
                 <li key={s.slug}>
                   <Link
                     href={`/univ/${s.slug}`}
-                    className="flex min-h-12 items-center justify-between gap-2 rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 transition-colors hover:border-sky-400 hover:bg-sky-50/60 dark:border-slate-800 dark:text-slate-300 dark:hover:border-sky-700 dark:hover:bg-sky-950/30"
+                    className="flex min-h-12 items-center justify-between gap-3 py-3 transition-colors hover:text-navy"
                   >
-                    <span className="truncate font-medium">{s.name}</span>
-                    <span className="shrink-0 text-xs text-slate-400">{factsLine(s) || s.university}</span>
+                    <span className="truncate text-[0.9rem] font-medium text-ink">
+                      {shortName(s)}数学の傾向と対策
+                    </span>
+                    <span className="shrink-0 text-[0.72rem] tabular-nums text-ink-3">
+                      {factsLine(s) || s.university}
+                    </span>
                   </Link>
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-sm">
-              <Link href="/universities" className="text-sky-700 underline underline-offset-4 dark:text-sky-400">
-                52大学すべてを見る
+            <p className="mt-4 text-[0.85rem]">
+              <Link href="/universities" className="text-navy underline underline-offset-4">
+                52大学の分析をすべて見る
               </Link>
             </p>
           </section>

@@ -1,7 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="大学別 数学入試分析">
-  <rect width="64" height="64" rx="12" fill="#0c4a6e" />
-  <g fill="none" stroke="#7dd3fc" stroke-width="4" stroke-linecap="round">
-    <path d="M14 46 L24 22 L34 38 L44 18" />
+  <rect width="64" height="64" fill="#23395d" />
+  <rect x="5.5" y="5.5" width="53" height="53" fill="none" stroke="#c9b27a" stroke-width="1.5" />
+  <!-- 出題分析＝年度ごとの積み上がりを、表紙の細い罫の意匠で -->
+  <g fill="#f4f2ed">
+    <rect x="15" y="36" width="7" height="13" />
+    <rect x="26" y="27" width="7" height="22" />
+    <rect x="37" y="31" width="7" height="18" />
   </g>
-  <circle cx="44" cy="18" r="5" fill="#fbbf24" />
+  <rect x="15" y="16" width="29" height="2" fill="#c9b27a" />
 </svg>

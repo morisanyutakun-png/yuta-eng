@@ -1,36 +1,56 @@
 @import "tailwindcss";
 @import "katex/dist/katex.min.css";
 
+/*
+ * 配色と書体は、シリーズの表紙（明朝・紺・細い罫）に合わせている。
+ * 角丸を多用したカード地ではなく、紙面に近い見え方を狙う。
+ */
 @theme {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Hiragino Kaku Gothic ProN",
     "Hiragino Sans", "Noto Sans JP", Meiryo, sans-serif;
+  --font-serif: "Hiragino Mincho ProN", "Yu Mincho", YuMincho, "Noto Serif JP",
+    "Times New Roman", serif;
 
-  --color-ink: oklch(0.25 0.02 250);
-  --color-ink-soft: oklch(0.45 0.02 250);
-  --color-line: oklch(0.91 0.005 250);
-  --color-surface: oklch(0.985 0.003 250);
-  --color-brand: oklch(0.45 0.12 240);
-  --color-brand-soft: oklch(0.96 0.02 240);
+  --color-paper: #fbfaf7;
+  --color-paper-2: #f4f2ed;
+  --color-ink: #1a1d21;
+  --color-ink-2: #4a5057;
+  --color-ink-3: #7c838b;
+  --color-rule: #ddd9d0;
+  --color-navy: #23395d;
+  --color-navy-2: #35507a;
+  --color-accent: #9a6b2f;
 }
 
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  /* 見出しへ飛んだときヘッダーの下に隠れないように */
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 4.5rem;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+/* 見出し・数字は明朝で締める */
+.serif {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-feature-settings: "palt";
+  word-break: auto-phrase;
+  line-break: strict;
 }
 
 /*
  * 日本語の本文組版。
- * ・auto-phrase は文節単位で折り返すので、助詞だけが行頭に落ちる不格好な改行が減る
- * ・line-break: strict で、小書き文字や長音が行頭に来ないようにする
+ * auto-phrase は文節で折り返すので、助詞だけが行頭に落ちる改行が減る。
  */
 .prose-ja {
-  line-height: 2;
+  line-height: 1.95;
   word-break: auto-phrase;
   line-break: strict;
   overflow-wrap: anywhere;
-  font-feature-settings: "pkna";
 }
 
 @media (min-width: 640px) {
@@ -39,32 +59,32 @@ html {
   }
 }
 
-/* 見出しは詰めて締める */
-.head-ja {
-  word-break: auto-phrase;
-  line-break: strict;
-  font-feature-settings: "palt";
+/* 章の始まりに引く細い罫（表紙の意匠に合わせる） */
+.rule-mark::before {
+  content: "";
+  display: block;
+  width: 2.25rem;
+  height: 2px;
+  background: var(--color-navy);
+  margin-bottom: 0.85rem;
 }
 
-/* 本文中の数式は行の高さを崩さない程度に抑える。 */
 .katex {
   font-size: 1em;
 }
 
-/* 表の中の数式は折り返させない。 */
 td .katex,
 th .katex {
   white-space: nowrap;
 }
 
-/* type="search" のブラウザ既定のクリアボタンを消す（自前のボタンと二重になるため） */
+/* type="search" の既定クリアボタンは自前のものと二重になるので消す */
 input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
   appearance: none;
 }
 
-/* 横スクロールする表の端をぼかして、続きがあることを示す */
 .scroll-hint {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;

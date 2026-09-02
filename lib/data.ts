@@ -47,11 +47,22 @@ export type University = {
   facts: Facts;
   /** 冒頭に出す1〜2文 */
   summary: string;
+  /** 「難易度と目標」から拾った目標点の一文。取れないこともある。 */
+  goal: string;
   lead: Block[];
   sections: Section[];
   yearTable: { head: Cell[]; rows: Cell[][] } | null;
   fieldTable: { head: Cell[]; rows: Cell[][] } | null;
+  /** 分野別頻度を棒グラフに描くための形。取れないこともある。 */
+  fieldChart: FieldChart | null;
   books: Book[];
+};
+
+export type FieldChart = {
+  /** 「8年中」「40題中」など、数の意味 */
+  unit: string;
+  total: number;
+  items: { label: string; count: number; note: string }[];
 };
 
 export const universities = raw as University[];

@@ -1,31 +1,45 @@
 import type { University } from "@/lib/data";
-import { yearRange } from "@/lib/data";
 
-type Row = { label: string; value: string };
+type Row = { label: string; value: string; sub?: string };
 
-/** ページ冒頭の「ひと目でわかる」欄。原稿から確実に取れた項目だけを並べる。 */
+/** ページ冒頭の要点。原稿から確実に取れた項目だけを並べる。 */
 export function FactsCard({ u }: { u: University }) {
   const rows: Row[] = [];
-  if (u.facts.examTime) rows.push({ label: "試験時間", value: `${u.facts.examTime}分` });
-  if (u.facts.questions) rows.push({ label: "大問数", value: `${u.facts.questions}題` });
-  if (u.facts.style) rows.push({ label: "解答形式", value: u.facts.style });
-  if (u.facts.points) rows.push({ label: "配点", value: `${u.facts.points}点` });
-  const years = yearRange(u);
-  if (years) rows.push({ label: "分析年度", value: years });
+  const { examTime, questions, style, points } = u.facts;
+
+  if (examTime) rows.push({ label: "試験時間", value: String(examTime), sub: "分" });
+  if (questions) rows.push({ label: "大問数", value: String(questions), sub: "題" });
+  if (examTime && questions) {
+    rows.push({ label: "1題あたり", value: String(Math.round(examTime / questions)), sub: "分" });
+  }
+  if (points) rows.push({ label: "配点", value: String(points), sub: "点" });
+  if (style) rows.push({ label: "解答形式", value: style });
+  // 3列に収まるよう「2019–26」と短く出す（正式な表記は本文側にある）
+  if (u.years.length === 2) {
+    rows.push({ label: "分析年度", value: `${u.years[0]}–${u.years[1].slice(2)}`, sub: "年度" });
+  }
 
   if (rows.length < 2) return null;
 
   return (
-    <section aria-labelledby="facts-heading" className="rounded-2xl border border-slate-200 bg-slate-50/80 p-4 sm:p-5 dark:border-slate-800 dark:bg-slate-900/60">
-      <h2 id="facts-heading" className="text-xs font-bold tracking-wide text-slate-500 dark:text-slate-400">
-        ひと目でわかる{u.name}
+    <section aria-labelledby="facts-heading" className="border-y border-rule py-5">
+      <h2 id="facts-heading" className="sr-only">
+        {u.name}の試験形式
       </h2>
-      <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-3">
+      <dl className="grid grid-cols-3 gap-x-3 gap-y-5">
         {rows.map((r) => (
           <div key={r.label}>
-            <dt className="text-[0.7rem] text-slate-500 dark:text-slate-400">{r.label}</dt>
-            <dd className="mt-0.5 text-[1.05rem] font-bold tabular-nums text-slate-900 dark:text-slate-100">
-              {r.value}
+            <dt className="text-[0.68rem] text-ink-3">{r.label}</dt>
+            <dd className="serif mt-1 leading-none text-ink">
+              <span
+                className={
+                  // 数値は大きく、「完全記述式」「2019–26」のような長い値は本文寄りの大きさに
+                  r.value.length <= 3 && r.sub ? "text-[1.6rem] tabular-nums" : "text-[1.05rem] tabular-nums"
+                }
+              >
+                {r.value}
+              </span>
+              {r.sub && <span className="ml-0.5 font-sans text-[0.72rem] font-normal text-ink-3">{r.sub}</span>}
             </dd>
           </div>
         ))}

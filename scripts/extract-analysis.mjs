@@ -491,7 +491,32 @@ const cellText = (c) => (c ? spansToText(c.spans) : "");
 const isYearTable = (t) => t.rows.filter((r) => /^(19|20)\d\d/.test(cellText(r[0]))).length >= 3;
 
 // 「分野 / 回数 / 特徴」の表＝分野別頻度
-const isFieldTable = (t) => /分野|項目|単元/.test(cellText(t.head[0])) && !isYearTable(t);
+/*
+ * 「分野 / 8年中 / 特徴」の表＝分野別の頻度。
+ * 2列目が出題回数として数えられるものだけを対象にする
+ * （慶應商の「項目 / 実際の出題」のような表を巻き込まないため）。
+ */
+const isFieldTable = (t) => {
+  if (isYearTable(t)) return false;
+  if (!/分野|単元/.test(cellText(t.head[0]))) return false;
+  const counted = t.rows.filter((r) => /^\d+/.test(cellText(r[1]).replace(/[^\d]/g, "") ? cellText(r[1]).trim() : ""));
+  return counted.length >= 3;
+};
+
+/** 分野別頻度の表を、棒グラフに描ける形へ。 */
+function toFieldChart(t) {
+  if (!t) return null;
+  const items = [];
+  for (const r of t.rows) {
+    const label = cellText(r[0]).replace(/\s+/g, "");
+    const m = cellText(r[1]).match(/(\d+)/);
+    if (!label || !m) continue;
+    items.push({ label, count: Number(m[1]), note: cellText(r[2] ?? { spans: [] }) });
+  }
+  if (items.length < 3) return null;
+  const total = items.reduce((a, x) => a + x.count, 0);
+  return { unit: cellText(t.head[1]).replace(/\s+/g, ""), total, items };
+}
 
 /* ─────────────── 要点の抽出 ─────────────── */
 
@@ -532,6 +557,25 @@ function extractFacts(blocks) {
   if (pts) facts.points = Number(pts[1]);
 
   return facts;
+}
+
+/**
+ * 「難易度と目標」の節から、目標点にあたる1文を拾う。
+ * FAQ に使うので、言い切っている文だけを採る。
+ */
+function extractGoal(sections) {
+  const sec = sections.find((s) => /目標|難易度/.test(s.title));
+  if (!sec) return "";
+  const text = sec.blocks
+    .filter((b) => b.type === "p")
+    .map((b) => spansToText(b.spans))
+    .join("");
+  for (const s of text.split(/(?<=。)/)) {
+    if (/目標(は|点|得点)|狙いたい|確保したい|取りきりたい/.test(s) && s.length < 120) {
+      return s.replace(/\s+/g, "").trim();
+    }
+  }
+  return "";
 }
 
 /** 冒頭に出すリード文。最初の段落の1〜2文だけを使う。 */
@@ -611,10 +655,12 @@ for (const [folder, rawBooks] of byFolder) {
     years: (data.analysisTitle.match(/((?:19|20)\d\d)\s*[-–—]+\s*((?:19|20)\d\d)/) || []).slice(1),
     facts: extractFacts(allBlocks),
     summary: leadSentences(allBlocks),
+    goal: extractGoal(data.sections),
     lead: data.lead,
     sections: data.sections.filter((s) => !BOOK_ONLY.test(s.title)),
     yearTable: tables.find(isYearTable) ?? null,
     fieldTable: tables.find(isFieldTable) ?? null,
+    fieldChart: toFieldChart(tables.find(isFieldTable)),
     books: books.map((b) => ({ title: b.title, asin: b.asin, price: b.price, pages: b.pages, amazonUrl: b.amazonUrl })),
   });
 }

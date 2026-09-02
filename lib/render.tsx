@@ -69,7 +69,7 @@ export function Spans({ spans }: { spans: Span[] }) {
         }
         if (s.t === "b") {
           return (
-            <strong key={i} className="font-semibold text-slate-900 dark:text-slate-100">
+            <strong key={i} className="font-semibold text-ink">
               {s.v}
             </strong>
           );
@@ -78,7 +78,7 @@ export function Spans({ spans }: { spans: Span[] }) {
           return (
             <em
               key={i}
-              className="not-italic font-semibold text-slate-900 [background:linear-gradient(transparent_62%,var(--mark)_62%)] dark:text-slate-100"
+              className="not-italic font-semibold text-ink [background:linear-gradient(transparent_60%,rgba(154,107,47,0.22)_60%)]"
               style={{ "--mark": "color-mix(in oklch, oklch(0.85 0.14 95) 55%, transparent)" } as React.CSSProperties}
             >
               {s.v}
@@ -97,7 +97,7 @@ function Table({ head, rows }: { head: Cell[]; rows: Cell[][] }) {
   return (
     <div>
       {wide && (
-        <p className="mb-1.5 flex items-center gap-1 text-[0.7rem] text-slate-400 sm:hidden">
+        <p className="mb-1.5 flex items-center gap-1 text-[0.68rem] text-ink-3 sm:hidden">
           <svg aria-hidden="true" viewBox="0 0 20 20" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M3 10h14M13 6l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -105,15 +105,15 @@ function Table({ head, rows }: { head: Cell[]; rows: Cell[][] }) {
         </p>
       )}
       <div className="scroll-hint -mx-5 overflow-x-auto px-5 sm:mx-0 sm:px-0">
-      <table className="w-full min-w-[34rem] border-collapse text-left text-[0.8rem] leading-relaxed">
+      <table className="w-full min-w-[32rem] border-collapse text-left text-[0.78rem] leading-relaxed">
         <thead>
-          <tr className="border-b border-slate-300 bg-slate-50 dark:border-slate-600 dark:bg-slate-900">
+          <tr className="border-y border-rule bg-paper-2/60">
             {head.map((c, i) => (
               <th
                 key={i}
                 colSpan={c.colSpan > 1 ? c.colSpan : undefined}
                 scope="col"
-                className="whitespace-nowrap px-3 py-2.5 align-bottom text-[0.72rem] font-bold tracking-wide text-slate-600 dark:text-slate-300"
+                className="whitespace-nowrap px-3 py-2 align-bottom text-[0.7rem] font-bold tracking-wide text-ink-2"
               >
                 <Spans spans={c.spans} />
               </th>
@@ -122,15 +122,15 @@ function Table({ head, rows }: { head: Cell[]; rows: Cell[][] }) {
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={i} className="border-b border-slate-100 last:border-0 dark:border-slate-800/70">
+            <tr key={i} className="border-b border-rule/70 last:border-0">
               {r.map((c, j) => (
                 <td
                   key={j}
                   colSpan={c.colSpan > 1 ? c.colSpan : undefined}
                   className={
                     j === 0
-                      ? "whitespace-nowrap px-3 py-2.5 align-top font-semibold text-slate-800 dark:text-slate-200"
-                      : "px-3 py-2.5 align-top leading-relaxed text-slate-700 dark:text-slate-300"
+                      ? "whitespace-nowrap px-3 py-2.5 align-top font-semibold text-ink"
+                      : "px-3 py-2.5 align-top leading-relaxed text-ink-2"
                   }
                 >
                   <Spans spans={c.spans} />
@@ -151,7 +151,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
       {blocks.map((b, i) => {
         if (b.type === "p") {
           return (
-            <p key={i} className="text-[0.95rem] text-slate-800 dark:text-slate-300">
+            <p key={i}>
               <Spans spans={b.spans} />
             </p>
           );
@@ -161,7 +161,7 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
           return (
             <List
               key={i}
-              className={`space-y-2 rounded-xl bg-slate-50 py-4 pl-9 pr-4 text-[0.95rem] text-slate-800 marker:text-slate-400 dark:bg-slate-900/60 dark:text-slate-300 ${
+              className={`space-y-2 border-l-2 border-rule py-1 pl-6 marker:text-ink-3 ${
                 b.ordered ? "list-decimal" : "list-disc"
               }`}
             >
