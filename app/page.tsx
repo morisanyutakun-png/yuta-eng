@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { CoverShelf } from "@/components/cover-shelf";
 import { TopFields } from "@/components/top-fields";
 import { UniversityFinder } from "@/components/university-finder";
 import { universities } from "@/lib/data";
@@ -57,6 +58,8 @@ export default function HomePage() {
             に整理しました。試験時間、大問構成、頻出分野、目標点まで。
           </p>
 
+          <CoverShelf />
+
           <dl className="mt-7 flex gap-8 border-y border-rule py-4">
             {[
               { k: "分析大学", v: universities.length, u: "大学" },
@@ -72,10 +75,11 @@ export default function HomePage() {
               </div>
             ))}
           </dl>
-          <TopFields />
         </section>
 
         <UniversityFinder items={items} groups={usedGroups} />
+
+        <TopFields />
 
         <section className="mt-16 border-t border-rule pt-7">
           <h2 className="serif text-[1.1rem] text-ink">このサイトについて</h2>
