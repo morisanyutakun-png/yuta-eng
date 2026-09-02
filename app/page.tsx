@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { TopFields } from "@/components/top-fields";
 import { UniversityFinder } from "@/components/university-finder";
 import { universities } from "@/lib/data";
 import { finderItems } from "@/lib/finder";
@@ -46,9 +47,9 @@ export default function HomePage() {
             数学入試分析
           </h1>
           <p className="prose-ja mt-5 max-w-[34rem] text-[0.95rem] text-ink-2">
-            国公立・私立{universities.length}大学の数学について、過去問8年分を
+            国公立・私立{universities.length}大学の数学を、過去問8年分から
             <strong className="font-semibold text-ink">年度別・分野別の表</strong>
-            に整理しました。試験時間と大問構成、どの分野が何回出ているか、小問の型、目標点まで、対策を決めるのに必要な事実だけを載せています。
+            に整理しました。試験時間、大問構成、頻出分野、目標点まで。
           </p>
 
           <dl className="mt-7 flex gap-8 border-y border-rule py-4">
@@ -66,6 +67,7 @@ export default function HomePage() {
               </div>
             ))}
           </dl>
+          <TopFields />
         </section>
 
         <UniversityFinder items={items} groups={usedGroups} />

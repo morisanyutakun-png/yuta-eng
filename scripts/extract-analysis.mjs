@@ -511,6 +511,8 @@ function toFieldChart(t) {
     const label = cellText(r[0]).replace(/\s+/g, "");
     const m = cellText(r[1]).match(/(\d+)/);
     if (!label || !m) continue;
+    // 「合計」行は分野ではないので棒にしない
+    if (/^(合計|計|総計|小計)$/.test(label)) continue;
     items.push({ label, count: Number(m[1]), note: cellText(r[2] ?? { spans: [] }) });
   }
   if (items.length < 3) return null;

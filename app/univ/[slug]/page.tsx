@@ -3,10 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { BookCta, InlineCta } from "@/components/book-cta";
-import { FactsCard } from "@/components/facts-card";
 import { FaqSection } from "@/components/faq";
 import { FieldChart } from "@/components/field-chart";
 import { Toc } from "@/components/toc";
+import { UnivHero } from "@/components/univ-hero";
 import {
   cleanHeading,
   factsLine,
@@ -138,23 +138,8 @@ export default async function UniversityPage({ params }: Props) {
           </Link>
         </nav>
 
-        <header className="pb-7 pt-4">
-          <p className="text-[0.72rem] font-semibold tracking-wide text-navy">
-            {u.university}
-            {u.course && `・${u.course}`}
-          </p>
-          <h1 className="serif mt-2.5 text-[1.75rem] leading-[1.4] text-ink sm:text-[2.15rem]">
-            {short}数学の
-            <br />
-            傾向と対策
-          </h1>
-          <p className="mt-3 text-[0.78rem] text-ink-3">
-            {years ? `${years}の過去問8年分を分析` : "過去問を分析"}
-          </p>
-          {u.summary && <p className="prose-ja mt-5 text-[0.95rem] text-ink-2">{summarize(u, 140)}</p>}
-        </header>
+        <UnivHero u={u} />
 
-        <FactsCard u={u} />
         <Toc titles={u.sections.map((s) => s.title)} />
 
         {u.fieldChart && <FieldChart data={u.fieldChart} name={short} />}
