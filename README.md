@@ -21,13 +21,19 @@
 
 ```
 npm run data          # 分析データ（data/analysis.json）
-python3 scripts/build-covers.py   # 表紙画像（public/covers/*.webp）
+python3 scripts/build-covers.py    # 表紙画像（public/covers/*.webp）
+python3 scripts/build-og.py        # OG画像とサムネイル
 ```
 
 表紙は各原稿の `cover.pdf`（表1＋背＋表4の一枚もの）から、
 表紙の部分だけを切り出して WebP にしている。背幅はページ数で変わるので、
 「右の裁ち落としを除いて判型の幅ぶんを右から取る」ことで背幅に依存せず切り出す。
 PyMuPDF と Pillow が必要（`pip install pymupdf pillow`）。
+
+`build-og.py` は大学ページの OG 画像（1200×630・`public/og/<slug>.jpg`）と、
+一覧に並べる小さい表紙（`public/covers/thumb/<ASIN>.webp`）を書き出す。
+OG の書体は原稿の組版と同じ Harano Aji（TeX Live 同梱）を使うので、
+表紙と字面が揃う。TeX Live が別の場所にある場合は `FONT_DIR` を直すこと。
 
 - 入力
   - `~/KDP_app/scripts/data/product-list.csv` … 書名・ASIN・価格・原稿PDFのパス

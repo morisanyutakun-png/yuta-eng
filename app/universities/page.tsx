@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   description: `数学の傾向と対策を掲載している${universities.length}大学の一覧。旧帝大・難関国公立から医学部・私立大まで、大学ごとの試験時間・大問構成・頻出分野を過去問8年分から分析しています。`,
   keywords: ["大学別 数学 一覧", "大学入試 数学 傾向", "医学部 数学 傾向と対策", "国公立 数学 過去問 分析"],
   alternates: { canonical: "/universities" },
+  openGraph: {
+    url: `${site.url}/universities`,
+    images: [{ url: "/og/home.jpg", width: 1200, height: 630, alt: site.name }],
+  },
+  twitter: { card: "summary_large_image", images: ["/og/home.jpg"] },
 };
 
 export default function UniversitiesPage() {

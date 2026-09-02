@@ -12,6 +12,7 @@ export function finderItems(): FinderItem[] {
     course: u.course,
     group: u.group,
     keywords: [u.name, shortName(u), u.university, u.course, u.group, u.kana].join(" "),
+    asin: u.books[0].asin,
     examTime: u.facts.examTime ?? null,
     questions: u.facts.questions ?? null,
     books: u.books.length,

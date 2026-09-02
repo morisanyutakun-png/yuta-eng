@@ -56,8 +56,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: `/univ/${u.slug}`,
       type: "article",
       images: [
-        { url: `/covers/${u.books[0].asin}.webp`, width: 620, height: 876, alt: `${u.books[0].title}の表紙` },
+        { url: `/og/${u.slug}.jpg`, width: 1200, height: 630, alt: `${short}数学の傾向と対策` },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [`/og/${u.slug}.jpg`],
     },
   };
 }
@@ -88,7 +94,7 @@ export default async function UniversityPage({ params }: Props) {
         mainEntityOfPage: `${site.url}/univ/${u.slug}`,
         about: { "@type": "CollegeOrUniversity", name: u.university },
         articleSection: u.sections.map((s) => cleanHeading(s.title)),
-        image: `${site.url}/covers/${u.books[0].asin}.webp`,
+        image: `${site.url}/og/${u.slug}.jpg`,
       },
       {
         "@type": "BreadcrumbList",

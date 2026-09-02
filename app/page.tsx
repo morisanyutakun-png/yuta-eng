@@ -18,6 +18,11 @@ export const metadata: Metadata = {
     "大学別 数学 頻出分野",
   ],
   alternates: { canonical: "/" },
+  openGraph: {
+    url: site.url,
+    images: [{ url: "/og/home.jpg", width: 1200, height: 630, alt: site.name }],
+  },
+  twitter: { card: "summary_large_image", images: ["/og/home.jpg"] },
 };
 
 export default function HomePage() {

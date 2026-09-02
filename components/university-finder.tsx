@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useDeferredValue, useMemo, useState } from "react";
 
@@ -13,6 +14,8 @@ export type FinderItem = {
   group: string;
   /** かな・別名を含む検索用の文字列 */
   keywords: string;
+  /** 一覧に出すサムネイル（予想問題集の表紙）*/
+  asin: string;
   examTime: number | null;
   questions: number | null;
   books: number;
@@ -137,9 +140,18 @@ export function UniversityFinder({ items, groups }: { items: FinderItem[]; group
                 <li key={it.slug}>
                   <Link
                     href={`/univ/${it.slug}`}
-                    className="group flex min-h-[3.4rem] items-center justify-between gap-3 py-3"
+                    className="group flex min-h-[3.4rem] items-center gap-3 py-3"
                   >
-                    <span className="min-w-0">
+                    <Image
+                      src={`/covers/thumb/${it.asin}.webp`}
+                      alt={`${it.short}数学の傾向と対策`}
+                      width={160}
+                      height={226}
+                      loading="lazy"
+                      sizes="44px"
+                      className="w-11 shrink-0 rounded-[2px] border border-rule shadow-[0_1px_3px_rgba(26,29,33,0.12)]"
+                    />
+                    <span className="min-w-0 flex-1">
                       <span className="block truncate text-[0.95rem] font-medium text-ink transition-colors group-hover:text-navy">
                         {it.short}数学
                       </span>
