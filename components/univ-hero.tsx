@@ -1,20 +1,25 @@
 import Image from "next/image";
 
 import type { University } from "@/lib/data";
-import { summarize, yearRange } from "@/lib/data";
+import { summarize, yearLabel } from "@/lib/data";
 import { shortName } from "@/lib/seo";
 
-type Stat = { label: string; value: string; sub?: string };
+type Stat = { label: string; value: string; sub?: string; note?: string };
 
 function stats(u: University): Stat[] {
   const out: Stat[] = [];
   const { examTime, questions, style, points } = u.facts;
-  if (examTime) out.push({ label: "試験時間", value: String(examTime), sub: "分" });
+  // 学部で試験時間が分かれる大学は、代表値の下に但し書きを出す
+  if (examTime) {
+    out.push({ label: "試験時間", value: String(examTime), sub: "分", note: u.facts.examTimeNote });
+  }
   if (questions) out.push({ label: "大問数", value: String(questions), sub: "題" });
+  // 選択制の大学は、冊子に並ぶ題数＝解く題数ではない。数字の代わりに方式を出す。
+  if (u.facts.selective) out.push({ label: "大問数", value: "学部別に選択" });
   if (examTime && questions) {
     out.push({ label: "1題あたり", value: String(Math.round(examTime / questions)), sub: "分" });
   }
-  if (points) out.push({ label: "配点", value: String(points), sub: "点" });
+  if (points) out.push({ label: "数学の配点", value: String(points), sub: "点" });
   if (style) out.push({ label: "解答形式", value: style });
   return out.slice(0, 4);
 }
@@ -26,13 +31,18 @@ function stats(u: University): Stat[] {
  */
 export function UnivHero({ u }: { u: University }) {
   const short = shortName(u);
-  const years = yearRange(u);
+  const years = yearLabel(u);
   const cover = u.books[0];
-  const top = u.fieldChart?.items.slice(0, 3) ?? [];
+  const chart = u.fieldChart;
+  const top = chart?.items.slice(0, 3) ?? [];
   const max = top.length ? Math.max(...top.map((t) => t.count)) : 1;
-  const denomMatch = u.fieldChart?.unit.match(/(\d+)\s*([^\d]*?)中/);
-  const denom = denomMatch ? `${denomMatch[1]}${denomMatch[2] || "題"}` : "";
+  // 分母を出せるのは題数で数えた表だけ（lib/data.ts の FieldChart を参照）
+  const denom = chart?.kind === "question" ? chart.denom : null;
   const rows = stats(u);
+  const lead = summarize(u, 120);
+  // 慶應経済のように、リード文そのものが変更の告知になっている大学がある。
+  // 同じ一文を要約と告知で二度出さない。
+  const leadIsChange = Boolean(u.change) && (u.change.includes(lead) || lead.includes(u.change));
 
   return (
     <header className="pb-2 pt-4">
@@ -53,7 +63,7 @@ export function UnivHero({ u }: { u: University }) {
             傾向と対策
           </h1>
           <p className="mt-2.5 text-[0.74rem] tabular-nums text-ink-3">
-            {years ? `${years}・過去問8年分の分析` : "過去問の分析"}
+            {years ? `${years}の過去問分析` : "過去問の出題分析"}
           </p>
         </div>
 
@@ -81,12 +91,38 @@ export function UnivHero({ u }: { u: University }) {
           </span>
         </a>
 
-        {u.summary && (
+        {u.summary && !leadIsChange && (
           <p className="prose-ja col-span-2 col-start-1 mt-5 text-[0.95rem] text-ink-2 sm:col-span-1">
-            {summarize(u, 120)}
+            {lead}
           </p>
         )}
       </div>
+
+      {/*
+        2027年度から形式が変わる大学。下の数字は過去問から出したものなので、
+        併記しないと「もう通用しない数字」を最初の画面で見せることになる。
+      */}
+      {u.change && (
+        <p className="prose-ja mt-5 border-l-2 border-accent bg-paper-2/70 px-3.5 py-3 text-[0.85rem] text-ink-2">
+          <strong className="font-semibold text-ink">次年度からの変更：</strong>
+          {u.change}
+          <span className="mt-1 block text-[0.78rem] text-ink-3">
+            下の数字と分析は、変更前の過去問にもとづくものです。
+          </span>
+        </p>
+      )}
+
+      {/*
+        千葉大・新潟大のように志望学部で解く問題が変わる大学は、
+        「大問◯題」という数字が存在しない。数字を並べる代わりに方式を書く。
+      */}
+      {u.facts.selective && (
+        <p className="prose-ja mt-5 border-y border-rule py-3 text-[0.85rem] text-ink-2">
+          <strong className="font-semibold text-ink">解く問題は志望学部で変わります。</strong>
+          1冊の問題冊子から、学部・学科ごとに指定された大問だけを解く方式です。
+          自分の学部の指定は、下の一覧表で確認してください。
+        </p>
+      )}
 
       {/* 要点の数字 */}
       {rows.length >= 2 && (
@@ -99,6 +135,11 @@ export function UnivHero({ u }: { u: University }) {
                   {r.value}
                 </span>
                 {r.sub && <span className="ml-0.5 font-sans text-[0.66rem] font-normal text-ink-3">{r.sub}</span>}
+                {r.note && (
+                  <span className="mt-1 block font-sans text-[0.6rem] font-normal leading-tight text-ink-3">
+                    {r.note}
+                  </span>
+                )}
               </dd>
             </div>
           ))}
@@ -109,7 +150,7 @@ export function UnivHero({ u }: { u: University }) {
       {top.length === 3 && (
         <div className="mt-4">
           <p className="text-[0.63rem] text-ink-3">
-            よく出る分野{denom && `（${denom}のうち）`}
+            よく出る分野{denom ? `（全${denom}題中の出題数）` : "（出題された題数）"}
           </p>
           <ul className="mt-2 space-y-1.5">
             {top.map((t) => (

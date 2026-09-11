@@ -11,10 +11,15 @@ export function TopFields() {
   return (
     <section aria-labelledby="top-fields" className="mt-10">
       <h2 id="top-fields" className="serif text-[1.05rem] text-ink">
-        どの大学でも狙われる分野
+        多くの大学で頻出になっている分野
       </h2>
       <p className="prose-ja mt-1.5 text-[0.8rem] text-ink-3">
-        分野別の分析が取れた{covered}大学のうち、その分野を出している大学の数。
+        {/*
+          各大学の表は上位の分野だけを挙げている。
+          「出している大学の数」ではなく「頻出として挙がった大学の数」であることを明示する。
+        */}
+        分野別の分析が取れた{covered}大学のうち、その分野を頻出として挙げている大学の数。
+        ここに出ていない大学でも、出題がないとは限らない。
       </p>
       <ul className="mt-4 space-y-2">
         {items.map((it) => (

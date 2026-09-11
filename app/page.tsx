@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { CoverShelf } from "@/components/cover-shelf";
 import { TopFields } from "@/components/top-fields";
 import { UniversityFinder } from "@/components/university-finder";
-import { universities } from "@/lib/data";
+import { siteTotals, universities } from "@/lib/data";
 import { finderItems } from "@/lib/finder";
 import { groupOrder, site } from "@/lib/site";
 
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const bookCount = universities.reduce((a, u) => a + u.books.length, 0);
+  const t = siteTotals();
   const usedGroups = groupOrder.filter((g) => universities.some((u) => u.group === g));
   const items = finderItems();
 
@@ -53,7 +53,7 @@ export default function HomePage() {
             数学入試分析
           </h1>
           <p className="prose-ja mt-5 max-w-[34rem] text-[0.95rem] text-ink-2">
-            国公立・私立{universities.length}大学の数学を、過去問8年分から
+            国公立・私立{t.universities}大学の数学入試を、{t.span}の過去問から
             <strong className="font-semibold text-ink">年度別・分野別の表</strong>
             に整理しました。試験時間、大問構成、頻出分野、目標点まで。
           </p>
@@ -62,9 +62,10 @@ export default function HomePage() {
 
           <dl className="mt-7 flex gap-8 border-y border-rule py-4">
             {[
-              { k: "分析大学", v: universities.length, u: "大学" },
-              { k: "予想問題集", v: bookCount, u: "冊" },
-              { k: "分析年度", v: 8, u: "年分" },
+              { k: "分析大学", v: t.universities, u: "大学" },
+              { k: "予想問題集", v: t.books, u: "冊" },
+              // 大学ごとに5〜9年分とばらつくので、合計の延べ年数を出す
+              { k: "分析した入試", v: t.totalYears, u: "年分" },
             ].map((s) => (
               <div key={s.k}>
                 <dt className="text-[0.68rem] text-ink-3">{s.k}</dt>
@@ -84,9 +85,10 @@ export default function HomePage() {
         <section className="mt-16 border-t border-rule pt-7">
           <h2 className="serif text-[1.1rem] text-ink">このサイトについて</h2>
           <p className="prose-ja mt-2.5 text-[0.88rem] text-ink-2">
-            各大学の公表資料と、実際の問題冊子8年分にあたって作成した分析です。
+            各大学の公表資料と実際の問題冊子にあたって作成した分析です。分析年数は大学によって
+            {t.minYears}〜{t.maxYears}年分と幅があり、各ページに対象年度を明記しています。
             出題形式・分野構成を調べたものであり、問題文の転載はしていません。
-            分析にもとづく予想問題集「{site.seriesName}」全{bookCount}冊も、各大学のページから辿れます。
+            分析にもとづく予想問題集「{site.seriesName}」全{t.books}冊も、各大学のページから辿れます。
           </p>
         </section>
       </div>

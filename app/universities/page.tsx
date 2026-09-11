@@ -2,15 +2,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { UniversityFinder } from "@/components/university-finder";
-import { summarize, universities } from "@/lib/data";
+import { siteTotals, summarize, universities } from "@/lib/data";
 import { finderItems } from "@/lib/finder";
-import { shortName } from "@/lib/seo";
+import { subject } from "@/lib/seo";
 import { groupOrder, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "大学一覧｜数学の傾向と対策を大学別に",
-  description: `数学の傾向と対策を掲載している${universities.length}大学の一覧。旧帝大・難関国公立から医学部・私立大まで、大学ごとの試験時間・大問構成・頻出分野を過去問8年分から分析しています。`,
-  keywords: ["大学別 数学 一覧", "大学入試 数学 傾向", "医学部 数学 傾向と対策", "国公立 数学 過去問 分析"],
+  description: `数学の傾向と対策を掲載している${universities.length}大学の一覧。旧帝大・難関国公立から医学部・私立大まで、大学ごとの試験時間・大問構成・頻出分野を過去問から分析しています。大学名・かなで絞り込めます。`,
+  keywords: [
+    "大学別 数学 傾向と対策",
+    "大学入試 数学 頻出分野",
+    "医学部 数学 傾向と対策",
+    "国公立 数学 過去問 分析",
+    "二次試験 数学 対策",
+  ],
   alternates: { canonical: "/universities" },
   openGraph: {
     url: `${site.url}/universities`,
@@ -31,7 +37,7 @@ export default function UniversitiesPage() {
     itemListElement: universities.map((u, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      name: `${shortName(u)}数学の傾向と対策`,
+      name: `${subject(u)}の傾向と対策`,
       url: `${site.url}/univ/${u.slug}`,
       description: summarize(u, 100),
     })),
@@ -53,8 +59,9 @@ export default function UniversitiesPage() {
         <header className="pb-6 pt-4">
           <h1 className="serif text-[1.7rem] leading-snug text-ink sm:text-[2.1rem]">大学一覧</h1>
           <p className="prose-ja mt-3 max-w-[34rem] text-[0.92rem] text-ink-2">
-            数学の傾向と対策をまとめている{universities.length}大学です。
-            大学名・かな・「医学部」などで絞り込めます。
+            数学の傾向と対策をまとめている{universities.length}大学です。分析年度は
+            {siteTotals().minYears}〜{siteTotals().maxYears}年分と大学によって幅があり、
+            それぞれのページに対象年度を書いています。大学名・かな・「医学部」などで絞り込めます。
           </p>
         </header>
 

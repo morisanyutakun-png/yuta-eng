@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { universities } from "@/lib/data";
-import { shortName } from "@/lib/seo";
+import { shortName, subject } from "@/lib/seo";
 import { groupOrder } from "@/lib/site";
 
 /**
@@ -26,7 +26,7 @@ export function CoverShelf() {
             <Link href={`/univ/${u.slug}`} className="group block">
               <Image
                 src={`/covers/thumb/${u.books[0].asin}.webp`}
-                alt={`${shortName(u)}数学の傾向と対策`}
+                alt={`${subject(u)}の傾向と対策`}
                 width={160}
                 height={226}
                 // 最初の画面に入る数枚だけ先に読む

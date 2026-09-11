@@ -1,23 +1,33 @@
 import type { FieldChart as Data } from "@/lib/data";
+import { fieldChartCaption } from "@/lib/data";
 
 /**
  * 分野別の出題頻度。表よりも偏りが一目で分かるので、棒で見せる。
- * 数値は原稿の分析表そのままで、割合は最大値を基準にした相対長。
+ * 数値は原稿の分析表そのままで、棒の長さは最大値を基準にした相対長。
+ *
+ * 分母は「題数で数えた表」のときだけ出す。
+ * 原稿には「8年中」という見出しの表もあるが、そこに並ぶ数字は年数ではなく題数で、
+ * 分母として扱うと「微分積分 16 / 8年」のような表示になってしまう。
  */
-export function FieldChart({ data, name }: { data: Data; name: string }) {
+export function FieldChart({
+  data,
+  name,
+  yearCount,
+}: {
+  data: Data;
+  name: string;
+  yearCount: number | null;
+}) {
   const max = Math.max(...data.items.map((i) => i.count));
-  // 「8年中」「40題中」から分母と単位を取り出し、「8 / 8年」の形で示す
-  const m = data.unit.match(/(\d+)\s*([^\d]*?)中/);
-  const denom = m ? `${m[1]}${m[2] || "題"}` : "";
-  const unit = m ? m[2] || "題" : "題";
+  const denom = data.kind === "question" ? data.denom : null;
 
   return (
     <section aria-labelledby="field-heading" className="mt-12">
       <h2 id="field-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
-        {name}で狙われる分野
+        {name}の頻出分野
       </h2>
       <p className="prose-ja mt-2.5 text-[0.9rem] text-ink-2">
-        {denom ? `${denom}のうち何回出たか。` : ""}棒が長い分野ほど、繰り返し狙われています。
+        {fieldChartCaption(data, yearCount)}棒が長い分野ほど、繰り返し狙われています。
       </p>
 
       <ol className="mt-5 space-y-3">
@@ -29,9 +39,9 @@ export function FieldChart({ data, name }: { data: Data; name: string }) {
                 <span className="text-[0.88rem] font-semibold leading-snug text-ink">{it.label}</span>
                 <span className="shrink-0 serif text-[1.1rem] tabular-nums text-navy">
                   {it.count}
-                  {denom && (
-                    <span className="ml-0.5 font-sans text-[0.68rem] font-normal text-ink-3">/{denom}</span>
-                  )}
+                  <span className="ml-0.5 font-sans text-[0.68rem] font-normal text-ink-3">
+                    {denom ? `題/${denom}題` : "題"}
+                  </span>
                 </span>
               </div>
               <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-paper-2">
@@ -39,7 +49,7 @@ export function FieldChart({ data, name }: { data: Data; name: string }) {
                   className="h-full rounded-full bg-navy"
                   style={{ width: `${pct}%` }}
                   role="img"
-                  aria-label={`${it.label} ${it.count}${unit}`}
+                  aria-label={`${it.label} ${it.count}題`}
                 />
               </div>
               {it.note && <p className="prose-ja mt-1.5 text-[0.8rem] text-ink-3">{it.note}</p>}

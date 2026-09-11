@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import type { Book, University } from "@/lib/data";
-import { yearRange } from "@/lib/data";
+import { yearLabel } from "@/lib/data";
 import { shortName } from "@/lib/seo";
 import { site } from "@/lib/site";
 
@@ -85,7 +85,7 @@ export function InlineCta({ u }: { u: University }) {
 
 /** ページ末尾の本命の導線。全巻を表紙つきで並べる。 */
 export function BookCta({ u }: { u: University }) {
-  const years = yearRange(u);
+  const years = yearLabel(u);
   const short = shortName(u);
   return (
     <section aria-labelledby="cta-heading" className="border border-navy/25 bg-white p-5 sm:p-7">

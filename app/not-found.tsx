@@ -1,18 +1,32 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+import { universities } from "@/lib/data";
+
+// 404 を検索結果に載せない
+export const metadata: Metadata = {
+  title: "ページが見つかりません",
+  robots: { index: false, follow: true },
+};
 
 export default function NotFound() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-      <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">ページが見つかりません</h1>
-      <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
+    <div className="mx-auto max-w-[38rem] px-5 py-20 sm:px-6">
+      <h1 className="serif text-[1.6rem] leading-snug text-ink sm:text-[2rem]">
+        ページが見つかりません
+      </h1>
+      <p className="prose-ja mt-4 text-[0.92rem] text-ink-2">
         URL が変わったか、削除された可能性があります。
+        大学ごとの数学の傾向と対策は、下の一覧からたどれます。
       </p>
-      <Link
-        href="/universities"
-        className="mt-6 inline-block rounded-md bg-sky-700 px-4 py-2 text-sm font-semibold text-white hover:bg-sky-600"
-      >
-        大学一覧へ
-      </Link>
+      <p className="mt-7">
+        <Link
+          href="/universities"
+          className="inline-flex min-h-11 items-center border border-navy bg-navy px-5 text-[0.9rem] font-semibold text-white transition-colors hover:bg-navy/90"
+        >
+          {universities.length}大学の一覧を見る
+        </Link>
+      </p>
     </div>
   );
 }

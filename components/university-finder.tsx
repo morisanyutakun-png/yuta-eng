@@ -9,6 +9,8 @@ export type FinderItem = {
   slug: string;
   name: string;
   short: string;
+  /** 「〜の傾向と対策」の前に置く主題（「東大理系数学」など） */
+  subject: string;
   university: string;
   course: string;
   group: string;
@@ -18,6 +20,8 @@ export type FinderItem = {
   asin: string;
   examTime: number | null;
   questions: number | null;
+  /** 志望学部ごとに解く問題を選ぶ方式か（大問数を1つに決められない） */
+  selective: boolean;
   books: number;
 };
 
@@ -144,7 +148,7 @@ export function UniversityFinder({ items, groups }: { items: FinderItem[]; group
                   >
                     <Image
                       src={`/covers/thumb/${it.asin}.webp`}
-                      alt={`${it.short}数学の傾向と対策`}
+                      alt={`${it.subject}の傾向と対策`}
                       width={160}
                       height={226}
                       loading="lazy"
@@ -153,12 +157,13 @@ export function UniversityFinder({ items, groups }: { items: FinderItem[]; group
                     />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-[0.95rem] font-medium text-ink transition-colors group-hover:text-navy">
-                        {it.short}数学
+                        {it.subject}
                       </span>
                       <span className="mt-0.5 block truncate text-[0.72rem] tabular-nums text-ink-3">
                         {[
                           it.examTime ? `${it.examTime}分` : null,
                           it.questions ? `大問${it.questions}題` : null,
+                          it.selective ? "学部別に選択" : null,
                           it.books > 1 ? `全${it.books}巻` : null,
                         ]
                           .filter(Boolean)

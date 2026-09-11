@@ -197,6 +197,71 @@ function spansToText(spans) {
   return spans.map((s) => (s.t === "math" ? `$${s.v}$` : s.v)).join("").replace(/\s+/g, " ").trim();
 }
 
+/*
+ * 数式を「素の文字」に落とすための対応表。
+ * plainMath() 専用で、KaTeX に渡す本文の数式には触らない。
+ */
+const MATH_PLAIN = {
+  "\\to": "→", "\\rightarrow": "→", "\\times": "×", "\\cdot": "・",
+  "\\cdots": "…", "\\ldots": "…", "\\dots": "…",
+  "\\pm": "±", "\\mp": "∓", "\\div": "÷",
+  "\\leqq": "≦", "\\geqq": "≧", "\\leq": "≦", "\\geq": "≧",
+  "\\le": "≦", "\\ge": "≧", "\\neq": "≠", "\\approx": "≒",
+  "\\alpha": "α", "\\beta": "β", "\\gamma": "γ", "\\delta": "δ",
+  "\\theta": "θ", "\\lambda": "λ", "\\mu": "μ", "\\sigma": "σ",
+  "\\pi": "π", "\\omega": "ω", "\\varepsilon": "ε", "\\phi": "φ",
+  "\\Sigma": "Σ", "\\Delta": "Δ", "\\infty": "∞",
+  "\\%": "%", "\\&": "&", "\\#": "#", "\\,": "", "\\;": "", "\\!": "",
+};
+
+/**
+ * インライン数式を、素のテキストとして読める形に落とす。
+ *
+ * 原稿は「配点は $100$ 点」「3完+$\alpha$」「満点の $72\%$」のように、
+ * ただの数字や記号まで数式にしている。これを $…$ のまま平文へ入れると
+ * 生の LaTeX が画面に出てしまい、逆に丸ごと削ると数字が消える。
+ * 数字・ギリシャ文字・簡単な記号だけの式は文字に直し、
+ * 手に負えない式（分数・積分・添字つき）は null を返して呼び出し側に捨てさせる。
+ */
+function plainMath(tex) {
+  let t = tex.trim();
+  if (!t) return "";
+  // \ansheet{11} のような組版専用の命令は、平文では意味を持たない
+  if (/\\(ansheet|dsp|displaystyle|textstyle)\b/.test(t)) return null;
+  for (const [k, v] of Object.entries(MATH_PLAIN)) t = t.split(k).join(v);
+  t = t.replace(/[{}$]/g, "").replace(/\s+/g, "");
+  // 命令が残っている＝落とし切れない式。平文には出さない。
+  if (/\\[a-zA-Z]/.test(t)) return null;
+  // ^ _ が残る式（x^{2}、S_{n} など）も、素の文字では読めない
+  if (/[\^_]/.test(t)) return null;
+  return t;
+}
+
+/**
+ * 平文フィールド（要約・目標点・見出し・分野名）用の文字列化。
+ * spansToText と違い、$…$ を残さない。
+ */
+function spansToPlain(spans) {
+  let out = "";
+  for (const s of spans) {
+    if (s.t !== "math") { out += s.v; continue; }
+    const p = plainMath(s.v);
+    if (p === null) continue; // 読めない式は落とす
+    // 「満点の72%」のように和文と地続きになるので、前後の空白は足さない
+    out += p;
+  }
+  return out
+    .replace(/\s+/g, " ")
+    // LaTeX の範囲ダッシュ（2023--2026）を全角波ダッシュに寄せる
+    .replace(/(\d)\s*--\s*(\d)/g, "$1〜$2")
+    .replace(/\(\s*〜\s*\)|（\s*〜\s*）/g, "")
+    // 数式を落とした跡に残る空括弧・二重読点を掃除する
+    .replace(/[（(]\s*[）)]/g, "")
+    .replace(/、\s*、/g, "、")
+    .replace(/\s+([、。）」])/g, "$1")
+    .trim();
+}
+
 /* ─────────────── 表 ─────────────── */
 
 function parseTables(tex) {
@@ -263,7 +328,7 @@ function findHeadings(tex) {
   while ((m = re.exec(tex))) {
     const g = readGroup(tex, m.index + m[0].length - 1);
     if (!g) continue;
-    out.push({ level: m[1], title: spansToText(parseSpans(g.body)), start: m.index, bodyStart: g.end });
+    out.push({ level: m[1], title: spansToPlain(parseSpans(g.body)), start: m.index, bodyStart: g.end });
   }
   return out;
 }
@@ -486,6 +551,8 @@ function extract(dir) {
 /* ─────────────── 表の役割づけ ─────────────── */
 
 const cellText = (c) => (c ? spansToText(c.spans) : "");
+// 分野名・注記のように、素のテキストとして表示する列に使う。
+const cellPlain = (c) => (c ? spansToPlain(c.spans) : "");
 
 // 年度が縦に並ぶ表＝年度別出題一覧
 const isYearTable = (t) => t.rows.filter((r) => /^(19|20)\d\d/.test(cellText(r[0]))).length >= 3;
@@ -503,24 +570,112 @@ const isFieldTable = (t) => {
   return counted.length >= 3;
 };
 
+/**
+ * 分野別頻度の表の見出し（「8年中」「32題中」「8年40題中」「8年で」）を読み、
+ * 数がどの軸で数えられているかを決める。
+ *
+ * ここを取り違えると「微分積分 16 / 8年」のような、分母を超える表示になる。
+ * 原稿の見出しは軸が混在しているので、
+ *   - 「題」があればその題数を分母にする（8年40題中 → 40題）
+ *   - 「年」しかなければ、数えているのは題数で、年数は期間にすぎない
+ * と読み分ける。
+ */
+function fieldBasis(head) {
+  const unit = head.replace(/\s+/g, "");
+  const q = unit.match(/(\d+)\s*題/);
+  const y = unit.match(/(\d+)\s*年/);
+  if (q) return { unit, kind: "question", n: Number(q[1]), years: y ? Number(y[1]) : null };
+  if (y) return { unit, kind: "year", n: null, years: Number(y[1]) };
+  return { unit, kind: "unknown", n: null, years: null };
+}
+
 /** 分野別頻度の表を、棒グラフに描ける形へ。 */
 function toFieldChart(t) {
   if (!t) return null;
   const items = [];
   for (const r of t.rows) {
-    const label = cellText(r[0]).replace(/\s+/g, "");
-    const m = cellText(r[1]).match(/(\d+)/);
+    const label = cellPlain(r[0]).replace(/\s+/g, "");
+    const countCell = cellText(r[1]);
+    const m = countCell.match(/(\d+)/);
     if (!label || !m) continue;
     // 「合計」行は分野ではないので棒にしない
     if (/^(合計|計|総計|小計)$/.test(label)) continue;
-    items.push({ label, count: Number(m[1]), note: cellText(r[2] ?? { spans: [] }) });
+    const count = Number(m[1]);
+    const note = cellPlain(r[2] ?? { spans: [] });
+
+    // 「データの分析／整式／複素数平面 & 各1」は3分野が1回ずつという意味。
+    // 1本の棒にまとめると、3分野あわせて1回だったように読めてしまう。
+    const each = /各\s*\d+/.test(countCell);
+    const parts = each ? label.split(/[／/・]/).map((x) => x.trim()).filter(Boolean) : [label];
+    if (parts.length > 1) {
+      for (const part of parts) items.push({ label: part, count, note });
+      continue;
+    }
+    items.push({ label, count, note });
   }
   if (items.length < 3) return null;
   const total = items.reduce((a, x) => a + x.count, 0);
-  return { unit: cellText(t.head[1]).replace(/\s+/g, ""), total, items };
+  const basis = fieldBasis(cellText(t.head[1]));
+  // 分母として出せるのは「題数」で数えているときだけ。
+  // 「8年中」は期間であって分母ではないので、n は持たせない。
+  return {
+    unit: basis.unit,
+    kind: basis.kind,
+    /** 分母として表示してよい題数。null なら分母を出さない。 */
+    denom: basis.kind === "question" ? basis.n : null,
+    /** 集計の対象期間（年）。取れないこともある。 */
+    years: basis.years,
+    /** items の count の合計。延べ数なので denom を超えうる。 */
+    total,
+    items,
+  };
 }
 
 /* ─────────────── 要点の抽出 ─────────────── */
+
+/**
+ * 数学の配点を拾う。
+ *
+ * 原稿の導入文には、数学の配点・他教科を含む合計・共通テストの配点・
+ * 学部ごとに違う配点が、同じ数段落に混ざって書かれている。
+ * かつてここで「計500点」「計800点」を数学の配点として拾い、
+ * 会津大に「配点 500 点」、熊本大医学部に「配点 800 点」と出していた。
+ *
+ * 数字を1つに決められない場合は、出さないほうが正しい。
+ */
+function extractPoints(text) {
+  const OTHER_SUBJECT = /外国語|英語|理科|国語|地理歴史|地歴|公民|小論文|面接|物理|化学|生物/;
+  const found = new Set();
+
+  for (const raw of text.split(/(?<=[。、])/)) {
+    // 共通テスト・換算後の点は、二次試験の数学の配点ではない
+    if (/共通テスト|センター|換算/.test(raw)) continue;
+    // 「配点は100点（A方式は外国語200点…）」の括弧書きは、数学の配点の話ではない
+    const sentence = raw.replace(/[（(][^）)]*[）)]/g, "");
+
+    // (a) 「数学250点」「数学は200点」と名指しされている
+    for (const m of sentence.matchAll(/数学(?:は|が)?\s*(\d{2,4})\s*点(?!満点)/g)) found.add(Number(m[1]));
+
+    if (OTHER_SUBJECT.test(sentence)) continue;
+
+    // (b) 他教科の名が出てこない文なら、「200点満点」「計250点」は数学のもの
+    const m =
+      sentence.match(/(\d{2,4})\s*点満点/) ||
+      sentence.match(/配点は\s*(\d{2,4})\s*点/) ||
+      sentence.match(/(?:合計|計)\s*(\d{2,4})\s*点/);
+    if (m) { found.add(Number(m[1])); continue; }
+
+    // (c) 数学の話をしていて、点数が1つしか出てこない文
+    //     （「数学は100分・大問4題・150点である」のような書き方）
+    if (!/数学|配点/.test(sentence)) continue;
+    const all = [...new Set([...sentence.matchAll(/(\d{2,4})\s*点/g)].map((x) => Number(x[1])))];
+    if (all.length === 1) found.add(all[0]);
+  }
+
+  // 愛媛大のように学部で配点が違う大学は、1つの数字にまとめられない。
+  // 九大理系のように「計250点」と「経済工学科のみ300点換算」が並ぶ場合も同じ。
+  return found.size === 1 ? [...found][0] : null;
+}
 
 /**
  * 「試験時間120分，大問5題，完全記述式」のような導入文から、
@@ -528,10 +683,12 @@ function toFieldChart(t) {
  */
 function extractFacts(blocks) {
   // 形式の説明は先頭の数段落に集中している。他大学との比較文を拾わないよう範囲を絞る。
+  // 原稿は「配点は $100$ 点」のように数字まで数式にしている。
+  // $ が混ざったままだと正規表現が当たらないので、平文に落としてから読む。
   const text = blocks
     .filter((b) => b.type === "p")
     .slice(0, 3)
-    .map((b) => spansToText(b.spans))
+    .map((b) => spansToPlain(b.spans))
     .join(" ");
 
   const facts = {};
@@ -539,12 +696,27 @@ function extractFacts(blocks) {
   const time =
     text.match(/試験時間(?:は)?\s*(\d{2,3})\s*分/) ||
     text.match(/数学は\s*(\d{2,3})\s*分/) ||
+    // 「数学（文科系）は80分・素点75点で」のように、科目名に括弧書きが挟まる書き方
+    text.match(/数学(?:[（(][^）)]*[）)])?は\s*(\d{2,3})\s*分/) ||
     text.match(/数学\s*[（(]\s*(\d{2,3})\s*分/) ||
     text.match(/(\d{2,3})\s*分\s*[，、,・･]\s*大問/);
   if (time) facts.examTime = Number(time[1]);
 
+  // 「試験時間は120分（教育学部・農学部は100分）」のように学部で分かれる大学がある。
+  // 代表値だけを出すと他学部の受験生に誤った数字を見せるので、但し書きを添える。
+  const varies = text.match(
+    /試験時間は[^。]{0,20}?\d{2,3}\s*分[^。]{0,10}[（(]([^）)]{0,40}?(\d{2,3})\s*分)[）)]/,
+  );
+  if (varies && facts.examTime && Number(varies[2]) !== facts.examTime) {
+    facts.examTimeNote = varies[1].replace(/\s+/g, "");
+  }
+
+  // 千葉大・新潟大のように「1冊子から志望学部ぶんだけ選んで解く」大学は、
+  // 冊子に並ぶ題数と受験生が解く題数が違う。数字を1つ出すと誤解を招くので出さない。
+  const selective = /(選択|指定)(され|する|に関する)|解くべき大問|指定された番号/.test(text);
   const dai = text.match(/大問\s*(\d+)\s*題/) || text.match(/(\d+)\s*題\s*[，、,]\s*完全記述/);
-  if (dai) facts.questions = Number(dai[1]);
+  if (dai && !selective) facts.questions = Number(dai[1]);
+  if (selective) facts.selective = true;
 
   if (/完全記述式/.test(text)) facts.style = "完全記述式";
   else if (/空欄補充/.test(text)) facts.style = "空欄補充";
@@ -552,11 +724,8 @@ function extractFacts(blocks) {
   else if (/マークシート/.test(text)) facts.style = "マークシート";
   else if (/記述式/.test(text)) facts.style = "記述式";
 
-  const pts =
-    text.match(/合計\s*(\d{2,4})\s*点/) ||
-    text.match(/計\s*(\d{2,4})\s*点/) ||
-    text.match(/配点は\s*\$?(\d{2,4})\$?\s*点/);
-  if (pts) facts.points = Number(pts[1]);
+  facts.points = extractPoints(text);
+  if (facts.points == null) delete facts.points;
 
   return facts;
 }
@@ -570,12 +739,44 @@ function extractGoal(sections) {
   if (!sec) return "";
   const text = sec.blocks
     .filter((b) => b.type === "p")
-    .map((b) => spansToText(b.spans))
+    .map((b) => spansToPlain(b.spans))
     .join("");
   for (const s of text.split(/(?<=。)/)) {
-    if (/目標(は|点|得点)|狙いたい|確保したい|取りきりたい/.test(s) && s.length < 120) {
-      return s.replace(/\s+/g, "").trim();
-    }
+    if (!/目標(は|点|得点)|狙いたい|確保したい|取りきりたい/.test(s) || s.length >= 120) continue;
+    const line = s.replace(/\s+/g, "").trim();
+    // 「目標は次のとおり。」だけを拾っても、FAQ の答えとしては何も言っていない。
+    // 後ろの表や箇条書きを指しているだけの文はここで落とす。
+    if (/^目標(点)?は?(次|以下|下記|上記|表)/.test(line)) continue;
+    // 点数・完答数のどちらも書いていない一文は、目標として成立していない
+    if (!/\d/.test(line)) continue;
+    return line;
+  }
+  return "";
+}
+
+/**
+ * 「2027年度から試験時間と配点が変わる」のように、
+ * このページの数字がそのままでは通用しなくなる変更を拾う。
+ *
+ * 予想問題集が狙うのは次年度の入試なので、
+ * 過去問から出した数字だけを黙って出すと受験生に古い情報を見せることになる。
+ */
+function extractChange(sections, lead) {
+  const blocks = [...lead, ...sections.flatMap((x) => x.blocks)];
+  const text = blocks
+    .filter((b) => b.type === "p")
+    .map((b) => spansToPlain(b.spans))
+    .join("");
+  for (const s of text.split(/(?<=。)/)) {
+    // 対象は「これから起きる変更」だけ。既に済んだ変更や、
+    // 表の内訳を述べただけの文（「上の一覧は…8年46題である」）は拾わない。
+    if (!/20(2[7-9]|[3-9]\d)年度/.test(s)) continue;
+    if (/上の一覧|次の一覧|からなる|内訳/.test(s)) continue;
+    if (!/(から|より)[^。]{0,60}(変わ|変更|拡大|縮小|休止|廃止|加え|加わ|追加|新設)/.test(s)) continue;
+    // 「加わった」「変わった」は完了。ページの数字はもう新しいほうを指している。
+    if (/(変わ|拡大|縮小|加わ|追加)っ?た[。，、]?$/.test(s.trim())) continue;
+    const line = s.replace(/\s+/g, "").trim();
+    if (line.length >= 20 && line.length <= 160) return line;
   }
   return "";
 }
@@ -584,7 +785,7 @@ function extractGoal(sections) {
 function leadSentences(blocks, maxLen = 120) {
   const p = blocks.find((b) => b.type === "p");
   if (!p) return "";
-  const text = spansToText(p.spans).replace(/\s+/g, "");
+  const text = spansToPlain(p.spans).replace(/\s+/g, "");
   const out = [];
   let total = 0;
   for (const s of text.split(/(?<=。)/)) {
@@ -593,6 +794,29 @@ function leadSentences(blocks, maxLen = 120) {
     total += s.length;
   }
   return out.join("");
+}
+
+/**
+ * ページに載せる分析対象年度を決める。
+ *
+ * 見出しの「（2019--2026年度）」は原稿によっては分析全体の構想を書いたままで、
+ * 実際に載っている年度別出題一覧と食い違うことがある（千葉大・愛媛大）。
+ * 読者が数えられるのは表のほうなので、表があれば表を正とする。
+ */
+function resolveYears(analysisTitle, yearTable) {
+  const fromTable = yearTable
+    ? yearTable.rows
+        .map((r) => (cellText(r[0]).match(/(19|20)\d\d/) || [])[0])
+        .filter(Boolean)
+        .map(Number)
+    : [];
+  if (fromTable.length >= 3) {
+    const uniq = [...new Set(fromTable)].sort((a, b) => a - b);
+    return { years: [String(uniq[0]), String(uniq[uniq.length - 1])], yearCount: uniq.length };
+  }
+  const m = analysisTitle.match(/((?:19|20)\d\d)\s*[-–—〜~]+\s*((?:19|20)\d\d)/);
+  if (!m) return { years: [], yearCount: null };
+  return { years: [m[1], m[2]], yearCount: Number(m[2]) - Number(m[1]) + 1 };
 }
 
 /* ─────────────── 実行 ─────────────── */
@@ -649,18 +873,20 @@ for (const [folder, rawBooks] of byFolder) {
 
   const { data, tables } = best;
   const allBlocks = [...data.lead, ...data.sections.flatMap((s) => s.blocks)];
+  const yearTable = tables.find(isYearTable) ?? null;
   items.push({
     ...meta,
     folder,
     analysisTitle: data.analysisTitle,
-    // 分析対象年度（「（2019--2026年度）」等）を見出しから拾う
-    years: (data.analysisTitle.match(/((?:19|20)\d\d)\s*[-–—]+\s*((?:19|20)\d\d)/) || []).slice(1),
+    // 年度別出題一覧を正として、なければ見出しの「（2019--2026年度）」から
+    ...resolveYears(data.analysisTitle, yearTable),
     facts: extractFacts(allBlocks),
     summary: leadSentences(allBlocks),
     goal: extractGoal(data.sections),
+    change: extractChange(data.sections, data.lead),
     lead: data.lead,
     sections: data.sections.filter((s) => !BOOK_ONLY.test(s.title)),
-    yearTable: tables.find(isYearTable) ?? null,
+    yearTable,
     fieldTable: tables.find(isFieldTable) ?? null,
     fieldChart: toFieldChart(tables.find(isFieldTable)),
     books: books.map((b) => ({ title: b.title, asin: b.asin, price: b.price, pages: b.pages, amazonUrl: b.amazonUrl })),

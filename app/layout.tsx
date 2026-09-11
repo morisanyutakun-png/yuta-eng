@@ -52,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <div className="prose-ja mx-auto max-w-[46rem] space-y-3 px-5 text-[0.72rem] text-ink-3 sm:px-6">
             <p>
               本サイトの分析は、各大学の公表資料と実際の問題冊子にあたって独自に調査したものです。
+              対象年度は大学によって異なり、各ページの冒頭に明記しています。
               出題形式・分野構成の分析であり、問題文の転載は行っていません。各大学とは関係のない非公式サイトです。
             </p>
             <p>掲載書籍は Amazon.co.jp で販売しています。価格・在庫は Amazon の表示が優先されます。</p>

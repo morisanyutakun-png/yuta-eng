@@ -1,6 +1,8 @@
 // 原稿フォルダ（第1階層）→ サイト上の大学ページのメタ情報。
 // key は ~/ 直下の原稿フォルダ名。1 フォルダ = 1 ページ（巻が複数あってもまとめる）。
-// kana … 検索用の読み・略称。スペース区切りで何語でも足せる。
+// kana  … 検索用の読み・略称。スペース区切りで何語でも足せる。
+// short … 見出し・タイトルに出す短い呼び名。省くと name から機械的に作る
+//         （末尾の「数学」と括弧書きを落とす）。それで壊れる大学だけ書く。
 export const universityMeta = {
   /* ── 旧帝大・難関国立 ── */
   東大理系数学: { slug: "todai-rikei", name: "東大理系数学", university: "東京大学", course: "理系", group: "旧帝大", kana: "とうだい とうきょうだいがく 東京大 理系" },
@@ -17,8 +19,8 @@ export const universityMeta = {
   九大文系数学: { slug: "kyudai-bunkei", name: "九大文系数学", university: "九州大学", course: "文系", group: "旧帝大", kana: "きゅうだい きゅうしゅうだいがく 九州大 文系" },
   北大理系数学: { slug: "hokudai-rikei", name: "北大理系数学", university: "北海道大学", course: "理系", group: "旧帝大", kana: "ほくだい ほっかいどうだいがく 北海道大 理系" },
   北大文系数学: { slug: "hokudai-bunkei", name: "北大文系数学", university: "北海道大学", course: "文系", group: "旧帝大", kana: "ほくだい ほっかいどうだいがく 北海道大 文系" },
-  東工大数学: { slug: "kagakudai", name: "東京科学大（旧東工大）数学", university: "東京科学大学", course: "理系", group: "旧帝大", kana: "とうこうだい とうきょうこうぎょうだいがく かがくだい とうきょうかがくだいがく 東工大 科学大" },
-  一橋数学: { slug: "hitotsubashi", name: "一橋数学", university: "一橋大学", course: "文系", group: "旧帝大", kana: "ひとつばし ひとつばしだいがく 一橋大 文系" },
+  東工大数学: { slug: "kagakudai", name: "東京科学大（旧東工大）数学", university: "東京科学大学", course: "理系", group: "旧帝大", short: "東京科学大（旧東工大）", kana: "とうこうだい とうきょうこうぎょうだいがく かがくだい とうきょうかがくだいがく 東工大 科学大" },
+  一橋数学: { slug: "hitotsubashi", name: "一橋数学", university: "一橋大学", course: "文系", group: "旧帝大", short: "一橋大", kana: "ひとつばし ひとつばしだいがく 一橋大 文系" },
   神戸大学数学: { slug: "kobe-rikei", name: "神戸大理系数学", university: "神戸大学", course: "理系", group: "難関国公立", kana: "こうべだい こうべだいがく 神戸大 理系" },
   神戸大文系数学: { slug: "kobe-bunkei", name: "神戸大文系数学", university: "神戸大学", course: "文系", group: "難関国公立", kana: "こうべだい こうべだいがく 神戸大 文系" },
 
@@ -41,7 +43,7 @@ export const universityMeta = {
   名工大数学: { slug: "nitech", name: "名工大数学", university: "名古屋工業大学", course: "理系", group: "国公立大", kana: "めいこうだい なごやこうぎょうだいがく 名工大" },
   京都工芸繊維大数学: { slug: "kit", name: "京都工芸繊維大数学", university: "京都工芸繊維大学", course: "理系", group: "国公立大", kana: "きょうこうせん きょうとこうげいせんいだいがく 工繊" },
   東京都立大理系数学: { slug: "tmu-rikei", name: "東京都立大理系数学", university: "東京都立大学", course: "理系", group: "国公立大", kana: "とりつだい とうきょうとりつだいがく 都立大 首都大" },
-  東京都立大学数理数学: { slug: "tmu-math", name: "東京都立大 数理科学科数学", university: "東京都立大学", course: "数理科学科", group: "国公立大", kana: "とりつだい とうきょうとりつだいがく 都立大 数理科学" },
+  東京都立大学数理数学: { slug: "tmu-math", name: "東京都立大 数理科学科数学", university: "東京都立大学", course: "数理科学科", group: "国公立大", short: "東京都立大 数理科学科", kana: "とりつだい とうきょうとりつだいがく 都立大 数理科学" },
   大阪公立理系数学前期: { slug: "omu", name: "大阪公立大理系数学", university: "大阪公立大学", course: "理系・前期", group: "国公立大", kana: "おおさかこうりつ おおさかこうりつだいがく 大阪公立 市大 府大" },
   会津大学数学: { slug: "aizu", name: "会津大数学", university: "会津大学", course: "理系", group: "国公立大", kana: "あいづだい あいづだいがく 会津大" },
 
@@ -59,8 +61,8 @@ export const universityMeta = {
   慶應経済数学A: { slug: "keio-keizai", name: "慶應経済数学（A方式）", university: "慶應義塾大学", course: "経済学部A方式", group: "私立大", kana: "けいおう けいおうぎじゅくだいがく 慶応 経済学部" },
   慶應商学部数学A: { slug: "keio-shou", name: "慶應商学部数学", university: "慶應義塾大学", course: "商学部A方式", group: "私立大", kana: "けいおう けいおうぎじゅくだいがく 慶応 商学部" },
   早稲田理工数学: { slug: "waseda-riko", name: "早稲田理工数学", university: "早稲田大学", course: "理工学部", group: "私立大", kana: "わせだ わせだだいがく 早大 理工学部" },
-  早稲田数学選抜: { slug: "waseda-jinka", name: "早稲田人科 数学選抜", university: "早稲田大学", course: "人間科学部 数学選抜", group: "私立大", kana: "わせだ わせだだいがく 早大 人間科学部 人科" },
-  東京理科大理学第一数学: { slug: "tus-ri1", name: "東京理科大 理学部第一部数学", university: "東京理科大学", course: "理学部第一部", group: "私立大", kana: "りかだい とうきょうりかだいがく 東京理科大 理学部" },
+  早稲田数学選抜: { slug: "waseda-jinka", name: "早稲田人科 数学選抜", university: "早稲田大学", course: "人間科学部 数学選抜", group: "私立大", short: "早稲田人科 数学選抜", kana: "わせだ わせだだいがく 早大 人間科学部 人科" },
+  東京理科大理学第一数学: { slug: "tus-ri1", name: "東京理科大 理学部第一部数学", university: "東京理科大学", course: "理学部第一部", group: "私立大", short: "東京理科大 理学部第一部", kana: "りかだい とうきょうりかだいがく 東京理科大 理学部" },
 };
 
 // トップページ等での並び順。

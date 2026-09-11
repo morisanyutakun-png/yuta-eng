@@ -5,7 +5,7 @@ export function FaqSection({ items, name }: { items: Faq[]; name: string }) {
   return (
     <section aria-labelledby="faq-heading" className="mt-14">
       <h2 id="faq-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
-        {name}の数学について、よくある質問
+        {name}について、よくある質問
       </h2>
       <dl className="mt-5 divide-y divide-rule border-y border-rule">
         {items.map((f) => (

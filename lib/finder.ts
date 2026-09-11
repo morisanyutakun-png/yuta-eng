@@ -1,6 +1,6 @@
 import type { FinderItem } from "@/components/university-finder";
 import { universities } from "@/lib/data";
-import { shortName } from "@/lib/seo";
+import { shortName, subject } from "@/lib/seo";
 
 /** 検索コンポーネントに渡す一覧。本文は渡さないので転送量は小さい。 */
 export function finderItems(): FinderItem[] {
@@ -8,6 +8,7 @@ export function finderItems(): FinderItem[] {
     slug: u.slug,
     name: u.name,
     short: shortName(u),
+    subject: subject(u),
     university: u.university,
     course: u.course,
     group: u.group,
@@ -15,6 +16,7 @@ export function finderItems(): FinderItem[] {
     asin: u.books[0].asin,
     examTime: u.facts.examTime ?? null,
     questions: u.facts.questions ?? null,
+    selective: u.facts.selective ?? false,
     books: u.books.length,
   }));
 }

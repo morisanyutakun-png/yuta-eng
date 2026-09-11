@@ -15,10 +15,10 @@ import {
   sectionId,
   summarize,
   universities,
-  yearRange,
+  yearLabel,
 } from "@/lib/data";
 import { Blocks } from "@/lib/render";
-import { buildFaq, keywords, shortName } from "@/lib/seo";
+import { buildFaq, keywords, pageTitle, subject } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -34,15 +34,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const u = getUniversity(slug);
   if (!u) return {};
 
-  const years = yearRange(u);
-  const short = shortName(u);
-  const title = `${short}数学の傾向と対策｜${years ?? "過去8年"}の出題分析`;
+  const title = pageTitle(u);
   const line = factsLine(u);
   const top = u.fieldChart?.items.slice(0, 3).map((i) => i.label.replace(/（.*?）/g, "")) ?? [];
+  // 年度が取れない大学に「過去8年」と書かない。取れた範囲だけを言う。
+  const label = yearLabel(u);
+  const scope = label ? `${label}の過去問` : "過去問";
 
   const description =
     `${u.university}${u.course ? `（${u.course}）` : ""}の数学の傾向と対策。` +
-    `${line ? `${line}。` : ""}${years ?? "過去8年"}の過去問を年度別・分野別に分析し、` +
+    `${line ? `${line}。` : ""}${scope}を年度別・分野別に分析し、` +
     `${top.length ? `頻出は${top.join("・")}。` : ""}時間配分と目標点までまとめました。`;
 
   return {
@@ -56,7 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: `/univ/${u.slug}`,
       type: "article",
       images: [
-        { url: `/og/${u.slug}.jpg`, width: 1200, height: 630, alt: `${short}数学の傾向と対策` },
+        { url: `/og/${u.slug}.jpg`, width: 1200, height: 630, alt: `${subject(u)}の傾向と対策` },
       ],
     },
     twitter: {
@@ -73,9 +74,7 @@ export default async function UniversityPage({ params }: Props) {
   const u = getUniversity(slug);
   if (!u) notFound();
 
-  const years = yearRange(u);
   const siblings = related(u);
-  const short = shortName(u);
   const faq = buildFaq(u);
 
   // 記事が長いので、本文の途中にも導線を1つ挟む
@@ -86,7 +85,7 @@ export default async function UniversityPage({ params }: Props) {
     "@graph": [
       {
         "@type": "Article",
-        headline: `${short}数学の傾向と対策｜${years ?? "過去8年"}の出題分析`,
+        headline: pageTitle(u),
         description: summarize(u, 200),
         inLanguage: "ja",
         author: { "@type": "Person", name: site.author },
@@ -101,7 +100,7 @@ export default async function UniversityPage({ params }: Props) {
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "トップ", item: site.url },
           { "@type": "ListItem", position: 2, name: "大学一覧", item: `${site.url}/universities` },
-          { "@type": "ListItem", position: 3, name: `${short}数学`, item: `${site.url}/univ/${u.slug}` },
+          { "@type": "ListItem", position: 3, name: subject(u), item: `${site.url}/univ/${u.slug}` },
         ],
       },
       ...(faq.length
@@ -118,13 +117,28 @@ export default async function UniversityPage({ params }: Props) {
         : []),
       ...u.books.map((b) => ({
         "@type": "Book",
+        "@id": b.amazonUrl,
         name: b.title,
         url: b.amazonUrl,
         inLanguage: "ja",
+        bookFormat: "https://schema.org/Paperback",
         author: { "@type": "Person", name: site.author },
         numberOfPages: b.pages ?? undefined,
         image: `${site.url}/covers/${b.asin}.webp`,
         isPartOf: { "@type": "BookSeries", name: site.seriesName },
+        // 検索結果に価格が出ると、Amazon へ進む前の迷いが1つ減る
+        ...(b.price
+          ? {
+              offers: {
+                "@type": "Offer",
+                price: b.price,
+                priceCurrency: "JPY",
+                availability: "https://schema.org/InStock",
+                url: b.amazonUrl,
+                seller: { "@type": "Organization", name: "Amazon.co.jp" },
+              },
+            }
+          : {}),
       })),
     ],
   };
@@ -148,7 +162,9 @@ export default async function UniversityPage({ params }: Props) {
 
         <Toc titles={u.sections.map((s) => s.title)} />
 
-        {u.fieldChart && <FieldChart data={u.fieldChart} name={short} />}
+        {u.fieldChart && (
+          <FieldChart data={u.fieldChart} name={subject(u)} yearCount={u.yearCount} />
+        )}
 
         {u.lead.length > 0 && (
           <div className="prose-ja mt-11 space-y-5 text-[0.95rem] text-ink-2">
@@ -170,7 +186,7 @@ export default async function UniversityPage({ params }: Props) {
           </div>
         ))}
 
-        <FaqSection items={faq} name={short} />
+        <FaqSection items={faq} name={subject(u)} />
 
         <div className="mt-14">
           <BookCta u={u} />
@@ -187,7 +203,7 @@ export default async function UniversityPage({ params }: Props) {
                     className="flex min-h-12 items-center justify-between gap-3 py-3 transition-colors hover:text-navy"
                   >
                     <span className="truncate text-[0.9rem] font-medium text-ink">
-                      {shortName(s)}数学の傾向と対策
+                      {subject(s)}の傾向と対策
                     </span>
                     <span className="shrink-0 text-[0.72rem] tabular-nums text-ink-3">
                       {factsLine(s) || s.university}
@@ -198,7 +214,7 @@ export default async function UniversityPage({ params }: Props) {
             </ul>
             <p className="mt-4 text-[0.85rem]">
               <Link href="/universities" className="text-navy underline underline-offset-4">
-                52大学の分析をすべて見る
+                {universities.length}大学の分析をすべて見る
               </Link>
             </p>
           </section>
