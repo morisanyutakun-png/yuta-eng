@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { BookCta, InlineCta } from "@/components/book-cta";
 import { FaqSection } from "@/components/faq";
 import { FieldChart } from "@/components/field-chart";
+import { KanseiPromo } from "@/components/kansei-promo";
 import { Toc } from "@/components/toc";
 import { UnivHero } from "@/components/univ-hero";
 import {
@@ -133,7 +134,6 @@ export default async function UniversityPage({ params }: Props) {
                 "@type": "Offer",
                 price: b.price,
                 priceCurrency: "JPY",
-                availability: "https://schema.org/InStock",
                 url: b.amazonUrl,
                 seller: { "@type": "Organization", name: "Amazon.co.jp" },
               },
@@ -185,6 +185,8 @@ export default async function UniversityPage({ params }: Props) {
             </section>
           </div>
         ))}
+
+        <KanseiPromo slug={u.slug} />
 
         <FaqSection items={faq} name={subject(u)} />
 

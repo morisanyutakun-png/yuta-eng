@@ -40,9 +40,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/" className="serif text-[0.95rem] tracking-tight text-ink">
               大学別 数学入試分析
             </Link>
-            <Link href="/universities" className="text-[0.82rem] text-ink-2 transition-colors hover:text-navy">
-              大学一覧
-            </Link>
+            <nav aria-label="サイト内" className="flex items-center gap-3.5 text-[0.8rem] text-ink-2 sm:gap-5">
+              <Link href="/shindan" className="transition-colors hover:text-navy">
+                志望校診断
+              </Link>
+              <Link href="/kansei" className="transition-colors hover:text-navy">
+                完成演習
+              </Link>
+              <Link href="/universities" className="transition-colors hover:text-navy">
+                大学一覧
+              </Link>
+            </nav>
           </div>
         </header>
 
@@ -55,7 +63,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               対象年度は大学によって異なり、各ページの冒頭に明記しています。
               出題形式・分野構成の分析であり、問題文の転載は行っていません。各大学とは関係のない非公式サイトです。
             </p>
-            <p>掲載書籍は Amazon.co.jp で販売しています。価格・在庫は Amazon の表示が優先されます。</p>
+            <p>
+              掲載書籍（「合格答案をつくる」シリーズ・「過去問の前に」シリーズ）は Amazon.co.jp で販売しています。
+              価格・在庫は Amazon の表示が優先されます。
+            </p>
             <p className="pt-1">© {new Date().getFullYear()} {site.author}</p>
           </div>
         </footer>

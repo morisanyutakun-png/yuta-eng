@@ -60,6 +60,13 @@ function renderMath(tex: string): string {
   return html;
 }
 
+/**
+ * 原稿の LaTeX では「--」が範囲のダッシュ（–）、「---」が全角ダッシュ（—）に組まれる。
+ * 本文にはこの2文字・3文字のまま入っているので、表示するときに組版と同じ字形に直す。
+ * （「2019--2026年度」「解答用紙 A1--1」「『---』は小問なしの大問」など）
+ */
+const dashes = (v: string) => v.replace(/---/g, "—").replace(/--/g, "–");
+
 export function Spans({ spans }: { spans: Span[] }) {
   return (
     <>
@@ -70,7 +77,7 @@ export function Spans({ spans }: { spans: Span[] }) {
         if (s.t === "b") {
           return (
             <strong key={i} className="font-semibold text-ink">
-              {s.v}
+              {dashes(s.v)}
             </strong>
           );
         }
@@ -81,11 +88,11 @@ export function Spans({ spans }: { spans: Span[] }) {
               className="not-italic font-semibold text-ink [background:linear-gradient(transparent_60%,rgba(154,107,47,0.22)_60%)]"
               style={{ "--mark": "color-mix(in oklch, oklch(0.85 0.14 95) 55%, transparent)" } as React.CSSProperties}
             >
-              {s.v}
+              {dashes(s.v)}
             </em>
           );
         }
-        return <span key={i}>{s.v}</span>;
+        return <span key={i}>{dashes(s.v)}</span>;
       })}
     </>
   );

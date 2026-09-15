@@ -45,3 +45,6 @@ next-env.d.ts
 public/prints/冊子*/
 public/prints/**/*.pdf
 public/prints/**/*.log
+
+# python
+__pycache__/

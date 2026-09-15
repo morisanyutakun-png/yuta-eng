@@ -120,7 +120,9 @@ def build_card(u: dict) -> Image.Image:
     years = u.get("years") or []
     if len(years) == 2:
         f_sub = font(GOTHIC_R, 26)
-        d.text((x, y + 10), f"{years[0]}〜{years[1]}年度・過去問8年分の分析", font=f_sub, fill=INK3)
+        # 分析年数は大学ごとに5〜9年分とばらつくので、決め打ちしない
+        count = f"（{u['yearCount']}年分）" if u.get("yearCount") else ""
+        d.text((x, y + 10), f"{years[0]}〜{years[1]}年度{count}の過去問分析", font=f_sub, fill=INK3)
 
     # 要点の数字
     rows = stats_of(u)
@@ -176,12 +178,20 @@ def build_home_card() -> Image.Image:
     d.text((x, 150), "大学別 数学入試分析", font=f_title, fill=INK)
 
     f_sub = font(GOTHIC_R, 30)
-    d.text((x, 290), "国公立・私立52大学の数学を、過去問8年分から", font=f_sub, fill=INK2)
+    years = [int(y) for u in DATA for y in u.get("years", [])]
+    span = f"{min(years)}〜{max(years)}年度" if years else "過去"
+    d.text((x, 290), f"国公立・私立{len(DATA)}大学の数学を、{span}の過去問から", font=f_sub, fill=INK2)
     d.text((x, 336), "年度別・分野別に分析", font=f_sub, fill=INK2)
 
     d.line([(x, 420), (W - PAD, 420)], fill=RULE, width=2)
     cx = x
-    for value, unit, label in [("52", "大学", "分析大学"), ("61", "冊", "予想問題集"), ("8", "年分", "分析年度")]:
+    books = sum(len(u["books"]) for u in DATA)
+    total_years = sum(u.get("yearCount") or 0 for u in DATA)
+    for value, unit, label in [
+        (str(len(DATA)), "大学", "分析大学"),
+        (str(books), "冊", "予想問題集"),
+        (str(total_years), "年分", "分析した入試"),
+    ]:
         f_label = font(GOTHIC_R, 24)
         d.text((cx, 452), label, font=f_label, fill=INK3)
         f_val = font(MINCHO_B, 62)

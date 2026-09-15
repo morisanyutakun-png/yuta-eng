@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "data": "node scripts/extract-analysis.mjs"
+    "data": "node scripts/extract-analysis.mjs",
+    "data:series": "node scripts/extract-series.mjs"
   },
   "dependencies": {
     "katex": "^0.16.45",

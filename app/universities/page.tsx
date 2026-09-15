@@ -4,6 +4,7 @@ import Link from "next/link";
 import { UniversityFinder } from "@/components/university-finder";
 import { siteTotals, summarize, universities } from "@/lib/data";
 import { finderItems } from "@/lib/finder";
+import { shindan } from "@/lib/series";
 import { subject } from "@/lib/seo";
 import { groupOrder, site } from "@/lib/site";
 
@@ -64,6 +65,18 @@ export default function UniversitiesPage() {
             それぞれのページに対象年度を書いています。大学名・かな・「医学部」などで絞り込めます。
           </p>
         </header>
+
+        <p className="prose-ja mb-6 border-l-2 border-navy/40 bg-paper-2/60 px-4 py-3 text-[0.82rem] text-ink-2">
+          旧帝大・難関国公立の理系で志望校を決めきれていない場合は、
+          <Link href="/shindan" className="font-semibold text-navy underline underline-offset-4">
+            志望校診断模試
+          </Link>
+          で{shindan.universities.length}大学との相性を、決まっている場合は
+          <Link href="/kansei" className="font-semibold text-navy underline underline-offset-4">
+            大学別の分野別完成演習
+          </Link>
+          で頻出分野を固められます。
+        </p>
 
         <UniversityFinder items={items} groups={usedGroups} />
       </div>

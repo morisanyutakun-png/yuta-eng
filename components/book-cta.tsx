@@ -88,7 +88,7 @@ export function BookCta({ u }: { u: University }) {
   const years = yearLabel(u);
   const short = shortName(u);
   return (
-    <section aria-labelledby="cta-heading" className="border border-navy/25 bg-white p-5 sm:p-7">
+    <section id="books" aria-labelledby="cta-heading" className="scroll-mt-20 border border-navy/25 bg-white p-5 sm:p-7">
       <p className="text-[0.68rem] font-bold tracking-wide text-accent">{site.seriesName}</p>
       <h2 id="cta-heading" className="serif mt-1.5 text-[1.25rem] leading-snug text-ink sm:text-[1.4rem]">
         {short}数学の予想問題集
