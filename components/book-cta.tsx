@@ -64,7 +64,7 @@ export function InlineCta({ u }: { u: University }) {
             {short}数学の予想問題を、採点基準つきで解く
           </p>
           <p className="prose-ja mt-1.5 text-[0.8rem] text-ink-2">
-            本番形式の全5回。どこで何点入るかまで示してあります。
+            本番形式の{book.rounds ? `全${book.rounds}回` : "予想問題"}。どこで何点入るかまで示してあります。
           </p>
           <a
             href={book.amazonUrl}
@@ -96,7 +96,7 @@ export function BookCta({ u }: { u: University }) {
       <p className="prose-ja mt-2.5 text-[0.9rem] text-ink-2">
         このページの{years ? `${years}の` : ""}出題分析をもとに書き下ろした、{short}数学のオリジナル予想問題集です。本番と同じ形式の問題に加えて、
         <strong className="font-semibold text-ink">どこで何点入るかを示した採点基準</strong>
-        と別解を収録しています。
+        {u.books.some((b) => b.altSolutions) ? "と別解" : ""}を収録しています。
       </p>
       <ul className="mt-6 space-y-5">
         {u.books.map((b) => (

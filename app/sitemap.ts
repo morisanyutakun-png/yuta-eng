@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: site.url, lastModified: now, changeFrequency: "monthly", priority: 1 },
     { url: `${site.url}/universities`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${site.url}/books`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${site.url}/shindan`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site.url}/kansei`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     // 近日追加予定の巻はページがないので載せない（ASIN が入ると自動で加わる）

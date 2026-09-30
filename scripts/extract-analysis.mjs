@@ -1,5 +1,5 @@
 // front.tex（原稿の「はじめに」）から出題分析セクションを構造化 JSON に変換する。
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { universityMeta } from "./university-meta.mjs";
@@ -13,32 +13,10 @@ import {
 } from "./lib/latex.mjs";
 
 const HOME = process.env.HOME ?? "/Users/moriyuuta";
-const PRODUCT_CSV = join(HOME, "KDP_app/scripts/data/product-list.csv");
 const OUT_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "data");
 
-/* ─────────────── CSV ─────────────── */
-
-function parseCsv(text) {
-  const rows = [];
-  let row = [];
-  let cell = "";
-  let quoted = false;
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
-    if (quoted) {
-      if (ch === '"') {
-        if (text[i + 1] === '"') { cell += '"'; i++; } else quoted = false;
-      } else cell += ch;
-      continue;
-    }
-    if (ch === '"') quoted = true;
-    else if (ch === ",") { row.push(cell); cell = ""; }
-    else if (ch === "\n") { row.push(cell); rows.push(row); row = []; cell = ""; }
-    else if (ch !== "\r") cell += ch;
-  }
-  if (cell || row.length) { row.push(cell); rows.push(row); }
-  return rows.filter((r) => r.some((c) => c.trim()));
-}
+/** 販売中の本（npm run data:books で Amazon から取り直したもの）。 */
+const BOOKS = JSON.parse(readFileSync(join(OUT_DIR, "books.json"), "utf8"));
 
 /* ─────────────── 本体 ─────────────── */
 
@@ -355,7 +333,12 @@ function extractPoints(text) {
 
   for (const raw of text.split(/(?<=[。、])/)) {
     // 共通テスト・換算後の点は、二次試験の数学の配点ではない
-    if (/共通テスト|センター|換算/.test(raw)) continue;
+    if (/共通テスト|センター|換算|読み替え/.test(raw)) continue;
+    // 「総合問題のみで、試験時間100分・450点」は総合問題全体の配点。数学のぶんではない
+    if (/総合問題/.test(raw) && !/数学[はがのも]/.test(raw)) continue;
+    // 「数学は450点中の150点を占める」——数学のぶんは後ろの数
+    const ofWhich = raw.match(/数学[はがのも]?[^。]{0,8}?\d{2,4}\s*点中(?:の)?\s*(\d{2,4})\s*点/);
+    if (ofWhich) { found.add(Number(ofWhich[1])); continue; }
     // 「配点は100点（A方式は外国語200点…）」の括弧書きは、数学の配点の話ではない
     const sentence = raw.replace(/[（(][^）)]*[）)]/g, "");
 
@@ -404,6 +387,10 @@ function extractFacts(blocks) {
     text.match(/数学は\s*(\d{2,3})\s*分/) ||
     // 「数学（文科系）は80分・素点75点で」のように、科目名に括弧書きが挟まる書き方
     text.match(/数学(?:[（(][^）)]*[）)])?は\s*(\d{2,3})\s*分/) ||
+    // 「数学は2時限80分・100点」「直近の問題冊子は90分で」「独立した試験時間（90分）」
+    text.match(/数学は[^。]{0,8}?(\d{2,3})\s*分/) ||
+    text.match(/問題冊子は\s*(\d{2,3})\s*分/) ||
+    text.match(/試験時間[^。]{0,4}[（(](\d{2,3})\s*分[）)]/) ||
     text.match(/数学\s*[（(]\s*(\d{2,3})\s*分/) ||
     text.match(/(\d{2,3})\s*分\s*[，、,・･]\s*大問/);
   if (time) facts.examTime = Number(time[1]);
@@ -419,13 +406,20 @@ function extractFacts(blocks) {
 
   // 千葉大・新潟大のように「1冊子から志望学部ぶんだけ選んで解く」大学は、
   // 冊子に並ぶ題数と受験生が解く題数が違う。数字を1つ出すと誤解を招くので出さない。
-  const selective = /(選択|指定)(され|する|に関する)|解くべき大問|指定された番号/.test(text);
+  // 「数学と外国語のどちらかを選択」のような“科目の選択”は別の話なので含めない。
+  const selective =
+    /解くべき大問|指定された番号|問題の選択|(大問|小問|問題|番号|\d+\s*題)[^。]{0,12}(指定され|選択する|選ぶ)/.test(text);
   const dai = text.match(/大問\s*(\d+)\s*題/) || text.match(/(\d+)\s*題\s*[，、,]\s*完全記述/);
   if (dai && !selective) facts.questions = Number(dai[1]);
   if (selective) facts.selective = true;
 
+  // 防衛医科大のように「選択式・数字記入式・記述式」が同じ試験に同居する大学があるので、
+  // 出てくる形式をすべて拾い、1つに決められるときだけ1つ書く。
   if (/完全記述式/.test(text)) facts.style = "完全記述式";
-  else if (/空欄補充/.test(text)) facts.style = "空欄補充";
+  else if (/選択式/.test(text) && /数字記入式/.test(text)) {
+    // 防衛医科大のように、1つの試験に選択式・数字記入式・記述式が同居する
+    facts.style = ["選択式", "数字記入式", /記述式/.test(text) ? "記述式" : null].filter(Boolean).join("・");
+  } else if (/空欄補充/.test(text)) facts.style = "空欄補充";
   else if (/マークシート/.test(text) && /記述/.test(text)) facts.style = "マーク＋記述";
   else if (/マークシート/.test(text)) facts.style = "マークシート";
   else if (/記述式/.test(text)) facts.style = "記述式";
@@ -527,53 +521,121 @@ function resolveYears(analysisTitle, yearTable) {
 
 /* ─────────────── 実行 ─────────────── */
 
-// 本書の構成に関する節はサイトには載せない（分析だけを出す）。
-const BOOK_ONLY = /回の並び|校正|本書|付録|使い方|収録/;
-
-const volNo = (t) => Number((t.match(/Vol\.?\s*(\d+)/) || [])[1] ?? 1);
-
-// まず原稿フォルダごとに巻をまとめ、巻数順に並べる。
-const rows = parseCsv(readFileSync(PRODUCT_CSV, "utf8"));
-const byFolder = new Map();
 const skipped = [];
+/** slug → { folder, volumes: { 1: "東大理系数学/東大数学vol1" } } */
+const manuscripts = {};
 
-for (const r of rows.slice(1)) {
-  const [title, asin, pages, , , price, pdf] = r;
-  const dir = pdf.replace(/\/[^/]*$/, "");
-  const folder = dir.split("/")[0];
-  if (!universityMeta[folder]) { skipped.push({ title, why: "メタ未登録（英語など）" }); continue; }
-  if (!byFolder.has(folder)) byFolder.set(folder, []);
-  byFolder.get(folder).push({
-    dir,
-    title: title.trim(),
-    asin: asin.trim(),
-    price: Number(price) || null,
-    pages: Number(pages) || null,
-    amazonUrl: `https://www.amazon.co.jp/dp/${asin.trim()}`,
-  });
+// 本書の構成に関する節はサイトには載せない（分析だけを出す）。
+// 第2巻以降には「第1巻との違い」「独自性の確認」のような巻の説明が入るので、それも落とす。
+const BOOK_ONLY = /回の並び|校正|本書|付録|使い方|収録|第\s*\d+\s*巻|独自性|重複/;
+
+/** 見出しや書名を突き合わせるための正規化（LaTeX・空白・括弧書きを外す）。 */
+const norm = (s) => s.replace(/\\[a-zA-Z]+|[{}$]/g, "").replace(/\s|[（(].*?[）)]/g, "");
+
+/** 全大学の呼び名。ほかの大学の原稿が紛れていないかの判定に使う。 */
+const ALL_NAMES = Object.values(universityMeta).map((m) => ({ slug: m.slug, name: norm(m.name) }));
+
+/**
+ * その大学の原稿フォルダの中から、「はじめに」を持つ巻のディレクトリを集める。
+ *
+ * どのフォルダにも雛形として名大の巻（名大数学vol1 など）がコピーされている。
+ * フォルダ名では見分けられない（名大文系数学のフォルダにも名大理系の巻が入っている）ので、
+ * 「はじめに」の見出しが“別の大学”の名前になっている巻を落とす。
+ * 分野別完成演習・診断模試は別シリーズなので対象外。
+ */
+function volumeDirs(folder, meta) {
+  const root = join(HOME, folder);
+  if (!existsSync(root)) return [];
+  const own = norm(meta.name);
+  return readdirSync(root, { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name)
+    .filter((name) => existsSync(join(root, name, "front.tex")))
+    .filter((name) => !/完成演習|診断模試|のコピー|copy/i.test(name))
+    .filter((name) => {
+      const head = norm((readFileSync(join(root, name, "front.tex"), "utf8").match(/\\hdA\{([^}]*)\}/) || [])[1] ?? "");
+      if (head.includes(own)) return true;
+      const other = ALL_NAMES.find((u) => u.slug !== meta.slug && u.name && head.includes(u.name));
+      if (other) {
+        skipped.push({ title: `${meta.name}／${name}`, why: `ほかの大学の原稿（${other.slug}）なので使わない` });
+        return false;
+      }
+      return true;
+    })
+    .sort()
+    .map((name) => `${folder}/${name}`);
+}
+
+// 大学ごとに、販売中の巻（data/books.json）と原稿のディレクトリをまとめる。
+const byFolder = new Map();
+for (const [folder, meta] of Object.entries(universityMeta)) {
+  const books = Object.values(BOOKS)
+    .filter((b) => b.series === "gokaku" && b.slug === meta.slug)
+    .sort((a, b) => a.vol - b.vol)
+    .map((b) => ({
+      title: b.title,
+      fullTitle: b.fullTitle,
+      asin: b.asin,
+      vol: b.vol,
+      price: b.price ?? null,
+      pages: b.pages ?? null,
+      released: b.released ?? null,
+      isbn13: b.isbn13 ?? null,
+      amazonUrl: `https://www.amazon.co.jp/dp/${b.asin}`,
+    }));
+  if (!books.length) { skipped.push({ title: meta.name, why: "販売中の巻が登録簿にない" }); continue; }
+  const dirs = volumeDirs(folder, meta);
+  if (!dirs.length) { skipped.push({ title: meta.name, why: `原稿が見つからない（${folder}）` }); continue; }
+  byFolder.set(folder, { books, dirs });
+
+  // 巻番号 → 原稿ディレクトリ。表紙を切り出す側（scripts/build-covers.py）が使う。
+  const volumes = {};
+  for (const dir of dirs) {
+    const n = Number((dir.match(/vol\s*(\d+)/i) || [])[1] ?? 1);
+    if (!volumes[n]) volumes[n] = dir;
+  }
+  manuscripts[meta.slug] = { folder, volumes };
+
+  // 収録している予想問題の回数。多くは5回だが、防衛医科大は6回、千葉工大は8回ある。
+  // 原稿の set1_q.tex … を数えるのがいちばん確か。
+  for (const b of books) {
+    const dir = volumes[b.vol];
+    if (!dir) continue;
+    const files = readdirSync(join(HOME, dir));
+    const n = files.filter((f) => /^set\d+_q\.tex$/.test(f)).length;
+    if (n) b.rounds = n;
+    // 別解を載せていない巻があるので、あるときだけ「別解つき」と書く。
+    // 原稿では betsu 環境（\begin{betsu}）で組まれている。
+    b.altSolutions = files
+      .filter((f) => /^set\d+_[ard]/.test(f))
+      .some((f) => /別解|\\begin\{betsu\}/.test(readFileSync(join(HOME, dir, f), "utf8")));
+  }
 }
 
 const items = [];
 
-for (const [folder, rawBooks] of byFolder) {
+for (const [folder, { books, dirs }] of byFolder) {
   const meta = universityMeta[folder];
-  const books = rawBooks.sort((a, b) => volNo(a.title) - volNo(b.title));
 
-  // 巻ごとに「はじめに」を読み、分析が最も充実したものを代表に選ぶ。
-  // （第2巻以降は「〜を受ける前に」など分析表を持たない構成のことがある）
+  // 代表に使う巻を決める。
+  // 年度別の出題一覧を持つ巻のうち最初のもの（＝第1巻）を優先する。
+  // 第2巻以降は分析が省かれていたり、巻ごとに目標点の書き方が違ったりするため、
+  // 大学の分析としては最初の巻に揃えるほうがぶれない。
   let best = null;
-  for (const b of books) {
+  for (const dir of dirs) {
     let data;
     try {
-      data = extract(b.dir);
+      data = extract(dir);
     } catch (e) {
-      skipped.push({ title: b.title, why: e.message });
+      skipped.push({ title: `${meta.name}（${dir}）`, why: e.message });
       continue;
     }
     if (!data) continue;
     const tables = [...data.lead, ...data.sections.flatMap((s) => s.blocks)].filter((x) => x.type === "table");
-    const score = (tables.some(isYearTable) ? 100 : 0) + tables.length + data.sections.length;
-    if (!best || score > best.score) best = { data, tables, score, from: b.title };
+    const hasYears = tables.some(isYearTable);
+    const score = (hasYears ? 100 : 0) + tables.length + data.sections.length;
+    if (!best || score > best.score) best = { data, tables, score, from: dir };
+    if (hasYears) break; // 年度別表のある最初の巻を採る
   }
   if (!best) { skipped.push({ title: folder, why: "分析セクションを取得できず" }); continue; }
 
@@ -595,12 +657,13 @@ for (const [folder, rawBooks] of byFolder) {
     yearTable,
     fieldTable: tables.find(isFieldTable) ?? null,
     fieldChart: toFieldChart(tables.find(isFieldTable)),
-    books: books.map((b) => ({ title: b.title, asin: b.asin, price: b.price, pages: b.pages, amazonUrl: b.amazonUrl })),
+    books,
   });
 }
 
 mkdirSync(join(OUT_DIR), { recursive: true });
 writeFileSync(join(OUT_DIR, "analysis.json"), JSON.stringify(items, null, 2));
+writeFileSync(join(OUT_DIR, "manuscripts.json"), `${JSON.stringify(manuscripts, null, 2)}\n`);
 
 /* ─────────────── 検証 ─────────────── */
 

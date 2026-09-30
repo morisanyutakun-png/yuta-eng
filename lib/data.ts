@@ -16,11 +16,24 @@ export type Block =
 
 export type Section = { title: string; blocks: Block[] };
 
+/** 「合格答案をつくる」の1冊。data/books.json（Amazon で確認した情報）から作る。 */
 export type Book = {
+  /** 一覧・見出しに出す短い書名 */
   title: string;
+  /** Amazon の商品名そのまま（構造化データ用） */
+  fullTitle: string;
   asin: string;
+  /** 第何巻か */
+  vol: number;
   price: number | null;
   pages: number | null;
+  /** 発売日 YYYY-MM-DD */
+  released: string | null;
+  isbn13: string | null;
+  /** 収録している予想問題の回数（原稿の set ファイル数）。取れないこともある。 */
+  rounds?: number;
+  /** 別解を載せているか。載せていない巻がある。 */
+  altSolutions?: boolean;
   amazonUrl: string;
 };
 
@@ -33,8 +46,9 @@ export type Facts = {
   /** 「教育学部・農学部は100分」のように、学部で試験時間が分かれるときの但し書き。 */
   examTimeNote?: string;
   /**
-   * 千葉大・新潟大・愛媛大のように、1冊の冊子から志望学部ぶんだけ選んで解く方式。
-   * 冊子に並ぶ題数と受験生が解く題数が違うので、大問数は出さない。
+   * 1冊の問題冊子から、志望学部の指定（千葉大・新潟大・愛媛大）や
+   * 受験生自身の選択（筑波大）で解く大問が決まる方式。
+   * 冊子に並ぶ題数と実際に解く題数が違うので、大問数は出さない。
    */
   selective?: boolean;
 };
@@ -190,7 +204,7 @@ export function factsLine(u: University): string {
   return [
     examTime ? `${examTime}分` : null,
     questions ? `大問${questions}題` : null,
-    selective ? "学部ごとに問題を選択" : null,
+    selective ? "解く問題を選択" : null,
     style,
   ]
     .filter(Boolean)

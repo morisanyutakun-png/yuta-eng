@@ -1,11 +1,11 @@
 import raw from "@/data/series.json";
-import { amazonUrl, kanseiCatalog, shindanCatalog, type CatalogEntry } from "@/lib/catalog";
+import { amazonUrl, kanseiBook, shindanBookData, type Book } from "@/lib/books";
 import type { Block, Span } from "@/lib/data";
 
 /*
  * 「過去問の前に」シリーズ（志望校診断模試・分野別完成演習）。
  * 中身は原稿から scripts/extract-series.mjs で起こした data/series.json、
- * Amazon の商品情報は lib/catalog.ts。この2つをここで合わせる。
+ * Amazon の商品情報は data/books.json（lib/books.ts）。この2つをここで合わせる。
  */
 
 export const seriesName = "過去問の前にシリーズ";
@@ -58,7 +58,8 @@ export type KanseiBook = {
 };
 
 export type Kansei = KanseiBook & {
-  catalog: CatalogEntry;
+  /** Amazon の商品情報。まだ出ていない巻は null */
+  catalog: Book | null;
   /** ASIN があれば公開。なければ「近日追加予定」 */
   published: boolean;
   amazonUrl: string | null;
@@ -93,7 +94,7 @@ export type Shindan = {
   differences: { same?: Span[]; differ?: Span[][] };
   next: string;
   easier: boolean;
-  catalog: CatalogEntry;
+  catalog: Book;
   amazonUrl: string;
   cover: string;
 };
@@ -101,12 +102,12 @@ export type Shindan = {
 const data = raw as unknown as { kansei: KanseiBook[]; shindan: Omit<Shindan, "catalog" | "amazonUrl" | "cover"> };
 
 export const kanseiAll: Kansei[] = data.kansei.map((b) => {
-  const catalog = kanseiCatalog[b.slug] ?? { asin: null };
+  const catalog = kanseiBook(b.slug) ?? null;
   return {
     ...b,
     catalog,
-    published: Boolean(catalog.asin),
-    amazonUrl: catalog.asin ? amazonUrl(catalog.asin) : null,
+    published: Boolean(catalog),
+    amazonUrl: catalog ? amazonUrl(catalog.asin) : null,
     // 表紙は slug 名で書き出してある（ASIN が後から決まっても描き直さずに済む）
     cover: `/covers/kansei/${b.slug}.webp`,
   };
@@ -127,8 +128,8 @@ export function kanseiFor(slug: string): Kansei | undefined {
 
 export const shindan: Shindan = {
   ...data.shindan,
-  catalog: shindanCatalog,
-  amazonUrl: amazonUrl(shindanCatalog.asin!),
+  catalog: shindanBookData!,
+  amazonUrl: amazonUrl(shindanBookData!.asin),
   cover: "/covers/kansei/shindan.webp",
 };
 
@@ -142,11 +143,3 @@ export const kanseiUniversityLabel = (k: KanseiBook) =>
 /** 目標時間の合計を「1日90分なら◯日」に直す（原稿の使い方の目安と同じ割り方）。 */
 export const daysAt = (minutes: number, perDay = 90) => Math.ceil(minutes / perDay);
 
-export const yen = (n?: number) => (n ? `¥${n.toLocaleString("ja-JP")}` : null);
-
-/** 発売日「2026-09-07」→「2026年9月7日」 */
-export function releasedLabel(d?: string) {
-  if (!d) return null;
-  const [y, m, day] = d.split("-").map(Number);
-  return `${y}年${m}月${day}日`;
-}

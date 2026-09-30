@@ -53,7 +53,7 @@ export default function HomePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-[46rem] px-5 sm:px-6">
+      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8">
         <section className="pb-8 pt-11 sm:pt-14">
           <h1 className="serif text-[1.9rem] leading-[1.35] text-ink sm:text-[2.5rem]">
             大学別
@@ -86,7 +86,10 @@ export default function HomePage() {
           </dl>
         </section>
 
-        <LearningPath compact className="mb-10" />
+        <>
+          <LearningPath compact className="mb-10 lg:hidden" />
+          <LearningPath className="mb-12 hidden lg:block" />
+        </>
 
         <UniversityFinder items={items} groups={usedGroups} />
 

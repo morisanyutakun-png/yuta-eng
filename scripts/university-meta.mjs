@@ -47,6 +47,12 @@ export const universityMeta = {
   大阪公立理系数学前期: { slug: "omu", name: "大阪公立大理系数学", university: "大阪公立大学", course: "理系・前期", group: "国公立大", kana: "おおさかこうりつ おおさかこうりつだいがく 大阪公立 市大 府大" },
   会津大学数学: { slug: "aizu", name: "会津大数学", university: "会津大学", course: "理系", group: "国公立大", kana: "あいづだい あいづだいがく 会津大" },
 
+  東京都立文系数学: { slug: "tmu-bunkei", name: "東京都立大文系数学", university: "東京都立大学", course: "文系", group: "国公立大", kana: "とりつだい とうきょうとりつだいがく 都立大 首都大 文系" },
+  岡山大学文系数学: { slug: "okayama-bunkei", name: "岡山大文系数学", university: "岡山大学", course: "文系", group: "国公立大", kana: "おかやまだい おかやまだいがく 岡山大 文系" },
+  広島大文系数学: { slug: "hiroshima-bunkei", name: "広大文系数学", university: "広島大学", course: "文系", group: "国公立大", kana: "ひろだい ひろしまだいがく 広島大 文系" },
+  横国文系数学: { slug: "yokokoku-bunkei", name: "横国文系数学", university: "横浜国立大学", course: "経済学部・経営学部", group: "国公立大", kana: "よここく よこはまこくりつだいがく 横浜国立 横国 経済学部 経営学部 文系" },
+  帯広畜産大: { slug: "obihiro", name: "帯広畜産大数学", university: "帯広畜産大学", course: "総合問題（数学）", group: "国公立大", kana: "おびひろちくさん おびひろちくさんだいがく 帯広畜産大 畜産 総合問題" },
+
   /* ── 医・薬 ── */
   熊本大医学数学: { slug: "kumamoto-med", name: "熊本大医学部数学", university: "熊本大学", course: "医学部医学科", group: "医学部・薬学部", kana: "くまもとだい くまもとだいがく 熊本大 医学部 医学科" },
   名市医学数学: { slug: "ncu-med", name: "名市大医学部数学", university: "名古屋市立大学", course: "医学部医学科", group: "医学部・薬学部", kana: "めいしだい なごやしりつだいがく 名市大 医学部 医学科" },
@@ -54,6 +60,8 @@ export const universityMeta = {
   福島県立医科大: { slug: "fmu", name: "福島県立医科大数学", university: "福島県立医科大学", course: "医学部医学科", group: "医学部・薬学部", kana: "ふくしまけんりついか ふくしまけんりついかだいがく 福島県立医科大 医学部 医学科" },
   旭川医科大学数学: { slug: "asahikawa", name: "旭川医科大数学", university: "旭川医科大学", course: "医学部医学科", group: "医学部・薬学部", kana: "あさひかわいか あさひかわいかだいがく 旭川医大 医学部 医学科" },
   岐阜薬科大学: { slug: "gifu-pharm", name: "岐阜薬科大数学", university: "岐阜薬科大学", course: "薬学部", group: "医学部・薬学部", kana: "ぎふやっか ぎふやっかだいがく 岐阜薬科大 薬学部" },
+  名市大中期数学: { slug: "ncu-pharm", name: "名市大薬学部数学", university: "名古屋市立大学", course: "薬学部・中期日程", group: "医学部・薬学部", kana: "めいしだい なごやしりつだいがく 名市大 薬学部 中期 薬学科 生命薬科学科" },
+  防衛医大数学: { slug: "ndmc", name: "防衛医科大数学", university: "防衛医科大学校", course: "医学科", group: "医学部・薬学部", kana: "ぼうえいいか ぼうえいいかだいがっこう 防衛医大 防衛医科大 医学科" },
 
   /* ── 私立 ── */
   慶應理工数学: { slug: "keio-riko", name: "慶應理工数学", university: "慶應義塾大学", course: "理工学部", group: "私立大", kana: "けいおう けいおうぎじゅくだいがく 慶応 理工学部" },
@@ -62,6 +70,7 @@ export const universityMeta = {
   慶應商学部数学A: { slug: "keio-shou", name: "慶應商学部数学", university: "慶應義塾大学", course: "商学部A方式", group: "私立大", kana: "けいおう けいおうぎじゅくだいがく 慶応 商学部" },
   早稲田理工数学: { slug: "waseda-riko", name: "早稲田理工数学", university: "早稲田大学", course: "理工学部", group: "私立大", kana: "わせだ わせだだいがく 早大 理工学部" },
   早稲田数学選抜: { slug: "waseda-jinka", name: "早稲田人科 数学選抜", university: "早稲田大学", course: "人間科学部 数学選抜", group: "私立大", short: "早稲田人科 数学選抜", kana: "わせだ わせだだいがく 早大 人間科学部 人科" },
+  千葉工大ASA数学: { slug: "cit", name: "千葉工大数学（SA・A日程）", university: "千葉工業大学", course: "SA・A日程", group: "私立大", short: "千葉工大", kana: "ちばこうだい ちばこうぎょうだいがく 千葉工大 SA日程 A日程" },
   東京理科大理学第一数学: { slug: "tus-ri1", name: "東京理科大 理学部第一部数学", university: "東京理科大学", course: "理学部第一部", group: "私立大", short: "東京理科大 理学部第一部", kana: "りかだい とうきょうりかだいがく 東京理科大 理学部" },
 };
 

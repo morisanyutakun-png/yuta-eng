@@ -4,9 +4,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AmazonButton } from "@/components/amazon-button";
+import { ArticleLayout } from "@/components/article-layout";
+import { AsideBook } from "@/components/aside-book";
 import { FaqSection } from "@/components/faq";
 import { KanseiCards } from "@/components/kansei-cards";
 import { LearningPath } from "@/components/learning-path";
+import { bookMetaLine, yen } from "@/lib/books";
 import { factsLine, getUniversity } from "@/lib/data";
 import { Blocks, Spans } from "@/lib/render";
 import type { Faq } from "@/lib/seo";
@@ -14,18 +17,16 @@ import {
   daysAt,
   getKansei,
   kanseiPublished,
-  releasedLabel,
   seriesName,
   seriesTagline,
   shindan,
-  yen,
   type Kansei,
 } from "@/lib/series";
 import { site } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
 
-// ASIN のある巻だけページを作る。lib/catalog.ts に ASIN を足せば次のビルドで増える。
+// 販売中の巻だけページを作る（data/books.json に載ったら自動で増える）。
 export function generateStaticParams() {
   return kanseiPublished.map((k) => ({ slug: k.slug }));
 }
@@ -121,11 +122,10 @@ export default async function KanseiPage({ params }: Props) {
 
   const analysis = getUniversity(k.slug);
   const faqs = buildFaq(k);
-  const c = k.catalog;
+  // getKansei は販売中の巻しか返さないので、商品情報も URL も必ずある
+  const c = k.catalog!;
   const url = k.amazonUrl!;
-  const meta = [c.pages ? `${c.pages}ページ` : null, releasedLabel(c.released) ? `${releasedLabel(c.released)}発売` : null]
-    .filter(Boolean)
-    .join("・");
+  const meta = bookMetaLine(c);
   const others = kanseiPublished.filter((x) => x.slug !== k.slug);
 
   const jsonLd = {
@@ -180,17 +180,36 @@ export default async function KanseiPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <article className="mx-auto max-w-[38rem] px-5 sm:px-6">
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
-          <Link href="/" className="hover:text-navy">
-            トップ
-          </Link>
-          <span className="mx-1.5 text-rule">／</span>
-          <Link href="/kansei" className="hover:text-navy">
-            分野別完成演習
-          </Link>
-        </nav>
-
+      <ArticleLayout
+        breadcrumb={[
+          { href: "/", label: "トップ" },
+          { href: "/kansei", label: "分野別完成演習" },
+          { label: k.name },
+        ]}
+        aside={
+          <>
+            <AsideBook
+              eyebrow="過去問の前にシリーズ"
+              title={`${k.name} 分野別完成演習`}
+              cover={k.cover}
+              href={url}
+              book={c}
+              note={`頻出${k.total.fields}分野・全${k.total.problems}題。目標時間 計${k.total.minutes}分。`}
+            />
+            {analysis && (
+              <AsideBook
+                eyebrow="過去問演習の段階で"
+                title={analysis.books[0].title}
+                cover={`/covers/${analysis.books[0].asin}.webp`}
+                href={analysis.books[0].amazonUrl}
+                book={analysis.books[0]}
+                note={`本番と同じ形式の予想問題${analysis.books[0].rounds ? `${analysis.books[0].rounds}回分` : ""}。`}
+                detail={{ href: `/univ/${analysis.slug}`, label: `${k.uni}数学の傾向と対策を見る` }}
+              />
+            )}
+          </>
+        }
+      >
         <header className="pb-2 pt-4">
           <p className="text-[0.72rem] font-semibold tracking-wide text-navy">
             {k.university}
@@ -500,7 +519,7 @@ export default async function KanseiPage({ params }: Props) {
             </div>
           </section>
         )}
-      </article>
+      </ArticleLayout>
     </>
   );
 }

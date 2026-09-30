@@ -15,7 +15,7 @@ function stats(u: University): Stat[] {
   }
   if (questions) out.push({ label: "大問数", value: String(questions), sub: "題" });
   // 選択制の大学は、冊子に並ぶ題数＝解く題数ではない。数字の代わりに方式を出す。
-  if (u.facts.selective) out.push({ label: "大問数", value: "学部別に選択" });
+  if (u.facts.selective) out.push({ label: "大問数", value: "選択制" });
   if (examTime && questions) {
     out.push({ label: "1題あたり", value: String(Math.round(examTime / questions)), sub: "分" });
   }
@@ -113,14 +113,14 @@ export function UnivHero({ u }: { u: University }) {
       )}
 
       {/*
-        千葉大・新潟大のように志望学部で解く問題が変わる大学は、
-        「大問◯題」という数字が存在しない。数字を並べる代わりに方式を書く。
+        千葉大・新潟大のように学部で指定される大学と、筑波大のように受験生が選ぶ大学がある。
+        どちらも「大問◯題」という数字が存在しないので、数字の代わりに方式を書く。
       */}
       {u.facts.selective && (
         <p className="prose-ja mt-5 border-y border-rule py-3 text-[0.85rem] text-ink-2">
-          <strong className="font-semibold text-ink">解く問題は志望学部で変わります。</strong>
-          1冊の問題冊子から、学部・学科ごとに指定された大問だけを解く方式です。
-          自分の学部の指定は、下の一覧表で確認してください。
+          <strong className="font-semibold text-ink">解く大問が決まっていません。</strong>
+          1冊の問題冊子から、志望学部ごとの指定または受験生自身の選択で解く大問が決まる方式です。
+          自分がどれを解くのかは、下の一覧表で確認してください。
         </p>
       )}
 

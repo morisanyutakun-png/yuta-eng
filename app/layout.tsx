@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
 
         <header className="border-b border-rule">
-          <div className="mx-auto flex max-w-[46rem] items-center justify-between px-5 py-3.5 sm:px-6">
+          <div className="mx-auto flex max-w-[46rem] items-center justify-between px-5 py-3.5 sm:px-6 lg:max-w-[74rem] lg:px-8">
             <Link href="/" className="serif text-[0.95rem] tracking-tight text-ink">
               大学別 数学入試分析
             </Link>
@@ -50,6 +50,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/universities" className="transition-colors hover:text-navy">
                 大学一覧
               </Link>
+              <Link href="/books" className="hidden transition-colors hover:text-navy sm:inline">
+                教材一覧
+              </Link>
             </nav>
           </div>
         </header>
@@ -57,7 +60,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
 
         <footer className="mt-20 border-t border-rule py-9">
-          <div className="prose-ja mx-auto max-w-[46rem] space-y-3 px-5 text-[0.72rem] text-ink-3 sm:px-6">
+          <div className="prose-ja mx-auto max-w-[46rem] space-y-3 px-5 text-[0.72rem] text-ink-3 sm:px-6 lg:max-w-[74rem] lg:px-8">
             <p>
               本サイトの分析は、各大学の公表資料と実際の問題冊子にあたって独自に調査したものです。
               対象年度は大学によって異なり、各ページの冒頭に明記しています。
@@ -66,6 +69,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <p>
               掲載書籍（「合格答案をつくる」シリーズ・「過去問の前に」シリーズ）は Amazon.co.jp で販売しています。
               価格・在庫は Amazon の表示が優先されます。
+              <Link href="/books" className="ml-1 underline underline-offset-4 hover:text-navy">
+                教材一覧
+              </Link>
             </p>
             <p className="pt-1">© {new Date().getFullYear()} {site.author}</p>
           </div>

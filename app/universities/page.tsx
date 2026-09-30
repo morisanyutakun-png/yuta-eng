@@ -48,7 +48,7 @@ export default function UniversitiesPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-[46rem] px-5 sm:px-6">
+      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8">
         <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ

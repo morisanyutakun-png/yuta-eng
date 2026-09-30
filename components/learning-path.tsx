@@ -121,7 +121,7 @@ export function LearningPath({
       <h2 id="path-heading" className="serif text-[1.05rem] text-ink">
         {heading}
       </h2>
-      <ol className="mt-3 grid gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-2">
+      <ol className="mt-3 grid gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((s) => {
           const here = s.key === current;
           return (

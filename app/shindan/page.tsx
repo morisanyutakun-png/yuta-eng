@@ -3,13 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { AmazonButton } from "@/components/amazon-button";
+import { ArticleLayout } from "@/components/article-layout";
+import { AsideBook } from "@/components/aside-book";
 import { FaqSection } from "@/components/faq";
 import { KanseiCards } from "@/components/kansei-cards";
 import { LearningPath } from "@/components/learning-path";
 import { spanText } from "@/lib/data";
 import { Spans } from "@/lib/render";
 import type { Faq } from "@/lib/seo";
-import { kanseiAll, releasedLabel, seriesName, seriesTagline, shindan as s, yen } from "@/lib/series";
+import { bookMetaLine, yen } from "@/lib/books";
+import { kanseiAll, seriesName, seriesTagline, shindan as s } from "@/lib/series";
 import { site } from "@/lib/site";
 
 const universityNames = s.universities.map((u) => u.name);
@@ -81,9 +84,7 @@ function faq(): Faq[] {
 export default function ShindanPage() {
   const faqs = faq();
   const c = s.catalog;
-  const meta = [c.pages ? `${c.pages}ページ` : null, releasedLabel(c.released) ? `${releasedLabel(c.released)}発売` : null]
-    .filter(Boolean)
-    .join("・");
+  const meta = bookMetaLine(c);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -133,15 +134,19 @@ export default function ShindanPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <article className="mx-auto max-w-[38rem] px-5 sm:px-6">
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
-          <Link href="/" className="hover:text-navy">
-            トップ
-          </Link>
-          <span className="mx-1.5 text-rule">／</span>
-          <span className="text-ink-2">志望校診断模試</span>
-        </nav>
-
+      <ArticleLayout
+        breadcrumb={[{ href: "/", label: "トップ" }, { label: "志望校診断模試" }]}
+        aside={
+          <AsideBook
+            eyebrow="過去問の前にシリーズ"
+            title="旧帝大・難関国公立大理系数学 志望校診断模試"
+            cover={s.cover}
+            href={s.amazonUrl}
+            book={c}
+            note={`模試${s.rounds}回（全${s.problems}題）で、${s.universities.length}大学との相性を判定。`}
+          />
+        }
+      >
         <header className="pb-2 pt-4">
           <p className="text-[0.72rem] font-semibold tracking-wide text-navy">{seriesName}・2027年度対策</p>
           <div className="mt-2.5 grid grid-cols-[1fr_auto] gap-x-4">
@@ -475,7 +480,7 @@ export default function ShindanPage() {
             非公式の独自教材です。各大学とは関係ありません。価格・在庫は Amazon の表示が優先されます。
           </p>
         </section>
-      </article>
+      </ArticleLayout>
     </>
   );
 }

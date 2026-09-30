@@ -139,9 +139,9 @@ export function UniversityFinder({ items, groups }: { items: FinderItem[]; group
         grouped.map(([g, list]) => (
           <section key={g} className="mt-7">
             <h3 className="serif border-b border-rule pb-1.5 text-[0.92rem] text-ink">{g}</h3>
-            <ul className="divide-y divide-rule">
+            <ul className="lg:grid lg:grid-cols-2 lg:gap-x-10">
               {list.map((it) => (
-                <li key={it.slug}>
+                <li key={it.slug} className="border-b border-rule">
                   <Link
                     href={`/univ/${it.slug}`}
                     className="group flex min-h-[3.4rem] items-center gap-3 py-3"

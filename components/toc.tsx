@@ -1,11 +1,18 @@
 import { cleanHeading, sectionId } from "@/lib/data";
 
-/** 記事の目次。長いページを上から順に読ませないための入口。 */
-export function Toc({ titles }: { titles: string[] }) {
+/**
+ * 記事の目次。長いページを上から順に読ませないための入口。
+ * スマホでは本文の頭に置き、画面が広いときは袖に出しっぱなしにする（variant="aside"）。
+ */
+export function Toc({ titles, variant = "inline" }: { titles: string[]; variant?: "inline" | "aside" }) {
   if (titles.length < 3) return null;
+  const aside = variant === "aside";
   return (
-    <nav aria-labelledby="toc-heading" className="mt-7 bg-paper-2/70 px-4 py-4 sm:px-5">
-      <h2 id="toc-heading" className="text-[0.68rem] font-bold tracking-wide text-ink-3">
+    <nav
+      aria-labelledby={aside ? "toc-aside-heading" : "toc-heading"}
+      className={aside ? "border border-rule bg-white px-4 py-4" : "mt-7 bg-paper-2/70 px-4 py-4 sm:px-5 lg:hidden"}
+    >
+      <h2 id={aside ? "toc-aside-heading" : "toc-heading"} className="text-[0.68rem] font-bold tracking-wide text-ink-3">
         このページの内容
       </h2>
       <ol className="mt-2">

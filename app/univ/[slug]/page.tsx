@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ArticleLayout } from "@/components/article-layout";
+import { AsideBook } from "@/components/aside-book";
 import { BookCta, InlineCta } from "@/components/book-cta";
 import { FaqSection } from "@/components/faq";
 import { FieldChart } from "@/components/field-chart";
-import { KanseiPromo } from "@/components/kansei-promo";
+import { StudyPlan } from "@/components/study-plan";
 import { Toc } from "@/components/toc";
 import { UnivHero } from "@/components/univ-hero";
 import {
@@ -18,8 +20,9 @@ import {
   universities,
   yearLabel,
 } from "@/lib/data";
+import { kanseiFor } from "@/lib/series";
 import { Blocks } from "@/lib/render";
-import { buildFaq, keywords, pageTitle, subject } from "@/lib/seo";
+import { buildFaq, keywords, pageTitle, shortName, subject } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -77,6 +80,8 @@ export default async function UniversityPage({ params }: Props) {
 
   const siblings = related(u);
   const faq = buildFaq(u);
+  const short = shortName(u);
+  const kansei = kanseiFor(u.slug);
 
   // 記事が長いので、本文の途中にも導線を1つ挟む
   const midpoint = Math.min(2, Math.max(1, Math.floor(u.sections.length / 2)));
@@ -119,12 +124,14 @@ export default async function UniversityPage({ params }: Props) {
       ...u.books.map((b) => ({
         "@type": "Book",
         "@id": b.amazonUrl,
-        name: b.title,
+        name: b.fullTitle,
         url: b.amazonUrl,
         inLanguage: "ja",
         bookFormat: "https://schema.org/Paperback",
         author: { "@type": "Person", name: site.author },
         numberOfPages: b.pages ?? undefined,
+        isbn: b.isbn13 ?? undefined,
+        datePublished: b.released ?? undefined,
         image: `${site.url}/covers/${b.asin}.webp`,
         isPartOf: { "@type": "BookSeries", name: site.seriesName },
         // 検索結果に価格が出ると、Amazon へ進む前の迷いが1つ減る
@@ -147,17 +154,40 @@ export default async function UniversityPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <article className="mx-auto max-w-[38rem] px-5 sm:px-6">
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
-          <Link href="/" className="hover:text-navy">
-            トップ
-          </Link>
-          <span className="mx-1.5 text-rule">／</span>
-          <Link href="/universities" className="hover:text-navy">
-            大学一覧
-          </Link>
-        </nav>
-
+      <ArticleLayout
+        breadcrumb={[
+          { href: "/", label: "トップ" },
+          { href: "/universities", label: "大学一覧" },
+          { label: `${short}数学` },
+        ]}
+        aside={
+          <>
+            <AsideBook
+              eyebrow="この分析からつくった予想問題集"
+              title={u.books[0].title}
+              cover={`/covers/${u.books[0].asin}.webp`}
+              href={u.books[0].amazonUrl}
+              book={u.books[0]}
+              note={`本番と同じ形式の予想問題${u.books[0].rounds ? `${u.books[0].rounds}回分` : ""}。${
+                u.books.length > 1 ? `全${u.books.length}巻。` : ""
+              }`}
+              detail={{ href: "#books", label: "収録内容と全巻を見る" }}
+            />
+            {kansei?.published && kansei.amazonUrl && (
+              <AsideBook
+                eyebrow="過去問の前に"
+                title={`${kansei.name} 分野別完成演習`}
+                cover={`/covers/kansei/${kansei.slug}.webp`}
+                href={kansei.amazonUrl}
+                book={kansei.catalog}
+                note={`頻出${kansei.total.fields}分野・全${kansei.total.problems}題を段階的に。`}
+                detail={{ href: `/kansei/${kansei.slug}`, label: "収録分野と出題傾向を見る" }}
+              />
+            )}
+            <Toc titles={u.sections.map((s) => s.title)} variant="aside" />
+          </>
+        }
+      >
         <UnivHero u={u} />
 
         <Toc titles={u.sections.map((s) => s.title)} />
@@ -186,7 +216,7 @@ export default async function UniversityPage({ params }: Props) {
           </div>
         ))}
 
-        <KanseiPromo slug={u.slug} />
+        <StudyPlan u={u} />
 
         <FaqSection items={faq} name={subject(u)} />
 
@@ -221,7 +251,7 @@ export default async function UniversityPage({ params }: Props) {
             </p>
           </section>
         )}
-      </article>
+      </ArticleLayout>
     </>
   );
 }
