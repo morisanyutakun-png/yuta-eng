@@ -12,6 +12,14 @@
 //   shindan … 過去問の前に 志望校診断模試
 
 export const bookRegistry = [
+  { asin: "B0HJNGCXJ8", series: "gokaku", slug: "omu-chuki", vol: 1 },
+
+  { asin: "B0HJPHZCZ1", series: "gokaku", slug: "kpum", vol: 1 },
+
+  { asin: "B0HL62MTY6", series: "gokaku", slug: "hirosaki-med", vol: 1 },
+
+  { asin: "B0HKLLPLQV", series: "gokaku", slug: "oit", vol: 1 },
+
   { asin: "B0HFFFP2PQ", series: "gokaku", slug: "aizu", vol: 1 },
 
   { asin: "B0HFGG5KF8", series: "gokaku", slug: "asahikawa", vol: 1 },

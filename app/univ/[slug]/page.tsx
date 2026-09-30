@@ -18,6 +18,7 @@ import {
   sectionId,
   summarize,
   universities,
+  universityCount,
   yearLabel,
 } from "@/lib/data";
 import { kanseiFor } from "@/lib/series";
@@ -246,7 +247,7 @@ export default async function UniversityPage({ params }: Props) {
             </ul>
             <p className="mt-4 text-[0.85rem]">
               <Link href="/universities" className="text-navy underline underline-offset-4">
-                {universities.length}大学の分析をすべて見る
+                {universityCount()}大学の分析をすべて見る
               </Link>
             </p>
           </section>

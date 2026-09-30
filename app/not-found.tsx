@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { universities } from "@/lib/data";
+import { universityCount } from "@/lib/data";
 
 // 404 を検索結果に載せない
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function NotFound() {
           href="/universities"
           className="inline-flex min-h-11 items-center border border-navy bg-navy px-5 text-[0.9rem] font-semibold text-white transition-colors hover:bg-navy/90"
         >
-          {universities.length}大学の一覧を見る
+          {universityCount()}大学の一覧を見る
         </Link>
       </p>
     </div>

@@ -180,7 +180,9 @@ def build_home_card() -> Image.Image:
     f_sub = font(GOTHIC_R, 30)
     years = [int(y) for u in DATA for y in u.get("years", [])]
     span = f"{min(years)}〜{max(years)}年度" if years else "過去"
-    d.text((x, 290), f"国公立・私立{len(DATA)}大学の数学を、{span}の過去問から", font=f_sub, fill=INK2)
+    # 「大学」は実際の大学数で数える（東大理系と東大文系で2大学とは数えない）
+    unis = len({u["university"] for u in DATA})
+    d.text((x, 290), f"国公立・私立{unis}大学の数学を、{span}の過去問から", font=f_sub, fill=INK2)
     d.text((x, 336), "年度別・分野別に分析", font=f_sub, fill=INK2)
 
     d.line([(x, 420), (W - PAD, 420)], fill=RULE, width=2)
@@ -188,7 +190,7 @@ def build_home_card() -> Image.Image:
     books = sum(len(u["books"]) for u in DATA)
     total_years = sum(u.get("yearCount") or 0 for u in DATA)
     for value, unit, label in [
-        (str(len(DATA)), "大学", "分析大学"),
+        (str(unis), "大学", "分析した大学"),
         (str(books), "冊", "予想問題集"),
         (str(total_years), "年分", "分析した入試"),
     ]:

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { universities } from "@/lib/data";
+import { universities, universityCount } from "@/lib/data";
 import { shortName, subject } from "@/lib/seo";
 import { groupOrder } from "@/lib/site";
 
@@ -43,7 +43,7 @@ export function CoverShelf() {
         ))}
       </ul>
       <p className="mt-1 text-[0.68rem] text-ink-3">
-        横にスクロールすると{universities.length}大学すべて出てきます
+        横にスクロールすると{universityCount()}大学・{universities.length}区分すべて出てきます
       </p>
     </section>
   );

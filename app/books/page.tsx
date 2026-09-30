@@ -5,15 +5,15 @@ import Link from "next/link";
 import { AmazonButton } from "@/components/amazon-button";
 import { LearningPath } from "@/components/learning-path";
 import { allBooks, bookMetaLine, gokakuBooks, yen } from "@/lib/books";
-import { universities, type University } from "@/lib/data";
+import { universities, universityCount, type University } from "@/lib/data";
 import { shortName } from "@/lib/seo";
 import { kanseiAll, seriesName, seriesTagline, shindan } from "@/lib/series";
 import { groupOrder, site } from "@/lib/site";
 
 const gokakuCount = allBooks.filter((b) => b.series === "gokaku").length;
-const title = `教材一覧｜合格答案をつくる（${universities.length}大学${gokakuCount}冊）と過去問の前に`;
+const title = `教材一覧｜合格答案をつくる（${universityCount()}大学${gokakuCount}冊）と過去問の前に`;
 const description =
-  `大学入試の数学対策の教材一覧です。本番と同じ形式の予想問題集「合格答案をつくる」を${universities.length}大学・${gokakuCount}冊、` +
+  `大学入試の数学対策の教材一覧です。本番と同じ形式の予想問題集「合格答案をつくる」を${universityCount()}大学・${gokakuCount}冊、` +
   `過去問に入る前の「過去問の前に」シリーズ（志望校診断模試・大学別の分野別完成演習${kanseiAll.filter((k) => k.published).length}冊）を掲載しています。` +
   `大学ごとの出題分析ページから、その大学の教材にたどれます。`;
 
@@ -136,7 +136,7 @@ export default function BooksPage() {
         <header className="pb-6 pt-4">
           <h1 className="serif text-[1.75rem] leading-[1.35] text-ink sm:text-[2.2rem]">教材一覧</h1>
           <p className="prose-ja mt-4 max-w-[38rem] text-[0.95rem] text-ink-2">
-            大学入試の数学対策として、本番と同じ形式の予想問題集「{site.seriesName}」を{universities.length}大学・
+            大学入試の数学対策として、本番と同じ形式の予想問題集「{site.seriesName}」を{universityCount()}大学・
             {gokakuCount}冊、過去問に入る前に使う「{seriesName}」を{kansei.length + 1}冊出しています。
             どれも大学ごとの出題分析から書き下ろした非公式の独自教材です。
           </p>
@@ -217,7 +217,7 @@ export default function BooksPage() {
         <section aria-labelledby="gokaku-heading" className="mt-16">
           <p className="text-[0.68rem] font-bold tracking-wide text-accent">{site.seriesName}</p>
           <h2 id="gokaku-heading" className="rule-mark serif mt-1 text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
-            本番形式の予想問題集（{universities.length}大学・{gokakuCount}冊）
+            本番形式の予想問題集（{universityCount()}大学・{gokakuCount}冊）
           </h2>
           <p className="prose-ja mt-3 max-w-[38rem] text-[0.9rem] text-ink-2">
             各大学の過去問を分析して書き下ろした予想問題に、どこで何点入るかを示した採点基準を付けた問題集です。
@@ -229,7 +229,7 @@ export default function BooksPage() {
               <section key={g} className="mt-8 break-inside-avoid first:mt-0 lg:mb-8 lg:mt-0">
                 <h3 className="serif border-b border-rule pb-1.5 text-[1rem] text-ink">
                   {g}
-                  <span className="ml-2 text-[0.72rem] font-normal text-ink-3">{list.length}大学</span>
+                  <span className="ml-2 text-[0.72rem] font-normal text-ink-3">{universityCount(list)}大学</span>
                 </h3>
                 <ul>
                   {list.map((u) => (

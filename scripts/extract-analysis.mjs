@@ -390,6 +390,8 @@ function extractFacts(blocks) {
     // 「数学は2時限80分・100点」「直近の問題冊子は90分で」「独立した試験時間（90分）」
     text.match(/数学は[^。]{0,8}?(\d{2,3})\s*分/) ||
     text.match(/問題冊子は\s*(\d{2,3})\s*分/) ||
+    // 「大問5題・120分・240点」のように、時間が真ん中に来る書き方
+    text.match(/大問\s*\d+\s*題[・、]\s*(\d{2,3})\s*分/) ||
     text.match(/試験時間[^。]{0,4}[（(](\d{2,3})\s*分[）)]/) ||
     text.match(/数学\s*[（(]\s*(\d{2,3})\s*分/) ||
     text.match(/(\d{2,3})\s*分\s*[，、,・･]\s*大問/);
@@ -547,21 +549,33 @@ function volumeDirs(folder, meta) {
   const root = join(HOME, folder);
   if (!existsSync(root)) return [];
   const own = norm(meta.name);
-  return readdirSync(root, { withFileTypes: true })
+  const dirs = readdirSync(root, { withFileTypes: true })
     .filter((e) => e.isDirectory())
     .map((e) => e.name)
     .filter((name) => existsSync(join(root, name, "front.tex")))
     .filter((name) => !/完成演習|診断模試|のコピー|copy/i.test(name))
-    .filter((name) => {
-      const head = norm((readFileSync(join(root, name, "front.tex"), "utf8").match(/\\hdA\{([^}]*)\}/) || [])[1] ?? "");
-      if (head.includes(own)) return true;
-      const other = ALL_NAMES.find((u) => u.slug !== meta.slug && u.name && head.includes(u.name));
-      if (other) {
-        skipped.push({ title: `${meta.name}／${name}`, why: `ほかの大学の原稿（${other.slug}）なので使わない` });
-        return false;
-      }
-      return true;
-    })
+    .map((name) => ({
+      name,
+      head: norm((readFileSync(join(root, name, "front.tex"), "utf8").match(/\\hdA\{([^}]*)\}/) || [])[1] ?? ""),
+    }));
+
+  // この大学の名前が見出しに入っている巻があれば、それだけを使う。
+  // 1つのフォルダに別の本の原稿が同居していることがある
+  // （弘前大学数学には医学科・理系・文系の3つが入っている）。
+  const own_ = dirs.filter((d) => d.head.includes(own));
+  const usable = own_.length
+    ? own_
+    : dirs.filter((d) => {
+        const other = ALL_NAMES.find((u) => u.slug !== meta.slug && u.name && d.head.includes(u.name));
+        if (other) {
+          skipped.push({ title: `${meta.name}／${d.name}`, why: `ほかの大学の原稿（${other.slug}）なので使わない` });
+          return false;
+        }
+        return true;
+      });
+
+  return usable
+    .map((d) => d.name)
     .sort()
     .map((name) => `${folder}/${name}`);
 }

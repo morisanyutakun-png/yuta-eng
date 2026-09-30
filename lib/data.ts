@@ -160,7 +160,10 @@ export function siteTotals() {
   const counts = universities.map((u) => u.yearCount).filter((n): n is number => n != null);
   const years = universities.flatMap((u) => u.years.map(Number)).filter(Boolean);
   return {
-    universities: universities.length,
+    /** 大学の数。東大理系と東大文系は同じ1大学として数える */
+    universities: universityCount(),
+    /** ページの数（＝試験区分の数）。理系・文系・中期などで分かれる */
+    sections: universities.length,
     books: universities.reduce((a, u) => a + u.books.length, 0),
     /** 年度データが取れている大学の数 */
     analyzed: counts.length,
@@ -171,6 +174,14 @@ export function siteTotals() {
     /** 延べ分析年数。「合計◯年分」として出せる。 */
     totalYears: counts.reduce((a, n) => a + n, 0),
   };
+}
+
+/**
+ * 大学の数。1つの大学に理系・文系・中期などの区分が複数あることがあるので、
+ * 「◯大学」と書くときは必ずこれを使う（神戸大理系と神戸大文系で2大学とは数えない）。
+ */
+export function universityCount(list: University[] = universities): number {
+  return new Set(list.map((u) => u.university)).size;
 }
 
 /** 検索・一覧に出す 1 行の要約。分析本文の先頭から作る。 */

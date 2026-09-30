@@ -61,7 +61,7 @@ export default function HomePage() {
             数学入試分析
           </h1>
           <p className="prose-ja mt-5 max-w-[34rem] text-[0.95rem] text-ink-2">
-            国公立・私立{t.universities}大学の数学入試を、{t.span}の過去問から
+            国公立・私立{t.universities}大学・{t.sections}区分（理系／文系／中期など）の数学入試を、{t.span}の過去問から
             <strong className="font-semibold text-ink">年度別・分野別の表</strong>
             に整理しました。試験時間、大問構成、頻出分野、目標点まで。
           </p>
@@ -70,7 +70,7 @@ export default function HomePage() {
 
           <dl className="mt-7 flex gap-8 border-y border-rule py-4">
             {[
-              { k: "分析大学", v: t.universities, u: "大学" },
+              { k: "分析した大学", v: t.universities, u: `大学・${t.sections}区分` },
               { k: "予想問題集", v: t.books, u: "冊" },
               // 大学ごとに5〜9年分とばらつくので、合計の延べ年数を出す
               { k: "分析した入試", v: t.totalYears, u: "年分" },

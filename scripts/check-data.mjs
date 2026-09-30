@@ -97,10 +97,15 @@ const tagPoints = (xs) => xs.reduce((a, t) => a + t.points, 0);
 if (tagPoints(series.shindan.tags.field) !== series.shindan.points) ng("診断模試: 分野タグの配点合計が満点と合わない");
 if (tagPoints(series.shindan.tags.ability) !== series.shindan.points) ng("診断模試: 能力タグの配点合計が満点と合わない");
 
+/* ── 「N大学」と書いている数が、区分の数になっていないか ── */
+const pageCount = analysis.length;
+const uniCount = new Set(analysis.map((u) => u.university)).size;
+if (pageCount === uniCount) ng("大学数とページ数が同じ。区分の分割が壊れている可能性がある");
+
 /* ── 結果 ── */
 const gokaku = Object.values(books).filter((b) => b.series === "gokaku").length;
 console.log(
-  `大学 ${analysis.length} / 合格答案をつくる ${gokaku}冊 / 分野別完成演習 ${series.kansei.length}冊（販売中 ` +
+  `大学 ${uniCount}（ページ ${pageCount} 区分） / 合格答案をつくる ${gokaku}冊 / 分野別完成演習 ${series.kansei.length}冊（販売中 ` +
     `${Object.values(books).filter((b) => b.series === "kansei").length}冊）`,
 );
 if (problems.length) {

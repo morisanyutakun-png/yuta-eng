@@ -30,25 +30,26 @@ export type FieldShare = { name: string; universities: number };
 
 /**
  * 「その分野を頻出として挙げている大学が何校あるか」を数える。
- * 大学ごとに分母（8年中／40題中…）が違うので回数は足さず、校数で見る。
+ * 分母（8年中／40題中…）が試験ごとに違うので回数は足さず、大学の数で見る。
+ * 同じ大学の理系と文系は1校として数える。
  */
 export function fieldsAcrossUniversities(limit = 8): {
   items: FieldShare[];
   covered: number;
 } {
   const count = new Map<string, Set<string>>();
-  let covered = 0;
+  const coveredUniversities = new Set<string>();
 
   for (const u of universities) {
     if (!u.fieldChart) continue;
-    covered++;
+    coveredUniversities.add(u.university);
     // 出題が確認できた分野だけを対象にする
     for (const it of u.fieldChart.items) {
       if (it.count <= 0) continue;
       const name = canonicalField(it.label);
       if (!name) continue;
       if (!count.has(name)) count.set(name, new Set());
-      count.get(name)!.add(u.slug);
+      count.get(name)!.add(u.university);
     }
   }
 
@@ -57,5 +58,5 @@ export function fieldsAcrossUniversities(limit = 8): {
     .sort((a, b) => b.universities - a.universities)
     .slice(0, limit);
 
-  return { items, covered };
+  return { items, covered: coveredUniversities.size };
 }
