@@ -8,6 +8,7 @@ import { AsideBook } from "@/components/aside-book";
 import { FaqSection } from "@/components/faq";
 import { KanseiCards } from "@/components/kansei-cards";
 import { LearningPath } from "@/components/learning-path";
+import { LookInsideSection } from "@/components/look-inside-section";
 import { spanText } from "@/lib/data";
 import { Spans } from "@/lib/render";
 import type { Faq } from "@/lib/seo";
@@ -449,6 +450,16 @@ export default function ShindanPage() {
             </Link>
           </p>
         </section>
+
+        <LookInsideSection
+          book={{
+            asin: c.asin,
+            title: "旧帝大・難関国公立大理系数学 志望校診断模試",
+            price: c.price,
+            pages: c.pages,
+            released: c.released,
+          }}
+        />
 
         <FaqSection items={faqs} name="志望校診断模試" />
 

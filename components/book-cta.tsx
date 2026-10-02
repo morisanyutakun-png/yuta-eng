@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Book, University } from "@/lib/data";
 import { yearLabel } from "@/lib/data";
 import { shortName } from "@/lib/seo";
+import { sampleFor } from "@/lib/samples";
 import { site } from "@/lib/site";
 
 function Cover({ book, priority = false }: { book: Book; priority?: boolean }) {
@@ -23,6 +24,8 @@ function BookRow({ book }: { book: Book }) {
   const meta = [book.pages ? `${book.pages}ページ` : null, book.price ? `¥${book.price.toLocaleString()}` : null]
     .filter(Boolean)
     .join("・");
+  // 巻ごとに抜粋を用意してある。ない巻にはリンクを出さない
+  const sample = sampleFor(book.asin);
 
   return (
     <li className="flex gap-4 border-t border-rule pt-5 first:border-0 first:pt-0">
@@ -32,6 +35,16 @@ function BookRow({ book }: { book: Book }) {
       <div className="flex min-w-0 flex-1 flex-col">
         <p className="serif text-[0.95rem] leading-snug text-ink">{book.title}</p>
         {meta && <p className="mt-1 text-[0.75rem] text-ink-3">{meta}</p>}
+        {sample && (
+          <a
+            href={sample.pdf}
+            target="_blank"
+            rel="noopener"
+            className="mt-1 inline-block text-[0.75rem] font-semibold text-navy underline underline-offset-4"
+          >
+            試し読み（抜粋{sample.pages.length}ページ・PDF）
+          </a>
+        )}
         <a
           href={book.amazonUrl}
           rel="noopener nofollow sponsored"

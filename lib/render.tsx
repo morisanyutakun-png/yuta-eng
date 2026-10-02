@@ -18,6 +18,7 @@ const MACROS: Record<string, string> = {
   "\\MF": "\\frac{#1}{#2}",
   "\\Ma": "\\boxed{#1}", // マーク欄
   "\\ansheet": "\\boxed{\\textbf{#1}}", // 解答用紙番号
+  "\\probref": "\\boxed{#1}", // 大問番号（原稿では枠囲み）
 };
 
 const CJK_RUN = /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ々〆ー]+/g;

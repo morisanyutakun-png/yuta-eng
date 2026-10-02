@@ -2,7 +2,7 @@
 //
 // 原稿・Amazon・サイトの3つがずれていないか、数字が常識的な範囲に収まっているかを見る。
 // 1つでも引っかかったら終了コード 1 を返すので、公開前に流す。
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -14,6 +14,7 @@ const read = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8"));
 const books = read("data/books.json");
 const analysis = read("data/analysis.json");
 const series = read("data/series.json");
+const samples = read("data/samples.json");
 
 const problems = [];
 const ng = (msg) => problems.push(msg);
@@ -97,6 +98,32 @@ const tagPoints = (xs) => xs.reduce((a, t) => a + t.points, 0);
 if (tagPoints(series.shindan.tags.field) !== series.shindan.points) ng("診断模試: 分野タグの配点合計が満点と合わない");
 if (tagPoints(series.shindan.tags.ability) !== series.shindan.points) ng("診断模試: 能力タグの配点合計が満点と合わない");
 
+/* ── 試し読み（抜粋） ── */
+for (const [asin, s] of Object.entries(samples)) {
+  if (!books[asin]) ng(`試し読み ${asin}: 登録簿にない本の抜粋がある`);
+  if (s.pages.length < 4 || s.pages.length > 6) ng(`試し読み ${asin}: 抜粋が ${s.pages.length} ページ（4〜6 のはず）`);
+  if (!file(s.pdf.replace(/^\//, "/"))) ng(`試し読み ${asin}: 抜粋PDFがない`);
+  for (const p of s.pages) if (!file(p.file)) ng(`試し読み ${asin}: 画像がない（${p.file}）`);
+
+  // 問題・解説・採点基準が同じ回（章）から出ていないか
+  const from = {};
+  for (const p of s.pages) {
+    const kind = p.label.replace("の例", "").replace("（続き）", "");
+    if (["問題", "解説", "採点基準"].includes(kind)) (from[kind] ||= new Set()).add(p.section);
+  }
+  const used = Object.values(from).flatMap((v) => [...v]);
+  if (used.length !== new Set(used).size) ng(`試し読み ${asin}: 問題・解説・採点基準が同じ回から出ている`);
+  if (!s.pages.some((p) => p.label.includes("問題"))) ng(`試し読み ${asin}: 問題のページがない`);
+}
+// 本文まるごとのPDFを公開していないか（抜粋は多くても6ページ）
+for (const f of readdirSync(join(ROOT, "public", "samples"), { recursive: true })) {
+  if (typeof f === "string" && f.endsWith(".pdf")) {
+    const asin = f.split("/")[0];
+    const pages = samples[asin]?.pages.length;
+    if (!pages) ng(`public/samples/${f}: data/samples.json にない PDF`);
+  }
+}
+
 /* ── 「N大学」と書いている数が、区分の数になっていないか ── */
 const pageCount = analysis.length;
 const uniCount = new Set(analysis.map((u) => u.university)).size;
@@ -104,6 +131,9 @@ if (pageCount === uniCount) ng("大学数とページ数が同じ。区分の分
 
 /* ── 結果 ── */
 const gokaku = Object.values(books).filter((b) => b.series === "gokaku").length;
+console.log(
+  `試し読み ${Object.keys(samples).length}冊 ${Object.values(samples).reduce((a, s) => a + s.pages.length, 0)}ページ`,
+);
 console.log(
   `大学 ${uniCount}（ページ ${pageCount} 区分） / 合格答案をつくる ${gokaku}冊 / 分野別完成演習 ${series.kansei.length}冊（販売中 ` +
     `${Object.values(books).filter((b) => b.series === "kansei").length}冊）`,

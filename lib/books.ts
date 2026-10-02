@@ -50,7 +50,7 @@ export function releasedLabel(d?: string | null) {
 }
 
 /** 「138ページ・2026年9月6日発売」 */
-export const bookMetaLine = (b?: Pick<Book, "pages" | "released"> | null) =>
+export const bookMetaLine = (b?: { pages?: number | null; released?: string | null } | null) =>
   [b?.pages ? `${b.pages}ページ` : null, releasedLabel(b?.released) ? `${releasedLabel(b?.released)}発売` : null]
     .filter(Boolean)
     .join("・");

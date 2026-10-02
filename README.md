@@ -35,6 +35,7 @@ npm run data:series                # 過去問の前にシリーズ（data/serie
 python3 scripts/build-covers.py    # 表紙画像（public/covers/*.webp）
 python3 scripts/build-og.py        # OG画像とサムネイル
 python3 scripts/build-series-assets.py  # 過去問の前にシリーズの表紙・OG
+python3 scripts/build-samples.py   # 試し読みの抜粋（public/samples/）
 npm run check                      # データの突き合わせ（公開前に流す）
 ```
 
@@ -134,6 +135,26 @@ python3 scripts/build-series-assets.py # 表紙（public/covers/kansei/）と OG
 - 原稿は8大学ぶん用意してあるので、まだ出していない巻も `data/series.json` には入っている。
   `book-registry.mjs` に ASIN を足した巻だけがページになる（`lib/series.ts` の `kanseiPublished`）
 
+## 試し読み（抜粋）
+
+書店での立ち読みに近い範囲で、書籍の中身を見られるようにしている。
+`scripts/build-samples.py` が本文PDFから1冊あたり4〜6ページを抜き出し、
+画像（`public/samples/<ASIN>/p1.webp`…）と、同じ抜粋だけを集めたPDFを作る。
+
+- **原稿・本文PDFは読むだけ**。公開ディレクトリに置くのは抜粋した画像とPDFだけで、
+  本文まるごとのファイルは配信しない
+- 抜き出すのは「目次／本書の使い方／問題／解説／採点基準」。
+  採点基準のない本（マーク式など）は付録や章扉に替える
+- **問題・解説・採点基準は、わざと別の回（章）から採る**。
+  同じ大問の「問題・解答・詳解・採点基準」が一式そろって見えないようにするため。
+  `npm run check` でこれを毎回確認している
+- 問題のページは、候補のうち分量が中くらいのものを選ぶ
+  （1行問題だけの余白だらけのページも、最も詰まったページも代表的でないため）
+- 版の取り違えを防ぐため、**本文PDFのページ数が Amazon の表示と一致する巻だけ**を対象にする。
+  一致しない巻は作らずに「作れなかった本」として報告する
+- 画面では `components/look-inside-section.tsx`（見出し・断り書き・購入リンク）と
+  `components/look-inside.tsx`（拡大表示）が担当する。抜粋のない本では何も出さない
+
 ## 開発
 
 ```
@@ -150,3 +171,5 @@ npm run lint
   決め打ちしないこと（`yearLabel` / `siteTotals` を通す）。
 - 価格・ページ数・収録回数・別解の有無も本ごとに違う。文言に直接書かず、
   `data/books.json` と `analysis.json` の値を使うこと。
+- 試し読みは「立ち読み」の範囲にとどめる。1回分・1章分をまとめて出さない。
+  「無料演習」「無料模試」といった言い方はしない。

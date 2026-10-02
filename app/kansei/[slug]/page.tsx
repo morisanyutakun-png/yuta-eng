@@ -9,6 +9,7 @@ import { AsideBook } from "@/components/aside-book";
 import { FaqSection } from "@/components/faq";
 import { KanseiCards } from "@/components/kansei-cards";
 import { LearningPath } from "@/components/learning-path";
+import { LookInsideSection } from "@/components/look-inside-section";
 import { bookMetaLine, yen } from "@/lib/books";
 import { factsLine, getUniversity } from "@/lib/data";
 import { Blocks, Spans } from "@/lib/render";
@@ -380,6 +381,8 @@ export default async function KanseiPage({ params }: Props) {
             </section>
           ))}
         </section>
+
+        <LookInsideSection book={{ asin: c.asin, title: `${k.name} 分野別完成演習`, price: c.price, pages: c.pages, released: c.released }} />
 
         <section className="mt-12" aria-labelledby="make-heading">
           <h2 id="make-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">

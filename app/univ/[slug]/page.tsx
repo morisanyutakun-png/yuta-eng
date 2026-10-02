@@ -7,6 +7,7 @@ import { AsideBook } from "@/components/aside-book";
 import { BookCta, InlineCta } from "@/components/book-cta";
 import { FaqSection } from "@/components/faq";
 import { FieldChart } from "@/components/field-chart";
+import { LookInsideSection } from "@/components/look-inside-section";
 import { StudyPlan } from "@/components/study-plan";
 import { Toc } from "@/components/toc";
 import { UnivHero } from "@/components/univ-hero";
@@ -21,6 +22,7 @@ import {
   universityCount,
   yearLabel,
 } from "@/lib/data";
+import { sampleFor } from "@/lib/samples";
 import { kanseiFor } from "@/lib/series";
 import { Blocks } from "@/lib/render";
 import { buildFaq, keywords, pageTitle, shortName, subject } from "@/lib/seo";
@@ -83,6 +85,8 @@ export default async function UniversityPage({ params }: Props) {
   const faq = buildFaq(u);
   const short = shortName(u);
   const kansei = kanseiFor(u.slug);
+  // 抜粋を用意できている巻を出す（第1巻に無ければ次の巻）
+  const sampleBook = u.books.find((b) => sampleFor(b.asin));
 
   // 記事が長いので、本文の途中にも導線を1つ挟む
   const midpoint = Math.min(2, Math.max(1, Math.floor(u.sections.length / 2)));
@@ -218,6 +222,8 @@ export default async function UniversityPage({ params }: Props) {
         ))}
 
         <StudyPlan u={u} />
+
+        {sampleBook && <LookInsideSection book={sampleBook} />}
 
         <FaqSection items={faq} name={subject(u)} />
 
