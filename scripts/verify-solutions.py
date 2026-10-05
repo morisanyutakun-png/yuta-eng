@@ -695,6 +695,92 @@ for X in [50.0, 200.0, 1000.0]:
     v = X*(f5(X) - f5(X-1))
     ok(f"5(2) x={X:.0f}", abs(v - 2) < 0.02, f"{v:.6f}")
 
+# ══ 東京科学大 2026 ══════════════════════════════════════
+print()
+print("── 東京科学大 2026 ──")
+import cmath
+from fractions import Fraction as Fr
+
+# 大問1
+for a_, b_, n_ in [(Fr(1),Fr(1),2), (Fr(-3,2),Fr(2,5),7), (Fr(0),Fr(1),3)]:
+    x = float(a_) + float(b_)*math.sqrt(n_)
+    p_, q_ = -2*float(a_), float(a_)**2 - float(b_)**2*n_
+    ok(f"1(1) a={a_} b={b_} n={n_}", abs(x*x + p_*x + q_) < 1e-9, f"{x*x+p_*x+q_:.2e}")
+    y = float(a_) + float(b_)*(n_ ** (1/3))
+    P_, Q_, R_ = -3*float(a_), 3*float(a_)**2, -(float(a_)**3 + float(b_)**3*n_)
+    ok(f"1(2) a={a_} b={b_} n={n_}", abs(y**3 + P_*y*y + Q_*y + R_) < 1e-9, f"{y**3+P_*y*y+Q_*y+R_:.2e}")
+
+# 大問2
+def count_lt(n_):
+    return sum(1 for x in range(1, n_) for y in range(1, n_) for z in range(1, n_) if x+y+z < n_)
+def count_eq(n_):
+    N = 3*n_
+    return sum(1 for x in range(1, N) for y in range(x+1, N) if 0 < N - x - y and N - x - y > y)
+for n_ in range(4, 41):
+    ok(f"2(2) n={n_}", count_lt(n_) == math.comb(n_-1, 3), f"全探索{count_lt(n_)} 式{math.comb(n_-1,3)}") if n_ <= 20 else None
+    want = (3*n_*n_ - 6*n_ + 4)//4 if n_ % 2 == 0 else 3*(n_-1)**2//4
+    ok(f"2(3) n={n_}", count_eq(n_) == want, f"全探索{count_eq(n_)} 式{want}") if n_ <= 20 else None
+ok("2(2) n=40", count_lt(40) == math.comb(39, 3))
+ok("2(3) n=40", count_eq(40) == (3*1600 - 240 + 4)//4)
+
+# 大問3
+def q3(a_, b_):
+    P = (3*a_/4, b_/4)
+    Q = ((a_*a_ - b_*b_)/(4*a_), b_/2)
+    return P, Q
+for a_, b_ in [(1.0,1.0), (1.0,2.0), (2.0,0.5), (1.0,math.sqrt(2))]:
+    P, Q = q3(a_, b_)
+    for nm, O in [("O",(0,0)), ("B",(0,b_)), ("C",(a_/2,b_/2))]:
+        pass
+    d = [math.dist(Q, X) for X in [(0,0), (0,b_), (a_/2, b_/2)]]
+    ok(f"3(1) 外心 a={a_} b={b_}", max(d) - min(d) < 1e-12, f"{d}")
+    for t in [a_/4, (3*a_*a_ - b_*b_)/(4*a_)]:
+        RP = (P[0]-t, P[1]); RQ = (Q[0]-t, Q[1])
+        ok(f"3(2) 直交 a={a_} b={b_} t={t:.4f}", abs(RP[0]*RQ[0] + RP[1]*RQ[1]) < 1e-12)
+    t = a_/4
+    RP = (P[0]-t, P[1]); RQ = (Q[0]-t, Q[1])
+    ratio = math.hypot(*RQ)/math.hypot(*RP)
+    ok(f"3(3) 比=b/a a={a_} b={b_}", abs(ratio - b_/a_) < 1e-12, f"{ratio:.9f} vs {b_/a_:.9f}")
+    t2 = (3*a_*a_ - b_*b_)/(4*a_)
+    if abs(t2 - a_/4) > 1e-9:
+        RP2 = (P[0]-t2, P[1]); RQ2 = (Q[0]-t2, Q[1])
+        r2 = math.hypot(*RQ2)/math.hypot(*RP2)
+        ok(f"3(3) もう一方は不一致 a={a_} b={b_}",
+           abs(r2 - b_/a_) > 1e-9 and abs(1/r2 - b_/a_) > 1e-9, f"{r2:.6f}")
+
+# 大問4
+e_ = lambda th: cmath.exp(1j*th)
+def Rn(n_, z):
+    return e_(2*(n_+1)*math.pi/3)*z.conjugate() + math.sqrt(3)*e_((2*n_-1)*math.pi/6)
+for n_ in range(1, 9):
+    p_ = e_((n_-1)*math.pi/3); q_ = e_(n_*math.pi/3)
+    ok(f"4(1) n={n_} 直線上の点は不動",
+       abs(Rn(n_, p_) - p_) < 1e-12 and abs(Rn(n_, q_) - q_) < 1e-12)
+    # 対称移動かどうか：中点が直線上に乗り、差が直線と垂直
+    z0 = 0.3 - 0.7j
+    w0 = Rn(n_, z0); mid = (z0 + w0)/2; d = q_ - p_
+    ok(f"4(1) n={n_} 対称移動",
+       abs(((mid - p_)/d).imag) < 1e-12 and abs(((w0 - z0)/d).real) < 1e-12)
+for z0 in [0j, 1+2j, -3.5+0.25j, 10-7j]:
+    z = z0
+    for n_ in range(1, 7):
+        z = Rn(n_, z)
+    ok(f"4(2) z7=z1-3√3i z1={z0}", abs(z - (z0 - 3*math.sqrt(3)*1j)) < 1e-10, f"{z:.6f}")
+
+# 大問5
+def Ik(k_):
+    return quad(lambda x: x**k_ * math.exp(-x), 0, 100, n=400001)[0]
+for k_ in range(1, 6):
+    ok(f"5 I_k≒k! k={k_}", abs(Ik(k_) - math.factorial(k_)) < 1e-4*math.factorial(k_),
+       f"数値{Ik(k_):.6f} k!={math.factorial(k_)}")
+for k_, big in [(1, False), (2, False), (3, False), (4, True), (5, True)]:
+    ok(f"5 k={k_} の判定", (math.factorial(k_)/2 > 10) == big, f"{math.factorial(k_)/2}")
+# n を大きくすると sin^2 の平均 1/2 に近づく
+for k_ in [3, 4]:
+    v = quad(lambda x: x**k_*math.exp(-x)*math.sin(300*x)**2, 0, 100, n=600001)[0]
+    ok(f"5 n=300 で k!/2 に近い k={k_}", abs(v - math.factorial(k_)/2) < 0.05*math.factorial(k_),
+       f"数値{v:.4f} 目標{math.factorial(k_)/2}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
