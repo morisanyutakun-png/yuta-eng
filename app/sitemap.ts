@@ -22,7 +22,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     // 解答解説は「公開済み」のものだけ。書きかけ・原典未確認のものは載せない
     ...(hasSolutions
-      ? [{ url: `${site.url}/kaisetsu`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 }]
+      ? [
+          { url: `${site.url}/kaisetsu`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },
+          { url: `${site.url}/kaisetsu/policy`, lastModified: now, changeFrequency: "yearly" as const, priority: 0.3 },
+        ]
       : []),
     ...[...new Set(published.map((s) => s.slug))].map((slug) => ({
       url: `${site.url}/kaisetsu/${slug}`,

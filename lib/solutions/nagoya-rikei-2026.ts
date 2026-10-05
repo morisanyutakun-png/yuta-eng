@@ -18,17 +18,8 @@ export const nagoyaRikei2026: SolutionSet = {
   division: "理科系",
   university: "名古屋大学",
   short: "名大理系",
-  source: {
-    url: "https://www.nagoya-u.ac.jp/admissions/exam/data/answer/sub/post_642.html",
-    publisher: "名古屋大学",
-    pageTitle: "令和８年度一般選抜（前期日程）の試験問題および正解・解答例等",
-    kind: "page",
-    checked: "2026-10-05",
-    universityRequest:
-      "名古屋大学は、入試問題の2次利用（問題集・参考書への掲載、塾のテキスト化、インターネット上での公開）について、" +
-      "出所の明示と「入学試験問題利用報告書」の提出を自サイトで求めている。" +
-      "当サイトは問題文を掲載せず独自の解答のみを公開しているが、この要請の有無は事実として記録しておく。",
-  },
+  // 問題の見てもらい方は lib/solutions/sources.ts にまとめてある
+  source: null,
   questions: [
     {
       no: 1,

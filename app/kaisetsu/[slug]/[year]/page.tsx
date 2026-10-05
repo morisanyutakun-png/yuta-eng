@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     `${s.university}${s.year}年度（${s.schedule}・${s.division}）の数学について、当サイトが独自に解いた解答・計算過程・詳解・別解。` +
     `全${s.questions.length}問の分野は${s.questions.map((q) => q.field).join("、")}。` +
-    `問題文は載せず、${s.source?.publisher}公式の問題公開ページへリンクしています。公式解答ではありません。`;
+    `問題文は掲載していません。公式解答ではありません。`;
   return {
     title,
     description,
@@ -73,7 +73,9 @@ export default async function YearPage({ params }: Props) {
       isAccessibleForFree: true,
       url: `${site.url}/kaisetsu/${s.slug}/${s.year}`,
       about: s.questions.map((q) => ({ "@type": "Thing", name: q.field })),
-      ...(s.source ? { citation: { "@type": "CreativeWork", name: s.source.pageTitle, url: s.source.url } } : {}),
+      ...(s.source?.kind === "official"
+        ? { citation: { "@type": "CreativeWork", name: s.source.pageTitle, url: s.source.url } }
+        : {}),
     },
     {
       "@context": "https://schema.org",
@@ -170,6 +172,9 @@ export default async function YearPage({ params }: Props) {
         <p className="prose-ja mt-14 border-t border-rule pt-5 text-[0.78rem] leading-[1.9] text-ink-3">
           {NOT_OFFICIAL}
           解答は当サイトで検算していますが、誤りが残っている可能性はあります。
+          <Link href="/kaisetsu/policy" className="ml-1 underline underline-offset-4 hover:text-navy">
+            掲載方針
+          </Link>
           配点・採点基準・難易度を大学の公表値として示すことはしていません。
         </p>
 

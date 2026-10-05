@@ -11,8 +11,7 @@ const unis = solutionUniversities();
 const title = "大学入試数学 過去問の解答・解説｜独自解答と詳解";
 const description =
   `大学入試の数学の過去問について、当サイトが独自に解いた解答・計算過程・詳解・別解を、大学別・年度別に掲載しています。` +
-  `現在は${unis.length}大学・${published.length}区分・全${questionCount}問。問題文は載せず、大学公式の問題公開ページへリンクで案内します。` +
-  `公式解答ではありません。`;
+  `現在は${unis.length}大学・${published.length}年度分・全${questionCount}問。問題文は掲載していません。公式解答ではありません。`;
 
 export const metadata: Metadata = {
   title,
@@ -69,12 +68,15 @@ export default function KaisetsuTop() {
           <p className="prose-ja mt-3 max-w-[38rem] text-[0.92rem] leading-[1.95] text-ink-2">
             大学入試の数学の過去問を、当サイトで独自に解いた解答・計算過程・詳解・別解です。
             どの方針をなぜ選ぶのか、場合分けや端点の確認をどこまで書くのか、答案で省略しない方がよい説明は何かまで載せています。
-            現在は{unis.length}大学・{published.length}区分・全{questionCount}問。
+            現在は{unis.length}大学・{published.length}年度分・全{questionCount}問。
           </p>
           <p className="prose-ja mt-3 max-w-[38rem] border-l-2 border-navy/40 bg-paper-2/60 px-4 py-3 text-[0.84rem] leading-[1.9] text-ink-2">
             {NOT_OFFICIAL}
-            問題文は各大学が公開しているページへ、ページごとにリンクしています。
+            大学が問題を公開している年度は、そのページへリンクしています。
             {lastUpdated && `最終更新 ${lastUpdated.replace(/-/g, "/")}。`}
+            <Link href="/kaisetsu/policy" className="ml-1 font-semibold text-navy underline underline-offset-4">
+              掲載方針
+            </Link>
           </p>
         </header>
 
@@ -144,11 +146,18 @@ export default function KaisetsuTop() {
             掲載のきまり
           </h2>
           <ul className="prose-ja mt-3 list-disc space-y-2 pl-5 text-[0.86rem] leading-[1.9] text-ink-2 marker:text-ink-3">
-            <li>問題文・図・表は掲載していません。問題は各大学の公開ページでご覧ください。</li>
+            <li>問題文・図・表は掲載していません。書き写しも言い換えもしていません。</li>
             <li>解答・計算過程・詳解・別解は、原典にあたったうえで当サイトが独自に作成したものです。</li>
             <li>大学の公式解答・出題意図や、予備校・問題集の解答解説は引用も要約もしていません。</li>
             <li>配点・採点基準・難易度を大学の公表値として示すことはしません。当サイトの見立てを出すときは、その旨を明記します。</li>
             <li>原典が確認できていない年度・大問はページを作っていません。推測で埋めることはしません。</li>
+            <li>
+              問題を転載している非公式サイトへのリンクはしていません。くわしくは
+              <Link href="/kaisetsu/policy" className="mx-1 font-semibold text-navy underline underline-offset-4">
+                掲載方針
+              </Link>
+              をご覧ください。
+            </li>
           </ul>
         </section>
       </div>

@@ -135,6 +135,95 @@ def P2d(n):
     return sum(st.values())
 ok("4   2次元の直接計算と一致", all(P(n)==P2d(n) for n in range(1,12)))
 
+
+# ══ 名大理系 2025 ══════════════════════════════════════
+print()
+print("── 名大理系 2025 ──")
+
+# 大問1 … g(x0) の式を、数値的に求めた最大値と突き合わせる
+f  = lambda x: math.log((math.exp(x)+math.exp(-x))/2)
+for c in [0.0, 0.5, -0.8, 0.95]:
+    x0 = 0.5*math.log((1+c)/(1-c))
+    g  = lambda x: c*x - f(x)
+    # x0 のまわりを細かく見て、本当にそこが最大か
+    xs = [x0 + (i-20000)/4000 for i in range(40001)]
+    ok(f"1(3) x0 が最大点 c={c}", max(xs, key=g) == min([max(xs, key=g)], key=g) and abs(max(xs, key=g)-x0) < 1e-3,
+       f"数値{max(xs, key=g):.6f} 式{x0:.6f}")
+    want = 0.5*((1+c)*math.log(1+c) + (1-c)*math.log(1-c)) if abs(c) < 1 else None
+    ok(f"1(3) g(x0) c={c}", abs(g(x0) - want) < 1e-12, f"直接{g(x0):.12f} 式{want:.12f}")
+ok("1(2) a=-1,b=1", abs((math.exp(2*-50)-1)/(math.exp(2*-50)+1) + 1) < 1e-12
+   and abs((1-math.exp(-2*50))/(1+math.exp(-2*50)) - 1) < 1e-12)
+
+# 大問2 … a^2-b^2=c の組を全探索
+def diffsq(c, amax=4000):
+    return sorted((a, b) for a in range(amax+1) for b in range(a+1) if a*a-b*b == c)
+ok("2(1) c=24", diffsq(24) == [(5,1),(7,5)], str(diffsq(24)))
+ok("2(1) c=25", diffsq(25) == [(5,0),(13,12)], str(diffsq(25)))
+ok("2(1) c=26", diffsq(26) == [], str(diffsq(26)))
+for p_, n_ in [(3,1),(3,2),(5,1),(7,1),(5,2)]:
+    c = 4*p_**(2*n_)
+    want = sorted((p_**i + p_**(2*n_-i), p_**(2*n_-i) - p_**i) for i in range(n_+1))
+    got = diffsq(c, amax=max(w[0] for w in want))
+    ok(f"2(2) p={p_} n={n_}", got == want, f"全探索{got} 式{want}")
+
+# 大問3 … 通過領域の面積・体積をモンテカルロ法で
+import random
+random.seed(20260101)
+def area_mc(r, al, N=400000):
+    lo, hi = -(1+r), (1+r)
+    cnt = 0
+    for _ in range(N):
+        x = random.uniform(lo, hi); y = random.uniform(lo, hi)
+        rho = math.hypot(x, y); ph = math.atan2(y, x)
+        if 0 <= ph <= al:
+            hit = abs(rho-1) <= r
+        else:
+            hit = min(math.hypot(x-1, y), math.hypot(x-math.cos(al), y-math.sin(al))) <= r
+        cnt += hit
+    return cnt/N * (hi-lo)**2
+for r, al in [(0.3, math.pi/3), (0.7, 2*math.pi/3), (1.0, math.pi/2), (0.5, 0.0)]:
+    want = 2*r*al + math.pi*r*r
+    got = area_mc(r, al)
+    ok(f"3(1) r={r} α={al:.4f}", abs(got-want) < 0.03*max(want,1), f"MC{got:.4f} 式{want:.4f}")
+
+def vol_mc(R, al, N=400000):
+    lo, hi = -(1+R), (1+R)
+    cnt = 0
+    for _ in range(N):
+        x = random.uniform(lo, hi); y = random.uniform(lo, hi); z = random.uniform(-R, R)
+        ph = math.atan2(y, x); rho = math.hypot(x, y)
+        if 0 <= ph <= al:
+            hit = (rho-1)**2 + z*z <= R*R
+        else:
+            hit = min((x-1)**2+y*y+z*z, (x-math.cos(al))**2+(y-math.sin(al))**2+z*z) <= R*R
+        cnt += hit
+    return cnt/N * (hi-lo)**2 * (2*R)
+for R, al in [(0.4, math.pi/3), (0.8, 2*math.pi/3), (1.0, math.pi/2), (0.6, 0.0)]:
+    want = math.pi*R*R*al + 4/3*math.pi*R**3
+    got = vol_mc(R, al)
+    ok(f"3(2) R={R} α={al:.4f}", abs(got-want) < 0.04*max(want,1), f"MC{got:.4f} 式{want:.4f}")
+
+# 大問4 … 6^n 通りの操作列を全探索
+NB = {1:(2,4), 2:(1,3,5), 3:(2,6), 4:(1,5), 5:(2,4,6), 6:(3,5)}
+def p_coins(n):
+    from itertools import product
+    good = 0
+    for seq in product(range(1,7), repeat=n):
+        st = [0]*7
+        for c in seq:
+            for j in NB[c]: st[j] ^= 1
+        if all(st[j] == 1 for j in range(1,7)): good += 1
+    return Fraction(good, 6**n)
+ok("4(1) p2=1/18", p_coins(2) == Fraction(1,18), str(p_coins(2)))
+ok("4(3) p4=7/162", p_coins(4) == Fraction(7,162), str(p_coins(4)))
+ok("4   n が奇数なら 0", p_coins(1) == 0 and p_coins(3) == 0)
+# (2) のグループ分けが唯一解か（偶奇の連立を全探索）
+sols = []
+for bits in range(64):
+    x = [(bits >> i) & 1 for i in range(6)]
+    if all(sum(x[j-1] for j in NB[i]) % 2 == 1 for i in range(1,7)): sols.append(tuple(x))
+ok("4(2) A={2,5} が唯一解", sols == [(0,1,0,0,1,0)], str(sols))
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

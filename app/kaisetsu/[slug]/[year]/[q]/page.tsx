@@ -80,7 +80,9 @@ export default async function QuestionPage({ params }: Props) {
       isAccessibleForFree: true,
       url: `${site.url}${questionPath(s, question.no)}`,
       about: [{ "@type": "Thing", name: question.field }, ...question.topics.map((t) => ({ "@type": "Thing", name: t }))],
-      ...(s.source ? { citation: { "@type": "CreativeWork", name: s.source.pageTitle, url: s.source.url } } : {}),
+      ...(s.source?.kind === "official"
+        ? { citation: { "@type": "CreativeWork", name: s.source.pageTitle, url: s.source.url } }
+        : {}),
     },
     {
       "@context": "https://schema.org",
@@ -166,6 +168,9 @@ export default async function QuestionPage({ params }: Props) {
         <p className="prose-ja mt-10 border-t border-rule pt-5 text-[0.78rem] leading-[1.9] text-ink-3">
           {NOT_OFFICIAL}
           解答は当サイトで検算していますが、誤りが残っている可能性はあります。
+          <Link href="/kaisetsu/policy" className="ml-1 underline underline-offset-4 hover:text-navy">
+            掲載方針
+          </Link>
         </p>
 
         <SolutionFooter set={s} />

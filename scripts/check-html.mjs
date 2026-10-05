@@ -106,14 +106,18 @@ for (const f of files) {
     for (const m of html.matchAll(/(?:href|src)="(\/[^"]*\.pdf)"/g)) {
       if (!m[1].startsWith("/samples/")) ng(page, `問題PDFらしきものを自サイトに置いている（${m[1]}）`);
     }
-    // 年度ページ・大問ページには、必ず原典への外部リンクがある
+    // 問題へのリンクは大学公式だけ。張るなら行き先が分かる文言と target/rel をそろえる
     if (/^\/kaisetsu\/[^/]+\/\d+/.test(page)) {
+      if (!body.includes("問題文について")) ng(page, "問題文の扱いについての案内がない");
       const out = [...html.matchAll(/<a\b[^>]*data-outbound="source"[^>]*>/g)].map((m) => m[0]);
-      if (!out.length) ng(page, "原典（大学公式）へのリンクがない");
       for (const a of out) {
-        if (!/target="_blank"/.test(a) || !/rel="[^"]*noopener/.test(a)) ng(page, "原典リンクの target/rel が足りない");
+        if (!/target="_blank"/.test(a) || !/rel="[^"]*noopener/.test(a)) ng(page, "問題へのリンクの target/rel が足りない");
       }
-      if (!body.includes("問題文を見る")) ng(page, "リンクの行き先が分かる文言になっていない");
+      if (out.length && !body.includes("問題文を見る")) ng(page, "リンクの行き先が分かる文言になっていない");
+      // ac.jp 以外の外部サイトへ問題を見に行かせていないか
+      for (const m of html.matchAll(/<a\b[^>]*data-outbound="source"[^>]*href="(https?:\/\/[^"]+)"/g)) {
+        if (!/^https:\/\/[^/]*\.ac\.jp\//.test(m[1])) ng(page, `問題のリンク先が大学公式でない（${m[1]}）`);
+      }
     }
   }
 
