@@ -79,7 +79,7 @@ export default function UniversitiesPage() {
           で頻出分野を固められます。
         </p>
 
-        <UniversityFinder items={items} groups={usedGroups} />
+        <UniversityFinder items={items} groups={usedGroups} headingLevel="h2" />
       </div>
     </>
   );

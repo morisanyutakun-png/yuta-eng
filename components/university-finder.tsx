@@ -35,7 +35,16 @@ function normalize(s: string) {
     .replace(/\s+/g, "");
 }
 
-export function UniversityFinder({ items, groups }: { items: FinderItem[]; groups: string[] }) {
+export function UniversityFinder({
+  items,
+  groups,
+  headingLevel: H = "h3",
+}: {
+  items: FinderItem[];
+  groups: string[];
+  /** 群の見出しの段。見出しの段が飛ばないよう、置く場所に合わせて渡す */
+  headingLevel?: "h2" | "h3";
+}) {
   const [query, setQuery] = useState("");
   const [group, setGroup] = useState<string>(ALL);
   const deferred = useDeferredValue(query);
@@ -138,7 +147,7 @@ export function UniversityFinder({ items, groups }: { items: FinderItem[]; group
       ) : (
         grouped.map(([g, list]) => (
           <section key={g} className="mt-7">
-            <h3 className="serif border-b border-rule pb-1.5 text-[0.92rem] text-ink">{g}</h3>
+            <H className="serif border-b border-rule pb-1.5 text-[0.92rem] text-ink">{g}</H>
             <ul className="lg:grid lg:grid-cols-2 lg:gap-x-10">
               {list.map((it) => (
                 <li key={it.slug} className="border-b border-rule">

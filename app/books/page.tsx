@@ -142,8 +142,7 @@ export default function BooksPage() {
           </p>
         </header>
 
-        <LearningPath compact className="mb-12 lg:hidden" />
-        <LearningPath className="mb-14 hidden lg:block" />
+        <LearningPath compact className="mb-12 lg:mb-14" />
 
         <section aria-labelledby="kako-heading" className="mt-4">
           <p className="text-[0.68rem] font-bold tracking-wide text-accent">{seriesName}</p>

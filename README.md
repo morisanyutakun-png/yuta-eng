@@ -37,6 +37,7 @@ python3 scripts/build-og.py        # OG画像とサムネイル
 python3 scripts/build-series-assets.py  # 過去問の前にシリーズの表紙・OG
 python3 scripts/build-samples.py   # 試し読みの抜粋（public/samples/）
 npm run check                      # データの突き合わせ（公開前に流す）
+npm run build && npm run check:html  # 出来上がった画面の点検（公開前に流す）
 ```
 
 ### 本を1冊足すとき
@@ -48,6 +49,9 @@ npm run check                      # データの突き合わせ（公開前に�
 ASIN と大学の対応だけが手入力で、ほかは原稿と Amazon から機械的に作る。
 `npm run check` は、価格・ページ数がサイトと Amazon でずれていないか、
 表紙や OG 画像が欠けていないか、試験時間や配点が常識的な範囲かまで見る。
+`npm run check:html` はビルドした HTML を読んで、id の重複・見出しの飛び・
+title や description の欠け・リンク切れ・組み残した数式がないかを見る。
+本番に出してからでないと気づきにくいものを、ビルドの時点で止めるため。
 
 ### 原稿フォルダの見分け方
 

@@ -48,10 +48,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const label = yearLabel(u);
   const scope = label ? `${label}の過去問` : "過去問";
 
-  const description =
+  let description =
     `${u.university}${u.course ? `（${u.course}）` : ""}の数学の傾向と対策。` +
     `${line ? `${line}。` : ""}${scope}を年度別・分野別に分析し、` +
     `${top.length ? `頻出は${top.join("・")}。` : ""}時間配分と目標点までまとめました。`;
+  // 試験時間や分野の内訳が原稿にない大学は、ここまでで短くなりすぎる。
+  // 一般論で埋めずに、その大学の書き出しをそのまま足して補う。
+  if (description.length < 70) {
+    const lead = summarize(u, 150 - description.length);
+    if (lead) description = `${description}${lead}`;
+  }
 
   return {
     title,

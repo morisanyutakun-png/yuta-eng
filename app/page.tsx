@@ -86,10 +86,7 @@ export default function HomePage() {
           </dl>
         </section>
 
-        <>
-          <LearningPath compact className="mb-10 lg:hidden" />
-          <LearningPath className="mb-12 hidden lg:block" />
-        </>
+        <LearningPath compact className="mb-10 lg:mb-12" />
 
         <UniversityFinder items={items} groups={usedGroups} />
 

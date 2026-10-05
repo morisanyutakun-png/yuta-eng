@@ -10,7 +10,8 @@
     "data": "node scripts/extract-analysis.mjs",
     "data:series": "node scripts/extract-series.mjs",
     "data:books": "node scripts/fetch-books.mjs",
-    "check": "node scripts/check-data.mjs"
+    "check": "node scripts/check-data.mjs",
+    "check:html": "node scripts/check-html.mjs"
   },
   "dependencies": {
     "katex": "^0.16.45",

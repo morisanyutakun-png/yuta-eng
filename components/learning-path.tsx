@@ -28,7 +28,11 @@ export function LearningPath({
   kanseiPublished?: boolean;
   heading?: string;
   className?: string;
-  /** 説明文を省いて1段1行にする（トップ・大学別分析のように、主役が別にあるページ用） */
+  /**
+   * 狭い画面では説明文を省いて1段1行にする（トップ・一覧のように、主役が別にあるページ用）。
+   * 広い画面では通常の4枚組に戻る。見出しは1つしか出さない
+   * （同じ id の見出しを2つ置くと aria-labelledby が壊れるため）。
+   */
   compact?: boolean;
 }) {
   const steps: { key: Stage; no: string; label: string; body: string; hint: string; href: string; cta: string }[] = [
@@ -70,13 +74,8 @@ export function LearningPath({
     },
   ];
 
-  if (compact) {
-    return (
-      <nav aria-labelledby="path-heading" className={className}>
-        <h2 id="path-heading" className="serif text-[1.05rem] text-ink">
-          {heading}
-        </h2>
-        <ol className="mt-3 divide-y divide-rule border-y border-rule">
+  const compactList = (
+    <ol className="mt-3 divide-y divide-rule border-y border-rule lg:hidden">
           {steps.map((s) => {
             const here = s.key === current;
             return (
@@ -111,17 +110,15 @@ export function LearningPath({
               </li>
             );
           })}
-        </ol>
-      </nav>
-    );
-  }
+    </ol>
+  );
 
-  return (
-    <nav aria-labelledby="path-heading" className={className}>
-      <h2 id="path-heading" className="serif text-[1.05rem] text-ink">
-        {heading}
-      </h2>
-      <ol className="mt-3 grid gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
+  const cards = (
+    <ol
+      className={`mt-3 grid gap-px overflow-hidden border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4 ${
+        compact ? "hidden lg:grid" : ""
+      }`}
+    >
         {steps.map((s) => {
           const here = s.key === current;
           return (
@@ -153,7 +150,16 @@ export function LearningPath({
             </li>
           );
         })}
-      </ol>
+    </ol>
+  );
+
+  return (
+    <nav aria-labelledby="path-heading" className={className}>
+      <h2 id="path-heading" className="serif text-[1.05rem] text-ink">
+        {heading}
+      </h2>
+      {compact && compactList}
+      {cards}
     </nav>
   );
 }
