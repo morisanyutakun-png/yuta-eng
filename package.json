@@ -11,7 +11,8 @@
     "data:series": "node scripts/extract-series.mjs",
     "data:books": "node scripts/fetch-books.mjs",
     "check": "node scripts/check-data.mjs",
-    "check:html": "node scripts/check-html.mjs"
+    "check:html": "node scripts/check-html.mjs",
+    "check:solutions": "python3 scripts/verify-solutions.py"
   },
   "dependencies": {
     "katex": "^0.16.45",

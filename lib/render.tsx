@@ -56,6 +56,55 @@ function renderMath(tex: string): string {
  */
 const dashes = (v: string) => v.replace(/---/g, "—").replace(/--/g, "–");
 
+/**
+ * 手で書いた解説用。`$…$` で囲んだところを数式として組み、`**…**` を強調にする。
+ * 原稿から起こす Spans と違い、こちらは人が直接書く。
+ *
+ * 強調と数式は入れ子になりうる（`**$d=y-x$ の動き**` のように、強調が数式をまたぐ）。
+ * 先に `$` で切ってしまうと、またいだ `**` が本文に残って見えてしまうので、
+ * 両方をひとつの正規表現で拾い、強調の中身はもう一度この関数に通す。
+ */
+export function MathText({ children }: { children: string }) {
+  // この関数は強調の中身で自分を呼び直すので、g つき正規表現は毎回作る
+  // （使い回すと lastIndex が入れ子の呼び出しどうしで混ざる）
+  const token = /(\*\*[\s\S]+?\*\*)|(\$[^$]+\$)/g;
+  // \$ は素の $ として残す（私用領域の文字に退避させてから戻す）
+  const src = children.replace(/\\\$/g, "\u0000");
+  const out: React.ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  const plain = (v: string, key: number) => <span key={key}>{dashes(v.replace(/\u0000/g, "$"))}</span>;
+
+  while ((m = token.exec(src)) !== null) {
+    if (m.index > last) out.push(plain(src.slice(last, m.index), out.length));
+    if (m[1]) {
+      out.push(
+        <strong key={out.length} className="font-semibold text-ink">
+          <MathText>{m[1].slice(2, -2).replace(/\u0000/g, "\\$")}</MathText>
+        </strong>,
+      );
+    } else {
+      const tex = m[2].slice(1, -1).replace(/\u0000/g, "$");
+      out.push(<span key={out.length} dangerouslySetInnerHTML={{ __html: renderMath(tex) }} />);
+    }
+    last = m.index + m[0].length;
+  }
+  if (last < src.length) out.push(plain(src.slice(last), out.length));
+  return <>{out}</>;
+}
+
+/** 別行立ての数式。長い式はスマートフォンで横に溢れるので、そこだけ横スクロールさせる。 */
+export function DisplayMath({ children }: { children: string }) {
+  return (
+    <span className="-mx-5 block overflow-x-auto px-5 py-0.5 text-center sm:mx-0 sm:px-0">
+      <span
+        className="inline-block min-w-0 text-[1.02em]"
+        dangerouslySetInnerHTML={{ __html: renderMath(children) }}
+      />
+    </span>
+  );
+}
+
 export function Spans({ spans }: { spans: Span[] }) {
   return (
     <>

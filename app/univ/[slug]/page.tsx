@@ -8,6 +8,7 @@ import { BookCta, InlineCta } from "@/components/book-cta";
 import { FaqSection } from "@/components/faq";
 import { FieldChart } from "@/components/field-chart";
 import { LookInsideSection } from "@/components/look-inside-section";
+import { SolutionsLink } from "@/components/solutions-link";
 import { StudyPlan } from "@/components/study-plan";
 import { Toc } from "@/components/toc";
 import { UnivHero } from "@/components/univ-hero";
@@ -226,6 +227,8 @@ export default async function UniversityPage({ params }: Props) {
             </section>
           </div>
         ))}
+
+        <SolutionsLink slug={u.slug} />
 
         <StudyPlan u={u} />
 

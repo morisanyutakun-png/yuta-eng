@@ -98,6 +98,25 @@ for (const f of files) {
     if (hit) ng(page, `${name}が残っている「${body.slice(Math.max(0, hit.index - 20), hit.index + 30)}」`);
   }
 
+  /* ── 解答解説のページだけの決まり ── */
+  if (page.startsWith("/kaisetsu")) {
+    if (!body.includes("大学の公式解答ではなく")) ng(page, "「公式解答ではない」断り書きがない");
+    if (/<iframe/i.test(html)) ng(page, "iframe で外部ページを埋め込んでいる");
+    // 問題PDFを自分のサーバーへ置いていないか
+    for (const m of html.matchAll(/(?:href|src)="(\/[^"]*\.pdf)"/g)) {
+      if (!m[1].startsWith("/samples/")) ng(page, `問題PDFらしきものを自サイトに置いている（${m[1]}）`);
+    }
+    // 年度ページ・大問ページには、必ず原典への外部リンクがある
+    if (/^\/kaisetsu\/[^/]+\/\d+/.test(page)) {
+      const out = [...html.matchAll(/<a\b[^>]*data-outbound="source"[^>]*>/g)].map((m) => m[0]);
+      if (!out.length) ng(page, "原典（大学公式）へのリンクがない");
+      for (const a of out) {
+        if (!/target="_blank"/.test(a) || !/rel="[^"]*noopener/.test(a)) ng(page, "原典リンクの target/rel が足りない");
+      }
+      if (!body.includes("問題文を見る")) ng(page, "リンクの行き先が分かる文言になっていない");
+    }
+  }
+
   /* ── リンクと画像を集める ── */
   for (const m of html.matchAll(/href="(\/[^"#?]*)"/g)) {
     if (!m[1].startsWith("/_next/") && !linked.has(m[1])) linked.set(m[1], page);

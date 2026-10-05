@@ -38,6 +38,7 @@ python3 scripts/build-series-assets.py  # 過去問の前にシリーズの表�
 python3 scripts/build-samples.py   # 試し読みの抜粋（public/samples/）
 npm run check                      # データの突き合わせ（公開前に流す）
 npm run build && npm run check:html  # 出来上がった画面の点検（公開前に流す）
+npm run check:solutions            # 掲載した解答を別の方法で解き直して確かめる
 ```
 
 ### 本を1冊足すとき
@@ -164,6 +165,48 @@ python3 scripts/build-series-assets.py # 表紙（public/covers/kansei/）と OG
 - 画面では `components/look-inside-section.tsx`（見出し・断り書き・購入リンク）と
   `components/look-inside.tsx`（拡大表示）が担当する。抜粋のない本では何も出さない
 
+## 過去問の解答・解説（/kaisetsu）
+
+過去問について、**こちらで独自に解いた解答・計算過程・詳解・別解だけ**を公開する。
+原稿も教材も関係しない、サイト独自のコンテンツ。
+
+- **問題文は載せない。** 問題は大学公式の公開ページへ、ふつうの文字リンクで案内する。
+  iframe で埋め込まない。問題PDFを `public/` へ写さない
+- **原典を確認できたものだけ公開する。** `lib/solutions/sources.ts` に、こちらでページを開いて
+  「その年度・その科目の問題が実際に置いてある」と確かめたものだけを書く。見つからない大学は書かない
+- 大学の公式解答・出題意図、予備校や問題集の解答解説は、引用も要約もしない
+- 配点・採点基準・難易度を大学の公表値として出さない。こちらの見立てを出すときは `ownDifficulty` に入れ、
+  画面には「当サイトの体感難易度」と書く
+
+### ファイルの分かれ方
+
+| ファイル | 中身 |
+| --- | --- |
+| `lib/solutions/types.ts` | 型と、公開状態・内部の確認記録の定義 |
+| `lib/solutions/sources.ts` | 原典の台帳（slug → 年度 → 大学公式ページ） |
+| `lib/solutions/<slug>-<year>.ts` | 解説の中身 |
+| `lib/solutions/index.ts` | 公開してよいものだけを選り分ける。ページと sitemap はここだけを見る |
+
+`publishable()` が公開条件を1か所に集めている。`status` が `published` でも、原典が未確認・
+権利面の保留が残っている・公開前の作業が残っているものは外に出ない。
+`review`（内部の確認記録）は画面に出さない。
+
+### 解説を1つ足すとき
+
+1. 原典（大学公式の問題公開ページ）に当たり、大学・年度・科目・日程・区分・大問番号を照合する
+2. `lib/solutions/sources.ts` に原典を足す（確認日も書く）
+3. `lib/solutions/<slug>-<year>.ts` を作り、自分で解いて書く
+4. `scripts/verify-solutions.py` に、**別の方法で同じ答えに着く**確認を足す
+5. `npm run check:solutions` → `npm run build` → `npm run check:html`
+
+### 分かっていること（2026-10-05 時点）
+
+- 問題を公式に公開している大学でも、載っているのは**直近1〜3年度分**であることが多い。
+  2019年度まで遡れる大学は見つかっていない
+- 名古屋大学は令和8年度しか残っておらず、令和7・令和6年度は目次にリンクがあるまま 404 になっている
+- ホームディレクトリにある過去問資料は、すべて**他社（東進）の過去問データベースの PDF** で原典ではない。
+  解説の材料には使っていない
+
 ## 開発
 
 ```
@@ -182,5 +225,7 @@ npm run lint
   `data/books.json` と `analysis.json` の値を使うこと。
 - 試し読みは「立ち読み」の範囲にとどめる。1回分・1章分をまとめて出さない。
   「無料演習」「無料模試」といった言い方はしない。
+- 過去問の解説に、問題文・図・表を載せない。他社の解答解説を言い換えない。
+  原典が確認できない年度はページを作らない（`/kaisetsu` の節を参照）。
 - 原稿の独自命令（`\probref` など）は `lib/katex-macros.json` に足す。
   足し忘れると画面に命令がそのまま出るので、`npm run check` が実際に組んで確かめている。

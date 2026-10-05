@@ -1,0 +1,123 @@
+/**
+ * 過去問の「当サイト独自の解答・解説」の型。
+ *
+ * 大事な前提が2つある。
+ *
+ * 1. **問題文は載せない。** このサイトが公開するのは、自分で解いた解答・計算過程・
+ *    詳解・別解だけで、問題そのものは大学公式の公開ページへリンクで案内する。
+ *    設問の内容に触れるときも、解くために必要な条件を記号で示すにとどめ、
+ *    問題文の言い回しや構成をなぞらない。
+ * 2. **確認できていないものは公開しない。** 原典（大学公式の問題公開ページ）に
+ *    当たれていない年度・大問は `status` を "draft" 以下のままにして、
+ *    ページもサイトマップも作らない。推測で埋めない。
+ */
+
+/** 公開状態。published だけがページになり、サイトマップに載る。 */
+export type PublishState =
+  /** 原典が確認できていない。ページを作らない */
+  | "unverified"
+  /** 原典は確認できたが、解説を書いていない */
+  | "planned"
+  /** 解説は書いたが、検算・権利の確認が終わっていない */
+  | "draft"
+  /** 公開してよい */
+  | "published";
+
+/** 内部の確認記録。利用者向けページには出さない。 */
+export type ReviewLog = {
+  /** 原典にあたって、大学・年度・科目・日程・区分・大問番号を照合したか */
+  sourceChecked: boolean;
+  /** 解答を検算したか（代入・別解・数値計算など）。その方法を書く */
+  verified: string[];
+  /** 権利面で判断を保留している点。空なら保留なし */
+  rightsHolds: string[];
+  /** そのほか、公開前に片づける作業 */
+  todos: string[];
+};
+
+export type Block =
+  /** 段落。`$…$` が数式、`**…**` が強調 */
+  | { k: "p"; t: string }
+  /** 別行立ての数式 */
+  | { k: "math"; t: string }
+  /** 手順。順番に意味があるもの */
+  | { k: "steps"; items: string[] }
+  /** 補足・注意。本筋から外れるが落とせない話 */
+  | { k: "note"; title?: string; t: string };
+
+/** 小問ひとつ分の解説。 */
+export type SubQuestion = {
+  /** 「(1)」など、問題冊子の表記に合わせた小問番号 */
+  label: string;
+  /** 何を求めるのか。問題文は写さず、やることだけを一行で */
+  task: string;
+  /** 最終解答。`$…$` で数式 */
+  answer: string;
+  /** この方針を選ぶ理由。「どう解くか」より先に「なぜそう解くか」を置く */
+  approach: string;
+  /** 計算過程と論証 */
+  blocks: Block[];
+  /** 有用な別解 */
+  alts?: { title: string; blocks: Block[] }[];
+  /** 答案で省略しない方がよい説明、つまずきやすい点 */
+  pitfalls?: string[];
+  /** 検算。読者が自分で確かめられる形で書く */
+  check?: string;
+};
+
+/** 大問ひとつ分。 */
+export type Question = {
+  /** 大問番号。URL の一部にもなる */
+  no: number;
+  /** 分野。一覧と構造化データに使う */
+  field: string;
+  /** 解くのに使う主な道具。検索語にもなる */
+  topics: string[];
+  /** 当サイトの見立てであることを明記したうえで出す体感難易度 */
+  ownDifficulty?: "標準" | "やや難" | "難";
+  /** 小問に分かれていない大問は label を "" にした要素を1つ置く */
+  subs: SubQuestion[];
+  status: PublishState;
+  review: ReviewLog;
+  /** 最終更新日 YYYY-MM-DD */
+  updated: string;
+};
+
+/** 原典（大学公式の問題公開ページ）。 */
+export type Source = {
+  /** リンク先 URL。公式ページが見つからないときは作らない */
+  url: string;
+  /** リンクの行き先を表す文言に使う、大学の正式名称 */
+  publisher: string;
+  /** どのページか（「令和8年度一般選抜（前期日程）の試験問題および正解・解答例等」など） */
+  pageTitle: string;
+  /** 直接 PDF か、問題を並べた一覧ページか */
+  kind: "pdf" | "page";
+  /** こちらで到達を確かめた日 YYYY-MM-DD */
+  checked: string;
+  /**
+   * 大学が自分のサイトで求めている手続き（利用報告など）。
+   * 法律上の義務とは切り分けて、事実としてだけ書き留める。こちらから連絡はしない。
+   */
+  universityRequest?: string;
+};
+
+/** 1大学・1年度・1区分の解説セット。 */
+export type SolutionSet = {
+  /** 大学ページと同じ slug。これで分析ページとつながる */
+  slug: string;
+  /** 入試年度（2026年度入試なら 2026） */
+  year: number;
+  /** 科目。いまは数学だけ */
+  subject: "数学";
+  /** 日程 */
+  schedule: string;
+  /** 試験区分（「理科系」「文科系」など、問題冊子の呼び方に合わせる） */
+  division: string;
+  /** 大学の正式名称 */
+  university: string;
+  /** 見出しに使う短い呼び名 */
+  short: string;
+  source: Source | null;
+  questions: Question[];
+};
