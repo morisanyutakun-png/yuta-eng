@@ -599,6 +599,102 @@ ok("6(3) 見つかった f は答えの中", found <= {15, 16, 18, 20, 30}, f"{s
 ok("6(3) m=2^30 で f=16,g=15", fg_fast(2**30) == (16, 15), str(fg_fast(2**30)))
 ok("6(3) m=7^14*2^2 で f=30,g=15", fg_fast(7**14 * 4) == (30, 15), str(fg_fast(7**14 * 4)))
 
+# ══ 九大理系 2026 ══════════════════════════════════════
+print()
+print("── 九大理系 2026 ──")
+from itertools import product as iproduct
+
+# 大問1 … 球・円柱の式を座標で直に確かめる
+u1 = (0.5, 0.0, math.sqrt(3)/2)
+c1 = (math.sqrt(2), 0.0, math.sqrt(6))
+ok("1(1) 中心は球面上", abs(sum(v*v for v in c1) - 8) < 1e-12, f"|c|^2={sum(v*v for v in c1):.12f}")
+ok("1(1) 中心は OP 上", all(abs(c1[i] - 2*math.sqrt(2)*u1[i]) < 1e-12 for i in range(3)))
+ok("1(1) 切り口の半径1", abs(math.sqrt(9 - 8) - 1) < 1e-12)
+def cyl(x, y, z):
+    return x*x + y*y + z*z - (x/2 + math.sqrt(3)/2*z)**2
+# 側面上の点（中心から垂直に1）
+perp = (math.sqrt(3)/2, 0.0, -0.5)
+for th in [0, 1.0, 2.5]:
+    e2 = (0.0, 1.0, 0.0)
+    P = tuple(c1[i] + math.cos(th)*perp[i] + math.sin(th)*e2[i] for i in range(3))
+    ok(f"1(2) 側面の式 θ={th}", abs(cyl(*P) - 1) < 1e-12, f"{cyl(*P):.12f}")
+for xx in [-1.0, 0.0, 0.8]:
+    yy = math.sqrt(max(0.0, 1 - 0.75*xx*xx))
+    ok(f"1(2) z=0 の切り口 x={xx}", abs(cyl(xx, yy, 0.0) - 1) < 1e-12)
+
+# 大問2
+t1k, t2k = (math.sqrt(3)-1)/2, (math.sqrt(3)+1)/2
+ok("2(1) t1*t2=1/2", abs(t1k*t2k - 0.5) < 1e-15)
+for t in [t1k, 0.5, 1/math.sqrt(2), 1.0, t2k]:
+    X = t + 1/(2*t); Y = t - 1/(2*t)
+    ok(f"2(1) X^2-Y^2=2 t={t:.4f}", abs(X*X - Y*Y - 2) < 1e-12)
+ok("2(1) 端で Y=±1", abs((t1k - 1/(2*t1k)) + 1) < 1e-12 and abs((t2k - 1/(2*t2k)) - 1) < 1e-12)
+ok("2(1) 端で X=√3", abs((t1k + 1/(2*t1k)) - math.sqrt(3)) < 1e-12)
+V2 = quad(lambda y: math.pi*((2 + y*y) - 3*y*y), -1, 1)[0]
+ok("2(2) 体積 8π/3", abs(V2 - 8*math.pi/3) < 1e-9, f"数値{V2:.9f} 式{8*math.pi/3:.9f}")
+
+# 大問3 … 硬貨の投げ方を木で全部たどって数え上げる
+def p_balls(n, r):
+    """n, n+1, n+2 番目の玉がすべて黒である確率。
+
+    「必要な個数の玉が出そろった時点で止める」ので、投げ方は木の葉と1対1になる。
+    長さを固定して列挙すると、同じ前半を何度も数えてしまうので注意。
+    """
+    need = n + 2
+    tot = Fraction(0)
+
+    def rec(balls, pr):
+        nonlocal tot
+        if len(balls) >= need:
+            if balls[n-1] == balls[n] == balls[n+1] == "B":
+                tot += pr
+            return
+        rec(balls + ["W", "W"], pr * r)        # 表
+        rec(balls + ["B"], pr * (1 - r))       # 裏
+
+    rec([], Fraction(1))
+    return tot
+
+for rr in [Fraction(3,10), Fraction(1,2), Fraction(7,10)]:
+    # 葉の確率の合計が 1 になること（数え漏れ・重複がないことの確認）
+    tot_check = Fraction(0)
+    def leaves(balls, pr, need=6):
+        global tot_check
+        if len(balls) >= need:
+            tot_check += pr; return
+        leaves(balls + ["W","W"], pr*rr); leaves(balls + ["B"], pr*(1-rr))
+    tot_check = Fraction(0); leaves([], Fraction(1))
+    ok(f"3 木の確率の合計が1 r={rr}", tot_check == 1, str(tot_check))
+    for n in range(1, 9):
+        want = (1-rr)**3 * (1 - (-rr)**n) / (1 + rr)
+        got = p_balls(n, rr)
+        ok(f"3(4) r={rr} n={n}", got == want, f"全列挙{got} 式{want}")
+    ok(f"3(1) r={rr} p1", p_balls(1, rr) == (1-rr)**3)
+    ok(f"3(1) r={rr} p2", p_balls(2, rr) == (1-rr)**4)
+    ok(f"3(3) 漸化式 r={rr}",
+       all(p_balls(n, rr) == (1-rr)*p_balls(n-1, rr) + rr*p_balls(n-2, rr) for n in range(3, 9)))
+
+# 大問4
+a4 = math.sqrt(2) + math.sqrt(3)
+ok("4(1) 二重根号", abs(a4 - math.sqrt(5 + 2*math.sqrt(6))) < 1e-14)
+ok("4(2) α は根", abs(a4**4 - 10*a4**2 + 1) < 1e-10, f"{a4**4-10*a4**2+1:.2e}")
+roots4 = [math.sqrt(2)+math.sqrt(3), -math.sqrt(2)-math.sqrt(3), math.sqrt(3)-math.sqrt(2), math.sqrt(2)-math.sqrt(3)]
+ok("4(2) 4解すべて根", all(abs(x**4 - 10*x**2 + 1) < 1e-10 for x in roots4))
+ok("4(2) 解の和0・積1", abs(sum(roots4)) < 1e-12 and abs(math.prod(roots4) - 1) < 1e-10)
+ok("4(3) p^2=12,8 は有理数の平方でない",
+   all(abs(math.isqrt(v)**2 - v) > 0 for v in (12, 8)))
+
+# 大問5
+g5 = lambda t: math.log(4*t*t + 1)
+f5 = lambda x: quad(g5, x, x+1, n=20001)[0]
+ok("5(1) 極小値", abs(f5(-0.5) - (math.log(2) + math.pi/2 - 2)) < 1e-7,
+   f"数値{f5(-0.5):.9f} 式{math.log(2)+math.pi/2-2:.9f}")
+grid5 = [-2 + 4*i/4000 for i in range(4001)]
+ok("5(1) 最小を与える x", abs(min(grid5, key=f5) + 0.5) < 2e-3, f"{min(grid5, key=f5):.5f}")
+for X in [50.0, 200.0, 1000.0]:
+    v = X*(f5(X) - f5(X-1))
+    ok(f"5(2) x={X:.0f}", abs(v - 2) < 0.02, f"{v:.6f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

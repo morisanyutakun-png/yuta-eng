@@ -1,4 +1,5 @@
 import { getUniversity, universities } from "@/lib/data";
+import { kyudaiRikei2026 } from "@/lib/solutions/kyudai-rikei-2026";
 import { kyodaiBunkei2026 } from "@/lib/solutions/kyodai-bunkei-2026";
 import { nagoyaBunkei2026 } from "@/lib/solutions/nagoya-bunkei-2026";
 import { nagoyaRikei2025 } from "@/lib/solutions/nagoya-rikei-2025";
@@ -21,6 +22,7 @@ const all: SolutionSet[] = [
   todaiRikei2026,
   todaiBunkei2026,
   kyodaiBunkei2026,
+  kyudaiRikei2026,
   nagoyaRikei2026,
   nagoyaBunkei2026,
   tohokuBunkei2026,

@@ -219,16 +219,34 @@ export default function EducatorsPage() {
               教材内容や授業・講習での利用についてご不明な点がございましたら、お問い合わせください。
               収録範囲、難易度、進度に合わせた使い方などについてお答えします。
             </p>
-            {site.contact && (
-              <p>
-                <a
-                  href={site.contact.includes("@") ? `mailto:${site.contact}` : site.contact}
-                  className="inline-flex min-h-11 items-center border border-rule bg-paper-2/60 px-5 text-[0.9rem] font-semibold text-navy transition-colors hover:border-navy/40"
-                >
-                  お問い合わせ
-                </a>
-              </p>
-            )}
+            {site.contact &&
+              (site.contact.includes("@") ? (
+                // 学校によっては mailto が開かないので、住所そのものも文字で出す。
+                // 先生がコピーして、ふだん使っているメールソフトから送れるようにする。
+                <div className="border border-rule bg-paper-2/50 px-5 py-4">
+                  <p className="text-[0.74rem] text-ink-3">メールでお送りください</p>
+                  <p className="mt-1 break-all font-mono text-[0.98rem] text-ink">
+                    <a href={`mailto:${site.contact}`} className="text-navy underline underline-offset-4">
+                      {site.contact}
+                    </a>
+                  </p>
+                  <p className="mt-2 text-[0.78rem] leading-relaxed text-ink-3">
+                    ご所属とお名前を添えていただけると、こちらの回答が早くなります。
+                    教材の内容・収録範囲・難易度・授業での使い方について承ります。
+                  </p>
+                </div>
+              ) : (
+                <p>
+                  <a
+                    href={site.contact}
+                    target="_blank"
+                    rel="noopener"
+                    className="inline-flex min-h-11 items-center border border-rule bg-paper-2/60 px-5 text-[0.9rem] font-semibold text-navy transition-colors hover:border-navy/40"
+                  >
+                    お問い合わせフォームへ
+                  </a>
+                </p>
+              ))}
           </div>
         </section>
 
