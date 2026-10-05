@@ -430,6 +430,79 @@ al0 = math.sqrt((1+math.sqrt(1+4*1e-9))/2)
 T0 = 8/5*al0**5 - 4/3*al0**3
 ok("4(3) k→0 で √2 に近づく", abs(T0/S4 - math.sqrt(2)) < 1e-6, f"比{T0/S4:.9f}")
 
+# ══ 京大文系 2026 ══════════════════════════════════════
+print()
+print("── 京大文系 2026 ──")
+from itertools import combinations as comb
+
+# 大問1 … 面積を数値積分で
+def area_kyo(t):
+    a = math.sqrt(1 - t*t)
+    # t x^2 - a x + (1-2t) = 0 の解
+    D = a*a - 4*t*(1-2*t)
+    x1 = (a - math.sqrt(D))/(2*t); x2 = (a + math.sqrt(D))/(2*t)
+    return quad(lambda x: (2 - x*x) - (1 - a*x)/t, x1, x2)[0], (7*t*t-4*t+1)**1.5/(6*t**3)
+for t in [0.2, 0.5, 0.8, 0.95]:
+    num, fml = area_kyo(t)
+    ok(f"1 面積 t={t}", abs(num - fml) < 1e-6*max(1, fml), f"数値{num:.8f} 式{fml:.8f}")
+S_of = lambda t: (7*t*t-4*t+1)**1.5/(6*t**3)
+tmin = min([i/100000 for i in range(1, 100000)], key=S_of)
+ok("1 最小を与える t", abs(tmin - 0.5) < 1e-4, f"全探索{tmin:.5f} 式0.5")
+ok("1 最小値 √3/2", abs(S_of(0.5) - math.sqrt(3)/2) < 1e-12, f"{S_of(0.5):.12f}")
+
+# 大問2 … 正四面体を座標に取り、距離の式と結論を確かめる
+O=(0,0,0); A=(1,0,0); B=(0.5, math.sqrt(3)/2, 0); C=(0.5, math.sqrt(3)/6, math.sqrt(6)/3)
+edges = [(O,A),(O,B),(O,C),(A,B),(A,C),(B,C)]
+ok("2 正四面体", all(abs(math.dist(p_, q_) - 1) < 1e-12 for p_, q_ in edges))
+def dist2(s_, w_):
+    P = (s_, 0, 0)
+    Q = tuple(B[i] + w_*(C[i]-B[i]) for i in range(3))
+    return sum((P[i]-Q[i])**2 for i in range(3))
+for s_ in [0.0, 0.3, 0.5, 1.0]:
+    for w_ in [0.0, 0.25, 0.5, 1.0]:
+        want = (s_-0.5)**2 + (w_-0.5)**2 + 0.5
+        ok(f"2 距離の式 s={s_} w={w_}", abs(dist2(s_, w_) - want) < 1e-12)
+def meets_any(r):
+    """ある P で球面が辺 BC と共有点をもつか。"""
+    for i in range(0, 201):
+        s_ = i/200
+        lo = math.sqrt((s_-0.5)**2 + 0.5); hi = math.sqrt((s_-0.5)**2 + 0.75)
+        if lo <= r <= hi: return True
+    return False
+for r in [0.1, 0.5, 0.70, 1.01, 2.0]:
+    ok(f"2 r={r} は共有点なし", not meets_any(r))
+for r in [0.71, 0.8, 0.95, 1.0]:
+    ok(f"2 r={r} は共有点あり", meets_any(r))
+ok("2 境界 √2/2", abs(math.sqrt(2)/2 - 0.7071067812) < 1e-9)
+
+# 大問3 … 3m+pk で表せない数を全探索
+def unrep(p_):
+    lim = 4*p_
+    rep = set()
+    for m_ in range(0, lim//3 + 2):
+        for k_ in range(0, lim//p_ + 2):
+            v = 3*m_ + p_*k_
+            if v <= lim: rep.add(v)
+    return [n for n in range(0, lim+1) if n not in rep]
+for p_ in [5, 7, 11, 13, 17, 19, 23]:
+    u = unrep(p_)
+    ok(f"3(2) p={p_}", len(u) == p_ - 1, f"全探索{len(u)} 式{p_-1}")
+    ok(f"3(1) p={p_} 2p以上は表せる", all(n < 2*p_ for n in u), f"最大{max(u)} < 2p={2*p_}")
+
+# 大問4 … ガウス記号の和を直接計算
+a_direct = lambda n: sum(math.floor(math.log(k, 3) + 1e-12) for k in range(1, n+1))
+ok("4(1) a26=42", a_direct(26) == 42, str(a_direct(26)))
+for N_ in range(1, 9):
+    m_ = 3**N_ - 1
+    want = ((2*N_-3)*3**N_ + 3)//2
+    ok(f"4(2) N={N_}", a_direct(m_) == want, f"直接{a_direct(m_)} 式{want}")
+
+# 大問5 … 期待値を全組合せで
+for n_ in list(range(3, 15)) + [25, 40]:
+    tot = list(comb(range(1, n_+1), 3))
+    e = Fraction(sum(max(c) for c in tot), len(tot))
+    ok(f"5 n={n_}", e == Fraction(3*(n_+1), 4), f"全探索{e} 式{Fraction(3*(n_+1),4)}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
