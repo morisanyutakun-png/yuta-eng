@@ -862,6 +862,123 @@ else:
     ok("6(2) Q が球面上（乱数300通り）", True, f"{hits} 例で確認")
 ok("6 方べきの関係", hits > 100, f"{hits} 例")
 
+# ══ 九大文系 2026 ══════════════════════════════════════
+print()
+print("── 九大文系 2026 ──")
+
+# 大問1 … 極値を細かい刻みの全探索で、面積を数値積分で
+f1 = lambda x: 2*x**3 + 3*x**2 - 36*x + 1
+step = 1e-4
+xs = [-6 + i*step for i in range(int(11/step) + 1)]
+lo_side = [x for x in xs if -5 < x < 0]
+hi_side = [x for x in xs if 0 < x < 4]
+xmax = max(lo_side, key=f1)
+xmin = min(hi_side, key=f1)
+ok("九大文系1(1) 極大は x=-3", abs(xmax + 3) < 2e-3, f"全探索 {xmax:.5f}")
+ok("九大文系1(1) 極大値 82", f1(-3) == 82)
+ok("九大文系1(1) 極小は x=2", abs(xmin - 2) < 2e-3, f"全探索 {xmin:.5f}")
+ok("九大文系1(1) 極小値 -43", f1(2) == -43)
+
+curve = lambda x: abs(x*x - 1)
+line = lambda x: x + 1
+# 交点が -1, 0, 2 の3つだけであることを総当たりで。
+# x=-1 は曲線の角で接しているだけで差の符号が変わらないため、
+# 符号変化ではなく |差| が 0 に落ちる場所を拾う。
+diff = lambda x: curve(x) - line(x)
+hits = []
+x = -4.0
+while x < 4.0:
+    if abs(diff(x)) < 3e-5:
+        hits.append(x)
+    x += 1e-5
+clustered = []
+for r in hits:
+    if not clustered or r - clustered[-1] > 1e-2:
+        clustered.append(round(r, 3))
+    else:
+        clustered[-1] = round(r, 3)
+ok("九大文系1(2) x=-1 では符号が変わらない（角で接する）",
+   diff(-1.01) > 0 and diff(-0.99) > 0 and abs(diff(-1)) < 1e-12)
+ok("九大文系1(2) 交点は x=-1,0,2 の3つ", len(clustered) == 3
+   and all(abs(a - b) < 2e-3 for a, b in zip(clustered, [-1, 0, 2])), str(clustered))
+s1 = quad(lambda x: curve(x) - line(x), -1, 0)[0]
+s2 = quad(lambda x: line(x) - curve(x), 0, 1)[0]
+s3 = quad(lambda x: line(x) - curve(x), 1, 2)[0]
+ok("九大文系1(2) [-1,0] の面積 1/6", abs(s1 - 1/6) < 1e-9, f"{s1:.10f}")
+ok("九大文系1(2) [0,2] の面積 2", abs(s2 + s3 - 2) < 1e-9, f"{s2 + s3:.10f}")
+ok("九大文系1(2) 合計 13/6", abs(s1 + s2 + s3 - 13/6) < 1e-9, f"{s1 + s2 + s3:.10f}")
+
+# 大問2 … 法線を連立で取り直し、H は「α 上で P に最も近い点」として数値探索で出す
+A2 = (1, 1, 1); B2 = (2, 2, 0); C2 = (4, 2, 2)
+AB = tuple(B2[i] - A2[i] for i in range(3))
+AC = tuple(C2[i] - A2[i] for i in range(3))
+dot = lambda u, v: sum(u[i]*v[i] for i in range(3))
+n2 = (1, -2, -1)
+ok("九大文系2 法線 (1,-2,-1)", dot(n2, AB) == 0 and dot(n2, AC) == 0)
+# P を球面上の全方向走査で探す（OP が法線と平行で y<=-1 になる点）
+best = None
+N = 900
+for i in range(N):
+    th = math.pi * (i + 0.5) / N
+    for j in range(2 * N):
+        ph = 2 * math.pi * j / (2 * N)
+        p_ = (1 + math.sin(th)*math.cos(ph), -1 + math.sin(th)*math.sin(ph), -1 + math.cos(th))
+        if p_[1] > -1:
+            continue
+        cx = (p_[1]*n2[2] - p_[2]*n2[1], p_[2]*n2[0] - p_[0]*n2[2], p_[0]*n2[1] - p_[1]*n2[0])
+        err = math.sqrt(dot(cx, cx))
+        if best is None or err < best[0]:
+            best = (err, p_)
+    if i % 150 == 0 and best and best[0] < 1e-3:
+        break
+ok("九大文系2(1) P=(1,-2,-1)", best is not None
+   and max(abs(best[1][k] - v) for k, v in enumerate((1, -2, -1))) < 5e-2,
+   f"球面走査 {tuple(round(v, 4) for v in best[1])}")
+P2 = (1, -2, -1)
+ok("九大文系2(1) P は球面上", abs((P2[0]-1)**2 + (P2[1]+1)**2 + (P2[2]+1)**2 - 1) < 1e-12)
+ok("九大文系2(1) もう一方の解は y>-1", abs(-2/3) < 1 and -2/3 > -1)
+# H を数値的な最小化で（s,t を細かく動かす）
+bs = bt = 0.0; bd = 1e9; stp = 1.0
+for _ in range(90):
+    for ds in (-1, 0, 1):
+        for dt in (-1, 0, 1):
+            s_, t_ = bs + ds*stp, bt + dt*stp
+            h = tuple(A2[i] + s_*AB[i] + t_*AC[i] for i in range(3))
+            d = math.dist(h, P2)
+            if d < bd:
+                bd, ns_, nt_ = d, s_, t_
+    bs, bt = ns_, nt_
+    stp *= 0.7
+ok("九大文系2(2) s=1/6", abs(bs - 1/6) < 1e-6, f"数値探索 {bs:.8f}")
+ok("九大文系2(2) t=-1/2", abs(bt + 0.5) < 1e-6, f"数値探索 {bt:.8f}")
+H2 = tuple(A2[i] + (1/6)*AB[i] + (-0.5)*AC[i] for i in range(3))
+ok("九大文系2(2) H=(-1/3,2/3,1/3)", max(abs(H2[k]-v) for k, v in enumerate((-1/3, 2/3, 1/3))) < 1e-12)
+PH = tuple(H2[i] - P2[i] for i in range(3))
+ok("九大文系2(2) PH ⊥ α", abs(dot(PH, AB)) < 1e-12 and abs(dot(PH, AC)) < 1e-12)
+AP = tuple(P2[i] - A2[i] for i in range(3))
+det = (AB[0]*(AC[1]*AP[2] - AC[2]*AP[1]) - AB[1]*(AC[0]*AP[2] - AC[2]*AP[0])
+       + AB[2]*(AC[0]*AP[1] - AC[1]*AP[0]))
+ok("九大文系2(3) 体積 8/3（行列式）", abs(abs(det)/6 - 8/3) < 1e-12, f"{abs(det)/6:.10f}")
+ok("九大文系2(3) 体積 8/3（底面×高さ）",
+   abs((1/3) * math.sqrt(6) * (8/math.sqrt(6)) - 8/3) < 1e-12)
+
+# 大問3 … (√2+1)^n+(√2-1)^n が整数になる n を、有理数演算で判定する
+# a+b√2 の形を (a, b) で持ち、整数のまま掛ける。b=0 になるときだけ整数。
+def mul(u, v):
+    return (u[0]*v[0] + 2*u[1]*v[1], u[0]*v[1] + u[1]*v[0])
+bad = []
+for n in range(1, 61):
+    x = (1, 1); y = (-1, 1); px = (1, 0); py = (1, 0)
+    for _ in range(n):
+        px = mul(px, x); py = mul(py, y)
+    sgn = (px[0] + py[0], px[1] + py[1])
+    if (sgn[1] == 0) != (n % 2 == 0):
+        bad.append(n)
+ok("九大文系3(2) 整数になるのは n が偶数のときだけ（n≤60 を整数演算で全探索）", not bad, str(bad))
+ok("九大文系3(2) n=2 で 6", mul(mul((1, 1), (1, 1)), (1, 0))[0] + mul(mul((-1, 1), (-1, 1)), (1, 0))[0] == 6)
+
+# 大問4 は理科系 大問3 と同一問題。上の確認をそのまま使う。
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

@@ -96,7 +96,7 @@ export const kyudaiRikei2026: SolutionSet = {
     {
       no: 2,
       field: "複素数平面",
-      topics: ["$z+1/z$ の像", "双曲線", "回転体の体積", "軸に垂直な断面"],
+      topics: ["z+1/z の像", "双曲線", "回転体の体積", "軸に垂直な断面"],
       ownDifficulty: "やや難",
       status: "published",
       updated: "2026-10-06",
