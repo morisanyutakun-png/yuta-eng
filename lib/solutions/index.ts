@@ -4,6 +4,7 @@ import { kyudaiRikei2026 } from "@/lib/solutions/kyudai-rikei-2026";
 import { kagakudai2026 } from "@/lib/solutions/kagakudai-2026";
 import { kyodaiBunkei2026 } from "@/lib/solutions/kyodai-bunkei-2026";
 import { nagoyaBunkei2026 } from "@/lib/solutions/nagoya-bunkei-2026";
+import { ncuMed2026 } from "@/lib/solutions/ncu-med-2026";
 import { nagoyaRikei2025 } from "@/lib/solutions/nagoya-rikei-2025";
 import { nagoyaRikei2026 } from "@/lib/solutions/nagoya-rikei-2026";
 import { todaiRikei2026 } from "@/lib/solutions/todai-rikei-2026";
@@ -30,6 +31,7 @@ const all: SolutionSet[] = [
   kagakudai2026,
   nagoyaRikei2026,
   nagoyaBunkei2026,
+  ncuMed2026,
   tohokuRikei2026,
   tohokuBunkei2026,
   nagoyaRikei2025,

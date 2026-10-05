@@ -979,6 +979,101 @@ ok("九大文系3(2) n=2 で 6", mul(mul((1, 1), (1, 1)), (1, 0))[0] + mul(mul((
 
 # 大問4 は理科系 大問3 と同一問題。上の確認をそのまま使う。
 
+# ══ 名市大医 2026 ══════════════════════════════════════
+print()
+print("── 名市大医 2026 ──")
+import itertools
+
+# 大問1 … H は「平面 OBC 上で A に最も近い点」として数値探索で出す
+A1 = (2, 1, 4); B1 = (3, 0, 1); C1 = (1, 2, 1)
+dot3 = lambda u, v: sum(u[i]*v[i] for i in range(3))
+def on_plane(s_, t_): return tuple(s_*B1[i] + t_*C1[i] for i in range(3))
+bs = bt = 0.0; bd = 1e9; stp = 1.0
+for _ in range(120):
+    for ds in (-1, 0, 1):
+        for dt in (-1, 0, 1):
+            s_, t_ = bs + ds*stp, bt + dt*stp
+            d = math.dist(on_plane(s_, t_), A1)
+            if d < bd: bd, ns_, nt_ = d, s_, t_
+    bs, bt = ns_, nt_; stp *= 0.72
+H1 = on_plane(bs, bt)
+want = (Fraction(31, 11), Fraction(20, 11), Fraction(17, 11))
+ok("名市大医1(1) H=(31/11,20/11,17/11)",
+   max(abs(H1[i] - float(want[i])) for i in range(3)) < 1e-7,
+   f"数値探索 {tuple(round(v, 6) for v in H1)}")
+ok("名市大医1(1) H は平面 x+y-3z=0 上",
+   abs(float(want[0]) + float(want[1]) - 3*float(want[2])) < 1e-12)
+cr1 = (B1[1]*C1[2] - B1[2]*C1[1], B1[2]*C1[0] - B1[0]*C1[2], B1[0]*C1[1] - B1[1]*C1[0])
+S1 = math.sqrt(dot3(cr1, cr1)) / 2
+ok("名市大医1(2) 三角形OBC=√11", abs(S1 - math.sqrt(11)) < 1e-12, f"{S1:.10f}")
+V1 = abs(dot3(A1, cr1)) / 6
+ok("名市大医1(2) 体積 3（行列式）", abs(V1 - 3) < 1e-12, f"{V1}")
+AH = math.dist(A1, (float(want[0]), float(want[1]), float(want[2])))
+ok("名市大医1(2) 体積 3（底面×高さ）", abs(S1*AH/3 - 3) < 1e-7, f"{S1*AH/3:.10f}")
+pq = (Fraction(-17, 9), Fraction(1, 9), Fraction(-13, 3))
+for nm, P_ in (("O", (0, 0, 0)), ("A", A1), ("B", B1), ("C", C1)):
+    val = sum(Fraction(c)**2 for c in P_) + sum(pq[i]*P_[i] for i in range(3))
+    ok(f"名市大医1(3) 球面が {nm} を通る", val == 0, f"残差 {val}")
+r2 = Fraction(17, 18)**2 + Fraction(1, 18)**2 + Fraction(13, 6)**2
+ok("名市大医1(3) 半径^2 = 1811/324", r2 == Fraction(1811, 324), str(r2))
+
+# 大問2 … 6^6 通りを全探索し、回転24通りで正規化して数える
+OPP = {0: 1, 1: 0, 2: 3, 3: 2, 4: 5, 5: 4}
+ADJ = [(i, j) for i in range(6) for j in range(i+1, 6) if OPP[i] != j]
+compose = lambda a, b: tuple(a[b[i]] for i in range(6))
+ROT = {tuple(range(6))}
+while True:
+    grown = {compose(g, h) for g in ROT for h in ((2, 3, 1, 0, 4, 5), (4, 5, 2, 3, 1, 0))} | ROT
+    if grown == ROT: break
+    ROT = grown
+ok("名市大医2 回転群は24個", len(ROT) == 24, str(len(ROT)))
+proper = lambda c: all(c[i] != c[j] for i, j in ADJ)
+kinds, all6, labeled = set(), set(), 0
+for c in itertools.product(range(6), repeat=6):
+    if not proper(c): continue
+    labeled += 1
+    k = min(tuple(c[g[i]] for i in range(6)) for g in ROT)
+    kinds.add(k)
+    if len(set(c)) == 6: all6.add(k)
+ok("名市大医2 ラベル付きの正当な塗り分け 4080", labeled == 4080, str(labeled))
+ok("名市大医2(1) 6色すべて使う = 30", len(all6) == 30, str(len(all6)))
+ok("名市大医2(2) 何色か使う = 230", len(kinds) == 230, str(len(kinds)))
+
+# 大問3 … 漸化式そのものを回して一般項と突き合わせ、m を全探索
+def a_seq(m, upto):
+    a = [0]
+    for n in range(1, upto): a.append(a[-1] + m**(n+1) - m**n - m)
+    return a
+ok("名市大医3(1) a_n=m^n-nm が漸化式に合う（m≤5, n≤12）",
+   all(a_seq(m, 13)[n-1] == m**n - n*m for m in range(1, 6) for n in range(1, 13)))
+ok("名市大医3(2) a_9=494 をみたす m は 2 だけ",
+   [m for m in range(1, 200) if m**9 - 9*m == 494] == [2])
+def is_prime(x): return x > 1 and all(x % d for d in range(2, int(x**0.5) + 1))
+with_prime = [m for m in range(1, 500) if any(is_prime(m**n - n*m) for n in range(1, 40))]
+ok("名市大医3(3) 素数の項をもつ m は 2,3 だけ（m≤499, n≤39 を全探索）",
+   with_prime == [2, 3], str(with_prime))
+ok("名市大医3(3) m=2 は a_3=2、m=3 は a_2=3", 2**3 - 3*2 == 2 and 3**2 - 2*3 == 3)
+
+# 大問4 … (1) を数値で、(2)(4) を数値積分と級数の直接和で
+f_n = lambda n, x: math.sin((2*n + 1)*x/2) / (2*math.sin(x/2))
+worst = max(abs(f_n(k, x) - f_n(k-1, x) - math.cos(k*x))
+            for k in range(1, 15)
+            for x in [1 + i*(math.pi - 1)/50 for i in range(51)])
+ok("名市大医4(1) f_k-f_(k-1)=cos kx", worst < 1e-9, f"最大誤差 {worst:.2e}")
+ok("名市大医4(2) I_0=(π-1)/2",
+   abs(quad(lambda x: f_n(0, x), 1, math.pi)[0] - (math.pi - 1)/2) < 1e-9)
+for n in (1, 3, 7, 20):
+    In = quad(lambda x: f_n(n, x), 1, math.pi)[0]
+    Sn = sum(math.sin(k)/k for k in range(1, n+1))
+    ok(f"名市大医4(2) n={n:2d} で Σsin k/k = (π-1)/2 - I_n",
+       abs(Sn - ((math.pi - 1)/2 - In)) < 1e-7, f"{Sn:.10f} / {(math.pi-1)/2-In:.10f}")
+Is = [abs(quad(lambda x: f_n(n, x), 1, math.pi, 100001)[0]) for n in (10, 50, 200, 800)]
+ok("名市大医4(3) I_n → 0", Is[-1] < 5e-3 and Is[-1] < Is[0],
+   f"n=10,50,200,800 で {[round(v, 6) for v in Is]}")
+total = sum(math.sin(k)/k for k in range(1, 400000))
+ok("名市大医4(4) 級数の和 = (π-1)/2", abs(total - (math.pi - 1)/2) < 2e-5,
+   f"40万項 {total:.9f} / {(math.pi-1)/2:.9f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

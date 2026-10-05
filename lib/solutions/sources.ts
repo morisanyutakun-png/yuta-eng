@@ -141,6 +141,21 @@ export const sources: Record<string, Record<number, Source>> = {
     },
   },
   // 東北大学は一般選抜の問題を大学サイトでは公開していない（2026-10-05 確認）
+  "ncu-med": {
+    2026: {
+      kind: "official",
+      url: "https://www.nagoya-cu.ac.jp/media/R8_zenki_math_med.pdf",
+      publisher: "名古屋市立大学",
+      pageTitle: "令和8年度 前期日程 医学部 数学",
+      target: "pdf",
+      checked: "2026-10-06",
+      note:
+        "「個別学力検査過去問題・解答例」から問題PDFと解答例を直接公開している。" +
+        "利用許諾の申請・利用報告書についての記載は大学サイトに見当たらない。" +
+        "問題冊子の表紙には「許可なしに転載、複製することを禁じます。」とあるが、" +
+        "当サイトは問題文・図を1つも載せないので複製にあたらない。",
+    },
+  },
   "tohoku-rikei": {
     2026: {
       kind: "none",
