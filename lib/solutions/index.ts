@@ -3,6 +3,7 @@ import { kyodaiBunkei2026 } from "@/lib/solutions/kyodai-bunkei-2026";
 import { nagoyaBunkei2026 } from "@/lib/solutions/nagoya-bunkei-2026";
 import { nagoyaRikei2025 } from "@/lib/solutions/nagoya-rikei-2025";
 import { nagoyaRikei2026 } from "@/lib/solutions/nagoya-rikei-2026";
+import { todaiRikei2026 } from "@/lib/solutions/todai-rikei-2026";
 import { tohokuBunkei2026 } from "@/lib/solutions/tohoku-bunkei-2026";
 import { todaiBunkei2026 } from "@/lib/solutions/todai-bunkei-2026";
 import { sources } from "@/lib/solutions/sources";
@@ -17,6 +18,7 @@ import type { Question, SolutionSet } from "@/lib/solutions/types";
 
 /** 書いた解説をすべて並べる。原典の確認が済んでいないものもここには入る。 */
 const all: SolutionSet[] = [
+  todaiRikei2026,
   todaiBunkei2026,
   kyodaiBunkei2026,
   nagoyaRikei2026,

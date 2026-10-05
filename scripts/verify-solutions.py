@@ -503,6 +503,102 @@ for n_ in list(range(3, 15)) + [25, 40]:
     e = Fraction(sum(max(c) for c in tot), len(tot))
     ok(f"5 n={n_}", e == Fraction(3*(n_+1), 4), f"全探索{e} 式{Fraction(3*(n_+1),4)}")
 
+# ══ 東大理系 2026 ══════════════════════════════════════
+print()
+print("── 東大理系 2026 ──")
+# 第2問・第4問は文科と同じ問題なので、上の確認がそのまま効く。
+
+# 大問1
+f1 = lambda th: math.sin(th) - th + th**3/6
+M1 = math.sin(1) - 5/6
+ok("1(1) M=sin1-5/6", abs(f1(1) - M1) < 1e-15, f"{M1:.10f}")
+ok("1(1) m=-M", abs(f1(-1) + M1) < 1e-15)
+ok("1(1) f は [-1,1] で増加",
+   all(f1(-1+2*i/20000) < f1(-1+2*(i+1)/20000) for i in range(20000)))
+I1 = quad(lambda x: math.sin(math.cos(x) - x), 0, 2*math.pi)[0]
+lo1, hi1 = 7/8*math.pi, 7/8*math.pi + 4*M1
+ok("1(2) 不等式", lo1 <= I1 <= hi1, f"{lo1:.6f} <= {I1:.6f} <= {hi1:.6f}")
+I1b = quad(lambda x: math.sin(math.cos(x))*math.cos(x), 0, 2*math.pi)[0]
+ok("1(2) sin x の項は消える", abs(I1 - I1b) < 1e-6, f"{I1:.8f} vs {I1b:.8f}")
+ok("1(2) 多項式部分が 7π/8",
+   abs(quad(lambda x: math.cos(x)**2 - math.cos(x)**4/6, 0, 2*math.pi)[0] - 7/8*math.pi) < 1e-6)
+
+# 大問3 … 弦を多数引いて通過領域を数値で確かめる
+import random
+random.seed(7)
+def on_chord(x, y):
+    """(x,y) が通過領域に入るかを、M を細かく動かして直に判定。"""
+    if x*x + y*y > 25 + 1e-9: return False
+    for i in range(3000):
+        ph = 2*math.pi*i/3000
+        u, v = 3 + 2*math.cos(ph), 2*math.sin(ph)
+        if abs(u - 5) < 1e-9 and abs(v) < 1e-9: continue
+        if abs(x*u + y*v - (u*u + v*v)) < 2e-2: return True
+    return False
+def by_formula(x, y):
+    return x*x + y*y <= 25 and 5*(x-3)**2 - 4*y*y <= 20
+agree = dis = 0
+for _ in range(1500):
+    x = random.uniform(-6, 7); y = random.uniform(-6, 6)
+    if abs(5*(x-3)**2 - 4*y*y - 20) < 0.6: continue   # 境界の近くは数値誤差で揺れる
+    if abs(x*x + y*y - 25) < 0.6: continue
+    if on_chord(x, y) == by_formula(x, y): agree += 1
+    else: dis += 1
+ok("3(2) 領域の式", dis == 0, f"一致{agree} 不一致{dis}")
+ok("3(1) 中点の円", all(
+    abs((3+2*math.cos(t)-3)**2 + (2*math.sin(t))**2 - 4) < 1e-12 for t in [0, 1, 2, 3]))
+
+# 大問5
+b5 = math.asin(1/3)
+ok("5(1) sin3β=23/27", abs(math.sin(3*b5) - 23/27) < 1e-12, f"{math.sin(3*b5):.12f}")
+ok("5(1) 3β<π/2", 3*b5 < math.pi/2, f"3β={3*b5:.6f}")
+vals = [math.sin(3*math.atan2(math.sin(t), math.cos(t)+3)) for t in [2*math.pi*i/20000 for i in range(20000)]]
+ok("5(1) 数値の範囲", abs(max(vals) - 23/27) < 1e-6 and abs(min(vals) + 23/27) < 1e-6,
+   f"[{min(vals):.6f}, {max(vals):.6f}]")
+def ok5(cx, cy):
+    """中心 c=(cx,cy) の単位円が、60度おきの6本の半直線の隣り合う2本と交わるか。"""
+    rho = math.hypot(cx, cy)
+    if rho <= 1: return True
+    d = math.asin(min(1.0, 1/rho)); ps = math.atan2(cy, cx)
+    hit = [k for k in range(6) if abs(((ps - k*math.pi/3 + math.pi) % (2*math.pi)) - math.pi) <= d]
+    return any(((a - b) % 6) in (1, 5) for a in hit for b in hit)
+N5, cnt = 1200, 0
+for i in range(N5):
+    for j in range(N5):
+        x = -2.5 + 5*(i+0.5)/N5; y = -2.5 + 5*(j+0.5)/N5
+        if ok5(x, y): cnt += 1
+area5 = cnt * (5/N5)**2
+ok("5(2) 面積 4√3", abs(area5 - 4*math.sqrt(3)) < 0.02, f"数え上げ{area5:.5f} 式{4*math.sqrt(3):.5f}")
+
+# 大問6
+def fg(n):
+    f_ = g_ = 0
+    for d in range(1, n+1):
+        if n % d == 0:
+            if d % 3 == 1: f_ += 1
+            elif d % 3 == 2: g_ += 1
+    return f_, g_
+ok("6(1) f,g(2800)", fg(2800) == (16, 14), str(fg(2800)))
+def fg_fast(n):
+    f_ = g_ = 0
+    d = 1
+    while d*d <= n:
+        if n % d == 0:
+            for q in {d, n//d}:
+                if q % 3 == 1: f_ += 1
+                elif q % 3 == 2: g_ += 1
+        d += 1
+    return f_, g_
+ok("6(2) f>=g (n<=200000)", all(fg_fast(n)[0] >= fg_fast(n)[1] for n in range(1, 200001)))
+found = set()
+for n in range(1, 400001):
+    f_, g_ = fg_fast(n)
+    if g_ == 15: found.add(f_)
+ok("6(3) 見つかった f は答えの中", found <= {15, 16, 18, 20, 30}, f"{sorted(found)}")
+# f=16 と f=30 は n が大きく（2^30、7^14*4）全探索には出てこないので、直に作って確かめる
+ok("6(3) m=2^30 で f=16,g=15", fg_fast(2**30) == (16, 15), str(fg_fast(2**30)))
+ok("6(3) m=7^14*2^2 で f=30,g=15", fg_fast(7**14 * 4) == (30, 15), str(fg_fast(7**14 * 4)))
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
