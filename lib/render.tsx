@@ -1,25 +1,13 @@
 import katex from "katex";
 
 import type { Block, Cell, Span } from "@/lib/data";
+// 原稿のプリアンブルで定義されている独自命令を KaTeX 側にも用意する。
+// 追加を忘れると命令がそのまま赤字で出てしまうので、
+// npm run check が「数式に未定義の命令がないか」をこの表で確かめる。
+import MACROS from "@/lib/katex-macros.json";
 
 // 数式はビルド時に KaTeX で HTML 化する。クライアント JS を増やさないため。
 const mathCache = new Map<string, string>();
-
-// 原稿のプリアンブルで定義されている独自命令を KaTeX 側にも用意する。
-const MACROS: Record<string, string> = {
-  "\\kuur": "\\boxed{\\text{#1}}", // 解説中の空所記号
-  "\\kubunmark": "\\text{#1}",
-  "\\dsp": "\\displaystyle",
-  "\\ans": "\\underline{#1}",
-  "\\underLine": "\\underline{#1}",
-  "\\Pt": "\\mathrm{#1}", // 点の名前
-  "\\Vec": "\\overrightarrow{\\mathrm{#1}}",
-  "\\Cb": "{}_{#1}\\mathrm{C}_{#2}", // 組合せ
-  "\\MF": "\\frac{#1}{#2}",
-  "\\Ma": "\\boxed{#1}", // マーク欄
-  "\\ansheet": "\\boxed{\\textbf{#1}}", // 解答用紙番号
-  "\\probref": "\\boxed{#1}", // 大問番号（原稿では枠囲み）
-};
 
 const CJK_RUN = /[぀-ヿ㐀-䶿一-鿿ｦ-ﾟ々〆ー]+/g;
 const SENTINEL = "\uE000"; // TeX 本文には現れない私用領域の文字

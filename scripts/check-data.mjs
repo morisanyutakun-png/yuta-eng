@@ -6,6 +6,8 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import katex from "katex";
+
 import { bookRegistry } from "./book-registry.mjs";
 import { universityMeta } from "./university-meta.mjs";
 
@@ -15,6 +17,7 @@ const books = read("data/books.json");
 const analysis = read("data/analysis.json");
 const series = read("data/series.json");
 const samples = read("data/samples.json");
+const macros = read("lib/katex-macros.json");
 
 const problems = [];
 const ng = (msg) => problems.push(msg);
@@ -105,15 +108,20 @@ for (const [asin, s] of Object.entries(samples)) {
   if (!file(s.pdf.replace(/^\//, "/"))) ng(`試し読み ${asin}: 抜粋PDFがない`);
   for (const p of s.pages) if (!file(p.file)) ng(`試し読み ${asin}: 画像がない（${p.file}）`);
 
-  // 問題・解説・採点基準が同じ回（章）から出ていないか
-  const from = {};
-  for (const p of s.pages) {
-    const kind = p.label.replace("の例", "").replace("（続き）", "");
-    if (["問題", "解説", "採点基準"].includes(kind)) (from[kind] ||= new Set()).add(p.section);
+  // 扉と問題が核。目次・使い方・採点基準は入れない
+  const kinds = s.pages.map((p) => p.kind);
+  if (!kinds.includes("扉")) ng(`試し読み ${asin}: 扉のページがない`);
+  if (kinds.filter((k) => k === "扉" || k === "問題").length < 2) ng(`試し読み ${asin}: 問題のページが足りない`);
+  for (const k of kinds) if (!["扉", "問題", "解答", "診断"].includes(k)) ng(`試し読み ${asin}: 出さない種類のページがある（${k}）`);
+
+  // 同じ回（章）から、扉・問題・解答が重なって出ていないか
+  const unitOf = (p) => p.label.match(/^第\d+[回章]/)?.[0];
+  const byUnit = {};
+  for (const p of s.pages) (byUnit[unitOf(p)] ||= new Set()).add(p.kind);
+  for (const [unit, set] of Object.entries(byUnit)) {
+    if (set.size > 1) ng(`試し読み ${asin}: ${unit} から ${[...set].join("・")} が揃って出ている`);
   }
-  const used = Object.values(from).flatMap((v) => [...v]);
-  if (used.length !== new Set(used).size) ng(`試し読み ${asin}: 問題・解説・採点基準が同じ回から出ている`);
-  if (!s.pages.some((p) => p.label.includes("問題"))) ng(`試し読み ${asin}: 問題のページがない`);
+  for (const p of s.pages) if (!unitOf(p)) ng(`試し読み ${asin}: 回（章）のわからない見出し「${p.label}」`);
 }
 // 本文まるごとのPDFを公開していないか（抜粋は多くても6ページ）
 for (const f of readdirSync(join(ROOT, "public", "samples"), { recursive: true })) {
@@ -123,6 +131,45 @@ for (const f of readdirSync(join(ROOT, "public", "samples"), { recursive: true }
     if (!pages) ng(`public/samples/${f}: data/samples.json にない PDF`);
   }
 }
+
+/* ── 数式が組めるか ──
+   原稿の独自命令（\probref など）を lib/katex-macros.json に足し忘れると、
+   その命令が赤字でそのまま画面に出てしまう。実際に組んで確かめる。 */
+const mathSeen = new Set();
+const mathBad = new Map();
+const walkMath = (node, where) => {
+  if (Array.isArray(node)) return node.forEach((n) => walkMath(n, where));
+  if (!node || typeof node !== "object") return;
+  if (node.t === "math" && typeof node.v === "string") {
+    if (mathSeen.has(node.v)) return;
+    mathSeen.add(node.v);
+    try {
+      const html = katex.renderToString(node.v, { throwOnError: true, macros: { ...macros }, strict: false });
+      if (html.includes("katex-error")) throw new Error("組めない数式");
+    } catch (e) {
+      mathBad.set(node.v, [where, e.message.split("\n")[0]]);
+    }
+    return;
+  }
+  for (const v of Object.values(node)) walkMath(v, node.slug ?? where);
+};
+walkMath(analysis, "analysis");
+walkMath(series, "series");
+for (const [tex, [where, msg]] of mathBad) ng(`${where}: 数式が組めない「${tex.slice(0, 40)}」（${msg}）`);
+
+/* ── 平文に LaTeX の命令が残っていないか ── */
+const walkPlain = (node, where) => {
+  if (typeof node === "string") {
+    const m = node.match(/\\[a-zA-Z]{2,}/);
+    if (m) ng(`${where}: 平文に ${m[0]} が残っている「${node.slice(0, 40)}」`);
+    return;
+  }
+  if (Array.isArray(node)) return node.forEach((n) => walkPlain(n, where));
+  if (!node || typeof node !== "object" || node.t === "math") return;
+  for (const v of Object.values(node)) walkPlain(v, node.slug ?? where);
+};
+walkPlain(analysis, "analysis");
+walkPlain(series, "series");
 
 /* ── 「N大学」と書いている数が、区分の数になっていないか ── */
 const pageCount = analysis.length;

@@ -11,14 +11,20 @@
 本文PDF そのものは公開ディレクトリに置かない。抜粋したページだけを新しいPDFに写す。
 
 抜粋の選び方（立ち読みに近い範囲にとどめる）
-  ・目次／本書の使い方／問題／解説／採点基準を1〜2ページずつ、合計4〜6ページ
-  ・問題・解説・採点基準は、わざと別の回（別の章）から採る。
+  ・中身の手ざわりがいちばん伝わるのは「試験の扉」と「問題」なので、そこを厚くする。
+    扉1ページ＋問題2ページ＋解答1ページの4ページを基本にする
+    （診断模試だけは、その本の売りである診断ページを1ページ足す）
+  ・目次・本書の使い方・採点基準は入れない。サンプルとしては重く、手ざわりが伝わりにくい
+  ・扉・問題・解答は、わざとすべて別の回（別の章）から採る。
     同じ大問の「問題・解答・詳解・採点基準」が揃わないようにするため
-  ・1回分・1章分をまとめて出さない
+  ・1回分・1章分をまとめて出さない（どの回も、そのページ全部は出さない）
   ・ページの途中で切らない（ページ単位でそのまま写す）
 
-版の取り違えを防ぐため、本文PDF のページ数が Amazon の表示（data/books.json）と
-一致する巻だけを対象にする。一致しない巻は作らずに報告する。
+版の取り違えを防ぐため、
+  ・表紙ページの巻表示（Vol.N／第N巻）が data/books.json の巻と一致すること
+  ・本文PDF のページ数が Amazon の表示と一致すること（KDP の表示が2ページまで
+    ずれている巻があるので、その差は許して報告する）
+の両方を満たす本文PDF だけを対象にする。
 """
 import json
 import os
@@ -46,9 +52,10 @@ NOTICE_FONT = "japan"
 NOTICE_TITLE = "試し読み（抜粋）"
 NOTICE_BODY = (
     "このファイルは、書籍の内容を確認していただくための抜粋です。\n"
-    "問題・解説・採点基準などを、それぞれ別の箇所から抜き出して並べています。\n"
+    "扉・問題・解答などを、それぞれ別の箇所から抜き出して並べています。\n"
     "連続したページではありません。\n\n"
-    "各ページの下部または上部に、書籍でのページ番号が入っています。\n"
+    "書籍でのページ番号は、各ページの下部または上部にあります。\n"
+    "扉のように番号の入らないページもあります。\n"
     "収録順や前後のつながりは、実際の書籍とは異なります。"
 )
 
@@ -68,8 +75,13 @@ def series_dirs() -> dict[str, str]:
 SERIES_DIRS = series_dirs()
 
 
-def interior_pdf(book: dict) -> Path | None:
-    """その巻の本文PDF。ページ数が Amazon の表示と一致するものだけを返す。"""
+# 表紙ページに刷られている巻表示。巻の取り違えはこれで止める
+VOL_MARK = re.compile(r"(?:Vol\.?\s*(\d+)|第\s*(\d+)\s*巻)")
+PAGE_SLACK = 2  # KDP の「ページ数」表示が組版と数ページずれている巻がある
+
+
+def interior_pdf(book: dict, report: list[str]) -> Path | None:
+    """その巻の本文PDF。巻表示とページ数で、別の巻・古い版を取り違えないようにする。"""
     if book["series"] == "gokaku":
         rel = MANUSCRIPTS.get(book["slug"], {}).get("volumes", {}).get(str(book["vol"]))
     else:
@@ -79,15 +91,30 @@ def interior_pdf(book: dict) -> Path | None:
     d = HOME / rel
     cands = [p for p in sorted(d.glob("*_KDP_B5_interior.pdf")) if "outlined" not in p.name]
     cands += [d / "main_b5.pdf", d / "main.pdf"]  # 入稿名でない巻の控え
+    near = None
     for p in cands:
         if not p.exists():
             continue
         try:
             with fitz.open(p) as doc:
-                if doc.page_count == book["pages"]:
+                cover = re.sub(r"\s+", "", doc[0].get_text())[:200]
+                m = VOL_MARK.search(cover)
+                vol = int(m.group(1) or m.group(2)) if m else 1
+                gap = abs(doc.page_count - book["pages"])
+                if vol != book["vol"]:
+                    continue  # 別の巻の PDF
+                if gap == 0:
                     return p
+                if gap <= PAGE_SLACK and near is None:
+                    near = (p, doc.page_count)
         except Exception:  # noqa: BLE001
             continue
+    if near:
+        report.append(
+            f"{book['asin']} {book['title']}: 本文PDF {near[1]}ページ / Amazon の表示 {book['pages']}ページ"
+            f"（{PAGE_SLACK}ページまでの差は同じ版として扱った）"
+        )
+        return near[0]
     return None
 
 
@@ -102,24 +129,35 @@ def find_toc_page(doc: fitz.Document) -> int | None:
     return None
 
 
-# 目次の見出しは本によって書き方が違う。
+# 目次の項目の始まり。見出しの文字は項目ごとに違うので、始まりだけを拾って
+# 「次の項目の始まりまで」をひとかたまりとして扱う。
 #   「第1 回予想問題 8」「第1 回オリジナル模試 5」
-#   「第1 回解答・解説（1・2・3） 16」  ← 括弧の中に数字が入る
+#   「第1 回解答・解説（1・2・3） 16」  ← 見出しの中に数字が入る
 #   「第1 回予想問題 . . . . . . . 7」  ← 点線リーダーが入る
-TOC_ENTRY = re.compile(
-    r"(はじめに|第\s*\d+\s*[回章](?:[^0-9（(]|[（(][^）)]*[）)])*"
-    r"|付録\s*[A-Z](?:[^0-9（(]|[（(][^）)]*[）)])*|最終判定[^0-9]*)\s*(\d+)"
-)
+#   「付録C 5 回分の設計 163」          ← 見出しの先頭に数字が来る
+TOC_HEAD = re.compile(r"はじめに|第\s*\d+\s*[回章]|付録\s*[A-Z]|最終判定")
 
 
 def parse_toc(doc: fitz.Document, toc_index: int) -> list[tuple[str, int]]:
-    """目次から「見出し → 書籍のページ番号」を読む。"""
+    """目次から「見出し → 書籍のページ番号」を読む。
+
+    ページ番号は、その項目のかたまりに出てくる数字のうち最後のものを採る。
+    「付録C 5 回分の設計 163」のように見出しのほうに数字が入っていても取り違えないため。
+    さらに、目次のページ番号は必ず増えていくので、前の項目より小さい数は捨てる。
+    """
     text = flat(doc[toc_index].get_text())
     text = re.sub(r"(?:[.．·]\s*){2,}", " ", text)  # 点線リーダー（「. . . .」を含む）を外す
-    entries = []
-    for m in TOC_ENTRY.finditer(text):
-        label = re.sub(r"[\s.．]+", "", m.group(1)).strip("・")
-        entries.append((label, int(m.group(2))))
+    heads = list(TOC_HEAD.finditer(text))
+    entries: list[tuple[str, int]] = []
+    for i, m in enumerate(heads):
+        chunk = text[m.end() : heads[i + 1].start() if i + 1 < len(heads) else len(text)]
+        nums = [int(n) for n in re.findall(r"\d+", chunk)]
+        prev = entries[-1][1] if entries else 0
+        page = next((n for n in reversed(nums) if n > prev), None)
+        if page is None:
+            continue
+        label = re.sub(r"[\s.．]+", "", m.group(0) + re.sub(r"\d+\s*$", "", chunk)).strip("・")
+        entries.append((label, page))
     return entries
 
 
@@ -141,6 +179,18 @@ def page_number_offset(doc: fitz.Document) -> int | None:
 
 def printed_to_index(printed: int, offset: int) -> int:
     return printed - 1 + offset
+
+
+def printed_number(doc: fitz.Document, index: int, offset: int) -> int:
+    """そのページに刷られているページ番号。扉のように番号のないページは 0。"""
+    n = index + 1 - offset
+    page = doc[index]
+    r = page.rect
+    bands = (
+        page.get_text("text", clip=fitz.Rect(0, r.height - 48, r.width, r.height)),
+        page.get_text("text", clip=fitz.Rect(0, 0, r.width, 48)),
+    )
+    return n if any(str(n) in re.findall(r"\d+", b) for b in bands) else 0
 
 
 class Sections:
@@ -182,128 +232,148 @@ def first_page_starting_with(doc: fitz.Document, span: tuple[int, int], pattern:
     return None
 
 
-# 問題そのものではないページ（試験の表紙・章扉・確認事項・白紙）
-NOT_PROBLEM = re.compile(r"注意事項|試験開始の合図|問題紙|この章の確認事項|この章で[^。]{0,8}が要求|この章の問題|解答用紙")
+# 問題そのものではないページ（扉・確認事項・白紙）
+NOT_PROBLEM = re.compile(r"注意事項|試験開始の合図|この章の確認事項|この章で[^。]{0,8}が要求|この章の問題")
 
-
-def problem_page(doc: fitz.Document, span: tuple[int, int], nth: int | None = None) -> int | None:
-    """
-    範囲の中で、実際に問題が刷られているページ。表紙・章扉・確認事項は飛ばす。
-
-    nth を指定しなければ、分量が中くらいのページを選ぶ。
-    いちばん短いページ（1行問題だけでほぼ余白）も、いちばん詰まったページも、
-    その本の代表的な見た目から外れるため。
-    """
-    hits = []
+def content_pages(doc: fitz.Document, span: tuple[int, int]) -> list[int]:
+    """範囲の中で、実際に問題が刷られているページ。扉・確認事項・解答用紙・白紙は外す。"""
+    out = []
     for i in range(span[0], span[1] + 1):
         t = flat(doc[i].get_text()).strip()
         if len(t) < 100 or NOT_PROBLEM.search(t[:400]):
             continue
-        hits.append((i, len(t)))
-    if not hits:
-        return None
-    if nth is not None:
-        return hits[min(nth, len(hits) - 1)][0]
-    hits.sort(key=lambda x: x[1])
-    return hits[len(hits) // 2][0]
+        if "解答用紙" in t[:24]:  # 書き込み用の解答用紙
+            continue
+        out.append(i)
+    return out
 
 
-def pick_pages(doc: fitz.Document, book: dict, sec: Sections, toc_index: int) -> list[tuple[int, str]]:
-    """抜粋するページ（PDF のページ番号, 見出し）を決める。"""
-    picks: list[tuple[int, str]] = [(toc_index, "目次")]
+def middling(doc: fitz.Document, idxs: list[int]) -> int:
+    """分量が中くらいのページ。いちばん余白の多いページも、いちばん詰まったページも避ける。"""
+    ranked = sorted(idxs, key=lambda i: len(flat(doc[i].get_text())))
+    return ranked[len(ranked) // 2]
 
-    intro = sec.find(r"^はじめに")
-    if intro:
-        # 「使い方」「解説の読み方」「採点」に触れているページを選ぶ
-        best = None
-        for i in range(intro[0], intro[1] + 1):
-            t = flat(doc[i].get_text())
-            if re.search(r"使い方|解説の読み方|採点の総則|本書の構成|読み方", t):
-                best = i
-                break
-        picks.append((best if best is not None else min(intro[0] + 1, intro[1]), "本書の使い方"))
 
-    if book["series"] == "kansei":
-        # 章立ての本。第2章から問題、第3章から解説を採る
-        ch2 = sec.find(r"^第2章(?!解答)", 0)
-        ch3_ans = sec.find(r"^第3章解答")
-        if ch2:
-            picks.append((ch2[0], "章扉の例"))
-            prob = problem_page(doc, (ch2[0] + 1, ch2[1]))
-            if prob is not None:
-                picks.append((prob, "問題の例"))
-        if ch3_ans:
-            start = first_page_starting_with(doc, ch3_ans, r"(\d+-\d+|第\s*\d+)") or ch3_ans[0]
-            picks.append((start, "解説の例"))
-        appendix = sec.find(r"^付録C") or sec.find(r"^付録")
-        if appendix:
-            picks.append((appendix[0], "付録の例"))
-    else:
-        # 回ごとに「問題 → 解答・解説 → 採点基準」が並ぶ本。
-        # 問題・解説・採点基準は、わざと別の回から採る（同じ大問で一式揃えない）。
-        by_round: dict[int, dict[str, tuple[int, int]]] = {}
-        for label, start, end in sec.items:
-            m = re.match(r"第(\d+)回", label)
-            if not m:
+def solution_page(doc: fitz.Document, span: tuple[int, int]) -> int:
+    """解答・解説の、大問の頭から始まるページ。途中から始まるページを避ける。"""
+    return first_page_starting_with(doc, span, r"(\d+-\d+|第\s*\d+)") or span[0]
+
+
+def by_unit(sec: Sections) -> dict[int, dict[str, tuple[int, int]]]:
+    """目次を「第N回／第N章 → 種類 → ページ範囲」に畳む。"""
+    out: dict[int, dict[str, tuple[int, int]]] = {}
+    for label, start, end in sec.items:
+        m = re.match(r"第(\d+)[回章]", label)
+        if not m:
+            continue
+        kind = (
+            "採点基準" if "採点基準" in label
+            else "診断" if "診断" in label
+            else "解答" if ("解答" in label or "解説" in label)
+            else "問題"  # 「第2回予想問題」「第2章場合の数と確率」
+        )
+        out.setdefault(int(m.group(1)), {}).setdefault(kind, (start, end))
+    return out
+
+
+def pick_pages(doc: fitz.Document, book: dict, sec: Sections) -> list[tuple[int, str, str, str]]:
+    """抜粋するページ（PDF のページ番号, 表示する見出し, 種類）を決める。
+
+    扉1・問題2・解答1 を基本にし、扉・問題・解答はすべて別の回（章）から採る。
+    どの回も「そのページ全部」は出さないので、1回分がまるごと見える状態にはならない。
+    """
+    units = by_unit(sec)
+    unit = "章" if any(re.match(r"第\d+章", label) for label, _, _ in sec.items) else "回"
+
+    used: set[int] = set()
+    covers: dict[int, str] = {}  # 目次の範囲の外にある扉 → その回の節の名前
+    # 文系の本などでは、1回分の問題が実質1ページに収まっている。
+    # そういう回は1ページ出すと「その回の問題を丸ごと」になるので、2回分までに限る。
+    # （どの本も問題のページは2枚見せたい。その回の解答・採点基準は出さない）
+    whole_left = 2
+
+    def take_problem(prefer: int, as_cover: bool) -> tuple[int, int, bool] | None:
+        """問題のページを1枚。as_cover なら、その回の1ページ目（扉）を採る。
+
+        返すのは（回／章の番号, PDF のページ, そのページが扉かどうか）。
+        1ページ目に問題が刷られている本（問題紙に第1問から載る本）もあるので、
+        扉かどうかは「問題の刷られたページに数えたか」で決める。
+        """
+        nonlocal whole_left
+        for n in [prefer] + [k for k in sorted(units) if k != prefer]:
+            if n in used or "問題" not in units.get(n, {}):
                 continue
-            kind = (
-                "採点基準" if "採点基準" in label
-                else "診断" if "診断" in label
-                else "解説" if ("解答" in label or "解説" in label)
-                else "問題" if ("問題" in label or "模試" in label)
-                else None
-            )
-            if kind:
-                by_round.setdefault(int(m.group(1)), {}).setdefault(kind, (start, end))
+            span = units[n]["問題"]
+            body = content_pages(doc, span)
+            rest = [i for i in body if i != span[0]]
+            if not rest and whole_left <= 0:
+                continue  # 1ページ出すとその回の問題が丸ごと見えてしまう
+            used.add(n)
+            if not rest:
+                whole_left -= 1
+            if not as_cover:
+                return n, middling(doc, rest) if rest else span[0], False
+            # 試験の扉はノンブルを持たないことがあり、目次のページ番号は
+            # 問題の1ページ目を指す。1つ前のページが、その回の扉かどうかを見る。
+            prev = span[0] - 1
+            if prev >= 0:
+                head = flat(doc[prev].get_text())[:300]
+                if re.search(rf"第\s*{n}\s*[回章]", head) and NOT_PROBLEM.search(head):
+                    # 扉は目次の範囲の1つ手前にあるので、節の名前はその回のものを使う
+                    covers[prev] = sec.label_of(span[0])
+                    return n, prev, True
+            return n, span[0], span[0] not in body
+        return None
 
-        def pick_round(kind: str, prefer: int, used: set[int]) -> tuple[int, int] | None:
-            order = [prefer] + [n for n in sorted(by_round) if n != prefer]
-            for n in order:
-                if n in used or kind not in by_round.get(n, {}):
-                    continue
-                used.add(n)
-                return by_round[n][kind]
-            # 回が足りないときは、重なってもその種類のページを出す
-            for n in sorted(by_round):
-                if kind in by_round.get(n, {}):
-                    return by_round[n][kind]
-            return None
+    def take(kind: str, prefer: int) -> tuple[int, tuple[int, int]] | None:
+        for n in [prefer] + [k for k in sorted(units) if k != prefer]:
+            if n in used or kind not in units.get(n, {}):
+                continue
+            used.add(n)
+            return n, units[n][kind]
+        return None
 
-        used: set[int] = set()
-        prob = pick_round("問題", 2, used)
-        ans = pick_round("解説", 3, used)
-        mark = pick_round("採点基準", 4, used)
-        diag = pick_round("診断", 1, set())
+    cover = take_problem(2, as_cover=True)
+    prob1 = take_problem(4, as_cover=False)
+    prob2 = take_problem(5, as_cover=False)
+    ans = take("解答", 3)
 
-        if prob:
-            # 1ページ目は試験の表紙なので飛ばし、2題目あたりのページを採る
-            p = problem_page(doc, prob)
-            if p is not None:
-                picks.append((p, "問題の例"))
-        if ans:
-            start = first_page_starting_with(doc, ans, r"第\s*\d+\s*問") or ans[0]
-            picks.append((start, "解説の例"))
-            # 診断模試は診断ページがその本の特徴なので、解説の2ページ目より優先する
-            if start + 1 <= ans[1] and not diag:
-                picks.append((start + 1, "解説の例（続き）"))
-        if mark:
-            picks.append((mark[0], "採点基準の例"))
-        else:
-            # 採点基準を持たない本（マーク式など）は、その本の特徴が出る付録に替える
-            appendix = sec.find(r"^付録A") or sec.find(r"^付録")
-            if appendix:
-                picks.append((appendix[0], "付録の例"))
+    picks: list[tuple[int, str, str]] = []
+    if cover:
+        n, idx, is_tobira = cover
+        label = "章扉" if unit == "章" else "試験の扉" if is_tobira else "問題紙"
+        picks.append((idx, f"第{n}{unit} {label}", "扉"))
+    for got in (prob1, prob2):
+        if got:
+            picks.append((got[1], f"第{got[0]}{unit} 問題", "問題"))
+    if ans:
+        n, span = ans
+        picks.append((solution_page(doc, span), f"第{n}{unit} 解答・解説", "解答"))
+
+    if book["series"] == "shindan":
+        used.discard(1)
+        diag = take("診断", 1)
         if diag:
-            picks.append((diag[0], "診断ページの例"))
+            n, span = diag
+            picks.append((span[0], f"第{n}{unit} 診断ページ", "診断"))
+
+    # 4ページに届かないとき（回数の少ない本）は、解答の続きで足す。
+    # 解答・解説は10ページ以上あるので、1ページ足しても1回分が揃うことはない
+    if ans:
+        n, span = ans
+        nxt = solution_page(doc, span) + 1
+        while len(picks) < 4 and nxt <= span[1]:
+            picks.append((nxt, f"第{n}{unit} 解答・解説（続き）", "解答"))
+            nxt += 1
 
     # 重複を外し、6ページまでに収める
     seen = set()
     out = []
-    for idx, label in picks:
+    for idx, label, kind in picks:
         if idx in seen or not (0 <= idx < doc.page_count):
             continue
         seen.add(idx)
-        out.append((idx, label))
+        out.append((idx, label, kind, covers.get(idx) or sec.label_of(idx)))
     return out[:6]
 
 
@@ -338,9 +408,9 @@ def notice_page(doc: fitz.Document, src_page: fitz.Page, title: str) -> None:
 
 
 def build(book: dict, report: list[str]) -> dict | None:
-    pdf = interior_pdf(book)
+    pdf = interior_pdf(book, report)
     if not pdf:
-        report.append(f"{book['asin']} {book['title']}: ページ数の合う本文PDFが見つからない（{book['pages']}ページ）")
+        report.append(f"{book['asin']} {book['title']}: 版の合う本文PDFが見つからない（{book['pages']}ページ）")
         return None
 
     doc = fitz.open(pdf)
@@ -357,7 +427,7 @@ def build(book: dict, report: list[str]) -> dict | None:
         return None
 
     sec = Sections(entries, offset, doc.page_count)
-    picks = pick_pages(doc, book, sec, toc_index)
+    picks = pick_pages(doc, book, sec)
     if len(picks) < 4:
         report.append(f"{book['asin']} {book['title']}: 抜粋が{len(picks)}ページしか選べない")
         doc.close()
@@ -371,7 +441,7 @@ def build(book: dict, report: list[str]) -> dict | None:
     pages = []
     sample = fitz.open()
     notice_page(sample, doc[picks[0][0]], f"{book['fullTitle'].split('：')[0].split(': ')[0]}")
-    for n, (idx, label) in enumerate(picks, start=1):
+    for n, (idx, label, kind, section) in enumerate(picks, start=1):
         page = doc[idx]
         zoom = IMG_WIDTH / page.rect.width
         pix = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom), alpha=False)
@@ -383,26 +453,46 @@ def build(book: dict, report: list[str]) -> dict | None:
             {
                 "file": f"/samples/{book['asin']}/{name}",
                 "label": label,
-                "section": sec.label_of(idx),
-                "page": idx + 1 - offset,  # 書籍に印刷されているページ番号
+                "kind": kind,
+                "section": section,
+                "page": printed_number(doc, idx, offset),  # 書籍に印刷されているページ番号
                 "width": pix.width,
                 "height": pix.height,
             }
         )
+
+    # 扉・問題・解答が同じ回（章）から出ていないかを確かめる。
+    # 同じ大問の「問題・解答・詳解」が揃って見えないようにするための線引き。
+    origin: dict[str, set[str]] = {}
+    for pg in pages:
+        if pg["kind"] in ("扉", "問題", "解答"):
+            origin.setdefault(pg["kind"], set()).add(re.match(r"第\d+[回章]", pg["label"]).group(0))
+    units = [u for v in origin.values() for u in v]
+    if len(units) != len(set(units)):
+        report.append(f"{book['asin']} {book['title']}: 扉・問題・解答が同じ回から出ている（{units}）")
+
+    # 1回分（1章分）がまとめて見える状態になっていないことを確かめる。
+    #   ・ひとつの回から2ページ以上は出さない
+    #   ・問題のページが丸ごと見えてしまう回は、多くても2つ
+    per_unit: dict[str, list[str]] = {}
+    for pg in pages:
+        per_unit.setdefault(re.match(r"第\d+[回章]", pg["label"]).group(0), []).append(pg["kind"])
+    for unit, kinds in per_unit.items():
+        if len([k for k in kinds if k != "解答"]) > 1 or len(set(kinds)) > 1:
+            report.append(f"{book['asin']} {book['title']}: {unit}から{len(kinds)}ページ出している（{kinds}）")
+    whole = 0
+    for (idx, _, kind, _section) in picks:
+        if kind not in ("扉", "問題"):
+            continue
+        for _, start, end in sec.items:
+            if start <= idx <= end and content_pages(doc, (start, end)) == [idx]:
+                whole += 1  # その回の問題が刷られたページは、これ1枚しかない
+    if whole > 2:
+        report.append(f"{book['asin']} {book['title']}: 問題を丸ごと出している回が{whole}つある")
+
     sample.save(out / "sample.pdf", garbage=4, deflate=True, clean=True)
     sample.close()
     doc.close()
-
-    # 問題・解説・採点基準が同じ回（章）から出ていないかを確かめる。
-    # 同じ大問の「問題・解答・採点基準」が揃って見えないようにするための線引き。
-    origin = {}
-    for pg in pages:
-        kind = pg["label"].replace("の例", "").replace("（続き）", "")
-        if kind in ("問題", "解説", "採点基準"):
-            origin.setdefault(kind, set()).add(re.sub(r"(予想問題|問題|解答・解説|解答|解説|採点基準)$", "", pg["section"]))
-    rounds = [list(v)[0] for v in origin.values() if len(v) == 1]
-    if len(rounds) != len(set(rounds)):
-        report.append(f"{book['asin']} {book['title']}: 問題・解説・採点基準が同じ回から出ている（{rounds}）")
 
     return {"asin": book["asin"], "pdf": f"/samples/{book['asin']}/sample.pdf", "pages": pages}
 

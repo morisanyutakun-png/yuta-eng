@@ -1,0 +1,14 @@
+{
+  "\\kuur": "\\boxed{\\text{#1}}",
+  "\\kubunmark": "\\text{#1}",
+  "\\dsp": "\\displaystyle",
+  "\\ans": "\\underline{#1}",
+  "\\underLine": "\\underline{#1}",
+  "\\Pt": "\\mathrm{#1}",
+  "\\Vec": "\\overrightarrow{\\mathrm{#1}}",
+  "\\Cb": "{}_{#1}\\mathrm{C}_{#2}",
+  "\\MF": "\\frac{#1}{#2}",
+  "\\Ma": "\\boxed{#1}",
+  "\\ansheet": "\\boxed{\\textbf{#1}}",
+  "\\probref": "\\boxed{#1}"
+}
