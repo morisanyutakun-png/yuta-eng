@@ -781,6 +781,87 @@ for k_ in [3, 4]:
     ok(f"5 n=300 で k!/2 に近い k={k_}", abs(v - math.factorial(k_)/2) < 0.05*math.factorial(k_),
        f"数値{v:.4f} 目標{math.factorial(k_)/2}")
 
+# ══ 東北大理系 2026 ══════════════════════════════════════
+print()
+print("── 東北大理系 2026 ──")
+# 第1問・第2問は文系と同じ問題なので、上の確認がそのまま効く。
+
+# 大問3
+g3 = lambda x: 8*x**3 - 6*x*x + 2
+h3 = lambda x: 3*x**4 + 8*x**3 - 12*x*x + 5
+dg3 = lambda x: 24*x*x - 12*x
+dh3 = lambda x: 12*x**3 + 24*x*x - 24*x
+for x in (1.0, -1.0):
+    ok(f"3(1) x={x} 値が一致", abs(g3(x) - h3(x)) < 1e-12, f"{g3(x)} vs {h3(x)}")
+    ok(f"3(1) x={x} 微分係数が一致", abs(dg3(x) - dh3(x)) < 1e-12, f"{dg3(x)} vs {dh3(x)}")
+f3 = lambda x: g3(x) if abs(x) <= 1 else h3(x)
+grid3 = [-6 + 12*i/600000 for i in range(600001)]
+xm = min(grid3, key=f3)
+ok("3(2) 最小を与える x", abs(xm - (-1-math.sqrt(3))) < 1e-3, f"全探索{xm:.5f} 式{-1-math.sqrt(3):.5f}")
+ok("3(2) 最小値", abs(f3(-1-math.sqrt(3)) - (-39 - 24*math.sqrt(3))) < 1e-10,
+   f"{f3(-1-math.sqrt(3)):.10f} vs {-39-24*math.sqrt(3):.10f}")
+
+# 大問4 … 4^8 通りの移動列を全探索
+STEPS = [(1,0), (-1,0), (0,1), (0,-1)]
+from itertools import product as iprod
+cnt40 = cnt_hyp = cnt_both = 0
+for seq in iprod(range(4), repeat=8):
+    x = y = 0; hit42 = False
+    for k, si in enumerate(seq):
+        dx, dy = STEPS[si]; x += dx; y += dy
+        if k < 7 and (x, y) == (4, 2): hit42 = True
+    if (x, y) == (4, 0): cnt40 += 1
+    if x*x - y*y == 16:
+        cnt_hyp += 1
+        if hit42: cnt_both += 1
+ok("4(1) P=(4,0)", Fraction(cnt40, 4**8) == Fraction(49, 4096), f"{Fraction(cnt40,4**8)}")
+ok("4(2) 双曲線上", Fraction(cnt_hyp, 4**8) == Fraction(7, 256), f"{Fraction(cnt_hyp,4**8)}")
+ok("4(3) 条件つき確率", Fraction(cnt_both, cnt_hyp) == Fraction(45, 1792), f"{Fraction(cnt_both,cnt_hyp)}")
+
+# 大問5
+ok("5(1) 接点", abs(math.exp(math.pi/4)*math.cos(math.pi/4) - math.exp(math.pi/4)/math.sqrt(2)) < 1e-12)
+for al, be in [(3.0,1.0), (3.0,3.0), (1.0,2.0)]:
+    I5 = lambda t: math.exp(al*t)*(al*math.cos(be*t)+be*math.sin(be*t))/(al*al+be*be)
+    J5 = lambda t: math.exp(al*t)*(al*math.sin(be*t)-be*math.cos(be*t))/(al*al+be*be)
+    hh = 1e-6
+    ok(f"5(2) I'=被積分 α={al} β={be}",
+       abs((I5(0.7+hh)-I5(0.7-hh))/(2*hh) - math.exp(al*0.7)*math.cos(be*0.7)) < 1e-5)
+    ok(f"5(2) J'=被積分 α={al} β={be}",
+       abs((J5(0.7+hh)-J5(0.7-hh))/(2*hh) - math.exp(al*0.7)*math.sin(be*0.7)) < 1e-5)
+V5 = math.pi*quad(lambda t: math.exp(2*t)*math.sin(t)**2 * math.exp(t)*(math.cos(t)-math.sin(t)),
+                  0, math.pi/4, n=200001)[0]
+want5 = math.pi/60*(math.sqrt(2)*math.exp(3*math.pi/4) - 4)
+ok("5(3) 体積", abs(V5 - want5) < 1e-8, f"数値{V5:.10f} 式{want5:.10f}")
+
+# 大問6 … 条件をみたす配置を乱数で作り、Q が球面上に来ることを確かめる
+random.seed(1234)
+def rnd3(): return [random.uniform(-3, 3) for _ in range(3)]
+hits = 0
+for _ in range(300):
+    M = rnd3(); r = random.uniform(1.0, 3.0)
+    O = rnd3()
+    def on_sphere(d):
+        n = math.sqrt(sum(v*v for v in d))
+        return [M[i] + r*d[i]/n for i in range(3)]
+    A = on_sphere(rnd3()); B = on_sphere(rnd3())
+    C = on_sphere(rnd3()); D = on_sphere(rnd3())
+    OA = [A[i]-O[i] for i in range(3)]; OB = [B[i]-O[i] for i in range(3)]
+    na = sum(v*v for v in OA); nb = sum(v*v for v in OB)
+    if na < 1e-6 or nb < 1e-6: continue
+    fO = sum((O[i]-M[i])**2 for i in range(3)) - r*r
+    a_ = fO/na; b_ = fO/nb                       # P, Q を S 上に乗せる取り方
+    P = [O[i] + a_*OA[i] for i in range(3)]
+    Q = [O[i] + b_*OB[i] for i in range(3)]
+    if abs(a_*na - b_*nb) > 1e-9: continue        # 条件 a|OA|^2 = b|OB|^2
+    dP = abs(math.dist(P, M) - r); dQ = abs(math.dist(Q, M) - r)
+    if dP > 1e-6: continue
+    hits += 1
+    if dQ > 1e-6:
+        ok("6(2) Q が球面上", False, f"ずれ {dQ:.2e}"); break
+else:
+    ok("6(2) Q が球面上（乱数300通り）", True, f"{hits} 例で確認")
+ok("6 方べきの関係", hits > 100, f"{hits} 例")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

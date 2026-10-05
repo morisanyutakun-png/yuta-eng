@@ -141,6 +141,13 @@ export const sources: Record<string, Record<number, Source>> = {
     },
   },
   // 東北大学は一般選抜の問題を大学サイトでは公開していない（2026-10-05 確認）
+  "tohoku-rikei": {
+    2026: {
+      kind: "none",
+      checked: "2026-10-06",
+      note: "学部ごとのページに一部の試験問題はあるが、一般選抜前期の数学は見つからなかった。",
+    },
+  },
   "tohoku-bunkei": {
     2026: {
       kind: "none",
