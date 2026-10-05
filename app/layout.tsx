@@ -59,6 +59,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/books" className="hidden transition-colors hover:text-navy sm:inline">
                 教材一覧
               </Link>
+              <Link
+                href="/educators"
+                className="hidden border-l border-rule pl-3.5 text-ink-3 transition-colors hover:text-navy lg:inline"
+              >
+                先生方へ
+              </Link>
             </nav>
           </div>
         </header>
