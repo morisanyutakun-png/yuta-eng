@@ -125,6 +125,14 @@ export const sources: Record<string, Record<number, Source>> = {
       note: "東京大学は入試問題そのものをサイトで公開していない。出題の意図は公表しているが、大学の文章なので引用も要約もしない。",
     },
   },
+  // 東北大学は一般選抜の問題を大学サイトでは公開していない（2026-10-05 確認）
+  "tohoku-bunkei": {
+    2026: {
+      kind: "none",
+      checked: "2026-10-05",
+      note: "学部ごとのページに一部の試験問題はあるが、一般選抜前期の数学は見つからなかった。",
+    },
+  },
   "handai-rikei": { 2026: {
       kind: "official",
       url: "https://www.osaka-u.ac.jp/ja/admissions/faculty/general/pastexam-answer/r8",

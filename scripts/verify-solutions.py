@@ -314,6 +314,122 @@ for k_ in [0.65, 0.8]:
     r = areas(k_)
     ok(f"4(3) k={k_} では M/4m≠1", abs(r[1]/r[0] - 4) > 1e-3, f"比 {r[1]/r[0]:.4f}")
 
+# ══ 名大文系 2026 ══════════════════════════════════════
+print()
+print("── 名大文系 2026 ──")
+# 第2問・第3問は理科系と同じ問題なので、上の確認がそのまま効く。ここは第1問だけ。
+def tan_theta(p_, a_):
+    """ベクトルから直に tanθ を出す（式変形とは別経路）。"""
+    sp = math.sqrt(p_)
+    b, c = a_ - sp, a_ + sp
+    AB = (b - a_, b*b + p_ - a_*a_)
+    AC = (c - a_, c*c + p_ - a_*a_)
+    dot = AB[0]*AC[0] + AB[1]*AC[1]
+    crs = AB[0]*AC[1] - AB[1]*AC[0]
+    return abs(crs)/dot if dot != 0 else float("inf"), dot
+for p_ in [0.2, 0.75, 1.0, 3.0]:
+    for a_ in [-2.0, -0.5, 0.0, 1.3]:
+        got, dot = tan_theta(p_, a_)
+        den = 4*p_ - 4*a_*a_ - 1
+        want = 4*math.sqrt(p_)/den if den != 0 else float("inf")
+        ok(f"1(3) p={p_} a={a_}", abs(got - want) < 1e-9 or (math.isinf(got) and math.isinf(want)),
+           f"直接{got:.9f} 式{want:.9f}")
+for a_ in [-1.5, 0.0, 0.7]:
+    p_ = a_*a_ + 0.25
+    _, dot = tan_theta(p_, a_)
+    ok(f"1(2) a={a_} で直角", abs(dot) < 1e-12, f"内積{dot:.2e}")
+def min_theta(p_):
+    best = math.pi
+    for i in range(-4000, 4001):
+        a_ = i/500
+        sp = math.sqrt(p_)
+        b, c = a_ - sp, a_ + sp
+        AB = (b - a_, b*b + p_ - a_*a_); AC = (c - a_, c*c + p_ - a_*a_)
+        dot = AB[0]*AC[0] + AB[1]*AC[1]
+        crs = abs(AB[0]*AC[1] - AB[1]*AC[0])
+        best = min(best, math.atan2(crs, dot))
+    return best
+for p_ in [0.1, 0.5, 0.75]:
+    ok(f"1(4) p={p_} は条件を満たす", min_theta(p_) >= math.pi/3 - 1e-9, f"min θ={math.degrees(min_theta(p_)):.3f}°")
+for p_ in [0.76, 1.0, 2.0]:
+    ok(f"1(4) p={p_} は条件を外れる", min_theta(p_) < math.pi/3 - 1e-6, f"min θ={math.degrees(min_theta(p_)):.3f}°")
+ok("1(4) p=3/4 で等号", abs(min_theta(0.75) - math.pi/3) < 1e-6, f"{math.degrees(min_theta(0.75)):.6f}°")
+
+# ══ 東北大文系 2026 ══════════════════════════════════════
+print()
+print("── 東北大文系 2026 ──")
+
+# 大問1 … 接点を数値で求め、垂直二等分線の y 切片を直に計算
+def q_direct(u):
+    d = math.sqrt(u*u - u + 1)
+    t1, t2 = u - d, u + d
+    mx, my = (t1+t2)/2, (t1*t1 + t2*t2)/2
+    slope = t1 + t2                 # P1P2 の傾き
+    return my + mx/slope            # x=0 での y（垂直二等分線の傾きは -1/slope）
+for u in [0.05, 0.25, 1.0, 3.0]:
+    ok(f"1(2) q(u) u={u}", abs(q_direct(u) - (2*u*u - u + 1.5)) < 1e-9,
+       f"直接{q_direct(u):.9f} 式{2*u*u-u+1.5:.9f}")
+grid = [i/20000 for i in range(1, 200001)]
+umin = min(grid, key=q_direct)
+ok("1(2) 最小を与える u", abs(umin - 0.25) < 1e-3, f"全探索{umin:.5f} 式0.25")
+ok("1(2) 最小値 11/8", abs(q_direct(0.25) - 11/8) < 1e-12, f"{q_direct(0.25):.12f}")
+
+# 大問2 … a^2+2b^2=c^2 の解を全探索して性質を確かめる
+sols = [(a, b, c) for c in range(1, 401) for a in range(1, c) for b in range(1, c)
+        if a*a + 2*b*b == c*c]
+ok("2 解の個数", len(sols) > 100, f"{len(sols)} 組")
+ok("2(3) a+c が偶数", all((a+c) % 2 == 0 for a, b, c in sols))
+ok("2(3) b が偶数", all(b % 2 == 0 for a, b, c in sols))
+ok("2(3) a,c 偶数なら b は4の倍数",
+   all(b % 4 == 0 for a, b, c in sols if a % 2 == 0 and c % 2 == 0),
+   f"対象 {sum(1 for a,b,c in sols if a%2==0 and c%2==0)} 組")
+ok("2(1) (1,2,3)", 1 + 2*4 == 9)
+
+# 大問3 … 座標に落として交点 F を数値で求める
+A = (math.sqrt(2), 0.0)
+B = (1/math.sqrt(2), math.sqrt(5 - 0.5))
+ok("3 前提 |a|,|b|,a·b", abs(math.hypot(*A)-math.sqrt(2)) < 1e-12
+   and abs(math.hypot(*B)-math.sqrt(5)) < 1e-12
+   and abs(A[0]*B[0]+A[1]*B[1]-1) < 1e-12)
+def F_num(s_):
+    t_ = (1-2*s_)/(5-s_)
+    D = (s_*A[0], s_*A[1]); E = (t_*B[0], t_*B[1])
+    # AE と BD の交点
+    d1 = (E[0]-A[0], E[1]-A[1]); d2 = (D[0]-B[0], D[1]-B[1])
+    det = d1[0]*(-d2[1]) - d1[1]*(-d2[0])
+    rhs = (B[0]-A[0], B[1]-A[1])
+    al = (rhs[0]*(-d2[1]) - rhs[1]*(-d2[0]))/det
+    return (A[0]+al*d1[0], A[1]+al*d1[1]), (d1[0]*d2[0]+d1[1]*d2[1])
+for s_ in [0.05, 0.25, 0.4, 0.49]:
+    Fn, perp = F_num(s_)
+    K = 2*s_*s_ - 2*s_ + 5
+    ca, cb = s_*(s_+4)/K, (1-s_)*(1-2*s_)/K
+    Ff = (ca*A[0]+cb*B[0], ca*A[1]+cb*B[1])
+    ok(f"3(1) 直交 s={s_}", abs(perp) < 1e-9, f"内積{perp:.2e}")
+    ok(f"3(2) OF s={s_}", abs(Fn[0]-Ff[0]) < 1e-9 and abs(Fn[1]-Ff[1]) < 1e-9,
+       f"数値({Fn[0]:.6f},{Fn[1]:.6f}) 式({Ff[0]:.6f},{Ff[1]:.6f})")
+s7 = 2/7
+K = 2*s7*s7 - 2*s7 + 5
+ca, cb = s7*(s7+4)/K, (1-s7)*(1-2*s7)/K
+Ff = (ca*A[0]+cb*B[0], ca*A[1]+cb*B[1])
+dot = Ff[0]*(B[0]-A[0]) + Ff[1]*(B[1]-A[1])
+ok("3(3) s=2/7 で OF⊥AB", abs(dot) < 1e-12, f"内積{dot:.2e}")
+ok("3(3) s=2/7 は範囲内", 0 < s7 < 0.5)
+
+# 大問4 … 面積を数値積分して比を確かめる
+f4 = lambda x: x**4 - x*x
+S4 = quad(lambda x: (x*x - 0.5)**2, -1/math.sqrt(2), 1/math.sqrt(2))[0]
+ok("4(3) S=2√2/15", abs(S4 - 2*math.sqrt(2)/15) < 1e-9, f"数値{S4:.10f} 式{2*math.sqrt(2)/15:.10f}")
+for k_ in [0.01, 0.1, 1.0, 5.0, 50.0]:
+    al = math.sqrt((1+math.sqrt(1+4*k_))/2)
+    T4 = quad(lambda x: k_ + x*x - x**4, -al, al)[0]
+    want = 8/5*al**5 - 4/3*al**3
+    ok(f"4(3) T k={k_}", abs(T4 - want) < 1e-6*max(1, abs(want)), f"数値{T4:.8f} 式{want:.8f}")
+    ok(f"4(3) T/S>√2 k={k_}", T4/S4 > math.sqrt(2), f"比{T4/S4:.6f}")
+al0 = math.sqrt((1+math.sqrt(1+4*1e-9))/2)
+T0 = 8/5*al0**5 - 4/3*al0**3
+ok("4(3) k→0 で √2 に近づく", abs(T0/S4 - math.sqrt(2)) < 1e-6, f"比{T0/S4:.9f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
