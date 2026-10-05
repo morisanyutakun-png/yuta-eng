@@ -55,7 +55,9 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
  * 答えを先に置くのは、答え合わせだけしたい人がスクロールしなくて済むようにするため。
  */
 export function SubQuestionBlock({ sub, qNo }: { sub: SubQuestion; qNo: number }) {
-  const id = `q${qNo}${sub.label ? `-${sub.label.replace(/[()（）]/g, "")}` : ""}`;
+  // 大問ページの見出しが id="q1" を使うので、小問は必ず別の id にする
+  // （小問に分かれていない大問は label が空になり、そのままだと id がぶつかる）
+  const id = `q${qNo}-${sub.label.replace(/[()（）]/g, "") || "all"}`;
   return (
     <section aria-labelledby={id} className="mt-9 first:mt-6">
       <h3 id={id} className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">

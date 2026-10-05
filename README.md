@@ -39,6 +39,7 @@ python3 scripts/build-samples.py   # 試し読みの抜粋（public/samples/）
 npm run check                      # データの突き合わせ（公開前に流す）
 npm run build && npm run check:html  # 出来上がった画面の点検（公開前に流す）
 npm run check:solutions            # 掲載した解答を別の方法で解き直して確かめる
+npm run data:originals             # 手元の「実物の問題冊子」を棚卸しする
 ```
 
 ### 本を1冊足すとき
@@ -214,6 +215,15 @@ python3 scripts/build-series-assets.py # 表紙（public/covers/kansei/）と OG
 3. `lib/solutions/<slug>-<year>.ts` を作り、自分で解いて書く
 4. `scripts/verify-solutions.py` に、**別の方法で同じ答えに着く**確認を足す
 5. `npm run check:solutions` → `npm run build` → `npm run check:html`
+
+### 原典の棚卸し
+
+`npm run data:originals` が、ホームディレクトリにある PDF を機械で選り分けて
+`data/originals.json`（slug → 年度 → ファイル）に書き出す。**解説を書くときに読んでよい
+原典は、このファイルに載っているものだけ。** ここを通さずに PDF を開かない。
+
+2026-10-05 時点で **63区分・383年度分（2018〜2026）**。見つからないのは omu-chuki だけ。
+このファイルはサイトからは読み込まれないので、配信物には入らない。
 
 ### 手元の資料の見分け方
 

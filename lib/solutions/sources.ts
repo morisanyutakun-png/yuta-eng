@@ -117,6 +117,14 @@ export const sources: Record<string, Record<number, Source>> = {
       checked: "2026-10-05",
       note: "大学サイトに試験問題の利用についての記載がある。",
     } },
+  // 東京大学は出題の意図を公表しているが、問題そのものは公開していない（2026-10-05 確認）
+  "todai-bunkei": {
+    2026: {
+      kind: "none",
+      checked: "2026-10-05",
+      note: "東京大学は入試問題そのものをサイトで公開していない。出題の意図は公表しているが、大学の文章なので引用も要約もしない。",
+    },
+  },
   "handai-rikei": { 2026: {
       kind: "official",
       url: "https://www.osaka-u.ac.jp/ja/admissions/faculty/general/pastexam-answer/r8",

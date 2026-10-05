@@ -12,13 +12,14 @@ from fractions import Fraction
 
 
 def quad(f, lo, hi, n=200001):
-    """シンプソン法。scipy を入れずに済ませるため、この1か所だけ自前で持つ。"""
+    """シンプソン法。scipy を入れずに済ませるため、この1か所だけ自前で持つ。
+
+    被積分関数が区間の内部で発散しないことは、呼ぶ側で保証する。
+    """
     h = (hi - lo) / (n - 1)
     s = 0.0
     for i in range(n):
         x = lo + i * h
-        if x <= 0:  # 1/x の端点を避ける
-            x = lo + 1e-12
         w = 1 if i in (0, n - 1) else (4 if i % 2 else 2)
         s += w * f(x)
     return (s * h / 3, 0.0)
@@ -223,6 +224,95 @@ for bits in range(64):
     x = [(bits >> i) & 1 for i in range(6)]
     if all(sum(x[j-1] for j in NB[i]) % 2 == 1 for i in range(1,7)): sols.append(tuple(x))
 ok("4(2) A={2,5} が唯一解", sols == [(0,1,0,0,1,0)], str(sols))
+
+# ══ 東大文系 2026 ══════════════════════════════════════
+print()
+print("── 東大文系 2026 ──")
+from itertools import combinations
+
+# 大問1 … 面積を数値積分し S=4d/3 と突き合わせる
+for d in [math.sqrt(3), 2.0, 2.5, 3.0]:
+    k_ = 1/d**2; al, be = -3-d, -3+d
+    S_num = quad(lambda x: k_*(x-al)*(be-x), al, be)[0]
+    ok(f"1 面積 d={d:.4f}", abs(S_num - 4*d/3) < 1e-5, f"数値{S_num:.6f} 式{4*d/3:.6f}")
+    yint = 1 - 9/d**2
+    ok(f"1 y切片 d={d:.4f}", -2-1e-12 <= yint <= 1e-12, f"{yint:.6f}")
+ok("1 S の下端", abs(4*math.sqrt(3)/3 - 2.3094010767) < 1e-9)
+
+# 大問2 … 格子点から3点を選んで三角形になる確率を全探索
+def p_tri(n):
+    pts = [(x, y) for x in (1, 2, 3) for y in range(1, n+1)]
+    tot = 0; tri = 0
+    for a, b, c in combinations(pts, 3):
+        tot += 1
+        area2 = (b[0]-a[0])*(c[1]-a[1]) - (b[1]-a[1])*(c[0]-a[0])
+        if area2 != 0: tri += 1
+    return Fraction(tri, tot)
+ok("2(1) p5=412/455", p_tri(5) == Fraction(412, 455), str(p_tri(5)))
+for m_ in [1, 2, 3, 4]:
+    want = Fraction(m_*(16*m_-7), (6*m_-1)*(3*m_-1))
+    ok(f"2(2) m={m_}", p_tri(2*m_) == want, f"全探索{p_tri(2*m_)} 式{want}")
+
+# 大問3 … f>g と共有点の個数を数値で
+def g(x):
+    n = math.floor(x/2)
+    return x - 2*n if x < 2*n+1 else -x + 2*n+2
+def f_(x, a): return a/8*(x-1)**2 + 2/a - 3
+bad = [(a, x) for a in [0.05*i for i in range(1, 20)]
+              for x in [4 + 0.001*j for j in range(0, 6000)]
+              if f_(x, a) <= g(x)]
+ok("3(1) x>=4 で f>g", not bad, f"反例 {bad[:2]}")
+def n_cross(a):
+    cnt = 0; prev = f_(0, a) - g(0)
+    N = 400000
+    for i in range(1, N+1):
+        x = 4*i/N
+        cur = f_(x, a) - g(x)
+        if prev == 0 or (prev < 0) != (cur < 0): cnt += 1
+        prev = cur
+    return cnt
+A = 4 - 2*math.sqrt(3)
+ok("3(2) a<4-2√3 は2個", n_cross(0.51) == 2 and n_cross(0.52) == 2, f"{n_cross(0.51)},{n_cross(0.52)}")
+ok("3(2) a>4-2√3 は4個", n_cross(0.60) == 4 and n_cross(0.66) == 4, f"{n_cross(0.60)},{n_cross(0.66)}")
+ok("3(2) 境界 a=4-2√3", abs(f_(3, A) - 1) < 1e-12, f"f(3)-1={f_(3,A)-1:.2e}")
+ok("3(2) 境界は範囲内", 0.5 < A < 2/3, f"{A:.6f}")
+
+# 大問4 … 接線の傾き・面積を直に計算
+def tangents(k_):
+    t = -k_
+    m1 = (t + math.sqrt(3))/(1 - math.sqrt(3)*t)
+    m2 = (t - math.sqrt(3))/(1 + math.sqrt(3)*t)
+    return t, m1, m2
+for k_ in [0.6, 0.7217, 1.0, 2.0]:
+    t, m1, m2 = tangents(k_)
+    angs = [math.atan(m) for m in (t, m1, m2)]
+    diffs = sorted(abs((angs[i]-angs[j]) % math.pi) for i, j in [(0,1),(1,2),(0,2)])
+    good = all(abs(min(d, math.pi-d) - math.pi/3) < 1e-9 for d in diffs)
+    ok(f"4(2) なす角60° k={k_}", good)
+    ok(f"4(2) p,q が実在 k={k_}", (m1-t) > 0 and (m2-t) > 0)
+for k_ in [0.5, 0.57]:
+    t, m1, m2 = tangents(k_)
+    ok(f"4(2) k={k_} は範囲外", not ((m1-t) > 0 and (m2-t) > 0))
+def areas(k_):
+    t, m1, m2 = tangents(k_)
+    p0 = math.sqrt((m1-t)/3); q0 = math.sqrt((m2-t)/3)
+    out = []
+    for sp in (1, -1):
+        for sq in (1, -1):
+            p, q = sp*p0, sq*q0
+            ms = [-k_, 3*p*p-k_, 3*q*q-k_]; cs = [0.0, -2*p**3, -2*q**3]
+            num = cs[0]*(ms[1]-ms[2]) + cs[1]*(ms[2]-ms[0]) + cs[2]*(ms[0]-ms[1])
+            den = (ms[0]-ms[1])*(ms[1]-ms[2])*(ms[2]-ms[0])
+            out.append(0.5*num*num/abs(den))
+    return sorted(set(round(v, 9) for v in out))
+K = 5*math.sqrt(3)/12
+a4 = areas(K)
+ok("4(3) 面積は2値", len(a4) == 2, str(a4))
+ok("4(3) M=4m", abs(a4[1]/a4[0] - 4) < 1e-7, f"比 {a4[1]/a4[0]:.9f}")
+ok("4(3) k が (2) の範囲内", K > math.sqrt(3)/3, f"k={K:.6f}")
+for k_ in [0.65, 0.8]:
+    r = areas(k_)
+    ok(f"4(3) k={k_} では M/4m≠1", abs(r[1]/r[0] - 4) > 1e-3, f"比 {r[1]/r[0]:.4f}")
 
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
