@@ -79,6 +79,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 教材一覧
               </Link>
             </p>
+            <p>
+              <Link href="/educators" className="underline underline-offset-4 hover:text-navy">
+                学校・塾・予備校関係者の方へ
+              </Link>
+              <span className="mx-2 text-rule">／</span>
+              <Link href="/kaisetsu/policy" className="underline underline-offset-4 hover:text-navy">
+                解答・解説の掲載方針
+              </Link>
+            </p>
             <p className="pt-1">© {new Date().getFullYear()} {site.author}</p>
           </div>
         </footer>

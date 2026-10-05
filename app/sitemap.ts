@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/books`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${site.url}/shindan`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site.url}/kansei`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${site.url}/educators`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
     // 近日追加予定の巻はページがないので載せない（ASIN が入ると自動で加わる）
     ...kanseiPublished.map((k) => ({
       url: `${site.url}/kansei/${k.slug}`,
