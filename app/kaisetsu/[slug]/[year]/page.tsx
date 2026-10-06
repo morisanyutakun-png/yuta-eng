@@ -111,7 +111,7 @@ export default async function YearPage({ params }: Props) {
         </nav>
 
         <header className="pb-2 pt-4">
-          <p className="text-[0.76rem] font-semibold tracking-wide text-navy">
+          <p className="eyebrow">
             {s.university}　{s.year}年度　{s.schedule}　{s.division}
           </p>
           <h1 className="serif mt-1 text-[1.65rem] leading-snug text-ink sm:text-[2rem]">

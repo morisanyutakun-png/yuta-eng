@@ -13,13 +13,22 @@
 
   --color-paper: #fbfaf7;
   --color-paper-2: #f4f2ed;
-  --color-ink: #1a1d21;
-  --color-ink-2: #4a5057;
-  --color-ink-3: #7c838b;
-  --color-rule: #ddd9d0;
-  --color-navy: #23395d;
+  --color-ink: #16191d;
+  --color-ink-2: #464c54;
+  --color-ink-3: #696f77;
+  --color-rule: #dcd8cf;
+  --color-navy: #1f3557;
   --color-navy-2: #35507a;
-  --color-accent: #9a6b2f;
+
+  /*
+   * 強調は朱。参考書に朱で入れる書きこみと同じ役どころで、
+   * 明朝と紺の紙面に足しても浮かない。
+   * 使うのは「答」「いまここ」「シリーズ名」のように、
+   * ページで一番見てほしい一点だけに絞る。増やすと効かなくなる。
+   */
+  --color-accent: #b3412f;
+  --color-accent-2: #d08676;
+  --color-accent-bg: #fdf2ef;
 }
 
 html {
@@ -67,6 +76,68 @@ body {
   height: 2px;
   background: var(--color-navy);
   margin-bottom: 0.85rem;
+}
+
+/* そのページの主役になる見出しには朱を引く */
+.rule-mark-accent::before {
+  background: var(--color-accent);
+}
+
+/*
+ * 見出しの上に置く小さなラベル。
+ * 「何の話が始まるのか」を1行で先に言うためのもので、
+ * 大きな見出しだけが続くページより流れが追いやすくなる。
+ */
+.eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+/*
+ * 一覧に並べる札。罫だけだと行が区別できず、影だけだと紙面から浮く。
+ * 細い罫＋ごく薄い影にして、重ねずに並べる。
+ */
+.card {
+  border: 1px solid var(--color-rule);
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(22, 25, 29, 0.04);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+a.card:hover,
+.card-link:hover .card {
+  border-color: color-mix(in srgb, var(--color-navy) 35%, transparent);
+  box-shadow: 0 4px 14px rgba(22, 25, 29, 0.1);
+}
+
+/* 年度・問題数など、短い値を囲う札 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 1px solid var(--color-rule);
+  background: var(--color-paper-2);
+  padding: 0.1rem 0.45rem;
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--color-ink-2);
+  white-space: nowrap;
+}
+
+.badge-accent {
+  border-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+  background: var(--color-accent-bg);
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.badge-navy {
+  border-color: color-mix(in srgb, var(--color-navy) 30%, transparent);
+  background: color-mix(in srgb, var(--color-navy) 6%, transparent);
+  color: var(--color-navy);
+  font-weight: 700;
 }
 
 .katex {

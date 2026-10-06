@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { subject } from "@/lib/seo";
@@ -63,75 +64,108 @@ export default function KaisetsuTop() {
           <span className="text-ink-2">過去問の解答・解説</span>
         </nav>
 
-        <header className="pb-6 pt-4">
-          <h1 className="serif text-[1.7rem] leading-snug text-ink sm:text-[2.1rem]">過去問の解答・解説</h1>
-          <p className="prose-ja mt-3 max-w-[38rem] text-[0.92rem] leading-[1.95] text-ink-2">
+        <header className="pb-7 pt-4">
+          <p className="eyebrow">当サイト独自の解答・解説</p>
+          <h1 className="serif mt-1.5 text-[1.7rem] leading-snug text-ink sm:text-[2.1rem]">過去問の解答・解説</h1>
+          <p className="prose-ja mt-3 max-w-[40rem] text-[0.95rem] leading-[1.95] text-ink-2">
             大学入試の数学の過去問を、当サイトで独自に解いた解答・計算過程・詳解・別解です。
             どの方針をなぜ選ぶのか、場合分けや端点の確認をどこまで書くのか、答案で省略しない方がよい説明は何かまで載せています。
-            現在は{unis.length}大学・{published.length}年度分・全{questionCount}問。
           </p>
-          <p className="prose-ja mt-3 max-w-[38rem] border-l-2 border-navy/40 bg-paper-2/60 px-4 py-3 text-[0.84rem] leading-[1.9] text-ink-2">
+
+          <dl className="mt-6 grid max-w-[34rem] grid-cols-3 gap-4 border-y border-rule py-4">
+            {[
+              { k: "掲載した大学", v: unis.length, u: "大学" },
+              { k: "掲載した年度", v: published.length, u: "年度分" },
+              { k: "解いた大問", v: questionCount, u: "問" },
+            ].map((x) => (
+              <div key={x.k}>
+                <dt className="text-[0.68rem] text-ink-3">{x.k}</dt>
+                <dd className="serif mt-1 leading-none text-ink">
+                  <span className="text-[1.7rem] tabular-nums">{x.v}</span>
+                  <span className="ml-0.5 font-sans text-[0.7rem] font-normal text-ink-3">{x.u}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <p className="prose-ja mt-5 max-w-[40rem] border-l-[3px] border-accent/60 bg-accent-bg px-4 py-3 text-[0.84rem] leading-[1.9] text-ink-2">
             {NOT_OFFICIAL}
             大学が問題を公開している年度は、そのページへリンクしています。
             {lastUpdated && `最終更新 ${lastUpdated.replace(/-/g, "/")}。`}
-            <Link href="/kaisetsu/policy" className="ml-1 font-semibold text-navy underline underline-offset-4">
+            <Link href="/kaisetsu/policy" className="ml-1 font-semibold text-accent underline underline-offset-4">
               掲載方針
             </Link>
           </p>
         </header>
 
-        <section aria-labelledby="by-univ" className="mt-2">
-          <h2 id="by-univ" className="rule-mark serif text-[1.3rem] text-ink">
+        <section aria-labelledby="by-univ" className="mt-4">
+          <h2 id="by-univ" className="rule-mark rule-mark-accent serif text-[1.3rem] text-ink">
             大学から探す
           </h2>
-          <ul className="mt-4 divide-y divide-rule border-y border-rule">
-            {unis.map(({ u, sets }) => (
-              <li key={u.slug}>
-                <Link
-                  href={`/kaisetsu/${u.slug}`}
-                  className="group flex min-h-[3.6rem] items-center justify-between gap-4 py-3.5"
-                >
-                  <span className="min-w-0">
-                    <span className="block text-[0.98rem] font-semibold text-ink transition-colors group-hover:text-navy">
-                      {subject(u)}
+          {/* 表紙を添えると、文字だけの行より目的の大学を見つけやすい */}
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {unis.map(({ u, sets }) => {
+              const total = sets.reduce((n, s) => n + s.questions.length, 0);
+              return (
+                <li key={u.slug}>
+                  <Link href={`/kaisetsu/${u.slug}`} className="card card-link group flex h-full gap-3.5 p-3.5">
+                    <Image
+                      src={`/covers/thumb/${u.books[0].asin}.webp`}
+                      alt=""
+                      width={160}
+                      height={226}
+                      loading="lazy"
+                      sizes="56px"
+                      className="h-[79px] w-[56px] shrink-0 rounded-[2px] border border-rule object-cover"
+                    />
+                    <span className="flex min-w-0 flex-1 flex-col">
+                      <span className="text-[0.97rem] font-semibold leading-snug text-ink transition-colors group-hover:text-navy">
+                        {subject(u)}
+                      </span>
+                      <span className="mt-0.5 text-[0.73rem] text-ink-3">
+                        {u.university}
+                        {u.course && `・${u.course}`}
+                      </span>
+                      <span className="mt-auto flex flex-wrap items-center gap-1 pt-2">
+                        {sets.map((s) => (
+                          <span key={s.year} className="badge">
+                            {s.year}年度
+                          </span>
+                        ))}
+                        <span className="badge badge-accent">全{total}問</span>
+                      </span>
                     </span>
-                    <span className="mt-0.5 block text-[0.74rem] text-ink-3">
-                      {u.university}
-                      {u.course && `・${u.course}`}／
-                      {sets.map((s) => `${s.year}年度（全${s.questions.length}問）`).join("・")}
-                    </span>
-                  </span>
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 20 20"
-                    className="size-3.5 shrink-0 text-ink-3 transition-transform group-hover:translate-x-0.5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="m7 4 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </Link>
-              </li>
-            ))}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </section>
 
-        <section aria-labelledby="by-year" className="mt-12">
+        <section aria-labelledby="by-year" className="mt-14">
           <h2 id="by-year" className="rule-mark serif text-[1.3rem] text-ink">
             年度から探す
           </h2>
-          <div className="mt-4 space-y-6">
+          <div className="mt-5 space-y-5">
             {years.map((y) => (
               <div key={y}>
-                <h3 className="serif border-b border-rule pb-1.5 text-[0.95rem] text-ink">{y}年度入試</h3>
-                <ul className="mt-2.5 flex flex-wrap gap-x-5 gap-y-2 text-[0.9rem]">
+                <h3 className="serif text-[1rem] text-ink">
+                  {y}年度入試
+                  <span className="ml-2 font-sans text-[0.72rem] font-normal text-ink-3">
+                    {published.filter((s) => s.year === y).length}区分
+                  </span>
+                </h3>
+                <ul className="mt-2.5 flex flex-wrap gap-2">
                   {published
                     .filter((s) => s.year === y)
                     .map((s) => (
                       <li key={s.slug}>
-                        <Link href={setPath(s)} className="text-navy underline underline-offset-4">
-                          {s.short} {s.subject}（{s.division}）
+                        <Link
+                          href={setPath(s)}
+                          className="badge transition-colors hover:border-navy/40 hover:text-navy"
+                        >
+                          {s.short}
+                          <span className="text-ink-3">（{s.division}）</span>
                         </Link>
                       </li>
                     ))}

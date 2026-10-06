@@ -6,6 +6,7 @@ import { getUniversity } from "@/lib/data";
 import { shortName, subject } from "@/lib/seo";
 import { NOT_OFFICIAL, published, questionPath, setPath, solutionsFor } from "@/lib/solutions";
 import { site } from "@/lib/site";
+import { SolutionFooter } from "@/components/solution-footer";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -94,7 +95,7 @@ export default async function UniversitySolutions({ params }: Props) {
         </nav>
 
         <header className="pb-6 pt-4">
-          <p className="text-[0.76rem] font-semibold tracking-wide text-navy">
+          <p className="eyebrow">
             {u.university}
             {u.course && `・${u.course}`}
           </p>
@@ -105,7 +106,7 @@ export default async function UniversitySolutions({ params }: Props) {
             {span}の全{total}問について、当サイトが独自に解いた解答・計算過程・詳解・別解を載せています。
             方針を選ぶ理由、場合分けと端点の確認、答案で省略しない方がよい説明まで書いています。
           </p>
-          <p className="prose-ja mt-3 max-w-[38rem] border-l-2 border-navy/40 bg-paper-2/60 px-4 py-3 text-[0.84rem] leading-[1.9] text-ink-2">
+          <p className="prose-ja mt-4 max-w-[40rem] border-l-[3px] border-accent/60 bg-accent-bg px-4 py-3 text-[0.84rem] leading-[1.9] text-ink-2">
             {NOT_OFFICIAL}
           </p>
         </header>
@@ -122,7 +123,7 @@ export default async function UniversitySolutions({ params }: Props) {
                 {s.questions.map((q) => (
                   <li key={q.no}>
                     <Link href={questionPath(s, q.no)} className="group flex min-h-[3.4rem] items-center gap-3 py-3">
-                      <span className="serif flex size-7 shrink-0 items-center justify-center border border-rule text-[0.84rem] tabular-nums text-ink-2">
+                      <span className="serif flex size-7 shrink-0 items-center justify-center border border-accent/30 bg-accent-bg text-[0.84rem] tabular-nums text-accent">
                         {q.no}
                       </span>
                       <span className="min-w-0 flex-1">
@@ -133,9 +134,7 @@ export default async function UniversitySolutions({ params }: Props) {
                           {q.topics.join("・")}
                         </span>
                       </span>
-                      <span className="shrink-0 text-[0.7rem] tabular-nums text-ink-3">
-                        小問{q.subs.length}
-                      </span>
+                      <span className="badge shrink-0 tabular-nums">小問{q.subs.length}</span>
                     </Link>
                   </li>
                 ))}
@@ -149,7 +148,7 @@ export default async function UniversitySolutions({ params }: Props) {
           ))}
         </div>
 
-        <section className="mt-14 border-t border-rule pt-7">
+        <section className="mt-12 border-t border-rule pt-7">
           <p className="text-[0.88rem]">
             <Link href={`/univ/${u.slug}`} className="font-semibold text-navy underline underline-offset-4">
               {subject(u)}の傾向と対策
@@ -157,6 +156,9 @@ export default async function UniversitySolutions({ params }: Props) {
             <span className="ml-1.5 text-ink-2">— 年度別・分野別の出題分析はこちら。</span>
           </p>
         </section>
+
+        {/* この種のページに表紙も購入導線も無かった。解説を読み終えた人がいちばん近い */}
+        <SolutionFooter set={sets[0]} />
       </div>
     </>
   );

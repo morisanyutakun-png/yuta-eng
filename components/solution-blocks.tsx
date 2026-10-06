@@ -77,15 +77,18 @@ export function SubQuestionBlock({ sub, qNo }: { sub: SubQuestion; qNo: number }
   return (
     <section aria-labelledby={id} className="mt-10 border-t border-rule pt-7 first:mt-6 first:border-0 first:pt-0">
       <h3 id={id} className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
-        {sub.label && <span className="serif text-[1.12rem] font-semibold text-navy">{sub.label}</span>}
+        {sub.label && <span className="serif text-[1.15rem] font-semibold text-accent">{sub.label}</span>}
         <span className="text-[0.92rem] font-semibold leading-snug text-ink">
           <MathText>{sub.task}</MathText>
         </span>
       </h3>
 
-      <p className="mt-3 border-y border-rule bg-paper-2/70 px-4 py-2.5 text-[0.95rem] text-ink">
-        <span className="mr-2 text-[0.68rem] font-bold tracking-wide text-accent">答</span>
-        <MathText>{sub.answer}</MathText>
+      {/* ページで一番見られるのは答。ここだけ朱で囲って、走り読みでも拾えるようにする */}
+      <p className="mt-3 flex gap-3 border border-accent/30 bg-accent-bg px-4 py-3 text-[0.97rem] text-ink">
+        <span className="mt-[0.15rem] shrink-0 text-[0.7rem] font-bold tracking-wide text-accent">答</span>
+        <span className="min-w-0">
+          <MathText>{sub.answer}</MathText>
+        </span>
       </p>
 
       {/* 方針は論証の第1段落。ラベルを付けずに地の文として読ませる */}
@@ -101,7 +104,7 @@ export function SubQuestionBlock({ sub, qNo }: { sub: SubQuestion; qNo: number }
 
       {sub.check && (
         <p className="prose-ja mt-3 text-[0.92rem] leading-[1.95] text-ink-2">
-          <strong className="font-semibold text-ink">確かめ。{"　"}</strong>
+          <strong className="font-semibold text-accent">確かめ。{"　"}</strong>
           <MathText>{sub.check}</MathText>
         </p>
       )}
@@ -109,7 +112,7 @@ export function SubQuestionBlock({ sub, qNo }: { sub: SubQuestion; qNo: number }
       {sub.pitfalls?.length ? (
         <div className="prose-ja mt-3 text-[0.92rem] leading-[1.95] text-ink-2">
           <p>
-            <strong className="font-semibold text-ink">答案では次を省略しない。</strong>
+            <strong className="font-semibold text-accent">答案では次を省略しない。</strong>
           </p>
           <ul className="mt-1.5 list-disc space-y-1.5 pl-6 marker:text-ink-3">
             {sub.pitfalls.map((p, i) => (
