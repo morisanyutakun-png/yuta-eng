@@ -16,7 +16,7 @@ export function SolutionsLink({ slug }: { slug: string }) {
   const total = sets.reduce((n, s) => n + s.questions.length, 0);
 
   return (
-    <section aria-labelledby="solutions" className="mt-14">
+    <section aria-labelledby="solutions" className="mt-14 scroll-mt-20">
       <h2 id="solutions" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
         過去問の解答・解説
       </h2>

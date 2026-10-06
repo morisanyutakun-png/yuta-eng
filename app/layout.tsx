@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { SiteNav } from "@/components/site-nav";
 import { hasSolutions } from "@/lib/solutions";
 import { site } from "@/lib/site";
 
@@ -41,31 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/" className="serif text-[0.95rem] tracking-tight text-ink">
               大学別 数学入試分析
             </Link>
-            <nav aria-label="サイト内" className="flex items-center gap-3.5 text-[0.8rem] text-ink-2 sm:gap-5">
-              {hasSolutions && (
-                <Link href="/kaisetsu" className="transition-colors hover:text-navy">
-                  過去問解答
-                </Link>
-              )}
-              <Link href="/shindan" className="hidden transition-colors hover:text-navy sm:inline">
-                志望校診断
-              </Link>
-              <Link href="/kansei" className="transition-colors hover:text-navy">
-                完成演習
-              </Link>
-              <Link href="/universities" className="transition-colors hover:text-navy">
-                大学一覧
-              </Link>
-              <Link href="/books" className="hidden transition-colors hover:text-navy sm:inline">
-                教材一覧
-              </Link>
-              <Link
-                href="/educators"
-                className="hidden border-l border-rule pl-3.5 text-ink-3 transition-colors hover:text-navy lg:inline"
-              >
-                先生方へ
-              </Link>
-            </nav>
+            <SiteNav hasSolutions={hasSolutions} />
           </div>
         </header>
 

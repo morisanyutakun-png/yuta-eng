@@ -31,7 +31,7 @@ export function LookInsideSection({
   if (!sample) return null;
 
   return (
-    <section aria-labelledby={headingId} className={`mt-14 ${className}`}>
+    <section aria-labelledby={headingId} className={`mt-14 scroll-mt-20 ${className}`}>
       <h2 id={headingId} className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
         書籍の中身を見る（試し読み）
       </h2>

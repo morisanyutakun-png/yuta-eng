@@ -197,7 +197,7 @@ export const nitech2026: SolutionSet = {
           check: String.raw`$a_1=2$ とすると $b_1=\dfrac13$、$b_2=\dfrac13+\dfrac12=\dfrac56$ で $a_2=\dfrac65-1=\dfrac15$。これを元の漸化式に入れると両辺とも $\dfrac{9}{10}$ になる。`,
           pitfalls: [
             String.raw`割ってよいのは $a_n\ne-1$ が与えられているから。この条件が (2)(3) に明記されていることに意味がある（(4) で効く）。`,
-            String.raw`$\left(a_{n+1}+1\right)$ で割るには $a_{n+1}\ne-1$ も要る。これは「$a_n\ne-1$ ならば $a_{n+1}\ne-1$」から従う（下の (4) の囲み参照）。`,
+            String.raw`$\left(a_{n+1}+1\right)$ で割るには $a_{n+1}\ne-1$ も要る。これは「$a_n\ne-1$ ならば $a_{n+1}\ne-1$」から従う（(4) で示す）。`,
           ],
         },
         {

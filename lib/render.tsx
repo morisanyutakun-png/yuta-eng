@@ -30,14 +30,23 @@ function protectJapanese(tex: string): string {
   );
 }
 
-function renderMath(tex: string): string {
-  const hit = mathCache.get(tex);
+/**
+ * KaTeX に渡す。`display` が真のときは別行立て（displaystyle）で組む。
+ *
+ * 文中の数式と別行立ての数式では、分数・総和・積分の組み方が変わる。
+ * 文中なら小さく詰めた形が正しいが、別行立てで同じ形にすると
+ * 分数が潰れて読めない。解答解説の本体は別行立ての式なので、
+ * ここを取り違えると紙の本と見た目が大きくずれる。
+ */
+function renderMath(tex: string, display = false): string {
+  const key = display ? `D\u0000${tex}` : tex;
+  const hit = mathCache.get(key);
   if (hit !== undefined) return hit;
   let html: string;
   try {
     html = katex.renderToString(protectJapanese(tex), {
       throwOnError: false,
-      displayMode: false,
+      displayMode: display,
       output: "html",
       macros: MACROS,
       strict: false,
@@ -45,7 +54,7 @@ function renderMath(tex: string): string {
   } catch {
     html = `<span class="font-mono text-sm">${tex.replace(/[<>&]/g, "")}</span>`;
   }
-  mathCache.set(tex, html);
+  mathCache.set(key, html);
   return html;
 }
 
@@ -99,7 +108,7 @@ export function DisplayMath({ children }: { children: string }) {
     <span className="-mx-5 block overflow-x-auto px-5 py-0.5 text-center sm:mx-0 sm:px-0">
       <span
         className="inline-block min-w-0 text-[1.02em]"
-        dangerouslySetInnerHTML={{ __html: renderMath(children) }}
+        dangerouslySetInnerHTML={{ __html: renderMath(children, true) }}
       />
     </span>
   );

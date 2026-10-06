@@ -9,6 +9,7 @@ import { FaqSection } from "@/components/faq";
 import { FieldChart } from "@/components/field-chart";
 import { LookInsideSection } from "@/components/look-inside-section";
 import { SolutionsLink } from "@/components/solutions-link";
+import { solutionsFor } from "@/lib/solutions";
 import { StudyPlan } from "@/components/study-plan";
 import { Toc } from "@/components/toc";
 import { UnivHero } from "@/components/univ-hero";
@@ -97,6 +98,13 @@ export default async function UniversityPage({ params }: Props) {
 
   // 記事が長いので、本文の途中にも導線を1つ挟む
   const midpoint = Math.min(2, Math.max(1, Math.floor(u.sections.length / 2)));
+
+  // 分析の節と同じ重さで目次に並べる。解説も試し読みもこのページの中身なので、
+  // 目次に出ていないと「分析しか無い」と思われて読まれない。
+  const tocExtra = [
+    ...(solutionsFor(u.slug).length ? [{ href: "#solutions", label: "過去問の解答・解説" }] : []),
+    ...(sampleBook ? [{ href: "#look-inside", label: "教材の試し読み" }] : []),
+  ];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -196,13 +204,13 @@ export default async function UniversityPage({ params }: Props) {
                 detail={{ href: `/kansei/${kansei.slug}`, label: "収録分野と出題傾向を見る" }}
               />
             )}
-            <Toc titles={u.sections.map((s) => s.title)} variant="aside" />
+            <Toc titles={u.sections.map((s) => s.title)} variant="aside" extra={tocExtra} />
           </>
         }
       >
         <UnivHero u={u} />
 
-        <Toc titles={u.sections.map((s) => s.title)} />
+        <Toc titles={u.sections.map((s) => s.title)} extra={tocExtra} />
 
         {u.fieldChart && (
           <FieldChart data={u.fieldChart} name={subject(u)} yearCount={u.yearCount} />
