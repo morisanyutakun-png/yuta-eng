@@ -157,6 +157,22 @@ export const sources: Record<string, Record<number, Source>> = {
         "当サイトは問題文・図を1つも載せないので複製にあたらない。",
     },
   },
+  nitech: {
+    2026: {
+      kind: "official",
+      url: "https://www.nitech.ac.jp/examination/gakubu/test.html",
+      publisher: "名古屋工業大学",
+      pageTitle: "入学試験過去問題",
+      target: "page",
+      checked: "2026-10-06",
+      note:
+        "問題PDFと解答例・出題意図を公開している。掲載は直近3年度分なので、" +
+        "年度が進むと直リンクが切れる。だから個別のPDFではなく一覧ページへリンクしている。" +
+        "大学の解答例は読んでいないし、言い換えもしていない。当サイトの解答は独自に解いたもの。" +
+        "転載・2次利用についての条件は大学サイトに見当たらない。" +
+        "いずれにせよ当サイトは問題文・図を1つも載せないので複製にあたらない。",
+    },
+  },
   "ncu-med": {
     2026: {
       kind: "official",

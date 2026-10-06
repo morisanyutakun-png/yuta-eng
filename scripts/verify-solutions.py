@@ -1173,6 +1173,135 @@ poly = sum(math.hypot(cx(math.pi*(i+1)/N3) - cx(math.pi*i/N3),
                       cy(math.pi*(i+1)/N3) - cy(math.pi*i/N3)) for i in range(N3))
 ok("三重大3(2) 長さ（40万分割の折れ線）", abs(poly - exact) < 1e-4, f"{poly:.9f} / {exact:.9f}")
 
+# ══ 名工大 2026 ════════════════════════════════════════
+print()
+print("── 名工大 2026 ──")
+import numpy as np
+
+# 大問1 … u=log x の3次式として全探索し、面積は数値積分で
+fn1 = lambda x: (math.log(x) ** 3) / 3 - 3 * math.log(x)
+uu = [-6 + 12 * i / 2_400_000 for i in range(2_400_001)]
+gg = [u ** 3 / 3 - 3 * u for u in uu]
+neg = [(g, u) for g, u in zip(gg, uu) if u < 0]
+pos = [(g, u) for g, u in zip(gg, uu) if u > 0]
+ok("名工大1(1) 極大は log x=-√3", abs(max(neg)[1] + math.sqrt(3)) < 1e-4, f"{max(neg)[1]:.6f}")
+ok("名工大1(1) 極小は log x= √3", abs(min(pos)[1] - math.sqrt(3)) < 1e-4, f"{min(pos)[1]:.6f}")
+ok("名工大1(1) 極大値 2√3", abs(fn1(math.exp(-math.sqrt(3))) - 2 * math.sqrt(3)) < 1e-9)
+ok("名工大1(1) 極小値 -2√3", abs(fn1(math.exp(math.sqrt(3))) + 2 * math.sqrt(3)) < 1e-9)
+def d2(x):
+    h = x * 1e-4
+    return (fn1(x + h) - 2 * fn1(x) + fn1(x - h)) / h ** 2
+for xv, nm, yv in ((math.exp(-1), "e^-1", 8 / 3), (math.exp(3), "e^3", 0.0)):
+    ok(f"名工大1(2) x={nm} で凹凸が変わる", d2(xv * 0.97) * d2(xv * 1.03) < 0)
+    ok(f"名工大1(2) 変曲点の y 座標", abs(fn1(xv) - yv) < 1e-9, f"{fn1(xv):.9f} → {yv}")
+area1 = quad(fn1, math.exp(-3), 1, 200001)[0] + quad(lambda x: -fn1(x), 1, math.exp(3), 200001)[0]
+want1 = 2 * math.exp(3) + 14 * math.exp(-3) + 2
+ok("名工大1(3) 面積 2e^3+14e^-3+2", abs(area1 - want1) < 1e-6, f"{area1:.9f} / {want1:.9f}")
+
+# 大問2 … 漸化式を直接回して閉じた式と突き合わせる
+ok("名工大2(1) x^2+x-xy-y=(x+1)(x-y)",
+   all(abs((x*x + x - x*y - y) - (x+1)*(x-y)) < 1e-12 for x in (-3, .5, 2, 7) for y in (-2, 0, 1.5, 9)))
+def nxt2(a, n):
+    A = a + 1
+    return A / (A / ((n + 1) * n) + 1) - 1
+closed2 = lambda n, a1: (a1 + 1 - n) / ((n - 1) * a1 + 2 * n - 1)
+for a1 in (0.3, 2.0, -5.0, 7.5):
+    a = a1; worst = 0.0; holds = True
+    for n in range(1, 13):
+        worst = max(worst, abs(a - closed2(n, a1)))
+        nx = nxt2(a, n)
+        if abs((nx + 1) * (a + 1) ** 2 / ((n + 1) * n) - (a*a + a - a*nx - nx)) > 1e-9:
+            holds = False
+        a = nx
+    ok(f"名工大2(3) a_1={a1} で漸化式と閉じた式が一致", holds and worst < 1e-9, f"最大誤差 {worst:.1e}")
+ok("名工大2(4) a_1=-7/2 で a_10=1", closed2(10, Fraction(-7, 2)) == 1)
+f_one = Fraction(-1)
+ok("名工大2(4) a_1=-1 なら n=1 の式は a_2 によらず成立",
+   all((Fraction(k) + 1) * (f_one + 1) ** 2 / 2 == f_one * f_one + f_one - f_one * Fraction(k) - Fraction(k)
+       for k in range(-5, 6)))
+bb = Fraction(1, 10)                     # a_2=9 すなわち b_2=1/10
+for n in range(2, 10):
+    bb += Fraction(1, n * (n + 1))
+ok("名工大2(4) a_1=-1, a_2=9 で a_10=1", 1 / bb - 1 == 1, f"a_10={1/bb-1}")
+
+# 大問3 … 一辺1の正四面体を実座標で作って確かめる
+O3 = (0.0, 0.0, 0.0); A3 = (1.0, 0.0, 0.0)
+B3 = (0.5, math.sqrt(3) / 2, 0.0)
+C3 = (0.5, math.sqrt(3) / 6, math.sqrt(6) / 3)
+edge_ok = all(abs(math.dist(P, Q) - 1) < 1e-12
+              for P, Q in ((O3, A3), (O3, B3), (O3, C3), (A3, B3), (A3, C3), (B3, C3)))
+ok("名工大3 一辺1の正四面体を構成", edge_ok)
+lin = lambda *ps: tuple(sum(c * p[i] for c, p in ps) for i in range(3))
+D3 = lin((0.25, A3), (0.75, B3))
+E3 = lin((1 / 7, C3), (6 / 7, D3))
+E3f = lin((3 / 14, A3), (9 / 14, B3), (1 / 7, C3))
+ok("名工大3(1) OE=(3/14)a+(9/14)b+(1/7)c", max(abs(E3[i] - E3f[i]) for i in range(3)) < 1e-12)
+bs = bt = 0.0; bd = 1e9; stp = 1.0
+for _ in range(140):
+    for ds in (-1, 0, 1):
+        for dt in (-1, 0, 1):
+            s_, t_ = bs + ds * stp, bt + dt * stp
+            d = math.dist(lin((s_, A3), (t_, C3)), E3)
+            if d < bd: bd, ns_, nt_ = d, s_, t_
+    bs, bt = ns_, nt_; stp *= 0.75
+ok("名工大3(2) OH=(3/7)a+(5/14)c", abs(bs - 3/7) < 1e-7 and abs(bt - 5/14) < 1e-7,
+   f"数値探索 s={bs:.8f} t={bt:.8f}")
+H3 = lin((3 / 7, A3), (5 / 14, C3))
+dot3b = lambda u, v: sum(u[i] * v[i] for i in range(3))
+EH = tuple(H3[i] - E3[i] for i in range(3))
+ok("名工大3(2) EH ⊥ 平面OAC", abs(dot3b(EH, A3)) < 1e-12 and abs(dot3b(EH, C3)) < 1e-12)
+AH3 = tuple(H3[i] - A3[i] for i in range(3)); AB3 = tuple(B3[i] - A3[i] for i in range(3))
+cos3 = dot3b(AH3, AB3) / (math.sqrt(dot3b(AH3, AH3)) * math.sqrt(dot3b(AB3, AB3)))
+ok("名工大3(3) cosθ=4/7", abs(cos3 - 4 / 7) < 1e-12, f"{cos3:.12f}")
+ok("名工大3(3) |AH|=1/2", abs(math.sqrt(dot3b(AH3, AH3)) - 0.5) < 1e-12)
+cx3 = (AB3[1]*AH3[2] - AB3[2]*AH3[1], AB3[2]*AH3[0] - AB3[0]*AH3[2], AB3[0]*AH3[1] - AB3[1]*AH3[0])
+S3 = math.sqrt(dot3b(cx3, cx3)) * (0.5 * 2 * (2 / math.sqrt(3)))
+ok("名工大3(4) S=√11/7", abs(S3 - math.sqrt(11) / 7) < 1e-12, f"{S3:.12f} / {math.sqrt(11)/7:.12f}")
+
+# 大問4 … 共有点の個数を数え、体積を数値積分と二分法で
+f4 = lambda x: x ** 3 - 2 * x + 4
+ok("名工大4 f(-2)=0 と因数分解", abs(f4(-2)) < 1e-12
+   and all(abs(f4(x) - (x + 2) * (x*x - 2*x + 2)) < 1e-9 for x in (-2, -1, 0, 1, 3, 7.5)))
+rt6 = math.sqrt(6) / 3
+ok("名工大4(1) 極大値 4+4√6/9", abs(f4(-rt6) - (4 + 4*math.sqrt(6)/9)) < 1e-12)
+ok("名工大4(1) 極小値 4-4√6/9", abs(f4(rt6) - (4 - 4*math.sqrt(6)/9)) < 1e-12)
+def count_pts(t):
+    g = lambda x: math.sqrt(max(f4(x), 0)) - math.sqrt(t) * (x + 2)
+    prev = g(-2 + 1e-9); c = 0; x = -2 + 1e-9
+    while x < 38:
+        x += 0.0004
+        v = g(x)
+        if prev == 0 or prev * v < 0: c += 1
+        prev = v
+    return c + 1
+bd4 = 2 * math.sqrt(10) - 6
+ok("名工大4(2) 境界 t=2√10-6 は t^2+12t-4=0 の正の解", abs(bd4*bd4 + 12*bd4 - 4) < 1e-12)
+ok("名工大4(2) t>2√10-6 で3点、下回ると1点",
+   count_pts(bd4 + 0.02) == 3 and count_pts(bd4 - 0.02) == 1,
+   f"t={bd4+0.02:.3f}→{count_pts(bd4+0.02)}点、t={bd4-0.02:.3f}→{count_pts(bd4-0.02)}点")
+r4 = (2 + bd4) / 2
+ok("名工大4(3) 重解は x=√10-2", abs(r4 - (math.sqrt(10) - 2)) < 1e-12)
+V4 = math.pi * quad(lambda x: f4(x) - bd4 * (x + 2) ** 2, -2, r4, 200001)[0]
+ok("名工大4(3) V=25π/3", abs(V4 - 25 * math.pi / 3) < 1e-6, f"{V4:.9f} / {25*math.pi/3:.9f}")
+def v1v2(t):
+    disc = math.sqrt((2 + t) ** 2 - 4 * (2 - 2 * t))
+    p_, q_ = ((2 + t) - disc) / 2, ((2 + t) + disc) / 2
+    a_ = math.pi * quad(lambda x: f4(x) - t * (x + 2) ** 2, -2, p_, 100001)[0]
+    b_ = math.pi * quad(lambda x: t * (x + 2) ** 2 - f4(x), p_, q_, 100001)[0]
+    return a_, b_
+tw = 3 * math.sqrt(5) - 6
+v1, v2 = v1v2(tw)
+ok("名工大4(4) t=3√5-6 で V1=V2", abs(v1 - v2) < 1e-6, f"V1={v1:.9f} V2={v2:.9f} 差{abs(v1-v2):.1e}")
+ok("名工大4(4) その t は3点をもつ範囲に入る", tw > bd4, f"{tw:.9f} > {bd4:.9f}")
+lo4, hi4 = bd4 + 1e-4, 5.0
+s0 = v1v2(lo4)[0] - v1v2(lo4)[1]
+for _ in range(60):
+    mid = (lo4 + hi4) / 2
+    a_, b_ = v1v2(mid)
+    if (a_ - b_) * s0 > 0: lo4 = mid
+    else: hi4 = mid
+ok("名工大4(4) 二分法でも同じ t", abs((lo4 + hi4) / 2 - tw) < 1e-5, f"{(lo4+hi4)/2:.9f} / {tw:.9f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
