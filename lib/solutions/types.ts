@@ -43,7 +43,48 @@ export type Block =
   /** 手順。順番に意味があるもの */
   | { k: "steps"; items: string[] }
   /** 補足・注意。本筋から外れるが落とせない話 */
-  | { k: "note"; title?: string; t: string };
+  | { k: "note"; title?: string; t: string }
+  /**
+   * 図。問題の図ではなく、**解くために自分で描いた図**だけを載せる。
+   * 大学の図を写したり、見た目を変えて再現したりはしない。
+   *
+   * 座標は数学のまま（$y$ が上向き）で書き、描画の側で上下を反転させる。
+   * 式から座標を出して書けるようにするためで、こうしないと図と本文がずれる。
+   */
+  | { k: "figure"; fig: Figure };
+
+/** 図ひとつぶん。 */
+export type Figure = {
+  /** 図の説明。読み上げと、画像が出ないときの代わりに使う */
+  caption: string;
+  /** 描く範囲 [xmin, xmax, ymin, ymax]。軸の目盛りもここから決める */
+  view: [number, number, number, number];
+  /** 軸の目盛り間隔。省略すると目盛りを打たない */
+  step?: { x?: number; y?: number };
+  items: FigureItem[];
+};
+
+export type FigureItem =
+  /** 関数のグラフ。$x$ の区間を指定して折れ線で近似する */
+  | { k: "curve"; f: (x: number) => number; from: number; to: number; dash?: boolean; faint?: boolean }
+  /** 媒介変数で描く曲線 */
+  | { k: "param"; f: (t: number) => [number, number]; from: number; to: number; dash?: boolean; faint?: boolean }
+  /** 線分 */
+  | { k: "seg"; a: [number, number]; b: [number, number]; dash?: boolean; faint?: boolean }
+  /** 多角形の塗り（面積を示すとき） */
+  | { k: "fill"; pts: [number, number][] }
+  /** 曲線と直線で挟まれた部分の塗り */
+  | { k: "fillBetween"; top: (x: number) => number; bottom: (x: number) => number; from: number; to: number }
+  /** 点。label を付けると近くに文字を置く */
+  | { k: "dot"; at: [number, number]; label?: string; place?: Place }
+  /** 文字だけを置く */
+  | { k: "text"; at: [number, number]; label: string; place?: Place };
+
+/**
+ * 文字を点のどちら側に置くか。
+ * 指定しないと自動で選ぶが、近い点が多いところでは明示して重なりを避ける。
+ */
+export type Place = "above" | "below" | "left" | "right" | "above-left" | "above-right" | "below-left" | "below-right";
 
 /** 小問ひとつ分の解説。 */
 export type SubQuestion = {

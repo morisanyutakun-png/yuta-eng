@@ -1,3 +1,4 @@
+import { FigureView } from "@/components/figure";
 import { DisplayMath, MathText } from "@/lib/render";
 import type { Block, SubQuestion } from "@/lib/solutions/types";
 
@@ -20,6 +21,8 @@ export function Blocks({ blocks }: { blocks: Block[] }) {
     <div className="prose-ja space-y-3 text-[0.92rem] leading-[1.95] text-ink-2">
       {blocks.map((b, i) => {
         if (b.k === "math") return <DisplayMath key={i}>{b.t}</DisplayMath>;
+
+        if (b.k === "figure") return <FigureView key={i} fig={b.fig} />;
 
         if (b.k === "steps") {
           // 順番に意味がある箇所。枠では囲わず、番号だけで本文と区別する

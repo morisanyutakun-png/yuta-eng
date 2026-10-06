@@ -128,6 +128,27 @@ export const nitech2026: SolutionSet = {
               t: String.raw`S=\Big\{G(0)-G(-3)\Big\}+\Big\{G(0)-G(3)\Big\}=\left(1+14e^{-3}\right)+\left(1+2e^{3}\right)`,
             },
             { k: "math", t: String.raw`S=2e^{3}+14e^{-3}+2` },
+            {
+              k: "figure",
+              fig: {
+                caption:
+                  "$y=f(x)$ の概形。$x$ 軸との交点は $e^{-3},\,1,\,e^{3}$ で、囲まれる部分は $x$ 軸の上と下に1つずつできる。横軸は $u=\log x$ の目盛りで描いてある。",
+                // 横軸に u=log x を取ると、3次関数の形がそのまま見える
+                view: [-3.6, 3.6, -5.2, 5.2],
+                step: { x: 1, y: 2 },
+                items: [
+                  { k: "fillBetween", top: (u) => u ** 3 / 3 - 3 * u, bottom: () => 0, from: -3, to: 0 },
+                  { k: "fillBetween", top: () => 0, bottom: (u) => u ** 3 / 3 - 3 * u, from: 0, to: 3 },
+                  { k: "curve", f: (u) => u ** 3 / 3 - 3 * u, from: -3.5, to: 3.5 },
+                  { k: "dot", at: [-Math.sqrt(3), 2 * Math.sqrt(3)], label: "極大 2√3", place: "above-right" },
+                  { k: "dot", at: [Math.sqrt(3), -2 * Math.sqrt(3)], label: "極小 −2√3", place: "below-left" },
+                  { k: "dot", at: [-1, 8 / 3], label: "変曲点 (e⁻¹, 8/3)", place: "above-left" },
+                  { k: "dot", at: [3, 0], label: "変曲点 (e³, 0)", place: "below-right" },
+                  { k: "dot", at: [-3, 0], label: "x=e⁻³", place: "below-left" },
+                  { k: "dot", at: [0, 0], label: "x=1", place: "below-right" },
+                ],
+              },
+            },
           ],
           check: String.raw`$G$ を微分すると $e^{u}\left(\dfrac{u^{3}}{3}-3u\right)$ に戻る（$u^{3}$ の項と $u^{2}$ の項が打ち消し合う）。数値では $S=42.868092804\ldots$ で、数値積分の結果と一致する。`,
           pitfalls: [
