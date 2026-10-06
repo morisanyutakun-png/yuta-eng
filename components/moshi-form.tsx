@@ -224,11 +224,28 @@ export function MoshiForm() {
         </p>
       </div>
 
-      <p className="prose-ja mt-6 border-l-[3px] border-rule-2 bg-paper-2 px-4 py-3 text-[0.84rem] leading-[1.9] text-ink-2">
-        参加申込の時点では料金は発生しません。受験料は{priceLabel}の予定です。
-        {roundLabel}。正式な受験日程が確定したあとに、お支払い方法をメールでご案内します。
-        お支払いの期限までにご入金が確認できない場合、お申し込みは自動的に取り消しとなります。
-      </p>
+      {/*
+        申し込む前に知っておくべきことを、要項と同じ作法で並べる。
+        1つの段落に詰めると読み飛ばされ、色の付いた帯にすると広告に見える。
+        押す直前に目が通る位置へ、項目として置く。
+      */}
+      <div className="mt-7 border border-rule">
+        <p className="border-b border-rule bg-paper-2 px-4 py-2 text-[0.74rem] font-bold tracking-wide text-navy">
+          お申し込みの前に
+        </p>
+        <ul className="divide-y divide-rule">
+          {[
+            ["料金", `参加申込の時点では料金は発生しません。受験料は${priceLabel}の予定です。`],
+            ["日程", `${roundLabel}。正式な受験日程が確定したあとに、メールでご案内します。`],
+            ["支払い", "お支払い方法は日程のご案内とあわせてお知らせします。期限までにご入金が確認できない場合、お申し込みは自動的に取り消しとなります。"],
+          ].map(([k, v]) => (
+            <li key={k} className="grid grid-cols-[4rem_1fr] gap-x-4 px-4 py-3">
+              <span className="text-[0.78rem] leading-relaxed text-ink-3">{k}</span>
+              <span className="prose-ja text-[0.86rem] leading-[1.9] text-ink-2">{v}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {error && (
         <p role="alert" className="mt-4 border-l-[3px] border-accent bg-accent-bg px-4 py-3 text-[0.86rem] text-ink">

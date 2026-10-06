@@ -105,25 +105,44 @@ export default function MoshiPage() {
             期間内の好きな日時に受験でき、記述答案はすべて人力で採点します。
           </p>
 
-          <dl className="mt-6 flex flex-wrap gap-x-9 gap-y-4">
-            {[
-              { k: "対象", v: String(moshi.universities.length), u: "大学" },
-              { k: "開催", v: `第${moshi.round}回`, u: moshi.period },
-              { k: "受験料（予定）", v: moshi.price.toLocaleString(), u: "円（税込）" },
-            ].map((s) => (
-              <div key={s.k}>
-                <dt className="text-[0.68rem] text-ink-3">{s.k}</dt>
-                <dd className="serif mt-1 leading-none text-ink">
-                  <span className="text-[1.5rem] tabular-nums">{s.v}</span>
-                  <span className="ml-1 font-sans text-[0.7rem] font-normal text-ink-3">{s.u}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
+          {/*
+            予備校の模試案内が使っている「実施要項」の形にそろえる。
+            数字を散らして並べるより、項目名と内容を対で積むほうが、
+            受けるかどうかを決めるのに必要なことが一度に読める。
+            料金についての断りも、浮いた帯にせず要項の中に収める。
+          */}
+          <div className="mt-7 border border-rule">
+            <p className="border-b border-rule bg-paper-2 px-4 py-2 text-[0.74rem] font-bold tracking-wide text-navy sm:px-5">
+              実施要項
+            </p>
+            <dl className="divide-y divide-rule">
+              {[
+                { k: "対象大学", v: `${moshi.universities.length}大学`, note: "下の一覧からお選びいただけます" },
+                { k: "実施時期", v: roundLabel.replace(/^第/, "第"), note: "正式な日程は確定しだいご案内します" },
+                { k: "受験方法", v: "オンライン・期間内の好きな日時", note: "本番と同じ試験時間を目安として表示する予定です" },
+                { k: "受験料", v: `${priceLabel}（予定）`, note: "参加申込の時点では料金は発生しません" },
+                { k: "採点", v: "全答案を人力で採点", note: "途中式や記述内容まで確認して得点を出します" },
+                { k: "申込", v: "受付中", note: "お支払い方法は正式な日程とあわせてご案内します" },
+              ].map((r) => (
+                <div key={r.k} className="grid grid-cols-[5.5rem_1fr] gap-x-4 px-4 py-3 sm:grid-cols-[7rem_1fr] sm:px-5">
+                  <dt className="text-[0.8rem] leading-relaxed text-ink-3">{r.k}</dt>
+                  <dd className="min-w-0">
+                    <span className="block text-[0.93rem] font-semibold leading-snug text-ink">{r.v}</span>
+                    <span className="mt-0.5 block text-[0.78rem] leading-relaxed text-ink-3">{r.note}</span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
 
-          <p className="prose-ja mt-5 max-w-[38rem] border-l-[3px] border-rule-2 bg-paper-2 px-4 py-3 text-[0.84rem] leading-[1.9] text-ink-2">
-            参加申込の時点では料金は発生しません。正式な受験日程が確定したあとに、お支払い方法をメールでご案内します。
-          </p>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <a href="#apply" className="btn btn-primary">
+              参加申込に進む
+            </a>
+            <a href="#unis" className="btn">
+              開催大学を見る
+            </a>
+          </div>
         </header>
 
         <section aria-labelledby="points" className="mt-12">
