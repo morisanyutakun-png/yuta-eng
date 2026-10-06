@@ -3,14 +3,19 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { AmazonButton } from "@/components/amazon-button";
-import { LearningPath } from "@/components/learning-path";
+import { ProductPanel, type Product } from "@/components/product-panel";
 import { allBooks, bookMetaLine, gokakuBooks, yen } from "@/lib/books";
 import { universities, universityCount, type University } from "@/lib/data";
 import { shortName } from "@/lib/seo";
-import { kanseiAll, seriesName, seriesTagline, shindan } from "@/lib/series";
+import { kanseiAll, seriesName, shindan } from "@/lib/series";
 import { groupOrder, site } from "@/lib/site";
 
-const gokakuCount = allBooks.filter((b) => b.series === "gokaku").length;
+const gokakuList = allBooks.filter((b) => b.series === "gokaku");
+// シリーズの顔に出す表紙。刊行順の先頭だと中期日程などになることがあるので、
+// 一覧と同じ並び（群の順）の先頭大学を使う
+const order: readonly string[] = groupOrder;
+const leadUniv = [...universities].sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group))[0];
+const gokakuCount = gokakuList.length;
 const title = `教材一覧｜合格答案をつくる（${universityCount()}大学${gokakuCount}冊）と過去問の前に`;
 const description =
   `大学入試の数学対策の教材一覧です。本番と同じ形式の予想問題集「合格答案をつくる」を${universityCount()}大学・${gokakuCount}冊、` +
@@ -142,75 +147,77 @@ export default function BooksPage() {
           </p>
         </header>
 
-        <LearningPath compact className="mb-12 lg:mb-14" />
-
-        <section aria-labelledby="kako-heading" className="mt-4">
-          <p className="text-[0.68rem] font-bold tracking-wide text-accent">{seriesName}</p>
-          <h2 id="kako-heading" className="rule-mark serif mt-1 text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
-            過去問に入る前の2段階
+        {/*
+          3つのシリーズを同じ型で並べる。順番は使う順（決める→固める→仕上げる）。
+          どれも「表紙→名前→だれ向けか→特徴→価格→ボタン」で書くので、
+          2つ目からは同じ位置を見るだけで比べられる。
+        */}
+        <section aria-labelledby="series-heading" className="mt-4">
+          <h2 id="series-heading" className="rule-mark serif h-sect text-ink">
+            3つのシリーズ
           </h2>
           <p className="prose-ja mt-3 max-w-[38rem] text-[0.9rem] text-ink-2">
-            {seriesTagline}——その間を埋めるシリーズです。志望校診断模試で行き先を決め、その大学の分野別完成演習で頻出分野を固めます。
+            使う順に並べています。志望校を決め、頻出分野を固め、本番の形式で仕上げる、という流れです。
           </p>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-[20rem_1fr] lg:gap-10">
-            <div className="flex gap-4 border border-rule bg-white p-4">
-              <Link href="/shindan" className="w-[84px] shrink-0">
-                <Image
-                  src={shindan.cover}
-                  alt="志望校診断模試の表紙"
-                  width={310}
-                  height={438}
-                  sizes="84px"
-                  className="w-full rounded-[2px] border border-rule"
-                />
-              </Link>
-              <div className="min-w-0">
-                <p className="text-[0.66rem] font-bold text-navy">1　志望校を決める</p>
-                <p className="serif mt-1 text-[0.98rem] leading-snug text-ink">
-                  <Link href="/shindan" className="hover:text-navy">
-                    旧帝大・難関国公立大理系数学 志望校診断模試
-                  </Link>
-                </p>
-                <p className="mt-1 text-[0.7rem] tabular-nums text-ink-3">
-                  {[yen(shindan.catalog.price), bookMetaLine(shindan.catalog)].filter(Boolean).join("・")}
-                </p>
-                <AmazonButton href={shindan.amazonUrl} label="Amazon" className="mt-2 !min-h-8 !px-2.5 !text-[0.72rem]" />
-              </div>
-            </div>
-
-            <div>
-              <p className="text-[0.66rem] font-bold text-navy">2　志望校の頻出分野を固める（分野別完成演習 {kansei.length}冊）</p>
-              <ul className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                {kansei.map((k) => (
-                  <li key={k.slug} className="flex items-center gap-2.5">
-                    <Link href={`/kansei/${k.slug}`} className="w-9 shrink-0">
-                      <Image
-                        src={`/covers/kansei/thumb/${k.slug}.webp`}
-                        alt={`${k.name} 分野別完成演習の表紙`}
-                        width={160}
-                        height={226}
-                        loading="lazy"
-                        sizes="36px"
-                        className="w-full rounded-[2px] border border-rule"
-                      />
-                    </Link>
-                    <span className="min-w-0 flex-1">
-                      <Link
-                        href={`/kansei/${k.slug}`}
-                        className="block truncate text-[0.82rem] text-ink hover:text-navy"
-                      >
-                        {k.name}
-                      </Link>
-                      <span className="block text-[0.68rem] tabular-nums text-ink-3">
-                        {k.total.fields}分野・{k.total.problems}題
-                      </span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <ul className="mt-7 space-y-10">
+            {(
+              [
+                {
+                  cover: shindan.cover,
+                  coverAlt: "志望校診断模試の表紙",
+                  name: "旧帝大・難関国公立大理系数学 志望校診断模試",
+                  audience: "志望校がまだ決まっていない人へ",
+                  points: [
+                    `${shindan.rounds}回分の模試を解いて、${shindan.universities.length}大学との相性を判定します。`,
+                    `過去問${shindan.pastExams}題を分析して作問し、分野別・能力別に得点を分けて出します。`,
+                    "どの大学を目指すかを決めてから、下の2つに進めます。",
+                  ],
+                  meta: [yen(shindan.catalog.price), bookMetaLine(shindan.catalog)].filter(Boolean).join("・"),
+                  href: "/shindan",
+                  hrefLabel: "判定の仕組みを見る",
+                  amazonUrl: shindan.amazonUrl,
+                },
+                {
+                  cover: kansei[0].cover,
+                  coverAlt: `${kansei[0].name} 分野別完成演習の表紙`,
+                  name: `過去問の前に 分野別完成演習（${kansei.length}冊）`,
+                  audience: "標準問題は終えたが、過去問はまだ早いと感じる人へ",
+                  points: [
+                    "志望校の頻出分野だけを取り出し、標準から本番の水準まで段階的に上げます。",
+                    "章ごとに分野がまとまっているので、苦手な分野から始められます。",
+                    `いまは${kansei.length}大学ぶんを刊行しています。`,
+                  ],
+                  meta: kansei[0].catalog
+                    ? [yen(kansei[0].catalog.price), bookMetaLine(kansei[0].catalog)].filter(Boolean).join("・") +
+                      "（1冊あたり）"
+                    : null,
+                  href: "/kansei",
+                  hrefLabel: "収録分野を見る",
+                  amazonUrl: kansei[0].amazonUrl,
+                },
+                {
+                  cover: `/covers/${leadUniv.books[0].asin}.webp`,
+                  coverAlt: `${leadUniv.books[0].title}の表紙`,
+                  name: `${site.seriesName}（${universityCount()}大学・${gokakuCount}冊）`,
+                  audience: "志望校が決まっていて、本番の形式で仕上げたい人へ",
+                  points: [
+                    "本番と同じ試験時間・大問構成・解答形式で書き下ろした予想問題集です。",
+                    "小問ごとの加点・減点を示した採点表が付いているので、自分の答案を採点できます。",
+                    "過去問そのものは入っていません。過去問演習と並べて使います。",
+                  ],
+                  meta: `¥${Math.min(...gokakuList.map((b) => b.price ?? Infinity)).toLocaleString()}〜（大学・巻による）`,
+                  href: "/universities",
+                  hrefLabel: "大学別に見る",
+                  amazonUrl: null,
+                },
+              ] satisfies Product[]
+            ).map((p, i) => (
+              <li key={p.name} className="border-t border-rule pt-10 first:border-0 first:pt-0">
+                <ProductPanel p={p} priority={i === 0} />
+              </li>
+            ))}
+          </ul>
         </section>
 
         <section aria-labelledby="gokaku-heading" className="mt-16">

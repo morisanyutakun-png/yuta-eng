@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-import { AmazonButton } from "@/components/amazon-button";
+import { ProductPanel, type Product } from "@/components/product-panel";
 import { siteTotals, universities, universityCount } from "@/lib/data";
 import { sampleCount } from "@/lib/samples";
 import { shortName, subject } from "@/lib/seo";
@@ -98,54 +98,55 @@ export default function EducatorsPage() {
   const order: readonly string[] = groupOrder;
   const shelf = [...universities].sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group));
 
-  // 代表的な3シリーズ。表紙とボタンを添えて、中身の違いが一目で分かるようにする
+  // 教材一覧と同じ型・同じ順で並べる。ページごとに並びが変わると読み直しになる
   const lead = kanseiPublished[0];
-  const series = [
+  const series: Product[] = [
     {
-      key: "kakomon",
-      name: "合格答案をつくる",
       cover: `/covers/${shelf[0].books[0].asin}.webp`,
-      alt: `${subject(shelf[0])}の表紙`,
-      lines: [
-        `大学別の予想問題集（全${totals.books}冊）。`,
-        "本番と同じ試験時間・大問構成で書き下ろした問題に、解答・解説と採点表を付けています。",
-        "過去問演習と並べて、答案を書く練習に使えます。",
+      coverAlt: `${subject(shelf[0])}の表紙`,
+      name: `合格答案をつくる（${universityCount()}大学・${totals.books}冊）`,
+      audience: "志望校が決まっている生徒の演習・課題に",
+      points: [
+        "本番と同じ試験時間・大問構成・解答形式で書き下ろした予想問題集です。",
+        "小問ごとの加点・減点を示した採点表つきで、記述答案の採点基準をそろえられます。",
+        "試験1回分をそのまま演習に、大問単位で切り出して課題にできます。",
       ],
+      meta: null,
       href: "/universities",
       hrefLabel: "大学別に見る",
-      amazon: shelf[0].books[0].amazonUrl,
+      amazonUrl: shelf[0].books[0].amazonUrl,
     },
     ...(lead
       ? [
           {
-            key: "kansei",
-            name: "過去問の前に 分野別完成演習",
             cover: lead.cover,
-            alt: `${lead.name} 分野別完成演習の表紙`,
-            lines: [
-              `分野別の演習書（全${kanseiPublished.length}冊）。`,
-              "標準問題は終えたが過去問はまだ早い、という段階のための1冊です。",
+            coverAlt: `${lead.name} 分野別完成演習の表紙`,
+            name: `過去問の前に 分野別完成演習（${kanseiPublished.length}冊）`,
+            audience: "標準問題を終えて、過去問に入る前の段階に",
+            points: [
+              "志望校の頻出分野を、標準から本番の水準まで段階的に上げます。",
               "章ごとに分野がまとまっているので、分野別の補習に切り出せます。",
             ],
+            meta: null,
             href: "/kansei",
             hrefLabel: "収録分野を見る",
-            amazon: lead.amazonUrl,
-          },
+            amazonUrl: lead.amazonUrl,
+          } satisfies Product,
         ]
       : []),
     {
-      key: "shindan",
-      name: "志望校診断模試",
       cover: shindan.cover,
-      alt: "志望校診断模試の表紙",
-      lines: [
-        `${shindan.rounds}回分の模試で、いまの実力に合う大学を探すための1冊。`,
-        "分野別・能力別の得点から、受験できる大学の見当をつけます。",
-        "志望校がまだ定まっていない生徒の面談材料になります。",
+      coverAlt: "志望校診断模試の表紙",
+      name: "旧帝大・難関国公立大理系数学 志望校診断模試",
+      audience: "志望校がまだ定まっていない生徒の面談に",
+      points: [
+        `${shindan.rounds}回分の模試で、いまの実力に合う大学を探します。`,
+        "分野別・能力別の得点が出るので、どこを詰めるかを一緒に決められます。",
       ],
+      meta: null,
       href: "/shindan",
       hrefLabel: "判定の仕組みを見る",
-      amazon: shindan.amazonUrl,
+      amazonUrl: shindan.amazonUrl,
     },
   ];
 
@@ -208,33 +209,10 @@ export default function EducatorsPage() {
           <h2 id="series" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
             刊行している教材
           </h2>
-          <ul className="mt-6 space-y-9">
-            {series.map((s) => (
-              <li key={s.key} className="flex gap-4 sm:gap-5">
-                <div className="w-[88px] shrink-0 sm:w-[112px]">
-                  <Image
-                    src={s.cover}
-                    alt={s.alt}
-                    width={310}
-                    height={438}
-                    loading="lazy"
-                    sizes="(max-width: 640px) 88px, 112px"
-                    className="w-full rounded-[3px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)]"
-                  />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="serif text-[1.02rem] leading-snug text-ink">{s.name}</h3>
-                  <p className="prose-ja mt-1.5 text-[0.88rem] leading-[1.9] text-ink-2">{s.lines.join("")}</p>
-                  <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-                    <Link
-                      href={s.href}
-                      className="text-[0.85rem] font-semibold text-navy underline underline-offset-4"
-                    >
-                      {s.hrefLabel}
-                    </Link>
-                    {s.amazon && <AmazonButton href={s.amazon} label="Amazonで見る" />}
-                  </div>
-                </div>
+          <ul className="mt-7 space-y-10">
+            {series.map((p, i) => (
+              <li key={p.name} className="border-t border-rule pt-10 first:border-0 first:pt-0">
+                <ProductPanel p={p} priority={i === 0} />
               </li>
             ))}
           </ul>
