@@ -66,15 +66,25 @@ def main() -> int:
         return 2
     slug, year = sys.argv[1], sys.argv[2]
     index = json.loads((ROOT / "data" / "originals.json").read_text(encoding="utf-8"))
-    rel = index.get(slug, {}).get(year)
-    if not rel:
+    rels = index.get(slug, {}).get(year)
+    if not rels:
         print(f"{slug} {year} の原典は data/originals.json にない。npm run data:originals を実行するか、手元にないかのどちらか")
         return 1
+    # 1年度に複数の冊子があることがある（学部別・試験日別）。全部出す。
+    if isinstance(rels, str):
+        rels = [rels]
+    if len(rels) > 1:
+        print(f"{slug} {year} には冊子が {len(rels)} 冊ある（どれも別の試験）。すべて出す。\n")
+    for rel in rels:
+        render(slug, year, rel, len(rels) > 1)
+    return 0
 
-    out = OUT / f"{slug}-{year}"
+
+def render(slug: str, year: str, rel: str, many: bool) -> None:
+    out = OUT / (f"{slug}-{year}-{Path(rel).stem}" if many else f"{slug}-{year}")
     out.mkdir(parents=True, exist_ok=True)
-    for old in out.glob("*.png"):
-        old.unlink()
+    for stale in out.glob("*.png"):
+        stale.unlink()
 
     doc = fitz.open(HOME / rel)
     total = doc.page_count
@@ -99,7 +109,7 @@ def main() -> int:
     if skipped:
         print(f"計算用紙・白紙とみなして除外（上部 {HEAD_MIN} 未満かつ全体 {BODY_MIN} 未満）: "
               + "、".join(f"p{i:02}({h}/{b})" for i, h, b in skipped))
-    return 0
+    print()
 
 
 if __name__ == "__main__":

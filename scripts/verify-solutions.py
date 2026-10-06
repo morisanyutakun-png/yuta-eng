@@ -1074,6 +1074,105 @@ total = sum(math.sin(k)/k for k in range(1, 400000))
 ok("名市大医4(4) 級数の和 = (π-1)/2", abs(total - (math.pi - 1)/2) < 2e-5,
    f"40万項 {total:.9f} / {(math.pi-1)/2:.9f}")
 
+# ══ 三重大 数学②（医・工） 2026 ════════════════════════
+print()
+print("── 三重大 数学② 2026 ──")
+import cmath
+
+# 大問1(1) … 円になる k を、平方完成の右辺の符号で 1/500 刻みに全探索
+circle_rhs = lambda k: Fraction(13, 4) / (k + 1) ** 2 - (5 - 3 * k) / (k + 1)
+predicted = lambda k: (-1 < k < Fraction(-1, 2)) or (k > Fraction(7, 6))
+off = [k for i in range(-999, 4001) for k in [Fraction(i, 500)]
+       if k > -1 and (circle_rhs(k) > 0) != predicted(k)]
+ok("三重大1(1) 円 ⟺ -1<k<-1/2 または k>7/6", not off, f"1/500刻みで全探索 外れ{len(off)}件")
+ok("三重大1(1) 境界は 12k^2-8k-7=0 の解",
+   all(12 * b * b - 8 * b - 7 == 0 for b in (Fraction(-1, 2), Fraction(7, 6))))
+ok("三重大1(1) k=7/6 では1点に縮む", circle_rhs(Fraction(7, 6)) == 0)
+
+# 大問1(2)
+A2 = (Fraction(1), Fraction(7)); B2 = (Fraction(-2), Fraction(-2))
+C2 = tuple((A2[i] + 2 * B2[i]) / 3 for i in range(2))
+ok("三重大1(2) C=(-1,1)", C2 == (Fraction(-1), Fraction(1)), str(C2))
+ip = A2[0] * C2[0] + A2[1] * C2[1]
+ok("三重大1(2) OA・OC=6", ip == 6, str(ip))
+cosA = float(ip) / (math.hypot(1, 7) * math.hypot(-1, 1))
+ok("三重大1(2) cos∠AOC=3/5 で 60°より小さい", abs(cosA - 0.6) < 1e-12 and cosA > 0.5,
+   f"{math.degrees(math.acos(cosA)):.2f}°")
+
+# 大問1(3) … sinθ=sin2θ の解を数値で探し、a-b=1 の組を変えても同じか見る
+roots = []
+prev = None
+for i in range(2_000_001):
+    th = 2 * math.pi * i / 2_000_000
+    v = math.sin(th) - math.sin(2 * th)
+    if prev is not None and (v == 0 or prev * v < 0):
+        if not roots or th - roots[-1] > 1e-3:
+            roots.append(th)
+    prev = v
+want3 = [0.0, math.pi / 3, math.pi, 5 * math.pi / 3]
+ok("三重大1(3) 解は 0, π/3, π, 5π/3",
+   all(min(abs(r - w) for r in roots + [0.0]) < 1e-4 for w in want3),
+   f"数値探索 {[round(r, 5) for r in roots]}")
+eq = lambda a, b, t: abs(math.sin(a*t)*math.cos(b*t) - (math.cos(a*t)*math.sin(b*t) + math.sin(2*t)))
+ok("三重大1(3) a,b の取り方によらない（a-b=1 を4組）",
+   all(eq(a, b, w) < 1e-12 for a, b in [(3, 2), (1.5, .5), (-2, -3), (7, 6)] for w in want3))
+
+# 大問1(4)
+ok("三重大1(4) 5log_3 2 > 3", 5 * math.log(2, 3) > 3, f"{5*math.log(2,3):.9f}")
+ok("三重大1(4) log_2 12 < log_3 72", math.log(12, 2) < math.log(72, 3),
+   f"{math.log(12,2):.9f} < {math.log(72,3):.9f}")
+tt = math.log(3, 2)
+ok("三重大1(4) log_2 3 < 5/3 とその2乗 < 3", tt < 5 / 3 and tt * tt < 3, f"t={tt:.9f}, t^2={tt*tt:.9f}")
+
+# 大問1(5) … 円周上の z を4000点とって w を写す
+cen5 = complex(1, 0.5); rad5 = math.sqrt(2) / 2
+far = max(abs(abs(((1j + 1) * (1j + cmath.exp(1j * th)) + 3) / 2 - cen5) - rad5)
+          for th in [2 * math.pi * i / 4000 for i in range(4000)])
+ok("三重大1(5) w は中心 1+i/2、半径 √2/2 の円", far < 1e-12, f"最大ずれ {far:.2e}")
+
+# 大問2 … 36通りを全列挙して分数のまま
+space = [(x, y) for x in range(1, 7) for y in range(1, 7)]
+Ev = lambda f: sum(Fraction(f(x, y)) for x, y in space) * Fraction(1, 36)
+ok("三重大2(1) P(Z=6)=5/36",
+   sum(1 for x, y in space if x + y == 6) * Fraction(1, 36) == Fraction(5, 36))
+ok("三重大2(1) P(X=2 かつ Z=6)=1/36",
+   sum(1 for x, y in space if x == 2 and x + y == 6) * Fraction(1, 36) == Fraction(1, 36))
+EX = Ev(lambda x, y: x); EX2 = Ev(lambda x, y: x * x)
+ok("三重大2(2) E(X)=7/2", EX == Fraction(7, 2))
+ok("三重大2(2) V(X)=35/12", EX2 - EX ** 2 == Fraction(35, 12))
+EZ = Ev(lambda x, y: x + y)
+ok("三重大2(3) E(Z)=7", EZ == 7)
+ok("三重大2(3) V(Z)=35/6", Ev(lambda x, y: (x + y) ** 2) - EZ ** 2 == Fraction(35, 6))
+EXY = Ev(lambda x, y: x * y); EXZ = Ev(lambda x, y: x * (x + y))
+ok("三重大2(4) E(XY)=49/4", EXY == Fraction(49, 4))
+ok("三重大2(4) E(XZ)=329/12", EXZ == Fraction(329, 12))
+ok("三重大2(4) E(XZ)-E(X)E(Z)=V(X)", EXZ - EX * EZ == Fraction(35, 12))
+
+# 大問3(1) … 原始関数を数値微分して被積分関数に戻るか
+prim = lambda t, a, b: math.exp(a*t) * (a*math.cos(b*t) + b*math.sin(b*t)) / (a*a + b*b)
+bad3 = 0.0
+for a, b in [(1, 2), (-1, 0.5), (3, -1), (0.7, 0.3)]:
+    for t in [-1 + 0.013 * i for i in range(200)]:
+        h = 1e-6
+        bad3 = max(bad3, abs((prim(t+h, a, b) - prim(t-h, a, b)) / (2*h) - math.exp(a*t)*math.cos(b*t)))
+ok("三重大3(1) 原始関数の微分が e^(at)cos(bt) に戻る", bad3 < 1e-6, f"最大誤差 {bad3:.2e}")
+
+# 大問3(2) … 長さを数値積分と折れ線の2通りで
+cx = lambda t: math.exp(-t) * (math.cos(t) + math.sin(t))
+cy = lambda t: math.exp(-t) * (math.cos(t) - math.sin(t) + 2)
+hh = 1e-7
+speed = lambda t: math.hypot((cx(t+hh) - cx(t-hh)) / (2*hh), (cy(t+hh) - cy(t-hh)) / (2*hh))
+exact = 8 / 5 * (2 + math.exp(-math.pi))
+ok("三重大3(2) 速さ = 4e^(-t)cos(t/2)",
+   max(abs(speed(t) - 4*math.exp(-t)*math.cos(t/2))
+       for t in [0.001 + (math.pi - 0.002) * i / 500 for i in range(501)]) < 1e-5)
+num = quad(speed, 0, math.pi, 100001)[0]
+ok("三重大3(2) 長さ (8/5)(2+e^-π)（数値積分）", abs(num - exact) < 1e-6, f"{num:.9f} / {exact:.9f}")
+N3 = 400000
+poly = sum(math.hypot(cx(math.pi*(i+1)/N3) - cx(math.pi*i/N3),
+                      cy(math.pi*(i+1)/N3) - cy(math.pi*i/N3)) for i in range(N3))
+ok("三重大3(2) 長さ（40万分割の折れ線）", abs(poly - exact) < 1e-4, f"{poly:.9f} / {exact:.9f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

@@ -89,28 +89,44 @@ def looks_like_booklet(path: Path) -> tuple[bool, str]:
 
 def main() -> int:
     slugs = meta()
-    found: dict[str, dict[str, str]] = {}
+    # 1年度に複数の冊子があることがある。三重大の数学①②③（学部ごとに別問題）、
+    # 千葉工大の試験日ごと、東京理科大の 100 分・80 分、弘前大の理系・文系などは
+    # どれも**別の試験**なので、1つに絞ると残りを見落とす。だから値は必ずリストにする。
+    found: dict[str, dict[str, list[str]]] = {}
     skipped: dict[str, int] = {}
     folders_missing = []
+    multi: list[str] = []
 
     for folder, slug in sorted(slugs.items()):
         d = HOME / folder
         if not d.is_dir():
             folders_missing.append(folder)
             continue
+        per_year: dict[str, list[Path]] = {}
         for p in sorted(d.glob("*.pdf")):
             ok, why = looks_like_booklet(p)
             if not ok:
                 skipped[why] = skipped.get(why, 0) + 1
                 continue
-            year = YEAR.search(p.name).group(0)
-            # 同じ年度が2つ見つかったら、ページ数の多いほうを採る（表紙だけの断片を避ける）
-            prev = found.get(slug, {}).get(year)
-            if prev:
-                with fitz.open(HOME / prev) as a, fitz.open(p) as b:
-                    if a.page_count >= b.page_count:
-                        continue
-            found.setdefault(slug, {})[year] = str(p.relative_to(HOME))
+            per_year.setdefault(YEAR.search(p.name).group(0), []).append(p)
+
+        for year, paths in sorted(per_year.items()):
+            pages = {}
+            for p in paths:
+                with fitz.open(p) as doc:
+                    pages[p] = doc.page_count
+            # 表紙だけ、途中までといった断片は落とす。別の試験なら
+            # ページ数は近いので、最大の半分未満のものだけを切る。
+            top = max(pages.values())
+            keep = [p for p in paths if pages[p] * 2 >= top]
+            for p in paths:
+                if p not in keep:
+                    skipped["同じ年度の断片（ページ数が半分未満）"] = (
+                        skipped.get("同じ年度の断片（ページ数が半分未満）", 0) + 1
+                    )
+            found.setdefault(slug, {})[year] = [str(p.relative_to(HOME)) for p in keep]
+            if len(keep) > 1:
+                multi.append(f"{slug} {year}: " + "、".join(p.name for p in keep))
 
     OUT.write_text(
         json.dumps({s: dict(sorted(v.items())) for s, v in sorted(found.items())}, ensure_ascii=False, indent=2) + "\n",
@@ -118,14 +134,21 @@ def main() -> int:
     )
 
     total = sum(len(v) for v in found.values())
+    files = sum(len(ps) for v in found.values() for ps in v.values())
     years = sorted({y for v in found.values() for y in v})
-    print(f"原典（実物の問題冊子）: {len(found)} 区分 / {total} 年度分")
+    print(f"原典（実物の問題冊子）: {len(found)} 区分 / {total} 年度分 / {files} 冊")
     print(f"年度の範囲: {years[0]}〜{years[-1]}" if years else "年度なし")
     print("\n使わなかったもの:")
     for why, n in sorted(skipped.items(), key=lambda kv: -kv[1]):
         print(f"  {n:4} 件  {why}")
     if folders_missing:
         print(f"\nフォルダが見つからない slug: {len(folders_missing)} 件")
+    if multi:
+        # 同じ年度に複数の冊子がある組み合わせは必ず出す。黙って1つに絞ると、
+        # 学部別・試験日別の問題をまるごと1つ見落とす。
+        print(f"\n同じ年度に複数の冊子がある（どれも別の試験）: {len(multi)} 件")
+        for line in multi:
+            print(f"  {line}")
     missing = [s for s in set(slugs.values()) if s not in found]
     if missing:
         print(f"\n原典が1年度も見つからない区分 {len(missing)} 件:")

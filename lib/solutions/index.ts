@@ -4,6 +4,7 @@ import { kyudaiRikei2026 } from "@/lib/solutions/kyudai-rikei-2026";
 import { kagakudai2026 } from "@/lib/solutions/kagakudai-2026";
 import { kyodaiBunkei2026 } from "@/lib/solutions/kyodai-bunkei-2026";
 import { nagoyaBunkei2026 } from "@/lib/solutions/nagoya-bunkei-2026";
+import { mie2026 } from "@/lib/solutions/mie-2026";
 import { ncuMed2026 } from "@/lib/solutions/ncu-med-2026";
 import { nagoyaRikei2025 } from "@/lib/solutions/nagoya-rikei-2025";
 import { nagoyaRikei2026 } from "@/lib/solutions/nagoya-rikei-2026";
@@ -32,6 +33,7 @@ const all: SolutionSet[] = [
   nagoyaRikei2026,
   nagoyaBunkei2026,
   ncuMed2026,
+  mie2026,
   tohokuRikei2026,
   tohokuBunkei2026,
   nagoyaRikei2025,
@@ -70,6 +72,24 @@ export const published: SolutionSet[] = all
   .map(publishable)
   .filter((s): s is SolutionSet => s !== null)
   .sort((a, b) => b.year - a.year || universities.findIndex((u) => u.slug === a.slug) - universities.findIndex((u) => u.slug === b.slug));
+
+// ページの住所は /kaisetsu/<slug>/<year> なので、同じ大学・同じ年度のセットは1つしか置けない。
+// 三重大のように1年度に複数の区分（学部ごとの別問題）がある大学では、2つ目を足した
+// 瞬間に片方がURLから消える。黙って消えると気づけないので、ビルドを止める。
+// 複数区分を載せたくなったら、まず住所に区分を入れるところから直すこと。
+{
+  const seen = new Set<string>();
+  for (const s of published) {
+    const key = `${s.slug}/${s.year}`;
+    if (seen.has(key)) {
+      throw new Error(
+        `解説セットが重複している: ${key}（${s.division}）。` +
+          "/kaisetsu/<slug>/<year> は1つしか持てないので、どちらか片方しかページにならない。",
+      );
+    }
+    seen.add(key);
+  }
+}
 
 export const hasSolutions = published.length > 0;
 
