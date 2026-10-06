@@ -104,11 +104,11 @@ export const todaiBunkei2026: SolutionSet = {
           answer: String.raw`$p_5=\dfrac{412}{455}$`,
           approach: String.raw`三角形にならない＝**一直線上に並ぶ**。余事象で数える。列が3本しかないので、縦・横・斜めの3通りしか起こらず、斜めは「等差数列」になる場合だけ。`,
           blocks: [
-            { k: "p", t: String.raw`$3n$ 個の点から3点を選ぶ総数は $\dbinom{3n}{3}$。一直線上に並ぶ組を数える。` },
+            { k: "p", t: String.raw`$3n$ 個の点から3点を選ぶ総数は $ {}_{3n}\mathrm{C}_3$。一直線上に並ぶ組を数える。` },
             {
               k: "steps",
               items: [
-                String.raw`**縦**（$x$ が同じ）… 各列に $n$ 個なので $3\dbinom{n}{3}$ 通り`,
+                String.raw`**縦**（$x$ が同じ）… 各列に $n$ 個なので $3{}_n\mathrm{C}_3$ 通り`,
                 String.raw`**それ以外** … 列が3本しかないので、縦でない直線は各列から1点ずつ。$(1,a),(2,b),(3,c)$ が一直線上 $\iff 2b=a+c$`,
               ],
             },
@@ -118,9 +118,9 @@ export const todaiBunkei2026: SolutionSet = {
             },
             {
               k: "p",
-              t: String.raw`$n=5$ なら、奇数は $1,3,5$ の3個、偶数は $2,4$ の2個なので $3^{2}+2^{2}=13$ 通り。縦は $3\dbinom53=30$ 通り。合わせて $43$ 通り。`,
+              t: String.raw`$n=5$ なら、奇数は $1,3,5$ の3個、偶数は $2,4$ の2個なので $3^{2}+2^{2}=13$ 通り。縦は $3{}_5\mathrm{C}_3=30$ 通り。合わせて $43$ 通り。`,
             },
-            { k: "math", t: String.raw`p_5=1-\frac{43}{\dbinom{15}{3}}=1-\frac{43}{455}=\frac{412}{455}` },
+            { k: "math", t: String.raw`p_5=1-\frac{43}{{}_{15}\mathrm{C}_3}=1-\frac{43}{455}=\frac{412}{455}` },
           ],
           pitfalls: [
             String.raw`横一直線（$a=b=c$）は「各列から1点ずつ」に含まれている。縦と別に足すと二重に数える。`,
@@ -146,15 +146,15 @@ export const todaiBunkei2026: SolutionSet = {
               k: "math",
               t: String.raw`2m(2m-1)(m-1)+2m^{2}=2m\big\{(2m-1)(m-1)+m\big\}=2m(2m^{2}-2m+1)`,
             },
-            { k: "p", t: String.raw`総数は $\dbinom{6m}{3}=2m(6m-1)(3m-1)$ だから` },
+            { k: "p", t: String.raw`総数は $ {}_{6m}\mathrm{C}_3=2m(6m-1)(3m-1)$ だから` },
             {
               k: "math",
               t: String.raw`p_{2m}=1-\frac{2m^{2}-2m+1}{(6m-1)(3m-1)}=\frac{18m^{2}-9m+1-(2m^{2}-2m+1)}{(6m-1)(3m-1)}=\frac{m(16m-7)}{(6m-1)(3m-1)}`,
             },
           ],
-          check: String.raw`$m=2$（$n=4$）とすると $\dfrac{2\cdot25}{11\cdot5}=\dfrac{10}{11}$。実際、$12$ 点から3点を選ぶ $220$ 通りのうち、縦 $3\dbinom43=12$ 通り、$a\equiv c$ が $2\cdot2^{2}=8$ 通りで、$1-\dfrac{20}{220}=\dfrac{10}{11}$ と合う。`,
+          check: String.raw`$m=2$（$n=4$）とすると $\dfrac{2\cdot25}{11\cdot5}=\dfrac{10}{11}$。実際、$12$ 点から3点を選ぶ $220$ 通りのうち、縦 $3{}_4\mathrm{C}_3=12$ 通り、$a\equiv c$ が $2\cdot2^{2}=8$ 通りで、$1-\dfrac{20}{220}=\dfrac{10}{11}$ と合う。`,
           pitfalls: [
-            String.raw`$\dbinom{6m}{3}$ を展開するとき $\dfrac{6m(6m-1)(6m-2)}{6}=2m(6m-1)(3m-1)$。$6m-2=2(3m-1)$ を使うと約分が通る。`,
+            String.raw`$ {}_{6m}\mathrm{C}_3$ を展開するとき $\dfrac{6m(6m-1)(6m-2)}{6}=2m(6m-1)(3m-1)$。$6m-2=2(3m-1)$ を使うと約分が通る。`,
             String.raw`$n$ が奇数のときは奇数・偶数の個数が $1$ 個ずれるので、$(2)$ の式はそのままでは使えない。$(1)$ で $n=5$ を別に数えたのはこのため。`,
           ],
         },

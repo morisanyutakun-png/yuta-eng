@@ -362,7 +362,7 @@ export const todaiRikei2026: SolutionSet = {
         {
           label: "(2)",
           task: String.raw`$f(n)\ge g(n)$ を示す`,
-          answer: String.raw`$f(n)-g(n)=\displaystyle\prod_{p\equiv1}(e_p+1)\times\prod_{p\equiv2}\begin{cases}1&(e_p\text{ 偶})\\0&(e_p\text{ 奇})\end{cases}\ \ge0$`,
+          answer: String.raw`$f(n)-g(n)$ は、$3$ で割って $1$ 余る素因数については「指数 $+1$」を、$2$ 余る素因数については「指数が偶数なら $1$、奇数なら $0$」を掛け合わせた値になり、どの因数も $0$ 以上だから $f(n)\ge g(n)$`,
           approach: String.raw`$3$ で割った余りが $1$ なら $+1$、$2$ なら $-1$ を与える重みを考えると、**積について掛け算が成り立つ**。約数の和が素因数ごとの積にほどける。`,
           blocks: [
             {
@@ -371,17 +371,17 @@ export const todaiRikei2026: SolutionSet = {
             },
             {
               k: "p",
-              t: String.raw`約数 $d$ に対し、$d\equiv1$ なら $\chi(d)=1$、$d\equiv2$ なら $\chi(d)=-1$ と定める。$\bmod 3$ の掛け算から $\chi(de)=\chi(d)\chi(e)$ なので`,
+              t: String.raw`$m$ の素因数を、$3$ で割って $1$ 余るもの $p_1,\ldots,p_s$（指数 $a_1,\ldots,a_s$）と、$2$ 余るもの $q_1,\ldots,q_t$（指数 $b_1,\ldots,b_t$）に分ける。約数を $p_1^{x_1}\cdots p_s^{x_s}q_1^{y_1}\cdots q_t^{y_t}$ と書くと、$3$ で割った余りは $p_i$ の部分が $1$、$q_j$ の部分が $2^{y_1+\cdots+y_t}$ と同じなので、**$y_1+\cdots+y_t$ の偶奇だけ**で決まる。`,
             },
             {
               k: "math",
-              t: String.raw`f(m)-g(m)=\sum_{d\mid m}\chi(d)=\prod_{p^{e}\|m}\left(1+\chi(p)+\cdots+\chi(p)^{e}\right)`,
+              t: String.raw`f(m)-g(m)=\Big\{(a_1+1)\cdots(a_s+1)\Big\}\times\varepsilon_1\varepsilon_2\cdots\varepsilon_t`,
             },
             {
               k: "steps",
               items: [
-                String.raw`$p\equiv1\pmod3$ … $\chi(p)=1$ なので因子は $e+1>0$`,
-                String.raw`$p\equiv2\pmod3$ … $\chi(p)=-1$ なので因子は $1-1+1-\cdots$ で、$e$ が偶数なら $1$、奇数なら $0$`,
+                String.raw`$p_i$ の指数 $x_i$ は余りに影響しないので、$0$ から $a_i$ まで自由に選べる。ここから $(a_i+1)$ 倍`,
+                String.raw`$q_j$ の指数 $y_j$ は $0$ から $b_j$ まで。偶数個の選び方と奇数個の選び方の差を $\varepsilon_j$ と書くと、$\varepsilon_j=1-1+1-\cdots$ となり、$b_j$ が偶数なら $\varepsilon_j=1$、奇数なら $\varepsilon_j=0$`,
               ],
             },
             { k: "p", t: String.raw`どの因子も $0$ 以上だから積も $0$ 以上。よって $f(n)\ge g(n)$。` },
@@ -392,7 +392,7 @@ export const todaiRikei2026: SolutionSet = {
             },
           ],
           pitfalls: [
-            String.raw`$\chi$ が掛け算を保つことが鍵。$\bmod 3$ で $2\times2=4\equiv1$ なので、$(-1)\times(-1)=1$ と符合する。`,
+            String.raw`$3$ で割って $2$ 余る数どうしを掛けると $1$ 余る（$2\times2=4$）。だから余りは「$2$ 余る素因数を何個使ったか」の偶奇だけで決まる。`,
           ],
         },
         {
@@ -411,7 +411,7 @@ export const todaiRikei2026: SolutionSet = {
             },
             {
               k: "p",
-              t: String.raw`**$A>0$ のとき。** $3$ で割って $2$ 余る素因数はすべて偶数乗なので、その部分の約数個数 $B=\displaystyle\prod_{p\equiv2}(e_p+1)$ は**奇数の積、すなわち奇数**。一方 $A=\displaystyle\prod_{p\equiv1}(e_p+1)$ で、$d=AB$。よって`,
+              t: String.raw`**$A>0$ のとき。** $3$ で割って $2$ 余る素因数はすべて偶数乗なので、その部分から出る約数の個数 $B=(b_1+1)\cdots(b_t+1)$ は**奇数どうしの積、すなわち奇数**。一方 $A=(a_1+1)\cdots(a_s+1)$ で、$d=AB$。よって`,
             },
             { k: "math", t: String.raw`d-A=A(B-1)=30` },
             {

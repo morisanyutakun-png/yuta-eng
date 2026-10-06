@@ -500,7 +500,7 @@ export const ncuMed2026: SolutionSet = {
           check: String.raw`実際に $40$ 万項まで足すと $1.070794\ldots$ で、$\dfrac{\pi-1}{2}=1.070796\ldots$ にごく近い。収束がゆっくりなのは、$\dfrac{\sin k}{k}$ が交代級数のようにきれいに符号を変えないため。`,
           pitfalls: [
             String.raw`(1)〜(3) が全部ここにつながっている。(3) を示さずに「$I_n$ は $0$ だろう」と飛ばすと、この小問の根拠がなくなる。`,
-            String.raw`$\displaystyle\sum\frac{1}{k}$ は発散するが、$\sin k$ の符号が不規則に変わるおかげでこの級数は収束する。絶対収束はしない。`,
+            String.raw`$\displaystyle\sum_{k=1}^{\infty}\frac{1}{k}$ は発散するが、$\sin k$ の符号が不規則に変わるおかげでこの級数は収束する。絶対収束はしない。`,
           ],
         },
       ],

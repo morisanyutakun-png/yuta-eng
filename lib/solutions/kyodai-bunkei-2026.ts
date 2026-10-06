@@ -128,7 +128,7 @@ export const kyodaiBunkei2026: SolutionSet = {
             },
             {
               k: "math",
-              t: String.raw`\exists z\in\left[0,\tfrac14\right]:\ z+\frac12\le r^{2}\le z+\frac34\ \Longleftrightarrow\ \frac12\le r^{2}\le1`,
+              t: String.raw`\frac12\le r^{2}\le1`,
             },
             {
               k: "p",
@@ -168,7 +168,7 @@ export const kyodaiBunkei2026: SolutionSet = {
           blocks: [
             {
               k: "p",
-              t: String.raw`$p$ は $3$ より大きい素数なので $3\nmid p$。よって $0,\ p,\ 2p$ を $3$ で割った余りはすべて異なり、$\{0,1,2\}$ を覆う。`,
+              t: String.raw`$p$ は $3$ より大きい素数なので、$p$ は $3$ の倍数ではない。よって $0,\ p,\ 2p$ を $3$ で割った余りはすべて異なり、$\{0,1,2\}$ を覆う。`,
             },
             {
               k: "p",
@@ -281,7 +281,7 @@ export const kyodaiBunkei2026: SolutionSet = {
           ],
           check: String.raw`$N=3$ とすると $m=26$ で、$\dfrac{3\cdot27+3}{2}=42$。(1) と一致する。$N=1$ なら $m=2$、$\dfrac{(-1)\cdot3+3}{2}=0$ で、$a_2=0$ とも合う。`,
           pitfalls: [
-            String.raw`$\sum j x^{j}$ は $3T-T$ のずらし算で出す。公式を覚えていなくても作れる。`,
+            String.raw`$\displaystyle\sum_{j=1}^{n} j x^{j}$ は $3T-T$ のずらし算で出す。公式を覚えていなくても作れる。`,
             String.raw`$j$ の範囲が $0$ から $N-1$ であることを確かめる。$m$ が区間の右端だから、ここがぴったり揃う。`,
           ],
         },
@@ -310,8 +310,8 @@ export const kyodaiBunkei2026: SolutionSet = {
           approach: String.raw`$X=x$ となるのは「$x$ を引き、残り2枚を $x$ 未満から引く」とき。期待値の和に $x{}_{x-1}\mathrm{C}_2=3{}_x\mathrm{C}_3$ という**二項係数の書き換え**を使うと、和が一気にたたまれる。`,
           blocks: [
             { k: "p", t: String.raw`最大が $x$ になるのは、$x$ を含み、残り2枚が $1,\dots,x-1$ から選ばれるとき。よって` },
-            { k: "math", t: String.raw`P(X=x)=\frac{\dbinom{x-1}{2}}{\dbinom{n}{3}}\qquad(x=3,4,\dots,n)` },
-            { k: "p", t: String.raw`期待値の分子に現れる $x\dbinom{x-1}{2}$ は` },
+            { k: "math", t: String.raw`P(X=x)=\frac{{}_{x-1}\mathrm{C}_2}{{}_n\mathrm{C}_3}\qquad(x=3,4,\dots,n)` },
+            { k: "p", t: String.raw`期待値の分子に現れる $x{}_{x-1}\mathrm{C}_2$ は` },
             {
               k: "math",
               t: String.raw`x{}_{x-1}\mathrm{C}_2=x\cdot\frac{(x-1)(x-2)}{2}=3\cdot\frac{x(x-1)(x-2)}{6}=3{}_x\mathrm{C}_3`,
@@ -319,7 +319,7 @@ export const kyodaiBunkei2026: SolutionSet = {
             { k: "p", t: String.raw`$\displaystyle\sum_{x=3}^{n}{}_x\mathrm{C}_3={}_{n+1}\mathrm{C}_4$（二項係数の和の公式）だから` },
             {
               k: "math",
-              t: String.raw`E[X]=\frac{3\dbinom{n+1}{4}}{\dbinom{n}{3}}=3\cdot\frac{\frac{(n+1)n(n-1)(n-2)}{24}}{\frac{n(n-1)(n-2)}{6}}=\frac{3(n+1)}{4}`,
+              t: String.raw`E[X]=\frac{3{}_{n+1}\mathrm{C}_4}{{}_n\mathrm{C}_3}=3\cdot\frac{\frac{(n+1)n(n-1)(n-2)}{24}}{\frac{n(n-1)(n-2)}{6}}=\frac{3(n+1)}{4}`,
             },
             {
               k: "note",
@@ -330,7 +330,7 @@ export const kyodaiBunkei2026: SolutionSet = {
           check: String.raw`$n=3$ なら引き方は1通りで $X=3$、式も $\dfrac{3\cdot4}{4}=3$。$n=4$ なら4通りで $\dfrac{3+4+4+4}{4}=\dfrac{15}{4}$、式も $\dfrac{3\cdot5}{4}=\dfrac{15}{4}$。`,
           pitfalls: [
             String.raw`$x$ の動く範囲は $3$ から $n$。$X$ は3枚の最大なので $2$ 以下にはならない。`,
-            String.raw`$x\dbinom{x-1}{2}=3\dbinom{x}{3}$ に気づかないと、$\sum x^{3}$ などを展開することになって計算が重くなる。`,
+            String.raw`$x{}_{x-1}\mathrm{C}_2=3{}_x\mathrm{C}_3$ に気づかないと、$\displaystyle\sum_{x=3}^{n} x^{3}$ などを展開することになって計算が重くなる。`,
           ],
         },
       ],

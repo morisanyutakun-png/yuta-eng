@@ -43,9 +43,9 @@ export const nagoyaRikei2025: SolutionSet = {
           blocks: [
             {
               k: "p",
-              t: String.raw`$f''(x)>0$ がすべての $x$ で成り立つから、$f'$ は $\mathbb{R}$ 上で狭義単調増加。狭義単調増加で連続な関数の値域は、両端の極限で決まる開区間なので`,
+              t: String.raw`$f''(x)>0$ がすべての $x$ で成り立つから、$f'$ はすべての実数で狭義単調増加。狭義単調増加で連続な関数の値域は、両端の極限で決まる開区間なので`,
             },
-            { k: "math", t: String.raw`f'(\mathbb{R})=\left(\lim_{x\to-\infty}f'(x),\ \lim_{x\to\infty}f'(x)\right)=(a,b)` },
+            { k: "math", t: String.raw`f'\text{ の値域}=\left(\lim_{x\to-\infty}f'(x),\ \lim_{x\to\infty}f'(x)\right)=(a,b)` },
             {
               k: "p",
               t: String.raw`$a<c<b$ だから、$f'(x_0)=c$ をみたす $x_0$ が存在し（中間値の定理）、$f'$ が狭義単調増加だからただ1つに定まる。`,
@@ -70,7 +70,7 @@ export const nagoyaRikei2025: SolutionSet = {
           ],
           pitfalls: [
             String.raw`「$f'$ は単調増加だから $f'(x)=c$ の解は高々1つ」だけでは足りない。**存在**も言う必要があり、そこで極限の条件と中間値の定理を使う。`,
-            String.raw`$g''=-f''<0$ から「上に凸だから最大値をもつ」と書くだけでは、最大値をとる点の存在が示せていない。$\mathbb{R}$ 全体では上に凸でも最大値を持たない関数がある（$g(x)=-e^{x}$ など）。`,
+            String.raw`$g''=-f''<0$ から「上に凸だから最大値をもつ」と書くだけでは、最大値をとる点の存在が示せていない。実数全体では上に凸でも最大値を持たない関数がある（$g(x)=-e^{x}$ など）。`,
           ],
         },
         {
@@ -343,7 +343,7 @@ export const nagoyaRikei2025: SolutionSet = {
           ],
           pitfalls: [
             String.raw`「選んだコインはそのまま」なので、選ばれたコイン自身は裏返らない。自分を含めて裏返すと思うと連立方程式が変わる。`,
-            String.raw`$n$ が奇数のときは $p_n=0$。$x_2+x_5=2$ は偶数なので、$\sum k_i$ も偶数でなければならない。`,
+            String.raw`$n$ が奇数のときは $p_n=0$。$x_2+x_5=2$ は偶数なので、$k_1+k_2+\cdots+k_6$ も偶数でなければならない。`,
           ],
         },
         {

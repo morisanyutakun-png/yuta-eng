@@ -167,7 +167,7 @@ export const kagakudai2026: SolutionSet = {
           blocks: [
             {
               k: "p",
-              t: String.raw`$x+y+z=3n$ をみたす正の整数の組は $ {}_{3n-1}\mathrm{C}_2$ 通り。このうち $x=y$ となるのは $2x+z=3n,\ x\ge1,\ z\ge1$ から $A=\left\lfloor\dfrac{3n-1}{2}\right\rfloor$ 通り。$y=z$、$x=z$ も同数。`,
+              t: String.raw`$x+y+z=3n$ をみたす正の整数の組は $ {}_{3n-1}\mathrm{C}_2$ 通り。このうち $x=y$ となるのは $2x+z=3n$、$x\ge1$、$z\ge1$ のとき。$z=3n-2x\ge1$ より $x\le\dfrac{3n-1}{2}$ だから、その個数 $A$ は $1\le x\le\dfrac{3n-1}{2}$ をみたす整数 $x$ の個数である。$y=z$、$x=z$ のときも同数。`,
             },
             {
               k: "p",

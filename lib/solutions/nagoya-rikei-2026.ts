@@ -187,7 +187,7 @@ export const nagoyaRikei2026: SolutionSet = {
               k: "p",
               t: String.raw`$\mathrm{C}(1,0,0)$ を通るので $H:\ 5(x-1)+(1-3a)y+(a-2)z=0$。直線 $\mathrm{DE}$ は $\vec{\mathrm{DE}}=(-2,-1,-1)$ より`,
             },
-            { k: "math", t: String.raw`\mathrm{P}(t)=(-1-2t,\ 2-t,\ 1-t)\qquad(t\in\mathbb{R})` },
+            { k: "math", t: String.raw`\mathrm{P}(t)=(-1-2t,\ 2-t,\ 1-t)\qquad(t\text{ は実数})` },
             { k: "p", t: String.raw`これを $H$ の式に代入し、左辺を $g(t)$ とおくと` },
             { k: "math", t: String.raw`g(t)=(2a-9)t-5(a+2)` },
             {
@@ -298,7 +298,7 @@ export const nagoyaRikei2026: SolutionSet = {
           blocks: [
             {
               k: "p",
-              t: String.raw`$N!=\displaystyle\prod_{p\le N}p^{e_p}$ と書くと、現れる素数はちょうど $m$ 種類。どの2つも互いに素という条件から、各 $p^{e_p}$ はまるごと $a,b,c$ のどれか1つに属する。`,
+              t: String.raw`$N!$ を素因数分解して $N!=p_1^{e_1}p_2^{e_2}\cdots p_m^{e_m}$ と書くと、現れる素数はちょうど $m$ 種類。どの2つも互いに素という条件から、各 $p^{e_p}$ はまるごと $a,b,c$ のどれか1つに属する。`,
             },
             {
               k: "p",
@@ -323,7 +323,7 @@ export const nagoyaRikei2026: SolutionSet = {
           blocks: [
             {
               k: "p",
-              t: String.raw`まず、2つが等しいとき。$a=b$ なら $\gcd(a,b)=a$ で、これが $1$ だから $a=b=1$。このとき $c=N!$。`,
+              t: String.raw`まず、2つが等しいとき。$a=b$ なら $a$ と $b$ の最大公約数は $a$ で、これが $1$ だから $a=b=1$。このとき $c=N!$。`,
             },
             {
               k: "p",
