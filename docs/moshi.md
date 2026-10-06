@@ -13,6 +13,10 @@ Vercel の環境変数に次の4つを入れる。コードには書かない。
 | `RESEND_API_KEY` | 確認メールの送信 | 申込は保存されるが、確認メールが送られない |
 | `MOSHI_MAIL_FROM` | 差出人（例 `info@yuta-eng.com`） | 同上 |
 | `ADMIN_USER` / `ADMIN_PASSWORD` | 管理画面の Basic 認証 | 管理画面が 503 で開かない（誰でも見られる状態にはならない） |
+| `MOSHI_NOTIFY_BCC` | 申込を知らせる控えの宛先（任意） | 控えが届かない。申込と確認メールはそのまま動く |
+
+`MOSHI_NOTIFY_BCC` は bcc なので、申し込んだ本人からは見えない。
+公開しているコードに個人の宛先を書かないため、環境変数から読む。
 
 設定したら、一度だけテーブルを作る。
 
@@ -66,3 +70,13 @@ postgresql://ユーザー:パスワード@ep-xxxx-pooler.リージョン.aws.neo
 Webhook で `payment_status='paid'` と `stripe_payment_id` を書く」。
 `lib/moshi/db.ts` に更新用の関数を足し、Webhook の受け口を
 `app/api/moshi/stripe/route.ts` として作るのが素直。
+
+## 試した申込を片づける
+
+```
+DATABASE_URL='…' npm run moshi:reset              # 件数を見るだけ
+DATABASE_URL='…' npm run moshi:reset -- --yes     # 全部消す
+DATABASE_URL='…' npm run moshi:reset -- --email=xxx@example.com --yes   # 1件だけ
+```
+
+`--yes` を付けないと何も消さない。中間表は外部キーで一緒に消える。

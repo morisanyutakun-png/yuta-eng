@@ -106,9 +106,12 @@ export default async function UniversitySolutions({ params }: Props) {
             {span}の全{total}問について、当サイトが独自に解いた解答・計算過程・詳解・別解を載せています。
             方針を選ぶ理由、場合分けと端点の確認、答案で省略しない方がよい説明まで書いています。
           </p>
-          <p className="prose-ja mt-4 max-w-[40rem] border-l-[3px] border-accent/60 bg-accent-bg px-4 py-3 text-[0.84rem] leading-[1.9] text-ink-2">
-            {NOT_OFFICIAL}
-          </p>
+          <div className="mt-5 max-w-[40rem] border border-rule">
+            <p className="border-b border-rule bg-paper-2 px-4 py-2 text-[0.74rem] font-bold tracking-wide text-navy">
+              掲載について
+            </p>
+            <p className="prose-ja px-4 py-2.5 text-[0.85rem] leading-[1.9] text-ink-2">{NOT_OFFICIAL}</p>
+          </div>
         </header>
 
         <div className="space-y-9">

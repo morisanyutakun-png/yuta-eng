@@ -88,14 +88,29 @@ export default function KaisetsuTop() {
             ))}
           </dl>
 
-          <p className="prose-ja mt-5 max-w-[40rem] border-l-[3px] border-accent/60 bg-accent-bg px-4 py-3 text-[0.84rem] leading-[1.9] text-ink-2">
-            {NOT_OFFICIAL}
-            大学が問題を公開している年度は、そのページへリンクしています。
-            {lastUpdated && `最終更新 ${lastUpdated.replace(/-/g, "/")}。`}
-            <Link href="/kaisetsu/policy" className="ml-1 font-semibold text-accent underline underline-offset-4">
-              掲載方針
-            </Link>
-          </p>
+          {/* サイト内のほかの断り書きと同じ作法にそろえる。色の帯は使わない */}
+          <div className="mt-6 max-w-[40rem] border border-rule">
+            <p className="border-b border-rule bg-paper-2 px-4 py-2 text-[0.74rem] font-bold tracking-wide text-navy">
+              掲載について
+            </p>
+            <dl className="divide-y divide-rule">
+              {[
+                ["解答", NOT_OFFICIAL],
+                ["問題文", "掲載していません。大学が問題を公開している年度は、そのページへリンクしています。"],
+                ...(lastUpdated ? [["最終更新", lastUpdated.replace(/-/g, "/")] as const] : []),
+              ].map(([k, v]) => (
+                <div key={k} className="grid grid-cols-[4.5rem_1fr] gap-x-4 px-4 py-2.5">
+                  <dt className="text-[0.78rem] leading-relaxed text-ink-3">{k}</dt>
+                  <dd className="prose-ja text-[0.85rem] leading-[1.9] text-ink-2">{v}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="border-t border-rule px-4 py-2.5 text-[0.82rem]">
+              <Link href="/kaisetsu/policy" className="font-semibold text-navy underline underline-offset-4">
+                掲載方針をくわしく見る
+              </Link>
+            </p>
+          </div>
         </header>
 
         <section aria-labelledby="by-univ" className="mt-4">
