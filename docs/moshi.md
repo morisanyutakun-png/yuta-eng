@@ -17,8 +17,17 @@ Vercel の環境変数に次の4つを入れる。コードには書かない。
 設定したら、一度だけテーブルを作る。
 
 ```
-DATABASE_URL='postgres://…' npm run moshi:setup
+DATABASE_URL='（Neon の Pooled connection をそのまま貼る）' npm run moshi:setup
 ```
+
+接続文字列は Neon のダッシュボード → Connection string →
+**Pooled connection** を選んで表示されるものを使う。ホスト名に `-pooler` が入る。
+
+```
+postgresql://ユーザー:パスワード@ep-xxxx-pooler.リージョン.aws.neon.tech/neondb?sslmode=require
+```
+
+見本の記号を残したまま実行すると、スクリプトがそれを見つけて止める。
 
 何度流しても同じ結果になる（`create table if not exists`）。既存のテーブルには触らない。
 
