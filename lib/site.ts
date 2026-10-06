@@ -13,7 +13,7 @@ export const site = {
    * リンクを出さない（押せないボタンや行き先のないリンクを置かないため）。
    * 入れればそのまま有効になる。
    */
-  contact: null as string | null,
+  contact: "info@yuta-eng.com" as string | null,
 } as const;
 
 export const groupOrder = ["旧帝大", "難関国公立", "国公立大", "医学部・薬学部", "私立大"] as const;
