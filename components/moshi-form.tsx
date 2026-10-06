@@ -1,0 +1,249 @@
+"use client";
+
+import Link from "next/link";
+import { useId, useState } from "react";
+
+import { moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
+
+/**
+ * 参加申込のフォーム。
+ *
+ * スマホで30秒から1分で終わることを目標にしている。だから入力欄は
+ * 氏名・メール・学年・大学の4つだけを必須にし、志望学部は任意にした。
+ * 学年と学部は打たせずに選ばせる。打つのはメールと名前だけで済む。
+ *
+ * 送り先はサーバーの API ひとつで、保存も送信もそちらで行う。
+ * 画面側では鍵も接続先も持たない。
+ */
+
+type Done = { universityIds: string[]; mailed: boolean; returning: boolean };
+
+export function MoshiForm() {
+  const base = useId();
+  const [picked, setPicked] = useState<string[]>([]);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [done, setDone] = useState<Done | null>(null);
+
+  const toggle = (id: string) =>
+    setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
+
+  async function submit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+
+    const f = new FormData(e.currentTarget);
+    const payload = {
+      name: String(f.get("name") ?? ""),
+      email: String(f.get("email") ?? ""),
+      grade: String(f.get("grade") ?? ""),
+      faculty: String(f.get("faculty") ?? ""),
+      universityIds: picked,
+    };
+
+    if (picked.length === 0) {
+      setError("参加を希望する大学を1つ以上選んでください。");
+      return;
+    }
+
+    setSending(true);
+    try {
+      const res = await fetch("/api/moshi/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(typeof data?.error === "string" ? data.error : "申し込めませんでした。");
+        return;
+      }
+      setDone({ universityIds: data.universityIds ?? [], mailed: Boolean(data.mailed), returning: Boolean(data.returning) });
+    } catch {
+      setError("通信できませんでした。電波の良いところでお試しください。");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  if (done) {
+    const names = done.universityIds
+      .map((id) => moshi.universities.find((u) => u.id === id))
+      .filter((u): u is NonNullable<typeof u> => Boolean(u));
+
+    return (
+      <section aria-labelledby={`${base}-done`} className="card mt-6 p-6">
+        <h3 id={`${base}-done`} className="serif text-[1.15rem] text-ink">
+          参加申込を受け付けました。
+        </h3>
+        <p className="prose-ja mt-3 text-[0.9rem] leading-[1.95] text-ink-2">
+          正式な受験日程・受験料のお支払い方法については、確定後にメールでご案内します。
+        </p>
+
+        <p className="mt-5 text-[0.72rem] font-bold tracking-wide text-ink-3">申込済み</p>
+        <ul className="mt-2 divide-y divide-rule border-y border-rule">
+          {names.map((u) => (
+            <li key={u.id} className="py-2.5 text-[0.92rem] text-ink">
+              {u.university}
+              <span className="ml-2 text-[0.8rem] text-ink-2">{u.exam}</span>
+            </li>
+          ))}
+        </ul>
+
+        {done.returning && (
+          <p className="prose-ja mt-4 text-[0.84rem] leading-[1.9] text-ink-2">
+            以前のお申し込みと同じメールアドレスでしたので、同じ申込にまとめました。
+            上の一覧が、現在お申し込みいただいているすべての模試です。
+          </p>
+        )}
+
+        <p className="prose-ja mt-4 text-[0.84rem] leading-[1.9] text-ink-3">
+          {done.mailed
+            ? "確認メールをお送りしました。数分たっても届かない場合は、迷惑メールフォルダをご確認ください。"
+            : "確認メールの送信ができませんでした。お申し込み自体は受け付けていますので、そのままお待ちください。"}
+        </p>
+      </section>
+    );
+  }
+
+  return (
+    <form onSubmit={submit} className="mt-6">
+      <fieldset className="border-0 p-0">
+        <legend className="text-[0.95rem] font-semibold text-ink">
+          参加を希望する模試
+          <span className="ml-2 text-[0.74rem] font-normal text-ink-2">複数選べます</span>
+        </legend>
+
+        {/*
+          10大学を縦に積むと画面が長くなるので、狭い画面でも2列に並べる。
+          大学名を主役にし、模試名は小さく添える。
+        */}
+        <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {moshi.universities.map((u) => {
+            const on = picked.includes(u.id);
+            return (
+              <li key={u.id}>
+                <label
+                  className={`flex min-h-[3.1rem] cursor-pointer items-center gap-3 border px-3.5 py-2.5 transition-colors ${
+                    on ? "border-navy bg-paper-2" : "border-rule bg-white hover:border-navy"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    name="universityIds"
+                    value={u.id}
+                    checked={on}
+                    onChange={() => toggle(u.id)}
+                    className="size-4 shrink-0 accent-[#1b3a63]"
+                  />
+                  <span className="min-w-0">
+                    <span className="block text-[0.93rem] font-semibold leading-snug text-ink">{u.university}</span>
+                    <span className="block truncate text-[0.74rem] text-ink-2">{u.exam}</span>
+                  </span>
+                </label>
+              </li>
+            );
+          })}
+        </ul>
+      </fieldset>
+
+      <div className="mt-7 grid gap-5 sm:grid-cols-2">
+        <p className="sm:col-span-2">
+          <label htmlFor={`${base}-name`} className="block text-[0.85rem] font-semibold text-ink">
+            お名前
+          </label>
+          <input
+            id={`${base}-name`}
+            name="name"
+            required
+            maxLength={60}
+            autoComplete="name"
+            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.95rem] text-ink focus:border-navy focus:outline-none"
+          />
+        </p>
+
+        <p className="sm:col-span-2">
+          <label htmlFor={`${base}-email`} className="block text-[0.85rem] font-semibold text-ink">
+            メールアドレス
+          </label>
+          <input
+            id={`${base}-email`}
+            name="email"
+            type="email"
+            required
+            maxLength={254}
+            inputMode="email"
+            autoComplete="email"
+            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.95rem] text-ink focus:border-navy focus:outline-none"
+          />
+          <span className="mt-1 block text-[0.74rem] leading-relaxed text-ink-3">
+            受験日程とお支払い方法のご案内に使います。他の目的には使いません。
+          </span>
+        </p>
+
+        <p>
+          <label htmlFor={`${base}-grade`} className="block text-[0.85rem] font-semibold text-ink">
+            学年
+          </label>
+          <select
+            id={`${base}-grade`}
+            name="grade"
+            required
+            defaultValue=""
+            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.95rem] text-ink focus:border-navy focus:outline-none"
+          >
+            <option value="" disabled>
+              選んでください
+            </option>
+            {moshi.grades.map((g) => (
+              <option key={g} value={g}>
+                {g}
+              </option>
+            ))}
+          </select>
+        </p>
+
+        <p>
+          <label htmlFor={`${base}-faculty`} className="block text-[0.85rem] font-semibold text-ink">
+            志望学部
+            <span className="ml-1.5 text-[0.74rem] font-normal text-ink-3">任意</span>
+          </label>
+          <select
+            id={`${base}-faculty`}
+            name="faculty"
+            defaultValue=""
+            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.95rem] text-ink focus:border-navy focus:outline-none"
+          >
+            <option value="">未選択</option>
+            {moshi.faculties.map((f) => (
+              <option key={f} value={f}>
+                {f}
+              </option>
+            ))}
+          </select>
+        </p>
+      </div>
+
+      <p className="prose-ja mt-6 border-l-[3px] border-rule-2 bg-paper-2 px-4 py-3 text-[0.84rem] leading-[1.9] text-ink-2">
+        参加申込の時点では料金は発生しません。受験料は{priceLabel}の予定です。
+        {roundLabel}。正式な受験日程が確定したあとに、お支払い方法をメールでご案内します。
+        お支払いの期限までにご入金が確認できない場合、お申し込みは自動的に取り消しとなります。
+      </p>
+
+      {error && (
+        <p role="alert" className="mt-4 border-l-[3px] border-accent bg-accent-bg px-4 py-3 text-[0.86rem] text-ink">
+          {error}
+        </p>
+      )}
+
+      <div className="mt-6 flex flex-wrap items-center gap-4">
+        <button type="submit" disabled={sending} className="btn btn-primary disabled:opacity-60">
+          {sending ? "送信しています…" : "参加申込"}
+        </button>
+        <Link href="/moshi/privacy" className="text-[0.82rem] text-navy underline underline-offset-4">
+          個人情報の取り扱い
+        </Link>
+      </div>
+    </form>
+  );
+}

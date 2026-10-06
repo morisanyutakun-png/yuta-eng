@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { CoverShelf } from "@/components/cover-shelf";
+import { moshi, roundLabel } from "@/lib/moshi/config";
 import { KanseiCards } from "@/components/kansei-cards";
 import { LearningPath } from "@/components/learning-path";
 import { TopFields } from "@/components/top-fields";
@@ -98,6 +99,22 @@ export default function HomePage() {
         </section>
 
         <LearningPath compact className="mt-16" />
+
+        {/* 既存の教材紹介より前に出さない。知らせる役だけを持たせる */}
+        <section aria-labelledby="moshi-heading" className="mt-16">
+          <h2 id="moshi-heading" className="rule-mark serif h-sect text-ink">
+            大学別オンライン数学模試
+          </h2>
+          <div className="card mt-4 flex flex-wrap items-center justify-between gap-4 px-5 py-4">
+            <p className="prose-ja min-w-0 text-[0.9rem] leading-[1.9] text-ink-2">
+              {moshi.season}・{moshi.universities.length}大学。{roundLabel}。
+              <span className="ml-1 text-ink">参加申込を受け付けています。</span>
+            </p>
+            <Link href="/moshi" className="btn shrink-0">
+              詳しく見る
+            </Link>
+          </div>
+        </section>
 
         <TopFields />
 

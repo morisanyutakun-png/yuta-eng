@@ -13,11 +13,13 @@
     "check": "node scripts/check-data.mjs",
     "check:html": "node scripts/check-html.mjs",
     "check:solutions": "python3 scripts/verify-solutions.py",
-    "data:originals": "python3 scripts/scan-originals.py"
+    "data:originals": "python3 scripts/scan-originals.py",
+    "moshi:setup": "node scripts/moshi-setup.mjs"
   },
   "dependencies": {
     "katex": "^0.16.45",
     "next": "16.2.4",
+    "pg": "^8.23.1",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
@@ -25,6 +27,7 @@
     "@tailwindcss/postcss": "^4",
     "@types/katex": "^0.16.7",
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

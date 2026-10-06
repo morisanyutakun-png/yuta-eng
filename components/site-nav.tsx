@@ -22,6 +22,7 @@ export function navItems(hasSolutions: boolean): Item[] {
     ...(hasSolutions
       ? [{ href: "/kaisetsu", label: "過去問解答", note: "当サイト独自の解答・解説" }]
       : []),
+    { href: "/moshi", label: "オンライン模試", note: "大学別の数学模試・参加申込受付中" },
     { href: "/kansei", label: "完成演習", note: "過去問の前に解く分野別演習" },
     { href: "/shindan", label: "志望校診断", note: "いまの実力から受かる大学を探す" },
     { href: "/books", label: "教材一覧", note: "刊行している全冊を学習段階順に" },

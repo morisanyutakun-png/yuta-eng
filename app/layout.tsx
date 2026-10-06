@@ -67,6 +67,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </Link>
             </p>
             <p>
+              <Link href="/moshi" className="underline underline-offset-4 hover:text-navy">
+                大学別オンライン数学模試
+              </Link>
+              <span className="mx-2 text-rule">／</span>
               <Link href="/educators" className="underline underline-offset-4 hover:text-navy">
                 学校・塾・予備校関係者の方へ
               </Link>

@@ -1,0 +1,21 @@
+{
+  "title": "大学別オンライン数学模試",
+  "season": "2027年度入試向け",
+  "round": 1,
+  "period": "2026年11月下旬〜12月上旬",
+  "price": 3980,
+  "universities": [
+    { "id": "mie-rikei", "university": "三重大学", "exam": "理系数学 入試実戦模試", "slug": "mie" },
+    { "id": "nagoya-rikei", "university": "名古屋大学", "exam": "理系数学 入試実戦模試", "slug": "nagoya-rikei" },
+    { "id": "nitech", "university": "名古屋工業大学", "exam": "数学 入試実戦模試", "slug": "nitech" },
+    { "id": "kagakudai-rikou", "university": "東京科学大学", "exam": "理工系数学 入試実戦模試", "slug": "kagakudai" },
+    { "id": "hitotsubashi", "university": "一橋大学", "exam": "数学 入試実戦模試", "slug": "hitotsubashi" },
+    { "id": "tohoku-rikei", "university": "東北大学", "exam": "理系数学 入試実戦模試", "slug": "tohoku-rikei" },
+    { "id": "tsukuba-rikei", "university": "筑波大学", "exam": "理系数学 入試実戦模試", "slug": "tsukuba" },
+    { "id": "kobe-rikei", "university": "神戸大学", "exam": "理系数学 入試実戦模試", "slug": "kobe-rikei" },
+    { "id": "chiba-rikei", "university": "千葉大学", "exam": "理系数学 入試実戦模試", "slug": "chiba" },
+    { "id": "okayama-rikei", "university": "岡山大学", "exam": "理系数学 入試実戦模試", "slug": "okayama" }
+  ],
+  "grades": ["高校1年", "高校2年", "高校3年", "既卒", "その他"],
+  "faculties": ["理", "工", "医", "歯・薬", "農・生命", "経済・商", "法・文", "教育", "その他・未定"]
+}
