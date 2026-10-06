@@ -1,5 +1,6 @@
 import { moshi, moshiUniversity } from "@/lib/moshi/config";
 import { hasDatabase, summary } from "@/lib/moshi/db";
+import { canSendMail } from "@/lib/moshi/mail";
 
 /**
  * 申込の確認用。
@@ -29,6 +30,11 @@ export default async function MoshiAdmin() {
   }
 
   const s = await summary();
+  // 設定の状態。鍵そのものは出さず、入っているかどうかだけを見せる
+  const settings = [
+    { k: "申込の保存（DATABASE_URL）", ok: hasDatabase() },
+    { k: "確認メール（RESEND_API_KEY・MOSHI_MAIL_FROM）", ok: canSendMail() },
+  ];
   const counts = new Map(s.byUniversity.map((b) => [b.universityId, b.count]));
   // 申込のない大学も 0 として並べる
   const rows = moshi.universities
@@ -42,6 +48,20 @@ export default async function MoshiAdmin() {
         総申込人数 <strong className="serif text-[1.3rem] tabular-nums text-ink">{s.total}</strong> 人
         <span className="ml-3 text-ink-3">延べ {s.byUniversity.reduce((n, b) => n + b.count, 0)} 件</span>
       </p>
+
+      <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-1.5 border-y border-rule py-3 text-[0.8rem]">
+        {settings.map((x) => (
+          <li key={x.k} className="flex items-center gap-1.5">
+            <span aria-hidden="true" className={x.ok ? "text-navy" : "text-accent"}>
+              {x.ok ? "●" : "○"}
+            </span>
+            <span className="text-ink-2">{x.k}</span>
+            <span className={x.ok ? "text-ink-3" : "font-semibold text-accent"}>
+              {x.ok ? "設定済み" : "未設定"}
+            </span>
+          </li>
+        ))}
+      </ul>
 
       <section aria-labelledby="by-univ" className="mt-9">
         <h2 id="by-univ" className="rule-mark serif h-sect text-ink">

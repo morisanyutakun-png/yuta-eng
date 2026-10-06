@@ -17,7 +17,36 @@ export function middleware(req: NextRequest) {
   const pass = process.env.ADMIN_PASSWORD;
 
   if (!user || !pass) {
-    return new NextResponse("管理画面は未設定です。", { status: 503 });
+    // まだ合言葉が決まっていない段階。ここは誰でも開けるので、
+    // 値は出さず「どの環境変数が足りないか」という名前だけを知らせる。
+    // 設定が済めばこの下の認証に入り、この画面自体が見えなくなる。
+    const missing = [
+      !process.env.ADMIN_USER && "ADMIN_USER",
+      !process.env.ADMIN_PASSWORD && "ADMIN_PASSWORD",
+      !process.env.DATABASE_URL && "DATABASE_URL",
+      !process.env.RESEND_API_KEY && "RESEND_API_KEY",
+      !process.env.MOSHI_MAIL_FROM && "MOSHI_MAIL_FROM",
+    ].filter((v): v is string => Boolean(v));
+
+    const body = [
+      "管理画面はまだ設定されていません。",
+      "",
+      "未設定の環境変数:",
+      ...missing.map((m) => `  - ${m}`),
+      "",
+      "Vercel のプロジェクト設定 → Environment Variables に入れ、",
+      "そのあと一度だけ次を実行してテーブルを作ってください。",
+      "",
+      "  DATABASE_URL='...' npm run moshi:setup",
+      "",
+      "ADMIN_USER と ADMIN_PASSWORD を入れると、この画面は",
+      "利用者名と合言葉を聞くようになります。",
+    ].join("\n");
+
+    return new NextResponse(body, {
+      status: 503,
+      headers: { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-store" },
+    });
   }
 
   const header = req.headers.get("authorization") ?? "";
