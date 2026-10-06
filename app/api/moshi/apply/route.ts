@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { hasDatabase, saveApplication } from "@/lib/moshi/db";
 import { sendConfirmation } from "@/lib/moshi/mail";
-import { parseApplication } from "@/lib/moshi/validate";
+import { THANKS_COOKIE, parseApplication } from "@/lib/moshi/validate";
 
 /**
  * 参加申込の受け口。
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
   // メールが送れなくても申込は保存済み。申込自体は失敗にしない
   const mailed = await sendConfirmation(parsed.value.email, parsed.value.name, result.all);
 
-  return NextResponse.json({
+  const res = NextResponse.json({
     ok: true,
     universityIds: result.all,
     added: result.added,
@@ -53,4 +53,20 @@ export async function POST(req: Request) {
     returning: result.returning,
     mailed,
   });
+
+  // 完了ページに渡すための控え。大学の識別子と送信できたかだけで、
+  // 氏名もメールアドレスも入れない。10分で消える。
+  res.cookies.set({
+    name: THANKS_COOKIE,
+    value: Buffer.from(
+      JSON.stringify({ u: result.all, m: mailed, r: result.returning }),
+      "utf8",
+    ).toString("base64url"),
+    path: "/moshi",
+    maxAge: 600,
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
+  return res;
 }

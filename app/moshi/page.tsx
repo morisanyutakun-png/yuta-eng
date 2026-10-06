@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { MoshiForm } from "@/components/moshi-form";
+import { AnswerSheet, Flow } from "@/components/moshi-visual";
 import { getUniversity, siteTotals, universityCount } from "@/lib/data";
 import { analysisHref, moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
 import { kanseiPublished } from "@/lib/series";
@@ -100,10 +101,20 @@ export default function MoshiPage() {
         <header className="border-b border-rule pb-8 pt-6">
           <p className="eyebrow">{moshi.season}</p>
           <h1 className="serif h-page mt-1.5 text-ink">{moshi.title}</h1>
-          <p className="prose-ja mt-4 max-w-[38rem] text-[0.97rem] leading-[1.95] text-ink-2">
-            大学ごとの入試形式を意識したオリジナル数学模試を、オンラインで実施します。
-            期間内の好きな日時に受験でき、記述答案はすべて人力で採点します。
-          </p>
+          <div className="mt-4 grid items-start gap-6 lg:grid-cols-[1fr_20rem]">
+            <p className="prose-ja max-w-[38rem] text-[0.97rem] leading-[1.95] text-ink-2">
+              大学ごとの入試形式を意識したオリジナル数学模試を、オンラインで実施します。
+              期間内の好きな日時に受験でき、記述答案はすべて人力で採点します。
+              答案は途中式まで読み、大問ごとに得点を出してお返しします。
+            </p>
+            {/* 文章より先に、この模試で何が起きるかを図で見せる */}
+            <figure className="justify-self-center lg:justify-self-end">
+              <AnswerSheet className="w-[20rem] max-w-full" />
+              <figcaption className="mt-1.5 text-center text-[0.74rem] text-ink-3 lg:text-right">
+                記述答案を人が読み、大問ごとに得点を出します
+              </figcaption>
+            </figure>
+          </div>
 
           {/*
             予備校の模試案内が使っている「実施要項」の形にそろえる。
@@ -157,6 +168,13 @@ export default function MoshiPage() {
               </div>
             ))}
           </dl>
+        </section>
+
+        <section aria-labelledby="flow" className="mt-14">
+          <h2 id="flow" className="rule-mark serif h-sect text-ink">
+            受験までの流れ
+          </h2>
+          <Flow />
         </section>
 
         <section aria-labelledby="unis" className="mt-14">

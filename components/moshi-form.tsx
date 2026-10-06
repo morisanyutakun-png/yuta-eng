@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
+
 
 import { moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
 
@@ -16,14 +18,12 @@ import { moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
  * 画面側では鍵も接続先も持たない。
  */
 
-type Done = { universityIds: string[]; mailed: boolean; returning: boolean };
-
 export function MoshiForm() {
   const base = useId();
+  const router = useRouter();
   const [picked, setPicked] = useState<string[]>([]);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [done, setDone] = useState<Done | null>(null);
 
   const toggle = (id: string) =>
     setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
@@ -58,52 +58,13 @@ export function MoshiForm() {
         setError(typeof data?.error === "string" ? data.error : "申し込めませんでした。");
         return;
       }
-      setDone({ universityIds: data.universityIds ?? [], mailed: Boolean(data.mailed), returning: Boolean(data.returning) });
+      // 申し込んだ大学の控えは、API が短命の cookie に入れている。
+      // この画面では何も持たずに、完了ページへ移るだけ。
+      router.push("/moshi/thanks");
     } catch {
       setError("通信できませんでした。電波の良いところでお試しください。");
-    } finally {
       setSending(false);
     }
-  }
-
-  if (done) {
-    const names = done.universityIds
-      .map((id) => moshi.universities.find((u) => u.id === id))
-      .filter((u): u is NonNullable<typeof u> => Boolean(u));
-
-    return (
-      <section aria-labelledby={`${base}-done`} className="card mt-6 p-6">
-        <h3 id={`${base}-done`} className="serif text-[1.15rem] text-ink">
-          参加申込を受け付けました。
-        </h3>
-        <p className="prose-ja mt-3 text-[0.9rem] leading-[1.95] text-ink-2">
-          正式な受験日程・受験料のお支払い方法については、確定後にメールでご案内します。
-        </p>
-
-        <p className="mt-5 text-[0.72rem] font-bold tracking-wide text-ink-3">申込済み</p>
-        <ul className="mt-2 divide-y divide-rule border-y border-rule">
-          {names.map((u) => (
-            <li key={u.id} className="py-2.5 text-[0.92rem] text-ink">
-              {u.university}
-              <span className="ml-2 text-[0.8rem] text-ink-2">{u.exam}</span>
-            </li>
-          ))}
-        </ul>
-
-        {done.returning && (
-          <p className="prose-ja mt-4 text-[0.84rem] leading-[1.9] text-ink-2">
-            以前のお申し込みと同じメールアドレスでしたので、同じ申込にまとめました。
-            上の一覧が、現在お申し込みいただいているすべての模試です。
-          </p>
-        )}
-
-        <p className="prose-ja mt-4 text-[0.84rem] leading-[1.9] text-ink-3">
-          {done.mailed
-            ? "確認メールをお送りしました。数分たっても届かない場合は、迷惑メールフォルダをご確認ください。"
-            : "確認メールの送信ができませんでした。お申し込み自体は受け付けていますので、そのままお待ちください。"}
-        </p>
-      </section>
-    );
   }
 
   return (
