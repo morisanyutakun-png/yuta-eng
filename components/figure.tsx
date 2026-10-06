@@ -1,3 +1,4 @@
+import { MathText } from "@/lib/render";
 import type { Figure, FigureItem, Place } from "@/lib/solutions/types";
 
 /**
@@ -30,6 +31,11 @@ const ORDER: Place[] = [
 ];
 
 type Box = { x1: number; y1: number; x2: number; y2: number };
+
+/** 読み上げ用。$…$ と **…** を落として地の文にする */
+function plain(s: string) {
+  return s.replace(/\*\*/g, "").replace(/\$([^$]+)\$/g, "$1").replace(/\\[a-zA-Z]+/g, "");
+}
 
 function hit(a: Box, b: Box) {
   return !(a.x2 < b.x1 || b.x2 < a.x1 || a.y2 < b.y1 || b.y2 < a.y1);
@@ -165,7 +171,7 @@ export function FigureView({ fig }: { fig: Figure }) {
       <svg
         viewBox={`0 0 ${W} ${H}`}
         role="img"
-        aria-label={fig.caption}
+        aria-label={plain(fig.caption)}
         className="w-full border border-rule bg-white"
       >
         {/* 目盛り */}
@@ -203,7 +209,9 @@ export function FigureView({ fig }: { fig: Figure }) {
           </text>
         ))}
       </svg>
-      <figcaption className="mt-1.5 text-[0.76rem] leading-relaxed text-ink-3">{fig.caption}</figcaption>
+      <figcaption className="prose-ja mt-1.5 text-[0.78rem] leading-relaxed text-ink-3">
+        <MathText>{fig.caption}</MathText>
+      </figcaption>
     </figure>
   );
 }

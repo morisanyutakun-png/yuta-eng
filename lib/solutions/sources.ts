@@ -173,6 +173,22 @@ export const sources: Record<string, Record<number, Source>> = {
         "いずれにせよ当サイトは問題文・図を1つも載せないので複製にあたらない。",
     },
   },
+  uec: {
+    2026: {
+      kind: "official",
+      url: "https://www.uec.ac.jp/education/undergraduate/admission/exam.html",
+      publisher: "電気通信大学",
+      pageTitle: "過去の入試問題",
+      target: "page",
+      checked: "2026-10-07",
+      note:
+        "前期日程の問題と解答例を公開している。掲載は直近3年度分なので、" +
+        "年度が進むと直リンクが切れる。個別のPDFではなく一覧ページへリンクした。" +
+        "大学の解答例は読んでいないし、言い換えてもいない。当サイトの解答は独自に解いたもの。" +
+        "手元のPDFには問題4ページのほかに他社の解答解説と思われるページが続いていたが、" +
+        "冊子が「問題用紙は4ページ」と明記しているので、その4ページだけを読んだ。",
+    },
+  },
   "ncu-med": {
     2026: {
       kind: "official",

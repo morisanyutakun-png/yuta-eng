@@ -1302,6 +1302,115 @@ for _ in range(60):
     else: hi4 = mid
 ok("名工大4(4) 二分法でも同じ t", abs((lo4 + hi4) / 2 - tw) < 1e-5, f"{(lo4+hi4)/2:.9f} / {tw:.9f}")
 
+# ══ 電通大 2026 ════════════════════════════════════════
+print()
+print("── 電通大 2026 ──")
+
+# 大問1
+fu = lambda x: 3*math.sin(2*x) + 2*math.sin(3*x)
+grid = [math.pi*i/400000 for i in range(1, 400000)]
+ok("電通大1(i) 極大 x1=π/5", abs(max(grid, key=fu) - math.pi/5) < 1e-4)
+ok("電通大1(i) 極小 x2=3π/5", abs(min(grid, key=fu) - 3*math.pi/5) < 1e-4)
+ok("電通大1(i) f'=12cos(5x/2)cos(x/2)",
+   max(abs((fu(x+1e-6)-fu(x-1e-6))/2e-6 - 12*math.cos(2.5*x)*math.cos(0.5*x))
+       for x in [0.05*i for i in range(1, 62)]) < 1e-5)
+zs, prev = [], fu(1e-9)
+for i in range(1, 400000):
+    x = math.pi*i/400000; v = fu(x)
+    if prev*v < 0: zs.append(x)
+    prev = v
+ok("電通大1(ii) cosα=1/4", len(zs) == 1 and abs(math.cos(zs[0]) - 0.25) < 1e-5, f"cosα={math.cos(zs[0]):.7f}")
+cs, prev = [], fu(1e-9) - 3*math.sin(2e-9)
+for i in range(1, 400000):
+    x = math.pi*i/400000; v = fu(x) - 3*math.sin(2*x)
+    if prev*v < 0: cs.append(x)
+    prev = v
+ok("電通大1(iii) β=π/3", cs and abs(cs[0] - math.pi/3) < 1e-5, f"β={cs[0]:.7f}")
+Iu = quad(lambda x: math.sin(2*x)*math.sin(3*x), 0, math.pi/3, 200001)[0]
+ok("電通大1(iv) I=3√3/10", abs(Iu - 3*math.sqrt(3)/10) < 1e-9, f"{Iu:.10f}")
+Vu = math.pi*quad(lambda x: fu(x)**2 - (3*math.sin(2*x))**2, 0, math.pi/3, 200001)[0]
+wantV = 18*math.sqrt(3)*math.pi/5 + 2*math.pi**2/3
+ok("電通大1(v) V=18√3π/5+2π²/3", abs(Vu - wantV) < 1e-6, f"{Vu:.9f} / {wantV:.9f}")
+
+# 大問2
+f2 = lambda x: (3*math.exp(x) - 1)/(math.exp(x) + 1)**2
+g2 = [-30 + 60*i/400000 for i in range(400001)]
+pk = max(g2, key=f2)
+# 格子の最大点は厳密な極大点と少しずれるので、位置は格子で、値は厳密点で確かめる
+ok("電通大2(i) 極大の位置 log(5/3)", abs(pk - math.log(5/3)) < 1e-3, f"格子最大 {pk:.6f}")
+ok("電通大2(i) 極大値 9/16", abs(f2(math.log(5/3)) - 9/16) < 1e-12, f"{f2(math.log(5/3)):.12f}")
+ok("電通大2(i) 極大点の前後で増減が変わる",
+   f2(math.log(5/3) - 0.01) < f2(math.log(5/3)) > f2(math.log(5/3) + 0.01))
+ok("電通大2(ii) 値域 -1<y≤9/16",
+   min(f2(x) for x in g2) > -1 and max(f2(x) for x in g2) <= 9/16 + 1e-12 and abs(f2(-60) + 1) < 1e-12)
+Ip = lambda t: math.log(t/(t+1))
+Jp = lambda t: math.log(t/(t+1)) + 1/(t+1)
+ok("電通大2(iii) I の原始関数",
+   max(abs((Ip(t+1e-7)-Ip(t-1e-7))/2e-7 - 1/(t*(t+1))) for t in [0.3+0.7*i for i in range(12)]) < 1e-5)
+ok("電通大2(iii) J の原始関数",
+   max(abs((Jp(t+1e-7)-Jp(t-1e-7))/2e-7 - 1/(t*(t+1)**2)) for t in [0.3+0.7*i for i in range(12)]) < 1e-5)
+S0 = quad(f2, -math.log(3), 0, 200001)[0]
+ok("電通大2(iv) S(0)=1-log2", abs(S0 - (1 - math.log(2))) < 1e-9, f"{S0:.10f}")
+Sinf = quad(f2, -math.log(3), 40, 200001)[0]
+ok("電通大2(iv) lim S(M)=3-2log2", abs(Sinf - (3 - 2*math.log(2))) < 1e-6, f"{Sinf:.9f}")
+
+# 大問3 … α,β を刻んで全探索
+Lf = lambda a: math.sqrt(17 - 8*math.cos(a)) - 1
+def Lmin(a, n=4000):
+    P = (-2 + math.cos(a), math.sin(a))
+    return min(math.dist(P, (2 + math.cos(2*math.pi*i/n), math.sin(2*math.pi*i/n))) for i in range(n))
+ok("電通大3(i) L(α)=√(17-8cosα)-1", all(abs(Lf(a) - Lmin(a)) < 2e-3 for a in (0.0, 1.0, 2.5, math.pi, 4.7)))
+ok("電通大3(i) 最大 L=4（α=π）", abs(Lf(math.pi) - 4) < 1e-12)
+N3 = 1200
+best_m = -9; best_mp = -9; best_sy = -9; arg = None
+for i in range(N3):
+    a = 2*math.pi*i/N3
+    P = (-2 + math.cos(a), math.sin(a))
+    for j in range(N3):
+        b = 2*math.pi*j/N3
+        Q = (2 + math.cos(b), math.sin(b))
+        best_m = max(best_m, (Q[1]-P[1])/(Q[0]-P[0]))
+        v = (Q[0]-P[0], Q[1]-P[1]); w = (-v[1], v[0])
+        R = (Q[0]+w[0], Q[1]+w[1]); Sp = (P[0]+w[0], P[1]+w[1])
+        if R[1] <= 0: continue
+        if abs(R[0]-P[0]) > 1e-9: best_mp = max(best_mp, (R[1]-P[1])/(R[0]-P[0]))
+        if Sp[1] > best_sy: best_sy = Sp[1]; arg = (a, b, P, Q)
+ok("電通大3(ii) m の最大 1/√3", abs(best_m - 1/math.sqrt(3)) < 5e-3, f"{best_m:.6f}")
+ok("電通大3(iii) m' の最大 2+√3", abs(best_mp - (2 + math.sqrt(3))) < 2e-2, f"{best_mp:.6f}")
+ok("電通大3(iv) S の y の最大 5+√2", abs(best_sy - (5 + math.sqrt(2))) < 1e-4, f"{best_sy:.7f}")
+a_, b_, P_, Q_ = arg
+ok("電通大3(iv) そのとき α=3π/4, β=0",
+   abs(a_ - 3*math.pi/4) < 1e-2 and min(abs(b_), abs(b_ - 2*math.pi)) < 1e-2)
+ok("電通大3(iv) P=(-2-√2/2, √2/2), Q=(3,0)",
+   abs(P_[0] + 2 + math.sqrt(2)/2) < 1e-2 and abs(P_[1] - math.sqrt(2)/2) < 1e-2
+   and abs(Q_[0] - 3) < 1e-2 and abs(Q_[1]) < 1e-2)
+Pz = (-2 - math.sqrt(2)/2, math.sqrt(2)/2); Qz = (3.0, 0.0)
+vz = (Qz[0]-Pz[0], Qz[1]-Pz[1]); wz = (-vz[1], vz[0])
+Rz = (Qz[0]+wz[0], Qz[1]+wz[1]); Sz = (Pz[0]+wz[0], Pz[1]+wz[1])
+sides = [math.dist(Pz, Qz), math.dist(Qz, Rz), math.dist(Rz, Sz), math.dist(Sz, Pz)]
+ok("電通大3(iv) PQRS は正方形", max(sides) - min(sides) < 1e-9
+   and abs(math.dist(Pz, Rz) - math.dist(Qz, Sz)) < 1e-9)
+
+# 大問4
+seq = [None, 1, 4, 12, 32]
+while len(seq) < 34: seq.append(4*(seq[-1] - seq[-2]))
+ok("電通大4(i) a1=1, a3=12", seq[1] == 1 and seq[3] == 12)
+ok("電通大4(iii) a_n=n·2^(n-1)", all(seq[n] == n*2**(n-1) for n in range(1, 31)))
+bk = lambda n: seq[n+1] - 2*seq[n]
+ok("電通大4(ii) b_n=2^n と b_(n+1)=2b_n",
+   all(bk(n) == 2**n for n in range(1, 30)) and all(bk(n+1) == 2*bk(n) for n in range(1, 29)))
+ok("電通大4(iii) c_(n+1)=c_n+1/2, c_n=n/2",
+   all(abs(seq[n]/2**n - n/2) < 1e-12 for n in range(1, 30)))
+Sn = lambda n: sum(seq[k] for k in range(1, n+1))
+Tn = lambda n: sum(bk(k) for k in range(1, n+1))
+ok("電通大4(iv) T_n=2^(n+1)-2", all(Tn(n) == 2**(n+1) - 2 for n in range(1, 26)))
+ok("電通大4(iv) S_n=(n-1)2^n+1", all(Sn(n) == (n-1)*2**n + 1 for n in range(1, 26)))
+exact = lambda n: sum(Fraction(k, n+k) for k in range(1, n+1))/n
+direct = lambda n: Fraction(2**n, n)*sum(Fraction(k*2**(k-1), (n+k)*2**(n+k-1)) for k in range(1, n+1))
+ok("電通大4(v) (2^n/n)Σ a_k/a_(n+k) = (1/n)Σ k/(n+k)", all(exact(n) == direct(n) for n in range(1, 26)))
+ok("電通大4(v) 極限 1-log2", abs(float(exact(4000)) - (1 - math.log(2))) < 3e-4,
+   f"n=4000 で {float(exact(4000)):.7f} / {1-math.log(2):.7f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
