@@ -8,7 +8,7 @@ import { BookCta, InlineCta } from "@/components/book-cta";
 import { FaqSection } from "@/components/faq";
 import { FieldChart } from "@/components/field-chart";
 import { LookInsideSection } from "@/components/look-inside-section";
-import { SolutionsLink } from "@/components/solutions-link";
+import { SolutionsCallout, SolutionsLink } from "@/components/solutions-link";
 import { solutionsFor } from "@/lib/solutions";
 import { StudyPlan } from "@/components/study-plan";
 import { Toc } from "@/components/toc";
@@ -209,6 +209,8 @@ export default async function UniversityPage({ params }: Props) {
         }
       >
         <UnivHero u={u} />
+
+        <SolutionsCallout slug={u.slug} />
 
         <Toc titles={u.sections.map((s) => s.title)} extra={tocExtra} />
 

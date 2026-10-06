@@ -1,0 +1,29 @@
+/**
+ * サイトのしるし。
+ *
+ * 紺の角版に、年度別の出題数を並べた棒を白抜きで入れてある。
+ * このサイトが出しているものは「大学別に、年度を追って並べた数字」なので、
+ * 中身をそのまま形にした。表紙の意匠（明朝・紺・細い罫）と同じ調子にそろえる。
+ *
+ * 実在の大学や団体の記章とは関係のない、このサイト独自のもの。
+ */
+export function LogoMark({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 32 32"
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      role="presentation"
+    >
+      <rect width="32" height="32" fill="currentColor" />
+      <g fill="#fff">
+        <rect x="6.5" y="18" width="3.5" height="7.5" />
+        <rect x="12.5" y="13" width="3.5" height="12.5" />
+        <rect x="18.5" y="15.5" width="3.5" height="10" />
+        <rect x="24.5" y="9" width="3.5" height="16.5" />
+      </g>
+      <rect x="6.5" y="6.5" width="12" height="1.6" fill="#fff" />
+    </svg>
+  );
+}

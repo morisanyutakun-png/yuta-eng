@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { LogoMark } from "@/components/logo";
 import { SiteNav } from "@/components/site-nav";
 import { hasSolutions } from "@/lib/solutions";
 import { site } from "@/lib/site";
@@ -39,8 +40,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <header className="border-b border-rule">
           <div className="mx-auto flex max-w-[46rem] items-center justify-between px-5 py-3.5 sm:px-6 lg:max-w-[74rem] lg:px-8">
-            <Link href="/" className="serif text-[0.95rem] tracking-tight text-ink">
-              大学別 数学入試分析
+            <Link href="/" className="flex items-center gap-2.5 text-ink">
+              <LogoMark className="size-7 shrink-0 text-navy" />
+              <span className="serif text-[0.97rem] leading-tight tracking-tight">
+                大学別 数学入試分析
+              </span>
             </Link>
             <SiteNav hasSolutions={hasSolutions} />
           </div>

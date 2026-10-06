@@ -307,16 +307,16 @@ export const kyodaiBunkei2026: SolutionSet = {
           label: "",
           task: String.raw`$X$ の期待値を求める`,
           answer: String.raw`$E[X]=\dfrac{3(n+1)}{4}$`,
-          approach: String.raw`$X=x$ となるのは「$x$ を引き、残り2枚を $x$ 未満から引く」とき。期待値の和に $x\binom{x-1}{2}=3\binom{x}{3}$ という**二項係数の書き換え**を使うと、和が一気にたたまれる。`,
+          approach: String.raw`$X=x$ となるのは「$x$ を引き、残り2枚を $x$ 未満から引く」とき。期待値の和に $x{}_{x-1}\mathrm{C}_2=3{}_x\mathrm{C}_3$ という**二項係数の書き換え**を使うと、和が一気にたたまれる。`,
           blocks: [
             { k: "p", t: String.raw`最大が $x$ になるのは、$x$ を含み、残り2枚が $1,\dots,x-1$ から選ばれるとき。よって` },
             { k: "math", t: String.raw`P(X=x)=\frac{\dbinom{x-1}{2}}{\dbinom{n}{3}}\qquad(x=3,4,\dots,n)` },
             { k: "p", t: String.raw`期待値の分子に現れる $x\dbinom{x-1}{2}$ は` },
             {
               k: "math",
-              t: String.raw`x\binom{x-1}{2}=x\cdot\frac{(x-1)(x-2)}{2}=3\cdot\frac{x(x-1)(x-2)}{6}=3\binom{x}{3}`,
+              t: String.raw`x{}_{x-1}\mathrm{C}_2=x\cdot\frac{(x-1)(x-2)}{2}=3\cdot\frac{x(x-1)(x-2)}{6}=3{}_x\mathrm{C}_3`,
             },
-            { k: "p", t: String.raw`$\displaystyle\sum_{x=3}^{n}\binom{x}{3}=\binom{n+1}{4}$（二項係数の和の公式）だから` },
+            { k: "p", t: String.raw`$\displaystyle\sum_{x=3}^{n}{}_x\mathrm{C}_3={}_{n+1}\mathrm{C}_4$（二項係数の和の公式）だから` },
             {
               k: "math",
               t: String.raw`E[X]=\frac{3\dbinom{n+1}{4}}{\dbinom{n}{3}}=3\cdot\frac{\frac{(n+1)n(n-1)(n-2)}{24}}{\frac{n(n-1)(n-2)}{6}}=\frac{3(n+1)}{4}`,

@@ -139,7 +139,7 @@ export const todaiBunkei2026: SolutionSet = {
             },
             {
               k: "math",
-              t: String.raw`3\binom{2m}{3}=\frac{(2m)(2m-1)(2m-2)}{2}=2m(2m-1)(m-1)`,
+              t: String.raw`3{}_{2m}\mathrm{C}_3=\frac{(2m)(2m-1)(2m-2)}{2}=2m(2m-1)(m-1)`,
             },
             { k: "p", t: String.raw`一直線上に並ぶ組は合わせて` },
             {

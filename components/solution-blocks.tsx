@@ -102,25 +102,24 @@ export function SubQuestionBlock({ sub, qNo }: { sub: SubQuestion; qNo: number }
         <Blocks blocks={sub.blocks} />
       </div>
 
+      {/*
+        検算と、答案で落としてはいけない点。見出し語は付けない。
+        「確かめ。」のようなラベルを置くと、答案に書き写せる文章ではなく
+        資料の付録として読まれる。本文と同じ地の文のまま、間を空けて続ける。
+      */}
       {sub.check && (
-        <p className="prose-ja mt-3 text-[0.92rem] leading-[1.95] text-ink-2">
-          <strong className="font-semibold text-accent">確かめ。{"　"}</strong>
+        <p className="prose-ja mt-3.5 text-[0.92rem] leading-[1.95] text-ink-2">
           <MathText>{sub.check}</MathText>
         </p>
       )}
 
       {sub.pitfalls?.length ? (
-        <div className="prose-ja mt-3 text-[0.92rem] leading-[1.95] text-ink-2">
-          <p>
-            <strong className="font-semibold text-accent">答案では次を省略しない。</strong>
-          </p>
-          <ul className="mt-1.5 list-disc space-y-1.5 pl-6 marker:text-ink-3">
-            {sub.pitfalls.map((p, i) => (
-              <li key={i}>
-                <MathText>{p}</MathText>
-              </li>
-            ))}
-          </ul>
+        <div className="prose-ja mt-3.5 space-y-2.5 text-[0.92rem] leading-[1.95] text-ink-2">
+          {sub.pitfalls.map((p, i) => (
+            <p key={i}>
+              <MathText>{p}</MathText>
+            </p>
+          ))}
         </div>
       ) : null}
 

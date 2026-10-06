@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import type { University } from "@/lib/data";
-import { summarize, yearLabel } from "@/lib/data";
+import { spanText, summarize, yearLabel } from "@/lib/data";
 import { shortName } from "@/lib/seo";
 
 type Stat = { label: string; value: string; sub?: string; note?: string };
@@ -43,6 +43,14 @@ export function UnivHero({ u }: { u: University }) {
   // 慶應経済のように、リード文そのものが変更の告知になっている大学がある。
   // 同じ一文を要約と告知で二度出さない。
   const leadIsChange = Boolean(u.change) && (u.change.includes(lead) || lead.includes(u.change));
+  // 要約が本文の書き出しと同じ大学がある。同じ文章を1画面に二度出さない。
+  const firstBody = (() => {
+    const b = (u.lead.find((x) => x.type === "p") ??
+      u.sections.flatMap((x) => x.blocks).find((x) => x.type === "p"));
+    return b && b.type === "p" ? spanText(b.spans).replace(/\s+/g, "") : "";
+  })();
+  const head = lead.replace(/…$/, "");
+  const leadRepeatsBody = head.length > 12 && firstBody.startsWith(head);
 
   return (
     <header className="pb-2 pt-4">
@@ -91,7 +99,7 @@ export function UnivHero({ u }: { u: University }) {
           </span>
         </a>
 
-        {u.summary && !leadIsChange && (
+        {u.summary && !leadIsChange && !leadRepeatsBody && (
           <p className="prose-ja col-span-2 col-start-1 mt-5 text-[0.95rem] text-ink-2 sm:col-span-1">
             {lead}
           </p>
