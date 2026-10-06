@@ -151,23 +151,32 @@ function Table({ head, rows }: { head: Cell[]; rows: Cell[][] }) {
   return (
     <div>
       {wide && (
-        <p className="mb-1.5 flex items-center gap-1 text-[0.68rem] text-ink-3 sm:hidden">
+        <p className="mb-1.5 flex items-center gap-1 text-[0.7rem] text-ink-3">
           <svg aria-hidden="true" viewBox="0 0 20 20" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M3 10h14M13 6l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           横にスクロールできます
         </p>
       )}
-      <div className="scroll-hint -mx-5 overflow-x-auto px-5 sm:mx-0 sm:px-0">
-      <table className="w-full min-w-[32rem] border-collapse text-left text-[0.78rem] leading-relaxed">
+      {/*
+        1列目（年度や分野の名前）は横に送っても残す。残さないと、
+        右のほうを見ているときに「どの行を見ているか」が分からなくなる。
+        行は1行おきに薄く敷いて、横に目を走らせても行を見失わないようにする。
+      */}
+      <div className="table-wrap -mx-5 px-5 sm:mx-0 sm:px-0">
+      <table className="w-full min-w-[32rem] border-collapse text-left text-[0.79rem] leading-relaxed">
         <thead>
-          <tr className="border-y border-rule bg-paper-2/60">
+          <tr className="border-b-2 border-navy/35 bg-paper-2">
             {head.map((c, i) => (
               <th
                 key={i}
                 colSpan={c.colSpan > 1 ? c.colSpan : undefined}
                 scope="col"
-                className="whitespace-nowrap px-3 py-2 align-bottom text-[0.7rem] font-bold tracking-wide text-ink-2"
+                className={
+                  i === 0
+                    ? "sticky left-0 z-10 whitespace-nowrap bg-paper-2 px-3 py-2.5 align-bottom text-[0.71rem] font-bold tracking-wide text-navy"
+                    : "whitespace-nowrap px-3 py-2.5 align-bottom text-[0.71rem] font-bold tracking-wide text-navy"
+                }
               >
                 <Spans spans={c.spans} />
               </th>
@@ -176,14 +185,14 @@ function Table({ head, rows }: { head: Cell[]; rows: Cell[][] }) {
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={i} className="border-b border-rule/70 last:border-0">
+            <tr key={i} className="border-b border-rule bg-white last:border-0 even:bg-paper-2/55">
               {r.map((c, j) => (
                 <td
                   key={j}
                   colSpan={c.colSpan > 1 ? c.colSpan : undefined}
                   className={
                     j === 0
-                      ? "whitespace-nowrap px-3 py-2.5 align-top font-semibold text-ink"
+                      ? "sticky left-0 z-10 whitespace-nowrap bg-inherit px-3 py-2.5 align-top font-semibold text-ink"
                       : "px-3 py-2.5 align-top leading-relaxed text-ink-2"
                   }
                 >

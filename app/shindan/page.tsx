@@ -173,7 +173,7 @@ export default function ShindanPage() {
                 height={438}
                 priority
                 sizes="(max-width: 640px) 96px, 128px"
-                className="w-full rounded-[2px] border border-rule shadow-[0_2px_8px_rgba(26,29,33,0.18)]"
+                className="w-full rounded-[2px] border border-rule shadow-[0_1px_3px_rgba(21,24,28,0.09)]"
               />
             </a>
             <p className="prose-ja col-span-2 mt-5 text-[0.95rem] text-ink-2 sm:col-span-1">
@@ -476,7 +476,7 @@ export default function ShindanPage() {
                 width={310}
                 height={438}
                 sizes="104px"
-                className="w-full rounded-[3px] border border-rule shadow-[0_1px_3px_rgba(26,29,33,0.14)]"
+                className="w-full rounded-[3px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)]"
               />
             </div>
             <div className="flex min-w-0 flex-1 flex-col">

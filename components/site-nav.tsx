@@ -55,7 +55,7 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
 
         <nav
           aria-label="サイト内"
-          className="absolute right-0 top-[calc(100%+0.6rem)] z-40 w-[17.5rem] border border-rule bg-paper shadow-[0_6px_24px_rgba(26,29,33,0.16)]"
+          className="absolute right-0 top-[calc(100%+0.6rem)] z-40 w-[17.5rem] border border-rule bg-paper shadow-[0_4px_16px_rgba(21,24,28,0.14)]"
         >
           <ul className="divide-y divide-rule">
             {items.map((it) => (

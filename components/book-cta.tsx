@@ -15,7 +15,7 @@ function Cover({ book, priority = false }: { book: Book; priority?: boolean }) {
       height={438}
       priority={priority}
       sizes="(max-width: 640px) 33vw, 160px"
-      className="w-full rounded-[3px] border border-rule shadow-[0_1px_3px_rgba(26,29,33,0.14)]"
+      className="w-full rounded-[3px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)]"
     />
   );
 }

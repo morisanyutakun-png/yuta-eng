@@ -34,7 +34,7 @@ export function KanseiCards({ headingLevel: H = "h3" }: { headingLevel?: "h2" | 
                 width={310}
                 height={438}
                 sizes="(max-width: 640px) 45vw, 160px"
-                className="w-full rounded-[2px] border border-rule shadow-[0_1px_4px_rgba(26,29,33,0.16)] transition-shadow group-hover:shadow-[0_3px_10px_rgba(26,29,33,0.24)]"
+                className="w-full rounded-[2px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)] transition-shadow group-hover:shadow-[0_2px_6px_rgba(21,24,28,0.12)]"
               />
               <H className="mt-2 text-[0.86rem] font-semibold leading-snug text-ink transition-colors group-hover:text-navy">
                 {k.name}

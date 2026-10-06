@@ -10,16 +10,19 @@ import { groupOrder } from "@/lib/site";
  * 横に流して並べるので、スマホでも最初の画面に表紙が入る。
  * 1枚ずつが大学ページへの入口を兼ねる。
  */
-export function CoverShelf() {
+export function CoverShelf({ labelled = false }: { labelled?: boolean }) {
   // 検索されやすい大学から先に並べる
   const order: readonly string[] = groupOrder;
   const list = [...universities].sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group));
 
   return (
-    <section aria-labelledby="shelf-heading" className="mt-6">
-      <h2 id="shelf-heading" className="sr-only">
-        大学別の分析を表紙から探す
-      </h2>
+    <section aria-labelledby={labelled ? undefined : "shelf-heading"} className="mt-6">
+      {/* 呼ぶ側が見出しを出すときは、自前の見出しを重ねない */}
+      {!labelled && (
+        <h2 id="shelf-heading" className="sr-only">
+          大学別の分析を表紙から探す
+        </h2>
+      )}
       <ul className="scroll-hint -mx-5 flex snap-x snap-mandatory scroll-pl-5 gap-3 overflow-x-auto px-5 pb-2 sm:-mx-6 sm:scroll-pl-6 sm:px-6">
         {list.map((u, i) => (
           <li key={u.slug} className="w-[104px] shrink-0 snap-start sm:w-[116px]">
@@ -33,7 +36,7 @@ export function CoverShelf() {
                 priority={i < 4}
                 loading={i < 4 ? undefined : "lazy"}
                 sizes="(max-width: 640px) 104px, 116px"
-                className="w-full rounded-[2px] border border-rule shadow-[0_1px_4px_rgba(26,29,33,0.16)] transition-shadow group-hover:shadow-[0_3px_10px_rgba(26,29,33,0.24)]"
+                className="w-full rounded-[2px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)] transition-shadow group-hover:shadow-[0_2px_6px_rgba(21,24,28,0.12)]"
               />
               <span className="mt-1.5 block truncate text-[0.74rem] text-ink-2 transition-colors group-hover:text-navy">
                 {shortName(u)}数学

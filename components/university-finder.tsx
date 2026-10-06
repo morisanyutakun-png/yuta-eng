@@ -110,7 +110,8 @@ export function UniversityFinder({
           )}
         </div>
 
-        <div className="scroll-hint -mx-5 mt-2 flex gap-1.5 overflow-x-auto px-5 sm:-mx-6 sm:px-6">
+        {/* 折り返して全部見せる。横に送らせると、隠れた絞り込みに気づけない */}
+        <div className="mt-2 flex flex-wrap gap-1.5">
           {[ALL, ...groups].map((g) => {
             const active = group === g;
             const count = g === ALL ? items.length : items.filter((i) => i.group === g).length;
@@ -120,10 +121,10 @@ export function UniversityFinder({
                 type="button"
                 onClick={() => setGroup(g)}
                 aria-pressed={active}
-                className={`min-h-9 shrink-0 border px-3 text-[0.82rem] transition-colors ${
+                className={`min-h-10 shrink-0 border px-3.5 text-[0.82rem] font-medium transition-colors ${
                   active
                     ? "border-navy bg-navy text-white"
-                    : "border-rule bg-white text-ink-2 hover:border-ink-3"
+                    : "border-rule bg-white text-ink-2 hover:border-navy hover:text-navy"
                 }`}
               >
                 {g}
@@ -148,41 +149,47 @@ export function UniversityFinder({
         grouped.map(([g, list]) => (
           <section key={g} className="mt-7">
             <H className="serif border-b border-rule pb-1.5 text-[0.92rem] text-ink">{g}</H>
-            <ul className="lg:grid lg:grid-cols-2 lg:gap-x-10">
+            {/*
+              主役は大学名と受験区分。試験時間・大問数はその大学を選ぶときの
+              判断材料なので、本文に混ぜず札にして位置をそろえる。
+              札の高さをそろえると、一覧として上下に比べられる。
+            */}
+            <ul className="mt-1 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
               {list.map((it) => (
-                <li key={it.slug} className="border-b border-rule">
+                <li key={it.slug}>
                   <Link
                     href={`/univ/${it.slug}`}
-                    className="group flex min-h-[3.4rem] items-center gap-3 py-3"
+                    className="card card-link group flex h-full items-center gap-3 p-3"
                   >
                     <Image
                       src={`/covers/thumb/${it.asin}.webp`}
-                      alt={`${it.subject}の傾向と対策`}
+                      alt=""
                       width={160}
                       height={226}
                       loading="lazy"
                       sizes="44px"
-                      className="w-11 shrink-0 rounded-[2px] border border-rule shadow-[0_1px_3px_rgba(26,29,33,0.12)]"
+                      className="h-[62px] w-11 shrink-0 border border-rule object-cover"
                     />
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate text-[0.95rem] font-medium text-ink transition-colors group-hover:text-navy">
-                        {it.subject}
+                    <span className="flex min-w-0 flex-1 flex-col gap-1">
+                      <span className="flex min-w-0 items-baseline gap-1.5">
+                        <span className="truncate text-[0.95rem] font-semibold text-ink transition-colors group-hover:text-navy">
+                          {it.university}
+                        </span>
+                        {it.course && (
+                          <span className="shrink-0 text-[0.76rem] text-ink-2">{it.course}</span>
+                        )}
                       </span>
-                      <span className="mt-0.5 block truncate text-[0.72rem] tabular-nums text-ink-3">
-                        {[
-                          it.examTime ? `${it.examTime}分` : null,
-                          it.questions ? `大問${it.questions}題` : null,
-                          it.selective ? "学部別に選択" : null,
-                          it.books > 1 ? `全${it.books}巻` : null,
-                        ]
-                          .filter(Boolean)
-                          .join("・") || it.university}
+                      <span className="flex flex-wrap items-center gap-1">
+                        {it.examTime && <span className="badge tabular-nums">{it.examTime}分</span>}
+                        {it.questions && <span className="badge tabular-nums">大問{it.questions}題</span>}
+                        {it.selective && <span className="badge">学部別に選択</span>}
+                        {it.books > 1 && <span className="badge tabular-nums">全{it.books}巻</span>}
                       </span>
                     </span>
                     <svg
                       aria-hidden="true"
                       viewBox="0 0 20 20"
-                      className="size-3.5 shrink-0 text-ink-3 transition-transform group-hover:translate-x-0.5"
+                      className="size-3.5 shrink-0 text-ink-3"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="2"

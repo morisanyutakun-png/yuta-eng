@@ -239,7 +239,7 @@ export default async function KanseiPage({ params }: Props) {
                 height={438}
                 priority
                 sizes="(max-width: 640px) 96px, 128px"
-                className="w-full rounded-[2px] border border-rule shadow-[0_2px_8px_rgba(26,29,33,0.18)]"
+                className="w-full rounded-[2px] border border-rule shadow-[0_1px_3px_rgba(21,24,28,0.09)]"
               />
             </a>
             {k.opener && (
@@ -495,7 +495,7 @@ export default async function KanseiPage({ params }: Props) {
                 width={310}
                 height={438}
                 sizes="104px"
-                className="w-full rounded-[3px] border border-rule shadow-[0_1px_3px_rgba(26,29,33,0.14)]"
+                className="w-full rounded-[3px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)]"
               />
             </div>
             <div className="flex min-w-0 flex-1 flex-col">

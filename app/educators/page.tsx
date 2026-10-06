@@ -189,7 +189,7 @@ export default function EducatorsPage() {
                     priority={i < 4}
                     loading={i < 4 ? undefined : "lazy"}
                     sizes="(max-width: 640px) 96px, 108px"
-                    className="w-full rounded-[2px] border border-rule shadow-[0_1px_4px_rgba(26,29,33,0.16)] transition-shadow group-hover:shadow-[0_3px_10px_rgba(26,29,33,0.24)]"
+                    className="w-full rounded-[2px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)] transition-shadow group-hover:shadow-[0_2px_6px_rgba(21,24,28,0.12)]"
                   />
                   <span className="mt-1.5 block truncate text-[0.72rem] text-ink-2 transition-colors group-hover:text-navy">
                     {shortName(u)}数学
@@ -219,7 +219,7 @@ export default function EducatorsPage() {
                     height={438}
                     loading="lazy"
                     sizes="(max-width: 640px) 88px, 112px"
-                    className="w-full rounded-[3px] border border-rule shadow-[0_1px_3px_rgba(26,29,33,0.14)]"
+                    className="w-full rounded-[3px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)]"
                   />
                 </div>
                 <div className="min-w-0 flex-1">

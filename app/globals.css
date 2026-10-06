@@ -11,24 +11,130 @@
   --font-serif: "Hiragino Mincho ProN", "Yu Mincho", YuMincho, "Noto Serif JP",
     "Times New Roman", serif;
 
-  --color-paper: #fbfaf7;
-  --color-paper-2: #f4f2ed;
-  --color-ink: #16191d;
-  --color-ink-2: #464c54;
-  --color-ink-3: #696f77;
-  --color-rule: #dcd8cf;
-  --color-navy: #1f3557;
-  --color-navy-2: #35507a;
-
   /*
-   * 強調は朱。参考書に朱で入れる書きこみと同じ役どころで、
-   * 明朝と紺の紙面に足しても浮かない。
-   * 使うのは「答」「いまここ」「シリーズ名」のように、
-   * ページで一番見てほしい一点だけに絞る。増やすと効かなくなる。
+   * 白を基調にし、構造はグレーの罫で、強調は紺で作る。
+   * 朱は「答」「いまここ」のように、そのページで一点だけに使う。
+   * 影・角丸・動きは最小限にして、文字の読みやすさを優先する。
    */
+  --color-paper: #ffffff;
+  --color-paper-2: #f5f6f8;
+  --color-ink: #15181c;
+  --color-ink-2: #434a53;
+  --color-ink-3: #666d76;
+  --color-rule: #e0e3e7;
+  --color-rule-2: #c8ccd2;
+  --color-navy: #1b3a63;
+  --color-navy-2: #2f5584;
   --color-accent: #b3412f;
   --color-accent-2: #d08676;
-  --color-accent-bg: #fdf2ef;
+  --color-accent-bg: #fdf3f1;
+}
+
+/*
+ * ページの横幅と余白。読み物は 46rem、一覧や表を含むページは 74rem。
+ * 各ページで別々に書くと少しずつずれるので、ここに1か所だけ置く。
+ */
+.page {
+  margin-inline: auto;
+  max-width: 46rem;
+  padding-inline: 1.25rem;
+}
+
+.page-wide {
+  max-width: 74rem;
+}
+
+@media (min-width: 640px) {
+  .page {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page {
+    padding-inline: 2rem;
+  }
+}
+
+/* 見出しの大きさ。h1・h2・h3 をページごとに決めない */
+.h-page {
+  font-size: 1.7rem;
+  line-height: 1.4;
+}
+
+.h-sect {
+  font-size: 1.25rem;
+  line-height: 1.45;
+}
+
+.h-sub {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+  .h-page {
+    font-size: 2.05rem;
+  }
+  .h-sect {
+    font-size: 1.4rem;
+  }
+}
+
+/* 押せるもの。寸法と当たり判定をそろえる */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2.75rem;
+  padding-inline: 1.25rem;
+  border: 1px solid var(--color-rule-2);
+  background: #fff;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-navy);
+  transition: background-color 0.12s, border-color 0.12s;
+}
+
+.btn:hover {
+  border-color: var(--color-navy);
+  background: var(--color-paper-2);
+}
+
+.btn-primary {
+  border-color: var(--color-navy);
+  background: var(--color-navy);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--color-navy-2);
+  border-color: var(--color-navy-2);
+}
+
+/*
+ * 幅の広い表は横に送るしかないが、黙って切れていると送れると気づけない。
+ * 右端にぼかしを出し、上に「横にスクロールできます」と書く。
+ */
+.table-wrap {
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.table-wrap::after {
+  content: "";
+  position: sticky;
+  top: 0;
+  right: 0;
+  float: right;
+  width: 1.5rem;
+  height: 100%;
+  margin-left: -1.5rem;
+  background: linear-gradient(to right, transparent, #fff);
+  pointer-events: none;
 }
 
 html {
@@ -102,14 +208,13 @@ body {
 .card {
   border: 1px solid var(--color-rule);
   background: #fff;
-  box-shadow: 0 1px 2px rgba(22, 25, 29, 0.04);
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  transition: border-color 0.12s, background-color 0.12s;
 }
 
 a.card:hover,
 .card-link:hover .card {
-  border-color: color-mix(in srgb, var(--color-navy) 35%, transparent);
-  box-shadow: 0 4px 14px rgba(22, 25, 29, 0.1);
+  border-color: var(--color-navy);
+  background: var(--color-paper-2);
 }
 
 /* 年度・問題数など、短い値を囲う札 */

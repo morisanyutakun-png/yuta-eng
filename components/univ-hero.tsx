@@ -82,7 +82,7 @@ export function UnivHero({ u }: { u: University }) {
             height={438}
             priority
             sizes="(max-width: 640px) 92px, 124px"
-            className="w-full rounded-[2px] border border-rule shadow-[0_2px_8px_rgba(26,29,33,0.18)] transition-shadow group-hover:shadow-[0_3px_14px_rgba(26,29,33,0.26)]"
+            className="w-full rounded-[2px] border border-rule shadow-[0_1px_3px_rgba(21,24,28,0.09)] transition-shadow group-hover:shadow-[0_2px_8px_rgba(21,24,28,0.12)]"
           />
           <span className="mt-1.5 block text-center text-[0.62rem] leading-tight text-ink-3">
             分析からつくった

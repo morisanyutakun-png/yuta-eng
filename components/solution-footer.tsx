@@ -44,7 +44,7 @@ export function SolutionFooter({ set }: { set: SolutionSet }) {
                 width={310}
                 height={438}
                 sizes="(max-width: 640px) 40vw, 150px"
-                className="w-[9.5rem] max-w-[40vw] rounded-[2px] border border-rule shadow-[0_1px_5px_rgba(26,29,33,0.18)]"
+                className="w-[9.5rem] max-w-[40vw] rounded-[2px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)]"
               />
             </Link>
 

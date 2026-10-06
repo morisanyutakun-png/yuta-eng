@@ -53,32 +53,33 @@ export default function HomePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8">
-        <section className="pb-8 pt-11 sm:pt-14">
-          <h1 className="serif text-[1.9rem] leading-[1.35] text-ink sm:text-[2.5rem]">
+      <div className="page page-wide">
+        {/*
+          最初の画面で「何ができるサイトか」を言い切り、すぐ下に検索を置く。
+          表紙の棚は目を引くが、探しに来た人を検索から遠ざけるので下へ移した。
+        */}
+        <section className="border-b border-rule pb-8 pt-9 sm:pt-12">
+          <h1 className="serif h-page text-ink">
             大学別
             <br className="sm:hidden" />
             数学入試分析
           </h1>
-          <p className="prose-ja mt-5 max-w-[34rem] text-[0.95rem] text-ink-2">
+          <p className="prose-ja mt-4 max-w-[36rem] text-[0.97rem] text-ink-2">
             国公立・私立{t.universities}大学・{t.sections}区分（理系／文系／中期など）の数学入試を、{t.span}の過去問から
             <strong className="font-semibold text-ink">年度別・分野別の表</strong>
-            に整理しました。試験時間、大問構成、頻出分野、目標点まで。
+            に整理しました。試験時間、大問構成、頻出分野、目標点まで、大学を選べばその場で読めます。
           </p>
 
-          <CoverShelf />
-
-          <dl className="mt-7 flex gap-8 border-y border-rule py-4">
+          <dl className="mt-6 flex flex-wrap gap-x-9 gap-y-4">
             {[
               { k: "分析した大学", v: t.universities, u: `大学・${t.sections}区分` },
               { k: "予想問題集", v: t.books, u: "冊" },
-              // 大学ごとに5〜9年分とばらつくので、合計の延べ年数を出す
               { k: "分析した入試", v: t.totalYears, u: "年分" },
             ].map((s) => (
               <div key={s.k}>
                 <dt className="text-[0.68rem] text-ink-3">{s.k}</dt>
                 <dd className="serif mt-1 leading-none text-ink">
-                  <span className="text-[1.7rem] tabular-nums">{s.v}</span>
+                  <span className="text-[1.6rem] tabular-nums">{s.v}</span>
                   <span className="ml-0.5 font-sans text-[0.7rem] font-normal text-ink-3">{s.u}</span>
                 </dd>
               </div>
@@ -86,11 +87,30 @@ export default function HomePage() {
           </dl>
         </section>
 
-        <LearningPath compact className="mb-10 lg:mb-12" />
+        <section aria-labelledby="find-heading" className="mt-10">
+          <h2 id="find-heading" className="rule-mark serif h-sect text-ink">
+            大学から探す
+          </h2>
+          <p className="prose-ja mt-2.5 max-w-[36rem] text-[0.9rem] text-ink-2">
+            大学名やかなで検索するか、下の区分で絞り込めます。
+          </p>
+          <UniversityFinder items={items} groups={usedGroups} />
+        </section>
 
-        <UniversityFinder items={items} groups={usedGroups} />
+        <LearningPath compact className="mt-16" />
 
         <TopFields />
+
+        <section aria-labelledby="shelf-heading" className="mt-16">
+          <h2 id="shelf-heading" className="rule-mark serif h-sect text-ink">
+            表紙から探す
+          </h2>
+          <p className="prose-ja mt-2.5 max-w-[36rem] text-[0.9rem] text-ink-2">
+            刊行している大学別の予想問題集です。表紙を選ぶと、その大学の出題分析に移ります。
+          </p>
+          <CoverShelf labelled />
+        </section>
+
 
         <section aria-labelledby="series-heading" className="mt-16">
           <p className="text-[0.68rem] font-bold tracking-wide text-accent">過去問の前にシリーズ</p>
@@ -112,7 +132,7 @@ export default function HomePage() {
               width={160}
               height={226}
               sizes="76px"
-              className="w-[76px] shrink-0 self-start rounded-[2px] border border-rule shadow-[0_1px_3px_rgba(26,29,33,0.14)]"
+              className="w-[76px] shrink-0 self-start rounded-[2px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)]"
             />
             <span className="min-w-0">
               <span className="block text-[0.68rem] font-bold text-navy">1　志望校が決まっていないなら</span>

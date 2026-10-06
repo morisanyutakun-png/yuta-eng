@@ -284,7 +284,7 @@ export default function KanseiSeriesPage() {
                 width={160}
                 height={226}
                 sizes="76px"
-                className="w-full rounded-[2px] border border-rule shadow-[0_1px_3px_rgba(26,29,33,0.14)]"
+                className="w-full rounded-[2px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)]"
               />
             </Link>
             <div className="min-w-0">

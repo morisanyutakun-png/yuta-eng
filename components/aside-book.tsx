@@ -38,7 +38,7 @@ export function AsideBook({
           width={310}
           height={438}
           sizes="88px"
-          className="h-fit w-[88px] shrink-0 rounded-[2px] border border-rule shadow-[0_1px_4px_rgba(26,29,33,0.16)]"
+          className="h-fit w-[88px] shrink-0 rounded-[2px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)]"
         />
         <div className="min-w-0">
           <p className="serif text-[0.92rem] leading-snug text-ink">{title}</p>
