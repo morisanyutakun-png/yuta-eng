@@ -27,10 +27,16 @@ export type GroupPolicy = {
   min: number;
   /** 1つの団体で承る上限人数 */
   max: number;
-  /** 受験期間の開始から何週間前までに申し込むか */
-  deadlineWeeks: number;
   /** 先生あての全体のまとめを付ける最少人数 */
   reportMin: number;
+  /** 請求書の発行日から支払期限までの日数 */
+  paymentDays: number;
+  /**
+   * 適格請求書発行事業者の登録があるか。
+   * 登録したらここを true にする。画面の書き方がこの1語で切り替わり、
+   * 登録していないのに「インボイスを出せます」と書くことがなくなる。
+   */
+  invoiceRegistered: boolean;
 };
 
 export type Moshi = {

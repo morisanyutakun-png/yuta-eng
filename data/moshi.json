@@ -106,7 +106,8 @@
   "group": {
     "min": 5,
     "max": 40,
-    "deadlineWeeks": 2,
-    "reportMin": 5
+    "reportMin": 5,
+    "paymentDays": 30,
+    "invoiceRegistered": false
   }
 }
