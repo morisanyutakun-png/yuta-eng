@@ -4,10 +4,11 @@ import Link from "next/link";
 
 import { FactStrip } from "@/components/fact-strip";
 import { MoshiForm } from "@/components/moshi-form";
+import { MoshiDeliverables } from "@/components/moshi-deliverables";
 import { MoshiSample } from "@/components/moshi-sample";
 import { AnswerSheet, Flow, MarkIcon, PerUnivIcon, PeriodIcon } from "@/components/moshi-visual";
 import { getUniversity, siteTotals, universityCount } from "@/lib/data";
-import { analysisHref, moshi, moshiPath, priceLabel, roundLabel } from "@/lib/moshi/config";
+import { analysisHref, deliverableLine, moshi, moshiPath, priceLabel, roundLabel } from "@/lib/moshi/config";
 import { sectionStyle } from "@/lib/sections";
 import { kanseiPublished } from "@/lib/series";
 import { site } from "@/lib/site";
@@ -126,8 +127,8 @@ export default function MoshiPage() {
               <p className="eyebrow">{moshi.season}</p>
               <h1 className="serif h-page mt-1.5 text-ink">{moshi.title}</h1>
               <p className="prose-ja mt-4 text-[1rem] leading-[1.95] text-ink-2 sm:text-[1.05rem]">
-                志望校1校の入試形式に合わせて作る数学模試です。オンラインで受験でき、
-                記述答案はすべて人力で採点します。
+                志望校1校の入試形式に合わせて作る数学模試です。記述答案はすべて人の手で採点し、
+                点数だけでなく、答案への講評と今後の学習の助言までお返しします。
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <a href="#apply" className="btn btn-primary">
@@ -185,7 +186,7 @@ export default function MoshiPage() {
                 { k: "実施時期", v: roundLabel.replace(/^第/, "第"), note: "正式な日程は確定しだいご案内します" },
                 { k: "受験方法", v: "オンライン・期間内の好きな日時", note: "本番と同じ試験時間を目安として表示する予定です" },
                 { k: "受験料", v: `${priceLabel}（予定）`, note: "参加申込の時点では料金は発生しません" },
-                { k: "採点", v: "全答案を人力で採点", note: "途中式や記述内容まで確認して得点を出します" },
+                { k: "採点と返却", v: "全答案を人力で採点", note: `${deliverableLine}をまとめてお返しします` },
                 { k: "申込", v: "受付中", note: "お支払い方法は正式な日程とあわせてご案内します" },
               ].map((r) => (
                 <div
@@ -202,6 +203,18 @@ export default function MoshiPage() {
             </dl>
           </div>
 
+        </section>
+
+        {/* この模試の中身。点数だけ返す模試との違いが出る場所なので、要項の次に置く */}
+        <section aria-labelledby="back" className="mt-14">
+          <h2 id="back" className="rule-mark serif h-sect text-ink">
+            受験後にお返しするもの
+          </h2>
+          <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.9rem] leading-[1.95] text-ink-2">
+            答案は人の手で最後まで読みます。合計点と大問別の得点に加えて、
+            答案の書き方への講評、分野ごとの得意・不得意、そこから見た今後の学習の助言までをまとめてお返しします。
+          </p>
+          <MoshiDeliverables />
         </section>
 
         <section aria-labelledby="flow" className="mt-14">
@@ -229,7 +242,7 @@ export default function MoshiPage() {
             <p>
               本模試は{moshi.universities.length}大学で実施します。旧帝大から、三重大学・岡山大学・千葉大学といった
               地方国公立大学まで、いずれも当サイトが{totals.span}の過去問を分析したうえで作問します。
-              答案はすべて人の手で読み、大問ごとの得点と解説をお返しします。
+              答案はすべて人の手で読み、点数だけでなく、答案の書き方への講評と今後の学習の助言までお返しします。
             </p>
           </div>
         </section>

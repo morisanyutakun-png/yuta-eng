@@ -18,6 +18,21 @@ export type MoshiUniversity = {
   slug?: string;
 };
 
+/** 受験後にお返しするもの。画面・メール・先生向けの案内で同じものを使う */
+export type Deliverable = { h: string; body: string };
+
+/** 学校・塾でまとめて申し込むときの決まり */
+export type GroupPolicy = {
+  /** 団体として承る最少人数 */
+  min: number;
+  /** 1つの団体で承る上限人数 */
+  max: number;
+  /** 受験期間の開始から何週間前までに申し込むか */
+  deadlineWeeks: number;
+  /** 先生あての全体のまとめを付ける最少人数 */
+  reportMin: number;
+};
+
 export type Moshi = {
   title: string;
   season: string;
@@ -27,6 +42,10 @@ export type Moshi = {
   universities: MoshiUniversity[];
   grades: string[];
   faculties: string[];
+  deliverables: Deliverable[];
+  /** お返しするものをまとめた冊子の呼び名 */
+  deliverableName: string;
+  group: GroupPolicy;
 };
 
 export const moshi = raw as Moshi;
@@ -35,6 +54,9 @@ export const moshi = raw as Moshi;
 export const roundLabel = `第${moshi.round}回：${moshi.period}開催予定`;
 
 export const priceLabel = `${moshi.price.toLocaleString()}円（税込）`;
+
+/** 「採点結果・答案への講評・分野別の得意不得意・今後の学習の助言」のような1行 */
+export const deliverableLine = moshi.deliverables.map((d) => d.h).join("・");
 
 export const moshiUniversity = (id: string) => moshi.universities.find((u) => u.id === id);
 

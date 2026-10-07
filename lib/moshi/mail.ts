@@ -1,4 +1,4 @@
-import { moshi, moshiUniversity, priceLabel, roundLabel } from "@/lib/moshi/config";
+import { deliverableLine, moshi, moshiUniversity, priceLabel, roundLabel } from "@/lib/moshi/config";
 import { site } from "@/lib/site";
 
 /**
@@ -187,6 +187,10 @@ function buildHtml(name: string, universityIds: string[]) {
         "受験料",
         `${esc(priceLabel)}の予定です。<br><span style="color:${C.accent};font-weight:700;">現時点では料金は発生していません。</span><br>お支払い方法は日程のご案内とあわせてお知らせします。`,
       )}
+      ${row(
+        "採点と返却",
+        `答案は人の手で採点します。${esc(deliverableLine)}をまとめた「${esc(moshi.deliverableName)}」をお返しします。`,
+      )}
       ${row("取り消し", "お支払いの期限までにご入金が確認できない場合、お申し込みは自動的に取り消しとなります。", true)}
     </table>
   </td></tr>
@@ -240,6 +244,7 @@ function buildText(name: string, universityIds: string[]) {
     `実施時期　${roundLabel}。正式な受験期間が決まりしだい、メールでご案内します。`,
     `受験料　　${priceLabel}の予定です。現時点では料金は発生していません。`,
     "　　　　　お支払い方法は日程のご案内とあわせてお知らせします。",
+    `採点と返却　答案は人の手で採点します。${deliverableLine}をまとめた「${moshi.deliverableName}」をお返しします。`,
     "取り消し　お支払いの期限までにご入金が確認できない場合、お申し込みは自動的に取り消しとなります。",
     "",
     `模試のご案内　${site.url}/moshi`,

@@ -210,10 +210,10 @@ export default function EducatorsPage() {
                 label: "中身を確かめる",
               },
               {
-                h: "模試のまとめてのお申し込み",
-                body: `${moshi.title}を、クラスや講座の単位で受験させたい場合のご相談を承ります。`,
+                h: "模試の団体でのお申し込み",
+                body: `${moshi.title}を、${moshi.group.min}名から${moshi.group.max}名まで、請求書払いで承ります。`,
                 to: "#moshi",
-                label: "模試のご利用について",
+                label: "団体でのお申し込み",
               },
               {
                 h: "教材選定のご相談",
@@ -383,8 +383,8 @@ export default function EducatorsPage() {
                 {moshi.title}
               </Link>
               は、志望校1校の入試形式に合わせて作る大学別の数学模試です。
-              {moshi.universities.length}大学で実施し、記述答案はすべて人の手で採点して、大問ごとの得点と解説をお返しします。
-              クラスや講座の単位でまとめて受験させたい場合のご相談を承っています。
+              {moshi.universities.length}大学で実施し、記述答案はすべて人の手で採点します。
+              クラスや講座の単位でまとめてお申し込みいただけます。条件は下のとおりです。
             </p>
             <p>
               受験はオンラインで、期間内の都合のよい日時に行えます。教室で一斉に取り組ませることも、
@@ -396,30 +396,43 @@ export default function EducatorsPage() {
             </p>
           </div>
 
+          {/*
+            条件は決め切って書く。「ご相談ください」とだけ書いたものは、
+            先生の側で検討が進まない。人数・締切・支払い・返すものを
+            数字と名前で出し、判断に要るものをこの表だけで揃える。
+          */}
           <div className="mt-6 border border-rule">
             <p className="border-b border-rule bg-paper-2 px-4 py-2 text-[0.74rem] font-bold tracking-wide text-navy">
-              ご相談の前にお知らせしておくこと
+              団体でのお申し込み
             </p>
             <ul className="divide-y divide-rule">
               {[
                 [
-                  "人数と時期",
-                  "採点を人の手で行っているため、人数と時期によってはお受けできない場合があります。ご検討の段階で、おおよその人数と希望時期をお知らせください。",
+                  "人数",
+                  `${moshi.group.min}名から${moshi.group.max}名まで承ります。${moshi.group.max}名を超える場合は、講座やクラスで分けてお申し込みください。`,
+                ],
+                [
+                  "お申し込みの締切",
+                  `受験期間の開始から${moshi.group.deadlineWeeks}週間前までにお申し込みください。受験者名簿は締切までにご提出いただければ結構です。`,
                 ],
                 [
                   "日程",
-                  `${roundLabel}。正式な受験期間が決まりしだいご案内します。校内の予定に合わせた期間の調整も、可能な範囲でご相談ください。`,
+                  `${roundLabel}。この期間内であれば、教室で一斉に実施する日を1日ご指定いただけます。各自の家で受けさせる形でも構いません。`,
+                ],
+                [
+                  "受験料",
+                  `1名あたり${priceLabel}です。人数による割引は行っていません。`,
                 ],
                 [
                   "お支払い",
-                  `受験料は${priceLabel}の予定です。学校・塾としてのお支払い方法（請求書が必要かどうかなど）は、人数とあわせてご相談ください。`,
+                  `学校・塾あての請求書を発行します。お申し込みが確定した時点で発行し、お支払いの期限は発行日から30日です。宛名・件名・提出形式のご指定に応じます。適格請求書（インボイス）が必要な場合は、お申し込みのさいにお知らせください。`,
                 ],
                 [
-                  "お返しするもの",
-                  "受験された方ごとの得点と解説です。クラス単位の成績一覧のような帳票は用意していません。必要な形式があれば、できるかどうかを含めてご相談ください。",
+                  "キャンセル",
+                  "受験期間の開始前であれば、人数の減少も取り消しも承ります。請求は確定した人数で行います。",
                 ],
               ].map(([k, v]) => (
-                <li key={k} className="grid gap-x-5 px-4 py-3.5 sm:grid-cols-[7rem_1fr]">
+                <li key={k} className="grid gap-x-5 px-4 py-3.5 sm:grid-cols-[8.5rem_1fr]">
                   <span className="text-[0.78rem] leading-relaxed text-ink-3">{k}</span>
                   <span className="prose-ja mt-1 text-[0.86rem] leading-[1.9] text-ink-2 sm:mt-0">{v}</span>
                 </li>
@@ -427,12 +440,37 @@ export default function EducatorsPage() {
             </ul>
           </div>
 
+          {/* 返すものは、この模試で一番の中身。項目を立てて見せる */}
+          <h3 className="mt-9 text-[1rem] font-semibold text-ink">
+            受験後にお渡しするもの ──「{moshi.deliverableName}」
+          </h3>
+          <p className="prose-ja mt-2 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
+            受験された方お一人ごとに、次の4つをまとめた冊子をお渡しします。点数だけを返して終わりにはしません。
+          </p>
+          <ol className="mt-4 grid gap-px border border-rule bg-rule sm:grid-cols-2">
+            {moshi.deliverables.map((d, i) => (
+              <li key={d.h} className="bg-white px-5 py-4">
+                <p className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
+                  0{i + 1}
+                </p>
+                <p className="mt-1 text-[0.93rem] font-semibold text-ink">{d.h}</p>
+                <p className="prose-ja mt-1.5 text-[0.84rem] leading-[1.9] text-ink-2">{d.body}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="prose-ja mt-4 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
+            {moshi.group.reportMin}名以上でお申し込みいただいた場合は、これに加えて
+            <strong className="font-semibold text-ink">受験者全体の分野別の得点状況</strong>
+            をまとめたものを、先生あてにお渡しします。どの分野が落ちているかが講座の単位で分かるので、
+            そのあとの授業で詰める順番を決める材料になります。
+          </p>
+
           <p className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2.5 text-[0.86rem]">
             <Link href="/moshi" className="btn">
               模試のご案内を見る
             </Link>
             <Link href="#contact" className="text-navy underline underline-offset-4">
-              ご相談はこちらから
+              団体でのお申し込み・ご質問はこちらから
             </Link>
           </p>
         </section>
@@ -443,7 +481,7 @@ export default function EducatorsPage() {
           </h2>
           <div className="prose-ja mt-5 space-y-4 text-[0.9rem] leading-[2] text-ink-2">
             <p>
-              収録範囲、難易度、進度に合わせた使い方、模試のまとめてのお申し込みについてお答えします。
+              収録範囲、難易度、進度に合わせた使い方、模試の団体でのお申し込みについてお答えします。
             </p>
             {site.contact &&
               (site.contact.includes("@") ? (
@@ -485,7 +523,7 @@ export default function EducatorsPage() {
                   <p className="eyebrow">学校・塾・予備校の方へ</p>
                   <p className="serif mt-1.5 text-[1.02rem] leading-snug text-ink">ご相談・お問い合わせ</p>
                   <p className="prose-ja mt-2.5 text-[0.82rem] leading-[1.9] text-ink-2">
-                    複数冊でのご利用、模試のまとめてのお申し込み、採用検討時の内容確認、教材選定について承ります。
+                    複数冊でのご利用、模試の団体でのお申し込み、採用検討時の内容確認、教材選定について承ります。
                   </p>
                   {site.contact &&
                     (site.contact.includes("@") ? (

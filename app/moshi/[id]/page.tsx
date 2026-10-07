@@ -5,10 +5,11 @@ import { notFound } from "next/navigation";
 import { CoverFan } from "@/components/cover-fan";
 import { FactStrip } from "@/components/fact-strip";
 import { MoshiForm } from "@/components/moshi-form";
+import { MoshiDeliverables } from "@/components/moshi-deliverables";
 import { MoshiSample } from "@/components/moshi-sample";
 import { AnswerSheet, Flow } from "@/components/moshi-visual";
 import { factsLine, fieldChartCaption, getUniversity, yearRange, yearsLabel } from "@/lib/data";
-import { moshi, moshiById, moshiPath, priceLabel, roundLabel } from "@/lib/moshi/config";
+import { deliverableLine, moshi, moshiById, moshiPath, priceLabel, roundLabel } from "@/lib/moshi/config";
 import { sectionStyle } from "@/lib/sections";
 import { shortName } from "@/lib/seo";
 import { getKansei } from "@/lib/series";
@@ -73,7 +74,7 @@ function faqFor(m: NonNullable<ReturnType<typeof moshiById>>) {
     q: `${bare}の数学の模試はありますか？`,
     a:
       `当サイトが${m.university}の数学の形式に合わせて作る「${m.exam}」を、${moshi.season}に実施します。` +
-      `オンラインで受験でき、記述答案はすべて人の手で採点して、大問ごとの得点と解説をお返しします。`,
+      `オンラインで受験でき、記述答案は人の手で採点します。講評と今後の学習の助言までお返しします。`,
   });
 
   items.push({
@@ -252,7 +253,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
               <p className="prose-ja mt-4 max-w-[38rem] text-[0.95rem] leading-[1.95] text-ink-2">
                 {m.university}の数学の形式に合わせて作る
                 <strong className="font-semibold text-ink">大学別の数学模試</strong>
-                （冠模試の形式）です。記述答案は人の手で採点します。
+                （冠模試の形式）です。記述答案は人の手で採点し、講評と今後の学習の助言までお返しします。
               </p>
 
               <p className="mt-6 flex flex-wrap gap-3">
@@ -338,6 +339,17 @@ export default async function MoshiUniversityPage({ params }: Props) {
           </section>
         )}
 
+        <section aria-labelledby="back" className="mt-14">
+          <h2 id="back" className="rule-mark serif h-sect text-ink">
+            受験後にお返しするもの
+          </h2>
+          <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
+            答案は人の手で最後まで読みます。{bare}の出題傾向と照らして、
+            どの分野をどの順で詰めるかまで書いてお返しします。
+          </p>
+          <MoshiDeliverables />
+        </section>
+
         {/* 見本。申し込む前に中身を確かめられるようにする */}
         <section aria-labelledby="sample-heading" className="mt-14 scroll-mt-20" id="sample">
           <h2 id="sample-heading" className="rule-mark serif h-sect text-ink">
@@ -360,7 +372,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
               ["実施時期", `${roundLabel}。正式な日程は確定しだいご案内します`],
               ["受験方法", "オンライン・期間内の好きな日時"],
               ["受験料", `${priceLabel}（予定）。参加申込の時点では料金は発生しません`],
-              ["採点", "記述答案を人力で採点し、大問ごとの得点と解説をお返しします"],
+              ["採点と返却", `記述答案を人力で採点し、${deliverableLine}をまとめてお返しします`],
             ].map(([k, v]) => (
               <div key={k} className="grid gap-x-5 px-4 py-3.5 sm:grid-cols-[7rem_1fr]">
                 <dt className="text-[0.78rem] leading-relaxed text-ink-3">{k}</dt>

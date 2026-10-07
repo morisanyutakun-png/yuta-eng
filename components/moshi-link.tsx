@@ -34,7 +34,7 @@ export function MoshiLink({ slug }: { slug: string }) {
           </h2>
           <p className="prose-ja mt-2 text-[0.88rem] leading-[1.9] text-ink-2">
             このページの分析をもとに、{m.university}の形式で作る大学別の数学模試を開きます。
-            記述答案は人の手で採点し、大問ごとの得点と解説をお返しします。
+            記述答案は人の手で採点し、講評と今後の学習の助言までお返しします。
             {roundLabel}。受験料は{priceLabel}の予定です。
           </p>
           <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
