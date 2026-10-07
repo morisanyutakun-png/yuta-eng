@@ -1,5 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { checkBasicAuth } from "@/lib/moshi/auth";
+
 /**
  * 管理画面の保護。
  *
@@ -49,25 +51,7 @@ export function middleware(req: NextRequest) {
     });
   }
 
-  const header = req.headers.get("authorization") ?? "";
-  if (header.startsWith("Basic ")) {
-    let decoded = "";
-    try {
-      decoded = atob(header.slice(6));
-    } catch {
-      decoded = "";
-    }
-    const i = decoded.indexOf(":");
-    const u = i < 0 ? "" : decoded.slice(0, i);
-    const p = i < 0 ? "" : decoded.slice(i + 1);
-    // 文字数の違いで早く抜けないよう、長さをそろえてから全文字を比べる
-    if (u.length === user.length && p.length === pass.length) {
-      let diff = 0;
-      for (let k = 0; k < u.length; k++) diff |= u.charCodeAt(k) ^ user.charCodeAt(k);
-      for (let k = 0; k < p.length; k++) diff |= p.charCodeAt(k) ^ pass.charCodeAt(k);
-      if (diff === 0) return NextResponse.next();
-    }
-  }
+  if (checkBasicAuth(req.headers.get("authorization"))) return NextResponse.next();
 
   return new NextResponse("認証が必要です。", {
     status: 401,

@@ -122,6 +122,32 @@ export async function saveApplication(input: ApplicationInput): Promise<Applicat
   }
 }
 
+/** 申込者の人数だけを数える。運営あての知らせに添える。 */
+export async function countApplications(): Promise<number | null> {
+  try {
+    const r = await pool().query<{ n: number }>("select count(*)::int as n from exam_applications");
+    return r.rows[0].n;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * 申込を1件消す。
+ *
+ * 管理画面から、試しに入れた申込を片づけるためのもの。
+ * 中間表は外部キーで一緒に消える（scripts/moshi-schema.sql の on delete cascade）。
+ * 消したものは戻らないので、呼ぶ側で必ず確かめてから呼ぶこと。
+ * 戻り値は消した人の氏名とメールアドレス。画面に「何を消したか」を出すために使う。
+ */
+export async function deleteApplication(id: string): Promise<{ name: string; email: string } | null> {
+  const r = await pool().query<{ name: string; email: string }>(
+    "delete from exam_applications where id = $1 returning name, email",
+    [id],
+  );
+  return r.rows[0] ?? null;
+}
+
 export type Summary = {
   total: number;
   byUniversity: { universityId: string; count: number }[];

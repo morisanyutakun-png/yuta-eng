@@ -1,6 +1,7 @@
+import { DeleteApplicant } from "@/components/moshi-admin-delete";
 import { moshi, moshiUniversity } from "@/lib/moshi/config";
 import { hasDatabase, summary } from "@/lib/moshi/db";
-import { canSendMail } from "@/lib/moshi/mail";
+import { adminAddress, canNotifyAdmin, canSendMail } from "@/lib/moshi/mail";
 
 /**
  * 申込の確認用。
@@ -31,9 +32,16 @@ export default async function MoshiAdmin() {
 
   const s = await summary();
   // 設定の状態。鍵そのものは出さず、入っているかどうかだけを見せる
+  const notify = adminAddress();
   const settings = [
     { k: "申込の保存（DATABASE_URL）", ok: hasDatabase() },
-    { k: "確認メール（RESEND_API_KEY・MOSHI_MAIL_FROM）", ok: canSendMail() },
+    { k: "申込者への確認メール（RESEND_API_KEY・MOSHI_MAIL_FROM）", ok: canSendMail() },
+    {
+      // 届かないときに、ここを見れば原因が分かるようにする。
+      // アドレスそのものは出さず、@ より後ろだけを見せる。
+      k: `運営への知らせ（MOSHI_ADMIN_EMAIL）${notify ? `… @${notify.split("@")[1] ?? ""}` : ""}`,
+      ok: canNotifyAdmin(),
+    },
   ];
   const counts = new Map(s.byUniversity.map((b) => [b.universityId, b.count]));
   // 申込のない大学も 0 として並べる
@@ -96,12 +104,12 @@ export default async function MoshiAdmin() {
           <p className="mt-4 text-[0.9rem] text-ink-2">まだ申込はありません。</p>
         ) : (
           <div className="table-wrap mt-4">
-            <table className="w-full min-w-[46rem] border-collapse text-left text-[0.8rem]">
+            <table className="w-full min-w-[52rem] border-collapse text-left text-[0.8rem]">
               <thead>
                 <tr className="border-b-2 border-navy/35 bg-paper-2">
-                  {["申込日時", "氏名", "メールアドレス", "学年", "志望学部", "申込大学", "状態"].map((h) => (
-                    <th key={h} scope="col" className="whitespace-nowrap px-3 py-2.5 text-[0.72rem] font-bold text-navy">
-                      {h}
+                  {["申込日時", "氏名", "メールアドレス", "学年", "志望学部", "申込大学", "状態", ""].map((h) => (
+                    <th key={h || "操作"} scope="col" className="whitespace-nowrap px-3 py-2.5 text-[0.72rem] font-bold text-navy">
+                      {h || <span className="sr-only">操作</span>}
                     </th>
                   ))}
                 </tr>
@@ -120,11 +128,20 @@ export default async function MoshiAdmin() {
                     <td className="whitespace-nowrap px-3 py-2.5 align-top text-ink-3">
                       {a.status}／{a.payment}
                     </td>
+                    <td className="px-3 py-2 align-top">
+                      <DeleteApplicant id={a.id} name={a.name} />
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+        )}
+        {s.applicants.length > 0 && (
+          <p className="mt-3 text-[0.76rem] leading-relaxed text-ink-3">
+            「取り消す」を押すと、その申込を完全に消します。元に戻せません。
+            試しに入れた申込を片づけるためのものです。
+          </p>
         )}
       </section>
     </div>

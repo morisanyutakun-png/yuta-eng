@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { hasDatabase, saveApplication } from "@/lib/moshi/db";
-import { sendConfirmation } from "@/lib/moshi/mail";
+import { countApplications, hasDatabase, saveApplication } from "@/lib/moshi/db";
+import { sendAdminNotice, sendConfirmation } from "@/lib/moshi/mail";
 import { THANKS_COOKIE, parseApplication } from "@/lib/moshi/validate";
 
 /**
@@ -42,8 +42,25 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "保存できませんでした。時間をおいてお試しください。" }, { status: 500 });
   }
 
-  // メールが送れなくても申込は保存済み。申込自体は失敗にしない
-  const mailed = await sendConfirmation(parsed.value.email, parsed.value.name, result.all);
+  // メールが送れなくても申込は保存済み。申込自体は失敗にしない。
+  // 申込者への確認と、運営への知らせは**別のメール**にする。
+  // 同じ1通を bcc で回していたときは、2つの宛先が同じだと1通しか届かなかった。
+  const [mailed] = await Promise.all([
+    sendConfirmation(parsed.value.email, parsed.value.name, result.all),
+    (async () => {
+      const total = await countApplications();
+      return sendAdminNotice({
+        name: parsed.value.name,
+        email: parsed.value.email,
+        grade: parsed.value.grade,
+        faculty: parsed.value.faculty,
+        added: result.added,
+        all: result.all,
+        returning: result.returning,
+        total,
+      });
+    })(),
+  ]);
 
   const res = NextResponse.json({
     ok: true,
