@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { FactStrip } from "@/components/fact-strip";
 import { MoshiForm } from "@/components/moshi-form";
 import { MoshiSample } from "@/components/moshi-sample";
 import { AnswerSheet, Flow, MarkIcon, PerUnivIcon, PeriodIcon } from "@/components/moshi-visual";
@@ -111,15 +112,22 @@ export default function MoshiPage() {
 
         <div className="sec-rule mt-3" />
 
+        <FactStrip
+          items={[
+            { icon: "pen", label: "記述式・人力採点" },
+            { icon: "clock", label: "期間内に受験" },
+            { icon: "grid", label: `${moshi.universities.length}大学` },
+          ]}
+        />
+
         <header className="border-b border-rule pb-8 pt-6">
-          <div className="grid items-center gap-8 lg:grid-cols-[1fr_26rem] lg:gap-12">
+          <div className="grid items-center gap-7 lg:grid-cols-[1fr_26rem] lg:gap-12">
             <div className="min-w-0">
               <p className="eyebrow">{moshi.season}</p>
               <h1 className="serif h-page mt-1.5 text-ink">{moshi.title}</h1>
               <p className="prose-ja mt-4 text-[1rem] leading-[1.95] text-ink-2 sm:text-[1.05rem]">
-                大学ごとの入試形式を意識したオリジナル数学模試を、オンラインで実施します。
-                期間内の好きな日時に受験でき、記述答案はすべて人力で採点します。
-                答案は途中式まで読み、大問ごとに得点を出してお返しします。
+                志望校1校の入試形式に合わせて作る数学模試です。オンラインで受験でき、
+                記述答案はすべて人力で採点します。
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <a href="#apply" className="btn btn-primary">

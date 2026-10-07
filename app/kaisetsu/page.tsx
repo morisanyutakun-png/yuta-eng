@@ -76,6 +76,11 @@ export default function KaisetsuTop() {
         <PageHeader
           section="kaisetsu"
           title="過去問の解答・解説"
+          facts={[
+            { icon: "pen", label: "独自の解答・詳解" },
+            { icon: "doc", label: "問題文は非掲載" },
+            { icon: "check", label: `全${questionCount}問・無料` },
+          ]}
           covers={unis.slice(0, 3).map(({ u }) => `/covers/thumb/${u.books[0].asin}.webp`)}
           lead={
             <>

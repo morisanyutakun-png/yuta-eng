@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { CoverShelf } from "@/components/cover-shelf";
+import { FactStrip } from "@/components/fact-strip";
 import { AnalysisTable } from "@/components/home-visual";
 import { IntentCards } from "@/components/intent-cards";
 import { AnswerSheet } from "@/components/moshi-visual";
@@ -66,7 +67,16 @@ export default function HomePage() {
           64区分をここで全部並べると「多すぎて選べない」が先に来るため、
           絞り込む前は少しだけ見せて、続きは一覧ページへ送る。
         */}
-        <section className="border-b border-rule pb-9 pt-8 sm:pt-11">
+        {/* 読む前に掴める手がかりを先に置く。文字だけの最初の画面にしない */}
+        <FactStrip
+          items={[
+            { icon: "grid", label: `${t.universities}大学・${t.sections}区分` },
+            { icon: "clock", label: `${t.minYears}〜${t.maxYears}年分` },
+            { icon: "pen", label: "解答解説も無料" },
+          ]}
+        />
+
+        <section className="border-b border-rule pb-9 pt-7 sm:pt-9">
           <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_21rem] lg:items-center lg:gap-x-12">
             <div className="min-w-0">
               <p className="text-[0.7rem] font-bold tracking-[0.1em] text-navy">
@@ -80,28 +90,15 @@ export default function HomePage() {
               <p className="prose-ja mt-4 max-w-[34rem] text-[0.97rem] text-ink-2">
                 試験時間・大問構成・頻出分野・目標点を、大学ごとに
                 <strong className="font-semibold text-ink">年度別・分野別の表</strong>
-                にまとめています。大学を選べばその場で読めます。
+                にまとめています。
               </p>
-
-              <dl className="mt-7 flex flex-wrap gap-x-8 gap-y-4">
-                {[
-                  { k: "分析した大学", v: t.universities, u: `大学・${t.sections}区分` },
-                  { k: "分析した入試", v: t.totalYears, u: "年分" },
-                  { k: "予想問題集", v: t.books, u: "冊" },
-                ].map((s) => (
-                  <div key={s.k}>
-                    <dt className="text-[0.68rem] text-ink-3">{s.k}</dt>
-                    <dd className="serif mt-1 leading-none text-ink">
-                      <span className="text-[1.6rem] tabular-nums">{s.v}</span>
-                      <span className="ml-0.5 font-sans text-[0.7rem] font-normal text-ink-3">{s.u}</span>
-                    </dd>
-                  </div>
-                ))}
-              </dl>
             </div>
 
-            {/* できあがる表そのものを見せる。文章で説明するより早い */}
-            <figure className="mt-9 lg:mt-0">
+            {/*
+              できあがる表そのものを見せる。文章で説明するより早い。
+              狭い画面では、数字より先にこれが出るように並び順を決めている。
+            */}
+            <figure className="mt-7 lg:mt-0">
               <div className="border border-rule bg-white px-4 py-4">
                 <AnalysisTable className="w-full" />
               </div>
@@ -110,6 +107,22 @@ export default function HomePage() {
               </figcaption>
             </figure>
           </div>
+
+          <dl className="mt-8 flex flex-wrap gap-x-9 gap-y-4 border-t border-rule pt-6">
+            {[
+              { k: "分析した大学", v: t.universities, u: `大学・${t.sections}区分` },
+              { k: "分析した入試", v: t.totalYears, u: "年分" },
+              { k: "予想問題集", v: t.books, u: "冊" },
+            ].map((s) => (
+              <div key={s.k}>
+                <dt className="text-[0.68rem] text-ink-3">{s.k}</dt>
+                <dd className="serif mt-1 leading-none text-ink">
+                  <span className="text-[1.6rem] tabular-nums">{s.v}</span>
+                  <span className="ml-0.5 font-sans text-[0.7rem] font-normal text-ink-3">{s.u}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
         </section>
 
         <section aria-labelledby="find-heading" className="mt-9" style={sectionStyle("universities")}>

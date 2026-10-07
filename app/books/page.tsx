@@ -153,6 +153,11 @@ export default function BooksPage() {
           section="books"
           title="教材一覧"
           covers={seriesCovers}
+          facts={[
+            { icon: "book", label: `全${gokakuCount + kansei.length + 1}冊` },
+            { icon: "grid", label: `${universityCount()}大学ぶん` },
+            { icon: "yen", label: "Amazonで販売" },
+          ]}
           lead={
             <>
               大学ごとの出題分析から書き下ろした、非公式の独自教材です。使う順に3つのシリーズを並べています。

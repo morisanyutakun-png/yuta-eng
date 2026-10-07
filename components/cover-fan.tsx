@@ -37,9 +37,9 @@ export function CoverFan({
           loading={priority && i === list.length - 1 ? undefined : "lazy"}
           sizes="88px"
           className={[
-            "w-[58px] border border-rule bg-white object-cover shadow-[0_1px_3px_rgba(21,24,28,0.10)] sm:w-[66px]",
+            "w-[42px] border border-rule bg-white object-cover shadow-[0_1px_3px_rgba(21,24,28,0.10)] sm:w-[58px] lg:w-[66px]",
             // 奥の2枚は少し下げて重ねる。手前ほど大きく見えるようにする
-            i < list.length - 1 ? "-mr-5 mb-1.5 sm:-mr-6" : "",
+            i < list.length - 1 ? "-mr-3.5 mb-1 sm:-mr-5 sm:mb-1.5 lg:-mr-6" : "",
           ].join(" ")}
         />
       ))}

@@ -1,4 +1,5 @@
 import { CoverFan } from "@/components/cover-fan";
+import { FactStrip, type FactIcon } from "@/components/fact-strip";
 import { sections, type SectionKey } from "@/lib/sections";
 
 /**
@@ -17,6 +18,10 @@ import { sections, type SectionKey } from "@/lib/sections";
  *
  * `meta` には年度や冊数のような短い数字を渡す。説明文の続きではなく、
  * 「どれだけあるか」を一目で示す行として使う。
+ *
+ * `facts` は見出しの上に置く要点の帯。狭い画面だと見出しと説明文しか
+ * 目に入らず、最初の画面が文字で埋まってしまうので、読む前に掴める
+ * 手がかりをここに置く。表紙も狭い画面で出す（小さくして横に並べる）。
  */
 export function PageHeader({
   section,
@@ -24,6 +29,7 @@ export function PageHeader({
   lead,
   meta,
   covers,
+  facts,
 }: {
   section: SectionKey;
   title: React.ReactNode;
@@ -31,11 +37,16 @@ export function PageHeader({
   meta?: React.ReactNode;
   /** 見出しの横に並べる表紙（最大3枚）。そのページから辿れる本にする */
   covers?: string[];
+  /** 見出しの上に置く要点。3つまで */
+  facts?: { icon: FactIcon; label: string }[];
 }) {
   return (
     <header className="border-b border-rule pb-8">
       <div className="sec-rule" />
-      <div className="flex items-start gap-6 pt-7">
+
+      {facts?.length ? <FactStrip items={facts} className="mt-0" /> : null}
+
+      <div className="flex items-start gap-4 pt-6 sm:gap-6 sm:pt-7">
         <div className="min-w-0 flex-1">
           <p className="eyebrow">{sections[section].eyebrow}</p>
           <h1 className="serif h-page mt-2 text-ink">{title}</h1>
@@ -44,8 +55,8 @@ export function PageHeader({
           )}
         </div>
 
-        {/* 表紙。狭い画面では文字の場所を奪うので出さない */}
-        {covers?.length ? <CoverFan covers={covers} className="hidden shrink-0 pt-1 sm:flex" priority /> : null}
+        {/* 表紙。狭い画面でも出す。文字しかない最初の画面にしない */}
+        {covers?.length ? <CoverFan covers={covers} className="shrink-0 pt-1" priority /> : null}
       </div>
 
       {meta && <div className="mt-6">{meta}</div>}

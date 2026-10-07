@@ -69,6 +69,11 @@ export default function UniversitiesPage() {
           section="universities"
           title="大学一覧"
           covers={headerCovers}
+          facts={[
+            { icon: "grid", label: `${universityCount()}大学・${universities.length}区分` },
+            { icon: "clock", label: `${siteTotals().minYears}〜${siteTotals().maxYears}年分` },
+            { icon: "doc", label: "年度別の表" },
+          ]}
           lead={
             <>
               数学の傾向と対策をまとめている{universityCount()}大学です。大学名・かな・「医学部」などで絞り込めます。

@@ -172,6 +172,11 @@ export default function EducatorsPage() {
           section="educators"
           title="学校・塾・予備校関係者の方へ"
           covers={series.map((p) => p.cover)}
+          facts={[
+            { icon: "person", label: "授業・講習に" },
+            { icon: "check", label: "採点表つき" },
+            { icon: "book", label: `${universityCount()}大学・${totals.books + kanseiPublished.length + 1}冊` },
+          ]}
           lead={
             <>
               大学入試の数学を大学別・区分別に分析し、その形式に合わせて書き下ろした予想問題集と演習書です。

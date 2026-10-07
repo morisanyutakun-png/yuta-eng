@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { CoverFan } from "@/components/cover-fan";
+import { FactStrip } from "@/components/fact-strip";
 import { MoshiForm } from "@/components/moshi-form";
 import { MoshiSample } from "@/components/moshi-sample";
 import { AnswerSheet, Flow } from "@/components/moshi-visual";
@@ -56,6 +57,80 @@ function keywordsFor(id: string): string[] {
   ];
 }
 
+/**
+ * よくある質問。
+ *
+ * 探す人が打ち込む言葉のまま問いを立てる（「三重大の数学の模試はある？」）。
+ * 答えはこのページに書いてある事実と、模試でこちらが決めたことだけで作る。
+ * 大学が公表していないことを、大学のものとして書かない。
+ */
+function faqFor(m: NonNullable<ReturnType<typeof moshiById>>) {
+  const u = m.slug ? getUniversity(m.slug) : undefined;
+  const bare = m.university.replace(/大学$/, "大");
+  const items: { q: string; a: string }[] = [];
+
+  items.push({
+    q: `${bare}の数学の模試はありますか？`,
+    a:
+      `当サイトが${m.university}の数学の形式に合わせて作る「${m.exam}」を、${moshi.season}に実施します。` +
+      `オンラインで受験でき、記述答案はすべて人の手で採点して、大問ごとの得点と解説をお返しします。`,
+  });
+
+  items.push({
+    q: `${bare}の冠模試とは何が違いますか？`,
+    a:
+      `冠模試は志望校1校の入試形式に合わせて作る模試のことで、本模試もその形式です。` +
+      `当サイトのものは会場に集まらず、受験期間のうち都合のよい日時にオンラインで受けられます。` +
+      `本模試は${m.university}とは関係のない、当サイトが独自に制作・実施するものです。`,
+  });
+
+  if (u && (u.facts.examTime || u.facts.questions)) {
+    const parts = [
+      u.facts.examTime ? `試験時間は${u.facts.examTime}分` : null,
+      u.facts.questions ? `大問は${u.facts.questions}題` : null,
+      u.facts.style ? `解答形式は${u.facts.style}` : null,
+    ].filter(Boolean);
+    items.push({
+      q: `${bare}の数学はどんな試験ですか？`,
+      a: `当サイトが${yearsLabel(u) ?? "過去"}の過去問を分析した範囲では、${parts.join("、")}です。本模試もこの形式に合わせて作問します。`,
+    });
+  }
+
+  if (u?.fieldChart?.items.length) {
+    const top = u.fieldChart.items.slice(0, 3);
+    items.push({
+      q: `${bare}の数学で狙われやすい分野はどこですか？`,
+      a:
+        `${yearsLabel(u) ?? "分析対象期間"}の出題を分野別に数えると、` +
+        `${top.map((t) => `${t.label}（${t.count}題）`).join("、")}が多く出ています。` +
+        `本模試の作問でもこの偏りを踏まえます。`,
+    });
+  }
+
+  items.push({
+    q: "どんな問題が出るのか、申し込む前に確かめられますか？",
+    a:
+      "このページに見本問題を1題そのまま載せています。解答例と採点表（どこに点が付き、どこで引かれるか）まで公開しています。" +
+      "見本は既刊「合格答案をつくる」シリーズの予想問題を作り替えたもので、大学の過去問そのものではありません。",
+  });
+
+  items.push({
+    q: "過去問がそのまま出題されますか？",
+    a:
+      "出題しません。出題形式・大問構成・頻出分野の分析にもとづいて、すべて書き下ろします。" +
+      "問題文の転載も行いません。",
+  });
+
+  items.push({
+    q: "受験料はいくらですか。申込の時点でかかりますか？",
+    a:
+      `受験料は${priceLabel}の予定です。参加申込の時点では料金は発生しません。` +
+      `正式な受験日程とお支払い方法は、確定しだいメールでご案内します。`,
+  });
+
+  return items;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const m = moshiById(id);
@@ -104,6 +179,8 @@ export default async function MoshiUniversityPage({ params }: Props) {
   // 分析から出した頻出分野。上位だけを出す
   const top = u?.fieldChart?.items.slice(0, 5) ?? [];
 
+  const faq = faqFor(m);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -114,6 +191,14 @@ export default async function MoshiUniversityPage({ params }: Props) {
         url: `${site.url}${moshiPath(m)}`,
         isPartOf: { "@type": "WebSite", name: site.name, url: site.url },
         inLanguage: "ja",
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: faq.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
       },
       {
         "@type": "BreadcrumbList",
@@ -145,6 +230,14 @@ export default async function MoshiUniversityPage({ params }: Props) {
 
         <div className="sec-rule mt-3" />
 
+        <FactStrip
+          items={[
+            { icon: "grid", label: `${bare}の形式` },
+            { icon: "pen", label: "記述式・人力採点" },
+            { icon: "clock", label: "期間内に受験" },
+          ]}
+        />
+
         <header className="border-b border-rule pb-9 pt-7">
           <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start lg:gap-x-12">
             <div className="min-w-0">
@@ -157,10 +250,9 @@ export default async function MoshiUniversityPage({ params }: Props) {
                 <span className="sm:ml-3">{m.exam}</span>
               </h1>
               <p className="prose-ja mt-4 max-w-[38rem] text-[0.95rem] leading-[1.95] text-ink-2">
-                {m.university}の数学の出題形式に合わせて作る、
+                {m.university}の数学の形式に合わせて作る
                 <strong className="font-semibold text-ink">大学別の数学模試</strong>
-                （いわゆる冠模試の形式）です。オンラインで実施し、記述答案はすべて人力で採点して、
-                大問ごとの得点と解説をお返しします。
+                （冠模試の形式）です。記述答案は人の手で採点します。
               </p>
 
               <p className="mt-6 flex flex-wrap gap-3">
@@ -357,6 +449,30 @@ export default async function MoshiUniversityPage({ params }: Props) {
             </div>
           </section>
         )}
+
+        <section aria-labelledby="faq-heading" className="mt-14">
+          <h2 id="faq-heading" className="rule-mark serif h-sect text-ink">
+            {bare}の数学の模試について、よくある質問
+          </h2>
+          <dl className="mt-5 divide-y divide-rule border-y border-rule">
+            {faq.map((f) => (
+              <div key={f.q} className="py-4">
+                <dt className="flex gap-2.5 text-[0.92rem] font-semibold leading-relaxed text-ink">
+                  <span aria-hidden="true" className="serif shrink-0 text-[var(--sec)]">
+                    Q.
+                  </span>
+                  <span className="prose-ja">{f.q}</span>
+                </dt>
+                <dd className="mt-2 flex gap-2.5">
+                  <span aria-hidden="true" className="serif shrink-0 text-ink-3">
+                    A.
+                  </span>
+                  <span className="prose-ja text-[0.88rem] leading-[1.95] text-ink-2">{f.a}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
 
         {/* ほかの大学の模試。探している大学が違った人をそのまま帰らせない */}
         <section aria-labelledby="others" className="mt-14">
