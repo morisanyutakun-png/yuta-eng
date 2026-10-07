@@ -33,6 +33,10 @@ const text = (html) =>
 
 const linked = new Map(); // 内部リンク・画像 → 最初に見つけたページ
 const seen = new Set();
+// 題名と説明は、ページごとに違っていないと検索結果で共食いする。
+// 作り方を間違えると10ページが同じ文になるので、ここで突き合わせる。
+const titles = new Map();
+const descs = new Map();
 
 for (const f of files) {
   const page = f.slice(APP.length).replace(/\.html$/, "").replace(/\/index$/, "") || "/";
@@ -48,6 +52,14 @@ for (const f of files) {
   if (!desc) ng(page, "description がない");
   else if (desc.length < 60 || desc.length > 160) ng(page, `description が ${desc.length} 字（60〜160字）`);
   if (!canon) ng(page, "canonical がない");
+  if (title) {
+    if (titles.has(title)) ng(page, `title が ${titles.get(title)} と同じ`);
+    else titles.set(title, page);
+  }
+  if (desc) {
+    if (descs.has(desc)) ng(page, `description が ${descs.get(desc)} と同じ`);
+    else descs.set(desc, page);
+  }
   if (!/<meta property="og:image"/.test(html)) ng(page, "og:image がない");
 
   /* ── 見出し ── */
@@ -77,16 +89,31 @@ for (const f of files) {
   }
 
   /* ── 構造化データ ── */
+  const bodyText = text(html);
   for (const m of html.matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)) {
+    let data;
     try {
-      JSON.parse(m[1]);
+      data = JSON.parse(m[1]);
     } catch (e) {
       ng(page, `JSON-LD が壊れている（${e.message.slice(0, 40)}）`);
+      continue;
+    }
+    // よくある質問は、画面に出ているものと同じでなければならない。
+    // 検索結果にだけ出す問答を作らない。
+    const nodes = [data, ...(data["@graph"] ?? [])].filter(Boolean);
+    for (const n of nodes) {
+      if (n["@type"] !== "FAQPage") continue;
+      for (const q of n.mainEntity ?? []) {
+        const name = String(q.name ?? "").replace(/\s+/g, "");
+        if (name && !bodyText.replace(/\s+/g, "").includes(name)) {
+          ng(page, `FAQ「${name.slice(0, 24)}」が画面に出ていない`);
+        }
+      }
     }
   }
 
   /* ── 組版の取りこぼし ── */
-  const body = text(html);
+  const body = bodyText;
   if (/katex-error/.test(html)) ng(page, "組めなかった数式がある");
   for (const [name, re] of [
     ["LaTeX の命令", /\\[a-zA-Z]{2,}/],

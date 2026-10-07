@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AsideBook } from "@/components/aside-book";
+import { FactStrip } from "@/components/fact-strip";
 import { ArticleLayout, AsideCard } from "@/components/article-layout";
 import { SolutionFooter } from "@/components/solution-footer";
 import { SourceLink } from "@/components/source-link";
@@ -154,7 +155,16 @@ export default async function QuestionPage({ params }: Props) {
           </>
         }
       >
-        <header className="pb-2 pt-4">
+        <FactStrip
+          items={[
+            { icon: "pen", label: "独自の解答・詳解" },
+            { icon: "doc", label: "問題文は非掲載" },
+            { icon: "check", label: `小問${question.subs.length}問・無料` },
+          ]}
+          className="mt-4"
+        />
+
+        <header className="pb-2 pt-5">
           <p className="eyebrow">
             {s.university}　{s.year}年度　{s.schedule}　{s.division}
           </p>

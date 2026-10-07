@@ -25,6 +25,7 @@ import {
   universityCount,
   yearLabel,
 } from "@/lib/data";
+import { moshi } from "@/lib/moshi/config";
 import { sampleFor } from "@/lib/samples";
 import { kanseiFor } from "@/lib/series";
 import { Blocks } from "@/lib/render";
@@ -62,10 +63,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (lead) description = `${description}${lead}`;
   }
 
+  // そのページから実際に辿れるものだけを足す。無いものの名前は出さない。
+  const short = shortName(u);
+  const bare = u.university.replace(/大学$/, "大");
+  const extra = [
+    ...(solutionsFor(u.slug).length
+      ? [`${u.university} 数学 過去問 解答`, `${short} 数学 解説`, `${bare} 数学 過去問 解説`]
+      : []),
+    ...(moshi.universities.some((m) => m.slug === u.slug)
+      ? [`${u.university} 数学 模試`, `${bare} 数学 模試`, `${u.university} 冠模試`]
+      : []),
+  ];
+
   return {
     title,
     description,
-    keywords: keywords(u),
+    keywords: [...new Set([...keywords(u), ...extra])],
     alternates: { canonical: `/univ/${u.slug}` },
     openGraph: {
       title,

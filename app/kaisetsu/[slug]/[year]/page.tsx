@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { AsideBook } from "@/components/aside-book";
+import { FactStrip } from "@/components/fact-strip";
 import { ArticleLayout, AsideCard } from "@/components/article-layout";
 import { SolutionFooter } from "@/components/solution-footer";
 import { SourceLink } from "@/components/source-link";
@@ -40,7 +41,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       `${s.university} ${s.year}年度 数学 解答`,
       `${short} ${s.year} 数学 解説`,
       `${short} 数学 ${s.year} 詳解`,
-      `${short} 数学 解答速報`,
+      `${short} ${s.year} 数学 別解`,
+      `${s.university} 数学 過去問 解説`,
       ...s.questions.map((q) => `${short} ${s.year} 第${q.no}問`),
       ...s.questions.flatMap((q) => q.topics.map((t) => `${short} 数学 ${t}`)),
     ],
@@ -139,7 +141,16 @@ export default async function YearPage({ params }: Props) {
           </>
         }
       >
-        <header className="pb-2 pt-4">
+        <FactStrip
+          items={[
+            { icon: "pen", label: "独自の解答・詳解" },
+            { icon: "doc", label: "問題文は非掲載" },
+            { icon: "check", label: `全${s.questions.length}問・無料` },
+          ]}
+          className="mt-4"
+        />
+
+        <header className="pb-2 pt-5">
           <p className="eyebrow">
             {s.university}　{s.year}年度　{s.schedule}　{s.division}
           </p>
