@@ -15,7 +15,8 @@
     "check:solutions": "python3 scripts/verify-solutions.py",
     "data:originals": "python3 scripts/scan-originals.py",
     "moshi:setup": "node scripts/moshi-setup.mjs",
-    "moshi:reset": "node scripts/moshi-reset.mjs"
+    "moshi:reset": "node scripts/moshi-reset.mjs",
+    "moshi:sample": "python3 scripts/build-moshi-sample.py"
   },
   "dependencies": {
     "katex": "^0.16.45",

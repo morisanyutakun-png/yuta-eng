@@ -141,11 +141,20 @@ export default function HomePage() {
           />
         </section>
 
+      </div>
+
+      {/*
+        ここから3つの節は、地をごく薄く落とした面に載せる。
+        白のまま細い罫だけで区切っていくと、縦に長いページのどこからどこまでが
+        一続きなのか読み取れなくなる。要所で面を切り替えて、流れに区切りを付ける。
+      */}
+      <div className="band mt-14">
+        <div className="page page-wide">
         {/*
           用件から入口を選ばせる。分析・診断・演習・予想問題集は性質が違うのに、
           名前を見ただけではどれが自分向けか分からない。
         */}
-        <section aria-labelledby="intent-heading" className="mt-16">
+        <section aria-labelledby="intent-heading">
           <h2 id="intent-heading" className="rule-mark serif h-sect text-ink">
             いまのあなたに合うもの
           </h2>
@@ -247,6 +256,10 @@ export default function HomePage() {
           </div>
         </section>
 
+        </div>
+      </div>
+
+      <div className="page page-wide">
         <TopFields />
 
         <section aria-labelledby="shelf-heading" className="mt-16" style={sectionStyle("books")}>

@@ -7,7 +7,7 @@
   ・大問3 … 積が N! になる組を全探索で数え上げ
   ・大問4 … 確率を分数のまま直接追い、2次元の歩きそのものでも確かめる
 
-模試の見本問題（lib/moshi/sample.ts）も、ここで同じように確かめる。
+模試の見本問題（assets/moshi-sample/moshi-sample.tex）も、ここで同じように確かめる。
 公開する以上、解説と同じ基準で確かめておく。
 """
 import math
@@ -1414,7 +1414,7 @@ ok("電通大4(v) (2^n/n)Σ a_k/a_(n+k) = (1/n)Σ k/(n+k)", all(exact(n) == dire
 ok("電通大4(v) 極限 1-log2", abs(float(exact(4000)) - (1 - math.log(2))) < 3e-4,
    f"n=4000 で {float(exact(4000)):.7f} / {1-math.log(2):.7f}")
 
-# ── 模試の見本問題（lib/moshi/sample.ts）─────────────────
+# ── 模試の見本問題（assets/moshi-sample/moshi-sample.tex）────
 # 一般項を解き直すのではなく、S_n と a_n の関係だけから数列を直接作って、
 # 載せている一般項と T_n の式に突き合わせる。
 seq_m = []

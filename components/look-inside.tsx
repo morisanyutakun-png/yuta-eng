@@ -5,6 +5,9 @@ import { useCallback, useEffect, useState } from "react";
 
 import type { SamplePage } from "@/lib/samples";
 
+/** 拡大表示に要るぶんだけ。書籍の抜粋と模試の見本で同じものを使う */
+type ViewerPage = Pick<SamplePage, "file" | "label" | "page" | "width" | "height">;
+
 /**
  * 抜粋ページの拡大表示。
  *
@@ -12,7 +15,7 @@ import type { SamplePage } from "@/lib/samples";
  * 画面いっぱいに1ページを出し、左右で送れるだけにしてある。
  * JavaScript が動かない環境でも、画像そのもののリンクとして開ける。
  */
-export function SampleViewer({ pages, title }: { pages: SamplePage[]; title: string }) {
+export function SampleViewer({ pages, title }: { pages: ViewerPage[]; title: string }) {
   const [open, setOpen] = useState<number | null>(null);
   const close = useCallback(() => setOpen(null), []);
   const move = useCallback(

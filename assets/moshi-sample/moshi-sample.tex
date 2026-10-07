@@ -1,0 +1,245 @@
+% =====================================================================
+%  大学別オンライン数学模試 ── 見本（問題・解答・採点基準）
+%
+%  組版は「合格答案をつくる」シリーズの本文と同じものを使う。
+%  プリアンブルは原稿側のものを TEXINPUTS 経由で読むだけで、
+%  原稿には一切手を入れない（読み取り専用）。
+%
+%  中身は既刊「合格答案をつくる 三重大数学」第1回 第2問を作り替えたもの。
+%  大学の過去問そのものではない。配点・採点基準は本模試のもので、
+%  大学が公表しているものではない。
+%
+%  答えは scripts/verify-solutions.py で、式を立て直すのではなく
+%  S_n と a_n の関係から数列を直接作って突き合わせてある。
+% =====================================================================
+\input{preamble}
+
+% 柱（ページ上部の見出し）は、この冊子が何かを名乗る。
+% 体裁はシリーズのものを使うが、シリーズの一冊ではない。
+\renewcommand{\seriesname}{大学別オンライン数学模試}
+\renewcommand{\booktitle}{見\ 本}
+\renewcommand{\bookyear}{2027}
+
+\begin{document}
+
+% ================= 扉 =================
+\thispagestyle{empty}
+\null\vspace*{18mm}
+\bindmarks
+\begin{center}
+  {\footnotesize 2027年度入試向け}\\[3.5mm]
+  {\large\bfseries 大学別オンライン数学模試}\\[2.5mm]
+  {\fontsize{22}{26}\selectfont\bfseries 見\hspace{1.2em}本}\\[6mm]
+  {\normalsize 問題 ・ 解答と解説 ・ 採点基準}\\[14mm]
+  {\footnotesize\bdotrow}
+\end{center}
+
+\vspace{12mm}
+\begin{center}
+\begin{minipage}{0.84\linewidth}\small
+\noindent\textbf{この見本について}
+\par\vspace{1.5mm}
+本模試で出題する問題の体裁・解説の書き方・採点のしかたを確かめていただくための見本です。
+収めたのは大問1題で、問題・解答と解説・採点基準をそのまま載せています。
+
+\par\vspace{2.0mm}
+ここに載せた問題は、既刊「合格答案をつくる」シリーズの予想問題を作り替えたものです。
+\textbf{大学の過去問そのものではありません。}本模試でも過去問は出題せず、
+各大学の出題形式・大問構成・頻出分野の分析にもとづいてすべて書き下ろします。
+
+\par\vspace{2.0mm}
+配点と採点基準は\textbf{本模試のもの}で、大学が公表しているものではありません。
+難易度の表示もしていません。
+
+\par\vspace{2.0mm}
+実際の模試は大学ごとに試験時間・大問数・解答形式を変えて作問します。
+この見本は、そのうちの1題がどのような形になるかを示すものです。
+\end{minipage}
+\end{center}
+
+\vfill
+\begin{center}\footnotesize
+  \sigrule\par\vspace{1.5mm}
+  \authorname\par\vspace{1.0mm}
+  yuta-eng.com
+\end{center}
+
+% ================= 問題紙 =================
+\begin{monsheet}
+
+\noindent\fbox{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+\vspace{0.8mm}
+\begin{center}\normalsize\bfseries 見本問題（1題・20点）\end{center}
+\vspace{0.4mm}
+\begin{center}\footnotesize
+解答時間の目安 25分\quad\bdot\quad 答案は途中の論証まで書くこと\quad\bdot\quad 分野：数列
+\end{center}
+\vspace{0.6mm}
+\end{minipage}}
+
+\begin{daimon}{1}
+数列 $\{a_{n}\}$ の初項から第 $n$ 項までの和を $S_{n}$ とする。
+すべての自然数 $n$ に対して
+\[
+  S_{n}=2a_{n}-3n
+\]
+が成り立つとする。以下の問いに答えよ。
+\begin{shomon}
+  \item $a_{1}$，$a_{2}$，$a_{3}$ を求めよ。\hfill（4点）
+  \item $a_{n+1}$ を $a_{n}$ を用いて表し，数列 $\{a_{n}\}$ の一般項を求めよ。\hfill（8点）
+  \item $\dsp T_{n}=\sum_{k=1}^{n}k\,a_{k}$ を $n$ を用いて表せ。\hfill（8点）
+\end{shomon}
+\end{daimon}
+
+\end{monsheet}
+
+% ================= 解答・解説 =================
+\section*{見本問題 解答・解説}
+
+\hdA{大問 1 ── 和 $S_{n}$ と一般項，$\sum k\,a_{k}$}
+\hdTag{全区分共通（見本）}
+
+\Q{1}{4}
+$n=1$ のとき $S_{1}=a_{1}$ であるから，与えられた関係式は
+\[
+  a_{1}=2a_{1}-3
+\]
+となり $a_{1}=3$ を得る。
+
+\smallskip
+$n=2$ のとき $S_{2}=a_{1}+a_{2}$ であるから $3+a_{2}=2a_{2}-6$ となり $a_{2}=9$。
+同様に $n=3$ では $3+9+a_{3}=2a_{3}-9$ となり $a_{3}=21$ である。
+
+\Ans{a_{1}=3,\qquad a_{2}=9,\qquad a_{3}=21}
+
+\Q{2}{8}
+$a_{n+1}=S_{n+1}-S_{n}$ である。与えられた関係式を $n+1$ と $n$ で書いて差をとると
+\[
+  a_{n+1}=\bigl\{2a_{n+1}-3(n+1)\bigr\}-\bigl(2a_{n}-3n\bigr)=2a_{n+1}-2a_{n}-3
+\]
+となる。整理して
+\[
+  a_{n+1}=2a_{n}+3\qquad(n\geqq1)
+\]
+を得る。
+
+\smallskip
+両辺に $3$ を足すと $a_{n+1}+3=2\left(a_{n}+3\right)$ となるので，
+数列 $\{a_{n}+3\}$ は公比 $2$ の等比数列である。初項は $a_{1}+3=6$ であるから
+\[
+  a_{n}+3=6\cdot2^{\,n-1}=3\cdot2^{\,n}
+  \qquad\text{よって}\qquad
+  a_{n}=3\left(2^{\,n}-1\right)
+\]
+である。
+
+\Ans{a_{n+1}=2a_{n}+3,\qquad a_{n}=3\left(2^{\,n}-1\right)}
+
+\hs{確かめ}$n=1,2,3$ を入れると $3,\ 9,\ 21$ となり，(1) で求めた値と合う。
+漸化式を立てたあとは，必ず最初の数項で確かめておきたい。
+
+\Q{3}{8}
+(2) より $k\,a_{k}=3k\cdot2^{\,k}-3k$ であるから
+\[
+  T_{n}=3\sum_{k=1}^{n}k\cdot2^{\,k}-3\sum_{k=1}^{n}k
+\]
+と2つの和に分かれる。後ろの和は $\dsp\frac{n(n+1)}{2}$ である。
+
+\smallskip
+前の和を $\dsp U_{n}=\sum_{k=1}^{n}k\cdot2^{\,k}$ とおき，$2$ 倍してずらして引く。
+\[
+  U_{n}-2U_{n}=2+\sum_{k=2}^{n}2^{\,k}-n\cdot2^{\,n+1}
+             =2+\left(2^{\,n+1}-4\right)-n\cdot2^{\,n+1}
+\]
+左辺は $-U_{n}$ であるから
+\[
+  U_{n}=(n-1)\cdot2^{\,n+1}+2
+\]
+となる。したがって
+\[
+  T_{n}=3\left\{(n-1)\cdot2^{\,n+1}+2\right\}-\frac{3n(n+1)}{2}
+       =3(n-1)\cdot2^{\,n+1}+6-\frac{3n(n+1)}{2}
+\]
+である。
+
+\Ans{T_{n}=3(n-1)\cdot2^{\,n+1}+6-\frac{3n(n+1)}{2}}
+
+\hs{確かめ}$n=1$ では $T_{1}=1\cdot a_{1}=3$ で，式の値も $0+6-3=3$。
+$n=2$ では $3+2\cdot9=21$ で，式の値も $24+6-9=21$ である。
+
+% ================= 採点基準 =================
+\clearpage
+\section*{見本問題 採点基準}
+
+\hdB{採点の手順}
+\begin{enumerate}[leftmargin=2.2em,itemsep=3pt,topsep=3pt]
+  \item まず答案を清書する。頭の中で解けたものは採点しない。
+  \item 小問ごとに\textbf{正解}と照合する。
+  \item 採点表の\textbf{加点行}を上から見て，\underLine{答案に実際に書いてある段階だけ}加点する。
+  \item 続く\textbf{$\times$ の行}に当たるものがあれば，その分を引く。$0$ 点未満にはしない。
+\end{enumerate}
+
+\hdB{この見本の配点}
+\begin{center}\small
+\begin{tabular}{@{}clcr@{}}
+\toprule
+\textbf{大問} & \textbf{主題} & \textbf{小問の配点} & \textbf{計} \\
+\midrule
+1 & 和 $S_{n}$ と一般項，$\sum k\,a_{k}$ & $4+8+8$ & 20 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\hdB{この見本で共通に見るところ}
+\noindent\fbox{\begin{minipage}{0.965\linewidth}\small
+\begin{itemize}[leftmargin=1.4em,itemsep=2.5pt,topsep=3pt]
+  \item 過程を書かず結論だけの答案は，その小問の満点の $30\%$ を上限とする。
+  \item 「明らかに」「同様に」で片づけた箇所は加点しない。直前に同じ議論を完全に書いている場合を除く。
+  \item 前小問の答えが誤っていても，その値を正しく使っていれば\textbf{過程の加点は行う}（結論の加点は行わない）。
+  \item 本書にない解法でも，論理が通っていれば満点とする。採点表の段階に読み替えて読むこと。
+\end{itemize}
+\end{minipage}}
+
+\Rh{1}{1}{4}
+\Seikai{$a_{1}=3,\ a_{2}=9,\ a_{3}=21$}
+\begin{saiten}
+\Sp{$S_{1}=a_{1}$ を使って $a_{1}$ を出している}{1}
+\Sp{$S_{2},\ S_{3}$ を前の項の和として書き直している}{1}
+\Sp{3つとも正しい}{2}
+\Ssep
+\Sm{$a_{1}$ を求めずに $a_{2}$ から書き始めている}{$-1$}
+\Sm{答えだけで，どの $n$ を代入したかが読み取れない}{$-1$}
+\end{saiten}
+
+\Rh{1}{2}{8}
+\Seikai{$a_{n+1}=2a_{n}+3$，$\ a_{n}=3\left(2^{\,n}-1\right)$}
+\begin{saiten}
+\Sp{$a_{n+1}=S_{n+1}-S_{n}$ を使うと述べている}{2}
+\Sp{差をとって $a_{n+1}=2a_{n}+3$ まで整理できている}{2}
+\Sp{$a_{n}+3$ が等比数列になることを使い，初項を $a_{1}+3=6$ と正しく取っている}{2}
+\Sp{一般項が合っている}{2}
+\Ssep
+\Sm{$a_{n}=S_{n}-S_{n-1}$ を $n\geqq2$ の断りなしに $n=1$ でも使っている}{$-1$}
+\Sm{等比数列の初項を $a_{1}=3$ としてしまい，$+3$ の分だけずれている}{$-2$}
+\Sm{漸化式は出せたが，一般項まで解ききれていない}{$-2$}
+\end{saiten}
+
+\Rh{1}{3}{8}
+\Seikai{$T_{n}=3(n-1)\cdot2^{\,n+1}+6-\dfrac{3n(n+1)}{2}$}
+\begin{saiten}
+\Sp{$k\,a_{k}$ を2つの和に分けている}{2}
+\Sp{$\dsp\sum_{k=1}^{n}k\cdot2^{\,k}$ をずらして引く方法で正しく求めている}{3}
+\Sp{$\dsp\sum_{k=1}^{n}k=\frac{n(n+1)}{2}$ を使っている}{1}
+\Sp{最後まで $n$ の式にまとめきっている}{2}
+\Ssep
+\Sm{ずらして引くときに，両端の項（$k=1$ の分と $k=n+1$ の分）の扱いを誤っている}{$-2$}
+\Sm{$U_{n}$ までは出せたが，$T_{n}$ に戻すときの係数 $3$ を落としている}{$-2$}
+\Sm{$n=1$ などで確かめておらず，符号の誤りがそのまま残っている}{$-1$}
+\end{saiten}
+
+\vspace{8mm}
+\noindent{\footnotesize\textcolor{rulegray}{%
+本模試は各大学とは関係のない、当サイトが独自に制作・実施するものです。
+配点・採点基準は本模試のもので、大学が公表しているものではありません。}}
+
+\end{document}

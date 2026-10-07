@@ -56,6 +56,33 @@
   }
 }
 
+/*
+ * 面を切り替える帯。
+ *
+ * 白の上に細い罫だけで節を区切っていくと、縦に長いページで
+ * どこからどこまでが一続きなのかが読み取れなくなる（白すぎる、と言われる状態）。
+ * 要所だけ地をごく薄く落として、面として区切る。
+ *
+ * 画面の端まで伸ばしたいので、本文の枠の外に置いて使う。
+ * `vw` で引き延ばすとスクロールバーのぶんだけ横に溢れるので、使わない。
+ */
+.band {
+  background: var(--color-paper-2);
+  border-block: 1px solid var(--color-rule);
+  padding-block: 3.5rem;
+}
+
+@media (min-width: 1024px) {
+  .band {
+    padding-block: 4.5rem;
+  }
+}
+
+/* 帯の中の札は、地に沈まないよう白のまま置く */
+.band .card {
+  background: #fff;
+}
+
 /* 見出しの大きさ。h1・h2・h3 をページごとに決めない */
 .h-page {
   font-size: 1.7rem;

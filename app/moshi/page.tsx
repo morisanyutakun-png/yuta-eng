@@ -294,7 +294,8 @@ export default function MoshiPage() {
             どんな問題が出て、どう採点されるか
           </h2>
           <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
-            本模試の見本を1題そのまま載せます。解答例と採点表まで出しますので、申し込む前に中身をご確認ください。
+            本模試で出す問題を、本番と同じ体裁の冊子にして1題ぶん公開しています。
+            問題・解答と解説・採点基準の全ページを、そのままご覧いただけます。
           </p>
           <MoshiSample />
         </section>

@@ -1,0 +1,53 @@
+{
+  "pdf": "/samples/moshi/moshi-sample.pdf",
+  "pages": [
+    {
+      "file": "/samples/moshi/p1.webp",
+      "label": "扉",
+      "kind": "扉",
+      "page": 1,
+      "width": 1100,
+      "height": 1556
+    },
+    {
+      "file": "/samples/moshi/p2.webp",
+      "label": "問題",
+      "kind": "問題",
+      "page": 2,
+      "width": 1100,
+      "height": 1556
+    },
+    {
+      "file": "/samples/moshi/p3.webp",
+      "label": "解答・解説",
+      "kind": "解答",
+      "page": 3,
+      "width": 1100,
+      "height": 1556
+    },
+    {
+      "file": "/samples/moshi/p4.webp",
+      "label": "解答・解説（続き）",
+      "kind": "解答",
+      "page": 4,
+      "width": 1100,
+      "height": 1556
+    },
+    {
+      "file": "/samples/moshi/p5.webp",
+      "label": "採点基準",
+      "kind": "採点",
+      "page": 5,
+      "width": 1100,
+      "height": 1556
+    },
+    {
+      "file": "/samples/moshi/p6.webp",
+      "label": "採点基準（続き）",
+      "kind": "採点",
+      "page": 6,
+      "width": 1100,
+      "height": 1556
+    }
+  ]
+}
