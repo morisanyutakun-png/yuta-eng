@@ -123,28 +123,69 @@ export async function saveApplication(input: ApplicationInput): Promise<Applicat
 }
 
 /**
+ * メールの結果を書くための列を足す。
+ *
+ * 足すだけ・何度流しても同じ結果になる文だけを使う。
+ * 既にある行には触らず、値は null で入る（PostgreSQL 11 以降は即座に終わる）。
+ *
+ * 1つのインスタンスにつき一度しか試さない。権限が無いなどで足せなくても、
+ * 申込そのものは成り立っているので、黙って諦める。
+ */
+let columnsEnsured = false;
+
+async function ensureMailColumns(): Promise<boolean> {
+  if (columnsEnsured) return true;
+  try {
+    await pool().query(`
+      alter table exam_applications add column if not exists mail_confirmation text;
+      alter table exam_applications add column if not exists mail_admin        text;
+      alter table exam_applications add column if not exists mail_at           timestamptz;
+    `);
+    columnsEnsured = true;
+    console.log("[moshi-db] メールの記録用の列を追加した");
+    return true;
+  } catch (e) {
+    console.error("[moshi-db] 列を追加できなかった:", e instanceof Error ? e.message : e);
+    return false;
+  }
+}
+
+/**
  * メールの結果を申込に書いておく。
  *
  * 届かなかったときに、あとから「何が起きたか」を管理画面で見られるようにする。
  * 以前は送信結果を捨てていたので、届かない理由を外からは追えなかった。
  *
- * 列がまだ無い古いテーブルでも申込を失敗させたくないので、黙って見送る
- * （npm run moshi:setup を流せば列が足され、次から記録される）。
+ * 列がまだ無いときは、その場で足してから書き直す。
+ * 移行のためだけに手で1回コマンドを流す、という手順を残さないため。
+ * 足せなかったときは黙って見送る（申込そのものは成り立っている）。
  */
 export async function recordMailResult(
   email: string,
   confirmation: string,
   admin: string,
 ): Promise<void> {
-  try {
-    await pool().query(
+  const write = () =>
+    pool().query(
       `update exam_applications
           set mail_confirmation = $2, mail_admin = $3, mail_at = now()
         where lower(email) = lower($1)`,
       [email, confirmation.slice(0, 200), admin.slice(0, 200)],
     );
-  } catch {
-    /* 列が無い・書けない場合は記録しない。申込そのものは成り立っている */
+
+  try {
+    await write();
+    columnsEnsured = true;
+  } catch (e) {
+    // 42703 = そんな列は無い。足してから一度だけ書き直す。
+    const code = (e as { code?: string })?.code;
+    if (code !== "42703") return;
+    if (!(await ensureMailColumns())) return;
+    try {
+      await write();
+    } catch {
+      /* 足した直後に書けないなら、記録は諦める */
+    }
   }
 }
 
