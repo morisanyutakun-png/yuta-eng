@@ -31,6 +31,12 @@ export const metadata: Metadata = {
 export default function UniversitiesPage() {
   const usedGroups = groupOrder.filter((g) => universities.some((u) => u.group === g));
   const items = finderItems();
+  // 見出しの横に並べる表紙。検索されやすい大学から3冊
+  const rank = (g: string) => usedGroups.findIndex((x) => x === g);
+  const headerCovers = [...universities]
+    .sort((a, b) => rank(a.group) - rank(b.group))
+    .slice(0, 3)
+    .map((u) => `/covers/thumb/${u.books[0].asin}.webp`);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -62,6 +68,7 @@ export default function UniversitiesPage() {
         <PageHeader
           section="universities"
           title="大学一覧"
+          covers={headerCovers}
           lead={
             <>
               数学の傾向と対策をまとめている{universityCount()}大学です。大学名・かな・「医学部」などで絞り込めます。

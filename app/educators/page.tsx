@@ -156,7 +156,10 @@ export default function EducatorsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:px-8" style={sectionStyle("educators")}>
+      <div
+        className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
+        style={sectionStyle("educators")}
+      >
         <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
@@ -168,6 +171,7 @@ export default function EducatorsPage() {
         <PageHeader
           section="educators"
           title="学校・塾・予備校関係者の方へ"
+          covers={series.map((p) => p.cover)}
           lead={
             <>
               大学入試の数学を大学別・区分別に分析し、その形式に合わせて書き下ろした予想問題集と演習書です。
@@ -176,8 +180,54 @@ export default function EducatorsPage() {
           }
         />
 
+        {/*
+          先生がこのページに来る用件は、だいたい次の3つに分かれる。
+          それぞれがどこに書いてあるかを先に示して、読む場所を選べるようにする。
+          売り込みではなく、見出しは用件のままの言葉にする。
+        */}
+        <section aria-labelledby="ask" className="mt-9">
+          <h2 id="ask" className="rule-mark serif h-sect text-ink">
+            ご相談いただけること
+          </h2>
+          <ol className="mt-5 grid gap-px border border-rule bg-rule sm:grid-cols-3">
+            {[
+              {
+                h: "複数冊でのご利用",
+                body: "授業・講習・課題演習でまとめてお使いになる場合のご相談を承ります。",
+                to: "#multiple",
+                label: "ご利用について",
+              },
+              {
+                h: "採用検討時の内容確認",
+                body: `収録範囲・難易度・解説の方針は、出題分析と抜粋（${sampleCount}冊ぶん）でご確認いただけます。`,
+                to: "#check",
+                label: "中身を確かめる",
+              },
+              {
+                h: "教材選定のご相談",
+                body: "学年・進度・志望層に合わせて、どの段階のどの教材が合うかをお答えします。",
+                to: "#contact",
+                label: "お問い合わせ",
+              },
+            ].map((x, i) => (
+              <li key={x.h} className="bg-white px-5 py-5">
+                <p className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
+                  0{i + 1}
+                </p>
+                <p className="serif mt-1.5 text-[1rem] leading-snug text-ink">{x.h}</p>
+                <p className="prose-ja mt-2 text-[0.84rem] leading-[1.9] text-ink-2">{x.body}</p>
+                <p className="mt-3">
+                  <Link href={x.to} className="text-[0.8rem] font-semibold text-navy underline underline-offset-4">
+                    {x.label}
+                  </Link>
+                </p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
         {/* 表紙の棚。文字より先に「どんな本か」を見せる */}
-        <section aria-labelledby="shelf" className="mt-10 border-y border-rule py-6">
+        <section aria-labelledby="shelf" className="mt-12 border-y border-rule py-6">
           <h2 id="shelf" className="sr-only">
             刊行している大学別教材
           </h2>
@@ -206,6 +256,14 @@ export default function EducatorsPage() {
             横にスクロールできます。表紙を選ぶと、その大学の出題分析と抜粋をご覧いただけます。
           </p>
         </section>
+
+        {/*
+          ここから先は読みものが続く。画面が広いときだけ右に袖を出して、
+          問い合わせ先を出しっぱなしにする。先生は読み終えてから戻るのではなく、
+          読みながら連絡先を控えることが多い。
+        */}
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-start lg:gap-x-12">
+          <div className="min-w-0">
 
         {/* 3シリーズ。表紙・説明・購入導線をひとまとめに */}
         <section aria-labelledby="series" className="mt-14">
@@ -334,6 +392,45 @@ export default function EducatorsPage() {
               ))}
           </div>
         </section>
+
+          </div>
+
+          <aside className="hidden lg:block">
+            <div className="sticky top-6 pt-2">
+              <div className="border border-rule bg-white">
+                <div className="sec-rule" />
+                <div className="px-5 py-5">
+                  <p className="eyebrow">学校・塾・予備校の方へ</p>
+                  <p className="serif mt-1.5 text-[1.02rem] leading-snug text-ink">ご相談・お問い合わせ</p>
+                  <p className="prose-ja mt-2.5 text-[0.82rem] leading-[1.9] text-ink-2">
+                    複数冊でのご利用、採用検討時の内容確認、教材選定について承ります。
+                  </p>
+                  {site.contact &&
+                    (site.contact.includes("@") ? (
+                      <p className="mt-3.5 break-all border-t border-rule pt-3.5 font-mono text-[0.92rem]">
+                        <a href={`mailto:${site.contact}`} className="text-navy underline underline-offset-4">
+                          {site.contact}
+                        </a>
+                      </p>
+                    ) : (
+                      <p className="mt-3.5 border-t border-rule pt-3.5">
+                        <a href={site.contact} target="_blank" rel="noopener" className="btn w-full">
+                          お問い合わせフォームへ
+                        </a>
+                      </p>
+                    ))}
+                  <p className="mt-2.5 text-[0.74rem] leading-relaxed text-ink-3">
+                    ご所属とお名前を添えていただけると、こちらの回答が早くなります。
+                  </p>
+                </div>
+              </div>
+
+              <p className="mt-4 text-[0.78rem] leading-relaxed text-ink-3">
+                価格・在庫・配送は Amazon の商品ページの表示が優先されます。
+              </p>
+            </div>
+          </aside>
+        </div>
 
         <p className="prose-ja mt-14 border-t border-rule pt-6 text-[0.78rem] leading-[1.9] text-ink-3">
           本サイトおよび教材は、各大学とは関係のない、独自に制作した非公式の教材です。

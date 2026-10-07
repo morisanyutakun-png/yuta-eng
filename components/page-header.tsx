@@ -1,4 +1,4 @@
-import { SectionMark } from "@/components/section-mark";
+import { CoverFan } from "@/components/cover-fan";
 import { sections, type SectionKey } from "@/lib/sections";
 
 /**
@@ -8,8 +8,12 @@ import { sections, type SectionKey } from "@/lib/sections";
  * 1〜2行の説明、右に記号。最初の画面に置くのはこれだけにして、
  * 細かい前置きは下の節へ送る。詰め込むと、何のページなのかが沈む。
  *
- * ラベルと記号は同じ柱の色になる（色はページ側の `--sec` から読む）。
+ * ラベルと上端の線は同じ柱の色になる（色はページ側の `--sec` から読む）。
  * 色だけで区別させず、ラベルの文字をかならず出す。
+ *
+ * 右に置くのは、そのページから辿れる**実物の表紙**。
+ * 線画の記号を置いていたが、何のことか分からないうえ素っ気なく、
+ * 刊行物を出しているサイトの見出しとしては弱かった。
  *
  * `meta` には年度や冊数のような短い数字を渡す。説明文の続きではなく、
  * 「どれだけあるか」を一目で示す行として使う。
@@ -19,11 +23,14 @@ export function PageHeader({
   title,
   lead,
   meta,
+  covers,
 }: {
   section: SectionKey;
   title: React.ReactNode;
   lead?: React.ReactNode;
   meta?: React.ReactNode;
+  /** 見出しの横に並べる表紙（最大3枚）。そのページから辿れる本にする */
+  covers?: string[];
 }) {
   return (
     <header className="border-b border-rule pb-8">
@@ -37,10 +44,8 @@ export function PageHeader({
           )}
         </div>
 
-        {/* 記号。狭い画面では文字の場所を奪うので出さない */}
-        <p className="sec-tint hidden size-[5.5rem] shrink-0 items-center justify-center sm:flex lg:size-[6.5rem]">
-          <SectionMark section={section} className="size-12 lg:size-14" />
-        </p>
+        {/* 表紙。狭い画面では文字の場所を奪うので出さない */}
+        {covers?.length ? <CoverFan covers={covers} className="hidden shrink-0 pt-1 sm:flex" priority /> : null}
       </div>
 
       {meta && <div className="mt-6">{meta}</div>}

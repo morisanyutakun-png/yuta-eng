@@ -99,6 +99,12 @@ function UniversityRow({ u }: { u: University }) {
 
 export default function BooksPage() {
   const kansei = kanseiAll.filter((k) => k.published);
+  // 見出しの横に、3つのシリーズを1冊ずつ並べる（使う順＝診断・完成演習・合格答案）
+  const seriesCovers = [
+    shindan.cover,
+    ...(kansei[0] ? [kansei[0].cover] : []),
+    `/covers/${leadUniv.books[0].asin}.webp`,
+  ];
   const groups = groupOrder
     .map((g) => [g, universities.filter((u) => u.group === g)] as const)
     .filter(([, list]) => list.length);
@@ -146,6 +152,7 @@ export default function BooksPage() {
         <PageHeader
           section="books"
           title="教材一覧"
+          covers={seriesCovers}
           lead={
             <>
               大学ごとの出題分析から書き下ろした、非公式の独自教材です。使う順に3つのシリーズを並べています。

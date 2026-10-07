@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { AsideBook } from "@/components/aside-book";
+import { ArticleLayout, AsideCard } from "@/components/article-layout";
 import { SolutionFooter } from "@/components/solution-footer";
 import { SourceLink } from "@/components/source-link";
 import { SubQuestionBlock } from "@/components/solution-blocks";
+import { amazonUrl } from "@/lib/books";
 import { getUniversity } from "@/lib/data";
 import { shortName, subject } from "@/lib/seo";
 import { NOT_OFFICIAL, published, questionOf, questionPath, setPath, solutionSet } from "@/lib/solutions";
@@ -101,23 +104,56 @@ export default async function QuestionPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:px-8">
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
-          <Link href="/kaisetsu" className="hover:text-navy">
-            過去問の解答・解説
-          </Link>
-          <span className="mx-1.5 text-rule">／</span>
-          <Link href={`/kaisetsu/${s.slug}`} className="hover:text-navy">
-            {subject(u)}
-          </Link>
-          <span className="mx-1.5 text-rule">／</span>
-          <Link href={setPath(s)} className="hover:text-navy">
-            {s.year}年度
-          </Link>
-          <span className="mx-1.5 text-rule">／</span>
-          <span className="text-ink-2">第{question.no}問</span>
-        </nav>
+      <ArticleLayout
+        section="kaisetsu"
+        breadcrumb={[
+          { href: "/kaisetsu", label: "過去問の解答・解説" },
+          { href: `/kaisetsu/${s.slug}`, label: subject(u) },
+          { href: setPath(s), label: `${s.year}年度` },
+          { label: `第${question.no}問` },
+        ]}
+        aside={
+          <>
+            {/* その年度のほかの大問へ。読みながら行き来できるようにする */}
+            <AsideCard title={`${s.year}年度の大問`}>
+              <ol className="-my-1">
+                {s.questions.map((q) => {
+                  const here = q.no === question.no;
+                  return (
+                    <li key={q.no}>
+                      <Link
+                        href={questionPath(s, q.no)}
+                        aria-current={here ? "page" : undefined}
+                        className={`flex gap-2.5 py-1.5 text-[0.86rem] leading-relaxed transition-colors hover:text-navy ${
+                          here ? "font-semibold text-navy" : "text-ink-2"
+                        }`}
+                      >
+                        <span aria-hidden="true" className="serif shrink-0 tabular-nums text-ink-3">
+                          0{q.no}
+                        </span>
+                        <span className="prose-ja min-w-0">{q.field}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ol>
+            </AsideCard>
 
+            {/* 読み終えた人がいちばん探すもの。読みながら目に入る位置に置く */}
+            {u.books[0] && (
+              <AsideBook
+                eyebrow="当サイト運営者が制作した教材"
+                title={u.books[0].title}
+                cover={`/covers/${u.books[0].asin}.webp`}
+                href={amazonUrl(u.books[0].asin)}
+                book={u.books[0]}
+                detail={{ href: `/univ/${u.slug}`, label: "この大学の出題分析を見る" }}
+                note={`${subject(u)}の出題を分析して書き下ろした予想問題集です。`}
+              />
+            )}
+          </>
+        }
+      >
         <header className="pb-2 pt-4">
           <p className="eyebrow">
             {s.university}　{s.year}年度　{s.schedule}　{s.division}
@@ -174,7 +210,7 @@ export default async function QuestionPage({ params }: Props) {
         </p>
 
         <SolutionFooter set={s} />
-      </div>
+      </ArticleLayout>
     </>
   );
 }

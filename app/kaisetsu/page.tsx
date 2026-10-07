@@ -76,6 +76,7 @@ export default function KaisetsuTop() {
         <PageHeader
           section="kaisetsu"
           title="過去問の解答・解説"
+          covers={unis.slice(0, 3).map(({ u }) => `/covers/thumb/${u.books[0].asin}.webp`)}
           lead={
             <>
               大学入試の数学の過去問を、当サイトで独自に解いた解答・計算過程・詳解・別解です。

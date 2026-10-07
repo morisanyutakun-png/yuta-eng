@@ -39,15 +39,31 @@ export function UniversityFinder({
   items,
   groups,
   headingLevel: H = "h3",
+  size = "md",
+  limit,
+  moreHref,
 }: {
   items: FinderItem[];
   groups: string[];
   /** 群の見出しの段。見出しの段が飛ばないよう、置く場所に合わせて渡す */
   headingLevel?: "h2" | "h3";
+  /** 検索欄の大きさ。トップでは探すことが主役なので大きくする */
+  size?: "md" | "lg";
+  /**
+   * 何も絞り込んでいないときに出す件数の上限。
+   * トップで64区分をいきなり全部並べると「多すぎて選べない」が先に来るので、
+   * 入口では少しだけ見せ、続きは一覧ページへ送る。
+   * 検索語や区分を選んだ時点で上限は外れ、該当するものは全部出す。
+   */
+  limit?: number;
+  /** 上限で隠れたぶんを見にいく先 */
+  moreHref?: string;
 }) {
   const [query, setQuery] = useState("");
   const [group, setGroup] = useState<string>(ALL);
   const deferred = useDeferredValue(query);
+  const idle = deferred.trim() === "" && group === ALL;
+  const big = size === "lg";
 
   const filtered = useMemo(() => {
     const q = normalize(deferred);
@@ -58,14 +74,21 @@ export function UniversityFinder({
     });
   }, [items, deferred, group]);
 
+  // 絞り込んでいないときだけ、入口として先頭を少しだけ見せる
+  const shown = useMemo(
+    () => (idle && limit ? filtered.slice(0, limit) : filtered),
+    [filtered, idle, limit],
+  );
+  const hidden = filtered.length - shown.length;
+
   const grouped = useMemo(() => {
     const map = new Map<string, FinderItem[]>();
-    for (const it of filtered) {
+    for (const it of shown) {
       if (!map.has(it.group)) map.set(it.group, []);
       map.get(it.group)!.push(it);
     }
     return [...map.entries()].sort((a, b) => groups.indexOf(a[0]) - groups.indexOf(b[0]));
-  }, [filtered, groups]);
+  }, [shown, groups]);
 
   return (
     <div>
@@ -78,7 +101,9 @@ export function UniversityFinder({
           <svg
             aria-hidden="true"
             viewBox="0 0 20 20"
-            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-ink-3"
+            className={`pointer-events-none absolute top-1/2 -translate-y-1/2 text-ink-3 ${
+              big ? "left-4 size-5" : "left-3 size-4"
+            }`}
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -94,7 +119,11 @@ export function UniversityFinder({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="大学名・かなで探す"
-            className="w-full border border-rule bg-white py-3 pl-10 pr-10 text-base text-ink outline-none placeholder:text-ink-3 focus:border-navy"
+            className={`w-full border bg-white pr-10 text-ink outline-none placeholder:text-ink-3 focus:border-navy ${
+              big
+                ? "border-rule-2 py-4 pl-12 text-[1.05rem] shadow-[0_1px_2px_rgba(21,24,28,0.05)]"
+                : "border-rule py-3 pl-10 text-base"
+            }`}
           />
           {query && (
             <button
@@ -138,7 +167,8 @@ export function UniversityFinder({
       </div>
 
       <p aria-live="polite" className="pt-4 text-[0.72rem] text-ink-3">
-        {filtered.length}件{query && <span className="ml-1">「{query}」の検索結果</span>}
+        {hidden > 0 ? `${filtered.length}件のうち${shown.length}件を表示` : `${filtered.length}件`}
+        {query && <span className="ml-1.5">「{query}」の検索結果</span>}
       </p>
 
       {filtered.length === 0 ? (
@@ -202,6 +232,14 @@ export function UniversityFinder({
             </ul>
           </section>
         ))
+      )}
+
+      {hidden > 0 && moreHref && (
+        <p className="mt-7 border-t border-rule pt-5">
+          <Link href={moreHref} className="btn">
+            すべての大学を見る（{filtered.length}区分）
+          </Link>
+        </p>
       )}
     </div>
   );
