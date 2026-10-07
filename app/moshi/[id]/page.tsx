@@ -9,7 +9,15 @@ import { MoshiDeliverables } from "@/components/moshi-deliverables";
 import { MoshiSample } from "@/components/moshi-sample";
 import { AnswerSheet, Flow } from "@/components/moshi-visual";
 import { factsLine, fieldChartCaption, getUniversity, yearRange, yearsLabel } from "@/lib/data";
-import { deliverableLine, moshi, moshiById, moshiPath, priceLabel, roundLabel } from "@/lib/moshi/config";
+import {
+  deliverableLine,
+  moshi,
+  moshiById,
+  moshiPath,
+  paymentLine,
+  priceLabel,
+  roundLabel,
+} from "@/lib/moshi/config";
 import { sectionStyle } from "@/lib/sections";
 import { shortName } from "@/lib/seo";
 import { getKansei } from "@/lib/series";
@@ -372,6 +380,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
               ["実施時期", `${roundLabel}。正式な日程は確定しだいご案内します`],
               ["受験方法", "オンライン・期間内の好きな日時"],
               ["受験料", `${priceLabel}（予定）。参加申込の時点では料金は発生しません`],
+              ["お支払い", paymentLine],
               ["採点と返却", `記述答案を人力で採点し、${deliverableLine}をまとめてお返しします`],
             ].map(([k, v]) => (
               <div key={k} className="grid gap-x-5 px-4 py-3.5 sm:grid-cols-[7rem_1fr]">
@@ -389,7 +398,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
           </h2>
           <p className="prose-ja mt-2.5 max-w-[38rem] text-[0.9rem] leading-[1.95] text-ink-2">
             {m.university}にはあらかじめ印を付けてあります。ほかの大学も受けたい場合は、続けてお選びください。
-            参加申込後、正式な受験日程とお支払い方法をご案内します。
+            参加申込後、正式な受験日程をメールでご案内します。{paymentLine}
           </p>
           <MoshiForm preselect={[m.id]} />
         </section>

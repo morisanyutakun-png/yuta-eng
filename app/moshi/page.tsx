@@ -8,7 +8,16 @@ import { MoshiDeliverables } from "@/components/moshi-deliverables";
 import { MoshiSample } from "@/components/moshi-sample";
 import { AnswerSheet, Flow, MarkIcon, PerUnivIcon, PeriodIcon } from "@/components/moshi-visual";
 import { getUniversity, siteTotals, universityCount } from "@/lib/data";
-import { analysisHref, deliverableLine, moshi, moshiPath, priceLabel, roundLabel } from "@/lib/moshi/config";
+import {
+  analysisHref,
+  cancelLine,
+  deliverableLine,
+  moshi,
+  moshiPath,
+  paymentLine,
+  priceLabel,
+  roundLabel,
+} from "@/lib/moshi/config";
 import { sectionStyle } from "@/lib/sections";
 import { kanseiPublished } from "@/lib/series";
 import { site } from "@/lib/site";
@@ -187,7 +196,7 @@ export default function MoshiPage() {
                 { k: "受験方法", v: "オンライン・期間内の好きな日時", note: "本番と同じ試験時間を目安として表示する予定です" },
                 { k: "受験料", v: `${priceLabel}（予定）`, note: "参加申込の時点では料金は発生しません" },
                 { k: "採点と返却", v: "全答案を人力で採点", note: `${deliverableLine}をまとめてお返しします` },
-                { k: "申込", v: "受付中", note: "お支払い方法は正式な日程とあわせてご案内します" },
+                { k: "お支払い", v: "銀行振込", note: "日程のご案内のときに、振込先と期限を個別にご相談します" },
               ].map((r) => (
                 <div
                   key={r.k}
@@ -319,11 +328,32 @@ export default function MoshiPage() {
           </h2>
           <p className="prose-ja mt-2.5 max-w-[38rem] text-[0.9rem] leading-[1.95] text-ink-2">
             受験を希望する大学を選び、お名前・メールアドレス・学年をご記入ください。
-            参加申込後、正式な受験日程とお支払い方法をご案内します。
-            お支払いの期限までに受験料のお支払いが確認できない場合、お申し込みは自動的に取り消しとなります。
+            参加申込後、正式な受験日程をメールでご案内します。{paymentLine}
+            {cancelLine}
           </p>
           <MoshiForm />
         </section>
+
+        {/*
+          決済の仕組みは作っていない。人数が少ないうちは、一人ずつやりとりするほうが早い。
+          だから「聞ける先がある」ことを、申込のすぐ下に出しておく。
+        */}
+        {site.contact && (
+          <section aria-labelledby="ask-moshi" className="mt-10 border border-rule bg-paper-2 px-5 py-5 sm:px-6">
+            <h2 id="ask-moshi" className="text-[0.95rem] font-semibold text-ink">
+              お支払いや受験の仕方について、ご不明な点は
+            </h2>
+            <p className="prose-ja mt-2 max-w-[40rem] text-[0.86rem] leading-[1.9] text-ink-2">
+              お支払いの方法や時期、受験の進め方など、気になることはお気軽にお尋ねください。
+              お申し込みの前でも後でも構いません。
+            </p>
+            <p className="mt-3 break-all font-mono text-[0.95rem]">
+              <a href={`mailto:${site.contact}`} className="text-navy underline underline-offset-4">
+                {site.contact}
+              </a>
+            </p>
+          </section>
+        )}
 
         {/* 学校・塾でまとめて受けさせたい先生向け。個人の申込とは別の入口を置く */}
         <section

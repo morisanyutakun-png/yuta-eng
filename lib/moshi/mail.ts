@@ -1,4 +1,12 @@
-import { deliverableLine, moshi, moshiUniversity, priceLabel, roundLabel } from "@/lib/moshi/config";
+import {
+  cancelLine,
+  deliverableLine,
+  moshi,
+  moshiUniversity,
+  paymentLine,
+  priceLabel,
+  roundLabel,
+} from "@/lib/moshi/config";
 import { site } from "@/lib/site";
 
 /**
@@ -134,7 +142,7 @@ function buildHtml(name: string, universityIds: string[]) {
 <title>${esc(moshi.title)} 参加申込</title></head>
 <body style="margin:0;padding:0;background:${C.band};">
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;">
-参加申込を受け付けました。正式な受験日程とお支払い方法は、確定しだいご案内します。
+参加申込を受け付けました。正式な受験日程は確定しだいご案内し、お支払いは個別にご相談します。
 </div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
        style="background:${C.band};padding:24px 12px;">
@@ -162,7 +170,7 @@ function buildHtml(name: string, universityIds: string[]) {
     <p style="margin:14px 0 0;font-size:14px;line-height:1.95;color:${C.ink2};">
       ${esc(name)} 様<br>
       このたびはお申し込みいただきありがとうございます。<br>
-      正式な受験日程とお支払い方法は、確定しだい改めてご案内します。
+      正式な受験日程は、確定しだい改めてご案内します。
     </p>
   </td></tr>
 
@@ -185,13 +193,13 @@ function buildHtml(name: string, universityIds: string[]) {
       ${row("実施時期", esc(roundLabel) + "。<br>正式な受験期間が決まりしだい、メールでご案内します。")}
       ${row(
         "受験料",
-        `${esc(priceLabel)}の予定です。<br><span style="color:${C.accent};font-weight:700;">現時点では料金は発生していません。</span><br>お支払い方法は日程のご案内とあわせてお知らせします。`,
+        `${esc(priceLabel)}の予定です。<br><span style="color:${C.accent};font-weight:700;">現時点では料金は発生していません。</span><br>${esc(paymentLine)}`,
       )}
       ${row(
         "採点と返却",
         `答案は人の手で採点します。${esc(deliverableLine)}をまとめた「${esc(moshi.deliverableName)}」をお返しします。`,
       )}
-      ${row("取り消し", "お支払いの期限までにご入金が確認できない場合、お申し込みは自動的に取り消しとなります。", true)}
+      ${row("取り消し", esc(cancelLine), true)}
     </table>
   </td></tr>
 
@@ -243,9 +251,9 @@ function buildText(name: string, universityIds: string[]) {
     "【このあとの流れ】",
     `実施時期　${roundLabel}。正式な受験期間が決まりしだい、メールでご案内します。`,
     `受験料　　${priceLabel}の予定です。現時点では料金は発生していません。`,
-    "　　　　　お支払い方法は日程のご案内とあわせてお知らせします。",
+    `　　　　　${paymentLine}`,
     `採点と返却　答案は人の手で採点します。${deliverableLine}をまとめた「${moshi.deliverableName}」をお返しします。`,
-    "取り消し　お支払いの期限までにご入金が確認できない場合、お申し込みは自動的に取り消しとなります。",
+    `取り消し　${cancelLine}`,
     "",
     `模試のご案内　${site.url}/moshi`,
     "",

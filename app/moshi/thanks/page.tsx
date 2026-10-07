@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
-import { moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
+import { cancelLine, moshi, paymentLine, priceLabel, roundLabel } from "@/lib/moshi/config";
 import { THANKS_COOKIE } from "@/lib/moshi/validate";
 import { site } from "@/lib/site";
 
@@ -57,8 +57,8 @@ export default async function MoshiThanks() {
   const done = await lastApplication();
   const next = [
     ["これから", `${roundLabel}。正式な受験期間が決まりしだい、メールでご案内します。`],
-    ["お支払い", `受験料は${priceLabel}の予定です。現時点では料金は発生していません。お支払い方法は日程のご案内とあわせてお知らせします。`],
-    ["取り消し", "お支払いの期限までにご入金が確認できない場合、お申し込みは自動的に取り消しとなります。"],
+    ["お支払い", `受験料は${priceLabel}の予定です。現時点では料金は発生していません。${paymentLine}`],
+    ["取り消し", cancelLine],
   ] as const;
 
   return (

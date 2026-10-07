@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 
 
-import { moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
+import { cancelLine, moshi, paymentLine, priceLabel, roundLabel } from "@/lib/moshi/config";
 
 /**
  * 参加申込のフォーム。
@@ -203,7 +203,7 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
           {[
             ["料金", `参加申込の時点では料金は発生しません。受験料は${priceLabel}の予定です。`],
             ["日程", `${roundLabel}。正式な受験日程が確定したあとに、メールでご案内します。`],
-            ["支払い", "お支払い方法は日程のご案内とあわせてお知らせします。期限までにご入金が確認できない場合、お申し込みは自動的に取り消しとなります。"],
+            ["支払い", `${paymentLine}${cancelLine}`],
           ].map(([k, v]) => (
             <li key={k} className="grid grid-cols-[4rem_1fr] gap-x-4 px-4 py-3">
               <span className="text-[0.78rem] leading-relaxed text-ink-3">{k}</span>
