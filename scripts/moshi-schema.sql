@@ -22,6 +22,12 @@ create table if not exists exam_applications (
   updated_at        timestamptz not null default now()
 );
 
+-- メールの結果。届かなかったときに理由を残し、管理画面で確かめられるようにする。
+-- 既にある表にも足せるよう、列ごとに if not exists で書く。
+alter table exam_applications add column if not exists mail_confirmation text;
+alter table exam_applications add column if not exists mail_admin        text;
+alter table exam_applications add column if not exists mail_at           timestamptz;
+
 -- 同じ人が二重に増えないようにする。大文字小文字の違いは同じ人とみなす
 create unique index if not exists exam_applications_email_key
   on exam_applications (lower(email));

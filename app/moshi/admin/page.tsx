@@ -15,6 +15,18 @@ import { adminAddress, canNotifyAdmin, canSendMail } from "@/lib/moshi/mail";
 export const dynamic = "force-dynamic";
 export const metadata = { robots: { index: false, follow: false } };
 
+/** メールの結果を1行で。記録が無い申込は「—」にする（古い申込など） */
+function MailState({ label, detail }: { label: string; detail: string | null }) {
+  if (!detail) return <span className="block text-[0.72rem] text-ink-3">{label} —</span>;
+  const ok = detail === "ok";
+  return (
+    <span className="block whitespace-nowrap text-[0.72rem]">
+      <span className="text-ink-3">{label} </span>
+      <span className={ok ? "text-navy" : "font-semibold text-accent"}>{ok ? "送信済み" : detail}</span>
+    </span>
+  );
+}
+
 const jp = (iso: string) =>
   new Date(iso).toLocaleString("ja-JP", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
 
@@ -104,10 +116,10 @@ export default async function MoshiAdmin() {
           <p className="mt-4 text-[0.9rem] text-ink-2">まだ申込はありません。</p>
         ) : (
           <div className="table-wrap mt-4">
-            <table className="w-full min-w-[52rem] border-collapse text-left text-[0.8rem]">
+            <table className="w-full min-w-[58rem] border-collapse text-left text-[0.8rem]">
               <thead>
                 <tr className="border-b-2 border-navy/35 bg-paper-2">
-                  {["申込日時", "氏名", "メールアドレス", "学年", "志望学部", "申込大学", "状態", ""].map((h) => (
+                  {["申込日時", "氏名", "メールアドレス", "学年", "志望学部", "申込大学", "メール送信", "状態", ""].map((h) => (
                     <th key={h || "操作"} scope="col" className="whitespace-nowrap px-3 py-2.5 text-[0.72rem] font-bold text-navy">
                       {h || <span className="sr-only">操作</span>}
                     </th>
@@ -124,6 +136,14 @@ export default async function MoshiAdmin() {
                     <td className="whitespace-nowrap px-3 py-2.5 align-top text-ink-2">{a.faculty ?? "—"}</td>
                     <td className="px-3 py-2.5 align-top text-ink-2">
                       {a.universityIds.map((id) => moshiUniversity(id)?.university ?? id).join("、")}
+                    </td>
+                    {/*
+                      届いたかどうかを1件ずつ出す。
+                      失敗した理由をそのまま出すので、何が起きたかが画面で分かる。
+                    */}
+                    <td className="px-3 py-2.5 align-top">
+                      <MailState label="確認" detail={a.mailConfirmation} />
+                      <MailState label="運営" detail={a.mailAdmin} />
                     </td>
                     <td className="whitespace-nowrap px-3 py-2.5 align-top text-ink-3">
                       {a.status}／{a.payment}

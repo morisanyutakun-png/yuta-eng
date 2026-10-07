@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { countApplications, hasDatabase, saveApplication } from "@/lib/moshi/db";
+import { countApplications, hasDatabase, recordMailResult, saveApplication } from "@/lib/moshi/db";
 import { sendAdminNotice, sendConfirmation } from "@/lib/moshi/mail";
 import { THANKS_COOKIE, parseApplication } from "@/lib/moshi/validate";
 
@@ -45,22 +45,30 @@ export async function POST(req: Request) {
   // メールが送れなくても申込は保存済み。申込自体は失敗にしない。
   // 申込者への確認と、運営への知らせは**別のメール**にする。
   // 同じ1通を bcc で回していたときは、2つの宛先が同じだと1通しか届かなかった。
-  const [mailed] = await Promise.all([
-    sendConfirmation(parsed.value.email, parsed.value.name, result.all),
-    (async () => {
-      const total = await countApplications();
-      return sendAdminNotice({
-        name: parsed.value.name,
-        email: parsed.value.email,
-        grade: parsed.value.grade,
-        faculty: parsed.value.faculty,
-        added: result.added,
-        all: result.all,
-        returning: result.returning,
-        total,
-      });
-    })(),
-  ]);
+  //
+  // 2通は順番に送る。Resend は毎秒2通までなので、同時に投げると上限ぎりぎりになる。
+  // 先に送るのは申込者への確認。運営への知らせが落ちても、申込は管理画面で見られる。
+  // 間を空けて待たせることはしない（上限に当たった実例はなく、
+  // 当たったときは postToResend が一度だけ送り直す）。
+  const confirmation = await sendConfirmation(parsed.value.email, parsed.value.name, result.all);
+
+  const total = await countApplications();
+  const admin = await sendAdminNotice({
+    name: parsed.value.name,
+    email: parsed.value.email,
+    grade: parsed.value.grade,
+    faculty: parsed.value.faculty,
+    added: result.added,
+    all: result.all,
+    returning: result.returning,
+    total,
+  });
+
+  // 届いたかどうかを申込に書いておく。管理画面で1件ずつ確かめられるようにする。
+  // 書けなくても申込は失敗にしない。
+  await recordMailResult(parsed.value.email, confirmation.detail, admin.detail);
+
+  const mailed = confirmation.ok;
 
   const res = NextResponse.json({
     ok: true,

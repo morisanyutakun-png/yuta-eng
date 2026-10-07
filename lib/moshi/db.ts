@@ -122,6 +122,32 @@ export async function saveApplication(input: ApplicationInput): Promise<Applicat
   }
 }
 
+/**
+ * メールの結果を申込に書いておく。
+ *
+ * 届かなかったときに、あとから「何が起きたか」を管理画面で見られるようにする。
+ * 以前は送信結果を捨てていたので、届かない理由を外からは追えなかった。
+ *
+ * 列がまだ無い古いテーブルでも申込を失敗させたくないので、黙って見送る
+ * （npm run moshi:setup を流せば列が足され、次から記録される）。
+ */
+export async function recordMailResult(
+  email: string,
+  confirmation: string,
+  admin: string,
+): Promise<void> {
+  try {
+    await pool().query(
+      `update exam_applications
+          set mail_confirmation = $2, mail_admin = $3, mail_at = now()
+        where lower(email) = lower($1)`,
+      [email, confirmation.slice(0, 200), admin.slice(0, 200)],
+    );
+  } catch {
+    /* 列が無い・書けない場合は記録しない。申込そのものは成り立っている */
+  }
+}
+
 /** 申込者の人数だけを数える。運営あての知らせに添える。 */
 export async function countApplications(): Promise<number | null> {
   try {
@@ -161,6 +187,10 @@ export type Summary = {
     payment: string;
     createdAt: string;
     universityIds: string[];
+    /** 確認メールの結果。記録がなければ null */
+    mailConfirmation: string | null;
+    /** 運営への知らせの結果 */
+    mailAdmin: string | null;
   }[];
 };
 
@@ -185,9 +215,15 @@ export async function summary(): Promise<Summary> {
     payment_status: string;
     created_at: Date;
     universities: string[];
+    mail_confirmation: string | null;
+    mail_admin: string | null;
   }>(
+    // 列がまだ無い表でも落ちないよう、行ごと JSON にしてから取り出す。
+    // 無い列は null になるだけで、問い合わせ自体は通る。
     `select a.id, a.name, a.email, a.grade, a.faculty,
             a.application_status, a.payment_status, a.created_at,
+            to_jsonb(a) ->> 'mail_confirmation' as mail_confirmation,
+            to_jsonb(a) ->> 'mail_admin'        as mail_admin,
             coalesce(array_agg(u.university_id) filter (where u.university_id is not null), '{}') as universities
        from exam_applications a
        left join exam_application_universities u on u.application_id = a.id
@@ -208,6 +244,8 @@ export async function summary(): Promise<Summary> {
       payment: r.payment_status,
       createdAt: new Date(r.created_at).toISOString(),
       universityIds: r.universities ?? [],
+      mailConfirmation: r.mail_confirmation,
+      mailAdmin: r.mail_admin,
     })),
   };
 }

@@ -23,6 +23,62 @@ import { site } from "@/lib/site";
  */
 export const canSendMail = () => Boolean(process.env.RESEND_API_KEY && process.env.MOSHI_MAIL_FROM);
 
+/** 送れたかどうかと、送れなかったときの理由。理由は管理画面に出す。 */
+export type MailResult = { ok: boolean; detail: string };
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Resend へ1通投げる。
+ *
+ * ここを1か所にまとめているのは、**落ちた理由を捨てないため**。
+ * 以前は res.ok だけを見て false を返していたので、届かないときに
+ * 何が起きたのか画面からもログからも分からなかった。
+ *
+ * Resend は毎秒2通までしか受け付けない。確認メールと運営への知らせで
+ * 2通になるので、呼ぶ側では順番に送る。それでも 429 で返ってきたときは、
+ * ここで一度だけ待って送り直す。
+ */
+async function postToResend(payload: Record<string, unknown>, label: string): Promise<MailResult> {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return { ok: false, detail: "RESEND_API_KEY が未設定" };
+
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) return { ok: true, detail: "ok" };
+
+      // 本文は読み捨てず、理由として短く残す（宛先や本文は入れない）
+      const body = await res.text().catch(() => "");
+      let message = body.slice(0, 160);
+      try {
+        const j = JSON.parse(body);
+        message = String(j.message ?? j.error ?? message).slice(0, 160);
+      } catch {
+        /* JSON でないときは本文の頭をそのまま使う */
+      }
+      const detail = `${res.status} ${message}`.trim();
+
+      // 多すぎると言われたときだけ、少し待って1度だけ送り直す
+      if (res.status === 429 && attempt === 0) {
+        await sleep(1100);
+        continue;
+      }
+      console.error(`[moshi-mail] ${label} 送信失敗: ${detail}`);
+      return { ok: false, detail };
+    } catch (e) {
+      const detail = e instanceof Error ? e.message.slice(0, 160) : "通信に失敗";
+      console.error(`[moshi-mail] ${label} 送信失敗: ${detail}`);
+      return { ok: false, detail };
+    }
+  }
+  return { ok: false, detail: "429 が続いた" };
+}
+
 /**
  * 運営の受け取り先。公開しているコードに個人の宛先を書かないので環境変数から読む。
  * 以前 bcc に使っていた名前も、設定済みのものをそのまま使えるように見る。
@@ -201,28 +257,25 @@ function buildText(name: string, universityIds: string[]) {
     .join("\n");
 }
 
-export async function sendConfirmation(to: string, name: string, universityIds: string[]): Promise<boolean> {
-  const key = process.env.RESEND_API_KEY;
+export async function sendConfirmation(
+  to: string,
+  name: string,
+  universityIds: string[],
+): Promise<MailResult> {
   const from = process.env.MOSHI_MAIL_FROM;
-  if (!key || !from) return false;
+  if (!from) return { ok: false, detail: "MOSHI_MAIL_FROM が未設定" };
 
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from,
-        to,
-        subject: `${moshi.title} 参加申込を受け付けました`,
-        html: buildHtml(name, universityIds),
-        text: buildText(name, universityIds),
-        ...(site.contact ? { reply_to: site.contact } : {}),
-      }),
-    });
-    return res.ok;
-  } catch {
-    return false;
-  }
+  return postToResend(
+    {
+      from,
+      to,
+      subject: `${moshi.title} 参加申込を受け付けました`,
+      html: buildHtml(name, universityIds),
+      text: buildText(name, universityIds),
+      ...(site.contact ? { reply_to: site.contact } : {}),
+    },
+    "申込者への確認",
+  );
 }
 
 /* ───── 運営への知らせ ───── */
@@ -257,11 +310,11 @@ const names = (ids: string[]) =>
  * 読むのは自分だけなので飾らない。件名だけで誰が何に申し込んだか分かるようにし、
  * 本文には画面に出している項目をそのまま並べる。
  */
-export async function sendAdminNotice(n: AdminNotice): Promise<boolean> {
-  const key = process.env.RESEND_API_KEY;
+export async function sendAdminNotice(n: AdminNotice): Promise<MailResult> {
   const from = process.env.MOSHI_MAIL_FROM;
   const to = adminAddress();
-  if (!key || !from || !to) return false;
+  if (!from) return { ok: false, detail: "MOSHI_MAIL_FROM が未設定" };
+  if (!to) return { ok: false, detail: "宛先が未設定（MOSHI_ADMIN_EMAIL）" };
 
   const addedNames = names(n.added);
   const allNames = names(n.all);
@@ -324,14 +377,5 @@ export async function sendAdminNotice(n: AdminNotice): Promise<boolean> {
     `申込の一覧　${site.url}/moshi/admin`,
   ].join("\n");
 
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ from, to, subject, html, text, reply_to: n.email }),
-    });
-    return res.ok;
-  } catch {
-    return false;
-  }
+  return postToResend({ from, to, subject, html, text, reply_to: n.email }, "運営への知らせ");
 }
