@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { MoshiForm } from "@/components/moshi-form";
-import { AnswerSheet, Flow } from "@/components/moshi-visual";
+import { AnswerSheet, Flow, MarkIcon, PerUnivIcon, PeriodIcon } from "@/components/moshi-visual";
 import { getUniversity, siteTotals, universityCount } from "@/lib/data";
 import { analysisHref, moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
 import { kanseiPublished } from "@/lib/series";
@@ -48,23 +48,25 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title, description, images: ["/og/home.jpg"] },
 };
 
-/** 模試の特徴。まだ作っていないものを約束しない範囲で書く。 */
-const points: { h: string; body: string }[] = [
+/**
+ * 特長。まだ作っていないものを約束しない範囲で書く。
+ * それぞれに小さな図を添える。見出しだけが続くより、何の話か早く分かる。
+ */
+const points = [
   {
-    h: "本番を意識したオリジナル問題",
-    body: "各大学の試験時間・大問構成・解答形式・頻出分野を踏まえて書き下ろします。過去問そのものは出題しません。",
-  },
-  {
-    h: "期間内の好きな日時に受験できます",
-    body: "受験期間のうち、都合のよい日時に取り組めます。本番と同じ試験時間を目安として画面に表示する予定です。",
-  },
-  {
-    h: "記述答案はすべて人力で採点します",
+    icon: MarkIcon,
+    h: "記述答案はすべて人力で採点",
     body: "答案は画像またはPDFで提出していただきます。途中式や記述内容まで確認したうえで、合計点と大問別の得点を出します。",
   },
   {
-    h: "詳細な解答解説をお渡しします",
-    body: "答えだけでなく、どの方針をなぜ選ぶのか、答案で省略しない方がよい説明は何かまで書いたものをお渡しします。",
+    icon: PerUnivIcon,
+    h: "大学ごとの形式で書き下ろし",
+    body: "試験時間・大問構成・解答形式・頻出分野を踏まえて作問します。過去問そのものは出題しません。",
+  },
+  {
+    icon: PeriodIcon,
+    h: "期間内の好きな日時に受験",
+    body: "受験期間のうち、都合のよい日時に取り組めます。本番と同じ試験時間を目安として画面に表示する予定です。",
   },
 ];
 
@@ -89,7 +91,7 @@ export default function MoshiPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="page">
+      <div className="page page-wide">
         <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
@@ -99,34 +101,66 @@ export default function MoshiPage() {
         </nav>
 
         <header className="border-b border-rule pb-8 pt-6">
-          <p className="eyebrow">{moshi.season}</p>
-          <h1 className="serif h-page mt-1.5 text-ink">{moshi.title}</h1>
-          <div className="mt-4 grid items-start gap-6 lg:grid-cols-[1fr_20rem]">
-            <p className="prose-ja max-w-[38rem] text-[0.97rem] leading-[1.95] text-ink-2">
-              大学ごとの入試形式を意識したオリジナル数学模試を、オンラインで実施します。
-              期間内の好きな日時に受験でき、記述答案はすべて人力で採点します。
-              答案は途中式まで読み、大問ごとに得点を出してお返しします。
-            </p>
+          <div className="grid items-center gap-8 lg:grid-cols-[1fr_26rem] lg:gap-12">
+            <div className="min-w-0">
+              <p className="eyebrow">{moshi.season}</p>
+              <h1 className="serif h-page mt-1.5 text-ink">{moshi.title}</h1>
+              <p className="prose-ja mt-4 text-[1rem] leading-[1.95] text-ink-2 sm:text-[1.05rem]">
+                大学ごとの入試形式を意識したオリジナル数学模試を、オンラインで実施します。
+                期間内の好きな日時に受験でき、記述答案はすべて人力で採点します。
+                答案は途中式まで読み、大問ごとに得点を出してお返しします。
+              </p>
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <a href="#apply" className="btn btn-primary">
+                  参加申込に進む
+                </a>
+                <a href="#unis" className="btn">
+                  開催大学を見る
+                </a>
+              </div>
+              <p className="mt-3 text-[0.78rem] text-ink-3">
+                参加申込の時点では料金は発生しません。
+              </p>
+            </div>
+
             {/* 文章より先に、この模試で何が起きるかを図で見せる */}
             <figure className="justify-self-center lg:justify-self-end">
-              <AnswerSheet className="w-[20rem] max-w-full" />
-              <figcaption className="mt-1.5 text-center text-[0.74rem] text-ink-3 lg:text-right">
+              <AnswerSheet className="w-[26rem] max-w-full" />
+              <figcaption className="mt-2 text-center text-[0.76rem] text-ink-3">
                 記述答案を人が読み、大問ごとに得点を出します
               </figcaption>
             </figure>
           </div>
+        </header>
 
+        {/* 特長。図を添えて横に並べる */}
+        <section aria-labelledby="points" className="mt-14">
+          <h2 id="points" className="rule-mark serif h-sect text-ink">
+            この模試について
+          </h2>
+          <ul className="mt-6 grid gap-px overflow-hidden border border-rule bg-rule lg:grid-cols-3">
+            {points.map((p) => (
+              <li key={p.h} className="bg-white p-5 lg:p-6">
+                <p.icon className="h-12 w-auto" />
+                <h3 className="mt-3 text-[0.98rem] font-semibold leading-snug text-ink">{p.h}</h3>
+                <p className="prose-ja mt-2 text-[0.87rem] leading-[1.9] text-ink-2">{p.body}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section aria-labelledby="youkou" className="mt-14">
+          <h2 id="youkou" className="rule-mark serif h-sect text-ink">
+            実施要項
+          </h2>
           {/*
             予備校の模試案内が使っている「実施要項」の形にそろえる。
             数字を散らして並べるより、項目名と内容を対で積むほうが、
             受けるかどうかを決めるのに必要なことが一度に読める。
             料金についての断りも、浮いた帯にせず要項の中に収める。
           */}
-          <div className="mt-7 border border-rule">
-            <p className="border-b border-rule bg-paper-2 px-4 py-2 text-[0.74rem] font-bold tracking-wide text-navy sm:px-5">
-              実施要項
-            </p>
-            <dl className="divide-y divide-rule">
+          <div className="mt-6 border border-rule">
+            <dl className="grid lg:grid-cols-2 lg:gap-x-px lg:bg-rule">
               {[
                 { k: "対象大学", v: `${moshi.universities.length}大学`, note: "下の一覧からお選びいただけます" },
                 { k: "実施時期", v: roundLabel.replace(/^第/, "第"), note: "正式な日程は確定しだいご案内します" },
@@ -135,7 +169,10 @@ export default function MoshiPage() {
                 { k: "採点", v: "全答案を人力で採点", note: "途中式や記述内容まで確認して得点を出します" },
                 { k: "申込", v: "受付中", note: "お支払い方法は正式な日程とあわせてご案内します" },
               ].map((r) => (
-                <div key={r.k} className="grid grid-cols-[5.5rem_1fr] gap-x-4 px-4 py-3 sm:grid-cols-[7rem_1fr] sm:px-5">
+                <div
+                  key={r.k}
+                  className="grid grid-cols-[5.5rem_1fr] gap-x-4 border-b border-rule bg-white px-4 py-3.5 last:border-b-0 sm:grid-cols-[7rem_1fr] sm:px-5 lg:border-b lg:[&:nth-last-child(-n+2)]:border-b-0"
+                >
                   <dt className="text-[0.8rem] leading-relaxed text-ink-3">{r.k}</dt>
                   <dd className="min-w-0">
                     <span className="block text-[0.93rem] font-semibold leading-snug text-ink">{r.v}</span>
@@ -146,28 +183,6 @@ export default function MoshiPage() {
             </dl>
           </div>
 
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <a href="#apply" className="btn btn-primary">
-              参加申込に進む
-            </a>
-            <a href="#unis" className="btn">
-              開催大学を見る
-            </a>
-          </div>
-        </header>
-
-        <section aria-labelledby="points" className="mt-12">
-          <h2 id="points" className="rule-mark serif h-sect text-ink">
-            この模試について
-          </h2>
-          <dl className="mt-6 space-y-6">
-            {points.map((p) => (
-              <div key={p.h}>
-                <dt className="text-[0.95rem] font-semibold leading-snug text-ink">{p.h}</dt>
-                <dd className="prose-ja mt-1.5 text-[0.9rem] leading-[1.95] text-ink-2">{p.body}</dd>
-              </div>
-            ))}
-          </dl>
         </section>
 
         <section aria-labelledby="flow" className="mt-14">
@@ -189,7 +204,7 @@ export default function MoshiPage() {
             同じ条件をカードごとに繰り返すと画面が埋まるので、
             期間・料金・採点は上の1行にまとめ、札には大学名と模試名だけを置く。
           */}
-          <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
+          <ul className="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
             {moshi.universities.map((u) => {
               const href = analysisHref(u);
               return (
