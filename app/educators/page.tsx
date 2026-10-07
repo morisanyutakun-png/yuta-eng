@@ -211,7 +211,7 @@ export default function EducatorsPage() {
               },
               {
                 h: "模試の団体でのお申し込み",
-                body: `${moshi.title}を、${moshi.group.min}名から${moshi.group.max}名まで、請求書・銀行振込の後払いで承ります。`,
+                body: `${moshi.title}を${moshi.group.min}名から承ります。人数の確定は受験の前日まで、ご請求は受験後です。`,
                 to: "#moshi",
                 label: "団体でのお申し込み",
               },
@@ -397,14 +397,60 @@ export default function EducatorsPage() {
           </div>
 
           {/*
-            条件は決め切って書く。「ご相談ください」とだけ書いたものは、
-            先生の側で検討が進まない。人数・締切・支払い・返すものを
-            数字と名前で出し、判断に要るものをこの表だけで揃える。
+            いちばん大事なのは「いつ何が決まるか」。
+            「お申し込みが確定した時点で請求」のような書き方だと、
+            何をもって確定とするのかが読み手に分からず、金額の根拠も立たない。
+            出来事の順に並べて、人数が決まる日と請求が出る日を名指しする。
           */}
-          <div className="mt-6 border border-rule">
-            <p className="border-b border-rule bg-paper-2 px-4 py-2 text-[0.74rem] font-bold tracking-wide text-navy">
-              団体でのお申し込み
-            </p>
+          <h3 className="mt-8 text-[1rem] font-semibold text-ink">決まる順番</h3>
+          <ol className="mt-4 border border-rule">
+            {[
+              {
+                h: "お申し込み",
+                when: "いつでも",
+                body: "受験期間が始まる前であれば、いつでも承ります。この時点では、おおよその人数と希望の時期だけで結構です。",
+              },
+              {
+                h: "実施日の決定",
+                when: "申し込みのあと",
+                body: `${roundLabel}。この期間のうち、教室で一斉に実施する日を1日お決めください。各自の家で、それぞれの都合のよい日に受けさせる形でも構いません。`,
+              },
+              {
+                h: "人数の確定",
+                when: "受験の前日まで",
+                body: "受験される日の前日までは、人数の増減を承ります。名簿のご提出もこのときまでで結構です。前日までに決まっていれば間に合います。",
+              },
+              {
+                h: "受験と返却",
+                when: "実施日",
+                body: "答案をご提出いただいたあと、採点して返却します。",
+              },
+              {
+                h: "ご請求",
+                when: "受験期間の終了後",
+                body: `実際に受験された人数で請求書を発行します。受験しなかった方の分は請求しません。お支払いの期限は、請求書の発行日から${moshi.group.paymentDays}日です。`,
+              },
+            ].map((x, i) => (
+              <li
+                key={x.h}
+                className="grid gap-x-5 border-b border-rule px-4 py-4 last:border-b-0 sm:grid-cols-[11rem_1fr]"
+              >
+                <p className="flex items-baseline gap-2.5">
+                  <span className="serif shrink-0 tabular-nums text-[0.82rem] text-[var(--sec)]">
+                    0{i + 1}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[0.92rem] font-semibold leading-snug text-ink">{x.h}</span>
+                    <span className="mt-0.5 block text-[0.74rem] text-ink-3">{x.when}</span>
+                  </span>
+                </p>
+                <p className="prose-ja mt-1.5 text-[0.86rem] leading-[1.9] text-ink-2 sm:mt-0">{x.body}</p>
+              </li>
+            ))}
+          </ol>
+
+          <h3 className="mt-8 text-[1rem] font-semibold text-ink">そのほかの条件</h3>
+          <div className="mt-4 border border-rule">
             <ul className="divide-y divide-rule">
               {[
                 [
@@ -412,32 +458,24 @@ export default function EducatorsPage() {
                   `${moshi.group.min}名から${moshi.group.max}名まで承ります。${moshi.group.max}名を超える場合は、講座やクラスで分けてお申し込みください。`,
                 ],
                 [
-                  "お申し込みの締切",
-                  "受験期間が始まる前日まで受け付けます。受験者の名簿は、受験される日までにご提出いただければ結構です。",
-                ],
-                [
-                  "日程",
-                  `${roundLabel}。この期間内であれば、教室で一斉に実施する日を1日ご指定いただけます。各自の家で受けさせる形でも構いません。`,
-                ],
-                [
                   "受験料",
                   `1名あたり${priceLabel}です。人数による割引は行っていません。`,
                 ],
                 [
                   "お支払い",
-                  `銀行振込による後払いです。お申し込みが確定した時点で学校・塾あての請求書をお送りし、お支払いの期限は発行日から${moshi.group.paymentDays}日です。先に受験していただき、そのあとのお支払いで構いません。`,
+                  "銀行振込です。受験が終わってからのお支払いで構いません。校内の手続きの都合で期限に合わない場合は、お申し込みのさいにお知らせください。",
                 ],
                 [
                   "書類",
-                  `見積書・請求書・納品書を発行します。宛名・件名・提出形式のご指定に応じますので、校内の手続きに必要な書式をお知らせください。${
+                  `見積書・請求書・納品書を発行します。見積書はお申し込みの前にもお出しできますので、校内の起案に必要でしたらお申し付けください。宛名・件名・提出形式のご指定にも応じます。${
                     moshi.group.invoiceRegistered
                       ? "適格請求書（インボイス）として発行できます。登録番号は請求書に記載します。"
                       : "なお当方は適格請求書発行事業者の登録をしていないため、お出しする請求書は適格請求書（インボイス）ではありません。消費税の仕入税額控除が必要な場合は、お申し込みの前にご確認ください。"
                   }`,
                 ],
                 [
-                  "キャンセル",
-                  "受験期間の開始前であれば、人数の減少も取り消しも承ります。請求は確定した人数で行います。",
+                  "取り消し",
+                  "受験の前日までであれば、人数の減少も全体の取り消しも承ります。費用はかかりません。",
                 ],
               ].map(([k, v]) => (
                 <li key={k} className="grid gap-x-5 px-4 py-3.5 sm:grid-cols-[8.5rem_1fr]">
