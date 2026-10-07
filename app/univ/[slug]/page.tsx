@@ -8,6 +8,7 @@ import { BookCta, InlineCta } from "@/components/book-cta";
 import { FaqSection } from "@/components/faq";
 import { FieldChart } from "@/components/field-chart";
 import { LookInsideSection } from "@/components/look-inside-section";
+import { MoshiLink } from "@/components/moshi-link";
 import { SolutionsCallout, SolutionsLink } from "@/components/solutions-link";
 import { solutionsFor } from "@/lib/solutions";
 import { StudyPlan } from "@/components/study-plan";
@@ -240,6 +241,8 @@ export default async function UniversityPage({ params }: Props) {
         ))}
 
         <SolutionsLink slug={u.slug} />
+
+        <MoshiLink slug={u.slug} />
 
         <StudyPlan u={u} />
 

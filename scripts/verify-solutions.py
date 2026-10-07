@@ -6,6 +6,9 @@
   ・大問2 … 平面と直線の交わりを、法線を外積で取り直して連立で
   ・大問3 … 積が N! になる組を全探索で数え上げ
   ・大問4 … 確率を分数のまま直接追い、2次元の歩きそのものでも確かめる
+
+模試の見本問題（lib/moshi/sample.ts）も、ここで同じように確かめる。
+公開する以上、解説と同じ基準で確かめておく。
 """
 import math
 from fractions import Fraction
@@ -1410,6 +1413,27 @@ direct = lambda n: Fraction(2**n, n)*sum(Fraction(k*2**(k-1), (n+k)*2**(n+k-1)) 
 ok("電通大4(v) (2^n/n)Σ a_k/a_(n+k) = (1/n)Σ k/(n+k)", all(exact(n) == direct(n) for n in range(1, 26)))
 ok("電通大4(v) 極限 1-log2", abs(float(exact(4000)) - (1 - math.log(2))) < 3e-4,
    f"n=4000 で {float(exact(4000)):.7f} / {1-math.log(2):.7f}")
+
+# ── 模試の見本問題（lib/moshi/sample.ts）─────────────────
+# 一般項を解き直すのではなく、S_n と a_n の関係だけから数列を直接作って、
+# 載せている一般項と T_n の式に突き合わせる。
+seq_m = []
+S_m = 0
+for n in range(1, 25):
+    # S_{n-1} + a_n = S_n = 2 a_n - 3n  →  a_n = S_{n-1} + 3n
+    an = S_m + 3 * n
+    seq_m.append(an)
+    S_m += an
+    assert S_m == 2 * an - 3 * n
+ok("模試見本(1) a1,a2,a3 = 3,9,21", seq_m[:3] == [3, 9, 21], str(seq_m[:3]))
+ok("模試見本(2) a_n=3(2^n-1)", all(seq_m[n-1] == 3*(2**n - 1) for n in range(1, 25)))
+ok("模試見本(2) 漸化式 a_(n+1)=2a_n+3",
+   all(seq_m[n] == 2*seq_m[n-1] + 3 for n in range(1, 24)))
+Tm_direct = lambda n: sum(k * seq_m[k-1] for k in range(1, n+1))
+Tm_closed = lambda n: 3*(n-1)*2**(n+1) + 6 - Fraction(3*n*(n+1), 2)
+ok("模試見本(3) T_n=3(n-1)2^(n+1)+6-3n(n+1)/2",
+   all(Tm_direct(n) == Tm_closed(n) for n in range(1, 25)),
+   f"T_1..T_4 = {[Tm_direct(n) for n in range(1, 5)]}")
 
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")

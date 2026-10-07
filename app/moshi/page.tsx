@@ -3,9 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { MoshiForm } from "@/components/moshi-form";
+import { MoshiSample } from "@/components/moshi-sample";
 import { AnswerSheet, Flow, MarkIcon, PerUnivIcon, PeriodIcon } from "@/components/moshi-visual";
 import { getUniversity, siteTotals, universityCount } from "@/lib/data";
-import { analysisHref, moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
+import { analysisHref, moshi, moshiPath, priceLabel, roundLabel } from "@/lib/moshi/config";
 import { sectionStyle } from "@/lib/sections";
 import { kanseiPublished } from "@/lib/series";
 import { site } from "@/lib/site";
@@ -24,19 +25,26 @@ const totals = siteTotals();
 
 const title = `${moshi.title}｜${moshi.season}`;
 const description =
-  `${moshi.season}の${moshi.title}です。${moshi.universities.length}大学について、` +
-  `各大学の入試形式を踏まえたオリジナル問題をオンラインで実施します。` +
-  `期間内の好きな日時に受験でき、記述答案はすべて人力で採点します。${roundLabel}。参加申込を受け付けています。`;
+  `志望校の入試形式に合わせて作る大学別の数学模試（冠模試の形式）です。旧帝大から地方国公立大まで` +
+  `${moshi.universities.length}大学。オンラインで受験でき、記述答案はすべて人力で採点します。` +
+  `見本問題と採点表を公開中。${roundLabel}。参加申込受付中。`;
 
 export const metadata: Metadata = {
   title,
   description,
   keywords: [
     "大学別 数学 模試",
+    "冠模試 数学",
+    "地方国公立 模試",
+    "国公立 二次 数学 模試",
     "オンライン 数学模試",
     "記述 模試 採点",
     "2027年度 入試 模試",
-    ...moshi.universities.map((u) => `${u.university} 数学 模試`),
+    // 「三重大学 数学 模試」でも「三重大 数学 模試」でも辿り着けるようにする
+    ...moshi.universities.flatMap((u) => [
+      `${u.university} 数学 模試`,
+      `${u.university.replace(/大学$/, "大")} 数学 模試`,
+    ]),
   ],
   alternates: { canonical: "/moshi" },
   openGraph: {
@@ -195,6 +203,29 @@ export default function MoshiPage() {
           <Flow />
         </section>
 
+        {/*
+          「冠模試」「大学別模試」で探している人に、何を指す言葉かを先に示す。
+          言葉の説明であって、他社の模試の有無について断定はしない。
+        */}
+        <section aria-labelledby="about-kanmoshi" className="mt-14">
+          <h2 id="about-kanmoshi" className="rule-mark serif h-sect text-ink">
+            大学別模試（冠模試）とは
+          </h2>
+          <div className="prose-ja mt-3 max-w-[40rem] space-y-3 text-[0.9rem] leading-[1.95] text-ink-2">
+            <p>
+              志望校1校の入試形式に合わせて作る模試を、大学別模試（冠模試）と呼びます。
+              全国共通の模試が「全体の中での位置」を測るのに対し、大学別模試は
+              <strong className="font-semibold text-ink">その大学の試験時間・大問構成・解答形式・頻出分野</strong>
+              のまま解いて、本番と同じ条件で答案を書く練習をするためのものです。
+            </p>
+            <p>
+              本模試は{moshi.universities.length}大学で実施します。旧帝大から、三重大学・岡山大学・千葉大学といった
+              地方国公立大学まで、いずれも当サイトが{totals.span}の過去問を分析したうえで作問します。
+              答案はすべて人の手で読み、大問ごとの得点と解説をお返しします。
+            </p>
+          </div>
+        </section>
+
         <section aria-labelledby="unis" className="mt-14">
           <h2 id="unis" className="rule-mark serif h-sect text-ink">
             開催予定の{moshi.universities.length}大学
@@ -207,30 +238,57 @@ export default function MoshiPage() {
             同じ条件をカードごとに繰り返すと画面が埋まるので、
             期間・料金・採点は上の1行にまとめ、札には大学名と模試名だけを置く。
           */}
+          {/*
+            札そのものを、その大学の案内ページへの入口にする。
+            「三重大の模試」を探して来た人が、10大学の中から自分の大学を
+            見つけ直さずに済むようにするため。
+          */}
           <ul className="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
             {moshi.universities.map((u) => {
-              const href = analysisHref(u);
+              const analysis = analysisHref(u);
               return (
-                <li key={u.id} className="card flex items-center justify-between gap-3 px-4 py-3.5">
-                  <span className="min-w-0">
-                    <span className="block text-[1rem] font-semibold leading-snug text-ink">{u.university}</span>
-                    <span className="mt-0.5 block text-[0.8rem] text-ink-2">{u.exam}</span>
-                  </span>
-                  {href && (
-                    <Link
-                      href={href}
-                      className="shrink-0 whitespace-nowrap text-[0.76rem] text-navy underline underline-offset-4"
+                <li key={u.id}>
+                  <Link href={moshiPath(u)} className="card card-link group flex h-full items-center gap-3 px-4 py-3.5">
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[1rem] font-semibold leading-snug text-ink transition-colors group-hover:text-navy">
+                        {u.university}
+                      </span>
+                      <span className="mt-0.5 block text-[0.8rem] text-ink-2">{u.exam}</span>
+                      {analysis && (
+                        <span className="mt-1.5 block text-[0.72rem] text-ink-3">
+                          出題形式・頻出分野・見本問題
+                        </span>
+                      )}
+                    </span>
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 20 20"
+                      className="size-3.5 shrink-0 text-ink-3 transition-transform group-hover:translate-x-0.5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
                     >
-                      出題分析
-                    </Link>
-                  )}
+                      <path d="m7 4 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </Link>
                 </li>
               );
             })}
           </ul>
           <p className="mt-3 text-[0.78rem] text-ink-3">
-            いずれも開催予定です。各大学の出題分析は、当サイトの分析ページでご覧いただけます。
+            いずれも開催予定です。大学名を選ぶと、その大学の出題形式と見本問題をご覧いただけます。
           </p>
+        </section>
+
+        {/* 申し込む前に中身を確かめられるようにする。文章で説明するより早い */}
+        <section aria-labelledby="sample-heading" className="mt-14 scroll-mt-20" id="sample">
+          <h2 id="sample-heading" className="rule-mark serif h-sect text-ink">
+            どんな問題が出て、どう採点されるか
+          </h2>
+          <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
+            本模試の見本を1題そのまま載せます。解答例と採点表まで出しますので、申し込む前に中身をご確認ください。
+          </p>
+          <MoshiSample />
         </section>
 
         <section aria-labelledby="apply-heading" className="mt-14 scroll-mt-20" id="apply">

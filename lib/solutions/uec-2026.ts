@@ -517,7 +517,7 @@ export const uec2026: SolutionSet = {
         verified: [
           "$a_n=n\\cdot2^{n-1}$ が漸化式と $a_2=4,\\ a_4=32$ に合うことを $n\\le30$ で確かめた",
           "$T_n=2^{n+1}-2$、$S_n=(n-1)2^{n}+1$ を $n\\le25$ で直接の総和と突き合わせた",
-          "(v) の式が $\\frac1n\\sum\\frac{k}{n+k}$ に簡約できることを分数のまま $n\\le25$ で確かめ、$n=5000$ で $1-\\log2$ に近づくことを見た",
+          "(v) の式が $\\frac1n\\sum_{k=1}^{n}\\frac{k}{n+k}$ に簡約できることを分数のまま $n\\le25$ で確かめ、$n=5000$ で $1-\\log2$ に近づくことを見た",
         ],
         rightsHolds: [],
         todos: [],
@@ -590,7 +590,7 @@ export const uec2026: SolutionSet = {
           label: "(iv)",
           task: String.raw`$S_n=\displaystyle\sum_{k=1}^{n}a_k$、$T_n=\displaystyle\sum_{k=1}^{n}b_k$ の一般項を求める`,
           answer: String.raw`$T_n=2^{n+1}-2$、$S_n=(n-1)2^{n}+1$`,
-          approach: String.raw`$T_n$ は等比の和。$S_n$ は $\sum k\cdot2^{k-1}$ だが、**$b_k=a_{k+1}-2a_k$ を足す**と $S$ と $T$ の関係式が出て、$\sum k x^{k}$ の計算をせずに済む。`,
+          approach: String.raw`$T_n$ は等比の和。$S_n$ は $\sum_{k=1}^{n}k\cdot2^{k-1}$ だが、**$b_k=a_{k+1}-2a_k$ を足す**と $S$ と $T$ の関係式が出て、$\sum_{k=1}^{n}kx^{k}$ の計算をせずに済む。`,
           blocks: [
             { k: "math", t: String.raw`T_n=\sum_{k=1}^{n}2^{k}=\frac{2\left(2^{n}-1\right)}{2-1}=2^{n+1}-2` },
             {
@@ -610,7 +610,7 @@ export const uec2026: SolutionSet = {
           check: String.raw`$n=1,2,3,4$ で $S_n=1,\ 5,\ 17,\ 49$。直接足した $1,\ 1+4,\ 1+4+12,\ 1+4+12+32$ と一致する。$T_n$ も $2,6,14,30$ で $2^{n+1}-2$ と合う。`,
           pitfalls: [
             String.raw`$\displaystyle\sum_{k=1}^{n}a_{k+1}$ は $S_n$ ではない。$a_2$ から $a_{n+1}$ までなので、$S_n$ に $a_{n+1}$ を足して $a_1$ を引く。`,
-            String.raw`$\sum k\cdot2^{k-1}$ をずらし算で出してもよいが、$b_k$ を足すほうが短い。`,
+            String.raw`$\sum_{k=1}^{n}k\cdot2^{k-1}$ をずらし算で出してもよいが、$b_k$ を足すほうが短い。`,
           ],
         },
         {
@@ -638,10 +638,10 @@ export const uec2026: SolutionSet = {
             },
             { k: "math", t: String.raw`=\Big[x-\log(1+x)\Big]_{0}^{1}=1-\log2` },
           ],
-          check: String.raw`$1-\log2=0.30685\ldots$。$n=10,100,1000,5000$ で $0.3312,\ 0.3093,\ 0.3071,\ 0.3069$ と近づく。$\dfrac{2^{n}}{n}\sum\dfrac{a_k}{a_{n+k}}$ と $\dfrac1n\sum\dfrac{k}{n+k}$ が厳密に等しいことも、分数のまま $n\le25$ で確かめた。`,
+          check: String.raw`$1-\log2=0.30685\ldots$。$n=10,100,1000,5000$ で $0.3312,\ 0.3093,\ 0.3071,\ 0.3069$ と近づく。$\dfrac{2^{n}}{n}\sum_{k=1}^{n}\dfrac{a_k}{a_{n+k}}$ と $\dfrac1n\sum_{k=1}^{n}\dfrac{k}{n+k}$ が厳密に等しいことも、分数のまま $n\le25$ で確かめた。`,
           pitfalls: [
             String.raw`$\dfrac{x}{1+x}$ はそのままでは積分できない。$1-\dfrac{1}{1+x}$ に分ける。`,
-            String.raw`区分求積に持ち込むには $\dfrac1n\sum f\!\left(\dfrac kn\right)$ の形にそろえる。$\dfrac{k}{n+k}$ を分母分子ともに $n$ で割るのがその操作。`,
+            String.raw`区分求積に持ち込むには $\dfrac1n\sum_{k=1}^{n}f\!\left(\dfrac kn\right)$ の形にそろえる。$\dfrac{k}{n+k}$ を分母分子ともに $n$ で割るのがその操作。`,
             String.raw`$2^{n}$ は約分で完全に消える。残ると発散する式に見えてしまう。`,
           ],
         },

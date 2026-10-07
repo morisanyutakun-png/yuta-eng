@@ -45,6 +45,11 @@ export const validIds = (ids: unknown): string[] => {
   return [...new Set(ids.filter((x): x is string => typeof x === "string" && known.has(x)))];
 };
 
+/** 大学別の案内ページ。id は data/moshi.json のもので、あとから変えない */
+export const moshiPath = (u: MoshiUniversity) => `/moshi/${u.id}`;
+
+export const moshiById = (id: string) => moshi.universities.find((u) => u.id === id);
+
 /** その大学の分析ページがサイトにあるかを確かめてから繋ぐ */
 export const analysisHref = (u: MoshiUniversity) =>
   u.slug && getUniversity(u.slug) ? `/univ/${u.slug}` : null;

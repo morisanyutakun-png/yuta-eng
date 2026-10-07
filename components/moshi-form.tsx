@@ -16,12 +16,17 @@ import { moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
  *
  * 送り先はサーバーの API ひとつで、保存も送信もそちらで行う。
  * 画面側では鍵も接続先も持たない。
+ *
+ * 大学別のページに置くときは `preselect` でその大学に印を付けておく。
+ * 探して選び直させない。
  */
 
-export function MoshiForm() {
+export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
   const base = useId();
   const router = useRouter();
-  const [picked, setPicked] = useState<string[]>([]);
+  // 大学別のページから来たときは、その大学に印を付けた状態で始める。
+  // 選び直しはできるので、ほかの大学を足して申し込むこともできる。
+  const [picked, setPicked] = useState<string[]>(preselect);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

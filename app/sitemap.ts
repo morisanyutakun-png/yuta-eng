@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { universities } from "@/lib/data";
+import { moshi, moshiPath } from "@/lib/moshi/config";
 import { kanseiPublished } from "@/lib/series";
 import { hasSolutions, published, questionPath, setPath } from "@/lib/solutions";
 import { site } from "@/lib/site";
@@ -14,6 +15,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/shindan`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site.url}/kansei`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site.url}/educators`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
+    // 模試。案内と、大学ごとのページ。申込を締めたら round を直すだけで追従する
+    { url: `${site.url}/moshi`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
+    ...moshi.universities.map((u) => ({
+      url: `${site.url}${moshiPath(u)}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    { url: `${site.url}/moshi/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
     // 近日追加予定の巻はページがないので載せない（ASIN が入ると自動で加わる）
     ...kanseiPublished.map((k) => ({
       url: `${site.url}/kansei/${k.slug}`,
