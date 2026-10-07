@@ -312,6 +312,31 @@ export default function MoshiPage() {
           <MoshiForm />
         </section>
 
+        {/* 学校・塾でまとめて受けさせたい先生向け。個人の申込とは別の入口を置く */}
+        <section
+          aria-labelledby="for-teachers"
+          className="mt-14 border border-rule"
+          style={sectionStyle("educators")}
+        >
+          <div className="sec-rule" />
+          <div className="flex flex-col gap-5 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-7">
+            <div className="min-w-0">
+              <p className="eyebrow">学校・塾・予備校の先生へ</p>
+              <h2 id="for-teachers" className="serif mt-1.5 text-[1.15rem] leading-snug text-ink">
+                クラス単位でのお申し込みもご相談ください
+              </h2>
+              <p className="prose-ja mt-2 max-w-[38rem] text-[0.86rem] leading-[1.9] text-ink-2">
+                講座や学年のまとまりで受験させたい場合のご相談を承っています。
+                採点は人の手で行うため、人数と時期によってはお受けできないことがあります。
+                おおよその人数と希望時期をお知らせください。
+              </p>
+            </div>
+            <Link href="/educators#moshi" className="btn shrink-0">
+              先生方へのご案内
+            </Link>
+          </div>
+        </section>
+
         {/* 作っている人。確かめられる事実だけを置く */}
         <section aria-labelledby="who" className="mt-16 border-t border-rule pt-9">
           <h2 id="who" className="serif h-sect text-ink">

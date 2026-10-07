@@ -5,6 +5,7 @@ import Link from "next/link";
 import { PageHeader } from "@/components/page-header";
 import { ProductPanel, type Product } from "@/components/product-panel";
 import { siteTotals, universities, universityCount } from "@/lib/data";
+import { moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
 import { sampleCount } from "@/lib/samples";
 import { sectionStyle } from "@/lib/sections";
 import { shortName, subject } from "@/lib/seo";
@@ -194,7 +195,7 @@ export default function EducatorsPage() {
           <h2 id="ask" className="rule-mark serif h-sect text-ink">
             ご相談いただけること
           </h2>
-          <ol className="mt-5 grid gap-px border border-rule bg-rule sm:grid-cols-3">
+          <ol className="mt-5 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 h: "複数冊でのご利用",
@@ -207,6 +208,12 @@ export default function EducatorsPage() {
                 body: `収録範囲・難易度・解説の方針は、出題分析と抜粋（${sampleCount}冊ぶん）でご確認いただけます。`,
                 to: "#check",
                 label: "中身を確かめる",
+              },
+              {
+                h: "模試のまとめてのお申し込み",
+                body: `${moshi.title}を、クラスや講座の単位で受験させたい場合のご相談を承ります。`,
+                to: "#moshi",
+                label: "模試のご利用について",
               },
               {
                 h: "教材選定のご相談",
@@ -360,13 +367,83 @@ export default function EducatorsPage() {
           </div>
         </section>
 
+        {/*
+          模試をクラス単位で受けさせたい先生向け。
+          団体受験は模試の主な入り口だが、採点は人の手でやっているので
+          人数と時期によっては受けられない。できないことを先に書いて、
+          そのうえで相談を受ける形にする。仕組みのない約束はしない。
+        */}
+        <section aria-labelledby="moshi-heading" className="mt-14 scroll-mt-20" id="moshi">
+          <h2 id="moshi-heading" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
+            模試をまとめてお申し込みいただく場合
+          </h2>
+          <div className="prose-ja mt-5 space-y-3 text-[0.9rem] leading-[2] text-ink-2">
+            <p>
+              <Link href="/moshi" className="font-semibold text-navy underline underline-offset-4">
+                {moshi.title}
+              </Link>
+              は、志望校1校の入試形式に合わせて作る大学別の数学模試です。
+              {moshi.universities.length}大学で実施し、記述答案はすべて人の手で採点して、大問ごとの得点と解説をお返しします。
+              クラスや講座の単位でまとめて受験させたい場合のご相談を承っています。
+            </p>
+            <p>
+              受験はオンラインで、期間内の都合のよい日時に行えます。教室で一斉に取り組ませることも、
+              各自の家で受けさせることもできます。出題の形式と採点の基準は、
+              <Link href="/moshi#sample" className="text-navy underline underline-offset-4">
+                見本問題
+              </Link>
+              で実物をご確認いただけます。
+            </p>
+          </div>
+
+          <div className="mt-6 border border-rule">
+            <p className="border-b border-rule bg-paper-2 px-4 py-2 text-[0.74rem] font-bold tracking-wide text-navy">
+              ご相談の前にお知らせしておくこと
+            </p>
+            <ul className="divide-y divide-rule">
+              {[
+                [
+                  "人数と時期",
+                  "採点を人の手で行っているため、人数と時期によってはお受けできない場合があります。ご検討の段階で、おおよその人数と希望時期をお知らせください。",
+                ],
+                [
+                  "日程",
+                  `${roundLabel}。正式な受験期間が決まりしだいご案内します。校内の予定に合わせた期間の調整も、可能な範囲でご相談ください。`,
+                ],
+                [
+                  "お支払い",
+                  `受験料は${priceLabel}の予定です。学校・塾としてのお支払い方法（請求書が必要かどうかなど）は、人数とあわせてご相談ください。`,
+                ],
+                [
+                  "お返しするもの",
+                  "受験された方ごとの得点と解説です。クラス単位の成績一覧のような帳票は用意していません。必要な形式があれば、できるかどうかを含めてご相談ください。",
+                ],
+              ].map(([k, v]) => (
+                <li key={k} className="grid gap-x-5 px-4 py-3.5 sm:grid-cols-[7rem_1fr]">
+                  <span className="text-[0.78rem] leading-relaxed text-ink-3">{k}</span>
+                  <span className="prose-ja mt-1 text-[0.86rem] leading-[1.9] text-ink-2 sm:mt-0">{v}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <p className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2.5 text-[0.86rem]">
+            <Link href="/moshi" className="btn">
+              模試のご案内を見る
+            </Link>
+            <Link href="#contact" className="text-navy underline underline-offset-4">
+              ご相談はこちらから
+            </Link>
+          </p>
+        </section>
+
         <section aria-labelledby="contact" className="mt-14">
           <h2 id="contact" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
             お問い合わせ
           </h2>
           <div className="prose-ja mt-5 space-y-4 text-[0.9rem] leading-[2] text-ink-2">
             <p>
-              収録範囲、難易度、進度に合わせた使い方などについてお答えします。
+              収録範囲、難易度、進度に合わせた使い方、模試のまとめてのお申し込みについてお答えします。
             </p>
             {site.contact &&
               (site.contact.includes("@") ? (
@@ -408,7 +485,7 @@ export default function EducatorsPage() {
                   <p className="eyebrow">学校・塾・予備校の方へ</p>
                   <p className="serif mt-1.5 text-[1.02rem] leading-snug text-ink">ご相談・お問い合わせ</p>
                   <p className="prose-ja mt-2.5 text-[0.82rem] leading-[1.9] text-ink-2">
-                    複数冊でのご利用、採用検討時の内容確認、教材選定について承ります。
+                    複数冊でのご利用、模試のまとめてのお申し込み、採用検討時の内容確認、教材選定について承ります。
                   </p>
                   {site.contact &&
                     (site.contact.includes("@") ? (
