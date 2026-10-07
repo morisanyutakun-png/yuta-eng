@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { HeaderStats, PageHeader } from "@/components/page-header";
+import { sectionStyle } from "@/lib/sections";
 import { subject } from "@/lib/seo";
 import { NOT_OFFICIAL, lastUpdated, published, questionCount, setPath, solutionUniversities } from "@/lib/solutions";
 import { site } from "@/lib/site";
@@ -55,7 +57,10 @@ export default function KaisetsuTop() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8">
+      <div
+        className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
+        style={sectionStyle("kaisetsu")}
+      >
         <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
@@ -64,56 +69,39 @@ export default function KaisetsuTop() {
           <span className="text-ink-2">過去問の解答・解説</span>
         </nav>
 
-        <header className="pb-7 pt-4">
-          <p className="eyebrow">当サイト独自の解答・解説</p>
-          <h1 className="serif mt-1.5 text-[1.7rem] leading-snug text-ink sm:text-[2.1rem]">過去問の解答・解説</h1>
-          <p className="prose-ja mt-3 max-w-[40rem] text-[0.95rem] leading-[1.95] text-ink-2">
-            大学入試の数学の過去問を、当サイトで独自に解いた解答・計算過程・詳解・別解です。
-            どの方針をなぜ選ぶのか、場合分けや端点の確認をどこまで書くのか、答案で省略しない方がよい説明は何かまで載せています。
-          </p>
+        {/*
+          最初の画面には「何の解答か」「どれだけあるか」だけを置く。
+          掲載のきまりは下に節があるので、ここでは1行の断り書きとリンクだけにする。
+        */}
+        <PageHeader
+          section="kaisetsu"
+          title="過去問の解答・解説"
+          lead={
+            <>
+              大学入試の数学の過去問を、当サイトで独自に解いた解答・計算過程・詳解・別解です。
+              どの方針をなぜ選ぶのか、答案で省略しない方がよい説明は何かまで書いています。
+            </>
+          }
+          meta={
+            <HeaderStats
+              items={[
+                { k: "掲載した大学", v: unis.length, u: "大学" },
+                { k: "掲載した年度", v: published.length, u: "年度分" },
+                { k: "解いた大問", v: questionCount, u: "問" },
+              ]}
+            />
+          }
+        />
 
-          <dl className="mt-6 grid max-w-[34rem] grid-cols-3 gap-4 border-y border-rule py-4">
-            {[
-              { k: "掲載した大学", v: unis.length, u: "大学" },
-              { k: "掲載した年度", v: published.length, u: "年度分" },
-              { k: "解いた大問", v: questionCount, u: "問" },
-            ].map((x) => (
-              <div key={x.k}>
-                <dt className="text-[0.68rem] text-ink-3">{x.k}</dt>
-                <dd className="serif mt-1 leading-none text-ink">
-                  <span className="text-[1.7rem] tabular-nums">{x.v}</span>
-                  <span className="ml-0.5 font-sans text-[0.7rem] font-normal text-ink-3">{x.u}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
+        <p className="prose-ja mt-5 text-[0.82rem] leading-[1.9] text-ink-3">
+          {NOT_OFFICIAL}
+          {lastUpdated && `　最終更新 ${lastUpdated.replace(/-/g, "/")}。`}
+          <Link href="/kaisetsu/policy" className="ml-1 text-navy underline underline-offset-4">
+            掲載方針
+          </Link>
+        </p>
 
-          {/* サイト内のほかの断り書きと同じ作法にそろえる。色の帯は使わない */}
-          <div className="mt-6 max-w-[40rem] border border-rule">
-            <p className="border-b border-rule bg-paper-2 px-4 py-2 text-[0.74rem] font-bold tracking-wide text-navy">
-              掲載について
-            </p>
-            <dl className="divide-y divide-rule">
-              {[
-                ["解答", NOT_OFFICIAL],
-                ["問題文", "掲載していません。大学が問題を公開している年度は、そのページへリンクしています。"],
-                ...(lastUpdated ? [["最終更新", lastUpdated.replace(/-/g, "/")] as const] : []),
-              ].map(([k, v]) => (
-                <div key={k} className="grid grid-cols-[4.5rem_1fr] gap-x-4 px-4 py-2.5">
-                  <dt className="text-[0.78rem] leading-relaxed text-ink-3">{k}</dt>
-                  <dd className="prose-ja text-[0.85rem] leading-[1.9] text-ink-2">{v}</dd>
-                </div>
-              ))}
-            </dl>
-            <p className="border-t border-rule px-4 py-2.5 text-[0.82rem]">
-              <Link href="/kaisetsu/policy" className="font-semibold text-navy underline underline-offset-4">
-                掲載方針をくわしく見る
-              </Link>
-            </p>
-          </div>
-        </header>
-
-        <section aria-labelledby="by-univ" className="mt-4">
+        <section aria-labelledby="by-univ" className="mt-12">
           <h2 id="by-univ" className="rule-mark rule-mark-accent serif text-[1.3rem] text-ink">
             大学から探す
           </h2>

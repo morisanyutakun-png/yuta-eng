@@ -136,6 +136,7 @@ export default function ShindanPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <ArticleLayout
+        section="shindan"
         breadcrumb={[{ href: "/", label: "トップ" }, { label: "志望校診断模試" }]}
         aside={
           <AsideBook

@@ -174,13 +174,19 @@ body {
   }
 }
 
-/* 章の始まりに引く細い罫（表紙の意匠に合わせる） */
+/*
+ * 章の始まりに引く細い罫（表紙の意匠に合わせる）。
+ *
+ * 色は `--sec`（その柱の色。lib/sections.ts で決める）を読む。
+ * ページの外側で `--sec` を1つ置けば、そのページの罫とラベルが
+ * まとめてその色になる。置かないページは紺のまま。
+ */
 .rule-mark::before {
   content: "";
   display: block;
   width: 2.25rem;
   height: 2px;
-  background: var(--color-navy);
+  background: var(--sec, var(--color-navy));
   margin-bottom: 0.85rem;
 }
 
@@ -198,7 +204,23 @@ body {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--color-accent);
+  color: var(--sec, var(--color-accent));
+}
+
+/*
+ * ページ見出しの帯。
+ * 上端に柱の色で細い線を引き、記号の後ろにごく薄く同じ色を敷く。
+ * 塗るのはこの2か所だけで、本文の地色は白のまま動かさない。
+ */
+.sec-rule {
+  height: 3px;
+  background: var(--sec, var(--color-navy));
+}
+
+.sec-tint {
+  background: color-mix(in srgb, var(--sec, var(--color-navy)) 7%, #fff);
+  border: 1px solid color-mix(in srgb, var(--sec, var(--color-navy)) 18%, #fff);
+  color: var(--sec, var(--color-navy));
 }
 
 /*

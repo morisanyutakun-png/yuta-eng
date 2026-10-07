@@ -33,8 +33,7 @@ const sharedSeisu: Question = {
         { k: "math", t: String.raw`3\times3\times3=3^{3}=27\ \text{個}` },
         {
           k: "note",
-          title: "(1) との数の合い方",
-          t: String.raw`(1) で書き出した5組を並べ替えると $3+6+6+6+6=27$ 通り。$(1,1,120)$ だけは同じ数が2つあるので $3$ 通りしかない。`,
+          t: String.raw`(1) で書き出した5組を並べ替えて数えると $3+6+6+6+6=27$ 通りとなり、この結果と合う。$(1,1,120)$ だけは同じ数が2つあるので $3$ 通りしかない。`,
         },
       ],
       check: String.raw`(1) の5組それぞれの並べ替えを足すと $27$。順序つきで数えた $3^{3}$ と一致する。`,
@@ -95,7 +94,6 @@ export const nagoyaBunkei2026: SolutionSet = {
             { k: "p", t: String.raw`$p>0$ だから $t=a\pm\sqrt p$。$b<c$ より $b=a-\sqrt p,\ c=a+\sqrt p$。` },
             {
               k: "note",
-              title: "接線が2本引けること",
               t: String.raw`$\mathrm{A}$ の $y$ 座標 $a^{2}$ は $Q$ 上の点の $y$ 座標 $a^{2}+p$ より $p$ だけ小さい。つまり $\mathrm{A}$ は放物線の外（下側）にあり、接線はつねに2本引ける。`,
             },
           ],

@@ -2,9 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { PageHeader } from "@/components/page-header";
 import { ProductPanel, type Product } from "@/components/product-panel";
 import { siteTotals, universities, universityCount } from "@/lib/data";
 import { sampleCount } from "@/lib/samples";
+import { sectionStyle } from "@/lib/sections";
 import { shortName, subject } from "@/lib/seo";
 import { kanseiPublished, shindan } from "@/lib/series";
 import { groupOrder, site } from "@/lib/site";
@@ -154,7 +156,7 @@ export default function EducatorsPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:px-8" style={sectionStyle("educators")}>
         <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
@@ -163,18 +165,19 @@ export default function EducatorsPage() {
           <span className="text-ink-2">学校・塾・予備校関係者の方へ</span>
         </nav>
 
-        <header className="pb-7 pt-6">
-          <h1 className="serif text-[1.6rem] leading-[1.45] text-ink sm:text-[2rem]">
-            学校・塾・予備校関係者の方へ
-          </h1>
-          <p className="prose-ja mt-3.5 text-[0.95rem] leading-[1.95] text-ink-2">
-            大学入試の数学を大学別・区分別に分析し、その形式に合わせて書き下ろした予想問題集と演習書です。
-            個人の学習を想定して作っていますが、授業・講習・課題演習にもご利用いただけます。
-          </p>
-        </header>
+        <PageHeader
+          section="educators"
+          title="学校・塾・予備校関係者の方へ"
+          lead={
+            <>
+              大学入試の数学を大学別・区分別に分析し、その形式に合わせて書き下ろした予想問題集と演習書です。
+              個人の学習を想定して作っていますが、授業・講習・課題演習にもご利用いただけます。
+            </>
+          }
+        />
 
         {/* 表紙の棚。文字より先に「どんな本か」を見せる */}
-        <section aria-labelledby="shelf" className="border-y border-rule py-6">
+        <section aria-labelledby="shelf" className="mt-10 border-y border-rule py-6">
           <h2 id="shelf" className="sr-only">
             刊行している大学別教材
           </h2>

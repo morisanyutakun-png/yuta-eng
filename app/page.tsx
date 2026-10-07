@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { CoverShelf } from "@/components/cover-shelf";
+import { AnalysisTable } from "@/components/home-visual";
+import { AnswerSheet } from "@/components/moshi-visual";
 import { moshi, roundLabel } from "@/lib/moshi/config";
 import { KanseiCards } from "@/components/kansei-cards";
 import { LearningPath } from "@/components/learning-path";
@@ -10,6 +12,7 @@ import { TopFields } from "@/components/top-fields";
 import { UniversityFinder } from "@/components/university-finder";
 import { siteTotals, universities } from "@/lib/data";
 import { finderItems } from "@/lib/finder";
+import { sectionStyle } from "@/lib/sections";
 import { kanseiPublished, seriesTagline, shindan } from "@/lib/series";
 import { groupOrder, site } from "@/lib/site";
 
@@ -56,22 +59,49 @@ export default function HomePage() {
 
       <div className="page page-wide">
         {/*
-          最初の画面で「何ができるサイトか」を言い切り、すぐ下に検索を置く。
-          表紙の棚は目を引くが、探しに来た人を検索から遠ざけるので下へ移した。
+          最初の画面に置くのは「何のサイトか」の1行と、できあがるものの図、
+          そして数字だけにする。説明の続きは下の節と「このサイトについて」に送る。
+          ここに文章を足すほど、何のサイトなのかが沈んで読まれなくなる。
         */}
-        <section className="border-b border-rule pb-8 pt-9 sm:pt-12">
-          <h1 className="serif h-page text-ink">
-            大学別
-            <br className="sm:hidden" />
-            数学入試分析
-          </h1>
-          <p className="prose-ja mt-4 max-w-[36rem] text-[0.97rem] text-ink-2">
-            国公立・私立{t.universities}大学・{t.sections}区分（理系／文系／中期など）の数学入試を、{t.span}の過去問から
-            <strong className="font-semibold text-ink">年度別・分野別の表</strong>
-            に整理しました。試験時間、大問構成、頻出分野、目標点まで、大学を選べばその場で読めます。
-          </p>
+        <section className="border-b border-rule pb-9 pt-8 sm:pt-11">
+          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-center lg:gap-x-12">
+            <div className="min-w-0">
+              <p className="text-[0.7rem] font-bold tracking-[0.1em] text-navy">
+                国公立・私立{t.universities}大学／{t.span}の過去問から
+              </p>
+              <h1 className="serif h-page mt-2.5 text-ink">
+                大学別
+                <br className="sm:hidden" />
+                数学入試分析
+              </h1>
+              <p className="prose-ja mt-4 max-w-[34rem] text-[0.97rem] text-ink-2">
+                試験時間・大問構成・頻出分野・目標点を、大学ごとに
+                <strong className="font-semibold text-ink">年度別・分野別の表</strong>
+                にまとめています。大学を選べばその場で読めます。
+              </p>
 
-          <dl className="mt-6 flex flex-wrap gap-x-9 gap-y-4">
+              <p className="mt-6 flex flex-wrap gap-3">
+                <Link href="#find-heading" className="btn btn-primary">
+                  大学から探す
+                </Link>
+                <Link href="/kaisetsu" className="btn">
+                  過去問の解答・解説
+                </Link>
+              </p>
+            </div>
+
+            {/* できあがる表そのものを見せる。文章で説明するより早い */}
+            <figure className="mt-9 lg:mt-0">
+              <div className="border border-rule bg-white px-4 py-4">
+                <AnalysisTable className="w-full" />
+              </div>
+              <figcaption className="mt-2 text-[0.7rem] leading-relaxed text-ink-3">
+                各大学のページに出している、年度 × 分野の出題表（見本）。
+              </figcaption>
+            </figure>
+          </div>
+
+          <dl className="mt-9 flex flex-wrap gap-x-9 gap-y-4 border-t border-rule pt-6">
             {[
               { k: "分析した大学", v: t.universities, u: `大学・${t.sections}区分` },
               { k: "予想問題集", v: t.books, u: "冊" },
@@ -88,7 +118,7 @@ export default function HomePage() {
           </dl>
         </section>
 
-        <section aria-labelledby="find-heading" className="mt-10">
+        <section aria-labelledby="find-heading" className="mt-10" style={sectionStyle("universities")}>
           <h2 id="find-heading" className="rule-mark serif h-sect text-ink">
             大学から探す
           </h2>
@@ -101,24 +131,31 @@ export default function HomePage() {
         <LearningPath compact className="mt-16" />
 
         {/* 既存の教材紹介より前に出さない。知らせる役だけを持たせる */}
-        <section aria-labelledby="moshi-heading" className="mt-16">
+        <section aria-labelledby="moshi-heading" className="mt-16" style={sectionStyle("moshi")}>
           <h2 id="moshi-heading" className="rule-mark serif h-sect text-ink">
             大学別オンライン数学模試
           </h2>
-          <div className="card mt-4 flex flex-wrap items-center justify-between gap-4 px-5 py-4">
-            <p className="prose-ja min-w-0 text-[0.9rem] leading-[1.9] text-ink-2">
-              {moshi.season}・{moshi.universities.length}大学。{roundLabel}。
-              <span className="ml-1 text-ink">参加申込を受け付けています。</span>
-            </p>
-            <Link href="/moshi" className="btn shrink-0">
-              詳しく見る
-            </Link>
+          {/* 文字だけの帯にせず、採点して返すところまでを図で見せる */}
+          <div className="card mt-4 flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:gap-7">
+            <AnswerSheet className="w-[150px] shrink-0 self-center sm:w-[170px]" />
+            <div className="min-w-0">
+              <p className="prose-ja text-[0.9rem] leading-[1.9] text-ink-2">
+                {moshi.season}・{moshi.universities.length}大学。{roundLabel}。
+                志望校と同じ形式の記述答案を、人の手で採点して返します。
+              </p>
+              <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+                <Link href="/moshi" className="btn btn-primary">
+                  模試のご案内と参加申込
+                </Link>
+                <span className="text-[0.78rem] text-ink-3">参加申込を受け付けています</span>
+              </p>
+            </div>
           </div>
         </section>
 
         <TopFields />
 
-        <section aria-labelledby="shelf-heading" className="mt-16">
+        <section aria-labelledby="shelf-heading" className="mt-16" style={sectionStyle("books")}>
           <h2 id="shelf-heading" className="rule-mark serif h-sect text-ink">
             表紙から探す
           </h2>
@@ -129,8 +166,8 @@ export default function HomePage() {
         </section>
 
 
-        <section aria-labelledby="series-heading" className="mt-16">
-          <p className="text-[0.68rem] font-bold tracking-wide text-accent">過去問の前にシリーズ</p>
+        <section aria-labelledby="series-heading" className="mt-16" style={sectionStyle("kansei")}>
+          <p className="eyebrow">過去問の前にシリーズ</p>
           <h2 id="series-heading" className="serif mt-1 text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
             {seriesTagline}
           </h2>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FaqSection } from "@/components/faq";
 import { KanseiCards } from "@/components/kansei-cards";
 import { LearningPath } from "@/components/learning-path";
+import { sectionStyle } from "@/lib/sections";
 import type { Faq } from "@/lib/seo";
 import {
   daysAt,
@@ -114,7 +115,10 @@ export default function KanseiSeriesPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8">
+      <div
+        className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
+        style={sectionStyle("kansei")}
+      >
         <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
@@ -122,6 +126,8 @@ export default function KanseiSeriesPage() {
           <span className="mx-1.5 text-rule">／</span>
           <span className="text-ink-2">分野別完成演習</span>
         </nav>
+
+        <div className="sec-rule mt-3" />
 
         <header className="pb-6 pt-4">
           <p className="text-[0.72rem] font-semibold tracking-wide text-navy">{seriesName}・2027年度対策</p>

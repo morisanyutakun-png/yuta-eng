@@ -175,6 +175,7 @@ export default async function UniversityPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <ArticleLayout
+        section="universities"
         breadcrumb={[
           { href: "/", label: "トップ" },
           { href: "/universities", label: "大学一覧" },

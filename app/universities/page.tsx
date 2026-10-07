@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { HeaderStats, PageHeader } from "@/components/page-header";
 import { UniversityFinder } from "@/components/university-finder";
 import { siteTotals, summarize, universities, universityCount } from "@/lib/data";
 import { finderItems } from "@/lib/finder";
 import { shindan } from "@/lib/series";
 import { subject } from "@/lib/seo";
+import { sectionStyle } from "@/lib/sections";
 import { groupOrder, site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -48,7 +50,7 @@ export default function UniversitiesPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8">
+      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8" style={sectionStyle("universities")}>
         <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
@@ -57,17 +59,30 @@ export default function UniversitiesPage() {
           <span className="text-ink-2">大学一覧</span>
         </nav>
 
-        <header className="pb-6 pt-4">
-          <h1 className="serif text-[1.7rem] leading-snug text-ink sm:text-[2.1rem]">大学一覧</h1>
-          <p className="prose-ja mt-3 max-w-[34rem] text-[0.92rem] text-ink-2">
-            数学の傾向と対策をまとめている{universityCount()}大学です。理系・文系・中期など試験が別に行われる区分は分けているので、
-            全部で{universities.length}ページあります。分析年度は
-            {siteTotals().minYears}〜{siteTotals().maxYears}年分と大学によって幅があり、
-            それぞれのページに対象年度を書いています。大学名・かな・「医学部」などで絞り込めます。
-          </p>
-        </header>
+        <PageHeader
+          section="universities"
+          title="大学一覧"
+          lead={
+            <>
+              数学の傾向と対策をまとめている{universityCount()}大学です。大学名・かな・「医学部」などで絞り込めます。
+            </>
+          }
+          meta={
+            <HeaderStats
+              items={[
+                { k: "掲載大学", v: universityCount(), u: "大学" },
+                { k: "試験区分", v: universities.length, u: "区分" },
+                {
+                  k: "分析年度",
+                  v: `${siteTotals().minYears}〜${siteTotals().maxYears}`,
+                  u: "年分（大学により異なる）",
+                },
+              ]}
+            />
+          }
+        />
 
-        <p className="prose-ja mb-6 border-l-2 border-navy/40 bg-paper-2/60 px-4 py-3 text-[0.82rem] text-ink-2">
+        <p className="prose-ja mb-6 mt-7 border-l-2 border-navy/40 bg-paper-2/60 px-4 py-3 text-[0.82rem] text-ink-2">
           旧帝大・難関国公立の理系で志望校を決めきれていない場合は、
           <Link href="/shindan" className="font-semibold text-navy underline underline-offset-4">
             志望校診断模試

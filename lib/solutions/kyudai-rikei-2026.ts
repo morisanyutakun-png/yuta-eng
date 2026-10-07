@@ -81,8 +81,7 @@ export const kyudaiRikei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "切り口が円柱からはみ出さないこと",
-              t: String.raw`この曲線上では $\vec{\mathrm{OX}}\cdot\vec u=\dfrac{x}{2}$ で、$|x|\le\dfrac{2}{\sqrt3}$ だから $\left|\vec{\mathrm{OX}}\cdot\vec u\right|\le0.578<2\sqrt2$。2つの底面の間にちゃんと収まっている。`,
+              t: String.raw`切り口が2つの底面の間に収まっていることも確かめておく。この曲線上では $\vec{\mathrm{OX}}\cdot\vec u=\dfrac{x}{2}$ で、$|x|\le\dfrac{2}{\sqrt3}$ だから $\left|\vec{\mathrm{OX}}\cdot\vec u\right|\le0.578<2\sqrt2$ となり、確かに収まっている。`,
             },
           ],
           check: String.raw`$C_1$ の中心から $\vec u$ に垂直な向きに $1$ 進んだ点 $\left(\sqrt2+\frac{\sqrt3}{2},\,0,\,\sqrt6-\frac12\right)$ を上の式に入れると、$|\mathrm{X}|^{2}=9$、$\vec{\mathrm{OX}}\cdot\vec u=2\sqrt2$ で $9-8=1$。側面の式が合っている。`,
@@ -168,8 +167,7 @@ export const kyudaiRikei2026: SolutionSet = {
             { k: "math", t: String.raw`=2\pi\left[2y-\frac{2y^{3}}{3}\right]_0^1=2\pi\cdot\frac43=\frac{8\pi}{3}` },
             {
               k: "note",
-              title: "2乗が残るので根号が消える",
-              t: String.raw`断面積に出てくるのは半径の**2乗**。$\left(\sqrt{2+y^{2}}\right)^{2}=2+y^{2}$、$\left(\sqrt3|y|\right)^{2}=3y^{2}$ となり、絶対値も根号も消えてただの2次式になる。`,
+              t: String.raw`断面積に出てくるのは半径の**2乗**なので、根号はここで消える。$\left(\sqrt{2+y^{2}}\right)^{2}=2+y^{2}$、$\left(\sqrt3|y|\right)^{2}=3y^{2}$ となり、絶対値も根号も残らずただの2次式になる。`,
             },
           ],
           check: String.raw`$y=\pm1$ で内半径と外半径がどちらも $\sqrt3$ になり、断面が潰れる。領域が $\mathrm{P_1},\mathrm{P_2}$ で閉じていることと合う。数値積分でも $8\pi/3=8.3776\ldots$ になる。`,
@@ -374,7 +372,6 @@ export const kyudaiRikei2026: SolutionSet = {
             { k: "p", t: String.raw`以上よりどの場合も矛盾し、そのような2次方程式は存在しない。` },
             {
               k: "note",
-              title: "(2) との関係",
               t: String.raw`(2) の4次式は、実は有理数係数でこれ以上分解できない。だから $\alpha$ を解にもつ有理数係数の方程式は、次数が $4$ の倍数でないと作れない。(3) はその $2$ 次の場合を手で確かめたことになる。`,
             },
           ],
@@ -457,8 +454,7 @@ export const kyudaiRikei2026: SolutionSet = {
             { k: "math", t: String.raw`\lim_{x\to\infty}x\big\{f(x)-f(x-1)\big\}=\int_0^1 2\,ds=2` },
             {
               k: "note",
-              title: "別の見方",
-              t: String.raw`$F(x)=\displaystyle\int_0^x\log(4t^{2}+1)dt$ とおくと $f(x)-f(x-1)=F(x+1)-2F(x)+F(x-1)$ で、これは2階差分。$F''(x)=\dfrac{8x}{4x^{2}+1}\approx\dfrac2x$ なので、$x$ 倍すれば $2$ に近づく、とも読める。`,
+              t: String.raw`別の見方もできる。$F(x)=\displaystyle\int_0^x\log(4t^{2}+1)dt$ とおくと $f(x)-f(x-1)=F(x+1)-2F(x)+F(x-1)$ で、これは2階差分である。$F''(x)=\dfrac{8x}{4x^{2}+1}\approx\dfrac2x$ なので、$x$ 倍すれば $2$ に近づく、とも読める。`,
             },
           ],
           check: String.raw`$x=1000$ で $x\{f(x)-f(x-1)\}=2.0000\ldots$、$x=100$ で $2.0001\ldots$。数値でも $2$ に近づく。`,

@@ -209,8 +209,7 @@ export const ncuMed2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "条件の言い換え",
-              t: String.raw`**異なる組に属する面どうしは必ず色が違う。同じ組（向かい合う2面）だけは、同じ色でも違う色でもよい。**`,
+              t: String.raw`与えられた条件は、次のように言い換えられる。**異なる組に属する面どうしは必ず色が違い、同じ組（向かい合う2面）だけは同じ色でも違う色でもよい。**`,
             },
             {
               k: "p",
@@ -408,8 +407,7 @@ export const ncuMed2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "分母が消せる理由",
-              t: String.raw`$1\le x\le\pi$ では $\dfrac12\le\dfrac{x}{2}\le\dfrac{\pi}{2}$ なので $\sin\dfrac{x}{2}\ge\sin\dfrac12>0$。$0$ で割る心配がないことを、約分の前に断っておく。`,
+              t: String.raw`約分の前に、分母が $0$ にならないことを断っておく。$1\le x\le\pi$ では $\dfrac12\le\dfrac{x}{2}\le\dfrac{\pi}{2}$ なので $\sin\dfrac{x}{2}\ge\sin\dfrac12>0$ であり、$0$ で割る心配はない。`,
             },
           ],
           check: String.raw`$k=1$、$x=\dfrac{\pi}{2}$ で左辺は $\dfrac{\sin\frac{3\pi}{4}}{2\sin\frac{\pi}{4}}-\dfrac{\sin\frac{\pi}{4}}{2\sin\frac{\pi}{4}}=\dfrac12-\dfrac12=0$、右辺は $\cos\dfrac{\pi}{2}=0$ で一致。`,

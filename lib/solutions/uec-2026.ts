@@ -479,8 +479,7 @@ export const uec2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "回す向きが決まる理由",
-              t: String.raw`逆向きに回すと $\vec{\mathrm{PS}}$ の $y$ 成分は $-(4+\cos\beta-\cos\alpha)$ となる。このとき $\mathrm{R}$ の $y$ 座標は $\sin\beta-4-\cos\beta+\cos\alpha\le-1<0$ となり、「$\mathrm{R}$ の $y$ 座標は正」に反する。だから回す向きは上の1通り。`,
+              t: String.raw`回す向きは一通りに決まる。逆向きに回すと $\vec{\mathrm{PS}}$ の $y$ 成分は $-(4+\cos\beta-\cos\alpha)$ となり、$\mathrm{R}$ の $y$ 座標が $\sin\beta-4-\cos\beta+\cos\alpha\le-1<0$ となって、$\mathrm{R}$ の $y$ 座標が正であることに反する。だから向きは上の1通りしかない。`,
             },
             { k: "p", t: String.raw`$\mathrm{S}$ の $y$ 座標は` },
             {

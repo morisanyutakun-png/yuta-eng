@@ -50,8 +50,7 @@ export const tohokuBunkei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "$u>0$ は使っていない",
-              t: String.raw`判別式は $u$ によらず正なので、(1) はすべての実数 $u$ で成り立つ。$u>0$ が効いてくるのは (2) のほう。`,
+              t: String.raw`ここまでで $u>0$ は使っていない。判別式は $u$ によらず正なので、(1) はすべての実数 $u$ で成り立つ。$u>0$ が効いてくるのは (2) のほうである。`,
             },
           ],
           pitfalls: [
@@ -164,8 +163,7 @@ export const tohokuBunkei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "奇数の平方が $\\bmod 8$ で $1$ になること",
-              t: String.raw`$n=2j+1$ とすると $n^{2}=4j(j+1)+1$ で、$j(j+1)$ は連続2整数の積だから偶数。したがって $n^{2}\equiv1\pmod 8$。`,
+              t: String.raw`奇数の平方を $8$ で割った余りが $1$ になることは、次のように確かめられる。$n=2j+1$ とすると $n^{2}=4j(j+1)+1$ で、$j(j+1)$ は連続2整数の積だから偶数である。したがって $n^{2}\equiv1\pmod 8$。`,
             },
           ],
           check: String.raw`$a,b,c\le400$ をすべて調べると、解はつねに $a+c$ が偶数で $b$ も偶数。$a,c$ がともに偶数の解（$(2,4,6),(4,8,12),\dots$）では $b$ が必ず $4$ の倍数になっている。`,
@@ -239,8 +237,7 @@ export const tohokuBunkei2026: SolutionSet = {
             { k: "p", t: String.raw`$\vec b$ の係数は $\alpha t=\dfrac{(1-s)(1-2s)}{2s^{2}-2s+5}$。以上を合わせて答えになる。` },
             {
               k: "note",
-              title: "分母が $0$ にならないこと",
-              t: String.raw`$2s^{2}-2s+5=2\left(s-\frac12\right)^{2}+\frac92>0$ なので、どんな $s$ でも割れる。`,
+              t: String.raw`分母は $0$ にならない。$2s^{2}-2s+5=2\left(s-\frac12\right)^{2}+\frac92>0$ なので、どんな $s$ でも割ることができる。`,
             },
           ],
           check: String.raw`$s=\dfrac14$ とすると $\vec{\mathrm{OF}}=\dfrac{17}{74}\vec a+\dfrac{3}{37}\vec b$。$\vec a,\vec b$ を実際の座標にとって交点を数値で求めても同じ点になる。`,
@@ -277,8 +274,7 @@ export const tohokuBunkei2026: SolutionSet = {
             { k: "p", t: String.raw`(1) の範囲 $0<s<\dfrac12$ をみたすのは $s=\dfrac27$ のみ。` },
             {
               k: "note",
-              title: "条件の意味",
-              t: String.raw`$\vec{\mathrm{OF}}\cdot(\vec b-\vec a)=0$ は「$\mathrm{OF}$ と $\mathrm{AB}$ が垂直」。円の中心は $\vec a-\vec b$ の位置で、$s$ によらない。動くのは半径だけで、それがちょうど $3$ になる $s$ を探していることになる。`,
+              t: String.raw`$\vec{\mathrm{OF}}\cdot(\vec b-\vec a)=0$ は $\mathrm{OF}$ と $\mathrm{AB}$ が垂直であることを表す。円の中心は $\vec a-\vec b$ の位置にあって $s$ によらず、動くのは半径だけである。つまり半径がちょうど $3$ になる $s$ を探していることになる。`,
             },
           ],
           check: String.raw`$s=\dfrac27$ のとき $\vec{\mathrm{OF}}=\dfrac{4\vec a+\vec b}{15}$。内積は $\dfrac{4\cdot1+5-4\cdot2-1}{15}=0$ で、確かに垂直。`,
@@ -336,8 +332,7 @@ export const tohokuBunkei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "ほかに候補がないこと",
-              t: String.raw`$f(x)-\left(-\frac14\right)=x^{4}-x^{2}+\frac14=\left(x^{2}-\frac12\right)^{2}$ と完全平方になり、$x=\pm\frac{1}{\sqrt2}$ が重解。水平線が2点で接するにはこの形しかない。`,
+              t: String.raw`ほかに候補はない。$f(x)-\left(-\frac14\right)=x^{4}-x^{2}+\frac14=\left(x^{2}-\frac12\right)^{2}$ と完全平方になり、$x=\pm\frac{1}{\sqrt2}$ が重解である。水平線が2点で接するにはこの形しかない。`,
             },
           ],
         },
@@ -386,7 +381,6 @@ export const tohokuBunkei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "$\\sqrt2$ は最小値ではない",
               t: String.raw`$k\to0^{+}$ で $\alpha\to1$ となり $\dfrac{T}{S}\to\sqrt2$ に近づくが、$k=0$ は共有点が3個になるので除かれている。$\sqrt2$ は**届かない下限**で、だから不等号が厳密になる。`,
             },
           ],

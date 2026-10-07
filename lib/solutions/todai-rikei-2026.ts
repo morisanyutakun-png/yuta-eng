@@ -75,8 +75,7 @@ export const todaiRikei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "$f$ は奇関数",
-              t: String.raw`$\sin\theta,\ \theta,\ \theta^{3}$ はどれも奇関数なので $f(-\theta)=-f(\theta)$。だから $m=-M$ になり、(2) でこの対称性が効いてくる。`,
+              t: String.raw`$\sin\theta,\ \theta,\ \theta^{3}$ はどれも奇関数なので $f(-\theta)=-f(\theta)$ であり、$f$ 自身も奇関数である。だから $m=-M$ になり、(2) でこの対称性が効いてくる。`,
             },
           ],
           check: String.raw`$\sin1=0.8414709\ldots$、$\dfrac56=0.8333\ldots$ なので $M=0.0081376\ldots$。正の小さな値で、$\sin\theta$ が $\theta-\dfrac{\theta^{3}}{6}$ よりわずかに大きいことを表している。`,
@@ -175,7 +174,6 @@ export const todaiRikei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "$\\mathrm{R}$ と $\\mathrm{P},\\mathrm{Q}$ が相異なること",
               t: String.raw`$\mathrm{R}$ の $z$ 座標は $3$ で、$\mathrm{P},\mathrm{Q}$ は $z=0$。だから $\mathrm{R}$ が $\mathrm{P},\mathrm{Q}$ と一致することはなく、条件は自動的に満たされる。`,
             },
           ],
@@ -387,8 +385,7 @@ export const todaiRikei2026: SolutionSet = {
             { k: "p", t: String.raw`どの因子も $0$ 以上だから積も $0$ 以上。よって $f(n)\ge g(n)$。` },
             {
               k: "note",
-              title: "等号が成り立つとき",
-              t: String.raw`$3$ で割って $2$ 余る素因数のうち1つでも奇数乗なら、因子が $0$ になって $f=g$。そうでなければ $f>g$。`,
+              t: String.raw`等号が成り立つのは次の場合である。$3$ で割って $2$ 余る素因数のうち1つでも奇数乗であれば、因子が $0$ になって $f=g$ となり、そうでなければ $f>g$ となる。`,
             },
           ],
           pitfalls: [

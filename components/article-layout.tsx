@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { sectionStyle, type SectionKey } from "@/lib/sections";
+
 /**
  * 読み物ページの土台。
  *
@@ -12,14 +14,20 @@ export function ArticleLayout({
   breadcrumb,
   children,
   aside,
+  section,
 }: {
   breadcrumb: { href?: string; label: string }[];
   children: React.ReactNode;
   /** 画面が広いときだけ右に出す袖 */
   aside?: React.ReactNode;
+  /** どの柱のページか。渡すと節見出しの罫とラベルがその色になる */
+  section?: SectionKey;
 }) {
   return (
-    <div className="mx-auto max-w-[38rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8">
+    <div
+      className="mx-auto max-w-[38rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
+      style={section ? sectionStyle(section) : undefined}
+    >
       <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
         {breadcrumb.map((b, i) => (
           <span key={b.label}>
@@ -34,6 +42,9 @@ export function ArticleLayout({
           </span>
         ))}
       </nav>
+
+      {/* 柱の色の線。どの柱のページかを、読み始める前に示す */}
+      {section && <div className="sec-rule mt-3" />}
 
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-start lg:gap-x-12">
         <article className="min-w-0 lg:max-w-[42rem]">{children}</article>

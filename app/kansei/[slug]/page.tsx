@@ -182,6 +182,7 @@ export default async function KanseiPage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <ArticleLayout
+        section="kansei"
         breadcrumb={[
           { href: "/", label: "トップ" },
           { href: "/kansei", label: "分野別完成演習" },

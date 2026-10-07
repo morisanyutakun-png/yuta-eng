@@ -70,7 +70,6 @@ export const nagoyaRikei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "なぜきれいに消えるか",
               t: String.raw`$\dfrac12$ と $\dfrac{a^2}{2b^2}$ が打ち消し合うのは偶然ではない。原点を通る直線と $y=\dfrac1x$ で囲む「扇形」の面積は、どこから測っても $\log(\text{比})$ になる。$a,b$ を $k$ 倍しても $S$ が変わらないことからも見当がつく。`,
             },
           ],
@@ -105,8 +104,7 @@ export const nagoyaRikei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "条件 $a<b$ は自動で満たされる",
-              t: String.raw`$b^2-a^2=\dfrac{1+a^2}{1-a^2}-a^2=\dfrac{1+a^4}{1-a^2}>0$ なので、この $b$ は確かに $a$ より大きい。答案ではここまで触れておくと安心。`,
+              t: String.raw`$a<b$ は自動で満たされる。実際 $b^2-a^2=\dfrac{1+a^2}{1-a^2}-a^2=\dfrac{1+a^4}{1-a^2}>0$ なので、この $b$ は確かに $a$ より大きい。答案でもここまで書いておきたい。`,
             },
           ],
           pitfalls: [
@@ -180,7 +178,6 @@ export const nagoyaRikei2026: SolutionSet = {
             { k: "math", t: String.raw`\vec n=(5,\ 1-3a,\ a-2)` },
             {
               k: "note",
-              title: "3点はつねに平面を定める",
               t: String.raw`$\vec n$ の第1成分は $a$ によらず $5$ なので $\vec n\neq\vec 0$。つまり $\mathrm{A},\mathrm{B},\mathrm{C}$ が一直線上に並ぶことはなく、$H$ はどんな $a$ でも平面として決まる。`,
             },
             {
@@ -215,8 +212,7 @@ export const nagoyaRikei2026: SolutionSet = {
             { k: "math", t: String.raw`5(a+2)(3a+19)\le0\ \Longleftrightarrow\ -\frac{19}{3}\le a\le-2` },
             {
               k: "note",
-              title: "$a=\\dfrac92$ はちゃんと除かれている",
-              t: String.raw`$g$ が定数になる $a=\dfrac92$ のときは $g(0)=g(1)=-\dfrac{65}{2}$ で積が正になるので、この不等式には含まれない。1次式と定数を分けて書かなくてよい理由がこれ。`,
+              t: String.raw`$g$ が定数になる $a=\dfrac92$ は、この不等式から自動的に外れている。実際 $g(0)=g(1)=-\dfrac{65}{2}$ で積が正になるからである。だから $1$ 次式の場合と定数の場合を分けて書く必要はない。`,
             },
           ],
           alts: [
@@ -307,7 +303,6 @@ export const nagoyaRikei2026: SolutionSet = {
             { k: "math", t: String.raw`3^m\ \text{個}` },
             {
               k: "note",
-              title: "$e_p$ の値は答えに効かない",
               t: String.raw`指数 $e_p$ がいくつかは数えるうえで関係なく、**素数が何種類あるか**だけで決まる。$N!$ の指数を具体的に求めようとすると回り道になる。`,
             },
           ],

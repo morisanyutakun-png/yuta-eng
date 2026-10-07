@@ -189,7 +189,6 @@ export const nitech2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "これは誘導",
               t: String.raw`この小問は単独では易しいが、(2) で漸化式の右辺 $a_n^{2}+a_n-a_na_{n+1}-a_{n+1}$ をそのまま $\left(a_n+1\right)\left(a_n-a_{n+1}\right)$ に直すために置かれている。$x=a_n$、$y=a_{n+1}$ にあたる。`,
             },
           ],
@@ -261,8 +260,7 @@ export const nitech2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "$a_1\\ne-1$ なら全項が $-1$ にならない",
-              t: String.raw`$a_n\ne-1$ のとき、もし $a_{n+1}=-1$ なら (2) の途中式の左辺が $0$、右辺が $a_n-a_{n+1}=a_n+1\ne0$ となって矛盾する。よって帰納的にすべての項が $-1$ でない。だから (3) の式がそのまま使える。`,
+              t: String.raw`$a_1\ne-1$ であれば、すべての項が $-1$ にならない。実際 $a_n\ne-1$ のとき、もし $a_{n+1}=-1$ なら (2) の途中式の左辺が $0$、右辺が $a_n-a_{n+1}=a_n+1\ne0$ となって矛盾する。よって帰納的にすべての項が $-1$ でなく、(3) の式がそのまま使える。`,
             },
             { k: "p", t: String.raw`**(ii) $a_1=-1$ のとき。** 元の漸化式で $n=1$ とすると、左辺は $\left(a_2+1\right)\left(a_1+1\right)^{2}/2=0$、右辺も $\left(a_1+1\right)\left(a_1-a_2\right)=0$。` },
             {
@@ -460,7 +458,6 @@ export const nitech2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "極小値が正であること",
               t: String.raw`$\dfrac{4\sqrt6}{9}=1.088\ldots$ なので極小値は $2.911\ldots>0$。よって $x>-2$ では $f(x)>0$ で、$\sqrt{f(x)}$ が定義できる。$f(-2)=0$ なので $C$ は $(-2,0)$ から始まる。`,
             },
           ],

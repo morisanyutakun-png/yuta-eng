@@ -387,8 +387,7 @@ export const tohokuRikei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "条件の正体は方べきの定理",
-              t: String.raw`$f(\mathrm{O})$ は $\mathrm{O}$ の球面 $S$ に関する方べき。直線 $\mathrm{OA}$ は $S$ と $\mathrm{A},\mathrm{P}$ で交わるので $\vec{\mathrm{OA}}\cdot\vec{\mathrm{OP}}=a\left|\vec{\mathrm{OA}}\right|^{2}$ が方べきに等しい。与えられた等式は「直線 $\mathrm{OB}$ 上でも方べきが同じ値になる」と言っており、それが $\mathrm{Q}\in S$ を意味する。`,
+              t: String.raw`この条件の正体は方べきの定理である。$f(\mathrm{O})$ は $\mathrm{O}$ の球面 $S$ に関する方べきで、直線 $\mathrm{OA}$ は $S$ と $\mathrm{A},\mathrm{P}$ で交わるので $\vec{\mathrm{OA}}\cdot\vec{\mathrm{OP}}=a\left|\vec{\mathrm{OA}}\right|^{2}$ がその方べきに等しい。与えられた等式は、直線 $\mathrm{OB}$ 上でも方べきが同じ値になると言っており、それが $\mathrm{Q}\in S$ を意味する。`,
             },
           ],
           check: String.raw`球面と点を乱数でたくさん作り、条件をみたすように $a,b$ を取ると、$\mathrm{Q}$ はつねに球面上に乗り、直線 $\mathrm{CD}$ 上に取れば $\mathrm{C}$ か $\mathrm{D}$ に一致する。`,

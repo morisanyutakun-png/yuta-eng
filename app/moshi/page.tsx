@@ -6,6 +6,7 @@ import { MoshiForm } from "@/components/moshi-form";
 import { AnswerSheet, Flow, MarkIcon, PerUnivIcon, PeriodIcon } from "@/components/moshi-visual";
 import { getUniversity, siteTotals, universityCount } from "@/lib/data";
 import { analysisHref, moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
+import { sectionStyle } from "@/lib/sections";
 import { kanseiPublished } from "@/lib/series";
 import { site } from "@/lib/site";
 
@@ -91,7 +92,7 @@ export default function MoshiPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="page page-wide">
+      <div className="page page-wide" style={sectionStyle("moshi")}>
         <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
@@ -99,6 +100,8 @@ export default function MoshiPage() {
           <span className="mx-1.5 text-rule">／</span>
           <span className="text-ink-2">{moshi.title}</span>
         </nav>
+
+        <div className="sec-rule mt-3" />
 
         <header className="border-b border-rule pb-8 pt-6">
           <div className="grid items-center gap-8 lg:grid-cols-[1fr_26rem] lg:gap-12">

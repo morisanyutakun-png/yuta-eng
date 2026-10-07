@@ -3,9 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { AmazonButton } from "@/components/amazon-button";
+import { HeaderStats, PageHeader } from "@/components/page-header";
 import { ProductPanel, type Product } from "@/components/product-panel";
 import { allBooks, bookMetaLine, gokakuBooks, yen } from "@/lib/books";
 import { universities, universityCount, type University } from "@/lib/data";
+import { sectionStyle } from "@/lib/sections";
 import { shortName } from "@/lib/seo";
 import { kanseiAll, seriesName, shindan } from "@/lib/series";
 import { groupOrder, site } from "@/lib/site";
@@ -129,7 +131,10 @@ export default function BooksPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8">
+      <div
+        className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
+        style={sectionStyle("books")}
+      >
         <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
@@ -138,21 +143,31 @@ export default function BooksPage() {
           <span className="text-ink-2">教材一覧</span>
         </nav>
 
-        <header className="pb-6 pt-4">
-          <h1 className="serif text-[1.75rem] leading-[1.35] text-ink sm:text-[2.2rem]">教材一覧</h1>
-          <p className="prose-ja mt-4 max-w-[38rem] text-[0.95rem] text-ink-2">
-            大学入試の数学対策として、本番と同じ形式の予想問題集「{site.seriesName}」を{universityCount()}大学・
-            {gokakuCount}冊、過去問に入る前に使う「{seriesName}」を{kansei.length + 1}冊出しています。
-            どれも大学ごとの出題分析から書き下ろした非公式の独自教材です。
-          </p>
-        </header>
+        <PageHeader
+          section="books"
+          title="教材一覧"
+          lead={
+            <>
+              大学ごとの出題分析から書き下ろした、非公式の独自教材です。使う順に3つのシリーズを並べています。
+            </>
+          }
+          meta={
+            <HeaderStats
+              items={[
+                { k: site.seriesName, v: gokakuCount, u: `冊・${universityCount()}大学` },
+                { k: seriesName, v: kansei.length + 1, u: "冊" },
+                { k: "合計", v: gokakuCount + kansei.length + 1, u: "冊" },
+              ]}
+            />
+          }
+        />
 
         {/*
           3つのシリーズを同じ型で並べる。順番は使う順（決める→固める→仕上げる）。
           どれも「表紙→名前→だれ向けか→特徴→価格→ボタン」で書くので、
           2つ目からは同じ位置を見るだけで比べられる。
         */}
-        <section aria-labelledby="series-heading" className="mt-4">
+        <section aria-labelledby="series-heading" className="mt-12">
           <h2 id="series-heading" className="rule-mark serif h-sect text-ink">
             3つのシリーズ
           </h2>

@@ -114,8 +114,7 @@ export const kyodaiBunkei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "この形が見通しを与える",
-              t: String.raw`$s$ と $w$ が完全に分離する。だから $\mathrm{P}$ を固定したときの最小・最大は $w=\frac12$ と $w=0,1$ で決まり、さらに $s$ を動かしたときの範囲もすぐ出る。`,
+              t: String.raw`この形では $s$ と $w$ が完全に分離する。だから $\mathrm{P}$ を固定したときの最小・最大は $w=\frac12$ と $w=0,1$ で決まり、さらに $s$ を動かしたときの範囲もすぐ出る。`,
             },
             { k: "p", t: String.raw`$\mathrm{P}$ を固定したときの最小距離 $d(s)$ と最大距離 $D(s)$ は` },
             {
@@ -211,7 +210,6 @@ export const kyodaiBunkei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "$p\\equiv1$ でも $p\\equiv2$ でも同じ",
               t: String.raw`$p\equiv1\pmod3$ なら余りは $1$ と $2$、$p\equiv2$ なら $2$ と $1$。足せばどちらも $3$ になるので、合計は $p-1$ で変わらない。`,
             },
           ],
@@ -323,8 +321,7 @@ export const kyodaiBunkei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "答えの形が自然なこと",
-              t: String.raw`$n+1$ を $4$ 等分した $3$ 番目、という形。$n$ 枚から $3$ 枚引いたとき、引いた札は $1$ から $n+1$ までを $4$ つに均す位置に散らばる、と読める。`,
+              t: String.raw`得られた値は、$n+1$ を $4$ 等分した $3$ 番目という形をしている。$n$ 枚から $3$ 枚引いたとき、引いた札は $1$ から $n+1$ までを $4$ つに均す位置に散らばる、と読める。`,
             },
           ],
           check: String.raw`$n=3$ なら引き方は1通りで $X=3$、式も $\dfrac{3\cdot4}{4}=3$。$n=4$ なら4通りで $\dfrac{3+4+4+4}{4}=\dfrac{15}{4}$、式も $\dfrac{3\cdot5}{4}=\dfrac{15}{4}$。`,

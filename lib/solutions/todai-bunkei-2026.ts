@@ -314,8 +314,7 @@ export const todaiBunkei2026: SolutionSet = {
             { k: "math", t: String.raw`k>\frac{1}{\sqrt3}=\frac{\sqrt3}{3}` },
             {
               k: "note",
-              title: "3本が平行になることはない",
-              t: String.raw`傾きの角が $60°$ ずつ違うので、3本の傾きはつねに相異なる。「どの2本も交わる」は自動的に満たされる。`,
+              t: String.raw`傾きの角が $60°$ ずつ違うので、3本の傾きはつねに相異なり、平行になることはない。どの2本も交わるという条件は自動的に満たされる。`,
             },
           ],
           pitfalls: [
@@ -373,8 +372,7 @@ export const todaiBunkei2026: SolutionSet = {
             },
             {
               k: "note",
-              title: "3本が1点で交わることはない",
-              t: String.raw`$S=0$ になるのは分子が $0$、すなわち $p=q$ のときだけ。$p^{2}\ne q^{2}$ だから起こらない。問題の但し書きは、ここでは効いてこない。`,
+              t: String.raw`3本が1点で交わるのは $S=0$ の場合だが、$S=0$ になるのは分子が $0$、すなわち $p=q$ のときだけである。$p^{2}\ne q^{2}$ だからこれは起こらず、三角形がつぶれる心配はない。`,
             },
           ],
           check: String.raw`$k=\dfrac{5\sqrt3}{12}$ では $\sqrt3k=\dfrac54$ なので $\dfrac{q_0^{2}}{p_0^{2}}=\dfrac{1+5/4}{5/4-1}=\dfrac{9/4}{1/4}=9$。確かに $q_0=3p_0$ で $r=\dfrac{3-1}{3+1}=\dfrac12$、$\dfrac{M}{m}=4$。`,
