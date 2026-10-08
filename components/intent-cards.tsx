@@ -24,12 +24,14 @@ export type Intent = {
   body: string;
   href: string;
   section: SectionKey;
+  /** 無料資料と購入する書籍を、初見でも区別できるようにする。 */
+  kind: string;
 };
 
 export function IntentCards({ items }: { items: Intent[] }) {
   return (
     <ul className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-      {items.map((it, i) => (
+      {items.map((it) => (
         <li key={it.href}>
           <Link
             href={it.href}
@@ -39,7 +41,7 @@ export function IntentCards({ items }: { items: Intent[] }) {
             <span className="sec-rule" />
             <span className="flex flex-1 flex-col px-3 pb-4 pt-3 sm:px-5 sm:pb-5 sm:pt-4">
               <span className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
-                0{i + 1}
+                {it.kind}
               </span>
               <span className="serif mt-2 text-[0.95rem] leading-snug text-ink sm:text-[1.05rem]">{it.want}</span>
               <span className="prose-ja mt-2.5 hidden text-[0.82rem] leading-[1.85] text-ink-2 sm:block">{it.body}</span>

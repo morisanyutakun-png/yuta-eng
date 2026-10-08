@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { HeaderStats, PageHeader } from "@/components/page-header";
+import { PageHeader } from "@/components/page-header";
 import { UniversityFinder } from "@/components/university-finder";
 import { siteTotals, summarize, universities, universityCount } from "@/lib/data";
 import { finderItems } from "@/lib/finder";
@@ -79,20 +79,11 @@ export default function UniversitiesPage() {
               数学の傾向と対策をまとめている{universityCount()}大学です。大学名・かな・「医学部」などで絞り込めます。
             </>
           }
-          meta={
-            <HeaderStats
-              items={[
-                { k: "掲載大学", v: universityCount(), u: "大学" },
-                { k: "試験区分", v: universities.length, u: "区分" },
-                {
-                  k: "分析年度",
-                  v: `${siteTotals().minYears}〜${siteTotals().maxYears}`,
-                  u: "年分（大学により異なる）",
-                },
-              ]}
-            />
-          }
         />
+
+        <div className="mt-4">
+          <UniversityFinder items={items} groups={usedGroups} headingLevel="h2" />
+        </div>
 
         <p className="prose-ja mb-6 mt-7 border-l-2 border-navy/40 bg-paper-2/60 px-4 py-3 text-[0.82rem] text-ink-2">
           旧帝大・難関国公立の理系で志望校を決めきれていない場合は、
@@ -106,7 +97,6 @@ export default function UniversitiesPage() {
           で頻出分野を固められます。
         </p>
 
-        <UniversityFinder items={items} groups={usedGroups} headingLevel="h2" />
       </div>
     </>
   );

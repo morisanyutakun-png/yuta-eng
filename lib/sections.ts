@@ -38,7 +38,7 @@ export const sections: Record<SectionKey, SectionInfo> = {
   kansei: { eyebrow: "過去問の前にシリーズ", color: "#2f6043" },
   shindan: { eyebrow: "志望校診断模試", color: "#5a3a78" },
   books: { eyebrow: "刊行物", color: "#8a5a1c" },
-  educators: { eyebrow: "学校・塾・予備校の方へ", color: "#4a5563" },
+  educators: { eyebrow: "学校・塾・法人の方へ", color: "#4a5563" },
 };
 
 /**

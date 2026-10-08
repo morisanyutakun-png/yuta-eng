@@ -176,10 +176,8 @@ export function MoshiReturnSample() {
           返却PDFを見る（A4横・表裏{moshiSample.return.pages.length}ページ）
         </a>
       </p>
-      <details className="mt-4 border border-rule px-4 py-3 sm:px-5">
-        <summary className="cursor-pointer text-[0.82rem] font-semibold text-navy">A4横の表・裏をプレビューする</summary>
-        <SampleViewer pages={moshiSample.return.pages} title={`${moshi.title} 共通返却サンプル`} layout="spread" />
-      </details>
+      <SampleViewer pages={moshiSample.return.pages} title={`${moshi.title} 共通返却サンプル`} layout="compact" />
+      <p className="mt-2 text-[0.72rem] text-ink-3">画像を押すと、表・裏を拡大して確認できます。</p>
       <InfoDetails title="見本・印刷についての注意事項">
         <p className="prose-ja text-[0.75rem] leading-[1.9] text-ink-3">{RETURN_NOTICE}</p>
       </InfoDetails>

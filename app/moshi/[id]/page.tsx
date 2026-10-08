@@ -8,7 +8,9 @@ import { MoshiForm } from "@/components/moshi-form";
 import { MoshiDeliverables } from "@/components/moshi-deliverables";
 import { MoshiSample } from "@/components/moshi-sample";
 import { MobileActions } from "@/components/mobile-actions";
-import { AnswerSheet, Flow } from "@/components/moshi-visual";
+import { MoshiReportCover } from "@/components/moshi-report-cover";
+import { PageJumps } from "@/components/page-jumps";
+import { Flow } from "@/components/moshi-visual";
 import { factsLine, fieldChartCaption, getUniversity, yearRange, yearsLabel } from "@/lib/data";
 import {
   deliverableLine,
@@ -277,14 +279,15 @@ export default async function MoshiUniversityPage({ params }: Props) {
               <p className="mt-2.5 text-[0.78rem] text-ink-3">参加申込の時点では料金は発生しません。</p>
             </div>
 
-            <figure className="mt-9 hidden sm:block lg:mt-0">
-              <AnswerSheet className="w-full max-w-[22rem]" />
-              <figcaption className="mt-2 text-[0.72rem] leading-relaxed text-ink-3">
-                記述答案を人が読み、大問ごとに得点を出します。
-              </figcaption>
-            </figure>
+            <MoshiReportCover className="mt-9 hidden w-full max-w-[22rem] sm:block lg:mt-0" />
           </div>
         </header>
+        <PageJumps items={[
+          { href: "#youkou-u", label: "日程・受験料" },
+          { href: "#sample", label: "問題・返却見本" },
+          { href: "#faq-heading", label: "よくある質問" },
+          { href: "#apply", label: "参加申込" },
+        ]} />
 
         {/* この大学の出題形式。数字はすべて当サイトの分析データから出す */}
         {u && (
@@ -296,7 +299,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
               当サイトが{yearsLabel(u) ?? "過去"}の過去問を分析した結果です。本模試は、この形式に合わせて作問します。
             </p>
 
-            <dl className="mt-5 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
+            <dl className="mt-5 grid grid-cols-2 gap-px border border-rule bg-rule lg:grid-cols-4">
               {[
                 { k: "試験時間", v: u.facts.examTime ? `${u.facts.examTime}分` : "—", n: u.facts.examTimeNote },
                 {
@@ -372,7 +375,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
         </section>
 
         <section aria-labelledby="youkou-u" className="mt-14">
-          <h2 id="youkou-u" className="rule-mark serif h-sect text-ink">
+          <h2 id="youkou-u" className="rule-mark serif h-sect scroll-mt-20 text-ink">
             実施要項
           </h2>
           <dl className="mt-5 divide-y divide-rule border border-rule">
@@ -473,7 +476,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
         )}
 
         <section aria-labelledby="faq-heading" className="mt-14">
-          <h2 id="faq-heading" className="rule-mark serif h-sect text-ink">
+          <h2 id="faq-heading" className="rule-mark serif h-sect scroll-mt-20 text-ink">
             {bare}の数学の模試について、よくある質問
           </h2>
           <div className="mt-5 divide-y divide-rule border-y border-rule">

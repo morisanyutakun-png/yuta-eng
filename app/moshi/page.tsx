@@ -8,7 +8,9 @@ import { MoshiDeliverables } from "@/components/moshi-deliverables";
 import { MoshiSample } from "@/components/moshi-sample";
 import { InfoDetails } from "@/components/info-details";
 import { MobileActions } from "@/components/mobile-actions";
-import { AnswerSheet, Flow, MarkIcon, PerUnivIcon, PeriodIcon } from "@/components/moshi-visual";
+import { MoshiReportCover } from "@/components/moshi-report-cover";
+import { PageJumps } from "@/components/page-jumps";
+import { Flow, MarkIcon, PerUnivIcon, PeriodIcon } from "@/components/moshi-visual";
 import { getUniversity, siteTotals, universityCount } from "@/lib/data";
 import {
   deliverableLine,
@@ -156,14 +158,15 @@ export default function MoshiPage() {
             </div>
 
             {/* 文章より先に、この模試で何が起きるかを図で見せる */}
-            <figure className="hidden justify-self-center sm:block lg:justify-self-end">
-              <AnswerSheet className="w-[26rem] max-w-full" />
-              <figcaption className="mt-2 text-center text-[0.76rem] text-ink-3">
-                記述答案を人が読み、大問ごとに得点を出します
-              </figcaption>
-            </figure>
+            <MoshiReportCover className="hidden w-full max-w-[26rem] justify-self-center sm:block lg:justify-self-end" />
           </div>
         </header>
+        <PageJumps items={[
+          { href: "#unis", label: "大学を選ぶ" },
+          { href: "#youkou", label: "日程・受験料" },
+          { href: "#sample", label: "問題・返却見本" },
+          { href: "/educators#moshi", label: "団体での受験" },
+        ]} />
 
         {/*
           対象の大学を最初に出す。自分の大学があるかどうかが分からないと、
@@ -178,7 +181,7 @@ export default function MoshiPage() {
               <li key={u.id}>
                 <Link
                   href={moshiPath(u)}
-                  className="inline-flex min-h-9 items-center border border-rule bg-white px-3 text-[0.86rem] text-ink transition-colors hover:border-[var(--sec)] hover:text-[var(--sec)]"
+                  className="inline-flex min-h-11 items-center border border-rule bg-white px-3 text-[0.86rem] text-ink transition-colors hover:border-[var(--sec)] hover:text-[var(--sec)]"
                 >
                   {u.university}
                 </Link>
@@ -195,7 +198,8 @@ export default function MoshiPage() {
           <h2 id="points" className="rule-mark serif h-sect text-ink">
             この模試について
           </h2>
-          <ul className="mt-6 grid gap-px overflow-hidden border border-rule bg-rule lg:grid-cols-3">
+          <InfoDetails title="作問・採点・受験方法を詳しく見る">
+          <ul className="grid gap-px overflow-hidden border border-rule bg-rule lg:grid-cols-3">
             {points.map((p) => (
               <li key={p.h} className="bg-white p-5 lg:p-6">
                 <p.icon className="hidden h-12 w-auto sm:block" />
@@ -204,10 +208,11 @@ export default function MoshiPage() {
               </li>
             ))}
           </ul>
+          </InfoDetails>
         </section>
 
         <section aria-labelledby="youkou" className="mt-14">
-          <h2 id="youkou" className="rule-mark serif h-sect text-ink">
+          <h2 id="youkou" className="rule-mark serif h-sect scroll-mt-20 text-ink">
             実施要項
           </h2>
           {/*
@@ -219,7 +224,7 @@ export default function MoshiPage() {
           <div className="mt-6 border border-rule">
             <dl className="grid lg:grid-cols-2 lg:gap-x-px lg:bg-rule">
               {[
-                { k: "対象大学", v: `${moshi.universities.length}大学`, note: "下の一覧からお選びいただけます" },
+                { k: "対象大学", v: `${moshi.universities.length}大学`, note: "開催大学の一覧からお選びいただけます" },
                 { k: "実施時期", v: roundLabel.replace(/^第/, "第"), note: "正式な日程は確定しだいご案内します" },
                 { k: "受験方法", v: "オンライン・期間内の好きな日時", note: "本番と同じ試験時間を目安として表示する予定です" },
                 { k: "受験料", v: priceLabel, note: "参加申込の時点では料金は発生しません" },

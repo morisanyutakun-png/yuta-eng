@@ -59,9 +59,9 @@ function UniversityRow({ u }: { u: University }) {
           <span className="shrink-0 text-[0.7rem] tabular-nums text-ink-3">全{books.length}巻</span>
         )}
       </div>
-      <ul className="mt-2 grid gap-2 sm:grid-cols-2">
+      <ul className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
         {books.map((b) => (
-          <li key={b.asin} className="flex items-center gap-2.5">
+          <li key={b.asin} className="flex min-w-0 items-center gap-2.5">
             {/* 幅の狭い画面では行ごと Amazon へ。ボタンを置くと見出しが潰れるため */}
             <a
               href={`https://www.amazon.co.jp/dp/${b.asin}`}
@@ -85,11 +85,11 @@ function UniversityRow({ u }: { u: University }) {
                 </span>
               </span>
             </a>
-            <AmazonButton
+            <span className="hidden shrink-0 sm:block"><AmazonButton
               href={`https://www.amazon.co.jp/dp/${b.asin}`}
               label="Amazon"
-              className="hidden shrink-0 !min-h-8 !px-2.5 !text-[0.72rem] sm:inline-flex"
-            />
+              className="!min-h-11 !px-2.5 !text-[0.72rem]"
+            /></span>
           </li>
         ))}
       </ul>

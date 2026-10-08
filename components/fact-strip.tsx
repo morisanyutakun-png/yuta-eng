@@ -7,8 +7,8 @@
  * 支払い方法や受付時間の帯と同じ役目のもの。
  *
  * 置くのは3つまで、1つは9文字までにする。狭い画面でも3つとも見えるように
- * するためで、入りきらないものは横に送れるが、送れることに気づかれにくい。
- * 印は意味を持たせず、文字の添えものとして使う（印だけで通じる必要はない）。
+ * するため、等幅の列に収め、長い表記は折り返す。横スクロールは不要。
+ * 印は広い画面で文字に添え、狭い画面では省く。
  */
 
 export type FactIcon = "check" | "doc" | "pen" | "clock" | "grid" | "book" | "yen" | "person";
@@ -69,17 +69,17 @@ export function FactStrip({
   if (!items.length) return null;
   return (
     <ul
-      className={`scroll-hint -mx-5 flex items-stretch overflow-x-auto border-y border-rule bg-paper-2 sm:-mx-6 lg:mx-0 ${className}`}
+      className={`-mx-5 grid auto-cols-fr grid-flow-col border-y border-rule bg-paper-2 sm:-mx-6 lg:mx-0 ${className}`}
     >
       {items.map((f) => (
         <li
           key={f.label}
-          className="flex shrink-0 items-center gap-1.5 border-r border-rule px-3 py-2.5 last:border-r-0 sm:px-5"
+          className="flex min-w-0 items-center justify-center gap-1.5 border-r border-rule px-2 py-2.5 last:border-r-0 sm:justify-start sm:px-5"
         >
           <svg
             aria-hidden="true"
             viewBox="0 0 20 20"
-            className="size-4 shrink-0 text-[var(--sec,var(--color-navy))] sm:size-[1.05rem]"
+            className="hidden shrink-0 text-[var(--sec,var(--color-navy))] sm:block sm:size-[1.05rem]"
             fill="none"
             stroke="currentColor"
             strokeWidth="1.5"
@@ -88,7 +88,7 @@ export function FactStrip({
           >
             {paths[f.icon]}
           </svg>
-          <span className="whitespace-nowrap text-[0.74rem] font-medium text-ink-2 sm:text-[0.78rem]">
+          <span className="text-center text-[0.74rem] font-medium leading-relaxed text-ink-2 sm:text-left sm:text-[0.78rem]">
             {f.label}
           </span>
         </li>

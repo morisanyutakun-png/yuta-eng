@@ -63,7 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           白文字との明暗比は 11.5:1 あり、薄い字でも 7:1 を下回らない。
         */}
         <footer className="mt-20 bg-navy py-10 text-white">
-          <div className="prose-ja mx-auto max-w-[46rem] space-y-3 px-5 text-[0.72rem] leading-[1.95] text-white/75 sm:px-6 lg:max-w-[74rem] lg:px-8">
+          <div className="mx-auto max-w-[46rem] space-y-4 px-5 text-[0.72rem] leading-relaxed text-white/75 sm:px-6 lg:max-w-[74rem] lg:px-8">
             <p className="flex items-center gap-2.5 pb-1 text-white">
               <LogoMark
                 className="size-6 shrink-0"
@@ -71,31 +71,36 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               />
               <span className="serif text-[0.95rem] tracking-tight">{site.name}</span>
             </p>
-            <p>
+            <p>{site.author}が制作・運営する、各大学とは関係のない非公式サイトです。</p>
+            <nav aria-label="サイトのご案内">
+              <ul className="grid grid-cols-2 gap-x-5 gap-y-1 sm:grid-cols-3">
+                {[
+                  { href: "/universities", label: "大学別の出題分析" },
+                  ...(hasSolutions ? [{ href: "/kaisetsu", label: "過去問の解答・解説" }] : []),
+                  { href: "/moshi", label: `${sections.moshi.eyebrow}（${moshi.title}）` },
+                  { href: "/books", label: "教材一覧" },
+                  { href: "/educators", label: "学校・塾・法人の方へ" },
+                  { href: "/moshi/privacy", label: "模試の個人情報の取り扱い" },
+                  { href: "/kaisetsu/policy", label: "解答・解説の掲載方針" },
+                  ...(site.contact ? [{ href: `mailto:${site.contact}`, label: "お問い合わせ" }] : []),
+                ].map((item) => <li key={item.href}><Link href={item.href} className="flex min-h-11 items-center border-b border-white/15 py-2 text-white hover:text-white/80">{item.label}</Link></li>)}
+              </ul>
+            </nav>
+            <details className="border-y border-white/20 py-2">
+              <summary className="min-h-11 cursor-pointer py-3 font-semibold text-white">分析・教材の利用について</summary>
+            <p className="prose-ja">
               本サイトの分析は、各大学の公表資料と実際の問題冊子にあたって独自に調査したものです。
               対象年度は大学によって異なり、各ページの冒頭に明記しています。
               出題形式・分野構成の分析であり、問題文の転載は行っていません。各大学とは関係のない非公式サイトです。
             </p>
-            <p>
+            <p className="prose-ja mt-3">
               掲載書籍（「合格答案をつくる」シリーズ・「過去問の前に」シリーズ）は Amazon.co.jp で販売しています。
               価格・在庫は Amazon の表示が優先されます。
               <Link href="/books" className="ml-1 text-white underline underline-offset-4 hover:text-white/80">
                 教材一覧
               </Link>
             </p>
-            <p>
-              <Link href="/moshi" className="text-white underline underline-offset-4 hover:text-white/80">
-                {sections.moshi.eyebrow}（{moshi.title}）
-              </Link>
-              <span className="mx-2 text-white/45">／</span>
-              <Link href="/educators" className="text-white underline underline-offset-4 hover:text-white/80">
-                学校・塾・予備校関係者の方へ
-              </Link>
-              <span className="mx-2 text-white/45">／</span>
-              <Link href="/kaisetsu/policy" className="text-white underline underline-offset-4 hover:text-white/80">
-                解答・解説の掲載方針
-              </Link>
-            </p>
+            </details>
             <p className="pt-2 text-white/55">© {new Date().getFullYear()} {site.author}</p>
           </div>
         </footer>

@@ -39,7 +39,7 @@ function navItems(hasSolutions: boolean): Item[] {
     { href: "/kansei", label: "完成演習", note: "過去問の前に解く分野別演習" },
     { href: "/shindan", label: "志望校診断", note: "いまの実力から受かる大学を探す" },
     { href: "/books", label: "教材一覧", note: "刊行している全冊を学習段階順に" },
-    { href: "/educators", label: "先生方へ", note: "学校・塾・予備校での採用について" },
+    { href: "/educators", label: "学校・法人", note: "学校・塾・法人の教材・団体受験" },
   ];
 }
 

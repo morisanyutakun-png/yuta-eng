@@ -42,6 +42,7 @@ export function UniversityFinder({
   size = "md",
   limit,
   moreHref,
+  compact = false,
 }: {
   items: FinderItem[];
   groups: string[];
@@ -58,6 +59,8 @@ export function UniversityFinder({
   limit?: number;
   /** 上限で隠れたぶんを見にいく先 */
   moreHref?: string;
+  /** トップの入口は、大学名・区分を中心に小さく一覧する。 */
+  compact?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const [group, setGroup] = useState<string>(ALL);
@@ -130,7 +133,7 @@ export function UniversityFinder({
               type="button"
               onClick={() => setQuery("")}
               aria-label="検索を消す"
-              className="absolute right-1.5 top-1/2 flex size-9 -translate-y-1/2 items-center justify-center text-ink-3 hover:text-ink"
+              className="absolute right-0.5 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center text-ink-3 hover:text-ink"
             >
               <svg viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" />
@@ -150,7 +153,7 @@ export function UniversityFinder({
                 type="button"
                 onClick={() => setGroup(g)}
                 aria-pressed={active}
-                className={`min-h-10 shrink-0 border px-3.5 text-[0.82rem] font-medium transition-colors ${
+                className={`min-h-11 shrink-0 border px-3 text-[0.82rem] font-medium transition-colors ${
                   active
                     ? "border-navy bg-navy text-white"
                     : "border-rule bg-white text-ink-2 hover:border-navy hover:text-navy"
@@ -184,7 +187,7 @@ export function UniversityFinder({
               判断材料なので、本文に混ぜず札にして位置をそろえる。
               札の高さをそろえると、一覧として上下に比べられる。
             */}
-            <ul className="mt-1 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+            <ul className={`mt-1 grid gap-2 sm:grid-cols-2 xl:grid-cols-3 ${compact ? "grid-cols-2" : ""}`}>
               {list.map((it) => (
                 <li key={it.slug}>
                   <Link
@@ -198,18 +201,18 @@ export function UniversityFinder({
                       height={226}
                       loading="lazy"
                       sizes="44px"
-                      className="h-[62px] w-11 shrink-0 border border-rule object-cover"
+                      className={`h-[62px] w-11 shrink-0 border border-rule object-cover ${compact ? "hidden sm:block" : ""}`}
                     />
                     <span className="flex min-w-0 flex-1 flex-col gap-1">
-                      <span className="flex min-w-0 items-baseline gap-1.5">
-                        <span className="truncate text-[0.95rem] font-semibold text-ink transition-colors group-hover:text-navy">
+                      <span className={`flex min-w-0 gap-1.5 ${compact ? "flex-col sm:flex-row sm:items-baseline" : "items-baseline"}`}>
+                        <span className="text-[0.95rem] font-semibold leading-snug text-ink transition-colors group-hover:text-navy">
                           {it.university}
                         </span>
                         {it.course && (
                           <span className="shrink-0 text-[0.76rem] text-ink-2">{it.course}</span>
                         )}
                       </span>
-                      <span className="flex flex-wrap items-center gap-1">
+                      <span className={`${compact ? "hidden sm:flex" : "flex"} flex-wrap items-center gap-1`}>
                         {it.examTime && <span className="badge tabular-nums">{it.examTime}分</span>}
                         {it.questions && <span className="badge tabular-nums">大問{it.questions}題</span>}
                         {it.selective && <span className="badge">学部別に選択</span>}

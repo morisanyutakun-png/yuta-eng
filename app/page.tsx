@@ -7,7 +7,7 @@ import { FactStrip } from "@/components/fact-strip";
 import { AnalysisTable } from "@/components/home-visual";
 import { IntentCards } from "@/components/intent-cards";
 import { InfoDetails } from "@/components/info-details";
-import { AnswerSheet } from "@/components/moshi-visual";
+import { MoshiReportCover } from "@/components/moshi-report-cover";
 import { moshi, roundLabel } from "@/lib/moshi/config";
 import { KanseiCards } from "@/components/kansei-cards";
 import { TopFields } from "@/components/top-fields";
@@ -115,22 +115,23 @@ export default function HomePage() {
           ]}
         />
 
-        <section className="border-b border-rule pb-9 pt-7 sm:pt-9">
+        <section className="-mx-5 border-b border-rule bg-paper-2/60 px-5 py-6 sm:mx-0 sm:px-7 sm:py-8">
           <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_21rem] lg:items-center lg:gap-x-12">
             <div className="min-w-0">
               <p className="text-[0.7rem] font-bold tracking-[0.1em] text-navy">
-                国公立・私立{t.universities}大学／{t.span}の過去問から
+                国公立・私立{t.universities}大学の数学入試を分析
               </p>
               <h1 className="serif h-page mt-2.5 text-ink">
-                大学別数学
-                <br className="sm:hidden" />
-                研究室
+                大学別数学研究室
               </h1>
-              <p className="prose-ja mt-4 max-w-[34rem] text-[0.97rem] text-ink-2">
-                試験時間・大問構成・頻出分野・目標点を、大学ごとに
-                <strong className="font-semibold text-ink">年度別・分野別の表</strong>
-                にまとめています。
+              <p className="mt-3 text-[0.97rem] font-semibold leading-relaxed text-navy">志望校の出題を知り、数学の対策を絞る。</p>
+              <p className="prose-ja mt-2 max-w-[34rem] text-[0.88rem] text-ink-2">
+                出題傾向・頻出分野・目標点を無料公開。大学別の模試と教材で、答案を書く力まで確かめられます。
               </p>
+              <div className="mt-5 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3">
+                <a href="#find-heading" className="btn btn-primary btn-compact">無料の出題分析</a>
+                <Link href="/moshi" className="btn btn-compact bg-white">大学別数学模試</Link>
+              </div>
             </div>
 
             {/*
@@ -147,35 +148,21 @@ export default function HomePage() {
             </figure>
           </div>
 
-          <dl className="mt-8 flex flex-wrap gap-x-9 gap-y-4 border-t border-rule pt-6">
-            {[
-              { k: "分析した大学", v: t.universities, u: `大学・${t.sections}区分` },
-              { k: "分析した入試", v: t.totalYears, u: "年分" },
-              { k: "予想問題集", v: t.books, u: "冊" },
-            ].map((s) => (
-              <div key={s.k}>
-                <dt className="text-[0.68rem] text-ink-3">{s.k}</dt>
-                <dd className="serif mt-1 leading-none text-ink">
-                  <span className="text-[1.6rem] tabular-nums">{s.v}</span>
-                  <span className="ml-0.5 font-sans text-[0.7rem] font-normal text-ink-3">{s.u}</span>
-                </dd>
-              </div>
-            ))}
-          </dl>
         </section>
 
-        <section aria-labelledby="find-heading" className="mt-9" style={sectionStyle("universities")}>
-          <h2 id="find-heading" className="rule-mark serif h-sect text-ink">
+        <section aria-labelledby="find-heading" className="mt-6" style={sectionStyle("universities")}>
+          <h2 id="find-heading" className="rule-mark serif h-sect scroll-mt-20 text-ink">
             大学から探す
           </h2>
           <p className="prose-ja mt-2.5 max-w-[36rem] text-[0.9rem] text-ink-2">
-            大学名やかなで検索するか、下の区分で絞り込めます。
+            志望校を選ぶと、出題傾向と対策が読めます。
           </p>
           <UniversityFinder
             items={items}
             groups={usedGroups}
             size="lg"
-            limit={6}
+            limit={4}
+            compact
             moreHref="/universities"
           />
         </section>
@@ -208,6 +195,7 @@ export default function HomePage() {
                 body: `${t.universities}大学・${t.sections}区分の試験時間・大問構成・頻出分野・目標点を、年度別の表で。`,
                 href: "/universities",
                 section: "universities",
+                kind: "無料のWeb資料",
               },
               {
                 want: "自分に合う大学を知りたい",
@@ -215,6 +203,7 @@ export default function HomePage() {
                 body: `${shindan.rounds}回の模試で得点の形を取り出し、${shindan.universities.length}大学との相性を判定します。`,
                 href: "/shindan",
                 section: "shindan",
+                kind: "書籍・購入教材",
               },
               {
                 want: "過去問の前に力をつけたい",
@@ -222,6 +211,7 @@ export default function HomePage() {
                 body: `志望校の頻出分野を、標準から本番の水準まで段階的に。${kanseiPublished.length}大学ぶん刊行。`,
                 href: "/kansei",
                 section: "kansei",
+                kind: "書籍・購入教材",
               },
               {
                 want: "本番の形式で演習したい",
@@ -229,6 +219,7 @@ export default function HomePage() {
                 body: `試験時間・大問構成・解答形式をそろえた予想問題集。全${t.books}冊。`,
                 href: "/books",
                 section: "books",
+                kind: "書籍・購入教材",
               },
             ]}
           />
@@ -279,7 +270,7 @@ export default function HomePage() {
           </h2>
           {/* 文字だけの帯にせず、採点して返すところまでを図で見せる */}
           <div className="card mt-4 flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:gap-7">
-            <AnswerSheet className="hidden w-[170px] shrink-0 self-center sm:block" />
+            <MoshiReportCover className="hidden w-[230px] shrink-0 sm:block" />
             <div className="min-w-0">
               <p className="prose-ja text-[0.9rem] leading-[1.9] text-ink-2">
                 「{moshi.title}」はオンラインで受験できます。{moshi.season}・{moshi.universities.length}大学。{roundLabel}。
@@ -371,6 +362,7 @@ export default function HomePage() {
           <h2 className="serif text-[1.1rem] text-ink">このサイトについて</h2>
           <p className="prose-ja mt-3 text-[0.84rem] text-ink-2">{site.author}が制作・運営する、各大学とは関係のない非公式サイトです。</p>
           <InfoDetails title="分析の出どころ・掲載内容を見る">
+          <p className="text-[0.82rem] leading-relaxed text-ink-2">{t.universities}大学・{t.sections}区分、合計{t.totalYears}年分の入試を分析。予想問題集は{t.books}冊を刊行しています。</p>
           <dl className="mt-4 grid gap-px border border-rule bg-rule sm:grid-cols-3">
             {[
               {

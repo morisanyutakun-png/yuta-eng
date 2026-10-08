@@ -136,6 +136,8 @@ for (const f of files) {
     if (!html.includes(`<title>大学別数学模試｜${moshi.title}｜`)) ng(page, "模試のページタイトルに種類とシリーズ名がない");
   }
   if (page === "/moshi" || moshi.universities.some((u) => page === `/moshi/${u.id}`)) {
+    if (!html.includes('aria-label="このページの案内"')) ng(page, "模試のページ内案内がない");
+    if (!html.includes("画像を押すと、表・裏を拡大して確認できます。")) ng(page, "返却見本のプレビュー導線がない");
     if (!html.includes('class="mobile-actions ') || !html.includes('href="#apply"')) ng(page, "モバイルの申込導線がない");
     if (!html.includes("個人成績表の内容・グラフを見る") || !html.includes("問題・解答・採点基準のページを開く")) ng(page, "見本の詳細を開く導線がない");
     const sample = html.match(/<section\b[^>]*\bid="sample"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? "";
@@ -152,6 +154,11 @@ for (const f of files) {
     for (const u of moshi.universities) {
       if (sample.includes(u.university)) ng(page, `共通見本に実在の大学名がある（${u.university}）`);
     }
+  }
+
+  if (page === "/") {
+    for (const required of ["無料の出題分析", "無料のWeb資料", "書籍・購入教材"])
+      if (!body.includes(required)) ng(page, `入口の区別に「${required}」がない`);
   }
 
   if (page === "/educators") {
