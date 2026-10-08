@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { NextStep } from "@/components/next-step";
 import { PageHeader } from "@/components/page-header";
 import { ProductPanel, type Product } from "@/components/product-panel";
 import { siteTotals, universities, universityCount } from "@/lib/data";
@@ -97,6 +98,32 @@ export default function EducatorsPage() {
     inLanguage: "ja",
   };
 
+  /**
+   * 団体でのお申し込み用の、項目を埋めたメール。
+   *
+   * 「メールをください」とだけ書くと、何を書けばよいか分からず止まる。
+   * 件名と、埋める項目をあらかじめ入れておけば、あとは埋めて送るだけになる。
+   * 問い合わせ先がフォームの場合は作らない（その場合はボタンを節へのリンクにする）。
+   */
+  const mailTemplate =
+    site.contact && site.contact.includes("@")
+      ? `mailto:${site.contact}?subject=${encodeURIComponent(
+          `${moshi.title}　団体でのお申し込みについて`,
+        )}&body=${encodeURIComponent(
+          [
+            "（この下の項目を埋めてお送りください。この時点ではまだ確定しません）",
+            "",
+            "ご所属（学校名・塾名）：",
+            "お名前：",
+            "ご希望の大学：",
+            "おおよその人数：",
+            "ご希望の時期：",
+            "ご質問・ご要望：",
+            "",
+          ].join("\n"),
+        )}`
+      : null;
+
   // 表紙の棚。検索されやすい大学から並べる
   const order: readonly string[] = groupOrder;
   const shelf = [...universities].sort((a, b) => order.indexOf(a.group) - order.indexOf(b.group));
@@ -187,62 +214,98 @@ export default function EducatorsPage() {
         />
 
         {/*
-          先生がこのページに来る用件は、だいたい次の3つに分かれる。
-          それぞれがどこに書いてあるかを先に示して、読む場所を選べるようにする。
-          売り込みではなく、見出しは用件のままの言葉にする。
+          先生がこのページでやることは、突き詰めると2つしかない。
+          教材を授業で使うか、模試をクラスで受けさせるか。
+          まずその2つを大きく分け、どちらを読めばよいかを先に決めてもらう。
+          相談だけしたい人のために、3つめの小さな入口も置く。
         */}
-        <section aria-labelledby="ask" className="mt-9">
+        <section aria-labelledby="ask" className="mt-10">
           <h2 id="ask" className="rule-mark serif h-sect text-ink">
-            ご相談いただけること
+            ご用件からお選びください
           </h2>
-          <ol className="mt-5 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
+
+          <ul className="mt-5 grid gap-4 lg:grid-cols-2">
             {[
               {
-                h: "複数冊でのご利用",
-                body: "授業・講習・課題演習でまとめてお使いになる場合のご相談を承ります。",
-                to: "#multiple",
-                label: "ご利用について",
+                n: "1",
+                want: "教材を授業・講習で使いたい",
+                to: "#books-for-class",
+                body: `${universityCount()}大学の予想問題集と、分野別の演習書です。試し読みと出題分析で中身を確かめてから、Amazon でご購入いただけます。`,
+                points: ["本番と同じ形式の予想問題集", "小問ごとの加点・減点つきの採点表", `抜粋で中身を確認（${sampleCount}冊ぶん）`],
+                label: "教材のご案内を見る",
               },
               {
-                h: "採用検討時の内容確認",
-                body: `収録範囲・難易度・解説の方針は、出題分析と抜粋（${sampleCount}冊ぶん）でご確認いただけます。`,
-                to: "#check",
-                label: "中身を確かめる",
-              },
-              {
-                h: "模試の団体でのお申し込み",
-                body: `${moshi.title}を${moshi.group.min}名から承ります。人数の確定は受験の前日まで、ご請求は受験後です。`,
+                n: "2",
+                want: "模試をクラスで受けさせたい",
                 to: "#moshi",
-                label: "団体でのお申し込み",
+                body: `${moshi.title}を、${moshi.group.min}名から団体で承ります。人数の確定は受験の前日まで、ご請求は受験後です。`,
+                points: ["志望校の形式で記述答案を書かせる", "人の手で採点し講評まで返す", "請求書・銀行振込の後払い"],
+                label: "模試のご案内を見る",
               },
-              {
-                h: "教材選定のご相談",
-                body: "学年・進度・志望層に合わせて、どの段階のどの教材が合うかをお答えします。",
-                to: "#contact",
-                label: "お問い合わせ",
-              },
-            ].map((x, i) => (
-              <li key={x.h} className="bg-white px-5 py-5">
-                <p className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
-                  0{i + 1}
-                </p>
-                <p className="serif mt-1.5 text-[1rem] leading-snug text-ink">{x.h}</p>
-                <p className="prose-ja mt-2 text-[0.84rem] leading-[1.9] text-ink-2">{x.body}</p>
-                <p className="mt-3">
-                  <Link href={x.to} className="text-[0.8rem] font-semibold text-navy underline underline-offset-4">
-                    {x.label}
-                  </Link>
-                </p>
+            ].map((x) => (
+              <li key={x.n}>
+                <Link
+                  href={x.to}
+                  className="group flex h-full flex-col border border-rule bg-white transition-colors hover:border-[var(--sec)]"
+                >
+                  <span className="sec-rule" />
+                  <span className="flex flex-1 flex-col px-5 py-5 sm:px-6">
+                    <span className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
+                      0{x.n}
+                    </span>
+                    <span className="serif mt-2 text-[1.15rem] leading-snug text-ink">{x.want}</span>
+                    <span className="prose-ja mt-2.5 text-[0.86rem] leading-[1.9] text-ink-2">{x.body}</span>
+                    <span className="mt-4 block space-y-1.5 border-t border-rule pt-3.5">
+                      {x.points.map((pt) => (
+                        <span key={pt} className="flex gap-2 text-[0.82rem] leading-relaxed text-ink-2">
+                          <span aria-hidden="true" className="shrink-0 text-[var(--sec)]">
+                            ・
+                          </span>
+                          <span className="min-w-0">{pt}</span>
+                        </span>
+                      ))}
+                    </span>
+                    <span className="mt-4 flex items-center gap-1.5 pt-1 text-[0.85rem] font-semibold text-[var(--sec)]">
+                      {x.label}
+                      <svg
+                        aria-hidden="true"
+                        viewBox="0 0 20 20"
+                        className="size-3 transition-transform group-hover:translate-y-0.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.4"
+                      >
+                        <path d="m4 7 6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                  </span>
+                </Link>
               </li>
             ))}
-          </ol>
+          </ul>
+
+          <p className="prose-ja mt-4 text-[0.86rem] leading-[1.9] text-ink-2">
+            どちらとも決めかねる場合や、学年・進度に合うものを一緒に選んでほしい場合は、
+            <Link href="#contact" className="font-semibold text-navy underline underline-offset-4">
+              そのままご相談ください
+            </Link>
+            。ご所属とお名前を添えてメールをいただければ、こちらからお返事します。
+          </p>
+        </section>
+
+        {/* ここから1つめ。教材の話だけをまとめる */}
+        <section aria-labelledby="books-heading" className="mt-16 scroll-mt-20" id="books-for-class">
+          <p className="eyebrow">ご用件 01</p>
+          <h2 id="books-heading" className="serif h-sect mt-1.5 border-b-2 border-ink/80 pb-3 text-ink">
+            教材を授業・講習で使う
+          </h2>
         </section>
 
         {/* 表紙の棚。文字より先に「どんな本か」を見せる */}
         <section aria-labelledby="shelf" className="mt-12 border-y border-rule py-6">
-          <h2 id="shelf" className="sr-only">
+          <h3 id="shelf" className="sr-only">
             刊行している大学別教材
-          </h2>
+          </h3>
           <ul className="scroll-hint -mx-5 flex snap-x snap-mandatory scroll-pl-5 gap-3 overflow-x-auto px-5 pb-2 sm:-mx-6 sm:scroll-pl-6 sm:px-6">
             {shelf.map((u, i) => (
               <li key={u.slug} className="w-[96px] shrink-0 snap-start sm:w-[108px]">
@@ -279,9 +342,9 @@ export default function EducatorsPage() {
 
         {/* 3シリーズ。表紙・説明・購入導線をひとまとめに */}
         <section aria-labelledby="series" className="mt-14">
-          <h2 id="series" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
+          <h3 id="series" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
             刊行している教材
-          </h2>
+          </h3>
           <ul className="mt-7 space-y-10">
             {series.map((p, i) => (
               <li key={p.name} className="border-t border-rule pt-10 first:border-0 first:pt-0">
@@ -295,9 +358,9 @@ export default function EducatorsPage() {
         </section>
 
         <section aria-labelledby="features" className="mt-14">
-          <h2 id="features" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
+          <h3 id="features" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
             教材の特徴
-          </h2>
+          </h3>
           <dl className="mt-6 space-y-7">
             {features.map((f) => (
               <div key={f.h}>
@@ -309,9 +372,9 @@ export default function EducatorsPage() {
         </section>
 
         <section aria-labelledby="check" className="mt-14">
-          <h2 id="check" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
+          <h3 id="check" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
             購入前に中身を確かめる
-          </h2>
+          </h3>
           <ul className="mt-5 divide-y divide-rule border-y border-rule">
             {[
               {
@@ -355,9 +418,9 @@ export default function EducatorsPage() {
         </section>
 
         <section aria-labelledby="multiple" className="mt-14">
-          <h2 id="multiple" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
+          <h3 id="multiple" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
             複数冊でのご利用について
-          </h2>
+          </h3>
           <div className="prose-ja mt-5 space-y-3 text-[0.9rem] leading-[2] text-ink-2">
             <p>複数名でのご利用も、通常の商品ページから購入いただけます。</p>
             <p className="text-[0.84rem] text-ink-3">
@@ -373,9 +436,20 @@ export default function EducatorsPage() {
           人数と時期によっては受けられない。できないことを先に書いて、
           そのうえで相談を受ける形にする。仕組みのない約束はしない。
         */}
-        <section aria-labelledby="moshi-heading" className="mt-14 scroll-mt-20" id="moshi">
-          <h2 id="moshi-heading" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
-            模試をまとめてお申し込みいただく場合
+        <NextStep
+          heading="教材について、次にすること"
+          note="中身をご確認いただいてから、通常の商品ページでご購入いただけます。ご不明な点は先にお尋ねください。"
+          primary={{ href: "/universities", label: "大学を選んで分析と試し読みを見る" }}
+          secondary={[
+            { href: "/books", label: "全冊を学習の段階順に見る" },
+            { href: "#contact", label: "教材選定について相談する" },
+          ]}
+        />
+
+        <section aria-labelledby="moshi-heading" className="mt-16 scroll-mt-20" id="moshi">
+          <p className="eyebrow">ご用件 02</p>
+          <h2 id="moshi-heading" className="serif h-sect mt-1.5 border-b-2 border-ink/80 pb-3 text-ink">
+            模試をクラスで受けさせる
           </h2>
           <div className="prose-ja mt-5 space-y-3 text-[0.9rem] leading-[2] text-ink-2">
             <p>
@@ -511,14 +585,23 @@ export default function EducatorsPage() {
             そのあとの授業で詰める順番を決める材料になります。
           </p>
 
-          <p className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2.5 text-[0.86rem]">
-            <Link href="/moshi" className="btn">
-              模試のご案内を見る
-            </Link>
-            <Link href="#contact" className="text-navy underline underline-offset-4">
-              団体でのお申し込み・ご質問はこちらから
-            </Link>
-          </p>
+          <NextStep
+            heading="模試について、次にすること"
+            note={
+              mailTemplate
+                ? "下のボタンを押すと、必要な項目があらかじめ入ったメールが開きます。埋めて送信してください。この時点ではまだ確定しません。"
+                : "ご所属・お名前・ご希望の大学・おおよその人数・ご希望の時期をお知らせください。"
+            }
+            primary={
+              mailTemplate
+                ? { href: mailTemplate, label: "団体でのお申し込み・お問い合わせ", external: true }
+                : { href: "#contact", label: "団体でのお申し込み・お問い合わせ" }
+            }
+            secondary={[
+              { href: "/moshi#sample", label: "見本問題を見る" },
+              { href: "/moshi", label: "模試のご案内を見る" },
+            ]}
+          />
         </section>
 
         <section aria-labelledby="contact" className="mt-14">
@@ -563,6 +646,31 @@ export default function EducatorsPage() {
 
           <aside className="hidden lg:block">
             <div className="sticky top-6 pt-2">
+              {/* 長いページなので、どこに何があるかを出しっぱなしにする */}
+              <nav aria-labelledby="toc-edu" className="mb-4 border border-rule bg-white px-4 py-4">
+                <p id="toc-edu" className="text-[0.7rem] font-bold tracking-wide text-ink-3">
+                  このページの中身
+                </p>
+                <ol className="mt-2 space-y-1.5">
+                  {[
+                    ["#books-for-class", "01　教材を授業・講習で使う"],
+                    ["#check", "　　中身を確かめる"],
+                    ["#multiple", "　　複数冊でのご利用"],
+                    ["#moshi", "02　模試をクラスで受けさせる"],
+                    ["#contact", "　　ご相談・お問い合わせ"],
+                  ].map(([href, label]) => (
+                    <li key={href}>
+                      <a
+                        href={href}
+                        className="block whitespace-pre text-[0.84rem] leading-relaxed text-ink-2 transition-colors hover:text-navy"
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+
               <div className="border border-rule bg-white">
                 <div className="sec-rule" />
                 <div className="px-5 py-5">
@@ -573,11 +681,20 @@ export default function EducatorsPage() {
                   </p>
                   {site.contact &&
                     (site.contact.includes("@") ? (
-                      <p className="mt-3.5 break-all border-t border-rule pt-3.5 font-mono text-[0.92rem]">
-                        <a href={`mailto:${site.contact}`} className="text-navy underline underline-offset-4">
-                          {site.contact}
-                        </a>
-                      </p>
+                      <>
+                        {mailTemplate && (
+                          <p className="mt-3.5 border-t border-rule pt-3.5">
+                            <a href={mailTemplate} className="btn btn-primary w-full">
+                              模試のお申し込み・ご相談
+                            </a>
+                          </p>
+                        )}
+                        <p className="mt-3 break-all font-mono text-[0.88rem]">
+                          <a href={`mailto:${site.contact}`} className="text-navy underline underline-offset-4">
+                            {site.contact}
+                          </a>
+                        </p>
+                      </>
                     ) : (
                       <p className="mt-3.5 border-t border-rule pt-3.5">
                         <a href={site.contact} target="_blank" rel="noopener" className="btn w-full">
