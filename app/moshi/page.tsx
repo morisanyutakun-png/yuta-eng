@@ -18,7 +18,7 @@ import {
   priceLabel,
   roundLabel,
 } from "@/lib/moshi/config";
-import { sectionStyle } from "@/lib/sections";
+import { sections, sectionStyle } from "@/lib/sections";
 import { kanseiPublished } from "@/lib/series";
 import { site } from "@/lib/site";
 
@@ -34,7 +34,7 @@ import { site } from "@/lib/site";
 
 const totals = siteTotals();
 
-const title = `${moshi.title}｜${moshi.season}`;
+const title = `${sections.moshi.eyebrow}｜${moshi.title}｜${moshi.season}`;
 const description =
   `${moshi.title}は志望校の入試形式に合わせて作る大学別の数学模試です。旧帝大から地方国公立大まで` +
   `${moshi.universities.length}大学。オンラインで受験でき、記述答案はすべて人力で採点します。` +
@@ -119,7 +119,7 @@ export default function MoshiPage() {
             トップ
           </Link>
           <span className="mx-1.5 text-rule">／</span>
-          <span className="text-ink-2">{moshi.title}</span>
+          <span className="text-ink-2">{sections.moshi.eyebrow}</span>
         </nav>
 
         <div className="sec-rule mt-3" />
@@ -136,7 +136,8 @@ export default function MoshiPage() {
           <div className="grid items-center gap-7 lg:grid-cols-[1fr_26rem] lg:gap-12">
             <div className="min-w-0">
               <p className="eyebrow">{moshi.season}</p>
-              <h1 className="serif h-page mt-1.5 text-ink">{moshi.title}</h1>
+              <h1 className="serif h-page mt-1.5 text-ink">{sections.moshi.eyebrow}</h1>
+              <p className="serif mt-2 text-[1.1rem] font-semibold text-[var(--sec)]">{moshi.title}</p>
               <p className="prose-ja mt-4 text-[1rem] leading-[1.95] text-ink-2 sm:text-[1.05rem]">
                 志望校の形式で解く、大学別のオンライン数学模試。記述答案を人力で採点し、成績・講評をPDFで返却します。
               </p>

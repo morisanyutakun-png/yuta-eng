@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import moshiData from "@/data/moshi.json";
+import { sections } from "@/lib/sections";
 
 /**
  * サイト内のナビゲーション。
@@ -34,7 +35,7 @@ function navItems(hasSolutions: boolean): Item[] {
     ...(hasSolutions
       ? [{ href: "/kaisetsu", label: "過去問解答", note: "当サイト独自の解答・解説" }]
       : []),
-    { href: "/moshi", label: moshiData.title, note: "大学別のオンライン数学模試・参加申込受付中" },
+    { href: "/moshi", label: sections.moshi.eyebrow, note: `${moshiData.title}・オンラインで受験` },
     { href: "/kansei", label: "完成演習", note: "過去問の前に解く分野別演習" },
     { href: "/shindan", label: "志望校診断", note: "いまの実力から受かる大学を探す" },
     { href: "/books", label: "教材一覧", note: "刊行している全冊を学習段階順に" },

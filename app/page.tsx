@@ -14,7 +14,7 @@ import { TopFields } from "@/components/top-fields";
 import { UniversityFinder } from "@/components/university-finder";
 import { siteTotals, universities } from "@/lib/data";
 import { finderItems } from "@/lib/finder";
-import { sectionStyle } from "@/lib/sections";
+import { sections, sectionStyle } from "@/lib/sections";
 import { kanseiPublished, seriesTagline, shindan } from "@/lib/series";
 import { hasSolutions, published, questionCount, solutionUniversities } from "@/lib/solutions";
 import { groupOrder, site } from "@/lib/site";
@@ -88,9 +88,9 @@ export default function HomePage() {
             申込受付中
           </span>
           <span className="min-w-0 flex-1">
-            <span className="block text-[0.88rem] font-semibold leading-snug text-ink">{moshi.title}</span>
+            <span className="block text-[0.88rem] font-semibold leading-snug text-ink">{sections.moshi.eyebrow}</span>
             <span className="mt-0.5 block text-[0.75rem] leading-snug text-ink-2">
-              {moshi.season}・{moshi.universities.length}大学
+              {moshi.title}・{moshi.universities.length}大学
               <span className="hidden sm:inline">・{roundLabel}</span>
             </span>
           </span>
@@ -275,14 +275,14 @@ export default function HomePage() {
         {/* 既存の教材紹介より前に出さない。知らせる役だけを持たせる */}
         <section aria-labelledby="moshi-heading" className="mt-16" style={sectionStyle("moshi")}>
           <h2 id="moshi-heading" className="rule-mark serif h-sect text-ink">
-            {moshi.title}
+            {sections.moshi.eyebrow}
           </h2>
           {/* 文字だけの帯にせず、採点して返すところまでを図で見せる */}
           <div className="card mt-4 flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:gap-7">
             <AnswerSheet className="hidden w-[170px] shrink-0 self-center sm:block" />
             <div className="min-w-0">
               <p className="prose-ja text-[0.9rem] leading-[1.9] text-ink-2">
-                大学別のオンライン数学模試。{moshi.season}・{moshi.universities.length}大学。{roundLabel}。
+                「{moshi.title}」はオンラインで受験できます。{moshi.season}・{moshi.universities.length}大学。{roundLabel}。
                 志望校と同じ形式の記述答案を、人の手で採点して返します。
               </p>
               <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">

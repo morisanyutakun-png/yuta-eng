@@ -128,6 +128,13 @@ for (const f of files) {
   }
 
   /* ── 模試の共通見本 ── */
+  const moshiNav = html.match(/<nav\b[^>]*aria-label="サイト内"[^>]*>([\s\S]*?)<\/nav>/)?.[1] ?? "";
+  const moshiNavLink = moshiNav.match(/<a\b[^>]*href="\/moshi"[^>]*>([\s\S]*?)<\/a>/)?.[1] ?? "";
+  if (strip(moshiNavLink) !== "大学別数学模試") ng(page, "模試タブが初見で分かる表記になっていない");
+  if (page === "/moshi") {
+    if (!/<h1\b[^>]*>大学別数学模試<\/h1>/.test(html)) ng(page, "模試の見出しが大学別数学模試になっていない");
+    if (!html.includes(`<title>大学別数学模試｜${moshi.title}｜`)) ng(page, "模試のページタイトルに種類とシリーズ名がない");
+  }
   if (page === "/moshi" || moshi.universities.some((u) => page === `/moshi/${u.id}`)) {
     if (!html.includes('class="mobile-actions ') || !html.includes('href="#apply"')) ng(page, "モバイルの申込導線がない");
     if (!html.includes("個人成績表の内容・グラフを見る") || !html.includes("問題・解答・採点基準のページを開く")) ng(page, "見本の詳細を開く導線がない");

@@ -19,7 +19,7 @@ import {
   priceLabel,
   roundLabel,
 } from "@/lib/moshi/config";
-import { sectionStyle } from "@/lib/sections";
+import { sections, sectionStyle } from "@/lib/sections";
 import { shortName } from "@/lib/seo";
 import { getKansei } from "@/lib/series";
 import { published } from "@/lib/solutions";
@@ -214,7 +214,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "トップ", item: site.url },
-          { "@type": "ListItem", position: 2, name: moshi.title, item: `${site.url}/moshi` },
+          { "@type": "ListItem", position: 2, name: sections.moshi.eyebrow, item: `${site.url}/moshi` },
           { "@type": "ListItem", position: 3, name: `${m.university} ${m.exam}`, item: `${site.url}${moshiPath(m)}` },
         ],
       },
@@ -233,7 +233,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
           </Link>
           <span className="mx-1.5 text-rule">／</span>
           <Link href="/moshi" className="hover:text-navy">
-            {moshi.title}
+            {sections.moshi.eyebrow}
           </Link>
           <span className="mx-1.5 text-rule">／</span>
           <span className="text-ink-2">{m.university}</span>
@@ -502,7 +502,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
           </ul>
           <p className="mt-4 text-[0.84rem]">
             <Link href="/moshi" className="text-navy underline underline-offset-4">
-              {moshi.title}の案内をまとめて見る
+              {sections.moshi.eyebrow}の案内をまとめて見る
             </Link>
           </p>
         </section>
