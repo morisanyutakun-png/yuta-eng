@@ -1,5 +1,6 @@
 export const site = {
-  name: "大学別 数学入試分析",
+  name: "大学別数学研究室",
+  alternateName: "大学別 数学入試分析",
   url: "https://yuta-eng.com",
   tagline: "大学別に、数学の出題形式と頻出分野を年度別に分析",
   description:

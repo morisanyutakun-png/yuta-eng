@@ -38,6 +38,7 @@ ACCENT = (154, 107, 47)
 
 PAD = 64
 COVER_W = 268
+SITE_NAME = "大学別数学研究室"
 
 
 def font(path: Path, size: int) -> ImageFont.FreeTypeFont:
@@ -160,7 +161,7 @@ def build_card(u: dict) -> Image.Image:
     # 下端の署名
     d.line([(x, H - 76), (W - PAD, H - 76)], fill=RULE, width=2)
     f_foot = font(GOTHIC_M, 24)
-    d.text((x, H - 56), "大学別 数学入試分析", font=f_foot, fill=INK2)
+    d.text((x, H - 56), SITE_NAME, font=f_foot, fill=INK2)
     f_url = font(GOTHIC_R, 22)
     url = "yuta-eng.com"
     d.text((W - PAD - text_w(d, url, f_url), H - 54), url, font=f_url, fill=INK3)
@@ -175,7 +176,7 @@ def build_home_card() -> Image.Image:
 
     x = PAD
     f_title = font(MINCHO_B, 92)
-    d.text((x, 150), "大学別 数学入試分析", font=f_title, fill=INK)
+    d.text((x, 150), SITE_NAME, font=f_title, fill=INK)
 
     f_sub = font(GOTHIC_R, 30)
     years = [int(y) for u in DATA for y in u.get("years", [])]

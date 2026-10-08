@@ -10,6 +10,9 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
+  applicationName: site.name,
+  creator: site.author,
+  publisher: site.author,
   title: {
     default: `${site.name}｜${site.tagline}`,
     template: `%s｜${site.name}`,
@@ -43,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/" className="flex items-center gap-2.5 text-ink">
               <LogoMark className="size-7 shrink-0 text-navy" />
               <span className="serif text-[0.97rem] leading-tight tracking-tight">
-                大学別 数学入試分析
+                {site.name}
               </span>
             </Link>
             <SiteNav hasSolutions={hasSolutions} />
@@ -64,7 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 className="size-6 shrink-0"
                 style={{ "--logo-ink": "#1b3a63" } as React.CSSProperties}
               />
-              <span className="serif text-[0.95rem] tracking-tight">大学別 数学入試分析</span>
+              <span className="serif text-[0.95rem] tracking-tight">{site.name}</span>
             </p>
             <p>
               本サイトの分析は、各大学の公表資料と実際の問題冊子にあたって独自に調査したものです。

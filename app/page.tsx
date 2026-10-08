@@ -34,7 +34,12 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/" },
   openGraph: {
+    title: `${site.name}｜${site.tagline}`,
+    description: site.description,
     url: site.url,
+    siteName: site.name,
+    locale: "ja_JP",
+    type: "website",
     images: [{ url: "/og/home.jpg", width: 1200, height: 630, alt: site.name }],
   },
   twitter: { card: "summary_large_image", images: ["/og/home.jpg"] },
@@ -49,6 +54,7 @@ export default function HomePage() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: site.name,
+    alternateName: site.alternateName,
     url: site.url,
     description: site.description,
     inLanguage: "ja",
@@ -115,9 +121,9 @@ export default function HomePage() {
                 国公立・私立{t.universities}大学／{t.span}の過去問から
               </p>
               <h1 className="serif h-page mt-2.5 text-ink">
-                大学別
+                大学別数学
                 <br className="sm:hidden" />
-                数学入試分析
+                研究室
               </h1>
               <p className="prose-ja mt-4 max-w-[34rem] text-[0.97rem] text-ink-2">
                 試験時間・大問構成・頻出分野・目標点を、大学ごとに
