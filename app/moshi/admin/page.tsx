@@ -1,6 +1,7 @@
-import { DeleteApplicant } from "@/components/moshi-admin-delete";
+import { DeleteApplicant, TogglePaid } from "@/components/moshi-admin-delete";
 import { moshi, moshiUniversity } from "@/lib/moshi/config";
 import { hasDatabase, summary } from "@/lib/moshi/db";
+import { payUrl } from "@/lib/moshi/config";
 import { adminAddress, canNotifyAdmin, canSendMail } from "@/lib/moshi/mail";
 
 /**
@@ -54,6 +55,7 @@ export default async function MoshiAdmin() {
       k: `運営への知らせ（MOSHI_ADMIN_EMAIL）${notify ? `… @${notify.split("@")[1] ?? ""}` : ""}`,
       ok: canNotifyAdmin(),
     },
+    { k: "カード決済のリンク（NEXT_PUBLIC_MOSHI_PAY_URL）", ok: Boolean(payUrl()) },
   ];
   const counts = new Map(s.byUniversity.map((b) => [b.universityId, b.count]));
   // 申込のない大学も 0 として並べる
@@ -108,6 +110,15 @@ export default async function MoshiAdmin() {
         </ul>
       </section>
 
+      {payUrl() && (
+        <p className="mt-5 border border-rule bg-paper-2 px-4 py-3 text-[0.8rem] text-ink-2">
+          お支払いのご案内に貼るカード決済のリンク：
+          <a href={payUrl()!} target="_blank" rel="noopener" className="ml-1 break-all text-navy underline underline-offset-4">
+            {payUrl()}
+          </a>
+        </p>
+      )}
+
       <section aria-labelledby="people" className="mt-12">
         <h2 id="people" className="rule-mark serif h-sect text-ink">
           申込者一覧
@@ -119,7 +130,7 @@ export default async function MoshiAdmin() {
             <table className="w-full min-w-[58rem] border-collapse text-left text-[0.8rem]">
               <thead>
                 <tr className="border-b-2 border-navy/35 bg-paper-2">
-                  {["申込日時", "氏名", "メールアドレス", "学年", "志望学部", "申込大学", "メール送信", "状態", ""].map((h) => (
+                  {["申込日時", "氏名", "メールアドレス", "学年", "志望学部", "申込大学", "メール送信", "入金", ""].map((h) => (
                     <th key={h || "操作"} scope="col" className="whitespace-nowrap px-3 py-2.5 text-[0.72rem] font-bold text-navy">
                       {h || <span className="sr-only">操作</span>}
                     </th>
@@ -145,8 +156,9 @@ export default async function MoshiAdmin() {
                       <MailState label="確認" detail={a.mailConfirmation} />
                       <MailState label="運営" detail={a.mailAdmin} />
                     </td>
-                    <td className="whitespace-nowrap px-3 py-2.5 align-top text-ink-3">
-                      {a.status}／{a.payment}
+                    <td className="whitespace-nowrap px-3 py-2 align-top">
+                      <TogglePaid id={a.id} paid={a.payment === "paid"} />
+                      <span className="mt-1 block text-[0.7rem] text-ink-3">{a.status}</span>
                     </td>
                     <td className="px-3 py-2 align-top">
                       <DeleteApplicant id={a.id} name={a.name} />

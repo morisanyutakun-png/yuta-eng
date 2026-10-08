@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 
 import { checkBasicAuth } from "@/lib/moshi/auth";
-import { deleteApplication, hasDatabase } from "@/lib/moshi/db";
+import { deleteApplication, hasDatabase, setPaymentStatus } from "@/lib/moshi/db";
 
 /**
  * 申込を1件消す。
@@ -32,5 +32,29 @@ export async function deleteApplicationAction(id: string): Promise<DeleteResult>
     return { ok: true, name: gone.name };
   } catch {
     return { ok: false, error: "消せませんでした。時間をおいてお試しください。" };
+  }
+}
+
+/**
+ * 入金の記録を切り替える。
+ *
+ * 消すのと同じく、管理画面と同じ URL へ送られるので middleware の認証を通るが、
+ * ここでも確かめ直す。入金は戻せる操作なので、画面側で尋ねることはしない。
+ */
+export async function setPaidAction(id: string, paid: boolean): Promise<DeleteResult> {
+  const h = await headers();
+  if (!checkBasicAuth(h.get("authorization"))) {
+    return { ok: false, error: "権限がありません。画面を開き直してください。" };
+  }
+  if (!hasDatabase()) return { ok: false, error: "DATABASE_URL が設定されていません。" };
+  if (!/^\d+$/.test(id)) return { ok: false, error: "申込の指定が正しくありません。" };
+
+  try {
+    const done = await setPaymentStatus(id, paid ? "paid" : "unpaid");
+    if (!done) return { ok: false, error: "その申込は見つかりませんでした。" };
+    revalidatePath("/moshi/admin");
+    return { ok: true, name: paid ? "入金済み" : "未入金" };
+  } catch {
+    return { ok: false, error: "書き換えられませんでした。時間をおいてお試しください。" };
   }
 }

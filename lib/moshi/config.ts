@@ -60,6 +60,10 @@ export type Moshi = {
   priceFixed: boolean;
   /** この模試では出さないもの。期待の食い違いを先に止める */
   notProvided: string[];
+  /** 平均点・偏差値・順位を出す最少の受験者数 */
+  statsMin: number;
+  /** その条件を1文で書いたもの */
+  statsNote: string;
   deliverables: Deliverable[];
   /** お返しするものをまとめた冊子の呼び名 */
   deliverableName: string;
@@ -88,7 +92,7 @@ export const deliverableLine = moshi.deliverables.map((d) => d.h).join("・");
  * 事情のある人が黙って離れてしまう。まず連絡をもらう形にする。
  */
 export const paymentLine =
-  "お支払いは銀行振込です。受験日程のご案内のときに、振込先と期限を個別にご相談します。";
+  "お支払いはクレジットカードによるオンライン決済です。受験日程のご案内のときに、お支払いのご案内をお送りします。学校・塾でまとめてお申し込みの場合は、請求書・銀行振込の後払いも承ります。";
 
 export const cancelLine =
   "お支払いの期限を過ぎてもご連絡がない場合は、お申し込みを取り消すことがあります。ご事情があればご相談ください。";
@@ -110,3 +114,23 @@ export const moshiById = (id: string) => moshi.universities.find((u) => u.id ===
 /** その大学の分析ページがサイトにあるかを確かめてから繋ぐ */
 export const analysisHref = (u: MoshiUniversity) =>
   u.slug && getUniversity(u.slug) ? `/univ/${u.slug}` : null;
+
+/* ───── お支払い ───── */
+
+/**
+ * 個人のお支払いに使う Stripe の決済リンク。
+ *
+ * 鍵を持つ実装（Checkout Session を作って webhook で受ける）は、
+ * 受験者がこの規模のうちは割に合わない。Stripe の決済リンクを1本用意して
+ * 環境変数に入れておけば、カード決済はそれで足りる。
+ * 入金は Stripe の画面で分かるので、管理画面では人が記録する。
+ *
+ * 設定がないあいだはボタンを出さない。押せない導線を置かない。
+ */
+export const payUrl = () => process.env.NEXT_PUBLIC_MOSHI_PAY_URL?.trim() || null;
+
+/** 個人のお支払い方法。決済リンクの設定があるかどうかで書き方を変える */
+export const payLineFor = (hasCard: boolean) =>
+  hasCard
+    ? "お支払いはクレジットカード（オンライン決済）です。受験日程のご案内のときに、お支払いのご案内をお送りします。"
+    : "お支払いは銀行振込です。受験日程のご案内のときに、振込先と期限を個別にご相談します。";

@@ -83,7 +83,7 @@ export function MoshiSample({ title = "大学別オンライン数学模試" }: 
 
         <Booklet
           heading={`2．受験後に返ってくるもの ──「${moshi.deliverableName}」`}
-          lead="採点して終わりにはしません。どこで何点落としたか、答案の書き方の何を直すか、次の2週間で何をするかまで書いてお返しします。その現物です。"
+          lead="1枚目の成績表で、得点・小問ごとの出来・何で落としたか・次の2週間ですることが一度に分かります。2枚目からは、答案に即した講評です。採点して終わりにはしません。"
           notice={RETURN_NOTICE}
           booklet={ret}
           title={`${title} 返却見本`}

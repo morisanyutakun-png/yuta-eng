@@ -189,6 +189,21 @@ export async function recordMailResult(
   }
 }
 
+/**
+ * 入金の状態を書き換える。
+ *
+ * カード決済は Stripe の決済リンクで受けるので、入金そのものは Stripe の画面で分かる。
+ * 誰が払ったかを申込の側にも残しておきたいので、管理画面から人が記録する。
+ * 自動で突き合わせる仕組みは、受験者がこの規模のうちは割に合わない。
+ */
+export async function setPaymentStatus(id: string, status: "unpaid" | "paid"): Promise<boolean> {
+  const r = await pool().query(
+    "update exam_applications set payment_status = $2, updated_at = now() where id = $1",
+    [id, status],
+  );
+  return (r.rowCount ?? 0) > 0;
+}
+
 /** 申込者の人数だけを数える。運営あての知らせに添える。 */
 export async function countApplications(): Promise<number | null> {
   try {

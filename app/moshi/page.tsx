@@ -221,7 +221,11 @@ export default function MoshiPage() {
                 { k: "受験方法", v: "オンライン・期間内の好きな日時", note: "本番と同じ試験時間を目安として表示する予定です" },
                 { k: "受験料", v: priceLabel, note: "参加申込の時点では料金は発生しません" },
                 { k: "採点と返却", v: "全答案を人力で採点", note: `${deliverableLine}をまとめてお返しします` },
-                { k: "お支払い", v: "銀行振込", note: "日程のご案内のときに、振込先と期限を個別にご相談します" },
+                {
+                  k: "お支払い",
+                  v: "クレジットカード",
+                  note: "学校・塾でまとめてお申し込みの場合は、請求書・銀行振込の後払いも承ります",
+                },
               ].map((r) => (
                 <div
                   key={r.k}
@@ -342,7 +346,7 @@ export default function MoshiPage() {
         */}
         <section aria-labelledby="not-provided" className="mt-14">
           <h2 id="not-provided" className="rule-mark serif h-sect text-ink">
-            この模試で出さないもの
+            判定・偏差値について
           </h2>
           <div className="mt-4 border border-rule">
             <ul className="flex flex-wrap gap-x-6 gap-y-2 border-b border-rule bg-paper-2 px-5 py-3.5">
@@ -365,14 +369,19 @@ export default function MoshiPage() {
             </ul>
             <div className="prose-ja space-y-3 px-5 py-4 text-[0.88rem] leading-[1.95] text-ink-2">
               <p>
-                これらは出しません。1つの大学の形式に絞った模試で、全国規模の母集団を取るものではないからです。
-                受験者の中での位置を数字で示しても、本番の合否とは結びつきません。
+                合否判定は出しません。1つの大学の形式に絞った模試で、全国規模の母集団を取るものではないからです。
+                少ない人数の中での判定を出しても、本番の合否とは結びつきません。
               </p>
               <p>
-                代わりにお返しするのは、
+                <strong className="font-semibold text-ink">平均点・偏差値・順位分布</strong>は、
+                その大学の受験者が{moshi.statsMin}名以上になった回から、成績表に載せます。
+                {moshi.statsNote.replace(/^受験者が.*?では、/, "それまでは出しません。")}
+              </p>
+              <p>
+                人数にかかわらずお返しするのは、
                 <strong className="font-semibold text-ink">答案のどこで何点落としたか</strong>と、
                 <strong className="font-semibold text-ink">次に何を直すか</strong>です。
-                全体の中での順位を知りたい場合は、全国規模の模試とあわせてお使いください。
+                全体の中での位置を知りたい場合は、全国規模の模試とあわせてお使いください。
               </p>
             </div>
           </div>
@@ -412,8 +421,8 @@ export default function MoshiPage() {
               お支払いや受験の仕方について、ご不明な点は
             </h2>
             <p className="prose-ja mt-2 max-w-[40rem] text-[0.86rem] leading-[1.9] text-ink-2">
-              お支払いの方法や時期、受験の進め方など、気になることはお気軽にお尋ねください。
-              お申し込みの前でも後でも構いません。
+              個人のお支払いはクレジットカードによるオンライン決済です。学校・塾でまとめてお申し込みの場合は、
+              請求書・銀行振込の後払いも承ります。受験の進め方など、気になることはお申し込みの前でも後でもお尋ねください。
             </p>
             <p className="mt-3 break-all font-mono text-[0.95rem]">
               <a href={`mailto:${site.contact}`} className="text-navy underline underline-offset-4">

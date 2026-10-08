@@ -131,7 +131,7 @@ for (const [asin, s] of Object.entries(samples)) {
   // 問題の見本と、返却の見本。どちらも揃っていないと「何が返るか」が伝わらない。
   const want = {
     problem: ["扉", "問題", "解答", "採点"],
-    return: ["扉", "採点", "講評", "分野", "助言"],
+    return: ["成績", "講評", "助言"],
   };
   for (const [key, need] of Object.entries(want)) {
     const s = moshiSample[key];
