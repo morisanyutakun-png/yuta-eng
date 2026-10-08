@@ -128,16 +128,24 @@ for (const [asin, s] of Object.entries(samples)) {
    書籍の抜粋ではなく、模試のために組んだ冊子をまるごと出している。
    こちらは全ページを出してよいが、分量が増えていないかは見ておく。 */
 {
-  const s = moshiSample;
-  if (!file(s.pdf)) ng("模試の見本: PDFがない");
-  if (s.pages.length < 4 || s.pages.length > 8) ng(`模試の見本: ${s.pages.length} ページ（4〜8 のはず）`);
-  for (const p of s.pages) if (!file(p.file)) ng(`模試の見本: 画像がない（${p.file}）`);
-  const kinds = s.pages.map((p) => p.kind);
-  if (!kinds.includes("扉")) ng("模試の見本: 扉のページがない");
-  if (!kinds.includes("問題")) ng("模試の見本: 問題のページがない");
-  if (!kinds.includes("解答")) ng("模試の見本: 解答のページがない");
-  if (!kinds.includes("採点")) ng("模試の見本: 採点基準のページがない");
-  for (const k of kinds) if (!["扉", "問題", "解答", "採点"].includes(k)) ng(`模試の見本: 出さない種類のページがある（${k}）`);
+  // 問題の見本と、返却の見本。どちらも揃っていないと「何が返るか」が伝わらない。
+  const want = {
+    problem: ["扉", "問題", "解答", "採点"],
+    return: ["扉", "採点", "講評", "分野", "助言"],
+  };
+  for (const [key, need] of Object.entries(want)) {
+    const s = moshiSample[key];
+    if (!s) {
+      ng(`模試の見本: ${key} がない`);
+      continue;
+    }
+    if (!file(s.pdf)) ng(`模試の見本(${key}): PDFがない`);
+    if (s.pages.length < 4 || s.pages.length > 8) ng(`模試の見本(${key}): ${s.pages.length} ページ（4〜8 のはず）`);
+    for (const p of s.pages) if (!file(p.file)) ng(`模試の見本(${key}): 画像がない（${p.file}）`);
+    const kinds = s.pages.map((p) => p.kind);
+    for (const k of need) if (!kinds.includes(k)) ng(`模試の見本(${key}): ${k}のページがない`);
+    for (const k of kinds) if (!need.includes(k)) ng(`模試の見本(${key}): 出さない種類のページがある（${k}）`);
+  }
 }
 
 // 本文まるごとのPDFを公開していないか（書籍の抜粋は多くても6ページ）
@@ -198,7 +206,7 @@ if (pageCount === uniCount) ng("大学数とページ数が同じ。区分の分
 const gokaku = Object.values(books).filter((b) => b.series === "gokaku").length;
 console.log(
   `試し読み ${Object.keys(samples).length}冊 ${Object.values(samples).reduce((a, s) => a + s.pages.length, 0)}ページ`,
-  `模試の見本 ${moshiSample.pages.length}ページ`,
+  `模試の見本 ${Object.values(moshiSample).reduce((a, b) => a + b.pages.length, 0)}ページ`,
 );
 console.log(
   `大学 ${uniCount}（ページ ${pageCount} 区分） / 合格答案をつくる ${gokaku}冊 / 分野別完成演習 ${series.kansei.length}冊（販売中 ` +

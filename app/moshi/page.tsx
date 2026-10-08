@@ -381,11 +381,11 @@ export default function MoshiPage() {
         {/* 申し込む前に中身を確かめられるようにする。文章で説明するより早い */}
         <section aria-labelledby="sample-heading" className="mt-14 scroll-mt-20" id="sample">
           <h2 id="sample-heading" className="rule-mark serif h-sect text-ink">
-            どんな問題が出て、どう採点されるか
+            出る問題と、返ってくるもの
           </h2>
           <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
-            本模試で出す問題を、本番と同じ体裁の冊子にして1題ぶん公開しています。
-            問題・解答と解説・採点基準の全ページを、そのままご覧いただけます。
+            出る問題と、受験後に返ってくるものを、どちらも現物で公開しています。
+            本番と同じ体裁の冊子をそのままご覧いただけます。
           </p>
           <MoshiSample />
         </section>

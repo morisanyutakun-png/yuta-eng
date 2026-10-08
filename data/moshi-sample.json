@@ -1,53 +1,108 @@
 {
-  "pdf": "/samples/moshi/moshi-sample.pdf",
-  "pages": [
-    {
-      "file": "/samples/moshi/p1.webp",
-      "label": "扉",
-      "kind": "扉",
-      "page": 1,
-      "width": 1100,
-      "height": 1556
-    },
-    {
-      "file": "/samples/moshi/p2.webp",
-      "label": "問題",
-      "kind": "問題",
-      "page": 2,
-      "width": 1100,
-      "height": 1556
-    },
-    {
-      "file": "/samples/moshi/p3.webp",
-      "label": "解答・解説",
-      "kind": "解答",
-      "page": 3,
-      "width": 1100,
-      "height": 1556
-    },
-    {
-      "file": "/samples/moshi/p4.webp",
-      "label": "解答・解説（続き）",
-      "kind": "解答",
-      "page": 4,
-      "width": 1100,
-      "height": 1556
-    },
-    {
-      "file": "/samples/moshi/p5.webp",
-      "label": "採点基準",
-      "kind": "採点",
-      "page": 5,
-      "width": 1100,
-      "height": 1556
-    },
-    {
-      "file": "/samples/moshi/p6.webp",
-      "label": "採点基準（続き）",
-      "kind": "採点",
-      "page": 6,
-      "width": 1100,
-      "height": 1556
-    }
-  ]
+  "problem": {
+    "pdf": "/samples/moshi/problem/moshi-sample.pdf",
+    "pages": [
+      {
+        "file": "/samples/moshi/problem/p1.webp",
+        "label": "扉",
+        "kind": "扉",
+        "page": 1,
+        "width": 1100,
+        "height": 1556
+      },
+      {
+        "file": "/samples/moshi/problem/p2.webp",
+        "label": "問題",
+        "kind": "問題",
+        "page": 2,
+        "width": 1100,
+        "height": 1556
+      },
+      {
+        "file": "/samples/moshi/problem/p3.webp",
+        "label": "解答・解説",
+        "kind": "解答",
+        "page": 3,
+        "width": 1100,
+        "height": 1556
+      },
+      {
+        "file": "/samples/moshi/problem/p4.webp",
+        "label": "解答・解説（続き）",
+        "kind": "解答",
+        "page": 4,
+        "width": 1100,
+        "height": 1556
+      },
+      {
+        "file": "/samples/moshi/problem/p5.webp",
+        "label": "採点基準",
+        "kind": "採点",
+        "page": 5,
+        "width": 1100,
+        "height": 1556
+      },
+      {
+        "file": "/samples/moshi/problem/p6.webp",
+        "label": "採点基準（続き）",
+        "kind": "採点",
+        "page": 6,
+        "width": 1100,
+        "height": 1556
+      }
+    ]
+  },
+  "return": {
+    "pdf": "/samples/moshi/return/moshi-return.pdf",
+    "pages": [
+      {
+        "file": "/samples/moshi/return/p1.webp",
+        "label": "扉",
+        "kind": "扉",
+        "page": 1,
+        "width": 1100,
+        "height": 1556
+      },
+      {
+        "file": "/samples/moshi/return/p2.webp",
+        "label": "採点結果",
+        "kind": "採点",
+        "page": 2,
+        "width": 1100,
+        "height": 1556
+      },
+      {
+        "file": "/samples/moshi/return/p3.webp",
+        "label": "答案への講評",
+        "kind": "講評",
+        "page": 3,
+        "width": 1100,
+        "height": 1556
+      },
+      {
+        "file": "/samples/moshi/return/p4.webp",
+        "label": "答案への講評（続き）",
+        "kind": "講評",
+        "page": 4,
+        "width": 1100,
+        "height": 1556
+      },
+      {
+        "file": "/samples/moshi/return/p5.webp",
+        "label": "分野別の得意・不得意",
+        "kind": "分野",
+        "page": 5,
+        "width": 1100,
+        "height": 1556
+      },
+      {
+        "file": "/samples/moshi/return/p6.webp",
+        "label": "今後の学習の助言",
+        "kind": "助言",
+        "page": 6,
+        "width": 1100,
+        "height": 1556
+      }
+    ]
+  }
 }

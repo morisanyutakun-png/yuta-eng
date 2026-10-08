@@ -26,7 +26,20 @@ export type MoshiSamplePage = {
   height: number;
 };
 
-export const moshiSample = raw as { pdf: string; pages: MoshiSamplePage[] };
+export type MoshiSampleBooklet = { pdf: string; pages: MoshiSamplePage[] };
+
+/**
+ * 2冊ある。
+ *   problem … 本番と同じ体裁の問題・解答と解説・採点基準
+ *   return  … 受験後にお返しする「合格への手引き」1人分（受験者・得点は架空）
+ *
+ * 受験料で何が返ってくるのかは、文章で説明するより返却の見本を見せるほうが早い。
+ */
+export const moshiSample = raw as Record<"problem" | "return", MoshiSampleBooklet>;
+
+/** 返却見本に出てくる受験者・得点は架空のもの。必ず添える */
+export const RETURN_NOTICE =
+  "受験後にお返しする「合格への手引き」を、1人分そのまま載せています。中に出てくる受験者・得点・答案はすべて架空のもので、実在の受験者のものではありません。";
 
 export const sampleMeta = {
   /** この見本に収めた大問の分野 */
