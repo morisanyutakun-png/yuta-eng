@@ -111,6 +111,30 @@ export function BookCta({ u }: { u: University }) {
         <strong className="font-semibold text-ink">どこで何点入るかを示した採点基準</strong>
         {u.books.some((b) => b.altSolutions) ? "と別解" : ""}を収録しています。
       </p>
+
+      {/*
+        買う直前にいちばん聞かれるのが「巻の違い」と「どれから買うか」。
+        別のページを読ませずに、ボタンのすぐ上で答える。
+      */}
+      {u.books.length > 1 && (
+        <dl className="mt-5 grid gap-px border border-rule bg-rule sm:grid-cols-2">
+          {[
+            {
+              k: `Vol.1〜${u.books.length}は何が違う？`,
+              v: `収録している問題が違います。どの巻も予想問題${u.books[0].rounds ?? 5}回分で、巻をまたいで同じ問題は入っていません。難易度や構成は同じです。`,
+            },
+            {
+              k: "最初にどれを買えばいい？",
+              v: `Vol.1 からで結構です。順番に意味はありませんが、1冊で${u.books[0].rounds ?? 5}回分あるので、まず1冊を解ききってから次を足すのがおすすめです。`,
+            },
+          ].map((x) => (
+            <div key={x.k} className="bg-white px-4 py-3.5">
+              <dt className="text-[0.85rem] font-semibold text-ink">{x.k}</dt>
+              <dd className="prose-ja mt-1.5 text-[0.82rem] leading-[1.9] text-ink-2">{x.v}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
       <ul className="mt-6 space-y-5">
         {u.books.map((b) => (
           <BookRow key={b.asin} book={b} />

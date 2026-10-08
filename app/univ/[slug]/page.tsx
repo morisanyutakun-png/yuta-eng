@@ -9,6 +9,7 @@ import { FaqSection } from "@/components/faq";
 import { FieldChart } from "@/components/field-chart";
 import { LookInsideSection } from "@/components/look-inside-section";
 import { MoshiLink } from "@/components/moshi-link";
+import { NextChoice } from "@/components/next-choice";
 import { SolutionsCallout, SolutionsLink } from "@/components/solutions-link";
 import { solutionsFor } from "@/lib/solutions";
 import { StudyPlan } from "@/components/study-plan";
@@ -252,6 +253,9 @@ export default async function UniversityPage({ params }: Props) {
             </section>
           </div>
         ))}
+
+        {/* 分析を読み終えた直後に、次の1つを選ばせる */}
+        <NextChoice u={u} />
 
         <SolutionsLink slug={u.slug} />
 
