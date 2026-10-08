@@ -109,5 +109,16 @@
     "reportMin": 5,
     "paymentDays": 30,
     "invoiceRegistered": false
-  }
+  },
+  "schedule": {
+    "applyDeadline": "受験日の前日まで",
+    "submitDeadline": "受験した日の翌日まで",
+    "returnWithin": "答案のご提出から2週間以内"
+  },
+  "priceFixed": true,
+  "notProvided": [
+    "合否判定",
+    "偏差値",
+    "受験者内の順位"
+  ]
 }

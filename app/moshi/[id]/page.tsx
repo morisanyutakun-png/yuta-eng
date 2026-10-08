@@ -133,7 +133,7 @@ function faqFor(m: NonNullable<ReturnType<typeof moshiById>>) {
   items.push({
     q: "受験料はいくらですか。申込の時点でかかりますか？",
     a:
-      `受験料は${priceLabel}の予定です。参加申込の時点では料金は発生しません。` +
+      `受験料は${priceLabel}。参加申込の時点では料金は発生しません。` +
       `正式な受験日程とお支払い方法は、確定しだいメールでご案内します。`,
   });
 
@@ -153,7 +153,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     `${m.university}の数学に合わせて作る大学別の数学模試です。` +
     (u ? `${factsLine(u)}という出題形式を踏まえ、` : "") +
-    `オンラインで実施し、記述答案はすべて人力で採点します。${roundLabel}。受験料は${priceLabel}の予定です。`;
+    `オンラインで実施し、記述答案はすべて人力で採点します。${roundLabel}。受験料は${priceLabel}。`;
 
   return {
     title: { absolute: `${title}（${moshi.season}）` },
@@ -379,7 +379,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
               ["対象", `${m.university}の数学を受験する方（${m.exam}）`],
               ["実施時期", `${roundLabel}。正式な日程は確定しだいご案内します`],
               ["受験方法", "オンライン・期間内の好きな日時"],
-              ["受験料", `${priceLabel}（予定）。参加申込の時点では料金は発生しません`],
+              ["受験料", `${priceLabel}。参加申込の時点では料金は発生しません`],
               ["お支払い", paymentLine],
               ["採点と返却", `記述答案を人力で採点し、${deliverableLine}をまとめてお返しします`],
             ].map(([k, v]) => (

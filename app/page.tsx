@@ -67,6 +67,38 @@ export default function HomePage() {
           64区分をここで全部並べると「多すぎて選べない」が先に来るため、
           絞り込む前は少しだけ見せて、続きは一覧ページへ送る。
         */}
+        {/*
+          いま集めたいのは模試の申込なので、最初の画面に告知を置く。
+          分析サイトとしての見出しは下にそのまま残す。
+          帯は1行に収め、押す先は模試の案内ひとつだけにする。
+        */}
+        <Link
+          href="/moshi"
+          style={sectionStyle("moshi")}
+          className="group mt-5 flex items-center gap-3 border border-[var(--sec)]/35 bg-[color-mix(in_srgb,var(--sec)_6%,#fff)] px-4 py-3 transition-colors hover:bg-[color-mix(in_srgb,var(--sec)_11%,#fff)] sm:px-5"
+        >
+          <span className="shrink-0 border border-[var(--sec)] px-2 py-0.5 text-[0.66rem] font-bold tracking-wide text-[var(--sec)]">
+            申込受付中
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-[0.88rem] font-semibold leading-snug text-ink">{moshi.title}</span>
+            <span className="mt-0.5 block text-[0.75rem] leading-snug text-ink-2">
+              {moshi.season}・{moshi.universities.length}大学
+              <span className="hidden sm:inline">・{roundLabel}</span>
+            </span>
+          </span>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 20 20"
+            className="size-3.5 shrink-0 text-[var(--sec)] transition-transform group-hover:translate-x-0.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+          >
+            <path d="m7 4 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </Link>
+
         {/* 読む前に掴める手がかりを先に置く。文字だけの最初の画面にしない */}
         <FactStrip
           items={[

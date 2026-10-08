@@ -57,7 +57,7 @@ export default async function MoshiThanks() {
   const done = await lastApplication();
   const next = [
     ["これから", `${roundLabel}。正式な受験期間が決まりしだい、メールでご案内します。`],
-    ["お支払い", `受験料は${priceLabel}の予定です。現時点では料金は発生していません。${paymentLine}`],
+    ["お支払い", `受験料は${priceLabel}です。現時点では料金は発生していません。${paymentLine}`],
     ["取り消し", cancelLine],
   ] as const;
 

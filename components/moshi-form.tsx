@@ -201,7 +201,7 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
         </p>
         <ul className="divide-y divide-rule">
           {[
-            ["料金", `参加申込の時点では料金は発生しません。受験料は${priceLabel}の予定です。`],
+            ["料金", `参加申込の時点では料金は発生しません。受験料は${priceLabel}です。`],
             ["日程", `${roundLabel}。正式な受験日程が確定したあとに、メールでご案内します。`],
             ["支払い", `${paymentLine}${cancelLine}`],
           ].map(([k, v]) => (

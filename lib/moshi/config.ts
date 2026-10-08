@@ -39,6 +39,13 @@ export type GroupPolicy = {
   invoiceRegistered: boolean;
 };
 
+/** 日程のうち、こちらで決められるもの。空にすると「確定しだい」と出る */
+export type MoshiSchedule = {
+  applyDeadline: string;
+  submitDeadline: string;
+  returnWithin: string;
+};
+
 export type Moshi = {
   title: string;
   season: string;
@@ -48,6 +55,11 @@ export type Moshi = {
   universities: MoshiUniversity[];
   grades: string[];
   faculties: string[];
+  schedule: MoshiSchedule;
+  /** 受験料が決まっているか。false のあいだは「予定」と添える */
+  priceFixed: boolean;
+  /** この模試では出さないもの。期待の食い違いを先に止める */
+  notProvided: string[];
   deliverables: Deliverable[];
   /** お返しするものをまとめた冊子の呼び名 */
   deliverableName: string;
@@ -59,7 +71,7 @@ export const moshi = raw as Moshi;
 /** 第1回：2026年11月下旬〜12月上旬開催予定、のような1行 */
 export const roundLabel = `第${moshi.round}回：${moshi.period}開催予定`;
 
-export const priceLabel = `${moshi.price.toLocaleString()}円（税込）`;
+export const priceLabel = `${moshi.price.toLocaleString()}円（税込）${moshi.priceFixed ? "" : "・予定"}`;
 
 /** 「採点結果・答案への講評・分野別の得意不得意・今後の学習の助言」のような1行 */
 export const deliverableLine = moshi.deliverables.map((d) => d.h).join("・");

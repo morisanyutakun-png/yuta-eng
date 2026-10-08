@@ -162,6 +162,31 @@ export default function MoshiPage() {
           </div>
         </header>
 
+        {/*
+          対象の大学を最初に出す。自分の大学があるかどうかが分からないと、
+          その下を読む理由がない。札はそのまま大学別のページへの入口にする。
+        */}
+        <section aria-labelledby="unis-top" className="mt-9">
+          <h2 id="unis-top" className="text-[0.95rem] font-semibold text-ink">
+            開催する{moshi.universities.length}大学
+          </h2>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {moshi.universities.map((u) => (
+              <li key={u.id}>
+                <Link
+                  href={moshiPath(u)}
+                  className="inline-flex min-h-9 items-center border border-rule bg-white px-3 text-[0.86rem] text-ink transition-colors hover:border-[var(--sec)] hover:text-[var(--sec)]"
+                >
+                  {u.university}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-2.5 text-[0.78rem] text-ink-3">
+            大学名を選ぶと、その大学の出題形式・頻出分野・見本問題をご覧いただけます。
+          </p>
+        </section>
+
         {/* 特長。図を添えて横に並べる */}
         <section aria-labelledby="points" className="mt-14">
           <h2 id="points" className="rule-mark serif h-sect text-ink">
@@ -194,7 +219,7 @@ export default function MoshiPage() {
                 { k: "対象大学", v: `${moshi.universities.length}大学`, note: "下の一覧からお選びいただけます" },
                 { k: "実施時期", v: roundLabel.replace(/^第/, "第"), note: "正式な日程は確定しだいご案内します" },
                 { k: "受験方法", v: "オンライン・期間内の好きな日時", note: "本番と同じ試験時間を目安として表示する予定です" },
-                { k: "受験料", v: `${priceLabel}（予定）`, note: "参加申込の時点では料金は発生しません" },
+                { k: "受験料", v: priceLabel, note: "参加申込の時点では料金は発生しません" },
                 { k: "採点と返却", v: "全答案を人力で採点", note: `${deliverableLine}をまとめてお返しします` },
                 { k: "お支払い", v: "銀行振込", note: "日程のご案内のときに、振込先と期限を個別にご相談します" },
               ].map((r) => (
@@ -261,7 +286,7 @@ export default function MoshiPage() {
             開催予定の{moshi.universities.length}大学
           </h2>
           <p className="prose-ja mt-2.5 text-[0.88rem] text-ink-2">
-            {roundLabel}。受験料はいずれも{priceLabel}の予定です。
+            {roundLabel}。受験料はいずれも{priceLabel}です。
           </p>
 
           {/*
@@ -308,6 +333,49 @@ export default function MoshiPage() {
           <p className="mt-3 text-[0.78rem] text-ink-3">
             いずれも開催予定です。大学名を選ぶと、その大学の出題形式と見本問題をご覧いただけます。
           </p>
+        </section>
+
+        {/*
+          出さないものを先に書く。「模試」で思い浮かべるものは人によって違い、
+          判定や偏差値を期待したまま申し込まれると、返したときに食い違う。
+          出せない理由まで書いて、何のための模試かをはっきりさせる。
+        */}
+        <section aria-labelledby="not-provided" className="mt-14">
+          <h2 id="not-provided" className="rule-mark serif h-sect text-ink">
+            この模試で出さないもの
+          </h2>
+          <div className="mt-4 border border-rule">
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 border-b border-rule bg-paper-2 px-5 py-3.5">
+              {moshi.notProvided.map((x) => (
+                <li key={x} className="flex items-center gap-1.5 text-[0.9rem] font-semibold text-ink">
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 20 20"
+                    className="size-4 shrink-0 text-ink-3"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  >
+                    <circle cx="10" cy="10" r="7.5" />
+                    <path d="M5.5 5.5l9 9" strokeLinecap="round" />
+                  </svg>
+                  {x}
+                </li>
+              ))}
+            </ul>
+            <div className="prose-ja space-y-3 px-5 py-4 text-[0.88rem] leading-[1.95] text-ink-2">
+              <p>
+                これらは出しません。1つの大学の形式に絞った模試で、全国規模の母集団を取るものではないからです。
+                受験者の中での位置を数字で示しても、本番の合否とは結びつきません。
+              </p>
+              <p>
+                代わりにお返しするのは、
+                <strong className="font-semibold text-ink">答案のどこで何点落としたか</strong>と、
+                <strong className="font-semibold text-ink">次に何を直すか</strong>です。
+                全体の中での順位を知りたい場合は、全国規模の模試とあわせてお使いください。
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* 申し込む前に中身を確かめられるようにする。文章で説明するより早い */}

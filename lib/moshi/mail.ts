@@ -193,7 +193,7 @@ function buildHtml(name: string, universityIds: string[]) {
       ${row("実施時期", esc(roundLabel) + "。<br>正式な受験期間が決まりしだい、メールでご案内します。")}
       ${row(
         "受験料",
-        `${esc(priceLabel)}の予定です。<br><span style="color:${C.accent};font-weight:700;">現時点では料金は発生していません。</span><br>${esc(paymentLine)}`,
+        `${esc(priceLabel)}です。<br><span style="color:${C.accent};font-weight:700;">現時点では料金は発生していません。</span><br>${esc(paymentLine)}`,
       )}
       ${row(
         "採点と返却",
@@ -250,7 +250,7 @@ function buildText(name: string, universityIds: string[]) {
     "",
     "【このあとの流れ】",
     `実施時期　${roundLabel}。正式な受験期間が決まりしだい、メールでご案内します。`,
-    `受験料　　${priceLabel}の予定です。現時点では料金は発生していません。`,
+    `受験料　　${priceLabel}。現時点では料金は発生していません。`,
     `　　　　　${paymentLine}`,
     `採点と返却　答案は人の手で採点します。${deliverableLine}をまとめた「${moshi.deliverableName}」をお返しします。`,
     `取り消し　${cancelLine}`,
