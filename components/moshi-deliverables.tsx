@@ -14,7 +14,7 @@ export function MoshiDeliverables() {
     <>
       <ol className="mt-5 grid gap-px border border-rule bg-rule sm:grid-cols-2">
         {moshi.deliverables.map((d, i) => (
-          <li key={d.h} className={`bg-white px-5 py-4 ${i === 0 ? "sm:col-span-2" : ""}`}>
+          <li key={d.h} className="bg-white px-5 py-4">
             <p className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
               0{i + 1}
             </p>

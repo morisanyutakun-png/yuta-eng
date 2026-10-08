@@ -197,7 +197,7 @@ function buildHtml(name: string, universityIds: string[]) {
       )}
       ${row(
         "採点と返却",
-        `答案は人の手で採点します。${esc(returnLine)}`,
+        `答案は人の手で採点します。${esc(returnLine)}<br><br>${esc(moshi.judgementNote)}`,
       )}
       ${row("取り消し", esc(cancelLine), true)}
     </table>
@@ -253,6 +253,7 @@ function buildText(name: string, universityIds: string[]) {
     `受験料　　${priceLabel}。現時点では料金は発生していません。`,
     `　　　　　${paymentLine}`,
     `採点と返却　答案は人の手で採点します。${returnLine}`,
+    `参考判定　${moshi.judgementNote}`,
     `取り消し　${cancelLine}`,
     "",
     `模試のご案内　${site.url}/moshi`,

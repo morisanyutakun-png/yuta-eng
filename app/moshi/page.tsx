@@ -341,9 +341,8 @@ export default function MoshiPage() {
         </section>
 
         {/*
-          出さないものを先に書く。「模試」で思い浮かべるものは人によって違い、
-          判定や偏差値を期待したまま申し込まれると、返したときに食い違う。
-          出せない理由まで書いて、何のための模試かをはっきりさせる。
+          数学の総合評価と、統計的な合格確率・他教科を含む判定を区別する。
+          統計の掲載条件も、申し込む前に確認できるようにする。
         */}
         <section aria-labelledby="not-provided" className="mt-14">
           <h2 id="not-provided" className="rule-mark serif h-sect text-ink">
@@ -370,8 +369,7 @@ export default function MoshiPage() {
             </ul>
             <div className="prose-ja space-y-3 px-5 py-4 text-[0.88rem] leading-[1.95] text-ink-2">
               <p>
-                合否判定は出しません。1つの大学の形式に絞った模試で、全国規模の母集団を取るものではないからです。
-                少ない人数の中での判定を出しても、本番の合否とは結びつきません。
+                {moshi.judgementNote}
               </p>
               <p>
                 <strong className="font-semibold text-ink">平均点・偏差値・順位分布</strong>は、
@@ -379,9 +377,9 @@ export default function MoshiPage() {
                 {moshi.statsNote.replace(/^受験者が.*?では、/, "それまでは出しません。")}
               </p>
               <p>
-                人数にかかわらずお返しするのは、
-                <strong className="font-semibold text-ink">答案のどこで何点落としたか</strong>と、
-                <strong className="font-semibold text-ink">次に何を直すか</strong>です。
+                受験者数にかかわらず、数学の合格参考判定・学習到達度とともに、
+                <strong className="font-semibold text-ink">答案のどこで何点落としたか</strong>、
+                <strong className="font-semibold text-ink">次に何を直すか</strong>をお返しします。
                 全体の中での位置を知りたい場合は、全国規模の模試とあわせてお使いください。
               </p>
             </div>

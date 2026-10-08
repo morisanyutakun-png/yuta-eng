@@ -116,8 +116,8 @@ export function SampleViewer({ pages, title, layout = "thumbnails" }: {
               alt={`${title}の${current.label}`}
               width={current.width}
               height={current.height}
-              sizes="(max-width: 1024px) 100vw, 900px"
-              className="mx-auto h-auto w-full max-w-[52rem] bg-white"
+              sizes={current.width > current.height ? "(max-width: 1350px) 100vw, 1280px" : "(max-width: 1024px) 100vw, 900px"}
+              className={`mx-auto h-auto w-full bg-white ${current.width > current.height ? "max-w-[80rem]" : "max-w-[52rem]"}`}
               loading="eager"
             />
           </div>

@@ -60,6 +60,9 @@ export type Moshi = {
   priceFixed: boolean;
   /** この模試では出さないもの。期待の食い違いを先に止める */
   notProvided: string[];
+  /** 数学単体・答案の総合評価。統計的な合格確率とは区別する */
+  judgementNote: string;
+  judgementLevels: { grade: string; label: string }[];
   /** 平均点・偏差値・順位を出す最少の受験者数 */
   statsMin: number;
   /** その条件を1文で書いたもの */
@@ -82,7 +85,7 @@ export const deliverableLine = moshi.deliverables.map((d) => d.h).join("・");
 
 /** 成績冊子と採点済み答案を区別した、画面・確認メール共通の返却案内 */
 export const returnLine =
-  `採点済み答案と、採点結果・答案講評・学習の助言をまとめた「${moshi.deliverableName}」を、受験者お一人ごとにPDFでお返しします。`;
+  `採点済み答案と、採点結果・数学の合格参考判定・学習到達度・答案講評・学習の助言をまとめた「${moshi.deliverableName}」を、受験者お一人ごとにPDFでお返しします。`;
 
 /**
  * お支払いについての言い方。

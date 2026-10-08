@@ -3,6 +3,7 @@
 // 原稿・Amazon・サイトの3つがずれていないか、数字が常識的な範囲に収まっているかを見る。
 // 1つでも引っかかったら終了コード 1 を返すので、公開前に流す。
 import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -149,6 +150,12 @@ for (const [asin, s] of Object.entries(samples)) {
     const [min, max] = key === "return" ? [2, 2] : [4, 8];
     if (s.pages.length < min || s.pages.length > max) ng(`模試の見本(${key}): ${s.pages.length} ページ（${min}〜${max} のはず）`);
     for (const p of s.pages) if (!file(p.file)) ng(`模試の見本(${key}): 画像がない（${p.file}）`);
+    if (key === "return" && s.pages.some((p) => p.width <= p.height || Math.abs(p.width / p.height - 297 / 210) > 0.002))
+      ng("返却見本: プレビュー画像がA4横の寸法になっていない");
+    if (key === "return") for (const page of s.pages) {
+      if (file(page.file) && page.version !== createHash("sha256").update(readFileSync(join(ROOT, "public", page.file))).digest("hex").slice(0, 12))
+        ng("返却見本: 画像の版識別子が内容と一致していない（古い画像を表示するおそれ）");
+    }
     const kinds = s.pages.flatMap((p) => p.kind.split("・"));
     for (const k of need) if (!kinds.includes(k)) ng(`模試の見本(${key}): ${k}のページがない`);
     for (const k of kinds) if (!need.includes(k)) ng(`模試の見本(${key}): 出さない種類のページがある（${k}）`);
@@ -184,6 +191,23 @@ for (const [asin, s] of Object.entries(samples)) {
       ng("返却見本: 復習プランの内容が欠けている");
   }
   if (!moshi.deliverables.some((d) => d.h === "採点済み答案")) ng("模試の返却物: 採点済み答案の案内がない");
+  const maximum = questions.reduce((sum, q) => sum + q.subs.reduce((n, s) => n + s.max, 0), 0);
+  const score = questions.reduce((sum, q) => sum + q.subs.reduce((n, s) => n + s.score, 0), 0);
+  if (maximum !== 60) ng("返却見本: 得点分布は60点満点の6区間を想定している");
+  const population = moshiReturn.populationScores;
+  if (!Array.isArray(population) || population.length < moshi.statsMin ||
+      population.some((n) => !Number.isInteger(n) || n < 0 || n > maximum) ||
+      !population.includes(score) || new Set(population).size < 2)
+    ng("返却見本: 偏差値・平均・順位を計算する架空の得点集団が不正");
+  if (moshiReturn.skills.length !== 5 || new Set(moshiReturn.skills.map((s) => s.label)).size !== 5 ||
+      moshiReturn.skills.some((s) => !s.label?.trim() || !Number.isFinite(s.score) || s.score < 0 || s.score > 100))
+    ng("返却見本: バランスチャートの5観点評価が不正");
+  if (moshi.judgementLevels.map((level) => level.grade).join("") !== "ABCD" ||
+      moshi.judgementLevels.some((level) => !level.label.trim()) ||
+      !moshi.judgementLevels.some((level) => level.grade === moshiReturn.judgement.grade) ||
+      !moshiReturn.judgement.comment.trim()) ng("返却見本: A〜Dの総合評価・判定所見が不正");
+  if (moshi.notProvided.includes("合否判定") || !moshi.judgementNote.includes("数学のみ") ||
+      !moshi.judgementNote.includes("合格確率")) ng("模試: 数学の参考判定と合格確率の区別がない");
 }
 
 // 本文まるごとのPDFを公開していないか（書籍の抜粋は多くても6ページ）

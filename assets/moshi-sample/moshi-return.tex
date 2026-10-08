@@ -1,7 +1,7 @@
-% 個人成績表と答案講評。A4・2ページ、採点済み答案は別添で返却する。
-% Web と PDF の内容は data/moshi-return.json を共有。成績・講評は架空の見本。
+% A4横・表裏2ページ。成績冊子と採点済み答案（別添）を区別する。
+% Web と PDF は data/moshi-return.json の架空データを共有する。
 \documentclass[a4paper,10pt]{ltjsarticle}
-\usepackage[margin=0mm]{geometry}
+\usepackage[a4paper,landscape,margin=0mm]{geometry}
 \usepackage{fontspec,luatexja-fontspec,xfp,tikz,xcolor}
 \usepackage[unicode]{hyperref}
 \setmainfont{TeX Gyre Heros}
@@ -16,21 +16,21 @@
 \definecolor{muted}{HTML}{596B79}
 \definecolor{rule}{HTML}{B9C9D6}
 \definecolor{pale}{HTML}{EFF4F8}
+\definecolor{bar}{HTML}{C7D6E1}
 
-% 位置は用紙上端からの mm。PDF の文字は画像化せず埋め込む。
+% 上端からの mm。文字は画像にせず、検索・拡大できる形で埋め込む。
 \newcommand{\rt}[6]{\node[anchor=north west,inner sep=0pt,text width=#3mm,
-  font=\fontsize{#4}{\fpeval{#4*1.5}}\selectfont,text=#5]
+  font=\fontsize{#4}{\fpeval{#4*1.45}}\selectfont,text=#5]
   at (#1,-#2) {#6};}
 \newcommand{\hr}[3]{\draw[rule,line width=0.35pt] (#1,-#2) -- ({#1+#3},-#2);}
 \newcommand{\vr}[3]{\draw[rule,line width=0.35pt] (#1,-#2) -- (#1,{-#2-#3});}
 \newcommand{\frameboxat}[4]{\draw[rule,line width=0.45pt]
   (#1,-#2) rectangle ({#1+#3},{-#2-#4});}
-\newcommand{\sectiontitle}[3]{%
-  \rt{14}{#2}{10}{8}{blue}{\bfseries #1}
-  \rt{25}{\fpeval{#2-0.8}}{150}{11}{navy}{\bfseries #3}
-  \draw[blue,line width=0.6pt] (14,{-#2-6}) -- (196,{-#2-6});}
+\newcommand{\sectiontitle}[4]{%
+  \rt{#1}{#2}{#3}{10}{navy}{\bfseries #4}
+  \draw[blue,line width=0.65pt] (#1,{-#2-6}) -- ({#1+#3},{-#2-6});}
 
-% components/logo.tsx と同じ、このサイト独自のしるし。他社の記章は使わない。
+% components/logo.tsx と共通の独自マーク。他社のロゴは使わない。
 \newcommand{\brandmark}[2]{%
   \begin{scope}[shift={(#1,-#2)},x=0.3125mm,y=-0.3125mm]
     \fill[navy] (0,0) rectangle (32,32);
@@ -42,130 +42,122 @@
   \end{scope}}
 
 \newcommand{\reportheader}[2]{%
-  \brandmark{14}{13}
-  \rt{28}{13}{130}{13}{navy}{\brandfont\bfseries \MoshiBrand}
-  \rt{28}{21}{135}{9}{muted}{\bfseries \MoshiTitle\quad\normalfont \MoshiSeason}
-  \draw[navy,line width=0.65pt] (174,-14) rectangle (196,-22);
-  \rt{178}{16}{15}{8}{navy}{\bfseries 返却見本}
-  \draw[navy,line width=0.8pt] (14,-31) -- (196,-31);
-  \rt{14}{37}{160}{13}{navy}{\bfseries \ReportUniversity\ \ReportCourse{}・第\ReportRound 回}
-  \rt{14}{47}{140}{22}{ink}{\bfseries #1}
-  \rt{154}{51}{42}{8.5}{muted}{合格への手引き\quad #2}
-  \hr{14}{284}{182}
-  \rt{14}{287}{145}{7}{muted}{発行：\MoshiBrand\quad 制作：\MoshiAuthor\quad yuta-eng.com}
-  \rt{181}{287}{15}{7.5}{navy}{#2 / 2}}
+  \brandmark{12}{10}
+  \rt{25}{10}{90}{12}{navy}{\brandfont\bfseries \MoshiBrand}
+  \rt{25}{18}{91}{8}{muted}{\bfseries \MoshiTitle\quad\normalfont \MoshiSeason}
+  \rt{123}{9}{130}{20}{ink}{\bfseries #1}
+  \rt{123}{22}{135}{9}{navy}{\ReportUniversity\ \ReportCourse{}・第\ReportRound 回}
+  \draw[navy,line width=0.65pt] (263,-11) rectangle (285,-19);
+  \rt{267}{13}{17}{8}{navy}{\bfseries 返却見本}
+  \rt{265}{22}{20}{7}{muted}{合格への手引き}
+  \draw[navy,line width=0.85pt] (12,-28) -- (285,-28);
+  \hr{12}{194}{273}
+  \rt{12}{196}{230}{6.5}{muted}{発行：\MoshiBrand\quad 制作：\MoshiAuthor\quad yuta-eng.com}
+  \rt{247}{196}{38}{6.5}{navy}{A4横・#2 / 2（短辺とじ）}}
 
 \newcommand{\candidateheader}{%
-  \frameboxat{14}{66}{182}{22}
-  \vr{79}{66}{22}\vr{137}{66}{22}
-  \rt{18}{69}{55}{7.5}{muted}{氏名 / 受験番号}
-  \rt{18}{76}{55}{11}{ink}{\bfseries \ReportCandidate\ 様}
-  \rt{18}{83}{55}{6.5}{muted}{\ReportNumber}
-  \rt{83}{69}{49}{7.5}{muted}{受験日}
-  \rt{83}{77}{49}{10}{ink}{\ReportExamDate}
-  \rt{141}{69}{51}{7.5}{muted}{返却日}
-  \rt{141}{77}{51}{10}{ink}{\ReportReturnDate}}
+  \frameboxat{12}{32}{273}{15}
+  \vr{107}{32}{15}\vr{196}{32}{15}
+  \rt{16}{34}{85}{7}{muted}{氏名 / 受験番号}
+  \rt{16}{39}{51}{10.5}{ink}{\bfseries \ReportCandidate\ 様}
+  \rt{66}{40.5}{37}{7.5}{muted}{\ReportNumber}
+  \rt{111}{34}{80}{7}{muted}{受験日}
+  \rt{111}{39.5}{80}{10}{ink}{\ReportExamDate}
+  \rt{200}{34}{81}{7}{muted}{返却日}
+  \rt{200}{39.5}{81}{10}{ink}{\ReportReturnDate}}
 
-\newcommand{\fieldrow}[6]{%
-  \rt{18}{#1}{54}{9}{ink}{第#2問\quad\textbf{#3}}
-  \rt{80}{#1}{24}{10}{navy}{\bfseries #4 / #5}
-  \fill[pale] (18,{-#1-8}) rectangle (101,{-#1-10.5});
-  \fill[blue] (18,{-#1-8}) rectangle ({18+83*#4/#5},{-#1-10.5});
-  \rt{18}{\fpeval{#1+13}}{80}{7}{muted}{得点率 #6\%}}
+\newcommand{\metric}[4]{%
+  \rt{\fpeval{#1+3}}{64}{39.5}{7.5}{muted}{#2}
+  \rt{\fpeval{#1+3}}{72}{39.5}{21}{navy}{\bfseries #3}
+  \rt{\fpeval{#1+3}}{86}{39.5}{6.5}{muted}{#4}}
 
-\newcommand{\subrow}[5]{%
-  \rt{120}{#1}{34}{8.5}{ink}{#2\quad (#3)}
-  \rt{158}{#1}{13}{8.5}{ink}{#5}
-  \rt{180}{#1}{12}{9}{navy}{\bfseries #4}}
+\newcommand{\scorerow}[8]{%
+  \rt{15}{#1}{32}{9.5}{ink}{\textbf{#2}\quad #3}
+  \rt{49}{#1}{17}{9}{ink}{#4}
+  \rt{70}{#1}{17}{9}{ink}{#5}
+  \rt{91}{#1}{17}{9}{ink}{#6}
+  \rt{112}{#1}{15}{10}{navy}{\bfseries #7}
+  \rt{128}{\fpeval{#1+1}}{10}{7}{muted}{#8\%}
+  \hr{12}{\fpeval{#1+9}}{128}}
 
-% コメントは答案の設問番号に即して書く。色帯や「できた点」カードにしない。
+% 設問に即した講評と復習。色帯・「できた点」カードを使わない。
 \newcommand{\feedback}[6]{%
-  \rt{18}{\fpeval{#1+3}}{25}{8.5}{muted}{第#2問}
-  \rt{18}{\fpeval{#1+9}}{25}{10}{ink}{\bfseries #3}
-  \rt{18}{\fpeval{#1+19}}{25}{9}{navy}{\bfseries #4 点}
-  \rt{48}{\fpeval{#1+3}}{144}{9}{ink}{#5}
-  \rt{48}{\fpeval{#1+18}}{144}{9}{ink}{#6}
-  \hr{14}{\fpeval{#1+32}}{182}}
+  \rt{15}{\fpeval{#1+3}}{24}{8}{muted}{第#2問}
+  \rt{15}{\fpeval{#1+9}}{24}{10}{ink}{\bfseries #3}
+  \rt{15}{\fpeval{#1+17}}{24}{9}{navy}{\bfseries #4 点}
+  \rt{44}{\fpeval{#1+3}}{12}{7}{muted}{講評}
+  \rt{58}{\fpeval{#1+3}}{126}{9}{ink}{#5}
+  \rt{44}{\fpeval{#1+18}}{12}{7}{muted}{復習}
+  \rt{58}{\fpeval{#1+18}}{126}{8.5}{ink}{#6}
+  \hr{12}{\fpeval{#1+32}}{176}}
 
 \newcommand{\planrow}[5]{%
-  \rt{18}{#1}{25}{8}{ink}{#2}
-  \rt{48}{#1}{86}{8}{ink}{\textbf{#3}\quad #4}
-  \rt{144}{#1}{48}{8}{ink}{#5}}
+  \rt{200}{#1}{85}{8.5}{navy}{\bfseries #2\quad #3}
+  \rt{200}{\fpeval{#1+6}}{85}{8}{ink}{#4}
+  \rt{200}{\fpeval{#1+16}}{85}{7}{muted}{確認：#5}
+  \hr{200}{\fpeval{#1+22}}{85}}
+
+\newcommand{\samplefooter}{%
+  \rt{12}{186}{273}{6.5}{muted}{数学の合格参考判定は得点・論理・分野バランスの総合評価です。合格確率・他教科を含む総合判定ではありません。}
+  \rt{12}{190}{273}{6.3}{muted}{全大学共通の架空例です。大学名・回次・日付・受験者・成績・統計・判定は架空。特定大学の公式配点ではありません。}}
 
 \input{moshi-return-data}
-\hypersetup{pdftitle={\MoshiTitle{}｜個人成績表・答案講評（共通返却見本）},
-  pdfauthor={\MoshiBrand},pdfsubject={全大学共通・架空の返却見本（\ReportUniversity\ \ReportCourse{}）}}
+\hypersetup{pdftitle={\MoshiTitle{}｜個人成績表・答案講評（A4横・共通返却見本）},
+  pdfauthor={\MoshiBrand},pdfsubject={全大学共通・数学単体の架空返却見本（\ReportUniversity\ \ReportCourse{}）}}
 \begin{document}
 \null
 \begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
 \begin{scope}[shift={(current page.north west)}]
-  \reportheader{個人成績表}{1}
+  \reportheader{個人成績表}{表}
   \candidateheader
 
-  \sectiontitle{01}{98}{成績概況}
-  \frameboxat{14}{109}{105}{35}
-  \fill[pale] (14,-109) rectangle (119,-118);
-  \hr{14}{118}{105}
-  \vr{43}{109}{35}\vr{68}{109}{35}\vr{90}{109}{35}
-  \rt{18}{111}{20}{8}{muted}{教科}
-  \rt{48}{111}{18}{8}{muted}{得点}
-  \rt{73}{111}{16}{8}{muted}{配点}
-  \rt{95}{111}{23}{8}{muted}{得点率}
-  \rt{18}{126}{22}{13}{ink}{\bfseries 数学}
-  \rt{48}{123}{20}{23}{navy}{\bfseries \ReportScore}
-  \rt{73}{127}{16}{13}{ink}{\ReportMax}
-  \rt{95}{127}{22}{12}{ink}{\ReportRate\%}
-  \rt{128}{111}{68}{9}{navy}{\bfseries 学習上の留意点}
-  \rt{128}{120}{68}{8}{ink}{\ReportSummary}
-  \rt{14}{147}{182}{7}{muted}{平均点・偏差値・順位は、大学ごとの受験者が\ReportStatsMin 名以上の回に掲載します。合否判定は行いません。}
+  \sectiontitle{12}{53}{273}{01\quad 成績概況（数学）}
+  \frameboxat{12}{62}{273}{30}
+  \foreach \x in {57.5,103,148.5,194,239.5} {\vr{\x}{62}{30}}
+  \metric{12}{得点 / 配点}{\ReportScore\, /\, \ReportMax}{点}
+  \metric{57.5}{平均点}{\ReportMean}{点}
+  \metric{103}{偏差値}{\ReportDeviation}{同じ大学の受験者内}
+  \metric{148.5}{順位}{\ReportRank\, /\, \ReportCount}{名}
+  \metric{194}{得点率}{\ReportRate\%}{学習到達度の一つの指標}
+  \metric{239.5}{合格参考判定}{\ReportGrade}{数学のみの総合評価}
+  \rt{12}{95}{273}{7}{muted}{統計は架空の\ReportCount 名から計算した見本です。実際の平均点・偏差値・順位は、大学ごとの受験者が\ReportStatsMin 名以上の回に掲載します。}
+  \rt{12}{100}{273}{6.5}{muted}{\ReportGradeLegend}
 
-  \sectiontitle{02}{157}{分野別成績・設問別得点}
-  \frameboxat{14}{169}{91}{75}
-  \fill[pale] (14,-169) rectangle (105,-177);
-  \rt{18}{171}{52}{7.5}{muted}{大問・分野}
-  \rt{78}{171}{26}{7.5}{muted}{得点 / 配点}
-  \ReportFieldRows
-  \frameboxat{116}{169}{80}{75}
-  \fill[pale] (116,-169) rectangle (196,-177);
-  \rt{120}{171}{34}{7.5}{muted}{大問・小問}
-  \rt{158}{171}{14}{7.5}{muted}{配点}
-  \rt{180}{171}{14}{7.5}{muted}{得点}
-  \vr{152}{169}{75}\vr{175}{169}{75}
-  \ReportSubRows
+  \sectiontitle{12}{105}{128}{02\quad 設問別成績}
+  \fill[pale] (12,-115) rectangle (140,-123);
+  \rt{15}{117}{32}{7.5}{muted}{大問・分野}
+  \rt{49}{117}{17}{7.5}{muted}{(1)}
+  \rt{70}{117}{17}{7.5}{muted}{(2)}
+  \rt{91}{117}{17}{7.5}{muted}{(3)}
+  \rt{112}{117}{25}{7.5}{muted}{合計 / 得点率}
+  \ReportScoreRows
+  \rt{12}{163}{128}{9}{navy}{\bfseries 判定所見\quad \ReportGrade：\ReportGradeLabel}
+  \rt{12}{171}{128}{8.5}{ink}{\ReportGradeComment}
 
-  \frameboxat{14}{252}{182}{16}
-  \rt{18}{255}{23}{8}{navy}{\bfseries 返却資料}
-  \rt{43}{254.5}{149}{9}{ink}{\bfseries 採点済み答案（別添PDF） / 合格への手引き（本冊子）}
-  \rt{43}{262}{149}{7}{muted}{提出答案の点数・添削と、成績表・答案講評を照らし合わせて復習してください。}
-  \rt{14}{274}{182}{7}{muted}{全大学共通・全3大問・\ReportMax 点の架空例です。大学名・回次・日付・受験者・成績は実在のものではありません。}
-  \rt{14}{279}{182}{6.5}{muted}{第1問は公開見本に対応し、第2・3問は返却形式を示す例です。大学の公式配点ではありません。}
+  \sectiontitle{153}{105}{132}{03\quad 学習到達度・答案のバランス}
+  \ReportRadar
+  \rt{153}{181}{132}{6.5}{muted}{採点者による5観点評価（各100点換算）。得点率とは別の尺度。}
+  \samplefooter
 \end{scope}
 \end{tikzpicture}
 \newpage
 \null
 \begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
 \begin{scope}[shift={(current page.north west)}]
-  \reportheader{答案講評・学習の手引き}{2}
+  \reportheader{答案講評・学習の手引き}{裏}
   \candidateheader
 
-  \sectiontitle{03}{98}{答案講評}
-  \frameboxat{14}{109}{182}{105}
-  \fill[pale] (14,-109) rectangle (196,-118);
-  \rt{18}{111}{25}{7.5}{muted}{大問 / 得点}
-  \rt{48}{111}{144}{7.5}{muted}{講評・復習事項}
-  \hr{14}{118}{182}\vr{43}{109}{105}
+  \sectiontitle{12}{53}{176}{04\quad 答案講評・復習のポイント}
   \ReportFeedback
+  \rt{12}{162}{176}{8.5}{navy}{\bfseries 次の学習へ}
+  \rt{12}{168}{176}{8.5}{ink}{\ReportSummary}
+  \rt{12}{180}{176}{7}{navy}{\bfseries 採点済み答案は別添PDFで返却します。添削・点数を本冊子と照合してください。}
 
-  \sectiontitle{04}{224}{復習予定（返却後の2週間）}
-  \frameboxat{14}{235}{182}{41}
-  \fill[pale] (14,-235) rectangle (196,-243);
-  \rt{18}{237}{25}{7.5}{muted}{期間}
-  \rt{48}{237}{86}{7.5}{muted}{学習内容}
-  \rt{144}{237}{48}{7.5}{muted}{確認事項}
-  \hr{14}{243}{182}\hr{14}{254}{182}\hr{14}{265}{182}
-  \vr{43}{235}{41}\vr{139}{235}{41}
+  \sectiontitle{200}{53}{85}{05\quad 2週間の復習計画}
   \ReportPlan
-  \rt{14}{279}{182}{6.5}{muted}{全大学共通の架空見本です。採点済み答案は、実際の返却時に本冊子とは別添のPDFでお渡しします。}
+  \sectiontitle{200}{136}{85}{06\quad 得点分布（架空\ReportCount 名）}
+  \ReportHistogram
+  \samplefooter
 \end{scope}
 \end{tikzpicture}
 \end{document}

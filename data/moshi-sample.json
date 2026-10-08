@@ -60,16 +60,18 @@
         "label": "個人成績表",
         "kind": "成績",
         "page": 1,
-        "width": 1400,
-        "height": 1980
+        "width": 2000,
+        "height": 1415,
+        "version": "5d3df05c89f0"
       },
       {
         "file": "/samples/moshi/return/p2.webp",
         "label": "答案講評・学習の手引き",
         "kind": "講評・助言",
         "page": 2,
-        "width": 1400,
-        "height": 1980
+        "width": 2000,
+        "height": 1415,
+        "version": "e9556fe22640"
       }
     ]
   }

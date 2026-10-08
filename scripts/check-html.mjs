@@ -11,6 +11,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const APP = join(ROOT, ".next", "server", "app");
 const PUBLIC = join(ROOT, "public");
 const moshi = JSON.parse(readFileSync(join(ROOT, "data", "moshi.json"), "utf8"));
+const moshiSample = JSON.parse(readFileSync(join(ROOT, "data", "moshi-sample.json"), "utf8"));
 
 if (!existsSync(APP)) {
   console.error("ビルド結果がない。先に npm run build を実行する");
@@ -132,6 +133,13 @@ for (const f of files) {
     if (!sample) ng(page, "模試の共通見本がない");
     if (!sample.includes("全大学共通")) ng(page, "見本が全大学共通である旨の案内がない");
     if (!strip(sample).replace(/\s+/g, "").includes("〇〇大学数学・第〇回")) ng(page, "返却見本の大学名・回次が架空表記になっていない");
+    for (const required of ["A4横", "合格参考判定", "学習到達度", "数学のみ", "合格確率", "得点分布", "採点済み答案"])
+      if (!sample.includes(required)) ng(page, `返却見本に${required}の案内がない`);
+    if (sample.includes("合否判定を行いません")) ng(page, "返却見本に変更前の判定方針が残っている");
+    if (!sample.includes("バランスチャート") || !sample.includes('role="img"')) ng(page, "返却見本に読めるグラフがない");
+    for (const image of moshiSample.return.pages) {
+      if (!sample.includes(`${image.file}?v=${image.version}`)) ng(page, "返却画像の版識別子がない（古い画像を表示するおそれ）");
+    }
     for (const u of moshi.universities) {
       if (sample.includes(u.university)) ng(page, `共通見本に実在の大学名がある（${u.university}）`);
     }
@@ -161,12 +169,13 @@ for (const f of files) {
   }
 
   /* ── リンクと画像を集める ── */
-  for (const m of html.matchAll(/href="(\/[^"#?]*)"/g)) {
-    if (!m[1].startsWith("/_next/") && !linked.has(m[1])) linked.set(m[1], page);
+  for (const m of html.matchAll(/href="(\/[^"]*)"/g)) {
+    const path = m[1].split(/[?#]/)[0];
+    if (!path.startsWith("/_next/") && !linked.has(path)) linked.set(path, page);
   }
   for (const m of html.matchAll(/src="(\/[^"?]+\.(?:webp|jpg|png|svg))"/g)) if (!linked.has(m[1])) linked.set(m[1], page);
   for (const m of html.matchAll(/url=%2F([^&"]+)/g)) {
-    const p = "/" + decodeURIComponent(m[1]);
+    const p = "/" + decodeURIComponent(m[1]).split(/[?#]/)[0];
     if (!linked.has(p)) linked.set(p, page);
   }
 }

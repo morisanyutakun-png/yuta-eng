@@ -18,7 +18,9 @@
 すでに作ってある画像と PDF（リポジトリに入っている）をそのまま使う。
 """
 import argparse
+import hashlib
 import json
+import math
 import os
 import re
 import shutil
@@ -106,7 +108,7 @@ def brand_data_tex() -> str:
 
 
 def return_data_tex() -> str:
-    """得点・得点率は小問から集計。PDF と Web で同じ内容を返す。"""
+    """得点・統計は共通の架空データから計算。判定は採点者の総合評価例。"""
     report = json.loads((ROOT / "data/moshi-return.json").read_text(encoding="utf-8"))
     config = json.loads((ROOT / "data/moshi.json").read_text(encoding="utf-8"))
 
@@ -118,6 +120,17 @@ def return_data_tex() -> str:
 
     score = sum(totals(q)[0] for q in report["questions"])
     maximum = sum(totals(q)[1] for q in report["questions"])
+    population = report["populationScores"]
+    if len(population) < config["statsMin"] or any(not 0 <= s <= maximum for s in population):
+        sys.exit("返却見本の架空受験者集団が統計の掲載条件を満たしていない")
+    mean = sum(population) / len(population)
+    sd = math.sqrt(sum((s - mean) ** 2 for s in population) / len(population))
+    if sd == 0:
+        sys.exit("返却見本の標準偏差が0のため偏差値を計算できない")
+    grade = report["judgement"]["grade"]
+    levels = {level["grade"]: level["label"] for level in config["judgementLevels"]}
+    if grade not in levels:
+        sys.exit("返却見本の判定がA〜Dの定義にない")
     fmt_date = lambda d: d.replace("-", " / ")
     values = {
         "University": report["university"], "Course": report["course"],
@@ -126,39 +139,83 @@ def return_data_tex() -> str:
         "Round": report["round"], "Score": score, "Max": maximum,
         "Rate": f"{100*score/maximum:.1f}", "StatsMin": config["statsMin"],
         "Summary": report["summary"],
+        "Mean": f"{mean:.1f}", "Deviation": f"{50 + 10*(score-mean)/sd:.1f}",
+        "Rank": 1 + sum(s > score for s in population), "Count": len(population),
+        "Grade": grade, "GradeLabel": levels[grade],
+        "GradeComment": report["judgement"]["comment"],
+        "GradeLegend": "参考判定の目安： " + " / ".join(f"{g}：{label}" for g, label in levels.items()),
     }
     commands = [f"\\newcommand{{\\Report{k}}}{{{tex_text(v)}}}" for k, v in values.items()]
-    fields, subs = [], []
+    rows = []
     for i, q in enumerate(report["questions"]):
         earned, total = totals(q)
-        fields.append(
-            f"\\fieldrow{{{181+i*22}}}{{{q['no']}}}{{{tex_text(q['field'])}}}"
-            f"{{{earned}}}{{{total}}}{{{100*earned/total:.0f}}}"
+        rows.append(
+            f"\\scorerow{{{126+i*12}}}{{{q['no']}}}{{{tex_text(q['field'])}}}"
+            + "".join(f"{{{s['score']} / {s['max']}}}" for s in q["subs"])
+            + f"{{{earned} / {total}}}{{{100*earned/total:.0f}}}"
         )
-        for j, s in enumerate(q["subs"]):
-            subs.append(
-                f"\\subrow{{{181+i*22+j*6}}}{{{q['no'] if j == 0 else ''}}}"
-                f"{{{s['no']}}}{{{s['score']}}}{{{s['max']}}}"
-            )
-        if i < len(report["questions"]) - 1:
-            subs.append(f"\\hr{{116}}{{{200+i*22}}}{{80}}")
-            fields.append(f"\\hr{{14}}{{{200+i*22}}}{{91}}")
-    commands.append("\\newcommand{\\ReportFieldRows}{" + "\n".join(fields) + "}")
-    commands.append("\\newcommand{\\ReportSubRows}{" + "\n".join(subs) + "}")
+    commands.append("\\newcommand{\\ReportScoreRows}{" + "\n".join(rows) + "}")
     feedback = []
     for i, q in enumerate(report["questions"]):
         earned, total = totals(q)
         feedback.append(
-            f"\\feedback{{{118+i*32}}}{{{q['no']}}}{{{tex_text(q['field'])}}}"
+            f"\\feedback{{{62+i*32}}}{{{q['no']}}}{{{tex_text(q['field'])}}}"
             f"{{{earned} / {total}}}{{{tex_text(q['comment'])}}}{{{tex_text(q['review'])}}}"
         )
     commands.append("\\newcommand{\\ReportFeedback}{" + "\n".join(feedback) + "}")
     plan = [
-        f"\\planrow{{{246+i*11}}}{{{tex_text(p['days'])}}}{{{tex_text(p['title'])}}}"
+        f"\\planrow{{{64+i*24}}}{{{tex_text(p['days'])}}}{{{tex_text(p['title'])}}}"
         f"{{{tex_text(p['task'])}}}{{{tex_text(p['check'])}}}"
         for i, p in enumerate(report["plan"])
     ]
     commands.append("\\newcommand{\\ReportPlan}{" + "\n".join(plan) + "}")
+
+    skills = report["skills"]
+    if len(skills) != 5 or any(not 0 <= s["score"] <= 100 for s in skills):
+        sys.exit("返却見本の5観点評価が不正")
+
+    def radar_point(radius, i):
+        angle = math.radians(-90 + i * 72)
+        return f"({218 + radius*math.cos(angle):.3f},{-148 - radius*math.sin(angle):.3f})"
+
+    radar = []
+    for level in (20, 40, 60, 80, 100):
+        points = " -- ".join(radar_point(25 * level / 100, i) for i in range(5))
+        radar.append(f"\\draw[rule,line width=0.3pt] {points} -- cycle;")
+    for i, skill in enumerate(skills):
+        radar.append(f"\\draw[rule,line width=0.3pt] (218,-148) -- {radar_point(25,i)};")
+        radar.append(
+            r"\node[align=center,text=ink,font=\fontsize{8}{11}\selectfont] at "
+            + radar_point(32, i) + " {" + tex_text(skill["label"])
+            + r"\\{\color{blue}\bfseries " + str(skill["score"]) + "}};"
+        )
+    points = " -- ".join(radar_point(25 * skill["score"] / 100, i) for i, skill in enumerate(skills))
+    radar.append(f"\\filldraw[fill=blue,fill opacity=0.17,draw=blue,line width=0.9pt] {points} -- cycle;")
+    for i, skill in enumerate(skills):
+        radar.append(f"\\fill[blue] {radar_point(25 * skill['score'] / 100, i)} circle[radius=0.65mm];")
+    for level in (20, 60, 100):
+        radar.append(f"\\rt{{219.5}}{{{148-25*level/100-1}}}{{10}}{{6}}{{muted}}{{{level}}}")
+    commands.append("\\newcommand{\\ReportRadar}{" + "\n".join(radar) + "}")
+
+    bins = [sum(lower <= s <= (maximum if lower == 50 else lower+9) for s in population) for lower in range(0, 60, 10)]
+    histogram = [
+        f"\\rt{{200}}{{145}}{{85}}{{6.5}}{{muted}}{{平均 {mean:.1f}点 / あなた {score}点（濃色）}}",
+        r"\draw[rule,line width=0.35pt] (201,-175) -- (284,-175);",
+    ]
+    for i, n in enumerate(bins):
+        x = 202 + i * 13.8
+        height = 20 * n / max(bins)
+        selected = i == min(score // 10, 5)
+        upper = maximum if i == 5 else i * 10 + 9
+        histogram.extend([
+            f"\\fill[{'blue' if selected else 'bar'}] ({x:.2f},-175) rectangle ({x+10:.2f},{-175+height:.2f});",
+            f"\\rt{{{x+2:.2f}}}{{{175-height-4:.2f}}}{{10}}{{6.5}}{{muted}}{{{n}}}",
+            f"\\rt{{{x-0.3:.2f}}}{{177}}{{13.8}}{{6}}{{muted}}{{{i*10}--{upper}}}",
+        ])
+    average_x = 201 + mean / maximum * 83
+    histogram.append(f"\\draw[muted,dashed,line width=0.4pt] ({average_x:.2f},-151) -- ({average_x:.2f},-175);")
+    histogram.append(r"\rt{200}{182}{85}{6}{muted}{縦：人数（名）\quad 横：得点（点）\quad 破線：平均}")
+    commands.append("\\newcommand{\\ReportHistogram}{" + "\n".join(histogram) + "}")
     return "\n".join(commands) + "\n"
 
 
@@ -210,6 +267,8 @@ def render(kind: str, pdf: Path, labels: list[tuple[str, str]]) -> dict:
     if not doc.metadata.get("title", "").startswith(title):
         sys.exit(f"{kind}: PDF の文書タイトルがシリーズ名と一致しない")
     for i, page in enumerate(doc):
+        if kind == "return" and (abs(page.rect.width - 841.89) > 1 or abs(page.rect.height - 595.28) > 1):
+            sys.exit(f"返却見本の{i + 1}ページがA4横ではない")
         if "".join(title.split()) not in "".join(page.get_text().split()):
             sys.exit(f"{kind}: {i + 1}ページにシリーズ名がない（表紙・柱・問題紙を確認）")
 
@@ -227,7 +286,7 @@ def render(kind: str, pdf: Path, labels: list[tuple[str, str]]) -> dict:
 
     pages = []
     for i, page in enumerate(doc):
-        zoom = (1400 if kind == "return" else IMG_WIDTH) / page.rect.width
+        zoom = (2000 if kind == "return" else IMG_WIDTH) / page.rect.width
         pix = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom), alpha=False)
         img = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
         name = f"p{i + 1}.webp"
@@ -241,6 +300,7 @@ def render(kind: str, pdf: Path, labels: list[tuple[str, str]]) -> dict:
                 "page": i + 1,
                 "width": pix.width,
                 "height": pix.height,
+                **({"version": hashlib.sha256((out / name).read_bytes()).hexdigest()[:12]} if kind == "return" else {}),
             }
         )
 

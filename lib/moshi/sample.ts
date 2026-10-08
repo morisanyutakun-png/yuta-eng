@@ -23,6 +23,8 @@ export type MoshiSamplePage = {
   page: number;
   width: number;
   height: number;
+  /** 画像内容のハッシュ。更新前の最適化画像を表示しないための版識別子 */
+  version?: string;
 };
 
 export type MoshiSampleBooklet = { pdf: string; pages: MoshiSamplePage[] };
@@ -34,11 +36,23 @@ export type MoshiSampleBooklet = { pdf: string; pages: MoshiSamplePage[] };
  *
  * 受験料で何が返ってくるのかは、文章で説明するより返却の見本を見せるほうが早い。
  */
-export const moshiSample = raw as Record<"problem" | "return", MoshiSampleBooklet>;
+const sampleData = raw as Record<"problem" | "return", MoshiSampleBooklet>;
+const returnVersion = sampleData.return.pages.map((page) => page.version).filter(Boolean).join("-");
+export const moshiSample = {
+  problem: sampleData.problem,
+  return: {
+    ...sampleData.return,
+    pdf: returnVersion ? `${sampleData.return.pdf}?v=${returnVersion}` : sampleData.return.pdf,
+    pages: sampleData.return.pages.map((page) => ({
+      ...page,
+      file: page.version ? `${page.file}?v=${page.version}` : page.file,
+    })),
+  },
+};
 
 /** 大学名・回次・日付・受験者・成績は架空。全大学で同じ見本を使う */
 export const RETURN_NOTICE =
-  "この見本は全大学共通の「合格への手引き」の成績表・答案講評です。大学名・回次・日付・受験者・成績は架空で、特定の大学の試験や公式配点を示すものではありません。採点済み答案は、実際の返却時に別添PDFでお渡しします。";
+  "この見本は全大学共通の「合格への手引き」です。大学名・回次・日付・受験者・成績・統計・判定はすべて架空で、特定大学の試験や公式配点を示すものではありません。成績冊子はA4横・表裏2ページ。採点済み答案は、実際の返却時に別添PDFでお渡しします。両面印刷は短辺とじを選んでください。";
 
 export const sampleMeta = {
   /** この見本に収めた大問の分野 */
