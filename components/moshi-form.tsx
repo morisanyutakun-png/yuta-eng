@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 
 
-import { cancelLine, moshi, paymentLine, priceLabel, roundLabel } from "@/lib/moshi/config";
+import { cancelLine, moshi, paymentShortLine, priceLabel, roundLabel } from "@/lib/moshi/config";
 
 /**
  * 参加申込のフォーム。
@@ -84,13 +84,13 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
           10大学を縦に積むと画面が長くなるので、狭い画面でも2列に並べる。
           大学名を主役にし、模試名は小さく添える。
         */}
-        <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+        <ul className="mt-3 grid grid-cols-2 gap-2">
           {moshi.universities.map((u) => {
             const on = picked.includes(u.id);
             return (
               <li key={u.id}>
                 <label
-                  className={`flex min-h-[3.1rem] cursor-pointer items-center gap-3 border px-3.5 py-2.5 transition-colors ${
+                  className={`flex min-h-[3.1rem] cursor-pointer items-center gap-2 border px-3 py-2.5 transition-colors ${
                     on ? "border-navy bg-paper-2" : "border-rule bg-white hover:border-navy"
                   }`}
                 >
@@ -103,8 +103,8 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
                     className="size-4 shrink-0 accent-[#1b3a63]"
                   />
                   <span className="min-w-0">
-                    <span className="block text-[0.93rem] font-semibold leading-snug text-ink">{u.university}</span>
-                    <span className="block truncate text-[0.74rem] text-ink-2">{u.exam}</span>
+                    <span className="block text-[0.85rem] font-semibold leading-snug text-ink sm:text-[0.93rem]">{u.university}</span>
+                    <span className="block text-[0.74rem] text-ink-2">{u.exam.replace(moshi.title, "").trim()}</span>
                   </span>
                 </label>
               </li>
@@ -203,7 +203,7 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
           {[
             ["料金", `参加申込の時点では料金は発生しません。受験料は${priceLabel}です。`],
             ["日程", `${roundLabel}。正式な受験日程が確定したあとに、メールでご案内します。`],
-            ["支払い", `${paymentLine}${cancelLine}`],
+            ["支払い", `${paymentShortLine}${cancelLine}`],
           ].map(([k, v]) => (
             <li key={k} className="grid grid-cols-[4rem_1fr] gap-x-4 px-4 py-3">
               <span className="text-[0.78rem] leading-relaxed text-ink-3">{k}</span>

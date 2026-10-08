@@ -1,4 +1,5 @@
 import { moshi, returnLine } from "@/lib/moshi/config";
+import { InfoDetails } from "@/components/info-details";
 
 /**
  * 受験後にお返しするもの。
@@ -12,7 +13,11 @@ import { moshi, returnLine } from "@/lib/moshi/config";
 export function MoshiDeliverables() {
   return (
     <>
-      <ol className="mt-5 grid gap-px border border-rule bg-rule sm:grid-cols-2">
+      <ul className="mt-4 grid grid-cols-2 gap-px border border-rule bg-rule">
+        {moshi.deliverables.map((d) => <li key={d.h} className="bg-white px-3 py-3 text-[0.8rem] font-semibold leading-relaxed text-ink">{d.h}</li>)}
+      </ul>
+      <InfoDetails title="返却内容を詳しく見る">
+      <ol className="grid gap-px border border-rule bg-rule sm:grid-cols-2">
         {moshi.deliverables.map((d, i) => (
           <li key={d.h} className="bg-white px-5 py-4">
             <p className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
@@ -26,6 +31,7 @@ export function MoshiDeliverables() {
       <p className="prose-ja mt-4 max-w-[40rem] text-[0.86rem] leading-[1.9] text-ink-2">
         {returnLine}
       </p>
+      </InfoDetails>
     </>
   );
 }

@@ -5,8 +5,11 @@ import Link from "next/link";
 import { NextStep } from "@/components/next-step";
 import { PageHeader } from "@/components/page-header";
 import { ProductPanel, type Product } from "@/components/product-panel";
+import { InfoDetails } from "@/components/info-details";
+import { MobileActions } from "@/components/mobile-actions";
+import { MoshiDeliverables } from "@/components/moshi-deliverables";
 import { siteTotals, universities, universityCount } from "@/lib/data";
-import { moshi, priceLabel, returnLine, roundLabel } from "@/lib/moshi/config";
+import { moshi, priceLabel, groupPaymentLine, roundLabel } from "@/lib/moshi/config";
 import { sampleCount } from "@/lib/samples";
 import { sectionStyle } from "@/lib/sections";
 import { shortName, subject } from "@/lib/seo";
@@ -31,7 +34,7 @@ import { groupOrder, site } from "@/lib/site";
 
 const totals = siteTotals();
 
-const title = "学校・塾・予備校関係者の方へ";
+const title = "学校・塾・法人の方へ";
 const description =
   `大学受験指導の演習教材としてのご案内です。${universityCount()}大学・${totals.sections}区分の数学入試を分析して` +
   `大学別に書き下ろした予想問題集と、分野別の演習書を刊行しています。` +
@@ -113,11 +116,13 @@ export default function EducatorsPage() {
           [
             "（この下の項目を埋めてお送りください。この時点ではまだ確定しません）",
             "",
-            "ご所属（学校名・塾名）：",
+            "ご所属（学校名・塾名・法人名）：",
             "お名前：",
             "ご希望の大学：",
             "おおよその人数：",
             "ご希望の時期：",
+            "ご希望の支払方法（カード・銀行振込・請求書払い）：",
+            "ご希望の支払期限：",
             "ご質問・ご要望：",
             "",
           ].join("\n"),
@@ -185,20 +190,21 @@ export default function EducatorsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div
-        className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
+        className="mobile-compact mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
         style={sectionStyle("educators")}
       >
+        <MobileActions primary={{href: mailTemplate ?? "#contact", label: "団体申込・相談"}} secondary={{href: "#moshi", label: "団体受験の条件"}} />
         <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
           </Link>
           <span className="mx-1.5 text-rule">／</span>
-          <span className="text-ink-2">学校・塾・予備校関係者の方へ</span>
+          <span className="text-ink-2">学校・塾・法人の方へ</span>
         </nav>
 
         <PageHeader
           section="educators"
-          title="学校・塾・予備校関係者の方へ"
+          title={<>学校・塾・法人<br className="sm:hidden" />の方へ</>}
           covers={series.map((p) => p.cover)}
           facts={[
             { icon: "person", label: "授業・講習に" },
@@ -207,8 +213,7 @@ export default function EducatorsPage() {
           ]}
           lead={
             <>
-              大学入試の数学を大学別・区分別に分析し、その形式に合わせて書き下ろした予想問題集と演習書です。
-              個人の学習を想定して作っていますが、授業・講習・課題演習にもご利用いただけます。
+              授業・講習用の大学別数学教材と、クラス単位で受けられる模試をご案内します。
             </>
           }
         />
@@ -239,7 +244,7 @@ export default function EducatorsPage() {
                 want: "模試をクラスで受けさせたい",
                 to: "#moshi",
                 body: `${moshi.title}を、${moshi.group.min}名から団体で承ります。人数の確定は受験の前日まで、ご請求は受験後です。`,
-                points: ["志望校の形式で記述答案を書かせる", "人の手で採点し講評まで返す", "請求書・銀行振込の後払い"],
+                points: ["志望校の形式で記述答案を書かせる", "人の手で採点し講評まで返す", "請求書払い・Stripe決済のご相談"],
                 label: "模試のご案内を見る",
               },
             ].map((x) => (
@@ -254,8 +259,8 @@ export default function EducatorsPage() {
                       0{x.n}
                     </span>
                     <span className="serif mt-2 text-[1.15rem] leading-snug text-ink">{x.want}</span>
-                    <span className="prose-ja mt-2.5 text-[0.86rem] leading-[1.9] text-ink-2">{x.body}</span>
-                    <span className="mt-4 block space-y-1.5 border-t border-rule pt-3.5">
+                    <span className="prose-ja mt-2.5 hidden text-[0.86rem] leading-[1.9] text-ink-2 sm:block">{x.body}</span>
+                    <span className="mt-4 hidden space-y-1.5 border-t border-rule pt-3.5 sm:block">
                       {x.points.map((pt) => (
                         <span key={pt} className="flex gap-2 text-[0.82rem] leading-relaxed text-ink-2">
                           <span aria-hidden="true" className="shrink-0 text-[var(--sec)]">
@@ -345,13 +350,16 @@ export default function EducatorsPage() {
           <h3 id="series" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
             刊行している教材
           </h3>
-          <ul className="mt-7 space-y-10">
+          <p className="mt-3 text-[0.84rem] leading-relaxed text-ink-2">大学別予想問題集・分野別完成演習・志望校診断模試の3シリーズです。</p>
+          <InfoDetails title="教材の内容・試し読みを見る">
+          <ul className="mt-4 space-y-10">
             {series.map((p, i) => (
               <li key={p.name} className="border-t border-rule pt-10 first:border-0 first:pt-0">
                 <ProductPanel p={p} priority={i === 0} />
               </li>
             ))}
           </ul>
+          </InfoDetails>
           <p className="mt-5 text-[0.78rem] leading-relaxed text-ink-3">
             価格・在庫・配送は Amazon の商品ページの表示が優先されます。
           </p>
@@ -361,7 +369,8 @@ export default function EducatorsPage() {
           <h3 id="features" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
             教材の特徴
           </h3>
-          <dl className="mt-6 space-y-7">
+          <InfoDetails title="教材の特徴・授業での使い方を読む">
+          <dl className="mt-4 space-y-7">
             {features.map((f) => (
               <div key={f.h}>
                 <dt className="text-[0.95rem] font-semibold leading-snug text-ink">{f.h}</dt>
@@ -369,6 +378,7 @@ export default function EducatorsPage() {
               </div>
             ))}
           </dl>
+          </InfoDetails>
         </section>
 
         <section aria-labelledby="check" className="mt-14">
@@ -470,6 +480,18 @@ export default function EducatorsPage() {
             </p>
           </div>
 
+          <dl className="mt-4 grid grid-cols-2 gap-px border border-rule bg-rule">
+            {[
+              ["人数", `${moshi.group.min}〜${moshi.group.max}名`],
+              ["受験料", `1名 ${priceLabel}`],
+              ["ご請求", "受験後・実受験人数分"],
+              ["支払期限", `請求書発行から${moshi.group.paymentDays}日`],
+            ].map(([label, value]) => <div key={label} className="bg-white px-3 py-3"><dt className="text-[0.7rem] text-ink-3">{label}</dt><dd className="mt-1 text-[0.83rem] font-semibold leading-relaxed text-ink">{value}</dd></div>)}
+          </dl>
+          <p className="prose-ja mt-3 text-[0.84rem] leading-relaxed text-ink-2">{groupPaymentLine}</p>
+          <p className="mt-2 text-[0.78rem] leading-relaxed text-ink-2">人数変更・取り消しは受験の前日まで無料です。人数による割引はありません。</p>
+          {!moshi.group.invoiceRegistered && <p className="mt-2 text-[0.75rem] leading-relaxed text-ink-3">適格請求書（インボイス）は発行できません。必要な場合は、お申し込み前にご確認ください。</p>}
+          <InfoDetails title="実施の流れ・書類・人数変更の条件を見る">
           {/*
             いちばん大事なのは「いつ何が決まるか」。
             「お申し込みが確定した時点で請求」のような書き方だと、
@@ -537,7 +559,7 @@ export default function EducatorsPage() {
                 ],
                 [
                   "お支払い",
-                  "銀行振込です。受験が終わってからのお支払いで構いません。校内の手続きの都合で期限に合わない場合は、お申し込みのさいにお知らせください。",
+                  groupPaymentLine,
                 ],
                 [
                   "書類",
@@ -559,25 +581,13 @@ export default function EducatorsPage() {
               ))}
             </ul>
           </div>
+          </InfoDetails>
 
           {/* 返すものは、この模試で一番の中身。項目を立てて見せる */}
           <h3 className="mt-9 text-[1rem] font-semibold text-ink">
             受験後にお渡しするもの ──「{moshi.deliverableName}」
           </h3>
-          <p className="prose-ja mt-2 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
-            {returnLine}
-          </p>
-          <ol className="mt-4 grid gap-px border border-rule bg-rule sm:grid-cols-2">
-            {moshi.deliverables.map((d, i) => (
-              <li key={d.h} className={`bg-white px-5 py-4 ${i === 0 ? "sm:col-span-2" : ""}`}>
-                <p className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
-                  0{i + 1}
-                </p>
-                <p className="mt-1 text-[0.93rem] font-semibold text-ink">{d.h}</p>
-                <p className="prose-ja mt-1.5 text-[0.84rem] leading-[1.9] text-ink-2">{d.body}</p>
-              </li>
-            ))}
-          </ol>
+          <MoshiDeliverables />
           <p className="prose-ja mt-4 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
             {moshi.group.reportMin}名以上でお申し込みいただいた場合は、これに加えて
             <strong className="font-semibold text-ink">受験者全体の分野別の得点状況</strong>

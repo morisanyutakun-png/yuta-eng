@@ -6,6 +6,7 @@ import { CoverShelf } from "@/components/cover-shelf";
 import { FactStrip } from "@/components/fact-strip";
 import { AnalysisTable } from "@/components/home-visual";
 import { IntentCards } from "@/components/intent-cards";
+import { InfoDetails } from "@/components/info-details";
 import { AnswerSheet } from "@/components/moshi-visual";
 import { moshi, roundLabel } from "@/lib/moshi/config";
 import { KanseiCards } from "@/components/kansei-cards";
@@ -65,7 +66,7 @@ export default function HomePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="page page-wide">
+      <div className="page page-wide mobile-compact">
         {/*
           最初の画面に置くのは、何のサイトかの1行・できあがるものの図・
           3つの数字・そして**大学を探す欄**だけ。
@@ -136,7 +137,7 @@ export default function HomePage() {
               できあがる表そのものを見せる。文章で説明するより早い。
               狭い画面では、数字より先にこれが出るように並び順を決めている。
             */}
-            <figure className="mt-7 lg:mt-0">
+            <figure className="mt-7 hidden sm:block lg:mt-0">
               <div className="border border-rule bg-white px-4 py-4">
                 <AnalysisTable className="w-full" />
               </div>
@@ -187,7 +188,7 @@ export default function HomePage() {
         一続きなのか読み取れなくなる。要所で面を切り替えて、流れに区切りを付ける。
       */}
       <div className="band mt-14">
-        <div className="page page-wide">
+        <div className="page page-wide mobile-compact">
         {/*
           用件から入口を選ばせる。分析・診断・演習・予想問題集は性質が違うのに、
           名前を見ただけではどれが自分向けか分からない。
@@ -278,7 +279,7 @@ export default function HomePage() {
           </h2>
           {/* 文字だけの帯にせず、採点して返すところまでを図で見せる */}
           <div className="card mt-4 flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:gap-7">
-            <AnswerSheet className="w-[150px] shrink-0 self-center sm:w-[170px]" />
+            <AnswerSheet className="hidden w-[170px] shrink-0 self-center sm:block" />
             <div className="min-w-0">
               <p className="prose-ja text-[0.9rem] leading-[1.9] text-ink-2">
                 大学別のオンライン数学模試。{moshi.season}・{moshi.universities.length}大学。{roundLabel}。
@@ -297,7 +298,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <div className="page page-wide">
+      <div className="page page-wide mobile-compact">
         <TopFields />
 
         <section aria-labelledby="shelf-heading" className="mt-16" style={sectionStyle("books")}>
@@ -350,9 +351,9 @@ export default function HomePage() {
               <span className="mr-2 text-[0.68rem] font-bold text-navy">2</span>
               志望校が決まったら、大学別の分野別完成演習（{kanseiPublished.length}冊刊行）
             </h3>
-            <div className="mt-4">
+            <InfoDetails title="大学別の完成演習を選ぶ">
               <KanseiCards />
-            </div>
+            </InfoDetails>
             <p className="mt-4 text-[0.85rem]">
               <Link href="/kansei" className="text-navy underline underline-offset-4">
                 分野別完成演習のシリーズ全体を見る
@@ -368,6 +369,8 @@ export default function HomePage() {
             教材やシリーズの紹介は上の節で済んでいるので、ここでは繰り返さない。
           */}
           <h2 className="serif text-[1.1rem] text-ink">このサイトについて</h2>
+          <p className="prose-ja mt-3 text-[0.84rem] text-ink-2">{site.author}が制作・運営する、各大学とは関係のない非公式サイトです。</p>
+          <InfoDetails title="分析の出どころ・掲載内容を見る">
           <dl className="mt-4 grid gap-px border border-rule bg-rule sm:grid-cols-3">
             {[
               {
@@ -389,6 +392,7 @@ export default function HomePage() {
               </div>
             ))}
           </dl>
+          </InfoDetails>
         </section>
 
         {/* 学校・塾向けの入口。生徒向けの導線とは別に、はっきり分けて置く */}
@@ -400,7 +404,7 @@ export default function HomePage() {
           <div className="sec-rule" />
           <div className="flex flex-col gap-5 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-7">
             <div className="min-w-0">
-              <p className="eyebrow">学校・塾・予備校の先生へ</p>
+              <p className="eyebrow">学校・塾・法人の方へ</p>
               <h2 id="educators-heading" className="serif mt-1.5 text-[1.15rem] leading-snug text-ink">
                 授業・講習・課題演習にお使いいただけます
               </h2>
@@ -409,7 +413,7 @@ export default function HomePage() {
               </p>
             </div>
             <Link href="/educators" className="btn shrink-0">
-              先生方へのご案内
+              団体向けのご案内
             </Link>
           </div>
         </section>

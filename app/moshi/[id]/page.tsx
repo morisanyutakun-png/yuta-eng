@@ -7,6 +7,7 @@ import { FactStrip } from "@/components/fact-strip";
 import { MoshiForm } from "@/components/moshi-form";
 import { MoshiDeliverables } from "@/components/moshi-deliverables";
 import { MoshiSample } from "@/components/moshi-sample";
+import { MobileActions } from "@/components/mobile-actions";
 import { AnswerSheet, Flow } from "@/components/moshi-visual";
 import { factsLine, fieldChartCaption, getUniversity, yearRange, yearsLabel } from "@/lib/data";
 import {
@@ -14,7 +15,7 @@ import {
   moshi,
   moshiById,
   moshiPath,
-  paymentLine,
+  paymentShortLine,
   priceLabel,
   roundLabel,
 } from "@/lib/moshi/config";
@@ -224,7 +225,8 @@ export default async function MoshiUniversityPage({ params }: Props) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <div className="page page-wide" style={sectionStyle("moshi")}>
+      <div className="page page-wide mobile-compact" style={sectionStyle("moshi")}>
+        <MobileActions primary={{href: "#apply", label: "参加申込"}} secondary={{href: "#sample", label: "見本を見る"}} />
         <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
@@ -275,7 +277,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
               <p className="mt-2.5 text-[0.78rem] text-ink-3">参加申込の時点では料金は発生しません。</p>
             </div>
 
-            <figure className="mt-9 lg:mt-0">
+            <figure className="mt-9 hidden sm:block lg:mt-0">
               <AnswerSheet className="w-full max-w-[22rem]" />
               <figcaption className="mt-2 text-[0.72rem] leading-relaxed text-ink-3">
                 記述答案を人が読み、大問ごとに得点を出します。
@@ -361,11 +363,10 @@ export default async function MoshiUniversityPage({ params }: Props) {
         {/* 見本。申し込む前に中身を確かめられるようにする */}
         <section aria-labelledby="sample-heading" className="mt-14 scroll-mt-20" id="sample">
           <h2 id="sample-heading" className="rule-mark serif h-sect text-ink">
-            出る問題と、返ってくるもの
+            問題・返却の見本
           </h2>
           <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
-            出る問題と、受験後に返ってくるものを、どちらも現物で公開しています。
-            カラーの返却レポートと、問題・解答・採点基準の見本をご覧いただけます。
+            返却PDFと、問題・解答・採点基準を公開しています。
           </p>
           <MoshiSample />
         </section>
@@ -380,7 +381,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
               ["実施時期", `${roundLabel}。正式な日程は確定しだいご案内します`],
               ["受験方法", "オンライン・期間内の好きな日時"],
               ["受験料", `${priceLabel}。参加申込の時点では料金は発生しません`],
-              ["お支払い", paymentLine],
+              ["お支払い", paymentShortLine],
               ["採点と返却", `記述答案を人力で採点し、${deliverableLine}をまとめてお返しします`],
             ].map(([k, v]) => (
               <div key={k} className="grid gap-x-5 px-4 py-3.5 sm:grid-cols-[7rem_1fr]">
@@ -398,7 +399,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
           </h2>
           <p className="prose-ja mt-2.5 max-w-[38rem] text-[0.9rem] leading-[1.95] text-ink-2">
             {m.university}にはあらかじめ印を付けてあります。ほかの大学も受けたい場合は、続けてお選びください。
-            参加申込後、正式な受験日程をメールでご案内します。{paymentLine}
+            正式な受験日程をメールでご案内します。参加申込の時点では料金は発生しません。
           </p>
           <MoshiForm preselect={[m.id]} />
         </section>
@@ -475,24 +476,14 @@ export default async function MoshiUniversityPage({ params }: Props) {
           <h2 id="faq-heading" className="rule-mark serif h-sect text-ink">
             {bare}の数学の模試について、よくある質問
           </h2>
-          <dl className="mt-5 divide-y divide-rule border-y border-rule">
+          <div className="mt-5 divide-y divide-rule border-y border-rule">
             {faq.map((f) => (
-              <div key={f.q} className="py-4">
-                <dt className="flex gap-2.5 text-[0.92rem] font-semibold leading-relaxed text-ink">
-                  <span aria-hidden="true" className="serif shrink-0 text-[var(--sec)]">
-                    Q.
-                  </span>
-                  <span className="prose-ja">{f.q}</span>
-                </dt>
-                <dd className="mt-2 flex gap-2.5">
-                  <span aria-hidden="true" className="serif shrink-0 text-ink-3">
-                    A.
-                  </span>
-                  <span className="prose-ja text-[0.88rem] leading-[1.95] text-ink-2">{f.a}</span>
-                </dd>
-              </div>
+              <details key={f.q}>
+                <summary className="min-h-11 cursor-pointer py-3 text-[0.86rem] font-semibold leading-relaxed text-ink">{f.q}</summary>
+                <p className="prose-ja pb-4 text-[0.88rem] text-ink-2">{f.a}</p>
+              </details>
             ))}
-          </dl>
+          </div>
         </section>
 
         {/* ほかの大学の模試。探している大学が違った人をそのまま帰らせない */}

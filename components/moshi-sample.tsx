@@ -1,4 +1,5 @@
 import { SampleViewer } from "@/components/look-inside";
+import { InfoDetails } from "@/components/info-details";
 import { MoshiReturnSample } from "@/components/moshi-return-sample";
 import { moshi } from "@/lib/moshi/config";
 import { SAMPLE_NOTICE, moshiSample, sampleMeta } from "@/lib/moshi/sample";
@@ -33,7 +34,10 @@ function Booklet({
       <h3 className="text-[1rem] font-semibold text-ink">{heading}</h3>
       <p className="prose-ja mt-2 max-w-[42rem] text-[0.88rem] leading-[1.9] text-ink-2">{lead}</p>
 
-      <SampleViewer pages={booklet.pages} title={title} />
+      <InfoDetails title="問題・解答・採点基準のページを開く">
+        <SampleViewer pages={booklet.pages} title={title} />
+        <p className="prose-ja mt-3 text-[0.78rem] leading-[1.9] text-ink-3">{notice}</p>
+      </InfoDetails>
 
       <p className="mt-4">
         <a href={booklet.pdf} target="_blank" rel="noopener" className="btn">
@@ -45,7 +49,6 @@ function Booklet({
         </a>
       </p>
 
-      <p className="prose-ja mt-3 text-[0.78rem] leading-[1.9] text-ink-3">{notice}</p>
     </div>
   );
 }
@@ -56,15 +59,13 @@ export function MoshiSample() {
   return (
     <div className="mt-6">
       <p className="prose-ja border-l-2 border-rule pl-3 text-[0.8rem] leading-[1.9] text-ink-3">
-        返却資料・見本問題は全大学共通のサンプルです。特定の大学・回次を想定したものではありません。
-        実際の模試は、大学ごとに試験時間・大問数・配点・解答形式が異なります。
+        全大学共通の架空サンプルです。実際の試験時間・大問数・配点は大学ごとに異なります。
       </p>
       <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-3 border-y border-rule py-3.5">
         {[
           { k: "見本の問題", v: "大問1題", u: sampleMeta.field },
           { k: "配点", v: `${sampleMeta.points}点`, u: "この1題ぶん" },
           { k: "解答時間の目安", v: `${sampleMeta.minutes}分` },
-          { k: "公開しているもの", v: "問題・解答と解説・採点基準・返却見本" },
         ].map((x) => (
           <div key={x.k}>
             <dt className="text-[0.68rem] text-ink-3">{x.k}</dt>
@@ -81,7 +82,7 @@ export function MoshiSample() {
 
         <Booklet
           heading="2．出る問題と、採点のしかた"
-          lead={`大学を特定しない共通の見本冊子を${problem.pages.length}ページ載せています。問題紙・解答と解説・採点基準の書き方を確かめられます。画像を押すと拡大できます。`}
+          lead={`${sampleMeta.field}1題・${sampleMeta.points}点・目安${sampleMeta.minutes}分。問題・解答・採点基準を全${problem.pages.length}ページで確認できます。`}
           notice={SAMPLE_NOTICE}
           booklet={problem}
           title={`${moshi.title} 共通見本問題`}

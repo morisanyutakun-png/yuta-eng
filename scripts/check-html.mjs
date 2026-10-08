@@ -129,6 +129,8 @@ for (const f of files) {
 
   /* ── 模試の共通見本 ── */
   if (page === "/moshi" || moshi.universities.some((u) => page === `/moshi/${u.id}`)) {
+    if (!html.includes('class="mobile-actions ') || !html.includes('href="#apply"')) ng(page, "モバイルの申込導線がない");
+    if (!html.includes("個人成績表の内容・グラフを見る") || !html.includes("問題・解答・採点基準のページを開く")) ng(page, "見本の詳細を開く導線がない");
     const sample = html.match(/<section\b[^>]*\bid="sample"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? "";
     if (!sample) ng(page, "模試の共通見本がない");
     if (!sample.includes("全大学共通")) ng(page, "見本が全大学共通である旨の案内がない");
@@ -143,6 +145,12 @@ for (const f of files) {
     for (const u of moshi.universities) {
       if (sample.includes(u.university)) ng(page, `共通見本に実在の大学名がある（${u.university}）`);
     }
+  }
+
+  if (page === "/educators") {
+    for (const required of ["学校・塾・法人", "Stripe経由", "ご相談いただけます", "請求書払い", "受験後払い", "適格請求書（インボイス）は発行できません"])
+      if (!body.includes(required)) ng(page, `団体の支払案内に「${required}」がない`);
+    if (body.includes("銀行振込です。受験が終わってから")) ng(page, "団体の旧支払案内が残っている");
   }
 
   /* ── 解答解説のページだけの決まり ── */

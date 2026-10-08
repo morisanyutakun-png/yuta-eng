@@ -28,7 +28,7 @@ export type Intent = {
 
 export function IntentCards({ items }: { items: Intent[] }) {
   return (
-    <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <ul className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
       {items.map((it, i) => (
         <li key={it.href}>
           <Link
@@ -37,12 +37,12 @@ export function IntentCards({ items }: { items: Intent[] }) {
             className="group flex h-full flex-col border border-rule bg-white transition-colors hover:border-[var(--sec)]"
           >
             <span className="sec-rule" />
-            <span className="flex flex-1 flex-col px-5 pb-5 pt-4">
+            <span className="flex flex-1 flex-col px-3 pb-4 pt-3 sm:px-5 sm:pb-5 sm:pt-4">
               <span className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
                 0{i + 1}
               </span>
-              <span className="serif mt-2 text-[1.05rem] leading-snug text-ink">{it.want}</span>
-              <span className="prose-ja mt-2.5 text-[0.82rem] leading-[1.85] text-ink-2">{it.body}</span>
+              <span className="serif mt-2 text-[0.95rem] leading-snug text-ink sm:text-[1.05rem]">{it.want}</span>
+              <span className="prose-ja mt-2.5 hidden text-[0.82rem] leading-[1.85] text-ink-2 sm:block">{it.body}</span>
               <span className="mt-4 flex items-center gap-1.5 pt-1 text-[0.8rem] font-semibold text-[var(--sec)]">
                 {it.to}
                 <svg

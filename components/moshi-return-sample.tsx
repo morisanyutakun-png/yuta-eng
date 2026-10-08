@@ -1,4 +1,5 @@
 import { LogoMark } from "@/components/logo";
+import { InfoDetails } from "@/components/info-details";
 import { SampleViewer } from "@/components/look-inside";
 import { ReturnDistribution, ReturnRadar } from "@/components/moshi-return-charts";
 import { moshi, returnLine } from "@/lib/moshi/config";
@@ -18,9 +19,11 @@ export function MoshiReturnSample() {
           A4横・表裏{moshiSample.return.pages.length}ページ・カラー
         </span>
       </div>
-      <p className="prose-ja mt-2 max-w-[44rem] text-[0.88rem] leading-[1.9] text-ink-2">{returnLine}</p>
+      <p className="prose-ja mt-2 text-[0.86rem] leading-relaxed text-ink-2">表：成績・参考判定・学習到達度。裏：講評・復習計画。採点済み答案は別添PDFで返却します。</p>
+      <p className="mt-2 text-[0.75rem] leading-relaxed text-ink-3">判定は数学のみの現状評価で、合格確率ではありません。大学・受験者・成績は架空の共通見本です。</p>
 
-      <div className="mt-5 border border-[#b9c9d6] bg-white px-5 py-6 sm:px-7 sm:py-7">
+      <InfoDetails title="個人成績表の内容・グラフを見る">
+      <div className="border border-[#b9c9d6] bg-white px-3 py-4 sm:px-7 sm:py-7">
         <div className="flex items-start justify-between gap-3 border-b-2 border-[#183d62] pb-4">
           <div className="flex items-center gap-3">
             <LogoMark className="size-9 shrink-0 text-[#183d62]" />
@@ -165,6 +168,8 @@ export function MoshiReturnSample() {
         </p>
         <p className="mt-4 border-t border-[#b9c9d6] pt-2 text-[0.65rem] leading-relaxed text-ink-3">発行：{site.name}　制作：{site.author}　yuta-eng.com</p>
       </div>
+      <p className="prose-ja mt-3 text-[0.75rem] leading-relaxed text-ink-3">{returnLine}</p>
+      </InfoDetails>
 
       <p className="mt-4">
         <a href={moshiSample.return.pdf} target="_blank" rel="noopener" className="btn">
@@ -175,7 +180,9 @@ export function MoshiReturnSample() {
         <summary className="cursor-pointer text-[0.82rem] font-semibold text-navy">A4横の表・裏をプレビューする</summary>
         <SampleViewer pages={moshiSample.return.pages} title={`${moshi.title} 共通返却サンプル`} layout="spread" />
       </details>
-      <p className="prose-ja mt-3 text-[0.75rem] leading-[1.9] text-ink-3">{RETURN_NOTICE}</p>
+      <InfoDetails title="見本・印刷についての注意事項">
+        <p className="prose-ja text-[0.75rem] leading-[1.9] text-ink-3">{RETURN_NOTICE}</p>
+      </InfoDetails>
     </div>
   );
 }

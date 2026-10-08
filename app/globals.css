@@ -44,6 +44,19 @@
   max-width: 74rem;
 }
 
+.info-details > summary {
+  min-height: 44px;
+}
+
+@media (max-width: 639px) {
+  .mobile-compact :where(.mt-14, .mt-16) {
+    margin-top: 2rem;
+  }
+  body:has(.mobile-actions) {
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom));
+  }
+}
+
 @media (min-width: 640px) {
   .page {
     padding-inline: 1.5rem;
