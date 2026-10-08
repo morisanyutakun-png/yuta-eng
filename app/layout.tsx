@@ -4,6 +4,7 @@ import Link from "next/link";
 import { LogoMark } from "@/components/logo";
 import { SiteNav } from "@/components/site-nav";
 import { hasSolutions } from "@/lib/solutions";
+import { moshi } from "@/lib/moshi/config";
 import { site } from "@/lib/site";
 
 import "./globals.css";
@@ -83,7 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </p>
             <p>
               <Link href="/moshi" className="text-white underline underline-offset-4 hover:text-white/80">
-                大学別オンライン数学模試
+                {moshi.title}
               </Link>
               <span className="mx-2 text-white/45">／</span>
               <Link href="/educators" className="text-white underline underline-offset-4 hover:text-white/80">

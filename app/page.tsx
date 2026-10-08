@@ -274,14 +274,14 @@ export default function HomePage() {
         {/* 既存の教材紹介より前に出さない。知らせる役だけを持たせる */}
         <section aria-labelledby="moshi-heading" className="mt-16" style={sectionStyle("moshi")}>
           <h2 id="moshi-heading" className="rule-mark serif h-sect text-ink">
-            大学別オンライン数学模試
+            {moshi.title}
           </h2>
           {/* 文字だけの帯にせず、採点して返すところまでを図で見せる */}
           <div className="card mt-4 flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:gap-7">
             <AnswerSheet className="w-[150px] shrink-0 self-center sm:w-[170px]" />
             <div className="min-w-0">
               <p className="prose-ja text-[0.9rem] leading-[1.9] text-ink-2">
-                {moshi.season}・{moshi.universities.length}大学。{roundLabel}。
+                大学別のオンライン数学模試。{moshi.season}・{moshi.universities.length}大学。{roundLabel}。
                 志望校と同じ形式の記述答案を、人の手で採点して返します。
               </p>
               <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">

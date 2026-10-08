@@ -23,7 +23,7 @@ import { kanseiPublished } from "@/lib/series";
 import { site } from "@/lib/site";
 
 /**
- * 大学別オンライン数学模試の案内と参加申込。
+ * 入試プレビューの案内と参加申込。
  *
  * いまの段階で用意するのは「告知」と「参加申込」まで。
  * 受験画面・答案提出・採点・結果はまだ作らないので、ここでも約束しない。
@@ -36,7 +36,7 @@ const totals = siteTotals();
 
 const title = `${moshi.title}｜${moshi.season}`;
 const description =
-  `志望校の入試形式に合わせて作る大学別の数学模試（冠模試の形式）です。旧帝大から地方国公立大まで` +
+  `${moshi.title}は志望校の入試形式に合わせて作る大学別の数学模試です。旧帝大から地方国公立大まで` +
   `${moshi.universities.length}大学。オンラインで受験でき、記述答案はすべて人力で採点します。` +
   `見本問題と採点表を公開中。${roundLabel}。参加申込受付中。`;
 
@@ -44,6 +44,7 @@ export const metadata: Metadata = {
   title,
   description,
   keywords: [
+    moshi.title,
     "大学別 数学 模試",
     "冠模試 数学",
     "地方国公立 模試",
@@ -136,7 +137,7 @@ export default function MoshiPage() {
               <p className="eyebrow">{moshi.season}</p>
               <h1 className="serif h-page mt-1.5 text-ink">{moshi.title}</h1>
               <p className="prose-ja mt-4 text-[1rem] leading-[1.95] text-ink-2 sm:text-[1.05rem]">
-                志望校1校の入試形式に合わせて作る数学模試です。記述答案はすべて人の手で採点し、
+                志望校1校の入試形式に合わせて作るオンライン数学模試です。記述答案はすべて人の手で採点し、
                 採点済み答案と、成績表・答案講評・今後の学習の助言をPDFでお返しします。
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">

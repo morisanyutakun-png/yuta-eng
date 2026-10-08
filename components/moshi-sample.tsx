@@ -1,5 +1,6 @@
 import { SampleViewer } from "@/components/look-inside";
 import { MoshiReturnSample } from "@/components/moshi-return-sample";
+import { moshi } from "@/lib/moshi/config";
 import { SAMPLE_NOTICE, moshiSample, sampleMeta } from "@/lib/moshi/sample";
 
 /**
@@ -49,7 +50,7 @@ function Booklet({
   );
 }
 
-export function MoshiSample({ title = "大学別オンライン数学模試" }: { title?: string }) {
+export function MoshiSample({ title = moshi.title }: { title?: string }) {
   const { problem } = moshiSample;
 
   return (

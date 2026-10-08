@@ -25,7 +25,7 @@ export function MoshiReturnSample() {
             <LogoMark className="size-9 shrink-0 text-[#183d62]" />
             <div>
               <p className="serif text-[1.03rem] font-semibold text-[#183d62]">{site.name}</p>
-              <p className="mt-0.5 text-[0.64rem] leading-relaxed text-ink-3">大学別オンライン数学模試</p>
+              <p className="mt-0.5 text-[0.72rem] font-medium leading-relaxed text-ink-3">{moshi.title}</p>
             </div>
           </div>
           <span className="shrink-0 border border-[#183d62] px-2 py-1 text-[0.65rem] text-[#183d62]">返却見本</span>
@@ -149,7 +149,7 @@ export function MoshiReturnSample() {
       </p>
       <details className="mt-4 border border-rule px-4 py-3 sm:px-5">
         <summary className="cursor-pointer text-[0.82rem] font-semibold text-navy">PDFの2ページをプレビューする</summary>
-        <SampleViewer pages={moshiSample.return.pages} title="三重大学 理系数学 返却サンプル" layout="spread" />
+        <SampleViewer pages={moshiSample.return.pages} title={`${report.university} ${report.course} ${moshi.title} 返却サンプル`} layout="spread" />
       </details>
       <p className="prose-ja mt-3 text-[0.75rem] leading-[1.9] text-ink-3">{RETURN_NOTICE}</p>
     </div>

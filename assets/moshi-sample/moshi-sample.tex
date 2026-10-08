@@ -1,5 +1,5 @@
 % =====================================================================
-%  大学別オンライン数学模試 ── 見本（問題・解答・採点基準）
+%  入試プレビュー ── 見本（問題・解答・採点基準）
 %
 %  組版は「合格答案をつくる」シリーズの本文と同じものを使う。
 %  プリアンブルは原稿側のものを TEXINPUTS 経由で読むだけで、
@@ -13,12 +13,16 @@
 %  S_n と a_n の関係から数列を直接作って突き合わせてある。
 % =====================================================================
 \input{preamble}
+\usepackage[unicode,hidelinks]{hyperref}
+\input{moshi-brand-data}
+\hypersetup{pdftitle={\MoshiTitle{}｜見本問題・解答と解説・採点基準},
+  pdfauthor={\MoshiBrand},pdfsubject={\MoshiSeason{}・大学別・オンライン数学模試の見本}}
 
 % 柱（ページ上部の見出し）は、この冊子が何かを名乗る。
 % 体裁はシリーズのものを使うが、シリーズの一冊ではない。
-\renewcommand{\seriesname}{大学別オンライン数学模試}
+\renewcommand{\seriesname}{\MoshiTitle}
 \renewcommand{\booktitle}{見\ 本}
-\renewcommand{\bookyear}{2027}
+\renewcommand{\bookyear}{\MoshiYear}
 
 \begin{document}
 
@@ -27,9 +31,10 @@
 \null\vspace*{18mm}
 \bindmarks
 \begin{center}
-  {\footnotesize 2027年度入試向け}\\[3.5mm]
-  {\large\bfseries 大学別オンライン数学模試}\\[2.5mm]
-  {\fontsize{22}{26}\selectfont\bfseries 見\hspace{1.2em}本}\\[6mm]
+  {\footnotesize \MoshiSeason}\\[3.5mm]
+  {\footnotesize 大学別・オンライン数学模試}\\[3mm]
+  {\fontsize{26}{32}\selectfont\bfseries \MoshiTitle}\\[6mm]
+  {\fontsize{18}{24}\selectfont\bfseries 見\hspace{1.2em}本}\\[6mm]
   {\normalsize 問題 ・ 解答と解説 ・ 採点基準}\\[14mm]
   {\footnotesize\bdotrow}
 \end{center}
@@ -60,7 +65,8 @@
 \vfill
 \begin{center}\footnotesize
   \sigrule\par\vspace{1.5mm}
-  \authorname\par\vspace{1.0mm}
+  \MoshiBrand\par\vspace{1.0mm}
+  制作：\MoshiAuthor\par\vspace{1.0mm}
   yuta-eng.com
 \end{center}
 
@@ -69,7 +75,7 @@
 
 \noindent\fbox{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
 \vspace{0.8mm}
-\begin{center}\normalsize\bfseries 見本問題（1題・20点）\end{center}
+\begin{center}\normalsize\bfseries \MoshiTitle\quad 見本問題（1題・20点）\end{center}
 \vspace{0.4mm}
 \begin{center}\footnotesize
 解答時間の目安 25分\quad\bdot\quad 答案は途中の論証まで書くこと\quad\bdot\quad 分野：数列

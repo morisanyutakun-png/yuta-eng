@@ -87,14 +87,28 @@ def tex_text(value: str) -> str:
     return "".join(escapes.get(c, c) for c in str(value))
 
 
+def brand_data_tex() -> str:
+    """表紙・柱・PDF の文書情報を、サイトと同じシリーズ名で組む。"""
+    config = json.loads((ROOT / "data/moshi.json").read_text(encoding="utf-8"))
+    site = (ROOT / "lib/site.ts").read_text(encoding="utf-8")
+    brand = re.search(r'name:\s*"([^"]+)"', site)
+    author = re.search(r'author:\s*"([^"]+)"', site)
+    year = re.match(r"\d{4}", config["season"])
+    if not brand or not author or not year:
+        sys.exit("見本のシリーズ名・年度・発行者データを確認できない")
+    values = {
+        "Title": config["title"], "Season": config["season"], "Year": year[0],
+        "Brand": brand[1], "Author": author[1],
+    }
+    return "\n".join(
+        f"\\newcommand{{\\Moshi{k}}}{{{tex_text(v)}}}" for k, v in values.items()
+    ) + "\n"
+
+
 def return_data_tex() -> str:
     """得点・得点率は小問から集計。PDF と Web で同じ内容を返す。"""
     report = json.loads((ROOT / "data/moshi-return.json").read_text(encoding="utf-8"))
     config = json.loads((ROOT / "data/moshi.json").read_text(encoding="utf-8"))
-    brand = re.search(r'name:\s*"([^"]+)"', (ROOT / "lib/site.ts").read_text(encoding="utf-8"))
-    author = re.search(r'author:\s*"([^"]+)"', (ROOT / "lib/site.ts").read_text(encoding="utf-8"))
-    if not brand or not author:
-        sys.exit("lib/site.ts にサイト名または制作者名がない")
 
     def totals(q):
         for s in q["subs"]:
@@ -106,10 +120,10 @@ def return_data_tex() -> str:
     maximum = sum(totals(q)[1] for q in report["questions"])
     fmt_date = lambda d: date.fromisoformat(d).strftime("%Y / %m / %d")
     values = {
-        "Brand": brand[1], "Author": author[1], "University": report["university"], "Course": report["course"],
+        "University": report["university"], "Course": report["course"],
         "Candidate": report["candidate"], "Number": report["number"],
         "ExamDate": fmt_date(report["examDate"]), "ReturnDate": fmt_date(report["returnDate"]),
-        "Round": config["round"], "Season": config["season"], "Score": score, "Max": maximum,
+        "Round": config["round"], "Score": score, "Max": maximum,
         "Rate": f"{100*score/maximum:.1f}", "StatsMin": config["statsMin"],
         "Summary": report["summary"],
     }
@@ -161,6 +175,7 @@ def build_pdf(tex: str) -> Path:
     # ファイル名は原稿側と重ねない。TEXINPUTS の探索順で原稿の main.tex を
     # 拾ってしまい、本ごと組み上がったことがある。
     shutil.copy(src, work / src.name)
+    (work / "moshi-brand-data.tex").write_text(brand_data_tex(), encoding="utf-8")
     if tex == "moshi-return.tex":
         (work / "moshi-return-data.tex").write_text(return_data_tex(), encoding="utf-8")
     env = {**os.environ, "TEXINPUTS": f".:{str(man) + ':' if man else ''}"}
@@ -189,6 +204,14 @@ def render(kind: str, pdf: Path, labels: list[tuple[str, str]]) -> dict:
             f"{kind}: ページ数が {doc.page_count} で、見出しの数 {len(labels)} と合わない。"
             "組み上がりが変わったので BOOKLETS の labels を直すこと"
         )
+
+    config = json.loads((ROOT / "data/moshi.json").read_text(encoding="utf-8"))
+    title = config["title"]
+    if not doc.metadata.get("title", "").startswith(title):
+        sys.exit(f"{kind}: PDF の文書タイトルがシリーズ名と一致しない")
+    for i, page in enumerate(doc):
+        if "".join(title.split()) not in "".join(page.get_text().split()):
+            sys.exit(f"{kind}: {i + 1}ページにシリーズ名がない（表紙・柱・問題紙を確認）")
 
     out = OUT_ROOT / kind
     out.mkdir(parents=True, exist_ok=True)

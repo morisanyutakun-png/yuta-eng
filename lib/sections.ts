@@ -15,6 +15,8 @@
  * 色だけで意味を伝えることはせず、必ず文字のラベルを添える。
  */
 
+import moshiData from "@/data/moshi.json";
+
 export type SectionKey =
   | "universities"
   | "kaisetsu"
@@ -34,7 +36,7 @@ export type SectionInfo = {
 export const sections: Record<SectionKey, SectionInfo> = {
   universities: { eyebrow: "大学別分析", color: "#1b3a63" },
   kaisetsu: { eyebrow: "過去問の解答・解説", color: "#b3412f" },
-  moshi: { eyebrow: "大学別オンライン数学模試", color: "#1f5f5b" },
+  moshi: { eyebrow: moshiData.title, color: "#1f5f5b" },
   kansei: { eyebrow: "過去問の前にシリーズ", color: "#2f6043" },
   shindan: { eyebrow: "志望校診断模試", color: "#5a3a78" },
   books: { eyebrow: "刊行物", color: "#8a5a1c" },

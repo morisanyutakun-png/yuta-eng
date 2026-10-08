@@ -7,8 +7,7 @@
 \setmainfont{TeX Gyre Heros}
 \setmainjfont{HaranoAjiGothic-Regular}[BoldFont=HaranoAjiGothic-Bold]
 \newjfontfamily\brandfont{HaranoAjiMincho-Regular}[BoldFont=HaranoAjiMincho-Bold]
-\hypersetup{pdftitle={個人成績表・答案講評｜合格への手引き（返却見本）},
-  pdfauthor={大学別数学研究室},pdfsubject={三重大学 理系数学・架空の成績例}}
+\input{moshi-brand-data}
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
 \definecolor{navy}{HTML}{183D62}
@@ -44,8 +43,8 @@
 
 \newcommand{\reportheader}[2]{%
   \brandmark{14}{13}
-  \rt{28}{13}{130}{13}{navy}{\brandfont\bfseries \ReportBrand}
-  \rt{28}{21}{135}{7.5}{muted}{大学別オンライン数学模試\quad \ReportSeason}
+  \rt{28}{13}{130}{13}{navy}{\brandfont\bfseries \MoshiBrand}
+  \rt{28}{21}{135}{9}{muted}{\bfseries \MoshiTitle\quad\normalfont \MoshiSeason}
   \draw[navy,line width=0.65pt] (174,-14) rectangle (196,-22);
   \rt{178}{16}{15}{8}{navy}{\bfseries 返却見本}
   \draw[navy,line width=0.8pt] (14,-31) -- (196,-31);
@@ -53,7 +52,7 @@
   \rt{14}{47}{140}{22}{ink}{\bfseries #1}
   \rt{154}{51}{42}{8.5}{muted}{合格への手引き\quad #2}
   \hr{14}{284}{182}
-  \rt{14}{287}{145}{7}{muted}{発行：\ReportBrand\quad 制作：\ReportAuthor\quad yuta-eng.com}
+  \rt{14}{287}{145}{7}{muted}{発行：\MoshiBrand\quad 制作：\MoshiAuthor\quad yuta-eng.com}
   \rt{181}{287}{15}{7.5}{navy}{#2 / 2}}
 
 \newcommand{\candidateheader}{%
@@ -94,6 +93,8 @@
   \rt{144}{#1}{48}{8}{ink}{#5}}
 
 \input{moshi-return-data}
+\hypersetup{pdftitle={\MoshiTitle{}｜個人成績表・答案講評（返却見本）},
+  pdfauthor={\MoshiBrand},pdfsubject={\MoshiSeason{}・\ReportUniversity\ \ReportCourse{}・架空の成績例}}
 \begin{document}
 \null
 \begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]

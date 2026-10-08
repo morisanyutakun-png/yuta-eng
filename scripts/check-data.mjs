@@ -131,6 +131,10 @@ for (const [asin, s] of Object.entries(samples)) {
    こちらは全ページを出してよいが、分量が増えていないかは見ておく。 */
 {
   // 問題の見本と、返却の見本。どちらも揃っていないと「何が返るか」が伝わらない。
+  if (typeof moshi.title !== "string" || !moshi.title.trim()) ng("模試: シリーズ名がない");
+  for (const u of moshi.universities) {
+    if (!u.exam.includes(moshi.title)) ng(`模試(${u.id}): 試験名がシリーズ名と一致しない`);
+  }
   const want = {
     problem: ["扉", "問題", "解答", "採点"],
     return: ["成績", "講評", "助言"],

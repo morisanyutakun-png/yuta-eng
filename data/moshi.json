@@ -1,5 +1,5 @@
 {
-  "title": "大学別オンライン数学模試",
+  "title": "入試プレビュー",
   "season": "2027年度入試向け",
   "round": 1,
   "period": "2026年11月下旬〜12月上旬",
@@ -8,61 +8,61 @@
     {
       "id": "mie-rikei",
       "university": "三重大学",
-      "exam": "理系数学 入試実戦模試",
+      "exam": "理系数学 入試プレビュー",
       "slug": "mie"
     },
     {
       "id": "nagoya-rikei",
       "university": "名古屋大学",
-      "exam": "理系数学 入試実戦模試",
+      "exam": "理系数学 入試プレビュー",
       "slug": "nagoya-rikei"
     },
     {
       "id": "nitech",
       "university": "名古屋工業大学",
-      "exam": "数学 入試実戦模試",
+      "exam": "数学 入試プレビュー",
       "slug": "nitech"
     },
     {
       "id": "kagakudai-rikou",
       "university": "東京科学大学",
-      "exam": "理工系数学 入試実戦模試",
+      "exam": "理工系数学 入試プレビュー",
       "slug": "kagakudai"
     },
     {
       "id": "hitotsubashi",
       "university": "一橋大学",
-      "exam": "数学 入試実戦模試",
+      "exam": "数学 入試プレビュー",
       "slug": "hitotsubashi"
     },
     {
       "id": "tohoku-rikei",
       "university": "東北大学",
-      "exam": "理系数学 入試実戦模試",
+      "exam": "理系数学 入試プレビュー",
       "slug": "tohoku-rikei"
     },
     {
       "id": "tsukuba-rikei",
       "university": "筑波大学",
-      "exam": "理系数学 入試実戦模試",
+      "exam": "理系数学 入試プレビュー",
       "slug": "tsukuba"
     },
     {
       "id": "kobe-rikei",
       "university": "神戸大学",
-      "exam": "理系数学 入試実戦模試",
+      "exam": "理系数学 入試プレビュー",
       "slug": "kobe-rikei"
     },
     {
       "id": "chiba-rikei",
       "university": "千葉大学",
-      "exam": "理系数学 入試実戦模試",
+      "exam": "理系数学 入試プレビュー",
       "slug": "chiba"
     },
     {
       "id": "okayama-rikei",
       "university": "岡山大学",
-      "exam": "理系数学 入試実戦模試",
+      "exam": "理系数学 入試プレビュー",
       "slug": "okayama"
     }
   ],
