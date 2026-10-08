@@ -119,7 +119,7 @@ function faqFor(m: NonNullable<ReturnType<typeof moshiById>>) {
   items.push({
     q: "どんな問題が出るのか、申し込む前に確かめられますか？",
     a:
-      "このページに見本問題を1題そのまま載せています。解答例と採点表（どこに点が付き、どこで引かれるか）まで公開しています。" +
+      "大学を特定しない共通見本として、このページに問題を1題載せています。解答例と採点表（どこに点が付き、どこで引かれるか）まで公開しています。" +
       "見本は既刊「合格答案をつくる」シリーズの予想問題を作り替えたもので、大学の過去問そのものではありません。",
   });
 
@@ -367,7 +367,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
             出る問題と、受験後に返ってくるものを、どちらも現物で公開しています。
             カラーの返却レポートと、問題・解答・採点基準の見本をご覧いただけます。
           </p>
-          <MoshiSample title={`${m.university} ${m.exam} 見本`} />
+          <MoshiSample />
         </section>
 
         <section aria-labelledby="youkou-u" className="mt-14">

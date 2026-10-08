@@ -184,7 +184,7 @@ export default function MoshiPage() {
             ))}
           </ul>
           <p className="mt-2.5 text-[0.78rem] text-ink-3">
-            大学名を選ぶと、その大学の出題形式・頻出分野・見本問題をご覧いただけます。
+            大学名を選ぶと、その大学の出題形式・頻出分野と、全大学共通の見本をご覧いただけます。
           </p>
         </section>
 
@@ -316,7 +316,7 @@ export default function MoshiPage() {
                       <span className="mt-0.5 block text-[0.8rem] text-ink-2">{u.exam}</span>
                       {analysis && (
                         <span className="mt-1.5 block text-[0.72rem] text-ink-3">
-                          出題形式・頻出分野・見本問題
+                          出題形式・頻出分野・共通見本
                         </span>
                       )}
                     </span>
@@ -336,7 +336,7 @@ export default function MoshiPage() {
             })}
           </ul>
           <p className="mt-3 text-[0.78rem] text-ink-3">
-            いずれも開催予定です。大学名を選ぶと、その大学の出題形式と見本問題をご覧いただけます。
+            いずれも開催予定です。大学名を選ぶと、その大学の出題形式と、全大学共通の見本をご覧いただけます。
           </p>
         </section>
 

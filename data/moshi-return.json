@@ -1,10 +1,12 @@
 {
-  "university": "三重大学",
-  "course": "理系数学",
+  "university": "〇〇大学",
+  "course": "数学",
+  "round": "〇",
+  "season": "20XX年度入試向け",
   "candidate": "受験 太郎",
   "number": "SAMPLE-001",
-  "examDate": "2026-12-03",
-  "returnDate": "2026-12-15",
+  "examDate": "20XX-XX-XX",
+  "returnDate": "20XX-XX-XX",
   "summary": "確率の場合分けを優先して復習してください。数列では初項と和の両端の確認が必要です。ベクトルの立式は概ね正確です。",
   "questions": [
     {

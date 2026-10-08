@@ -1,7 +1,7 @@
 """問題の見本と、カラーの返却レポートを PDF・画像に書き出す。
 
 2冊ぶん作る。
-  問題の見本   … 本番と同じ体裁の問題・解答と解説・採点基準
+  問題の見本   … 大学を特定しない共通の問題・解答と解説・採点基準
   返却の見本   … 受験後にお返しする「合格への手引き」1人分
 
 `npm run moshi:sample` で実行する。作るもの:
@@ -25,7 +25,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-from datetime import date
 from pathlib import Path
 
 import fitz
@@ -88,16 +87,17 @@ def tex_text(value: str) -> str:
 
 
 def brand_data_tex() -> str:
-    """表紙・柱・PDF の文書情報を、サイトと同じシリーズ名で組む。"""
+    """シリーズ名・発行者は実データ、見本の年度は架空の共通データから組む。"""
     config = json.loads((ROOT / "data/moshi.json").read_text(encoding="utf-8"))
+    sample = json.loads((ROOT / "data/moshi-return.json").read_text(encoding="utf-8"))
     site = (ROOT / "lib/site.ts").read_text(encoding="utf-8")
     brand = re.search(r'name:\s*"([^"]+)"', site)
     author = re.search(r'author:\s*"([^"]+)"', site)
-    year = re.match(r"\d{4}", config["season"])
+    year = re.match(r"(20XX)年度", sample["season"])
     if not brand or not author or not year:
         sys.exit("見本のシリーズ名・年度・発行者データを確認できない")
     values = {
-        "Title": config["title"], "Season": config["season"], "Year": year[0],
+        "Title": config["title"], "Season": sample["season"], "Year": year[1],
         "Brand": brand[1], "Author": author[1],
     }
     return "\n".join(
@@ -118,12 +118,12 @@ def return_data_tex() -> str:
 
     score = sum(totals(q)[0] for q in report["questions"])
     maximum = sum(totals(q)[1] for q in report["questions"])
-    fmt_date = lambda d: date.fromisoformat(d).strftime("%Y / %m / %d")
+    fmt_date = lambda d: d.replace("-", " / ")
     values = {
         "University": report["university"], "Course": report["course"],
         "Candidate": report["candidate"], "Number": report["number"],
         "ExamDate": fmt_date(report["examDate"]), "ReturnDate": fmt_date(report["returnDate"]),
-        "Round": config["round"], "Score": score, "Max": maximum,
+        "Round": report["round"], "Score": score, "Max": maximum,
         "Rate": f"{100*score/maximum:.1f}", "StatsMin": config["statsMin"],
         "Summary": report["summary"],
     }
@@ -212,6 +212,13 @@ def render(kind: str, pdf: Path, labels: list[tuple[str, str]]) -> dict:
     for i, page in enumerate(doc):
         if "".join(title.split()) not in "".join(page.get_text().split()):
             sys.exit(f"{kind}: {i + 1}ページにシリーズ名がない（表紙・柱・問題紙を確認）")
+
+    # 大学別ページで共有する見本へ、実在の開催大学名を戻さない。
+    sample_text = "".join("".join(page.get_text().split()) for page in doc)
+    sample_text += "".join(str(v) for v in doc.metadata.values())
+    for university in config["universities"]:
+        if university["university"] in sample_text:
+            sys.exit(f"{kind}: 共通見本に実在の大学名が残っている（{university['university']}）")
 
     out = OUT_ROOT / kind
     out.mkdir(parents=True, exist_ok=True)

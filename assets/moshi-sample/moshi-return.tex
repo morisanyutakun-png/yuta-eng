@@ -48,7 +48,7 @@
   \draw[navy,line width=0.65pt] (174,-14) rectangle (196,-22);
   \rt{178}{16}{15}{8}{navy}{\bfseries 返却見本}
   \draw[navy,line width=0.8pt] (14,-31) -- (196,-31);
-  \rt{14}{37}{160}{13}{navy}{\bfseries \ReportUniversity\ \ReportCourse\quad 第\ReportRound 回}
+  \rt{14}{37}{160}{13}{navy}{\bfseries \ReportUniversity\ \ReportCourse{}・第\ReportRound 回}
   \rt{14}{47}{140}{22}{ink}{\bfseries #1}
   \rt{154}{51}{42}{8.5}{muted}{合格への手引き\quad #2}
   \hr{14}{284}{182}
@@ -93,8 +93,8 @@
   \rt{144}{#1}{48}{8}{ink}{#5}}
 
 \input{moshi-return-data}
-\hypersetup{pdftitle={\MoshiTitle{}｜個人成績表・答案講評（返却見本）},
-  pdfauthor={\MoshiBrand},pdfsubject={\MoshiSeason{}・\ReportUniversity\ \ReportCourse{}・架空の成績例}}
+\hypersetup{pdftitle={\MoshiTitle{}｜個人成績表・答案講評（共通返却見本）},
+  pdfauthor={\MoshiBrand},pdfsubject={全大学共通・架空の返却見本（\ReportUniversity\ \ReportCourse{}）}}
 \begin{document}
 \null
 \begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
@@ -137,8 +137,8 @@
   \rt{18}{255}{23}{8}{navy}{\bfseries 返却資料}
   \rt{43}{254.5}{149}{9}{ink}{\bfseries 採点済み答案（別添PDF） / 合格への手引き（本冊子）}
   \rt{43}{262}{149}{7}{muted}{提出答案の点数・添削と、成績表・答案講評を照らし合わせて復習してください。}
-  \rt{14}{274}{182}{7}{muted}{全3大問・\ReportMax 点の架空例です。第1問は公開見本に対応し、第2・3問は返却形式を示す例です。}
-  \rt{14}{279}{182}{6.5}{muted}{大学とは関係のない独自の模試です。配点は本見本のもので、大学の公式配点ではありません。}
+  \rt{14}{274}{182}{7}{muted}{全大学共通・全3大問・\ReportMax 点の架空例です。大学名・回次・日付・受験者・成績は実在のものではありません。}
+  \rt{14}{279}{182}{6.5}{muted}{第1問は公開見本に対応し、第2・3問は返却形式を示す例です。大学の公式配点ではありません。}
 \end{scope}
 \end{tikzpicture}
 \newpage
@@ -165,7 +165,7 @@
   \hr{14}{243}{182}\hr{14}{254}{182}\hr{14}{265}{182}
   \vr{43}{235}{41}\vr{139}{235}{41}
   \ReportPlan
-  \rt{14}{279}{182}{6.5}{muted}{受験者・得点・講評は架空です。採点済み答案は、実際の返却時に本冊子とは別添のPDFでお渡しします。}
+  \rt{14}{279}{182}{6.5}{muted}{全大学共通の架空見本です。採点済み答案は、実際の返却時に本冊子とは別添のPDFでお渡しします。}
 \end{scope}
 \end{tikzpicture}
 \end{document}

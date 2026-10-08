@@ -10,6 +10,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const APP = join(ROOT, ".next", "server", "app");
 const PUBLIC = join(ROOT, "public");
+const moshi = JSON.parse(readFileSync(join(ROOT, "data", "moshi.json"), "utf8"));
 
 if (!existsSync(APP)) {
   console.error("ビルド結果がない。先に npm run build を実行する");
@@ -123,6 +124,17 @@ for (const f of files) {
   ]) {
     const hit = body.match(re);
     if (hit) ng(page, `${name}が残っている「${body.slice(Math.max(0, hit.index - 20), hit.index + 30)}」`);
+  }
+
+  /* ── 模試の共通見本 ── */
+  if (page === "/moshi" || moshi.universities.some((u) => page === `/moshi/${u.id}`)) {
+    const sample = html.match(/<section\b[^>]*\bid="sample"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? "";
+    if (!sample) ng(page, "模試の共通見本がない");
+    if (!sample.includes("全大学共通")) ng(page, "見本が全大学共通である旨の案内がない");
+    if (!strip(sample).replace(/\s+/g, "").includes("〇〇大学数学・第〇回")) ng(page, "返却見本の大学名・回次が架空表記になっていない");
+    for (const u of moshi.universities) {
+      if (sample.includes(u.university)) ng(page, `共通見本に実在の大学名がある（${u.university}）`);
+    }
   }
 
   /* ── 解答解説のページだけの決まり ── */

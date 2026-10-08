@@ -50,12 +50,16 @@ function Booklet({
   );
 }
 
-export function MoshiSample({ title = moshi.title }: { title?: string }) {
+export function MoshiSample() {
   const { problem } = moshiSample;
 
   return (
     <div className="mt-6">
-      <dl className="flex flex-wrap gap-x-8 gap-y-3 border-y border-rule py-3.5">
+      <p className="prose-ja border-l-2 border-rule pl-3 text-[0.8rem] leading-[1.9] text-ink-3">
+        返却資料・見本問題は全大学共通のサンプルです。特定の大学・回次を想定したものではありません。
+        実際の模試は、大学ごとに試験時間・大問数・配点・解答形式が異なります。
+      </p>
+      <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-3 border-y border-rule py-3.5">
         {[
           { k: "見本の問題", v: "大問1題", u: sampleMeta.field },
           { k: "配点", v: `${sampleMeta.points}点`, u: "この1題ぶん" },
@@ -77,10 +81,10 @@ export function MoshiSample({ title = moshi.title }: { title?: string }) {
 
         <Booklet
           heading="2．出る問題と、採点のしかた"
-          lead={`本番と同じ体裁で組んだ冊子を${problem.pages.length}ページ載せています。問題紙・解答と解説・採点基準まで、そのままご覧いただけます。画像を押すと拡大できます。`}
+          lead={`大学を特定しない共通の見本冊子を${problem.pages.length}ページ載せています。問題紙・解答と解説・採点基準の書き方を確かめられます。画像を押すと拡大できます。`}
           notice={SAMPLE_NOTICE}
           booklet={problem}
-          title={`${title} 見本問題`}
+          title={`${moshi.title} 共通見本問題`}
           pdfLabel="見本問題をPDFで見る"
         />
       </div>

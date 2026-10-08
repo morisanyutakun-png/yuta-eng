@@ -155,6 +155,12 @@ for (const [asin, s] of Object.entries(samples)) {
   }
 
   // Web と PDF が共有する架空の成績例。2ページの固定レイアウトに収まる構成を守る。
+  for (const [key, value] of Object.entries({
+    university: "〇〇大学", course: "数学", round: "〇", season: "20XX年度入試向け",
+    examDate: "20XX-XX-XX", returnDate: "20XX-XX-XX",
+  })) {
+    if (moshiReturn[key] !== value) ng(`返却見本: ${key}は大学・回次・日程を固定しない架空表記にする`);
+  }
   const questions = moshiReturn.questions;
   if (questions.length !== 3) ng("返却見本: 大問は3題のはず");
   const numbers = questions.map((q) => q.no);

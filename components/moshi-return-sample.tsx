@@ -31,7 +31,7 @@ export function MoshiReturnSample() {
           <span className="shrink-0 border border-[#183d62] px-2 py-1 text-[0.65rem] text-[#183d62]">返却見本</span>
         </div>
         <p className="mt-4 text-[0.8rem] font-semibold text-[#183d62]">
-          {report.university} {report.course}・第{moshi.round}回
+          {report.university} {report.course}・第{report.round}回
         </p>
         <div className="mt-1 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
           <h4 className="text-[1.5rem] font-bold tracking-tight text-ink">個人成績表</h4>
@@ -137,7 +137,8 @@ export function MoshiReturnSample() {
           ))}
         </dl>
         <p className="mt-4 text-[0.65rem] leading-[1.8] text-ink-3">
-          全3大問の架空例です。第1問（数列）は公開見本に対応し、第2・3問は返却形式を示す例です。
+          全大学共通の架空例です。大学名・回次・日付・受験者・成績は実在のものではありません。
+          第1問（数列）は公開見本に対応し、第2・3問は返却形式を示す例です。
         </p>
         <p className="mt-4 border-t border-[#b9c9d6] pt-2 text-[0.65rem] leading-relaxed text-ink-3">発行：{site.name}　制作：{site.author}　yuta-eng.com</p>
       </div>
@@ -149,7 +150,7 @@ export function MoshiReturnSample() {
       </p>
       <details className="mt-4 border border-rule px-4 py-3 sm:px-5">
         <summary className="cursor-pointer text-[0.82rem] font-semibold text-navy">PDFの2ページをプレビューする</summary>
-        <SampleViewer pages={moshiSample.return.pages} title={`${report.university} ${report.course} ${moshi.title} 返却サンプル`} layout="spread" />
+        <SampleViewer pages={moshiSample.return.pages} title={`${moshi.title} 共通返却サンプル`} layout="spread" />
       </details>
       <p className="prose-ja mt-3 text-[0.75rem] leading-[1.9] text-ink-3">{RETURN_NOTICE}</p>
     </div>
