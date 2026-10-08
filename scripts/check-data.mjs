@@ -18,6 +18,7 @@ const analysis = read("data/analysis.json");
 const series = read("data/series.json");
 const samples = read("data/samples.json");
 const moshiSample = read("data/moshi-sample.json");
+const moshiReturn = read("data/moshi-return.json");
 const macros = read("lib/katex-macros.json");
 
 const problems = [];
@@ -140,11 +141,37 @@ for (const [asin, s] of Object.entries(samples)) {
       continue;
     }
     if (!file(s.pdf)) ng(`模試の見本(${key}): PDFがない`);
-    if (s.pages.length < 4 || s.pages.length > 8) ng(`模試の見本(${key}): ${s.pages.length} ページ（4〜8 のはず）`);
+    const [min, max] = key === "return" ? [2, 2] : [4, 8];
+    if (s.pages.length < min || s.pages.length > max) ng(`模試の見本(${key}): ${s.pages.length} ページ（${min}〜${max} のはず）`);
     for (const p of s.pages) if (!file(p.file)) ng(`模試の見本(${key}): 画像がない（${p.file}）`);
-    const kinds = s.pages.map((p) => p.kind);
+    const kinds = s.pages.flatMap((p) => p.kind.split("・"));
     for (const k of need) if (!kinds.includes(k)) ng(`模試の見本(${key}): ${k}のページがない`);
     for (const k of kinds) if (!need.includes(k)) ng(`模試の見本(${key}): 出さない種類のページがある（${k}）`);
+  }
+
+  // Web と PDF が共有する架空の成績例。2ページの固定レイアウトに収まる構成を守る。
+  const questions = moshiReturn.questions;
+  if (questions.length !== 3) ng("返却見本: 大問は3題のはず");
+  const numbers = questions.map((q) => q.no);
+  if (new Set(numbers).size !== numbers.length) ng("返却見本: 大問番号が重複している");
+  for (const q of questions) {
+    if (!["blue", "teal", "amber"].includes(q.tone)) ng(`返却見本: 大問${q.no}の色が不正`);
+    if (q.subs.length !== 3 || q.subs.some((s, i) => s.no !== i + 1)) ng(`返却見本: 大問${q.no}の小問構成が不正`);
+    for (const s of q.subs) {
+      if (!Number.isInteger(s.score) || !Number.isInteger(s.max) || s.max <= 0 || s.score < 0 || s.score > s.max)
+        ng(`返却見本: 大問${q.no}(${s.no})の得点・配点が不正`);
+    }
+    for (const key of ["field", "status", "good", "fix", "next"]) {
+      if (typeof q[key] !== "string" || !q[key].trim()) ng(`返却見本: 大問${q.no}の${key}がない`);
+    }
+  }
+  if (moshiReturn.feedbackOrder.length !== questions.length ||
+      new Set(moshiReturn.feedbackOrder).size !== questions.length ||
+      moshiReturn.feedbackOrder.some((n) => !numbers.includes(n))) ng("返却見本: 講評の大問に欠け・重複がある");
+  if (moshiReturn.plan.length !== 3) ng("返却見本: 復習プランは3段階のはず");
+  for (const p of moshiReturn.plan) {
+    if (["days", "title", "task", "check"].some((key) => typeof p[key] !== "string" || !p[key].trim()))
+      ng("返却見本: 復習プランの内容が欠けている");
   }
 }
 

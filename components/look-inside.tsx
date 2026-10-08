@@ -15,7 +15,11 @@ type ViewerPage = Pick<SamplePage, "file" | "label" | "page" | "width" | "height
  * 画面いっぱいに1ページを出し、左右で送れるだけにしてある。
  * JavaScript が動かない環境でも、画像そのもののリンクとして開ける。
  */
-export function SampleViewer({ pages, title }: { pages: ViewerPage[]; title: string }) {
+export function SampleViewer({ pages, title, layout = "thumbnails" }: {
+  pages: ViewerPage[];
+  title: string;
+  layout?: "thumbnails" | "spread";
+}) {
   const [open, setOpen] = useState<number | null>(null);
   const close = useCallback(() => setOpen(null), []);
   const move = useCallback(
@@ -44,7 +48,7 @@ export function SampleViewer({ pages, title }: { pages: ViewerPage[]; title: str
 
   return (
     <>
-      <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <ul className={layout === "spread" ? "mt-4 grid gap-4 sm:grid-cols-2" : "mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3"}>
         {pages.map((p, i) => (
           <li key={p.file}>
             <a
@@ -66,7 +70,7 @@ export function SampleViewer({ pages, title }: { pages: ViewerPage[]; title: str
                   width={p.width}
                   height={p.height}
                   loading="lazy"
-                  sizes="(max-width: 640px) 45vw, 220px"
+                  sizes={layout === "spread" ? "(max-width: 640px) 90vw, (max-width: 1184px) 45vw, 530px" : "(max-width: 640px) 45vw, 220px"}
                   className="w-full transition-transform duration-200 group-hover:scale-[1.02]"
                 />
               </span>
@@ -114,7 +118,7 @@ export function SampleViewer({ pages, title }: { pages: ViewerPage[]; title: str
               height={current.height}
               sizes="(max-width: 1024px) 100vw, 900px"
               className="mx-auto h-auto w-full max-w-[52rem] bg-white"
-              priority
+              loading="eager"
             />
           </div>
 

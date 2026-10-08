@@ -57,35 +57,19 @@
     "pages": [
       {
         "file": "/samples/moshi/return/p1.webp",
-        "label": "成績表（1枚目）",
+        "label": "個人成績レポート",
         "kind": "成績",
         "page": 1,
-        "width": 1100,
-        "height": 1556
+        "width": 1400,
+        "height": 1980
       },
       {
         "file": "/samples/moshi/return/p2.webp",
-        "label": "答案への講評",
-        "kind": "講評",
+        "label": "答案講評・復習プラン",
+        "kind": "講評・助言",
         "page": 2,
-        "width": 1100,
-        "height": 1556
-      },
-      {
-        "file": "/samples/moshi/return/p3.webp",
-        "label": "答案への講評（続き）",
-        "kind": "講評",
-        "page": 3,
-        "width": 1100,
-        "height": 1556
-      },
-      {
-        "file": "/samples/moshi/return/p4.webp",
-        "label": "今後の学習の助言",
-        "kind": "助言",
-        "page": 4,
-        "width": 1100,
-        "height": 1556
+        "width": 1400,
+        "height": 1980
       }
     ]
   }

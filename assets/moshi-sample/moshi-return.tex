@@ -1,234 +1,141 @@
-% =====================================================================
-%  大学別オンライン数学模試 ── 返却見本「合格への手引き」
-%
-%  1枚目は成績表。得点・分野別・大問別をグラフで出し、1枚で全体が分かるようにする。
-%  2枚目以降は答案への講評で、どこで何を取り違えたかを答案に即して書く。
-%
-%  組版は「合格答案をつくる」シリーズの本文を土台にするが、
-%  成績表だけは色を使う。白黒前提の本文と違い、これは画面と手元で読むもので、
-%  得点の多い少ないを一目で掴ませたいため。
-%
-%  中の受験者・得点・答案はすべて架空のもの。実在の受験者のものではない。
-%  問題は見本問題（数列）と同じもので、答えは
-%  scripts/verify-solutions.py で確かめてある。
-% =====================================================================
-\input{preamble}
+% 返却見本：A4・2ページ。問題冊子とは独立したカラーの個人成績レポート。
+% 内容は data/moshi-return.json から build-moshi-sample.py が生成する。
+% 受験者・得点・答案の記述はすべて架空。大学の公式配点ではない。
+\documentclass[a4paper,10pt]{ltjsarticle}
+\usepackage[margin=0mm]{geometry}
+\usepackage{fontspec,luatexja-fontspec,xfp}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{xcolor}
+\usepackage[unicode]{hyperref}
+\setmainfont{TeX Gyre Heros}
+\setsansfont{TeX Gyre Heros}
+\setmainjfont{HaranoAjiGothic-Regular}[BoldFont=HaranoAjiGothic-Bold]
+\setsansjfont{HaranoAjiGothic-Regular}[BoldFont=HaranoAjiGothic-Bold]
+\hypersetup{pdftitle={合格への手引き｜個人成績レポート（返却見本）},
+  pdfauthor={大学別数学研究室},pdfsubject={三重大学 理系数学・架空の成績例}}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\definecolor{navy}{HTML}{173D57}
+\definecolor{teal}{HTML}{167E88}
+\definecolor{blue}{HTML}{327AB1}
+\definecolor{amber}{HTML}{B97416}
+\definecolor{ink}{HTML}{203746}
+\definecolor{muted}{HTML}{5F7180}
+\definecolor{rule}{HTML}{DCE6EC}
+\definecolor{pale}{HTML}{F3F7FA}
+\definecolor{tealbg}{HTML}{EAF6F6}
+\definecolor{bluebg}{HTML}{EFF5FB}
+\definecolor{amberbg}{HTML}{FFF5E6}
 
-\renewcommand{\seriesname}{大学別オンライン数学模試}
-\renewcommand{\booktitle}{合格への手引き}
-\renewcommand{\bookyear}{2027}
+% x, y, width (mm), font size (pt), color, content. y は紙面上端から。
+\newcommand{\rt}[6]{\node[anchor=north west,inner sep=0pt,text width=#3mm,
+  font=\fontsize{#4}{\fpeval{#4*1.45}}\selectfont,text=#5]
+  at (#1,-#2) {#6};}
+\newcommand{\panel}[5]{\fill[#5,rounded corners=2mm]
+  (#1,-#2) rectangle ({#1+#3},{-#2-#4});}
+\newcommand{\divider}[3]{\draw[rule,line width=0.35pt]
+  (#1,-#2) -- ({#1+#3},-#2);}
+\newcommand{\sectiontitle}[4]{%
+  \fill[teal] (#1,{-#2-1.6}) circle (2.5mm);
+  \node[text=white,font=\fontsize{8}{10}\selectfont\bfseries] at (#1,{-#2-1.6}) {#3};
+  \rt{\fpeval{#1+5}}{\fpeval{#2-1.1}}{80}{12}{navy}{\bfseries #4}}
+\newcommand{\reportheader}[3]{%
+  \fill[navy] (0,0) rectangle (210,-3);
+  \rt{14}{12}{110}{9}{teal}{\bfseries \ReportBrand\quad 大学別オンライン数学模試}
+  \panel{167}{11}{29}{7}{tealbg}
+  \rt{170}{12}{24}{8}{teal}{\bfseries 返却サンプル}
+  \rt{14}{25}{160}{23}{navy}{\bfseries #1}
+  \rt{14}{39}{160}{9}{muted}{\ReportUniversity\ \ReportCourse\quad 第\ReportRound 回\quad #2}
+  \divider{14}{278}{182}
+  \rt{14}{282}{125}{7}{muted}{合格への手引き\quad\textbf{\ReportBrand}\quad yuta-eng.com}
+  \rt{181}{282}{15}{8}{teal}{\bfseries #3 / 2}}
 
-% ---- 成績表の配色。サイトの色をそのまま持ってくる ----
-\definecolor{mTeal}{HTML}{1F5F5B}   % 模試の色
-\definecolor{mNavy}{HTML}{1B3A63}   % 得点の棒
-\definecolor{mRed}{HTML}{B3412F}    % 落としたところ
-\definecolor{mAmber}{HTML}{8A5A1C}  % あと一歩
-\definecolor{mGreen}{HTML}{2F6043}  % 取れているところ
-\definecolor{mRule}{HTML}{E0E3E7}
-\definecolor{mPale}{HTML}{F2F6F5}
+% 分野別グラフ。ラベル・得点率も書き、色だけに意味を持たせない。
+\newcommand{\fieldrow}[7]{%
+  \rt{14}{#1}{40}{11}{ink}{\bfseries #2}
+  \rt{58}{#1}{25}{8}{#6}{\bfseries #7}
+  \rt{83}{#1}{24}{11}{navy}{\bfseries #3 / #4}
+  \fill[rule,rounded corners=1mm] (14,{-#1-8}) rectangle (107,{-#1-11});
+  \fill[#6,rounded corners=1mm] (14,{-#1-8}) rectangle ({14+93*#3/#4},{-#1-11});
+  \rt{14}{\fpeval{#1+13}}{87}{8}{muted}{得点率 #5\%}}
 
-\usepackage{colortbl}
+% 大問、設問、配点、得点。小問の表示はコンパクトな9行にまとめる。
+\newcommand{\subrow}[6]{%
+  \rt{117}{#1}{29}{8.5}{muted}{#2\quad (#3)}
+  \rt{155}{#1}{13}{8.5}{muted}{#5}
+  \rt{177}{#1}{14}{9}{#6}{\bfseries #4}}
 
-% 見出しの帯
-\newcommand{\cardhd}[1]{%
-  \par\noindent\colorbox{mTeal}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-    \rule{0pt}{2.6ex}\hspace{0.2em}\textcolor{white}{\bfseries\small #1}\rule[-0.9ex]{0pt}{0.9ex}}}%
-  \par\vspace{1.6mm}}
+% 分野ごとの短評：良かった点、確認点、次の一手。
+\newcommand{\feedback}[8]{%
+  \panel{14}{#1}{182}{37}{#3bg}
+  \fill[#3] (14,-#1) rectangle (15.2,{-#1-37});
+  \rt{20}{\fpeval{#1+3}}{53}{11}{#3}{\bfseries 大問#2\quad #4}
+  \rt{168}{\fpeval{#1+3}}{22}{11}{navy}{\bfseries #5 点}
+  \rt{20}{\fpeval{#1+12}}{165}{9}{ink}{\textbf{できた点}\quad #6}
+  \rt{20}{\fpeval{#1+19}}{165}{9}{ink}{\textbf{確認する点}\quad #7}
+  \rt{20}{\fpeval{#1+27}}{165}{9}{#3}{\textbf{次の一手}\quad #8}}
 
-% 横棒。得点 / 満点 を色で描く
-\newcommand{\scorebar}[4]{% #1 ラベル #2 得点 #3 満点 #4 色
-  \noindent\makebox[7.2em][l]{\small #1}%
-  \begin{tikzpicture}[baseline=-0.6ex]
-    \fill[mRule] (0,0) rectangle (6.4,0.30);
-    \fill[#4] (0,0) rectangle ({6.4*#2/#3},0.30);
-  \end{tikzpicture}%
-  \hspace{0.6em}{\small\bfseries #2}{\footnotesize\textcolor{black!55}{\,/\,#3}}\par\vspace{1.3mm}}
+\newcommand{\planstep}[6]{%
+  \panel{#1}{232}{57}{35}{pale}
+  \rt{\fpeval{#1+4}}{235}{49}{8}{teal}{\bfseries #2}
+  \rt{\fpeval{#1+4}}{241}{49}{10}{navy}{\bfseries #3}
+  \rt{\fpeval{#1+4}}{248}{49}{8}{ink}{#4}
+  \rt{\fpeval{#1+4}}{261}{49}{7.5}{teal}{#5\ #6}}
 
+\input{moshi-return-data}
 \begin{document}
+\null
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.north west)}]
+  \reportheader{個人成績レポート}{成績の全体像}{1}
+  \panel{14}{50}{182}{16}{pale}
+  \rt{19}{53}{68}{10}{ink}{\bfseries \ReportCandidate\ 様}
+  \rt{19}{60}{70}{7}{muted}{受験番号：\ReportNumber}
+  \rt{113}{53}{76}{8}{muted}{受験日：\ReportExamDate}
+  \rt{113}{60}{76}{8}{muted}{返却日：\ReportReturnDate}
 
-% =====================================================================
-%  1枚目：成績表
-% =====================================================================
-\newgeometry{top=14mm,bottom=12mm,left=16mm,right=16mm}
-\thispagestyle{empty}
-\begingroup
-\renewcommand{\baselinestretch}{1.12}\selectfont
-\setlength{\parskip}{0pt}
-\begin{center}
-  {\footnotesize\textcolor{mTeal}{\bfseries 2027年度入試向け ・ 大学別オンライン数学模試}}\\[1.2mm]
-  {\fontsize{17}{20}\selectfont\bfseries 成\hspace{0.4em}績\hspace{0.4em}表}\\[1.0mm]
-  {\footnotesize （返却見本・記載内容はすべて架空のものです）}
-\end{center}
-\vspace{2.4mm}
+  \panel{14}{75}{89}{45}{navy}
+  \rt{20}{79}{45}{9}{white}{\bfseries 数学・総合得点}
+  \rt{20}{87}{32}{34}{white}{\bfseries \ReportScore}
+  \rt{48}{92}{30}{14}{white}{/ \ReportMax\ 点}
+  \rt{20}{111}{40}{8}{white}{得点率 \ReportRate\%}
+  \rt{65}{111}{32}{7}{white}{本模試の配点}
+  \rt{112}{78}{80}{10}{teal}{\bfseries 採点者からのひとこと}
+  \rt{112}{87}{80}{11}{navy}{\ReportSummary}
 
-\noindent\colorbox{mPale}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-\vspace{1.2mm}
-\hspace{0.4em}\begin{minipage}{0.97\linewidth}\small
-\begin{tabular}{@{}p{4.6em}p{12.5em}p{6.4em}p{12em}@{}}
-受験者 & \textbf{（見本）受験 太郎} & 受験した模試 & \textbf{三重大学 理系数学} \\
-受験日 & 2026年12月3日 & 返却日 & 2026年12月15日 \\
-\end{tabular}
-\end{minipage}
-\vspace{1.2mm}}}
+  \sectiontitle{16.5}{132}{1}{分野別の得点バランス}
+  \rt{117}{131}{79}{11}{navy}{\bfseries 設問別の得点}
+  \ReportFieldRows
+  \panel{115}{143}{81}{7}{pale}
+  \rt{117}{144}{32}{8}{muted}{大問・小問}
+  \rt{155}{144}{14}{8}{muted}{配点}
+  \rt{177}{144}{14}{8}{muted}{得点}
+  \ReportSubRows
 
-\vspace{3mm}
-\cardhd{1　得点}
+  \sectiontitle{16.5}{219}{2}{今回の復習ポイント}
+  \panel{14}{230}{89}{25}{tealbg}
+  \rt{19}{233}{80}{10}{teal}{\bfseries 強み\quad \ReportStrengthTitle}
+  \rt{19}{241}{79}{9}{ink}{\ReportStrengthBody}
+  \panel{108}{230}{88}{25}{amberbg}
+  \rt{113}{233}{78}{10}{amber}{\bfseries 優先復習\quad \ReportFocusTitle}
+  \rt{113}{241}{78}{9}{ink}{\ReportFocusBody}
 
-\noindent
-\begin{minipage}[t]{0.46\linewidth}
-  \vspace{0pt}
-  \begin{center}
-    {\fontsize{34}{38}\selectfont\bfseries\textcolor{mNavy}{13}}%
-    {\large\textcolor{black!55}{\,/\,20}}\\[1.0mm]
-    {\footnotesize 得点率 \textbf{65\%}}
-  \end{center}
-\end{minipage}%
-\begin{minipage}[t]{0.52\linewidth}
-  \vspace{2mm}
-  \scorebar{大問1（数列）}{13}{20}{mNavy}
-  \vspace{2mm}
-  \noindent{\footnotesize\textcolor{black!55}{%
-  この見本は大問1題のみです。実際の模試は大問3〜6題で実施します。}}
-\end{minipage}
-
-\vspace{3.4mm}
-\cardhd{2　小問ごとの得点}
-
-\noindent
-\scorebar{(1) 初項と第3項}{4}{4}{mGreen}
-\scorebar{(2) 漸化式・一般項}{6}{8}{mAmber}
-\scorebar{(3) $\sum k\,a_k$ の計算}{3}{8}{mRed}
-
-\vspace{1.5mm}
-\noindent{\footnotesize
-\textcolor{mGreen}{■}\,満点\quad
-\textcolor{mAmber}{■}\,あと一歩\quad
-\textcolor{mRed}{■}\,立て直しが要る}
-
-\vspace{3.4mm}
-\cardhd{3　何で落としたか}
-
-\noindent\small
-\begin{tabular}{@{}p{3.2em}p{12em}p{18.5em}@{}}
-\toprule
-\textbf{小問} & \textbf{落とした理由} & \textbf{次にすること} \\
-\midrule
-(2) & 等比数列の初項の取り違え & 置き換えた数列に名前を付け、$b_1$ を置き換えた式から出す \\
-\addlinespace[2pt]
-(3) & ずらして引くときの両端の扱い & 2つの和を縦に並べて書いてから引く \\
-\bottomrule
-\end{tabular}
-
-\vspace{2mm}
-\noindent{\footnotesize\textcolor{black!60}{%
-どちらも方針は正しく立てられています。落としているのは手の動きで、
-同じ操作を書き方を決めて繰り返せば減ります。くわしくは次ページの講評を。}}
-
-\vspace{3.4mm}
-\cardhd{4　受験者全体の中での位置}
-
-\noindent\colorbox{black!4}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-\vspace{1.2mm}\hspace{0.4em}\begin{minipage}{0.96\linewidth}\small
-\textbf{この回は非掲載です。}\par\vspace{0.8mm}
-平均点・偏差値・順位分布は、その大学の受験者が\textbf{30名以上}になった回から掲載します。
-少人数の中での位置を数字にしても、意味のある値にならないためです。
-掲載する回では、この欄に平均点・偏差値・得点分布のグラフが入ります。
-\par\vspace{0.8mm}
-合否判定は、どの回でも出していません。
-\end{minipage}\vspace{1.2mm}}}
-
-\vspace{3.4mm}
-\cardhd{5　この2週間ですること}
-
-\noindent\small
-\begin{enumerate}[leftmargin=1.6em,itemsep=2pt,topsep=1pt]
-  \item 置き換えの初項を、置き換えた式から出す練習を10題（$b_1$ だけでよい）
-  \item $\dsp\sum_{k=1}^{n}k\,r^{\,k}$ を、縦に並べて引く書き方で5題
-  \item 一般項を出したら、必ず最初の3項で確かめる（上の15題すべてで）
-\end{enumerate}
-
-\vfill
-\noindent{\footnotesize\textcolor{black!55}{%
-本模試は三重大学とは関係のない、当サイトが独自に制作・実施するものです。
-配点・採点基準は本模試のもので、大学が公表しているものではありません。
-この見本の受験者・得点・答案はすべて架空のものです。\hfill yuta-eng.com}}
-
-\endgroup
-\clearpage
-\restoregeometry
-\resetcolht
-
-% =====================================================================
-%  2枚目以降：答案への講評
-% =====================================================================
-\section*{答案への講評}
-
-\hdA{(2) 漸化式と一般項 ── 6点 / 8点}
-
-\hdB{書けていたところ}
-$a_{n+1}=S_{n+1}-S_{n}$ を使うと最初に宣言し、差をとって
-$a_{n+1}=2a_{n}+3$ まで正しく整理できています。ここまでで4点。
-方針の宣言が1行あるだけで、読む側は以降の計算を追いやすくなります。この書き方は続けてください。
-
-\hdB{落としたところ}
-両辺に $3$ を足して $\{a_{n}+3\}$ が等比数列になることまでは書けていますが、
-その初項を $a_{1}=3$ としています。等比数列になっているのは $a_{n}+3$ のほうなので、初項は
-\[
-  a_{1}+3=6
-\]
-です。ここを取り違えたため、一般項が $a_{n}=3\cdot2^{\,n-1}$ となり、
-正しい $a_{n}=3\left(2^{\,n}-1\right)$ からずれました。
-
-\hdB{次に直すこと}
-\textbf{置き換えた数列の初項は、置き換えた式に $n=1$ を入れて出す。}
-$\{b_{n}\}=\{a_{n}+3\}$ と名前を付けてしまえば、$b_{1}=a_{1}+3=6$ と機械的に書けます。
-名前を付けずに進めると、元の数列の初項をそのまま使ってしまいがちです。
-
-\smallskip
-また、(1) で $a_{1},a_{2},a_{3}=3,9,21$ を出しているので、
-一般項に $n=1,2,3$ を入れて突き合わせれば、この誤りはその場で見つかりました。
-\textbf{一般項を出したら必ず最初の数項で確かめる}ことを習慣にしてください。
-
-\hdA{(3) $\dsp\sum_{k=1}^{n}k\,a_{k}$ ── 3点 / 8点}
-
-\hdB{書けていたところ}
-$k\,a_{k}=3k\cdot2^{\,k}-3k$ と2つの和に分け、後ろの和を $\dfrac{n(n+1)}{2}$ と
-処理するところまでは正しく書けています。方針としては最短のものを選べています。
-
-\hdB{落としたところ}
-$U_{n}=\dsp\sum_{k=1}^{n}k\cdot2^{\,k}$ をずらして引くところで、
-$k=1$ の項と $k=n+1$ の項の扱いが抜けています。答案では
-\[
-  U_{n}-2U_{n}=\sum_{k=1}^{n}2^{\,k}
-\]
-としていますが、正しくは
-\[
-  U_{n}-2U_{n}=2+\sum_{k=2}^{n}2^{\,k}-n\cdot2^{\,n+1}
-\]
-で、先頭の $2$ と末尾の $-n\cdot2^{\,n+1}$ が落ちています。
-ここが落ちると、以降の計算がすべてずれます。
-
-\hdB{次に直すこと}
-\textbf{ずらして引くときは、2つの和を縦に並べて書く。}
-\[
-  \begin{array}{rcccccc}
-    U_{n}  &=& 1\cdot2 &+& 2\cdot2^{2} &+\cdots+& n\cdot2^{\,n}\\[1mm]
-    2U_{n} &=&         & & 1\cdot2^{2} &+\cdots+& (n-1)\cdot2^{\,n}+n\cdot2^{\,n+1}
-  \end{array}
-\]
-並べてから引けば、ずれて余る両端の項が目で見えます。
-頭の中で引くと、必ずこの2か所を落とします。
-
-\hdA{今後の学習の助言}
-
-\hdB{三重大学の出題傾向と照らして}
-当サイトの分析では、三重大学の理系数学は試験時間120分・大問3題・完全記述式で、
-2019〜2026年度の8年分で三角関数・ベクトル・確率が各8題と多く、数列もこれに次ぎます。
-大問3題のうち1題が数列になる年が続いているため、
-\textbf{今回落とした2か所は、本番でそのまま出る可能性の高い操作}です。
-
-\hdB{そのあとに}
-この2点が固まったら、数列と他分野の融合（確率漸化式・数列と極限）に進んでください。
-三重大学では分野をまたぐ出題が見られるため、単独の数列が解けるだけでは足りません。
-
+  \rt{14}{261}{182}{7.5}{muted}{平均点・偏差値・順位分布は、大学ごとの受験者が\ReportStatsMin 名以上の回で掲載。合否判定は行いません。}
+  \rt{14}{268}{182}{7}{muted}{全3大問・\ReportMax 点の架空例です。大問1（数列）は公開見本に対応し、大問2・3は返却形式を示す例です。}
+\end{scope}
+\end{tikzpicture}
+\newpage
+\null
+\begin{tikzpicture}[remember picture,overlay,x=1mm,y=1mm]
+\begin{scope}[shift={(current page.north west)}]
+  \reportheader{答案講評・復習プラン}{結果を次の学習へ}{2}
+  \rt{14}{52}{182}{9}{muted}{\ReportCandidate\ 様\quad /\quad 確率 → 数列 → ベクトルの順に確認しましょう。}
+  \sectiontitle{16.5}{68}{3}{答案から見えた、次の一手}
+  \ReportFeedback
+  \sectiontitle{16.5}{218}{4}{次の2週間の学習プラン}
+  \ReportPlan
+  \rt{14}{271}{182}{7}{muted}{受験者・得点・答案講評は架空です。大学とは関係のない独自の模試で、配点は本模試のものです。}
+\end{scope}
+\end{tikzpicture}
 \end{document}

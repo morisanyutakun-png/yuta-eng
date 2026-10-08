@@ -3,10 +3,9 @@ import raw from "@/data/moshi-sample.json";
 /**
  * 模試の見本。
  *
- * 中身は LaTeX で組んである（assets/moshi-sample/moshi-sample.tex）。
- * 画面に HTML で書き起こすのではなく、**書籍と同じ組版の PDF を作ってから**
- * 1ページずつの画像にして載せる。書店で手に取るのと同じ見え方にしたいからで、
- * 作り方も書籍の試し読みとそろえてある（scripts/build-moshi-sample.py）。
+ * 問題は書籍と同じ組版。返却見本は独立したカラーの成績レポート。
+ * PDF とページ画像は scripts/build-moshi-sample.py で生成し、
+ * 返却内容は data/moshi-return.json を Web の概要と共有する。
  *
  * 出どころは既刊「合格答案をつくる」シリーズの予想問題を作り替えたもの。
  * 大学の過去問そのものではない。配点・採点基準は本模試のもので、
@@ -19,7 +18,7 @@ import raw from "@/data/moshi-sample.json";
 export type MoshiSamplePage = {
   file: string;
   label: string;
-  /** 扉・問題・解答・採点のどれか。偏りの確認に使う */
+  /** ページの内容。1ページに複数の内容がある場合は「・」でつなぐ */
   kind: string;
   page: number;
   width: number;
@@ -39,7 +38,7 @@ export const moshiSample = raw as Record<"problem" | "return", MoshiSampleBookle
 
 /** 返却見本に出てくる受験者・得点は架空のもの。必ず添える */
 export const RETURN_NOTICE =
-  "受験後にお返しする「合格への手引き」を、1人分そのまま載せています。中に出てくる受験者・得点・答案はすべて架空のもので、実在の受験者のものではありません。";
+  "受験後の「合格への手引き」の返却サンプルです。受験者・得点・答案講評はすべて架空のものです。配点は本模試のもので、大学が公表しているものではありません。";
 
 export const sampleMeta = {
   /** この見本に収めた大問の分野 */

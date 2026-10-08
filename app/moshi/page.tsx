@@ -394,7 +394,7 @@ export default function MoshiPage() {
           </h2>
           <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
             出る問題と、受験後に返ってくるものを、どちらも現物で公開しています。
-            本番と同じ体裁の冊子をそのままご覧いただけます。
+            カラーの返却レポートと、問題・解答・採点基準の見本をご覧いただけます。
           </p>
           <MoshiSample />
         </section>

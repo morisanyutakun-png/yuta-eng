@@ -1,4 +1,4 @@
-"""模試の見本を、書籍と同じ組版で PDF にし、試し読みと同じ形で載せられるようにする。
+"""問題の見本と、カラーの返却レポートを PDF・画像に書き出す。
 
 2冊ぶん作る。
   問題の見本   … 本番と同じ体裁の問題・解答と解説・採点基準
@@ -10,9 +10,9 @@
   public/samples/moshi/<種類>/*.pdf      配信する PDF
   data/moshi-sample.json                 ページの見出しと寸法
 
-組版は「合格答案をつくる」シリーズのプリアンブルをそのまま使う。
-同じ体裁で見せたいので真似を書き起こさず、原稿側のものを **読むだけ** にしてある
-（原稿ディレクトリには何も書き込まない。出力はすべて作業用ディレクトリへ）。
+問題の見本は書籍のプリアンブルを読む。返却見本は独立した A4・2ページの
+レポートで、data/moshi-return.json を Web と PDF の共通データとして使う。
+原稿ディレクトリには何も書き込まない。
 
 原稿が手元にない機械では組めない。そのときは分かる形で止め、
 すでに作ってある画像と PDF（リポジトリに入っている）をそのまま使う。
@@ -24,13 +24,14 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from datetime import date
 from pathlib import Path
 
 import fitz
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parent.parent
-HOME = Path(os.environ.get("HOME", "/Users/moriyuuta"))
+MANUSCRIPT_HOME = Path(os.environ.get("HOME", "/Users/moriyuuta"))
 ASSETS = ROOT / "assets" / "moshi-sample"
 OUT_ROOT = ROOT / "public" / "samples" / "moshi"
 DATA = ROOT / "data" / "moshi-sample.json"
@@ -56,10 +57,8 @@ BOOKLETS = {
     "return": {
         "tex": "moshi-return.tex",
         "labels": [
-            ("成績表（1枚目）", "成績"),
-            ("答案への講評", "講評"),
-            ("答案への講評（続き）", "講評"),
-            ("今後の学習の助言", "助言"),
+            ("個人成績レポート", "成績"),
+            ("答案講評・復習プラン", "講評・助言"),
         ],
     },
 }
@@ -71,10 +70,82 @@ def manuscript_dir() -> Path:
     rel = reg.get("mie", {}).get("volumes", {}).get("1")
     if not rel:
         sys.exit("data/manuscripts.json に三重大 vol.1 の場所がない")
-    d = HOME / rel
+    d = MANUSCRIPT_HOME / rel
     if not (d / "preamble.tex").exists():
         sys.exit(f"プリアンブルが見つからない: {d / 'preamble.tex'}")
     return d
+
+
+def tex_text(value: str) -> str:
+    """共通データは普通のテキスト。LaTeX の命令として解釈させない。"""
+    escapes = {
+        "\\": r"\textbackslash{}", "&": r"\&", "%": r"\%", "$": r"\$",
+        "#": r"\#", "_": r"\_", "{": r"\{", "}": r"\}",
+        "~": r"\textasciitilde{}", "^": r"\textasciicircum{}",
+    }
+    return "".join(escapes.get(c, c) for c in str(value))
+
+
+def return_data_tex() -> str:
+    """得点・得点率は小問から集計。PDF と Web で同じ内容を返す。"""
+    report = json.loads((ROOT / "data/moshi-return.json").read_text(encoding="utf-8"))
+    config = json.loads((ROOT / "data/moshi.json").read_text(encoding="utf-8"))
+    brand = re.search(r'name:\s*"([^"]+)"', (ROOT / "lib/site.ts").read_text(encoding="utf-8"))
+    if not brand:
+        sys.exit("lib/site.ts にサイト名がない")
+
+    def totals(q):
+        for s in q["subs"]:
+            if not 0 <= s["score"] <= s["max"] or s["max"] <= 0:
+                sys.exit(f"返却見本の小問得点が不正: {q['no']}/{s['no']}")
+        return sum(s["score"] for s in q["subs"]), sum(s["max"] for s in q["subs"])
+
+    score = sum(totals(q)[0] for q in report["questions"])
+    maximum = sum(totals(q)[1] for q in report["questions"])
+    fmt_date = lambda d: date.fromisoformat(d).strftime("%Y / %m / %d")
+    values = {
+        "Brand": brand[1], "University": report["university"], "Course": report["course"],
+        "Candidate": report["candidate"], "Number": report["number"],
+        "ExamDate": fmt_date(report["examDate"]), "ReturnDate": fmt_date(report["returnDate"]),
+        "Round": config["round"], "Score": score, "Max": maximum,
+        "Rate": f"{100*score/maximum:.1f}", "StatsMin": config["statsMin"],
+        "Summary": report["summary"],
+        "StrengthTitle": report["strength"]["title"], "StrengthBody": report["strength"]["body"],
+        "FocusTitle": report["focus"]["title"], "FocusBody": report["focus"]["body"],
+    }
+    commands = [f"\\newcommand{{\\Report{k}}}{{{tex_text(v)}}}" for k, v in values.items()]
+    fields, subs = [], []
+    for i, q in enumerate(report["questions"]):
+        earned, total = totals(q)
+        fields.append(
+            f"\\fieldrow{{{146+i*23}}}{{{tex_text(q['field'])}}}{{{earned}}}{{{total}}}"
+            f"{{{100*earned/total:.0f}}}{{{q['tone']}}}{{{tex_text(q['status'])}}}"
+        )
+        for j, s in enumerate(q["subs"]):
+            subs.append(
+                f"\\subrow{{{153+i*18+j*5}}}{{{q['no'] if j == 0 else ''}}}"
+                f"{{{s['no']}}}{{{s['score']}}}{{{s['max']}}}{{{q['tone']}}}"
+            )
+        if i < len(report["questions"]) - 1:
+            subs.append(f"\\divider{{117}}{{{168+i*18}}}{{79}}")
+    commands.append("\\newcommand{\\ReportFieldRows}{" + "\n".join(fields) + "}")
+    commands.append("\\newcommand{\\ReportSubRows}{" + "\n".join(subs) + "}")
+    feedback = []
+    for i, no in enumerate(report["feedbackOrder"]):
+        q = next(q for q in report["questions"] if q["no"] == no)
+        earned, total = totals(q)
+        feedback.append(
+            f"\\feedback{{{81+i*42}}}{{{no}}}{{{q['tone']}}}{{{tex_text(q['field'])}}}"
+            f"{{{earned} / {total}}}{{{tex_text(q['good'])}}}{{{tex_text(q['fix'])}}}{{{tex_text(q['next'])}}}"
+        )
+    commands.append("\\newcommand{\\ReportFeedback}{" + "\n".join(feedback) + "}")
+    plan = [
+        f"\\planstep{{{14+i*62.5}}}{{{tex_text(p['days'])}}}{{{tex_text(p['title'])}}}"
+        f"{{{tex_text(p['task'])}}}{{確認：}}{{{tex_text(p['check'])}}}"
+        for i, p in enumerate(report["plan"])
+    ]
+    commands.append("\\newcommand{\\ReportPlan}{" + "\n".join(plan) + "}")
+    return "\n".join(commands) + "\n"
 
 
 def build_pdf(tex: str) -> Path:
@@ -84,13 +155,15 @@ def build_pdf(tex: str) -> Path:
     src = ASSETS / tex
     if not src.exists():
         sys.exit(f"原稿がない: {src}")
-    man = manuscript_dir()
+    man = manuscript_dir() if tex != "moshi-return.tex" else None
 
     work = Path(tempfile.mkdtemp(prefix="moshi-sample-"))
     # ファイル名は原稿側と重ねない。TEXINPUTS の探索順で原稿の main.tex を
     # 拾ってしまい、本ごと組み上がったことがある。
     shutil.copy(src, work / src.name)
-    env = {**os.environ, "TEXINPUTS": f".:{man}:"}
+    if tex == "moshi-return.tex":
+        (work / "moshi-return-data.tex").write_text(return_data_tex(), encoding="utf-8")
+    env = {**os.environ, "TEXINPUTS": f".:{str(man) + ':' if man else ''}"}
 
     # LastPage の参照を解くため2回通す
     for i in range(2):
@@ -124,7 +197,7 @@ def render(kind: str, pdf: Path, labels: list[tuple[str, str]]) -> dict:
 
     pages = []
     for i, page in enumerate(doc):
-        zoom = IMG_WIDTH / page.rect.width
+        zoom = (1400 if kind == "return" else IMG_WIDTH) / page.rect.width
         pix = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom), alpha=False)
         img = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
         name = f"p{i + 1}.webp"

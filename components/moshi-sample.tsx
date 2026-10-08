@@ -1,15 +1,15 @@
 import { SampleViewer } from "@/components/look-inside";
-import { RETURN_NOTICE, SAMPLE_NOTICE, moshiSample, sampleMeta } from "@/lib/moshi/sample";
-import { moshi } from "@/lib/moshi/config";
+import { MoshiReturnSample } from "@/components/moshi-return-sample";
+import { SAMPLE_NOTICE, moshiSample, sampleMeta } from "@/lib/moshi/sample";
 
 /**
  * 模試の見本。
  *
  * 申し込む前に確かめたいのは2つ。「どんな問題が出るのか」と
  * 「受験料を払って何が返ってくるのか」。
- * どちらも文章で説明するより、本番と同じ体裁の冊子を見せるほうが早い。
+ * 返却レポートは読める概要を先に、問題冊子はページ画像で見せる。
  *
- * 見せ方は書籍の試し読みとそろえてある。画像を押すと拡大でき、
+ * PDF のプレビューは画像を押すと拡大でき、
  * まとめて読みたい人には PDF をそのまま渡す。
  */
 function Booklet({
@@ -50,7 +50,7 @@ function Booklet({
 }
 
 export function MoshiSample({ title = "大学別オンライン数学模試" }: { title?: string }) {
-  const { problem, ret } = { problem: moshiSample.problem, ret: moshiSample.return };
+  const { problem } = moshiSample;
 
   return (
     <div className="mt-6">
@@ -72,22 +72,15 @@ export function MoshiSample({ title = "大学別オンライン数学模試" }: 
       </dl>
 
       <div className="mt-6 space-y-10">
+        <MoshiReturnSample />
+
         <Booklet
-          heading="1．出る問題と、採点のしかた"
+          heading="2．出る問題と、採点のしかた"
           lead={`本番と同じ体裁で組んだ冊子を${problem.pages.length}ページ載せています。問題紙・解答と解説・採点基準まで、そのままご覧いただけます。画像を押すと拡大できます。`}
           notice={SAMPLE_NOTICE}
           booklet={problem}
           title={`${title} 見本問題`}
           pdfLabel="見本問題をPDFで見る"
-        />
-
-        <Booklet
-          heading={`2．受験後に返ってくるもの ──「${moshi.deliverableName}」`}
-          lead="1枚目の成績表で、得点・小問ごとの出来・何で落としたか・次の2週間ですることが一度に分かります。2枚目からは、答案に即した講評です。採点して終わりにはしません。"
-          notice={RETURN_NOTICE}
-          booklet={ret}
-          title={`${title} 返却見本`}
-          pdfLabel="返却見本をPDFで見る"
         />
       </div>
     </div>
