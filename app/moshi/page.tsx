@@ -137,7 +137,7 @@ export default function MoshiPage() {
               <h1 className="serif h-page mt-1.5 text-ink">{moshi.title}</h1>
               <p className="prose-ja mt-4 text-[1rem] leading-[1.95] text-ink-2 sm:text-[1.05rem]">
                 志望校1校の入試形式に合わせて作る数学模試です。記述答案はすべて人の手で採点し、
-                点数だけでなく、答案への講評と今後の学習の助言までお返しします。
+                採点済み答案と、成績表・答案講評・今後の学習の助言をPDFでお返しします。
               </p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <a href="#apply" className="btn btn-primary">

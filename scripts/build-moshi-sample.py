@@ -17,6 +17,7 @@
 原稿が手元にない機械では組めない。そのときは分かる形で止め、
 すでに作ってある画像と PDF（リポジトリに入っている）をそのまま使う。
 """
+import argparse
 import json
 import os
 import re
@@ -57,8 +58,8 @@ BOOKLETS = {
     "return": {
         "tex": "moshi-return.tex",
         "labels": [
-            ("個人成績レポート", "成績"),
-            ("答案講評・復習プラン", "講評・助言"),
+            ("個人成績表", "成績"),
+            ("答案講評・学習の手引き", "講評・助言"),
         ],
     },
 }
@@ -91,8 +92,9 @@ def return_data_tex() -> str:
     report = json.loads((ROOT / "data/moshi-return.json").read_text(encoding="utf-8"))
     config = json.loads((ROOT / "data/moshi.json").read_text(encoding="utf-8"))
     brand = re.search(r'name:\s*"([^"]+)"', (ROOT / "lib/site.ts").read_text(encoding="utf-8"))
-    if not brand:
-        sys.exit("lib/site.ts にサイト名がない")
+    author = re.search(r'author:\s*"([^"]+)"', (ROOT / "lib/site.ts").read_text(encoding="utf-8"))
+    if not brand or not author:
+        sys.exit("lib/site.ts にサイト名または制作者名がない")
 
     def totals(q):
         for s in q["subs"]:
@@ -104,44 +106,42 @@ def return_data_tex() -> str:
     maximum = sum(totals(q)[1] for q in report["questions"])
     fmt_date = lambda d: date.fromisoformat(d).strftime("%Y / %m / %d")
     values = {
-        "Brand": brand[1], "University": report["university"], "Course": report["course"],
+        "Brand": brand[1], "Author": author[1], "University": report["university"], "Course": report["course"],
         "Candidate": report["candidate"], "Number": report["number"],
         "ExamDate": fmt_date(report["examDate"]), "ReturnDate": fmt_date(report["returnDate"]),
-        "Round": config["round"], "Score": score, "Max": maximum,
+        "Round": config["round"], "Season": config["season"], "Score": score, "Max": maximum,
         "Rate": f"{100*score/maximum:.1f}", "StatsMin": config["statsMin"],
         "Summary": report["summary"],
-        "StrengthTitle": report["strength"]["title"], "StrengthBody": report["strength"]["body"],
-        "FocusTitle": report["focus"]["title"], "FocusBody": report["focus"]["body"],
     }
     commands = [f"\\newcommand{{\\Report{k}}}{{{tex_text(v)}}}" for k, v in values.items()]
     fields, subs = [], []
     for i, q in enumerate(report["questions"]):
         earned, total = totals(q)
         fields.append(
-            f"\\fieldrow{{{146+i*23}}}{{{tex_text(q['field'])}}}{{{earned}}}{{{total}}}"
-            f"{{{100*earned/total:.0f}}}{{{q['tone']}}}{{{tex_text(q['status'])}}}"
+            f"\\fieldrow{{{181+i*22}}}{{{q['no']}}}{{{tex_text(q['field'])}}}"
+            f"{{{earned}}}{{{total}}}{{{100*earned/total:.0f}}}"
         )
         for j, s in enumerate(q["subs"]):
             subs.append(
-                f"\\subrow{{{153+i*18+j*5}}}{{{q['no'] if j == 0 else ''}}}"
-                f"{{{s['no']}}}{{{s['score']}}}{{{s['max']}}}{{{q['tone']}}}"
+                f"\\subrow{{{181+i*22+j*6}}}{{{q['no'] if j == 0 else ''}}}"
+                f"{{{s['no']}}}{{{s['score']}}}{{{s['max']}}}"
             )
         if i < len(report["questions"]) - 1:
-            subs.append(f"\\divider{{117}}{{{168+i*18}}}{{79}}")
+            subs.append(f"\\hr{{116}}{{{200+i*22}}}{{80}}")
+            fields.append(f"\\hr{{14}}{{{200+i*22}}}{{91}}")
     commands.append("\\newcommand{\\ReportFieldRows}{" + "\n".join(fields) + "}")
     commands.append("\\newcommand{\\ReportSubRows}{" + "\n".join(subs) + "}")
     feedback = []
-    for i, no in enumerate(report["feedbackOrder"]):
-        q = next(q for q in report["questions"] if q["no"] == no)
+    for i, q in enumerate(report["questions"]):
         earned, total = totals(q)
         feedback.append(
-            f"\\feedback{{{81+i*42}}}{{{no}}}{{{q['tone']}}}{{{tex_text(q['field'])}}}"
-            f"{{{earned} / {total}}}{{{tex_text(q['good'])}}}{{{tex_text(q['fix'])}}}{{{tex_text(q['next'])}}}"
+            f"\\feedback{{{118+i*32}}}{{{q['no']}}}{{{tex_text(q['field'])}}}"
+            f"{{{earned} / {total}}}{{{tex_text(q['comment'])}}}{{{tex_text(q['review'])}}}"
         )
     commands.append("\\newcommand{\\ReportFeedback}{" + "\n".join(feedback) + "}")
     plan = [
-        f"\\planstep{{{14+i*62.5}}}{{{tex_text(p['days'])}}}{{{tex_text(p['title'])}}}"
-        f"{{{tex_text(p['task'])}}}{{確認：}}{{{tex_text(p['check'])}}}"
+        f"\\planrow{{{246+i*11}}}{{{tex_text(p['days'])}}}{{{tex_text(p['title'])}}}"
+        f"{{{tex_text(p['task'])}}}{{{tex_text(p['check'])}}}"
         for i, p in enumerate(report["plan"])
     ]
     commands.append("\\newcommand{\\ReportPlan}{" + "\n".join(plan) + "}")
@@ -219,21 +219,25 @@ def render(kind: str, pdf: Path, labels: list[tuple[str, str]]) -> dict:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--kind", choices=BOOKLETS, help="指定した見本だけ再生成する")
+    args = parser.parse_args()
+    selected = {args.kind: BOOKLETS[args.kind]} if args.kind else BOOKLETS
+    data = json.loads(DATA.read_text(encoding="utf-8")) if args.kind and DATA.exists() else {}
     # 置き場所を作り直す前に、古い形（直下に画像があった頃）を片づける
-    if OUT_ROOT.exists():
+    if not args.kind and OUT_ROOT.exists():
         for old in OUT_ROOT.iterdir():
             if old.is_file():
                 old.unlink()
 
-    data = {}
-    for kind, spec in BOOKLETS.items():
+    for kind, spec in selected.items():
         pdf = build_pdf(spec["tex"])
         data[kind] = render(kind, pdf, spec["labels"])
 
     DATA.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     size = sum(f.stat().st_size for f in OUT_ROOT.rglob("*") if f.is_file())
-    total = sum(len(v["pages"]) for v in data.values())
-    print(f"書き出し {len(data)}冊 / {total}ページ / {size / 1024:.0f}KB  → {OUT_ROOT.relative_to(ROOT)}")
+    total = sum(len(data[kind]["pages"]) for kind in selected)
+    print(f"書き出し {len(selected)}冊 / {total}ページ（登録済み全体 {size / 1024:.0f}KB） → {OUT_ROOT.relative_to(ROOT)}")
     print(f"        {DATA.relative_to(ROOT)}")
 
 

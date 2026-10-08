@@ -38,7 +38,7 @@ export const moshiSample = raw as Record<"problem" | "return", MoshiSampleBookle
 
 /** 返却見本に出てくる受験者・得点は架空のもの。必ず添える */
 export const RETURN_NOTICE =
-  "受験後の「合格への手引き」の返却サンプルです。受験者・得点・答案講評はすべて架空のものです。配点は本模試のもので、大学が公表しているものではありません。";
+  "この見本は「合格への手引き」の成績表・答案講評です。受験者・得点・講評はすべて架空で、大学の公式配点ではありません。採点済み答案は、実際の返却時に別添PDFでお渡しします。";
 
 export const sampleMeta = {
   /** この見本に収めた大問の分野 */

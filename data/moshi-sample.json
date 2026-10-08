@@ -57,7 +57,7 @@
     "pages": [
       {
         "file": "/samples/moshi/return/p1.webp",
-        "label": "個人成績レポート",
+        "label": "個人成績表",
         "kind": "成績",
         "page": 1,
         "width": 1400,
@@ -65,7 +65,7 @@
       },
       {
         "file": "/samples/moshi/return/p2.webp",
-        "label": "答案講評・復習プラン",
+        "label": "答案講評・学習の手引き",
         "kind": "講評・助言",
         "page": 2,
         "width": 1400,

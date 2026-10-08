@@ -1,10 +1,10 @@
 import {
   cancelLine,
-  deliverableLine,
   moshi,
   moshiUniversity,
   paymentLine,
   priceLabel,
+  returnLine,
   roundLabel,
 } from "@/lib/moshi/config";
 import { site } from "@/lib/site";
@@ -197,7 +197,7 @@ function buildHtml(name: string, universityIds: string[]) {
       )}
       ${row(
         "採点と返却",
-        `答案は人の手で採点します。${esc(deliverableLine)}をまとめた「${esc(moshi.deliverableName)}」をお返しします。`,
+        `答案は人の手で採点します。${esc(returnLine)}`,
       )}
       ${row("取り消し", esc(cancelLine), true)}
     </table>
@@ -252,7 +252,7 @@ function buildText(name: string, universityIds: string[]) {
     `実施時期　${roundLabel}。正式な受験期間が決まりしだい、メールでご案内します。`,
     `受験料　　${priceLabel}。現時点では料金は発生していません。`,
     `　　　　　${paymentLine}`,
-    `採点と返却　答案は人の手で採点します。${deliverableLine}をまとめた「${moshi.deliverableName}」をお返しします。`,
+    `採点と返却　答案は人の手で採点します。${returnLine}`,
     `取り消し　${cancelLine}`,
     "",
     `模試のご案内　${site.url}/moshi`,

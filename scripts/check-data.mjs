@@ -19,6 +19,7 @@ const series = read("data/series.json");
 const samples = read("data/samples.json");
 const moshiSample = read("data/moshi-sample.json");
 const moshiReturn = read("data/moshi-return.json");
+const moshi = read("data/moshi.json");
 const macros = read("lib/katex-macros.json");
 
 const problems = [];
@@ -155,13 +156,12 @@ for (const [asin, s] of Object.entries(samples)) {
   const numbers = questions.map((q) => q.no);
   if (new Set(numbers).size !== numbers.length) ng("返却見本: 大問番号が重複している");
   for (const q of questions) {
-    if (!["blue", "teal", "amber"].includes(q.tone)) ng(`返却見本: 大問${q.no}の色が不正`);
     if (q.subs.length !== 3 || q.subs.some((s, i) => s.no !== i + 1)) ng(`返却見本: 大問${q.no}の小問構成が不正`);
     for (const s of q.subs) {
       if (!Number.isInteger(s.score) || !Number.isInteger(s.max) || s.max <= 0 || s.score < 0 || s.score > s.max)
         ng(`返却見本: 大問${q.no}(${s.no})の得点・配点が不正`);
     }
-    for (const key of ["field", "status", "good", "fix", "next"]) {
+    for (const key of ["field", "comment", "review"]) {
       if (typeof q[key] !== "string" || !q[key].trim()) ng(`返却見本: 大問${q.no}の${key}がない`);
     }
   }
@@ -173,6 +173,7 @@ for (const [asin, s] of Object.entries(samples)) {
     if (["days", "title", "task", "check"].some((key) => typeof p[key] !== "string" || !p[key].trim()))
       ng("返却見本: 復習プランの内容が欠けている");
   }
+  if (!moshi.deliverables.some((d) => d.h === "採点済み答案")) ng("模試の返却物: 採点済み答案の案内がない");
 }
 
 // 本文まるごとのPDFを公開していないか（書籍の抜粋は多くても6ページ）

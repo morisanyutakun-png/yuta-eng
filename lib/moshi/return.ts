@@ -3,12 +3,9 @@ import raw from "@/data/moshi-return.json";
 type ReturnQuestion = {
   no: number;
   field: string;
-  status: string;
-  tone: "blue" | "teal" | "amber";
   subs: { no: number; score: number; max: number }[];
-  good: string;
-  fix: string;
-  next: string;
+  comment: string;
+  review: string;
 };
 
 /** Web の概要と返却 PDF の共通データ。すべて架空の成績例。 */

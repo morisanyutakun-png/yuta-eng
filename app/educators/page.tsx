@@ -6,7 +6,7 @@ import { NextStep } from "@/components/next-step";
 import { PageHeader } from "@/components/page-header";
 import { ProductPanel, type Product } from "@/components/product-panel";
 import { siteTotals, universities, universityCount } from "@/lib/data";
-import { moshi, priceLabel, roundLabel } from "@/lib/moshi/config";
+import { moshi, priceLabel, returnLine, roundLabel } from "@/lib/moshi/config";
 import { sampleCount } from "@/lib/samples";
 import { sectionStyle } from "@/lib/sections";
 import { shortName, subject } from "@/lib/seo";
@@ -565,11 +565,11 @@ export default function EducatorsPage() {
             受験後にお渡しするもの ──「{moshi.deliverableName}」
           </h3>
           <p className="prose-ja mt-2 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
-            受験された方お一人ごとに、次の4つをまとめた冊子をお渡しします。点数だけを返して終わりにはしません。
+            {returnLine}
           </p>
           <ol className="mt-4 grid gap-px border border-rule bg-rule sm:grid-cols-2">
             {moshi.deliverables.map((d, i) => (
-              <li key={d.h} className="bg-white px-5 py-4">
+              <li key={d.h} className={`bg-white px-5 py-4 ${i === 0 ? "sm:col-span-2" : ""}`}>
                 <p className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
                   0{i + 1}
                 </p>

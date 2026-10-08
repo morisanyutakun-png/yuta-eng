@@ -1,4 +1,4 @@
-import { moshi } from "@/lib/moshi/config";
+import { moshi, returnLine } from "@/lib/moshi/config";
 
 /**
  * 受験後にお返しするもの。
@@ -14,7 +14,7 @@ export function MoshiDeliverables() {
     <>
       <ol className="mt-5 grid gap-px border border-rule bg-rule sm:grid-cols-2">
         {moshi.deliverables.map((d, i) => (
-          <li key={d.h} className="bg-white px-5 py-4">
+          <li key={d.h} className={`bg-white px-5 py-4 ${i === 0 ? "sm:col-span-2" : ""}`}>
             <p className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
               0{i + 1}
             </p>
@@ -24,8 +24,7 @@ export function MoshiDeliverables() {
         ))}
       </ol>
       <p className="prose-ja mt-4 max-w-[40rem] text-[0.86rem] leading-[1.9] text-ink-2">
-        この4つをまとめた冊子を「<strong className="font-semibold text-ink">{moshi.deliverableName}</strong>」として、
-        受験された方お一人ごとにお渡しします。点数を出して終わりにはしません。
+        {returnLine}
       </p>
     </>
   );

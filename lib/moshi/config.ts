@@ -65,7 +65,7 @@ export type Moshi = {
   /** その条件を1文で書いたもの */
   statsNote: string;
   deliverables: Deliverable[];
-  /** お返しするものをまとめた冊子の呼び名 */
+  /** 採点結果・講評・学習の助言をまとめた冊子の呼び名。採点済み答案は別添 */
   deliverableName: string;
   group: GroupPolicy;
 };
@@ -77,8 +77,12 @@ export const roundLabel = `第${moshi.round}回：${moshi.period}開催予定`;
 
 export const priceLabel = `${moshi.price.toLocaleString()}円（税込）${moshi.priceFixed ? "" : "・予定"}`;
 
-/** 「採点結果・答案への講評・分野別の得意不得意・今後の学習の助言」のような1行 */
+/** 採点済み答案も含む返却資料の一覧 */
 export const deliverableLine = moshi.deliverables.map((d) => d.h).join("・");
+
+/** 成績冊子と採点済み答案を区別した、画面・確認メール共通の返却案内 */
+export const returnLine =
+  `採点済み答案と、採点結果・答案講評・学習の助言をまとめた「${moshi.deliverableName}」を、受験者お一人ごとにPDFでお返しします。`;
 
 /**
  * お支払いについての言い方。
