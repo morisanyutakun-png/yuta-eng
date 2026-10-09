@@ -3,8 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { CoverShelf } from "@/components/cover-shelf";
-import { FactStrip } from "@/components/fact-strip";
-import { AnalysisTable } from "@/components/home-visual";
+import { HomeAnalysisPreview } from "@/components/home-analysis-preview";
 import { IntentCards } from "@/components/intent-cards";
 import { InfoDetails } from "@/components/info-details";
 import { MoshiReportCover } from "@/components/moshi-report-cover";
@@ -67,96 +66,28 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="page page-wide mobile-compact">
-        {/*
-          最初の画面に置くのは、何のサイトかの1行・できあがるものの図・
-          3つの数字・そして**大学を探す欄**だけ。
-          探しに来た人が最初にすることは検索なので、それを一番上に置く。
-          64区分をここで全部並べると「多すぎて選べない」が先に来るため、
-          絞り込む前は少しだけ見せて、続きは一覧ページへ送る。
-        */}
-        {/*
-          いま集めたいのは模試の申込なので、最初の画面に告知を置く。
-          分析サイトとしての見出しは下にそのまま残す。
-          帯は1行に収め、押す先は模試の案内ひとつだけにする。
-        */}
-        <Link
-          href="/moshi"
-          style={sectionStyle("moshi")}
-          className="group mt-5 flex items-center gap-3 border border-[var(--sec)]/35 bg-[color-mix(in_srgb,var(--sec)_6%,#fff)] px-4 py-3 transition-colors hover:bg-[color-mix(in_srgb,var(--sec)_11%,#fff)] sm:px-5"
-        >
-          <span className="shrink-0 border border-[var(--sec)] px-2 py-0.5 text-[0.66rem] font-bold tracking-wide text-[var(--sec)]">
-            申込受付中
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-[0.88rem] font-semibold leading-snug text-ink">{sections.moshi.eyebrow}</span>
-            <span className="mt-0.5 block text-[0.75rem] leading-snug text-ink-2">
-              {moshi.title}・{moshi.universities.length}大学
-              <span className="hidden sm:inline">・{roundLabel}</span>
-            </span>
-          </span>
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 20 20"
-            className="size-3.5 shrink-0 text-[var(--sec)] transition-transform group-hover:translate-x-0.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.2"
-          >
-            <path d="m7 4 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </Link>
-
-        {/* 読む前に掴める手がかりを先に置く。文字だけの最初の画面にしない */}
-        <FactStrip
-          items={[
-            { icon: "grid", label: `${t.universities}大学・${t.sections}区分` },
-            { icon: "clock", label: `${t.minYears}〜${t.maxYears}年分` },
-            { icon: "pen", label: "解答解説も無料" },
-          ]}
-        />
-
-        <section className="-mx-5 border-b border-rule bg-paper-2/60 px-5 py-6 sm:mx-0 sm:px-7 sm:py-8">
-          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_21rem] lg:items-center lg:gap-x-12">
-            <div className="min-w-0">
+        {/* サイト名の繰り返しや販売案内より先に、分析の中身と大学検索を見せる。 */}
+        <section aria-labelledby="analysis-heading" className="-mx-5 border-b border-rule bg-paper-2/60 px-5 py-5 sm:mx-0 sm:px-7 sm:py-7">
+          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_25rem] lg:items-center lg:gap-x-12">
+            <div>
               <p className="text-[0.7rem] font-bold tracking-[0.1em] text-navy">
-                国公立・私立{t.universities}大学の数学入試を分析
+                {t.universities}大学・{t.sections}区分の出題傾向と対策
               </p>
-              <h1 className="serif h-page mt-2.5 text-ink">
-                大学別数学研究室
+              <h1 id="analysis-heading" className="serif h-page mt-1.5 text-ink">
+                大学別の数学入試分析
               </h1>
-              <p className="mt-3 text-[0.97rem] font-semibold leading-relaxed text-navy">志望校の出題を知り、数学の対策を絞る。</p>
-              <p className="prose-ja mt-2 max-w-[34rem] text-[0.88rem] text-ink-2">
-                出題傾向・頻出分野・目標点を無料公開。大学別の模試と教材で、答案を書く力まで確かめられます。
+              <p className="prose-ja mt-2 max-w-[34rem] text-[0.86rem] text-ink-2">
+                年度別の出題・頻出分野・難易度と目標点を、大学ごとにまとめています。
               </p>
-              <div className="mt-5 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3">
-                <a href="#find-heading" className="btn btn-primary btn-compact">無料の出題分析</a>
-                <Link href="/moshi" className="btn btn-compact bg-white">大学別数学模試</Link>
-              </div>
             </div>
-
-            {/*
-              できあがる表そのものを見せる。文章で説明するより早い。
-              狭い画面では、数字より先にこれが出るように並び順を決めている。
-            */}
-            <figure className="mt-7 hidden sm:block lg:mt-0">
-              <div className="border border-rule bg-white px-4 py-4">
-                <AnalysisTable className="w-full" />
-              </div>
-              <figcaption className="mt-2 text-[0.7rem] leading-relaxed text-ink-3">
-                各大学のページに出している、年度 × 分野の出題表（見本）。
-              </figcaption>
-            </figure>
+            <HomeAnalysisPreview />
           </div>
-
         </section>
 
-        <section aria-labelledby="find-heading" className="mt-6" style={sectionStyle("universities")}>
-          <h2 id="find-heading" className="rule-mark serif h-sect scroll-mt-20 text-ink">
-            大学から探す
+        <section aria-labelledby="find-heading" className="mt-4" style={sectionStyle("universities")}>
+          <h2 id="find-heading" className="serif h-sect scroll-mt-20 text-ink">
+            志望校の分析を探す
           </h2>
-          <p className="prose-ja mt-2.5 max-w-[36rem] text-[0.9rem] text-ink-2">
-            志望校を選ぶと、出題傾向と対策が読めます。
-          </p>
           <UniversityFinder
             items={items}
             groups={usedGroups}
@@ -166,6 +97,16 @@ export default function HomePage() {
             moreHref="/universities"
           />
         </section>
+
+        <InfoDetails title="分析で分かること・掲載範囲">
+          <p className="prose-ja text-[0.84rem] text-ink-2">大学ごとの試験時間・大問構成、年度別の出題、分野別の頻度、難易度と目標点を掲載しています。分析対象は{t.minYears}〜{t.maxYears}年分で、大学により異なります。</p>
+          <p className="prose-ja mt-2 text-[0.8rem] text-ink-3">問題文は転載せず、各大学の公表資料と問題冊子を確認して独自に分析しています。詳しい対象年度は各大学のページに明記しています。</p>
+        </InfoDetails>
+
+        <Link href="/moshi" style={sectionStyle("moshi")} className="mt-5 flex min-h-11 items-center justify-between gap-3 border-y border-rule py-3 text-[0.82rem] text-ink-2 hover:text-[var(--sec)]">
+          <span>{sections.moshi.eyebrow}<span className="ml-2 text-[0.72rem] text-ink-3">{moshi.title}・{moshi.universities.length}大学</span></span>
+          <span aria-hidden="true">→</span>
+        </Link>
 
       </div>
 
@@ -195,7 +136,7 @@ export default function HomePage() {
                 body: `${t.universities}大学・${t.sections}区分の試験時間・大問構成・頻出分野・目標点を、年度別の表で。`,
                 href: "/universities",
                 section: "universities",
-                kind: "無料のWeb資料",
+                kind: "Webの分析資料",
               },
               {
                 want: "自分に合う大学を知りたい",

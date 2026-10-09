@@ -157,8 +157,14 @@ for (const f of files) {
   }
 
   if (page === "/") {
-    for (const required of ["無料の出題分析", "無料のWeb資料", "書籍・購入教材"])
+    for (const required of ["大学別の数学入試分析", "志望校の分析を探す", "掲載中の分析の一例", "分析で分かること・掲載範囲", "Webの分析資料", "書籍・購入教材"])
       if (!body.includes(required)) ng(page, `入口の区別に「${required}」がない`);
+    if (body.includes("無料")) ng(page, "トップに無料を前面に出す表現が残っている");
+    const homeHero = html.match(/<section\b[^>]*\baria-labelledby="analysis-heading"[^>]*>([\s\S]*?)<\/section>/)?.[1] ?? "";
+    if (!homeHero.includes('href="/univ/nagoya-rikei"')) ng(page, "冒頭に実際の分析への入口がない");
+    if (/class="[^"]*\bhidden\b/.test(homeHero)) ng(page, "冒頭の分析がモバイルで隠れている");
+    if (homeHero.includes("btn-primary")) ng(page, "冒頭に強い申込風のボタンがある");
+    if (html.indexOf('href="/moshi"', html.indexOf('<main')) < html.indexOf('id="univ-search"')) ng(page, "分析検索より先に模試の告知がある");
   }
 
   if (page === "/educators") {

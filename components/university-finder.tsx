@@ -93,6 +93,23 @@ export function UniversityFinder({
     return [...map.entries()].sort((a, b) => groups.indexOf(a[0]) - groups.indexOf(b[0]));
   }, [shown, groups]);
 
+  const groupButtons = [ALL, ...groups].map((g) => {
+    const active = group === g;
+    const count = g === ALL ? items.length : items.filter((i) => i.group === g).length;
+    return (
+      <button
+        key={g}
+        type="button"
+        onClick={() => setGroup(g)}
+        aria-pressed={active}
+        className={`min-h-11 shrink-0 border px-3 text-[0.82rem] font-medium transition-colors ${active ? "border-navy bg-navy text-white" : "border-rule bg-white text-ink-2 hover:border-navy hover:text-navy"}`}
+      >
+        {g}
+        <span className={`ml-1.5 text-[0.7rem] tabular-nums ${active ? "text-white/70" : "text-ink-3"}`}>{count}</span>
+      </button>
+    );
+  });
+
   return (
     <div>
       {/* 絞り込み。スクロールしても画面上部に残す */}
@@ -142,34 +159,18 @@ export function UniversityFinder({
           )}
         </div>
 
-        {/* 折り返して全部見せる。横に送らせると、隠れた絞り込みに気づけない */}
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          {[ALL, ...groups].map((g) => {
-            const active = group === g;
-            const count = g === ALL ? items.length : items.filter((i) => i.group === g).length;
-            return (
-              <button
-                key={g}
-                type="button"
-                onClick={() => setGroup(g)}
-                aria-pressed={active}
-                className={`min-h-11 shrink-0 border px-3 text-[0.82rem] font-medium transition-colors ${
-                  active
-                    ? "border-navy bg-navy text-white"
-                    : "border-rule bg-white text-ink-2 hover:border-navy hover:text-navy"
-                }`}
-              >
-                {g}
-                <span className={`ml-1.5 text-[0.7rem] tabular-nums ${active ? "text-white/70" : "text-ink-3"}`}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+        {/* トップでは任意の絞り込みだけを折りたたみ、大学への入口を先に見せる。 */}
+        {compact ? (
+          <details className="mt-2 border-y border-rule">
+            <summary className="min-h-11 cursor-pointer py-3 text-[0.78rem] text-ink-2">
+              大学の区分で絞る{group !== ALL && <span className="ml-2 font-semibold text-navy">{group}</span>}
+            </summary>
+            <div className="flex flex-wrap gap-1.5 pb-3">{groupButtons}</div>
+          </details>
+        ) : <div className="mt-2 flex flex-wrap gap-1.5">{groupButtons}</div>}
       </div>
 
-      <p aria-live="polite" className="pt-4 text-[0.72rem] text-ink-3">
+      <p aria-live="polite" className={`${compact ? "pt-2" : "pt-4"} text-[0.72rem] text-ink-3`}>
         {hidden > 0 ? `${filtered.length}件のうち${shown.length}件を表示` : `${filtered.length}件`}
         {query && <span className="ml-1.5">「{query}」の検索結果</span>}
       </p>
@@ -180,7 +181,7 @@ export function UniversityFinder({
         </p>
       ) : (
         grouped.map(([g, list]) => (
-          <section key={g} className="mt-7">
+          <section key={g} className={compact ? "mt-3" : "mt-7"}>
             <H className="serif border-b border-rule pb-1.5 text-[0.92rem] text-ink">{g}</H>
             {/*
               主役は大学名と受験区分。試験時間・大問数はその大学を選ぶときの
