@@ -4173,6 +4173,78 @@ for _ in range(2000):
 ok("京大理21-6問2 (1,a) に f(t)=t f'(t) の解がある", _bad21t == 0,
    f"2次式 2000 個で反例 {_bad21t} 件")
 
+# ---------------------------------------------------------------- 京大理系2020
+# 第1問：3解が一辺 √3a の正三角形をなす
+_a20r = 2 ** (-1 / 3)
+_rt20 = [complex(-2 * _a20r, 0),
+         complex(-_a20r / 2, _a20r * math.sqrt(3) / 2),
+         complex(-_a20r / 2, -_a20r * math.sqrt(3) / 2)]
+_e1 = -(_rt20[0] + _rt20[1] + _rt20[2])
+_e2 = (_rt20[0] * _rt20[1] + _rt20[1] * _rt20[2] + _rt20[2] * _rt20[0])
+_e3 = -(_rt20[0] * _rt20[1] * _rt20[2])
+ok("京大理20-1 a=∛4/2、b=3∛2/2、3解は -∛4 と (∛4/4)(-1±√3i)",
+   abs(_e1 - 3 * _a20r) < 1e-12 and abs(_e2 - 3 * _a20r ** 2) < 1e-12
+   and abs(_e3 - 1) < 1e-12
+   and abs(_a20r - 4 ** (1 / 3) / 2) < 1e-12
+   and abs(3 * _a20r ** 2 - 3 * 2 ** (1 / 3) / 2) < 1e-12
+   and all(abs(abs(_rt20[i] - _rt20[j]) - math.sqrt(3) * _a20r) < 1e-12
+           for i, j in ((0, 1), (0, 2), (1, 2))),
+   f"a = {_a20r:.9f}、b = {3 * _a20r ** 2:.9f}、辺 {abs(_rt20[0] - _rt20[1]):.9f}")
+
+# 第2問：s_n は偶数の整数、極限は -π
+_ok20s = True
+for _p in (1, 2, 3, 5):
+    _al = _p + math.sqrt(_p * _p + 1)
+    _s = [2, 2 * _p]
+    for _k in range(2, 45):
+        _s.append(2 * _p * _s[-1] + _s[-2])
+    if not all(x % 2 == 0 for x in _s[:40]):
+        _ok20s = False
+    if not all(abs(_al ** n + (_p - math.sqrt(_p * _p + 1)) ** n - _s[n]) < 1e-6
+               for n in range(1, 10)):
+        _ok20s = False
+    if not all(abs(math.sin(_al ** n * math.pi)
+                   + (-1) ** n * math.sin(math.pi / _al ** n)) < 1e-6
+               for n in range(1, 9)):
+        _ok20s = False
+    if abs(-(_al ** 40) * math.sin(math.pi / _al ** 40) + math.pi) > 1e-9:
+        _ok20s = False
+ok("京大理20-2 α^n+β^n は偶数の整数、極限は -π", _ok20s,
+   "p=1,2,3,5 で漸化式・恒等式・極限を確認")
+
+# 第4問：B(f(m,n)) の最大
+def _B20(a):
+    b = 0
+    while a % 3 == 0:
+        a //= 3
+        b += 1
+    return b
+
+
+_best20 = (-1, [])
+for _m in range(1, 31):
+    for _n in range(1, 31):
+        if _n % 3 == 0:
+            continue
+        _v = _B20(_m ** 3 + _n * _n + _n + 3)
+        if _v > _best20[0]:
+            _best20 = (_v, [(_m, _n)])
+        elif _v == _best20[0]:
+            _best20[1].append((_m, _n))
+ok("京大理20-4 最大は 4、(m,n)=(3,11),(12,11),(21,11),(30,11)",
+   _best20[0] == 4 and _best20[1] == [(3, 11), (12, 11), (21, 11), (30, 11)],
+   f"最大 {_best20[0]}、組 {_best20[1]}")
+
+# 第6問：2回転してできる立体の体積
+_vol20 = 0.0
+_n20v = 2_000_000
+for _i in range(_n20v):
+    _x = -1 + 2 * (_i + 0.5) / _n20v
+    _vol20 += math.pi * ((1 + math.log(2) - _x * _x) - math.log(1 + abs(_x))) * 2 / _n20v
+ok("京大理20-6 体積は 2π(5/3 - log2)",
+   abs(_vol20 - 2 * math.pi * (5 / 3 - math.log(2))) < 1e-6,
+   f"数値積分 {_vol20:.9f}（厳密値 {2 * math.pi * (5 / 3 - math.log(2)):.9f}）")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
