@@ -3415,6 +3415,111 @@ ok("京大文23-5 f(x) = -3x+1",
            for x in (-1.0, -0.3, 0.0, 0.7, 2.0)),
    f"A={_A23k:.9f}, B={_B23k:.9f}, C={_C23k2:.9f}")
 
+# ---------------------------------------------------------------- 京大文系2022
+ok("京大文22-1 5.4 < log_4 2022 < 5.5",
+   5.4 < math.log(2022, 4) < 5.5
+   and 5.4 * (2 * 0.3011) < 3.301          # 下からの評価
+   and 2022 < 2 ** 11,                      # 上からの評価
+   f"log_4 2022 = {math.log(2022, 4):.9f}")
+
+# 第2問：三角柱の辺に沿った経路。A から n 回で上の面に戻る数
+_E22 = {"A": "BCD", "B": "ACE", "C": "ABF", "D": "EFA", "E": "DFB", "F": "DEC"}
+
+
+def _walk22b(n):
+    cur = {"A": 1}
+    for _ in range(n):
+        nxt = {}
+        for v, c in cur.items():
+            for w in _E22[v]:
+                nxt[w] = nxt.get(w, 0) + c
+        cur = nxt
+    return sum(c for v, c in cur.items() if v in "ABC")
+
+
+_cnt22 = [_walk22b(n) for n in range(1, 10)]
+ok("京大文22-2 a_n = (3ⁿ+1)/2",
+   all(c == (3 ** n + 1) // 2 for c, n in zip(_cnt22, range(1, 10))),
+   f"n=1..9 で {_cnt22}")
+
+# 第3問：直交する2接線と放物線で囲まれた面積
+_p22 = lambda x: x * x / 4
+_l1_22 = lambda x: -x / 2 - 0.25
+_l2_22 = lambda x: 2 * x - 4
+_ar22 = 0.0
+_n22 = 2_000_000
+for _i in range(_n22):
+    _x = -1 + 5 * (_i + 0.5) / _n22
+    _ar22 += (_p22(_x) - (_l1_22(_x) if _x < 1.5 else _l2_22(_x))) * 5 / _n22
+ok("京大文22-3 面積は 125/48",
+   abs(-0.5 * 2 + 1) < 1e-15                        # 傾きの積が -1
+   and abs(_l1_22(1.5) + 1) < 1e-15 and abs(_l2_22(1.5) + 1) < 1e-15
+   and abs(_ar22 - 125 / 48) < 1e-6,
+   f"数値積分 {_ar22:.9f}（125/48 = {125 / 48:.9f}）")
+
+# 第4問：PQ/RS = √2 のときの PQ の中点の軌跡
+_rnd22 = random.Random(2022)
+_bad22b = 0
+for _ in range(200_000):
+    _a = _rnd22.uniform(0.05, 8)
+    _b = 1 / (4 * _a)                      # ab = 1/4
+    _D = 1 + 4 * _a * _b
+    _al = (1 - math.sqrt(_D)) / (2 * _a)   # 負の解（P 側）
+    _be = (1 + math.sqrt(_D)) / (2 * _a)   # 正の解（Q 側）
+    _P = (_al, -1 / _al)
+    _Q = (_be, -1 / _be)
+    _R = (1 / _a, 0.0)
+    _S = (0.0, 1 / _b)
+    _M = ((_P[0] + _Q[0]) / 2, (_P[1] + _Q[1]) / 2)
+    if (abs(math.dist(_P, _Q) / math.dist(_R, _S) - math.sqrt(2)) > 1e-9
+            or abs(_M[0] * _M[1] - 1) > 1e-9
+            or abs(_M[0] - 1 / (2 * _a)) > 1e-9 or abs(_M[1] - 1 / (2 * _b)) > 1e-9):
+        _bad22b += 1
+ok("京大文22-4 軌跡は xy = 1 の x>0 の部分", _bad22b == 0,
+   f"ab=1/4 の20万組で不一致 {_bad22b} 件")
+
+# 第5問：内積の表から座標を作って PG を調べる
+_G22 = [[16.0, 8.0, 8.0], [8.0, 9.0, 6.0], [8.0, 6.0, 12.0]]
+
+
+def _chol22(M):
+    """3×3 のコレスキー分解。行ベクトルがそのまま a, b, c の座標になる。"""
+    L = [[0.0] * 3 for _ in range(3)]
+    for i in range(3):
+        for j in range(i + 1):
+            t = M[i][j] - sum(L[i][k] * L[j][k] for k in range(j))
+            L[i][j] = math.sqrt(t) if i == j else t / L[j][j]
+    return L
+
+
+_L22 = _chol22(_G22)
+_a22, _b22, _c22 = _L22[0], _L22[1], _L22[2]
+_sub = lambda u, v: [u[i] - v[i] for i in range(3)]
+_nrm = lambda u: math.sqrt(sum(x * x for x in u))
+_det22 = (_a22[0] * (_b22[1] * _c22[2] - _b22[2] * _c22[1])
+          - _a22[1] * (_b22[0] * _c22[2] - _b22[2] * _c22[0])
+          + _a22[2] * (_b22[0] * _c22[1] - _b22[1] * _c22[0]))
+_best22 = (9.0, None)
+_perp22b = 0.0
+for _i in range(400_001):
+    _s = _i / 400_000
+    _OP = [(1 - _s) * _b22[k] + _s * _c22[k] for k in range(3)]
+    _Gp = [(_a22[k] + _OP[k]) / 3 for k in range(3)]
+    _PG = _sub(_Gp, _OP)
+    _perp22b = max(_perp22b, abs(sum(_PG[k] * _a22[k] for k in range(3))))
+    _d = _nrm(_PG)
+    if _d < _best22[0]:
+        _best22 = (_d, _s)
+ok("京大文22-5 PG⊥OA、PG の最小は 4/3",
+   abs(_nrm(_a22) - 4) < 1e-9 and abs(_nrm(_b22) - 3) < 1e-9
+   and abs(_nrm(_c22) - 2 * math.sqrt(3)) < 1e-9
+   and abs(_nrm(_sub(_b22, _a22)) - 3) < 1e-9
+   and abs(_nrm(_sub(_c22, _b22)) - 3) < 1e-9
+   and abs(_nrm(_sub(_c22, _a22)) - 2 * math.sqrt(3)) < 1e-9
+   and abs(_det22) / 6 > 1e-6                       # つぶれていない
+   and _perp22b < 1e-9 and abs(_best22[0] - 4 / 3) < 1e-6,
+   f"体積 {abs(_det22) / 6:.6f}、PG 最小 {_best22[0]:.9f}（s={_best22[1]:.6f}）")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
