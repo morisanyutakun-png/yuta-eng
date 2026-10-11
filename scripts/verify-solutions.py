@@ -10,6 +10,7 @@
 模試の見本問題（assets/moshi-sample/moshi-sample.tex）も、ここで同じように確かめる。
 公開する以上、解説と同じ基準で確かめておく。
 """
+import random
 import itertools
 import math
 from fractions import Fraction
@@ -2880,6 +2881,91 @@ ok("東大文22-4(2) N=98・表90回の確率は 31³/2⁸⁶",
    math.comb(32, 2) == 496 and math.comb(32, 2) ** 3 == 122023936
    and Fraction(496 ** 3, 2 ** 98) == Fraction(31 ** 3, 2 ** 86) == Fraction(29791, 2 ** 86),
    f"496³ = {math.comb(32, 2) ** 3}")
+
+# ---------------------------------------------------------------- 東大文系2021
+# 第1問：y = ax^3 - 2x と単位円の共有点が6個になる a の範囲
+def _circle21(a, n=400_000):
+    """単位円を角度で刻み、sinθ -(a cos³θ - 2cosθ) の符号変化で共有点を数える。"""
+    cnt = 0
+    prev = None
+    for i in range(n + 1):
+        th = 2 * math.pi * i / n
+        c, s_ = math.cos(th), math.sin(th)
+        v = s_ - (a * c ** 3 - 2 * c)
+        if prev is not None and (v == 0.0 or prev * v < 0):
+            cnt += 1
+        prev = v
+    return cnt
+
+
+ok("東大文21-1 共有点6個の境目は 50/27 と 2",
+   _circle21(50 / 27 - 0.01) == 2 and _circle21(50 / 27 + 0.001) == 6
+   and _circle21(1.9) == 6 and _circle21(2.0) == 2 and _circle21(2.1) == 2,
+   f"50/27 = {50 / 27:.6f}")
+_ext21 = []
+for _a in (1.8, 1.9, 2.1):
+    _g = lambda t, a=_a: a * a * t ** 3 - 4 * a * t * t + 5 * t
+    _ext21.append(abs(_g(1 / _a) - 2 / _a) < 1e-12 and abs(_g(5 / (3 * _a)) - 50 / (27 * _a)) < 1e-12)
+ok("東大文21-1 g(t) の極大 2/a・極小 50/(27a)", all(_ext21),
+   f"a=1.9 で極大 {1.9 ** 2 * (1 / 1.9) ** 3 - 4 * 1.9 * (1 / 1.9) ** 2 + 5 / 1.9:.6f}")
+
+# 第2問：1 を含む N 個の選び方のうち、条件1・条件2 をみたすものの個数
+def _count21(N):
+    c1 = c2 = 0
+    for rest in itertools.combinations(range(2, 2 * N + 1), N - 1):
+        S = (1,) + rest
+        st = set(S)
+        if not any(x + 1 in st for x in S):
+            c1 += 1
+        if any(all(l + i in st for i in range(N - 2)) for l in range(1, N + 4)):
+            c2 += 1
+    return c1, c2
+
+
+_res21 = [_count21(N) for N in (5, 6, 7, 8, 9)]
+ok("東大文21-2(1) 条件1をみたす選び方は N 通り",
+   all(c1 == N for (c1, _), N in zip(_res21, (5, 6, 7, 8, 9))),
+   f"N=5..9 で {[c[0] for c in _res21]}")
+ok("東大文21-2(2) 条件2をみたす選び方は (N+1)(3N+2)/2 通り",
+   all(c2 == (N + 1) * (3 * N + 2) // 2 for (_, c2), N in zip(_res21, (5, 6, 7, 8, 9))),
+   f"N=5..9 で {[c[1] for c in _res21]}")
+
+# 第3問：2x^2+ax+b=0 の解の配置と、放物線の通過範囲
+_rnd21b = random.Random(20210303)
+_bad21 = 0
+for _ in range(200_000):
+    _a, _b = _rnd21b.uniform(-4, 4), _rnd21b.uniform(-4, 1)
+    _D = _a * _a - 8 * _b
+    _direct = False
+    if _D > 0:
+        _r1 = (-_a - math.sqrt(_D)) / 4
+        _r2 = (-_a + math.sqrt(_D)) / 4
+        _direct = -1 < _r1 < 0 and 0 < _r2 < 1
+    if _direct != (abs(_a) - 2 < _b < 0):
+        _bad21 += 1
+ok("東大文21-3(1) (a,b) の範囲は |a|-2 < b < 0", _bad21 == 0,
+   f"解を直接求めた判定との不一致 {_bad21} 件／20万点")
+_bad21b = 0
+for _ in range(60_000):
+    _x, _y = _rnd21b.uniform(-3, 3), _rnd21b.uniform(-6, 14)
+    _got = False
+    for _i in range(4001):  # a を動かして (a,b) が三角形の内部に入るか総当たり
+        _a = -2 + 4 * _i / 4000
+        _b = _y - _x * _x - _a * _x
+        if abs(_a) - 2 < _b < 0:
+            _got = True
+            break
+    _pred = _x * _x - 2 * max(1.0, abs(_x)) < _y < _x * _x + 2 * abs(_x)
+    if _pred != _got and min(abs(_y - (_x * _x + 2 * abs(_x))),
+                             abs(_y - (_x * _x - 2 * max(1.0, abs(_x))))) > 0.01:
+        _bad21b += 1
+ok("東大文21-3(2) 通過範囲は x²-2max(1,|x|) < y < x²+2|x|", _bad21b == 0,
+   f"総当たりとの不一致（境界から0.01以上離れた点）{_bad21b} 件／6万点")
+
+# 第4問は理科第4問と同じ問題。2021C37 ≡ 3 (mod 4) をもう一度だけ確かめておく。
+ok("東大文21-4 2021C37 を 4 で割った余りは 3（理科第4問と同じ問題）",
+   math.comb(2021, 37) % 4 == 3 and math.comb(505, 9) % 4 == 3 and math.comb(126, 2) % 4 == 3,
+   f"126C2 = {math.comb(126, 2)}")
 
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
