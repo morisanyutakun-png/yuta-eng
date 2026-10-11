@@ -1623,6 +1623,158 @@ ok("東大理5 c_n = 4c_(n-1) - 2c_(n-2)（未公開・記録のみ）",
    all(_c[n] == 4*_c[n-1] - 2*_c[n-2] for n in range(4, 9)),
    f"c_2..c_8 = {[_c[n] for n in range(2, 9)]}")
 
+# ── 東大理系2024 ─────────────────────────────────────────
+# 1 … 角の条件を arccos で直接判定したものと、答えの不等式が一致するか
+def t24_direct(x, y):
+    r = math.hypot(x, y)
+    if r < 1e-15:
+        return False
+    a1 = math.acos(max(-1, min(1, (-y) / (math.sqrt(2) * r))))
+    nb = math.sqrt(x * x + (y + 1) ** 2 + 1)
+    a2 = math.acos(max(-1, min(1, (y + 2) / (math.sqrt(2) * nb))))
+    return a1 >= 2 * math.pi / 3 - 1e-12 and a2 <= math.pi / 6 + 1e-12
+
+
+def t24_claim(x, y):
+    if abs(x) < 1e-15 and abs(y) < 1e-15:
+        return False
+    return x * x + (y - 1) ** 2 / 3 <= 1 + 1e-12 and y >= abs(x) - 1e-12
+
+bad = 0
+for i in range(601):
+    x = -1.6 + i * 3.2 / 600
+    for k in range(601):
+        y = -1.2 + k * 4.4 / 600
+        if t24_direct(x, y) != t24_claim(x, y):
+            # 境界の刻み幅ぶんの食い違いは数えない
+            if min(abs(x * x + (y - 1) ** 2 / 3 - 1), abs(y - abs(x))) > 5e-3 and math.hypot(x, y) > 5e-3:
+                bad += 1
+ok("東大理24-1 領域は 楕円かつ y≧|x|（原点を除く）", bad == 0, f"食い違い {bad} 点")
+ok("東大理24-1 (1,1) で両方の角がちょうど等号",
+   abs((-1) / 2 + 0.5) < 1e-12 and abs(3 / (math.sqrt(6) * math.sqrt(2)) - math.sqrt(3) / 2) < 1e-12)
+
+# 2 … f を数値積分し、f'=2arctan x - π/4 と最大最小を別経路で
+def t24_f(x):
+    g = lambda t: abs(t - x) / (1 + t * t)
+    return quad(g, 0.0, x, 2001)[0] + quad(g, x, 1.0, 2001)[0]
+
+ok("東大理24-2(1) f'(tanα)=2α-π/4（数値微分と一致）",
+   all(abs((t24_f(v + 1e-5) - t24_f(v - 1e-5)) / 2e-5 - (2 * math.atan(v) - math.pi / 4)) < 1e-6
+       for v in (0.2, 0.5, 0.8)))
+ok("東大理24-2(2) tan(π/8)=√2-1", abs(math.tan(math.pi / 8) - (math.sqrt(2) - 1)) < 1e-12)
+_g = [(t24_f(i / 800), i / 800) for i in range(801)]
+_mn, _amn = min(_g)
+_mx, _amx = max(_g)
+ok("東大理24-2(3) 最小は log((1+√2)/2)",
+   abs(_mn - math.log((1 + math.sqrt(2)) / 2)) < 1e-6 and abs(_amn - (math.sqrt(2) - 1)) < 2e-3,
+   f"格子 {_mn:.8f} at {_amn}")
+ok("東大理24-2(3) 最大は π/4-½log2（x=1）",
+   abs(_mx - (math.pi / 4 - 0.5 * math.log(2))) < 1e-6 and abs(_amx - 1.0) < 1e-9)
+
+# 3 … 8点の上の推移を分数のまま追う
+_pts = [(2, 1), (2, -1), (-2, 1), (-2, -1), (1, 2), (1, -2), (-1, 2), (-1, -2)]
+_ix = {p: i for i, p in enumerate(_pts)}
+_mv = [(lambda a, b: (a, -b), Fraction(1, 3)), (lambda a, b: (-a, b), Fraction(1, 3)),
+       (lambda a, b: (b, a), Fraction(1, 6)), (lambda a, b: (-b, -a), Fraction(1, 6))]
+_v = [Fraction(0)] * 8
+_v[_ix[(2, 1)]] = Fraction(1)
+_sym = _fit = True
+for n in range(1, 15):
+    _w = [Fraction(0)] * 8
+    for i, p in enumerate(_pts):
+        if _v[i]:
+            for fn, pr in _mv:
+                _w[_ix[fn(*p)]] += _v[i] * pr
+    _v = _w
+    if _v[_ix[(2, 1)]] != _v[_ix[(-2, -1)]]:
+        _sym = False
+    _claim = Fraction(0) if n % 2 else Fraction(1, 4) * (1 + Fraction(1, 3 ** n))
+    if _v[_ix[(2, 1)]] != _claim:
+        _fit = False
+ok("東大理24-3(2) (2,1) と (-2,-1) の確率は n=1..14 で一致", _sym)
+ok("東大理24-3(3) p_n = (1/4)(1+1/3^n)（偶数）／0（奇数）", _fit)
+
+# 4 … 円の作り方を幾何に戻して確かめ、解の個数を数える
+_s2 = math.sqrt(2)
+_f4 = lambda x: -(_s2 / 4) * x * x + 4 * _s2
+_c4 = lambda t: t ** 3 / 4 - 3 * t
+_r4 = lambda t: t ** 6 / 16 - (15 / 8) * t ** 4 + 12 * t * t + 32
+ok("東大理24-4(1) 中心→接点 と 接線 が直交",
+   all(abs((t - _c4(t)) + (-(_s2 / 2) * t) * _f4(t)) < 1e-9 for t in (0.5, 1.0, 2.0, 3.0, 3.5, 3.9)))
+ok("東大理24-4(1) r^2 は中心と接点の距離の2乗",
+   all(abs((t - _c4(t)) ** 2 + _f4(t) ** 2 - _r4(t)) < 1e-9 for t in (0.5, 1.0, 2.0, 3.0, 3.5, 3.9)))
+ok("東大理24-4(1) r^2 = (t^2-16)^2(t^2+2)/16",
+   all(abs(_r4(t) - (t * t - 16) ** 2 * (t * t + 2) / 16) < 1e-9 for t in (0.5, 1.0, 2.0, 3.0, 3.5, 3.9)))
+_h4 = lambda t: -(3 / 8) * t ** 4 + (3 / 2) * t ** 3 + 3 * t * t - 18 * t + 23
+ok("東大理24-4(2) h(t)=r^2-(3-c)^2",
+   all(abs(_h4(t) - (_r4(t) - (3 - _c4(t)) ** 2)) < 1e-9 for t in (0.7, 1.9, 2.6, 3.4)))
+
+
+def _t24_count(a):
+    s = a * a
+    cnt = 0
+    prev = None
+    for i in range(1, 200000):
+        t = 4 * i / 200000
+        val = _h4(t) - s
+        if prev is not None and prev * val < 0:
+            cnt += 1
+        prev = val
+    return cnt
+
+ok("東大理24-4(2) a<√5 で1個", all(_t24_count(a) == 1 for a in (0.3, 1.0, 2.0, 2.23)))
+ok("東大理24-4(2) √5<a<7√2/4 で3個", all(_t24_count(a) == 3 for a in (2.24, 2.3, 2.4, 2.47)))
+ok("東大理24-4(2) a=√5 の解は t=2（重解）と t=2√3",
+   abs(_h4(2.0) - 5) < 1e-12 and abs(_h4(2 * math.sqrt(3)) - 5) < 1e-9)
+
+# 5 … 断面の半径を走査して面積を作り、体積を数値積分で
+def _t24_area(x, M=600):
+    k = 1 - x
+    zm = min(x, 1 - x)
+    if zm <= 0:
+        return 0.0
+    rs = [(k - zm * j / M) ** 2 + (zm * j / M) ** 2 for j in range(M + 1)]
+    return math.pi * (max(rs) - min(rs))
+
+_V = sum(_t24_area(i / 4000) for i in range(4001)) / 4000
+ok("東大理24-5 体積は π/9", abs(_V - math.pi / 9) < 1e-5, f"数値積分 {_V:.8f} / π/9 = {math.pi/9:.8f}")
+
+# 6 … 素数になる n を全探索
+def _isp(m):
+    if m < 2:
+        return False
+    if m % 2 == 0:
+        return m == 2
+    d = 3
+    while d * d <= m:
+        if m % d == 0:
+            return False
+        d += 2
+    return True
+
+ok("東大理24-6(1) n = -7, -3, 1",
+   [n for n in range(-400, 400) if _isp(n ** 3 + 10 * n * n + 20 * n)] == [-7, -3, 1])
+_worst = 0
+_three = 0
+for a in range(-120, 121):
+    for b in range(-120, 121):
+        cand = {1, -1}
+        for kk in (1, -1):
+            D = a * a - 4 * (b - kk)
+            if D >= 0:
+                rr = math.isqrt(D)
+                if rr * rr == D:
+                    for sg in (1, -1):
+                        num = -a + sg * rr
+                        if num % 2 == 0:
+                            cand.add(num // 2)
+        c = sum(1 for n in cand if _isp(n ** 3 + a * n * n + b * n))
+        _worst = max(_worst, c)
+        if c == 3:
+            _three += 1
+ok("東大理24-6(2) 素数になる n は高々3個（241^2 通りの (a,b) で確認）", _worst == 3,
+   f"最大 {_worst} 個／ちょうど3個になる組 {_three} 通り")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
