@@ -1970,6 +1970,287 @@ ok("東大理23-6(1) V = 20/3 + 2√3π/3", abs(_cv / _M23 * _vol23 - _V23) < 0.
 ok("東大理23-6(2) W = 20/3 + (8 + 2√3/3 - 9√2α)π", abs(_cw / _M23 * _vol23 - _W23) < 0.06,
    f"MC {_cw / _M23 * _vol23:.4f} / 式 {_W23:.4f}")
 
+# ── 東大理系2022 ─────────────────────────────────────────
+from math import comb as _comb22, gcd as _gcd22
+import itertools as _it22
+
+# 1 … f を数値積分で作り、その数値微分と f' の式を比べる
+_g22 = lambda t: math.cos(t) * math.log(math.cos(t))
+_f22 = lambda x: math.cos(x) * math.log(math.cos(x)) - math.cos(x) + (quad(_g22, 0.0, x, 2001)[0] if x > 0 else 0.0)
+ok("東大理22-1(1) f'(x) = log(cos x)(cos x - sin x)",
+   all(abs((_f22(v + 1e-6) - _f22(v - 1e-6)) / 2e-6 - math.log(math.cos(v)) * (math.cos(v) - math.sin(v))) < 1e-6
+       for v in (0.3, 0.7, 1.2)))
+_m22 = min((_f22(i * (math.pi / 2 - 1e-4) / 600), i * (math.pi / 2 - 1e-4) / 600) for i in range(601))
+_claim22 = math.log(1 + math.sqrt(2)) - math.sqrt(2) / 2 * math.log(2) - math.sqrt(2)
+ok("東大理22-1(2) 最小は log(1+√2) - (√2/2)log2 - √2",
+   abs(_m22[0] - _claim22) < 1e-6 and abs(_m22[1] - math.pi / 4) < 3e-3,
+   f"格子 {_m22[0]:.8f} at {_m22[1]:.5f} / 式 {_claim22:.8f}")
+
+# 2 … 多倍長整数でそのまま確かめる
+_a22 = [0, 1]
+for _ in range(15):
+    _a22.append(_a22[-1] ** 2 + 1)
+ok("東大理22-2(1) 3の倍数番目だけ5の倍数",
+   all(_a22[n] % 5 == 0 for n in (3, 6, 9, 12)) and all(_a22[n] % 5 != 0 for n in range(1, 13) if n % 3))
+ok("東大理22-2(2) a_n が a_k の倍数 ⟺ n が k の倍数",
+   all((_a22[n] % _a22[k] == 0) == (n % k == 0) for k in range(1, 13) for n in range(1, 13)))
+ok("東大理22-2(3) 25 で割った余りは 1,2,5 の繰り返し",
+   [_a22[n] % 25 for n in range(1, 13)] == [1, 2, 5] * 4)
+ok("東大理22-2(3) 最大公約数が3の組では a_m と a_n^2 の最大公約数は 5",
+   all(_gcd22(_a22[m], _a22[n] ** 2) == 5 for m, n in ((6, 9), (9, 6), (6, 15), (15, 6), (9, 12)))
+   and _gcd22(2022, 8091) == 3)
+
+# 3 … D を格子で走査して「十分離れている」点の面積を直接数える
+def _far22(S, T):
+    return abs(S[0] - T[0]) >= 1 or abs(S[1] - T[1]) >= 1
+
+
+def _area22(a, M=700):
+    pts = [(0, 0), (3, 0), (3, 3), (a, a * a)]
+    c = 0
+    for i in range(M):
+        x = 3 * (i + 0.5) / M
+        for j in range(M):
+            y = 3 * (j + 0.5) / M
+            if all(_far22((x, y), t) for t in pts):
+                c += 1
+    return c * 9 / M / M
+
+
+_fa22 = lambda a: a ** 3 - 2 * a * a - a + 5 if a <= math.sqrt(2) else 2 * a * a + a - 3
+# 格子の刻み幅ぶん（3/700 程度）の誤差は許す
+ok("東大理22-3(2) f(a) の式が格子での面積と一致",
+   all(abs(_area22(a) - _fa22(a)) < 0.02 for a in (1.0, 1.1, 1.3, math.sqrt(2), 1.5, 1.6, math.sqrt(3))))
+_mn22 = min((_fa22(1 + i * (math.sqrt(3) - 1) / 5000), 1 + i * (math.sqrt(3) - 1) / 5000) for i in range(5001))
+ok("東大理22-3(3) f の最小は a=√2", abs(_mn22[1] - math.sqrt(2)) < 1e-3 and abs(_mn22[0] - (math.sqrt(2) + 1)) < 1e-4,
+   f"最小 {_mn22[0]:.6f} at {_mn22[1]:.6f}")
+
+# 4 … 2つの面積を数値積分で比べ、領域の判定を傾きの全探索と照合
+def _two_areas22(m, n):
+    # x^3 + Px + Q = 0 の3実解を三角関数の公式で直接出す（符号変化を拾う方法だと
+    # n=0 のとき x=0 でちょうど 0 になり、根を1つ取りこぼす）
+    P = -(1 + m)
+    Q = -n
+    if 4 * P ** 3 + 27 * Q ** 2 >= 0:
+        return None
+    rr = 2 * math.sqrt(-P / 3)
+    ph = math.acos(max(-1.0, min(1.0, 3 * Q / (P * rr))))
+    xs = sorted(rr * math.cos((ph - 2 * math.pi * k) / 3) for k in range(3))
+    g = lambda t: (t ** 3 - t) - (m * t + n)
+    return quad(g, xs[0], xs[1], 2001)[0], -quad(g, xs[1], xs[2], 2001)[0]
+
+_eq22 = []
+for _m, _n in ((2.0, 0.0), (0.0, 0.0), (5.0, 0.0), (2.0, 0.3), (2.0, -0.5), (0.5, 0.1)):
+    _r = _two_areas22(_m, _n)
+    if _r:
+        _eq22.append((_n == 0.0, abs(_r[0] - _r[1]) < 1e-6))
+ok("東大理22-4(2) 2つの面積が等しい ⟺ 直線が原点を通る", all(a == b for a, b in _eq22), f"{_eq22}")
+
+
+def _brute22(X, Y):
+    for i in range(-20000, 20001):
+        m = i / 200
+        if abs(Y - m * X) < 1e-12 and 1 + m > 0:
+            return True
+    return False
+
+ok("東大理22-4(2) 領域は x(x+y)>0 と原点",
+   all((X * (X + Y) > 0 or (X == 0 and Y == 0)) == _brute22(X, Y)
+       for X in (-2, -1, 0, 1, 2) for Y in (-3, -1, 0, 1, 3)))
+
+# 5 … 断面積を作って数値積分
+def _sec22(z):
+    r1 = 2 - 2 * z
+    r2 = math.sqrt(max(0.0, 1 - z * z))
+    return math.pi * ((r1 + r2) ** 2 - (r1 - r2) ** 2)
+
+_V22 = quad(_sec22, 0.5, 1.0, 40001)[0]
+ok("東大理22-5 体積は 4π²/3 - 2√3π",
+   abs(_V22 - (4 * math.pi ** 2 / 3 - 2 * math.sqrt(3) * math.pi)) < 1e-6,
+   f"数値積分 {_V22:.9f} / 式 {4 * math.pi ** 2 / 3 - 2 * math.sqrt(3) * math.pi:.9f}")
+
+# 6 … 2^N 通りの表裏をすべて並べて X_N を直接計算
+_v22 = [(math.cos(2 * k * math.pi / 3), math.sin(2 * k * math.pi / 3)) for k in range(3)]
+
+
+def _count22(N):
+    per = {}
+    for bits in _it22.product([0, 1], repeat=N):
+        k = 0
+        x = y = 0.0
+        r = 0
+        for b in bits:
+            if b:
+                x += _v22[k % 3][0]
+                y += _v22[k % 3][1]
+                r += 1
+            else:
+                k += 1
+        if abs(x) < 1e-9 and abs(y) < 1e-9:
+            per[r] = per.get(r, 0) + 1
+    return per
+
+_okall22 = True
+for _N in (8, 11, 14):
+    _per = _count22(_N)
+    _pred = {3 * s: _comb22((_N + 1) // 3 - 1, s) ** 3 for s in range((_N + 1) // 3)}
+    if _per != {k: v for k, v in _pred.items() if v}:
+        _okall22 = False
+ok("東大理22-6 場合の数は (C(n,s))^3（N=8,11,14 で全探索と一致）", _okall22)
+ok("東大理22-6(1) 確率は 5/128", Fraction(sum(_count22(8).values()), 2 ** 8) == Fraction(5, 128))
+ok("東大理22-6(2) C(66,s) の最大は s=33（r=99）",
+   max(range(67), key=lambda s: _comb22(66, s)) == 33)
+
+# ── 東大理系2021 ─────────────────────────────────────────
+from math import comb as _comb21
+
+# 1 … (a,b) を総当たりで探す判定と、答えの不等式を突き合わせる
+_tri21 = lambda a, b: b < 0 and b > a - 2 and b > -a - 2
+
+
+def _direct21(X, Y, N=1500):
+    for i in range(-N, N + 1):
+        a = 4 * i / N
+        if _tri21(a, Y - X * X - a * X):
+            return True
+    return False
+
+
+def _form21(X, Y):
+    up = X * X + 2 * abs(X)
+    lo = X * X - 2 * abs(X) if abs(X) >= 1 else X * X - 2
+    return lo < Y < up
+
+_bad21 = 0
+for _i in range(-40, 41):
+    X = _i / 15
+    for _j in range(-70, 110):
+        Y = _j / 15
+        if _direct21(X, Y) != _form21(X, Y):
+            up = X * X + 2 * abs(X)
+            lo = X * X - 2 * abs(X) if abs(X) >= 1 else X * X - 2
+            if min(abs(Y - up), abs(Y - lo)) > 0.03:
+                _bad21 += 1
+ok("東大理21-1(2) 通過範囲は x^2-2|x| 系と x^2+2|x| のあいだ", _bad21 == 0, f"食い違い {_bad21} 点")
+
+# 2 … 係数の式と f(2) の式を、ランダムな値で突き合わせる
+import random as _rnd21
+_rnd21.seed(21)
+
+
+def _coef21(al, be, ga):
+    return ((be - ga) + (be + ga - 2 * al) * 1j) / 2, (be + ga - 2 * al) * (1 - 1j) / 2, al
+
+_ok21 = True
+for _ in range(500):
+    _al = complex(_rnd21.uniform(-3, 3), _rnd21.uniform(-3, 3))
+    _be = complex(_rnd21.uniform(-3, 3), _rnd21.uniform(-3, 3))
+    _ga = complex(_rnd21.uniform(-3, 3), _rnd21.uniform(-3, 3))
+    _a, _b, _c = _coef21(_al, _be, _ga)
+    if (abs(_a * 0 + _b * 0 + _c - _al) > 1e-9 or abs(_a + _b + _c - _be) > 1e-9
+            or abs(_a * 1j * 1j + _b * 1j + _c - _ga) > 1e-9):
+        _ok21 = False
+ok("東大理21-2(1) a,b,c の式が f(0),f(1),f(i) を再現する", _ok21)
+
+_ok21 = True
+for _ in range(500):
+    _al, _be, _ga = [_rnd21.uniform(1, 2) for _ in range(3)]
+    _a, _b, _c = _coef21(_al, _be, _ga)
+    if abs(4 * _a + 2 * _b + _c - complex(3 * _be - _ga - _al, _be + _ga - 2 * _al)) > 1e-9:
+        _ok21 = False
+ok("東大理21-2(2) f(2) = (3β-γ-α)+(β+γ-2α)i", _ok21)
+
+_hex21 = lambda x, y, e=1e-9: (-2 - e <= x + y <= 5 + e) and (-1 - e <= 2 * x - y <= 7 + e) and (-3 - e <= x - 3 * y <= 6 + e)
+ok("東大理21-2(2) 立方体 [1,2]^3 の像は六角形に入る",
+   all(_hex21(3 * be - ga - al, be + ga - 2 * al)
+       for i in range(21) for j in range(21) for k in range(21)
+       for al, be, ga in [(1 + i / 20, 1 + j / 20, 1 + k / 20)]))
+_miss21 = 0
+for _i in range(-20, 81):
+    for _j in range(-40, 41):
+        x, y = _i / 20, _j / 20
+        if not _hex21(x, y, 0):
+            continue
+        # 3β-γ-α=x, β+γ-2α=y を α で解く（β=(x+y+3α)/4）
+        if not any(1 - 1e-9 <= (x + y + 3 * (1 + k / 400)) / 4 <= 2 + 1e-9
+                   and 1 - 1e-9 <= y + 2 * (1 + k / 400) - (x + y + 3 * (1 + k / 400)) / 4 <= 2 + 1e-9
+                   for k in range(401)):
+            _miss21 += 1
+ok("東大理21-2(2) 六角形の点はすべて実現される", _miss21 == 0, f"取りこぼし {_miss21}")
+
+# 3 … 接線と交点、定積分を数値で
+_f21 = lambda x: x / (x * x + 3)
+_g21 = lambda x: (x + 1) / 8
+ok("東大理21-3(1) f'(1)=1/8 と x=-3 が共有点",
+   abs((_f21(1 + 1e-7) - _f21(1 - 1e-7)) / 2e-7 - 0.125) < 1e-7 and abs(_f21(-3) - _g21(-3)) < 1e-15)
+_I21 = quad(lambda x: (_f21(x) - _g21(x)) ** 2, -3.0, 1.0, 120001)[0]
+_c21 = 5 * math.sqrt(3) / 24 * math.pi + math.log(3) / 8 - 7 / 6
+ok("東大理21-3(2) 積分は 5√3π/24 + log3/8 - 7/6", abs(_I21 - _c21) < 1e-9,
+   f"数値積分 {_I21:.10f} / 式 {_c21:.10f}")
+
+# 4 … 二項係数を多倍長整数で直接
+def _v2_21(n):
+    e = 0
+    while n % 2 == 0:
+        n //= 2
+        e += 1
+    return e
+
+ok("東大理21-4(2) A と B の2の指数が等しい（奇数 K,L が取れる）",
+   all(_v2_21(_comb21(4 * a + 1, 4 * b + 1)) == _v2_21(_comb21(a, b))
+       for a in range(2, 14) for b in range(1, a)))
+ok("東大理21-4(3) a-b が偶数なら 4 で割った余りが等しい",
+   all(_comb21(4 * a + 1, 4 * b + 1) % 4 == _comb21(a, b) % 4
+       for a in range(2, 16) for b in range(1, a) if (a - b) % 2 == 0))
+ok("東大理21-4(4) C(2021,37) を 4 で割った余りは 3",
+   _comb21(2021, 37) % 4 == 3 and _comb21(505, 9) % 4 == 3 and _comb21(126, 2) % 4 == 3)
+
+# 5 … f' の零点の個数と、最大の位置
+_F21 = lambda th, al: (th + math.sin(th) + al) ** 2 + (math.cos(th) + 3) ** 2
+
+
+def _argmax21(al, M=40000):
+    return max((_F21(math.pi * i / M, al), math.pi * i / M) for i in range(M + 1))[1]
+
+
+def _nzero21(al, M=40000):
+    c = 0
+    prev = None
+    for i in range(1, M):
+        th = math.pi * i / M
+        v = (_F21(th + 1e-7, al) - _F21(th - 1e-7, al)) / 2e-7
+        if prev is not None and prev * v < 0:
+            c += 1
+        prev = v
+    return c
+
+ok("東大理21-5(1) 0<θ<π に f'=0 がちょうど1つ", all(_nzero21(a) == 1 for a in (0.1, 0.3, 0.6, 1.0, 3.0)))
+ok("東大理21-5(2) 最大が π/2 より左にあるのは α < 2-π/2",
+   all((_argmax21(a) < math.pi / 2) == (a < 2 - math.pi / 2) for a in (0.1, 0.3, 0.42, 0.44, 0.6, 1.0, 3.0)),
+   f"2-π/2 = {2 - math.pi / 2:.5f}")
+
+# 6 … 有理数のまま p を探す
+def _fact21(a):
+    b = Fraction((a * a + 1) * (a + 2))
+    c = -Fraction(4 * a + 3, 4) * Fraction(a * a + 1)
+    for num in range(-120, 121):
+        for den in (1, 2, 3, 4):
+            p = Fraction(num, den)
+            if p == 0:
+                continue
+            if p ** 6 - 4 * c * p ** 2 - b ** 2 == 0:
+                return p, (p ** 3 - b) / (2 * p), (p ** 3 + b) / (2 * p)
+    return None
+
+ok("東大理21-6(3) 因数分解できる整数 a は 0 だけ",
+   [a for a in range(-12, 13) if _fact21(a)] == [0])
+ok("東大理21-6(3) a=0 の分解が合っている",
+   _fact21(0) == (Fraction(-1), Fraction(3, 2), Fraction(-1, 2)) or
+   _fact21(0) == (Fraction(1), Fraction(-1, 2), Fraction(3, 2)),
+   f"{_fact21(0)}")
+ok("東大理21-6(3) a^2+1 が平方数になる整数は 0 だけ",
+   [a for a in range(-1000, 1001) if math.isqrt(a * a + 1) ** 2 == a * a + 1] == [0])
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
