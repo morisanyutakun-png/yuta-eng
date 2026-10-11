@@ -21,6 +21,7 @@ import { todaiRikei2026 } from "@/lib/solutions/todai-rikei-2026";
 import { uec2026 } from "@/lib/solutions/uec-2026";
 import { tohokuRikei2026 } from "@/lib/solutions/tohoku-rikei-2026";
 import { tohokuBunkei2026 } from "@/lib/solutions/tohoku-bunkei-2026";
+import { todaiBunkei2025 } from "@/lib/solutions/todai-bunkei-2025";
 import { todaiBunkei2026 } from "@/lib/solutions/todai-bunkei-2026";
 import { sources } from "@/lib/solutions/sources";
 import type { Question, SolutionSet } from "@/lib/solutions/types";
@@ -43,6 +44,7 @@ const all: SolutionSet[] = [
   todaiRikei2020,
   todaiRikei2019,
   todaiBunkei2026,
+  todaiBunkei2025,
   kyodaiBunkei2026,
   kyodaiRikei2025,
   kyudaiRikei2026,

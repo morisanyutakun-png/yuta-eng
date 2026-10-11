@@ -2507,6 +2507,129 @@ for _ in range(1500):
         _bad19 += 1
 ok("東大理19-6 b=-a² と α+β が (x-1)²-y²=1 の上にある", _bad19 == 0, f"外れ {_bad19}")
 
+# ── 東大文系2025 ─────────────────────────────────────────
+from collections import defaultdict as _dd25
+import random as _rnd25
+
+# 1 … 法線のもう一方の交点を2回たどる
+_nx25 = lambda a: -a - 1 / (2 * a)
+_best25 = min((_nx25(_nx25(i * 4 / 200000)), i * 4 / 200000) for i in range(1, 200001))
+ok("東大文25-1(2) R の x 座標の最小は 5√2/4（a=1/√2）",
+   abs(_best25[0] - 5 * math.sqrt(2) / 4) < 1e-8 and abs(_best25[1] - 1 / math.sqrt(2)) < 1e-3,
+   f"{_best25[0]:.9f} at a={_best25[1]:.6f}")
+
+# 2 … 3頂点までの距離の最小を、辺の上と三角形の中で最大化する
+def _tri25(th):
+    h, m = math.cos(th / 2), math.sin(th / 2)
+    return (0.0, 0.0), (h, -m), (h, m)
+
+
+def _s_scan25(th, M=4000):
+    A, B, C = _tri25(th)
+    best = 0.0
+    for X, Y in ((A, B), (A, C), (B, C)):
+        for i in range(M + 1):
+            P = (X[0] + (Y[0] - X[0]) * i / M, X[1] + (Y[1] - X[1]) * i / M)
+            best = max(best, min(math.dist(P, Q) for Q in (A, B, C)))
+    return best
+
+
+def _t_scan25(th, M=260):
+    A, B, C = _tri25(th)
+    best = 0.0
+    for i in range(M + 1):
+        for j in range(M + 1 - i):
+            u, v = i / M, j / M
+            P = (A[0] + u * (B[0] - A[0]) + v * (C[0] - A[0]), A[1] + u * (B[1] - A[1]) + v * (C[1] - A[1]))
+            best = max(best, min(math.dist(P, Q) for Q in (A, B, C)))
+    return best
+
+
+def _s25(th):
+    if th <= math.pi / 3:
+        return 0.5
+    if th <= math.pi / 2:
+        return math.sin(th / 2)
+    return 1 / (2 * math.sin(th / 2))
+
+
+_t25 = lambda th: 1 / (2 * math.cos(th / 2)) if th <= math.pi / 2 else 1 / (2 * math.sin(th / 2))
+_ths25 = (math.pi / 6, math.pi / 3, 0.9, math.pi / 2, 2.0, 2 * math.pi / 3, 2.8, 3.0)
+ok("東大文25-2 s の式が辺の上の走査と一致",
+   all(abs(_s_scan25(th) - _s25(th)) < 2e-3 for th in _ths25))
+ok("東大文25-2 t の式が三角形の走査と一致",
+   all(abs(_t_scan25(th) - _t25(th)) < 6e-3 for th in _ths25))
+ok("東大文25-2(1)(2) θ=π/3 で s=1/2・t=√3/3、θ=2π/3 で s=t=√3/3",
+   abs(_s25(math.pi / 3) - 0.5) < 1e-12 and abs(_t25(math.pi / 3) - math.sqrt(3) / 3) < 1e-12
+   and abs(_s25(2 * math.pi / 3) - math.sqrt(3) / 3) < 1e-12
+   and abs(_t25(2 * math.pi / 3) - math.sqrt(3) / 3) < 1e-12)
+
+# 3 … 右端2個の色を状態として分数のまま推移させる
+def _sim25(n):
+    st = _dd25(Fraction)
+    st[("W", "W")] = Fraction(1)
+    for _ in range(n):
+        nx = _dd25(Fraction)
+        for (x, y), p in st.items():
+            for z in ("W", "B"):
+                if z != y and z == x:
+                    nx[(z, z)] += p / 2
+                else:
+                    nx[(y, z)] += p / 2
+        st = nx
+    return st
+
+_ok25a = _ok25b = True
+for n in range(1, 9):
+    st = _sim25(n)
+    A = sum(p for (x, _y), p in st.items() if x == "W")
+    P = st[("W", "W")]
+    if A != Fraction(1, 2) + Fraction(1, 2 ** n):
+        _ok25a = False
+    if P != Fraction(1, 3) + Fraction(1, 2 ** (n + 1)) + Fraction((-1) ** n, 3 * 2 ** (n + 1)):
+        _ok25b = False
+ok("東大文25-3(2) 右から2番目が白は 1/2 + 1/2^n", _ok25a)
+ok("東大文25-3(3) 右から1,2番目がともに白の式", _ok25b)
+ok("東大文25-3(1) n=3 で 5/8",
+   sum(p for (x, _y), p in _sim25(3).items() if x == "W") == Fraction(5, 8))
+
+# 手順をそのまま回すシミュレーションでも
+_rnd25.seed(25)
+_c25 = _cc25 = 0
+_M25 = 120000
+for _ in range(_M25):
+    row = ["W", "W"]
+    for _ in range(3):
+        z = _rnd25.choice("WB")
+        row.append(z)
+        if z != row[-2] and z == row[-3]:
+            row[-2] = z
+    if row[-2] == "W":
+        _c25 += 1
+    if row[-1] == "W" and row[-2] == "W":
+        _cc25 += 1
+ok("東大文25-3 手順をそのまま回した結果とも合う（n=3）",
+   abs(_c25 / _M25 - 0.625) < 0.01 and abs(_cc25 / _M25 - 0.375) < 0.01,
+   f"{_c25 / _M25:.5f}, {_cc25 / _M25:.5f}")
+
+# 4 … S(a) を数値積分して最大を探す
+def _S25(a, M=30000):
+    tot = 0.0
+    for i in range(M):
+        x = -1 + 2 * (i + 0.5) / M
+        hi = -0.5 * x * x + 2
+        lo = abs(x * x + a)
+        if hi > lo:
+            tot += hi - lo
+    return tot * 2 / M
+
+_bm25 = max((_S25(-2 + 4 * i / 4000, 3000), -2 + 4 * i / 4000) for i in range(4000))
+ok("東大文25-4 S の最大は 19/6（a=-1/4）",
+   abs(_bm25[0] - 19 / 6) < 2e-3 and abs(_bm25[1] + 0.25) < 2e-3,
+   f"{_bm25[0]:.6f} at a={_bm25[1]:.5f}")
+ok("東大文25-4 S(0)=3, S(-1)=7/3, S(-2)=1/3",
+   abs(_S25(0.0) - 3) < 1e-4 and abs(_S25(-1.0) - 7 / 3) < 1e-4 and abs(_S25(-2.0) - 1 / 3) < 1e-4)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
