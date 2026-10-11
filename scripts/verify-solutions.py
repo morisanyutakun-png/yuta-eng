@@ -3780,6 +3780,126 @@ ok("京大文19-5 体積の最大は 64/81",
    abs(_best19[0] - 64 / 81) < 1e-9 and abs(_best19[1] - 1 / 3) < 1e-5,
    f"最大 {_best19[0]:.9f}（d={_best19[1]:.6f}）")
 
+# ---------------------------------------------------------------- 京大理系2024
+# 第1問：立方体の塗り分け（文系2024第2問と同じ設定）。p4 と n→∞ の極限
+_adjR = [(i, j) for i in range(6) for j in range(i + 1, 6)
+         if (i, j) not in ((0, 1), (2, 3), (4, 5))]
+_cntR = {}
+for _n in (4, 5, 6, 7):
+    _cntR[_n] = sum(1 for _c in itertools.product(range(_n), repeat=6)
+                    if all(_c[i] != _c[j] for i, j in _adjR))
+_permR = lambda n, k: math.perm(n, k) if k <= n else 0
+_pR = lambda n: (_permR(n, 3) + 3 * _permR(n, 4) + 3 * _permR(n, 5) + _permR(n, 6)) / n ** 6
+ok("京大理24-1 p4 = 3/128、lim p_n = 1",
+   Fraction(_cntR[4], 4 ** 6) == Fraction(3, 128)
+   and all(_cntR[n] == _permR(n, 3) + 3 * _permR(n, 4) + 3 * _permR(n, 5) + _permR(n, 6)
+           for n in _cntR)
+   and _pR(10) < _pR(100) < _pR(1000) < _pR(10 ** 5) < 1 and _pR(10 ** 5) > 0.9998,
+   f"全探索 n=4..7 で {[_cntR[n] for n in (4, 5, 6, 7)]}、p_(10^5) = {_pR(10 ** 5):.6f}")
+
+# 第2問：z = (x+y)/2 の動く範囲は中心 4+3i、半径 1/2〜5/2 の円環
+_rnd24k = random.Random(2024)
+_out24 = 0
+for _ in range(300_000):
+    while True:
+        _ux, _uy = _rnd24k.uniform(-2, 2), _rnd24k.uniform(-2, 2)
+        if _ux * _ux + _uy * _uy <= 4:
+            break
+    _th = _rnd24k.uniform(0, 2 * math.pi)
+    _zx = (_ux + 8 + 3 * math.cos(_th)) / 2
+    _zy = (_uy + 6 + 3 * math.sin(_th)) / 2
+    _r = math.hypot(_zx - 4, _zy - 3)
+    if not (0.5 - 1e-9 <= _r <= 2.5 + 1e-9):
+        _out24 += 1
+ok("京大理24-2 円環 1/2 ≦ |z-(4+3i)| ≦ 5/2、面積 6π",
+   _out24 == 0 and abs(math.pi * 2.5 ** 2 - math.pi * 0.5 ** 2 - 6 * math.pi) < 1e-12,
+   f"30万組で範囲外 {_out24} 件、面積 {6 * math.pi:.6f}")
+
+# 第3問：直線 QY と PX がねじれの位置
+def _det3(u, v, w):
+    return (u[0] * (v[1] * w[2] - v[2] * w[1])
+            - u[1] * (v[0] * w[2] - v[2] * w[0])
+            + u[2] * (v[0] * w[1] - v[1] * w[0]))
+
+
+_bad24s = 0
+for _i in range(-20, 21):
+    for _j in range(-20, 21):
+        _x, _y = _i / 4, _j / 4
+        _PX = (-0.5, 0.0, _x)
+        _QY = (-0.5, 0.5 - _y, _y)
+        _PQ = (0.0, 0.5, 0.0)
+        if (abs(_det3(_PX, _QY, _PQ)) > 1e-12) != (_x != _y):
+            _bad24s += 1
+ok("京大理24-3 ねじれの位置 ⟺ x ≠ y", _bad24s == 0,
+   f"1681 組で不一致 {_bad24s} 件")
+
+# 第4問：a_{n+1} = a_n/2（偶）/ (3a_n+1)/2（奇）
+def _step24(x):
+    return x // 2 if x % 2 == 0 else (3 * x + 1) // 2
+
+
+def _oddrun24(a0):
+    k = 0
+    x = a0
+    while x % 2 == 1:
+        k += 1
+        x = _step24(x)
+    return k
+
+
+ok("京大理24-4 最小は 15 と 2047（= 2⁴-1, 2¹¹-1）",
+   min(a for a in range(1, 100_000) if _oddrun24(a) >= 4) == 15
+   and min(a for a in range(1, 100_000) if _oddrun24(a) >= 11) == 2047
+   and 2 ** 4 - 1 == 15 and 2 ** 11 - 1 == 2047,
+   "a_0 を 1..99999 で走査して確認")
+
+# 第5問：D_a の面積
+_sh24 = lambda x: (math.exp(x) - math.exp(-x)) / 2
+_ch24 = lambda x: (math.exp(x) + math.exp(-x)) / 2
+
+
+def _Snum24(a, N=1_000_000):
+    b = math.log(a + math.sqrt(a * a + 1))
+    s = 0.0
+    for i in range(N):
+        x = b * (i + 0.5) / N
+        top = min(_ch24(x), a)
+        bot = _sh24(x)
+        if top > bot:
+            s += (top - bot) * b / N
+    return s
+
+
+def _Spred24(a):
+    return (1 + math.sqrt(a * a - 1) - math.sqrt(a * a + 1)
+            + a * math.log((a + math.sqrt(a * a + 1)) / (a + math.sqrt(a * a - 1))))
+
+
+ok("京大理24-5 S_a の式と lim S_a = 1",
+   all(abs(_Snum24(a) - _Spred24(a)) < 1e-6 for a in (1.0, 1.5, 2.0, 5.0, 20.0))
+   and abs(_Spred24(10 ** 8) - 1) < 1e-8 and _Spred24(100) < 1,
+   f"a=2 で {_Spred24(2.0):.9f}、a=10⁸ で {_Spred24(10 ** 8):.9f}")
+
+# 第6問：2^√k の桁数と最高位
+_c24 = math.log(10) / math.log(2)
+
+
+def _NL24(n):
+    lo = ((n - 1) * _c24) ** 2
+    hi = (n * _c24) ** 2
+    hi1 = ((n - 1) * _c24 + 1) ** 2
+    rng = range(max(1, math.floor(lo) - 2), math.ceil(hi) + 3)
+    return (sum(1 for k in rng if lo <= k < hi), sum(1 for k in rng if lo <= k < hi1))
+
+
+_rat24 = [(_NL24(n)[1] / _NL24(n)[0]) for n in (10, 50, 200, 1000, 5000)]
+ok("京大理24-6 極限は log10(2)",
+   all(abs(r - math.log10(2)) < 0.012 for r in _rat24)
+   and abs(_rat24[-1] - math.log10(2)) < 2e-5
+   and all(_rat24[i] < _rat24[i + 1] for i in range(len(_rat24) - 1)),
+   f"n=10,50,200,1000,5000 で {[round(r, 5) for r in _rat24]}（log10 2 = {math.log10(2):.5f}）")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
