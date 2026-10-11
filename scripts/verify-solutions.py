@@ -3611,6 +3611,84 @@ ok("京大文21-5 p 素数なら p⁴+14 は素数でない",
    and 3 ** 4 + 14 == 95 == 5 * 19,
    f"200未満の素数 {len(_ps21)} 個すべてで合成数")
 
+# ---------------------------------------------------------------- 京大文系2020
+# 第1問：C: y=|x|x-3x+1 と l: y=x-3
+_cv20 = lambda x: abs(x) * x - 3 * x + 1
+_ln20 = lambda x: x - 3
+_xb20 = -2 - 2 * math.sqrt(2)
+_n20k = 4_000_000
+_ar20 = 0.0
+for _i in range(_n20k):
+    _x = _xb20 + (2 - _xb20) * (_i + 0.5) / _n20k
+    _ar20 += (_cv20(_x) - _ln20(_x)) * (2 - _xb20) / _n20k
+ok("京大文20-1 a=-3、面積は (48+32√2)/3",
+   abs(_cv20(2) - _ln20(2)) < 1e-12 and abs(_cv20(_xb20) - _ln20(_xb20)) < 1e-12
+   and abs(_ar20 - (48 + 32 * math.sqrt(2)) / 3) < 1e-6,
+   f"数値積分 {_ar20:.9f}（厳密値 {(48 + 32 * math.sqrt(2)) / 3:.9f}）")
+
+# 第2問：y=x² と2点で直交する2次関数
+def _ortho20(p, q, r):
+    """共有点が2個あり、そのどちらでも接線が直交するか。"""
+    A, B, C = 1 - p, -q, -r
+    if abs(A) < 1e-12:
+        return False
+    D = B * B - 4 * A * C
+    if D <= 1e-9:
+        return False
+    ts = ((-B - math.sqrt(D)) / (2 * A), (-B + math.sqrt(D)) / (2 * A))
+    return all(abs(2 * t * (2 * p * t + q) + 1) < 1e-7 for t in ts)
+
+
+ok("京大文20-2 2つの族（q=0,p<0,r=(p-1)/(4p)）と（p=-1,r=1/2,q 任意）",
+   all(_ortho20(p, 0, (p - 1) / (4 * p)) for p in (-0.25, -0.5, -1, -2, -5))
+   and all(_ortho20(-1, q, 0.5) for q in (0, 0.5, 2, -3))
+   and not any(_ortho20(p, q, r) for p, q, r in
+               ((-1, 2, 0.4), (0.5, 0, -0.25), (-2, 1, 0.375), (2, 0, 0.125))),
+   "条件を外した4例ではいずれも成り立たない")
+
+# 第3問：f(m,n) = mn²+am²+n²+8 が 16 で割り切れる (m,n) の存在条件
+_exist20 = {}
+for _a in range(1, 32, 2):
+    _exist20[_a] = any((m * n * n + _a * m * m + n * n + 8) % 16 == 0
+                       for m in range(32) for n in range(32))
+ok("京大文20-3 条件は a ≡ 3 (mod 4)",
+   all(_exist20[a] == (a % 4 == 3) for a in _exist20)
+   and all((2 * 4 + a * 4 + 4 + 8) % 16 == 0 for a in _exist20 if a % 4 == 3),
+   f"解をもつ a は {[a for a in sorted(_exist20) if _exist20[a]]}")
+
+# 第4問：単位球面上の4点
+_k20 = (3 * math.sqrt(2) - math.sqrt(6)) / 8
+_a20v = (0.5, math.sqrt(3) / 2, 0.0)
+_b20v = (-0.5, math.sqrt(3) / 2, 0.0)
+_c20v = (0.0, -1 / math.sqrt(2), 1 / math.sqrt(2))
+_d20v = (0.0, 2 * _k20 / math.sqrt(3), 1 / math.sqrt(2) + 2 * _k20 / math.sqrt(3))
+_dt = lambda u, v: sum(u[i] * v[i] for i in range(3))
+ok("京大文20-4 k = (3√2-√6)/8",
+   all(abs(_dt(v, v) - 1) < 1e-12 for v in (_a20v, _b20v, _c20v, _d20v))
+   and abs(_dt(_a20v, _b20v) - 0.5) < 1e-12 and abs(_dt(_c20v, _d20v) - 0.5) < 1e-12
+   and abs(_dt(_a20v, _c20v) + math.sqrt(6) / 4) < 1e-12
+   and abs(_dt(_b20v, _c20v) + math.sqrt(6) / 4) < 1e-12
+   and abs(_dt(_a20v, _d20v) - _k20) < 1e-12 and abs(_dt(_b20v, _d20v) - _k20) < 1e-12
+   and abs(16 * _k20 ** 2 + 4 * math.sqrt(6) * _k20 - 3) < 1e-12,
+   f"k = {_k20:.9f}")
+
+# 第5問：4×4 のラテン方陣
+_rows20 = list(itertools.permutations(range(4)))
+_lat20 = 0
+for _r1 in _rows20:
+    for _r2 in _rows20:
+        if any(_r1[j] == _r2[j] for j in range(4)):
+            continue
+        for _r3 in _rows20:
+            if any(_r3[j] in (_r1[j], _r2[j]) for j in range(4)):
+                continue
+            for _r4 in _rows20:
+                if any(_r4[j] in (_r1[j], _r2[j], _r3[j]) for j in range(4)):
+                    continue
+                _lat20 += 1
+ok("京大文20-5 入れ方は 576 通り", _lat20 == 576 and 24 * 24 == 576,
+   f"全探索 {_lat20} 通り（1行目固定で 24 通り × 4! = 576）")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

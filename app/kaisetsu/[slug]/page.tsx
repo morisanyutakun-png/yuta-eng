@@ -100,16 +100,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { u, sets, total, span } = m;
   const title = `${subject(u)} 過去問の解答・解説｜${span}`;
   // description は検索結果にそのまま出る。160字を超えると途中で切られるので、
-  // 年度が増えても伸びない書き方にする（3年度以上なら区分・日程は落として年度だけ並べる）。
-  const yearList =
+  // 年度が増えても**伸びない**書き方にする。年度を並べると1年ごとに5字ずつ増えて
+  // いつか必ず溢れるので、並べるのは2年度までにし、それより多いときは span に任せる。
+  const yrs = sets.map((s) => s.year);
+  const consecutive = yrs.length === Math.max(...yrs) - Math.min(...yrs) + 1;
+  const coverage =
     sets.length <= 2
-      ? sets.map((s) => `${s.year}年度（${s.division}・${s.schedule}）`).join("、")
-      : `${sets.map((s) => s.year).join("・")}年度`;
+      ? `収録年度は${sets.map((s) => `${s.year}年度（${s.division}・${s.schedule}）`).join("、")}。`
+      : consecutive
+        ? ""
+        : `収録しているのは${span}のうち${sets.length}年度ぶんです。`;
   // 公式の公開先がない大学で「公式ページへリンク」と書くと、ないものを案内することになる。
   const hasOfficial = sets.some((s) => s.source?.kind === "official");
   const description =
     `${u.university}${u.course ? `（${u.course}）` : ""}の数学の過去問について、当サイトが独自に解いた解答・計算過程・詳解・別解。` +
-    `${span}の全${total}問を大問ごとに掲載しています。収録年度は${yearList}。` +
+    `${span}の全${total}問を大問ごとに掲載しています。${coverage}` +
     (hasOfficial
       ? `問題文は載せず、${u.university}公式の問題公開ページへリンクしています。公式解答ではありません。`
       : "問題文は載せていません。公式解答ではありません。");
