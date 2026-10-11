@@ -4066,6 +4066,113 @@ ok("京大理22-6 x_n - y_n = n(n-1)/2",
    and all(round(_x22[n]) % 3 == (1 if n % 3 == 0 else 0) for n in range(1, 16)),
    f"x_n-y_n（n=1..12）= {[round(_x22[n] - _y22(n)) for n in range(1, 13)]}")
 
+# ---------------------------------------------------------------- 京大理系2021
+# 第1問 問1：平面 2x-2y+z=2 に関する P(1,1,1) の対称点
+_n21r = (2.0, -2.0, 1.0)
+_P21 = (1.0, 1.0, 1.0)
+_Q21 = (13 / 9, 5 / 9, 11 / 9)
+_M21 = tuple((_P21[i] + _Q21[i]) / 2 for i in range(3))
+_cross21r = lambda u, v: (u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2],
+                          u[0] * v[1] - u[1] * v[0])
+_PQ21 = tuple(_Q21[i] - _P21[i] for i in range(3))
+ok("京大理21-1問1 Q = (13/9, 5/9, 11/9)",
+   abs(sum(_n21r[i] * _M21[i] for i in range(3)) - 2) < 1e-12
+   and all(abs(c) < 1e-12 for c in _cross21r(_PQ21, _n21r)),
+   f"中点 {tuple(round(v, 6) for v in _M21)} が平面上、PQ ∥ 法線")
+
+# 第1問 問2：n 回目に初めて赤で、4色そろう
+_ok21p = True
+for _n in range(4, 9):
+    _c = sum(1 for s_ in itertools.product("RWBY", repeat=_n)
+             if s_[-1] == "R" and "R" not in s_[:-1] and set(s_[:-1]) == {"W", "B", "Y"})
+    if Fraction(_c, 4 ** _n) != Fraction(3 ** (_n - 1) - 3 * 2 ** (_n - 1) + 3, 4 ** _n):
+        _ok21p = False
+ok("京大理21-1問2 (3^{n-1}-3·2^{n-1}+3)/4^n", _ok21p, "n=4..8 を全探索で確認")
+
+# 第2問：接線と x 軸の交点までの距離の最小
+def _L21(p):
+    return math.hypot(p - (p * p - 1) / (2 * p), (p * p + 1) / 2)
+
+
+_best21r = (9.0, None)
+for _i in range(1, 2_000_000):
+    _p = _i / 2_000_000 * 3
+    _v = _L21(_p)
+    if _v < _best21r[0]:
+        _best21r = (_v, _p)
+ok("京大理21-2 L の最小は 3√3/4",
+   abs(_best21r[0] - 3 * math.sqrt(3) / 4) < 1e-7
+   and abs(_best21r[1] - 1 / math.sqrt(2)) < 1e-4,
+   f"最小 {_best21r[0]:.9f}（p={_best21r[1]:.6f}、1/√2 = {1 / math.sqrt(2):.6f}）")
+
+# 第3問：Σ (1/2)^n cos(nπ/6)
+_S21 = sum((0.5) ** n * math.cos(n * math.pi / 6) for n in range(400))
+ok("京大理21-3 和は (14+3√3)/13",
+   abs(_S21 - (14 + 3 * math.sqrt(3)) / 13) < 1e-12,
+   f"部分和 {_S21:.12f}（厳密値 {(14 + 3 * math.sqrt(3)) / 13:.12f}）")
+
+# 第4問：y=log(1+cos x) の 0≦x≦π/2 の弧長
+_len21 = 0.0
+_n21l = 2_000_000
+for _i in range(_n21l):
+    _x = (math.pi / 2) * (_i + 0.5) / _n21l
+    _yp = -math.sin(_x) / (1 + math.cos(_x))
+    _len21 += math.sqrt(1 + _yp * _yp) * (math.pi / 2) / _n21l
+ok("京大理21-4 弧長は 2log(1+√2)",
+   abs(_len21 - 2 * math.log(1 + math.sqrt(2))) < 1e-6,
+   f"数値積分 {_len21:.9f}（厳密値 {2 * math.log(1 + math.sqrt(2)):.9f}）")
+
+# 第5問：外心と垂心の軌跡
+_B21 = (-math.sqrt(3), -1.0)
+_C21 = (math.sqrt(3), -1.0)
+_bad21h = 0
+_ys21 = []
+for _i in range(1, 2000):
+    _th = math.pi * _i / 2000
+    _A21 = (2 * math.cos(_th), 2 * math.sin(_th))
+    if _A21[1] <= 0:
+        continue
+    _u = (_B21[0] - _A21[0], _B21[1] - _A21[1])
+    _v = (_C21[0] - _A21[0], _C21[1] - _A21[1])
+    _ang = math.degrees(math.acos((_u[0] * _v[0] + _u[1] * _v[1])
+                                  / math.hypot(*_u) / math.hypot(*_v)))
+    _H = (_A21[0] + _B21[0] + _C21[0], _A21[1] + _B21[1] + _C21[1])
+    _ys21.append(_H[1])
+    if abs(_ang - 60) > 1e-6 or abs(_H[0] ** 2 + (_H[1] + 2) ** 2 - 4) > 1e-9:
+        _bad21h += 1
+ok("京大理21-5 外心は原点、垂心の軌跡は x²+(y+2)²=4 の y>-2 の部分",
+   _bad21h == 0 and min(_ys21) > -2 and max(_ys21) <= 1e-12,
+   f"2000点で不一致 {_bad21h} 件、H の y は {min(_ys21):.6f} 〜 {max(_ys21):.6f}")
+
+# 第6問 問1：3^n-2^n が素数なら n も素数
+def _isp21(m):
+    if m < 2:
+        return False
+    for d in range(2, int(m ** 0.5) + 1):
+        if m % d == 0:
+            return False
+    return True
+
+
+_pr21 = [n for n in range(2, 41) if _isp21(3 ** n - 2 ** n)]
+ok("京大理21-6問1 3ⁿ-2ⁿ が素数なら n も素数",
+   all(_isp21(n) for n in _pr21) and _pr21 == [2, 3, 5, 17, 29, 31],
+   f"n≦40 で素数になるのは {_pr21}")
+
+# 第6問 問2：f(a)=af(1) なら原点を通る接線がある
+_rnd21r = random.Random(2021)
+_bad21t = 0
+for _ in range(2000):
+    _a = _rnd21r.uniform(1.2, 4)
+    _c1, _c2 = _rnd21r.uniform(-3, 3), _rnd21r.uniform(-3, 3)
+    _c0 = _c2 * (_a - _a * _a) / (1 - _a)          # f(a)=a f(1) となるように
+    _g = lambda x: (_c0 + _c1 * x + _c2 * x * x) - x * (_c1 + 2 * _c2 * x)
+    if not any(_g(1 + (_a - 1) * k / 2000) * _g(1 + (_a - 1) * (k + 1) / 2000) <= 0
+               for k in range(2000)):
+        _bad21t += 1
+ok("京大理21-6問2 (1,a) に f(t)=t f'(t) の解がある", _bad21t == 0,
+   f"2次式 2000 個で反例 {_bad21t} 件")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
