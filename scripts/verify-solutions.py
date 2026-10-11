@@ -3520,6 +3520,97 @@ ok("京大文22-5 PG⊥OA、PG の最小は 4/3",
    and _perp22b < 1e-9 and abs(_best22[0] - 4 / 3) < 1e-6,
    f"体積 {abs(_det22) / 6:.6f}、PG 最小 {_best22[0]:.9f}（s={_best22[1]:.6f}）")
 
+# ---------------------------------------------------------------- 京大文系2021
+# 第1問 問1：6.75 と 101.0101(2) の積を2進法・4進法で
+_pr21 = Fraction(27, 4) * (Fraction(85, 16))     # 6.75 × 101.0101(2)
+_bin21 = 0b100011 + Fraction(55, 64)
+_quad21 = 2 * 16 + 0 * 4 + 3 + Fraction(3, 4) + Fraction(1, 16) + Fraction(3, 64)
+ok("京大文21-1問1 積は 100011.110111(2) = 203.313(4)",
+   _pr21 == Fraction(2295, 64) and _bin21 == _pr21 and _quad21 == _pr21
+   and Fraction(6) + Fraction(3, 4) == Fraction(4 + 2) + Fraction(1, 2) + Fraction(1, 4),
+   f"積 = {_pr21} = {float(_pr21)}")
+
+# 第1問 問2：垂心
+_A21 = (3.0, 0.0)
+_B21 = (2 * math.cos(math.radians(60)), 2 * math.sin(math.radians(60)))
+_H21 = (_A21[0] / 9 + 2 * _B21[0] / 3, _A21[1] / 9 + 2 * _B21[1] / 3)
+_dot = lambda u, v: u[0] * v[0] + u[1] * v[1]
+ok("京大文21-1問2 OH = OA/9 + 2OB/3",
+   abs(math.hypot(*_A21) - 3) < 1e-12 and abs(math.hypot(*_B21) - 2) < 1e-12
+   and abs(_dot(_A21, _B21) - 3) < 1e-12
+   and abs(_dot((_H21[0] - _A21[0], _H21[1] - _A21[1]), _B21)) < 1e-12
+   and abs(_dot((_H21[0] - _B21[0], _H21[1] - _B21[1]), _A21)) < 1e-12,
+   f"H = ({_H21[0]:.9f}, {_H21[1]:.9f})")
+
+# 第2問：絶対値つきの定積分
+_n21 = 4_000_000
+_s21 = 0.0
+for _i in range(_n21):
+    _x = -1 + 2 * (_i + 0.5) / _n21
+    _s21 += abs(_x * _x - _x / 2 - 0.5) * 2 / _n21
+ok("京大文21-2 定積分は 19/24", abs(_s21 - 19 / 24) < 1e-7,
+   f"数値積分 {_s21:.9f}（19/24 = {19 / 24:.9f}）")
+
+# 第3問：箱の玉の受け渡し
+def _balls21(n, trials, seed):
+    rnd = random.Random(seed)
+    hit = 0
+    for _ in range(trials):
+        boxes = [["R", "W"] for _ in range(n)]
+        for k in range(n - 1):
+            b = rnd.choice(boxes[k])
+            boxes[k].remove(b)
+            boxes[k + 1].append(b)
+        b = rnd.choice(boxes[n - 1])
+        boxes[n - 1].remove(b)
+        boxes[0].append(b)
+        if sorted(boxes[0]) == ["R", "W"]:
+            hit += 1
+    return hit / trials
+
+
+_sim21 = [(n, _balls21(n, 400_000, 21), 0.5 + 0.5 / 3 ** (n - 1)) for n in (2, 3, 4, 5)]
+ok("京大文21-3 確率は 1/2 + 1/(2·3^{n-1})",
+   all(abs(got - pred) < 0.004 for _, got, pred in _sim21),
+   "、".join(f"n={n}: {got:.5f}/{pred:.5f}" for n, got, pred in _sim21))
+
+# 第4問：四角形 OPFQ の面積
+_cross21 = lambda u, v: (u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2],
+                         u[0] * v[1] - u[1] * v[0])
+_best21b = (9.0, None)
+_coplanar21 = 0.0
+for _i in range(300_001):
+    _p = 3 * _i / 300_000
+    _q = 3 - _p
+    _OP = (1.0, 0.0, _p)
+    _OQ = (0.0, 2.0, _q)
+    _coplanar21 = max(_coplanar21, abs(sum(a * b for a, b in zip(_cross21(_OP, _OQ), (1, 2, 3)))))
+    _S = math.sqrt(sum(x * x for x in _cross21(_OP, _OQ)))
+    if _S < _best21b[0]:
+        _best21b = (_S, _p)
+ok("京大文21-4 P(1,0,3/5)、Q(0,2,12/5)、S = 2√70/5",
+   _coplanar21 < 1e-9                                   # O,P,F,Q が同一平面
+   and abs(_best21b[0] - 2 * math.sqrt(70) / 5) < 1e-6
+   and abs(_best21b[1] - 0.6) < 1e-4,
+   f"S 最小 {_best21b[0]:.9f}（p={_best21b[1]:.6f}）")
+
+# 第5問：p 素数なら p^4+14 は素数でない
+def _isprime21(m):
+    if m < 2:
+        return False
+    for d in range(2, int(m ** 0.5) + 1):
+        if m % d == 0:
+            return False
+    return True
+
+
+_ps21 = [p for p in range(2, 200) if _isprime21(p)]
+ok("京大文21-5 p 素数なら p⁴+14 は素数でない",
+   not any(_isprime21(p ** 4 + 14) for p in _ps21)
+   and all((p ** 4 + 14) % 3 == 0 for p in _ps21 if p != 3)
+   and 3 ** 4 + 14 == 95 == 5 * 19,
+   f"200未満の素数 {len(_ps21)} 個すべてで合成数")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
