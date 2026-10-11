@@ -2251,6 +2251,136 @@ ok("東大理21-6(3) a=0 の分解が合っている",
 ok("東大理21-6(3) a^2+1 が平方数になる整数は 0 だけ",
    [a for a in range(-1000, 1001) if math.isqrt(a * a + 1) ** 2 == a * a + 1] == [0])
 
+# ── 東大理系2020 ─────────────────────────────────────────
+import itertools as _it20
+import random as _rnd20
+
+# 1 … 3式の解集合を直接作って下限を見る
+def _sol_inf20(a, b, c):
+    f = lambda x: (a * x * x + b * x + c > 0) and (b * x * x + c * x + a > 0) and (c * x * x + a * x + b > 0)
+    xs = [i / 200 - 5 for i in range(2001) if f(i / 200 - 5)]
+    return min(xs) if xs else None
+
+_rnd20.seed(20)
+ok("東大理20-1(2) a,b,c がすべて正なら x=-1000 も解",
+   all((lambda a, b, c: (a * 1e6 - b * 1000 + c > 0) and (b * 1e6 - c * 1000 + a > 0) and (c * 1e6 - a * 1000 + b > 0))(
+       *[_rnd20.uniform(0.1, 3) for _ in range(3)]) for _ in range(300)))
+_bad20 = 0
+for _ in range(400):
+    v = [_rnd20.uniform(0, 3) for _ in range(3)]
+    for i in _rnd20.sample(range(3), _rnd20.choice([1, 2])):
+        v[i] = 0.0
+    m = _sol_inf20(*v)
+    if m is not None and abs(m) > 0.011:
+        _bad20 += 1
+ok("東大理20-1(3) 1つ以上が0なら解集合の下限は 0（p=0）", _bad20 == 0, f"外れ {_bad20}")
+
+# 2 … 三角形を1つ固定して格子で面積を数える
+_A20, _B20, _C20 = (0.0, 0.0), (1.0, 0.0), (0.0, 2.0)
+_tri20 = lambda P, Q, R: abs((Q[0] - P[0]) * (R[1] - P[1]) - (Q[1] - P[1]) * (R[0] - P[0])) / 2
+_S20 = lambda X: _tri20(_A20, _B20, X) + _tri20(_B20, _C20, X) + _tri20(_C20, _A20, X)
+
+
+def _area20(pred, M=700, lo=-4.0, hi=5.0):
+    c = 0
+    for i in range(M):
+        x = lo + (hi - lo) * (i + 0.5) / M
+        for j in range(M):
+            y = lo + (hi - lo) * (j + 0.5) / M
+            if pred((x, y)):
+                c += 1
+    return c * (hi - lo) ** 2 / M / M
+
+ok("東大理20-2 △ABC = 1", abs(_tri20(_A20, _B20, _C20) - 1) < 1e-12)
+_a20 = _area20(lambda X: 2 <= _S20(X) <= 3)
+ok("東大理20-2 面積は 15/2", abs(_a20 - 7.5) < 0.05, f"格子 {_a20:.4f}")
+ok("東大理20-2 S≦k の面積は (3k^2-1)/2",
+   all(abs(_area20(lambda X, k=k: _S20(X) <= k) - (3 * k * k - 1) / 2) < 0.05 for k in (1, 2, 3)))
+
+# 3 … 媒介変数から直接
+_X20 = lambda t: (1 + t) * math.sqrt(1 + t)
+_Y20 = lambda t: 3 * (1 + t) * math.sqrt(1 - t)
+_f20 = lambda t: math.hypot(_X20(t), _Y20(t))
+ok("東大理20-3(1) y/x は単調減少",
+   all(_Y20(t) / _X20(t) > _Y20(t + 1e-4) / _X20(t + 1e-4) for t in [-0.99 + i * 0.002 for i in range(990)]))
+_m20 = max((_f20(-1 + 2 * i / 50000), -1 + 2 * i / 50000) for i in range(50001))
+ok("東大理20-3(2) 最大は 3√6/2（t=1/2）",
+   abs(_m20[0] - 3 * math.sqrt(6) / 2) < 1e-7 and abs(_m20[1] - 0.5) < 1e-3,
+   f"{_m20[0]:.9f} at t={_m20[1]:.5f}")
+_D20 = quad(lambda t: _Y20(t) * 1.5 * math.sqrt(1 + t), -1.0, 1.0, 60001)[0]
+ok("東大理20-3(3) D の面積は 9π/4", abs(_D20 - 9 * math.pi / 4) < 1e-6,
+   f"数値積分 {_D20:.8f} / 9π/4 = {9 * math.pi / 4:.8f}")
+ok("東大理20-3(3) 掃過面積 = D + 27π/8 = 45π/8",
+   abs((9 * math.pi / 4 + 27 * math.pi / 8) - 45 * math.pi / 8) < 1e-12)
+
+# 4 … a_{n,k} を定義どおり数え上げる
+def _ank20(n, k):
+    return sum(2 ** sum(c) for c in _it20.combinations(range(n), k))
+
+ok("東大理20-4 a_4,3 = 120（問題文の例）", _ank20(4, 3) == 120)
+ok("東大理20-4(1) a_n,2 = (2^n-1)(2^n-2)/3",
+   all(_ank20(n, 2) == (2 ** n - 1) * (2 ** n - 2) // 3 for n in range(2, 12)))
+ok("東大理20-4(3) a_{n+1,k+1}/a_{n,k} = 2^k(2^{n+1}-1)/(2^{k+1}-1)",
+   all(Fraction(_ank20(n + 1, k + 1), _ank20(n, k)) == Fraction(2 ** k * (2 ** (n + 1) - 1), 2 ** (k + 1) - 1)
+       for n in range(1, 9) for k in range(1, n + 1)))
+
+# 5 … 断面の形から体積を、モンテカルロで
+def _inU20(x, y, z):
+    if z < 0 or z > 2:
+        return False
+    lam = z / 2
+    cx = min(max(x, 0.0), lam)
+    return math.hypot(x - cx, y) <= 1 - lam
+
+_rnd20.seed(205)
+_cnt20 = 0
+_M20 = 400000
+for _ in range(_M20):
+    if _inU20(_rnd20.uniform(-1.1, 1.6), _rnd20.uniform(-1.1, 1.1), _rnd20.uniform(0, 2)):
+        _cnt20 += 1
+_v20 = _cnt20 / _M20 * 2.7 * 2.2 * 2
+ok("東大理20-5(2) 体積は 2(π+1)/3", abs(_v20 - 2 * (math.pi + 1) / 3) < 0.02,
+   f"MC {_v20:.5f} / 式 {2 * (math.pi + 1) / 3:.5f}")
+# 凸包の点が本当に線分 AP 上にあるか（S は円錐）
+# 円錐の判定には、半直線を刻んで探すぶんの余裕（1e-6）を持たせる
+_inS20 = lambda x, y, z: -1e-9 <= z <= 2 + 1e-9 and math.hypot(x, y) <= (2 - z) / 2 + 1e-6
+_bad5 = 0
+for _ in range(3000):
+    x, y, z = _rnd20.uniform(-1.1, 1.6), _rnd20.uniform(-1.1, 1.1), _rnd20.uniform(0, 2)
+    if not _inU20(x, y, z):
+        continue
+    if not any(_inS20(1 + (x - 1) * 4000 / i, y * 4000 / i, 2 + (z - 2) * 4000 / i) for i in range(1, 4001)):
+        _bad5 += 1
+ok("東大理20-5(2) 断面の式で入る点は線分 AP 上にある", _bad5 == 0, f"外れ {_bad5}")
+
+# 6 … 解の個数を直接数える
+def _n20(s, q, M=200000):
+    F = lambda th: math.sin(th) * math.cos(th) - s * math.sin(th) + q * math.cos(th)
+    vs = [F(2 * math.pi * i / M) for i in range(M)]
+    c = 0
+    for i in range(M):
+        a, b = vs[i], vs[(i + 1) % M]
+        if a == 0.0 or a * b < 0:
+            c += 1
+    return c
+
+_rnd20.seed(206)
+_in20 = []
+for _ in range(25):
+    d = _rnd20.uniform(0, 0.4995)
+    th = _rnd20.uniform(0, 2 * math.pi)
+    _in20.append(_n20(d * math.cos(th), d * math.sin(th)))
+ok("東大理20-6(2) 距離 < 1/2 ならつねに4個以上", all(c >= 4 for c in _in20), f"{sorted(set(_in20))}")
+_out20 = sum(1 for _ in range(25)
+             if _n20(*(lambda d, th: (d * math.cos(th), d * math.sin(th)))(
+                 _rnd20.uniform(0.52, 0.8), _rnd20.uniform(0, 2 * math.pi))) < 4)
+ok("東大理20-6(2) 距離 > 1/2 では4個未満になる点がある", _out20 > 0, f"25点中 {_out20} 点")
+_c20 = 1 / (2 * math.sqrt(2))
+ok("東大理20-6(2) c=1/(2√2) で c+√(c²+1)=√2（境目）",
+   abs(_c20 + math.sqrt(_c20 * _c20 + 1) - math.sqrt(2)) < 1e-12 and abs(math.sqrt(2) * _c20 - 0.5) < 1e-12)
+ok("東大理20-6(2) 縮閉線上で √(2x²+y²) の最小は 1/2",
+   abs(min(math.hypot(math.cos(u) ** 3, math.sin(u) ** 3) for u in [i * math.pi / 2 / 20000 for i in range(20001)]) - 0.5) < 1e-9)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

@@ -157,6 +157,11 @@ export const sources: Record<string, Record<number, Source>> = {
       checked: "2026-10-11",
       note: "東京大学は年度によらず入試問題そのものを公開していない。2022〜2024年度ぶんと同じ確認。",
     },
+    2020: {
+      kind: "none",
+      checked: "2026-10-11",
+      note: "東京大学は年度によらず入試問題そのものを公開していない。2021〜2024年度ぶんと同じ確認。",
+    },
   },
   "todai-bunkei": {
     2026: {
