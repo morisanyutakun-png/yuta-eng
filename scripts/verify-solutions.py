@@ -3689,6 +3689,97 @@ for _r1 in _rows20:
 ok("京大文20-5 入れ方は 576 通り", _lat20 == 576 and 24 * 24 == 576,
    f"全探索 {_lat20} 通り（1行目固定で 24 通り × 4! = 576）")
 
+# ---------------------------------------------------------------- 京大文系2019
+# 第1問 問1：多項式の割り算
+def _pmul19(A, B):
+    C = [0] * (len(A) + len(B) - 1)
+    for i, x in enumerate(A):
+        for j, y in enumerate(B):
+            C[i + j] += x * y
+    return C
+
+
+_got19 = _pmul19([1, 1, 1, 1], [1, 1, 1])        # (x³+x²+x+1)(x²+x+1)、x^0 から
+_got19 = [_got19[i] + ([1, 1][i] if i < 2 else 0) for i in range(len(_got19))]
+ok("京大文19-1問1 a=3、Q=x²+x+1、R=x+1",
+   _got19 == [2, 3, 3, 3, 2, 1],
+   f"展開した係数（x⁰から） {_got19}")
+
+# 第1問 問2：8.94^18 の桁数と上2桁
+_v19 = Fraction(894, 100) ** 18
+_i19 = _v19.numerator // _v19.denominator
+ok("京大文19-1問2 18桁で上2桁は 13",
+   len(str(_i19)) == 18 and str(_i19)[:2] == "13"
+   and 80 ** 9 == 134217728 * 10 ** 9
+   and 0.98875 * 1.34217728e17 > 1.3e17,
+   f"8.94^18 の整数部分 = {_i19}")
+
+# 第2問：f(x)=x²+2(ax+b|x|) の最小値
+def _m19(a, b, N=400_000):
+    best = float("inf")
+    for i in range(N + 1):
+        x = -20 + 40 * i / N
+        best = min(best, x * x + 2 * (a * x + b * abs(x)))
+    return best
+
+
+def _mpred19(a, b):
+    if a <= -b:
+        return -((a + b) ** 2)
+    if a >= b:
+        return -((a - b) ** 2)
+    return 0.0
+
+
+ok("京大文19-2 m は -(a+b)² / 0 / -(a-b)² の3通り",
+   all(abs(_m19(a, b) - _mpred19(a, b)) < 1e-5
+       for b in (1.0, 2.5)
+       for a in (-5.0, -b - 0.3, -b, -0.5, 0.0, 0.5, b, b + 0.3, 5.0)),
+   "b=1, 2.5 について a を9通りで確認")
+
+# 第3問：「すべての b に対し、ある x で ax²+bx+c<0」
+def _exists19(a, b, c):
+    xs = [0.0] + ([-b / (2 * a)] if a != 0 else [])
+    xs += [10.0 ** e for e in range(13)] + [-(10.0 ** e) for e in range(13)]
+    return any(a * x * x + b * x + c < 0 for x in xs)
+
+
+def _prop19(a, c):
+    return all(_exists19(a, b, c) for b in (i / 20 for i in range(-400, 401)))
+
+
+_cases19 = ((1, 1), (1, -1), (-1, 1), (-1, -1), (0, 1), (0, -1), (0, 0), (2, 0),
+            (0.5, 0.0001), (-0.0001, 5), (-5, 1e-9), (1e-9, -1e-9), (3, 2),
+            (0, -0.001), (0.001, 0))
+ok("京大文19-3 条件は「a<0 または c<0」",
+   all(_prop19(a, c) == (a < 0 or c < 0) for a, c in _cases19),
+   f"{len(_cases19)} 通りの (a,c) で一致")
+
+# 第4問：低→高の切り替わりがちょうど1回
+def _cross19(n):
+    tot = Fraction(0)
+    for bits in itertools.product((0, 1), repeat=n):   # 1 が「5以上」
+        seq = (0,) + bits
+        if sum(1 for k in range(1, n + 1) if seq[k - 1] == 0 and seq[k] == 1) == 1:
+            tot += Fraction(1, 3) ** sum(bits) * Fraction(2, 3) ** (n - sum(bits))
+    return tot
+
+
+ok("京大文19-4 確率は ((n-1)2ⁿ+1)/3ⁿ",
+   all(_cross19(n) == Fraction((n - 1) * 2 ** n + 1, 3 ** n) for n in range(1, 13)),
+   "n=1..12 を全探索で確認（1/3, 5/9, 17/27, 49/81, 43/81, …）")
+
+# 第5問：球に内接する四角錐の体積
+_best19 = (0.0, None)
+for _i in range(1_000_000):
+    _d = _i / 1_000_000
+    _V = (2 / 3) * (1 - _d * _d) * (1 + _d)
+    if _V > _best19[0]:
+        _best19 = (_V, _d)
+ok("京大文19-5 体積の最大は 64/81",
+   abs(_best19[0] - 64 / 81) < 1e-9 and abs(_best19[1] - 1 / 3) < 1e-5,
+   f"最大 {_best19[0]:.9f}（d={_best19[1]:.6f}）")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
