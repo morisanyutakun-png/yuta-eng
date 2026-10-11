@@ -30,11 +30,11 @@ export function DeleteApplicant({ id, name }: { id: string; name: string }) {
             if (!r.ok) setError(r.error);
           });
         }}
-        className="min-h-9 border border-rule px-2.5 text-[0.74rem] font-semibold text-accent transition-colors hover:border-accent/50 hover:bg-accent-bg disabled:opacity-50"
+        className="min-h-9 border border-rule px-2.5 text-[0.8rem] font-semibold text-accent transition-colors hover:border-accent/50 hover:bg-accent-bg disabled:opacity-50"
       >
         {pending ? "消しています…" : "取り消す"}
       </button>
-      {error && <span className="ml-2 block pt-1 text-[0.72rem] text-accent">{error}</span>}
+      {error && <span className="ml-2 block pt-1 text-[0.75rem] text-accent">{error}</span>}
     </span>
   );
 }
@@ -61,7 +61,7 @@ export function TogglePaid({ id, paid }: { id: string; paid: boolean }) {
             if (!r.ok) setError(r.error);
           });
         }}
-        className={`min-h-9 border px-2.5 text-[0.74rem] font-semibold transition-colors disabled:opacity-50 ${
+        className={`min-h-9 border px-2.5 text-[0.8rem] font-semibold transition-colors disabled:opacity-50 ${
           paid
             ? "border-navy/35 bg-navy/5 text-navy hover:bg-navy/10"
             : "border-rule text-ink-2 hover:border-navy/40 hover:text-navy"
@@ -69,7 +69,7 @@ export function TogglePaid({ id, paid }: { id: string; paid: boolean }) {
       >
         {pending ? "…" : paid ? "入金済み" : "未入金にする→済"}
       </button>
-      {error && <span className="ml-2 block pt-1 text-[0.72rem] text-accent">{error}</span>}
+      {error && <span className="ml-2 block pt-1 text-[0.75rem] text-accent">{error}</span>}
     </span>
   );
 }

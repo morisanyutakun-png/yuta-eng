@@ -33,14 +33,14 @@ function BookRow({ book }: { book: Book }) {
         <Cover book={book} />
       </div>
       <div className="flex min-w-0 flex-1 flex-col">
-        <p className="serif text-[0.95rem] leading-snug text-ink">{book.title}</p>
-        {meta && <p className="mt-1 text-[0.75rem] text-ink-3">{meta}</p>}
+        <p className="serif text-[0.97rem] leading-snug text-ink">{book.title}</p>
+        {meta && <p className="mt-1 text-[0.8rem] text-ink-3">{meta}</p>}
         {sample && (
           <a
             href={sample.pdf}
             target="_blank"
             rel="noopener"
-            className="mt-1 inline-block text-[0.75rem] font-semibold text-navy underline underline-offset-4"
+            className="mt-1 inline-block text-[0.8rem] font-semibold text-navy underline underline-offset-4"
           >
             試し読み（抜粋{sample.pages.length}ページ・PDF）
           </a>
@@ -49,7 +49,7 @@ function BookRow({ book }: { book: Book }) {
           href={book.amazonUrl}
           rel="noopener nofollow sponsored"
           target="_blank"
-          className="mt-auto flex min-h-11 items-center justify-center gap-1.5 rounded-[4px] bg-[#ffa41c] px-4 text-[0.9rem] font-bold text-[#111] transition-colors hover:bg-[#ffb454]"
+          className="mt-auto flex min-h-11 items-center justify-center gap-1.5 rounded-[4px] bg-[#ffa41c] px-4 text-[0.93rem] font-bold text-[#111] transition-colors hover:bg-[#ffb454]"
         >
           Amazonで見る
           <svg aria-hidden="true" viewBox="0 0 20 20" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2.2">
@@ -72,18 +72,18 @@ export function InlineCta({ u }: { u: University }) {
           <Cover book={book} priority />
         </div>
         <div className="min-w-0">
-          <p className="text-[0.68rem] font-bold tracking-wide text-accent">この分析からつくった問題集</p>
+          <p className="text-[0.75rem] font-bold tracking-wide text-accent">この分析からつくった問題集</p>
           <p className="serif mt-1 text-[1.02rem] leading-snug text-ink">
             {short}数学の予想問題を、採点基準つきで解く
           </p>
-          <p className="prose-ja mt-1.5 text-[0.8rem] text-ink-2">
+          <p className="prose-ja mt-1.5 text-[0.86rem] text-ink-2">
             本番形式の{book.rounds ? `全${book.rounds}回` : "予想問題"}。どこで何点入るかまで示してあります。
           </p>
           <a
             href={book.amazonUrl}
             rel="noopener nofollow sponsored"
             target="_blank"
-            className="mt-3 inline-flex min-h-10 items-center gap-1.5 rounded-[4px] bg-[#ffa41c] px-4 text-[0.85rem] font-bold text-[#111] transition-colors hover:bg-[#ffb454]"
+            className="mt-3 inline-flex min-h-10 items-center gap-1.5 rounded-[4px] bg-[#ffa41c] px-4 text-[0.86rem] font-bold text-[#111] transition-colors hover:bg-[#ffb454]"
           >
             Amazonで見る
             <svg aria-hidden="true" viewBox="0 0 20 20" className="size-3" fill="none" stroke="currentColor" strokeWidth="2.4">
@@ -102,11 +102,11 @@ export function BookCta({ u }: { u: University }) {
   const short = shortName(u);
   return (
     <section id="books" aria-labelledby="cta-heading" className="scroll-mt-20 border border-navy/25 bg-white p-5 sm:p-7">
-      <p className="text-[0.68rem] font-bold tracking-wide text-accent">{site.seriesName}</p>
+      <p className="text-[0.75rem] font-bold tracking-wide text-accent">{site.seriesName}</p>
       <h2 id="cta-heading" className="serif mt-1.5 text-[1.25rem] leading-snug text-ink sm:text-[1.4rem]">
         {short}数学の予想問題集
       </h2>
-      <p className="prose-ja mt-2.5 text-[0.9rem] text-ink-2">
+      <p className="prose-ja mt-2.5 text-[0.93rem] text-ink-2">
         このページの{years ? `${years}の` : ""}出題分析をもとに書き下ろした、{short}数学のオリジナル予想問題集です。本番と同じ形式の問題に加えて、
         <strong className="font-semibold text-ink">どこで何点入るかを示した採点基準</strong>
         {u.books.some((b) => b.altSolutions) ? "と別解" : ""}を収録しています。
@@ -129,8 +129,8 @@ export function BookCta({ u }: { u: University }) {
             },
           ].map((x) => (
             <div key={x.k} className="bg-white px-4 py-3.5">
-              <dt className="text-[0.85rem] font-semibold text-ink">{x.k}</dt>
-              <dd className="prose-ja mt-1.5 text-[0.82rem] leading-[1.9] text-ink-2">{x.v}</dd>
+              <dt className="text-[0.86rem] font-semibold text-ink">{x.k}</dt>
+              <dd className="prose-ja mt-1.5 text-[0.86rem] leading-[1.9] text-ink-2">{x.v}</dd>
             </div>
           ))}
         </dl>
@@ -140,7 +140,7 @@ export function BookCta({ u }: { u: University }) {
           <BookRow key={b.asin} book={b} />
         ))}
       </ul>
-      <p className="mt-5 border-t border-rule pt-3 text-[0.7rem] leading-relaxed text-ink-3">
+      <p className="mt-5 border-t border-rule pt-3 text-[0.75rem] leading-relaxed text-ink-3">
         非公式の自作教材です。{u.university}とは関係ありません。価格・在庫は Amazon の表示が優先されます。
       </p>
     </section>

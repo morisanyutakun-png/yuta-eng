@@ -179,7 +179,7 @@ export default async function UniversitySolutions({ params }: Props) {
         className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
         style={sectionStyle("kaisetsu")}
       >
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+        <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
           </Link>
@@ -209,7 +209,7 @@ export default async function UniversitySolutions({ params }: Props) {
                 {u.course && `・${u.course}`}
               </p>
               <h1 className="serif h-page mt-1.5 text-ink">{subject(u)} 過去問の解答・解説</h1>
-              <p className="prose-ja mt-4 max-w-[38rem] text-[0.92rem] leading-[1.95] text-ink-2">
+              <p className="prose-ja mt-4 max-w-[38rem] text-[0.93rem] leading-[1.95] text-ink-2">
                 {span}の全{total}問について、当サイトが独自に解いた解答・計算過程・詳解・別解を載せています。
                 {u.facts.examTime || u.facts.questions ? `${shortName(u)}の数学は${factsLine(u)}。` : ""}
                 方針を選ぶ理由、場合分けと端点の確認、答案で省略しない方がよい説明まで書いています。
@@ -224,7 +224,7 @@ export default async function UniversitySolutions({ params }: Props) {
             )}
           </div>
 
-          <p className="prose-ja mt-5 text-[0.82rem] leading-[1.9] text-ink-3">
+          <p className="prose-ja mt-5 text-[0.86rem] leading-[1.9] text-ink-3">
             {NOT_OFFICIAL}
             <Link href="/kaisetsu/policy" className="ml-1 text-navy underline underline-offset-4">
               掲載方針
@@ -244,14 +244,14 @@ export default async function UniversitySolutions({ params }: Props) {
                 {s.questions.map((q) => (
                   <li key={q.no}>
                     <Link href={questionPath(s, q.no)} className="group flex min-h-[3.4rem] items-center gap-3 py-3">
-                      <span className="serif flex size-7 shrink-0 items-center justify-center border border-accent/30 bg-accent-bg text-[0.84rem] tabular-nums text-accent">
+                      <span className="serif flex size-7 shrink-0 items-center justify-center border border-accent/30 bg-accent-bg text-[0.86rem] tabular-nums text-accent">
                         {q.no}
                       </span>
                       <span className="min-w-0 flex-1">
-                        <span className="block text-[0.94rem] font-semibold text-ink transition-colors group-hover:text-navy">
+                        <span className="block text-[0.97rem] font-semibold text-ink transition-colors group-hover:text-navy">
                           第{q.no}問　{q.field}
                         </span>
-                        <span className="mt-0.5 block truncate text-[0.73rem] text-ink-3">
+                        <span className="mt-0.5 block truncate text-[0.75rem] text-ink-3">
                           {q.topics.join("・")}
                         </span>
                       </span>
@@ -260,7 +260,7 @@ export default async function UniversitySolutions({ params }: Props) {
                   </li>
                 ))}
               </ul>
-              <p className="mt-2.5 text-[0.84rem]">
+              <p className="mt-2.5 text-[0.86rem]">
                 <Link href={setPath(s)} className="font-semibold text-navy underline underline-offset-4">
                   {s.year}年度をまとめて読む
                 </Link>
@@ -306,7 +306,7 @@ export default async function UniversitySolutions({ params }: Props) {
                     <span className="block text-[0.93rem] font-semibold text-ink transition-colors group-hover:text-navy">
                       {l.h}
                     </span>
-                    <span className="mt-1 block text-[0.82rem] leading-relaxed text-ink-3">{l.body}</span>
+                    <span className="mt-1 block text-[0.86rem] leading-relaxed text-ink-3">{l.body}</span>
                   </span>
                   <svg
                     aria-hidden="true"
@@ -331,7 +331,7 @@ export default async function UniversitySolutions({ params }: Props) {
           <dl className="mt-5 divide-y divide-rule border-y border-rule">
             {faq.map((f) => (
               <div key={f.q} className="py-4">
-                <dt className="flex gap-2.5 text-[0.92rem] font-semibold leading-relaxed text-ink">
+                <dt className="flex gap-2.5 text-[0.93rem] font-semibold leading-relaxed text-ink">
                   <span aria-hidden="true" className="serif shrink-0 text-[var(--sec)]">
                     Q.
                   </span>
@@ -341,7 +341,7 @@ export default async function UniversitySolutions({ params }: Props) {
                   <span aria-hidden="true" className="serif shrink-0 text-ink-3">
                     A.
                   </span>
-                  <span className="prose-ja text-[0.88rem] leading-[1.95] text-ink-2">{f.a}</span>
+                  <span className="prose-ja text-[0.93rem] leading-[1.95] text-ink-2">{f.a}</span>
                 </dd>
               </div>
             ))}

@@ -32,11 +32,11 @@ function Booklet({
   return (
     <div className="mt-8 first:mt-0">
       <h3 className="text-[1rem] font-semibold text-ink">{heading}</h3>
-      <p className="prose-ja mt-2 max-w-[42rem] text-[0.88rem] leading-[1.9] text-ink-2">{lead}</p>
+      <p className="prose-ja mt-2 max-w-[42rem] text-[0.93rem] leading-[1.9] text-ink-2">{lead}</p>
 
       <InfoDetails title="問題・解答・採点基準のページを開く">
         <SampleViewer pages={booklet.pages} title={title} />
-        <p className="prose-ja mt-3 text-[0.78rem] leading-[1.9] text-ink-3">{notice}</p>
+        <p className="prose-ja mt-3 text-[0.8rem] leading-[1.9] text-ink-3">{notice}</p>
       </InfoDetails>
 
       <p className="mt-4">
@@ -58,7 +58,7 @@ export function MoshiSample() {
 
   return (
     <div className="mt-6">
-      <p className="prose-ja border-l-2 border-rule pl-3 text-[0.8rem] leading-[1.9] text-ink-3">
+      <p className="prose-ja border-l-2 border-rule pl-3 text-[0.86rem] leading-[1.9] text-ink-3">
         全大学共通の架空サンプルです。実際の試験時間・大問数・配点は大学ごとに異なります。
       </p>
       <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-3 border-y border-rule py-3.5">
@@ -68,10 +68,10 @@ export function MoshiSample() {
           { k: "解答時間の目安", v: `${sampleMeta.minutes}分` },
         ].map((x) => (
           <div key={x.k}>
-            <dt className="text-[0.68rem] text-ink-3">{x.k}</dt>
-            <dd className="mt-0.5 text-[0.92rem] font-semibold text-ink">
+            <dt className="text-[0.75rem] text-ink-3">{x.k}</dt>
+            <dd className="mt-0.5 text-[0.93rem] font-semibold text-ink">
               {x.v}
-              {x.u && <span className="ml-1.5 text-[0.7rem] font-normal text-ink-3">{x.u}</span>}
+              {x.u && <span className="ml-1.5 text-[0.75rem] font-normal text-ink-3">{x.u}</span>}
             </dd>
           </div>
         ))}

@@ -28,7 +28,7 @@ export function ArticleLayout({
       className="mx-auto max-w-[38rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
       style={section ? sectionStyle(section) : undefined}
     >
-      <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+      <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
         {breadcrumb.map((b, i) => (
           <span key={b.label}>
             {i > 0 && <span className="mx-1.5 text-rule">／</span>}
@@ -70,7 +70,7 @@ export function AsideCard({
 }) {
   return (
     <section className={`border border-rule bg-white px-4 py-4 ${className}`}>
-      {title && <h2 className="text-[0.7rem] font-bold tracking-wide text-ink-3">{title}</h2>}
+      {title && <h2 className="text-[0.75rem] font-bold tracking-wide text-ink-3">{title}</h2>}
       <div className={title ? "mt-2.5" : ""}>{children}</div>
     </section>
   );

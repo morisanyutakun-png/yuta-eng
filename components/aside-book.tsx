@@ -30,7 +30,7 @@ export function AsideBook({
 }) {
   return (
     <AsideCard>
-      <p className="text-[0.66rem] font-bold tracking-wide text-accent">{eyebrow}</p>
+      <p className="text-[0.75rem] font-bold tracking-wide text-accent">{eyebrow}</p>
       <div className="mt-2 flex gap-3">
         <Image
           src={cover}
@@ -41,18 +41,18 @@ export function AsideBook({
           className="h-fit w-[88px] shrink-0 rounded-[2px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)]"
         />
         <div className="min-w-0">
-          <p className="serif text-[0.92rem] leading-snug text-ink">{title}</p>
-          {note && <p className="prose-ja mt-1 text-[0.72rem] text-ink-2">{note}</p>}
-          <p className="mt-1 text-[0.7rem] tabular-nums text-ink-3">
+          <p className="serif text-[0.93rem] leading-snug text-ink">{title}</p>
+          {note && <p className="prose-ja mt-1 text-[0.75rem] text-ink-2">{note}</p>}
+          <p className="mt-1 text-[0.75rem] tabular-nums text-ink-3">
             {[yen(book?.price), bookMetaLine(book)].filter(Boolean).join("・")}
           </p>
         </div>
       </div>
-      <AmazonButton href={href} className="mt-3 w-full !min-h-10 !text-[0.85rem]" />
+      <AmazonButton href={href} className="mt-3 w-full !min-h-10 !text-[0.86rem]" />
       {detail && (
         <Link
           href={detail.href}
-          className="mt-2 block text-center text-[0.78rem] font-semibold text-navy underline underline-offset-4"
+          className="mt-2 block text-center text-[0.8rem] font-semibold text-navy underline underline-offset-4"
         >
           {detail.label}
         </Link>

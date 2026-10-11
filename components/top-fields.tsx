@@ -13,7 +13,7 @@ export function TopFields() {
       <h2 id="top-fields" className="serif text-[1.05rem] text-ink">
         多くの大学で頻出になっている分野
       </h2>
-      <p className="prose-ja mt-1.5 text-[0.8rem] text-ink-3">
+      <p className="prose-ja mt-1.5 text-[0.86rem] text-ink-3">
         {/*
           各大学の表は上位の分野だけを挙げている。
           「出している大学の数」ではなく「頻出として挙がった大学の数」であることを明示する。
@@ -24,16 +24,16 @@ export function TopFields() {
       <ul className="mt-4 space-y-2">
         {items.map((it) => (
           <li key={it.name} className="flex items-center gap-2.5">
-            <span className="w-[7.5rem] shrink-0 truncate text-[0.8rem] text-ink sm:w-[10rem]">{it.name}</span>
+            <span className="w-[7.5rem] shrink-0 truncate text-[0.86rem] text-ink sm:w-[10rem]">{it.name}</span>
             <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-paper-2">
               <span
                 className="block h-full rounded-full bg-navy"
                 style={{ width: `${Math.round((it.universities / covered) * 100)}%` }}
               />
             </span>
-            <span className="serif w-11 shrink-0 text-right text-[0.9rem] tabular-nums text-navy">
+            <span className="serif w-11 shrink-0 text-right text-[0.93rem] tabular-nums text-navy">
               {it.universities}
-              <span className="ml-0.5 font-sans text-[0.62rem] font-normal text-ink-3">校</span>
+              <span className="ml-0.5 font-sans text-[0.75rem] font-normal text-ink-3">校</span>
             </span>
           </li>
         ))}

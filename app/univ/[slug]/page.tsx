@@ -235,7 +235,7 @@ export default async function UniversityPage({ params }: Props) {
         )}
 
         {u.lead.length > 0 && (
-          <div className="prose-ja mt-11 space-y-5 text-[0.95rem] text-ink-2">
+          <div className="prose-ja mt-11 space-y-5 text-[0.97rem] text-ink-2">
             <Blocks blocks={u.lead} />
           </div>
         )}
@@ -247,7 +247,7 @@ export default async function UniversityPage({ params }: Props) {
               <h2 className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
                 {cleanHeading(s.title)}
               </h2>
-              <div className="prose-ja mt-4 space-y-5 text-[0.95rem] text-ink-2">
+              <div className="prose-ja mt-4 space-y-5 text-[0.97rem] text-ink-2">
                 <Blocks blocks={s.blocks} />
               </div>
             </section>
@@ -281,17 +281,17 @@ export default async function UniversityPage({ params }: Props) {
                     href={`/univ/${s.slug}`}
                     className="flex min-h-12 items-center justify-between gap-3 py-3 transition-colors hover:text-navy"
                   >
-                    <span className="truncate text-[0.9rem] font-medium text-ink">
+                    <span className="truncate text-[0.93rem] font-medium text-ink">
                       {subject(s)}の傾向と対策
                     </span>
-                    <span className="shrink-0 text-[0.72rem] tabular-nums text-ink-3">
+                    <span className="shrink-0 text-[0.75rem] tabular-nums text-ink-3">
                       {factsLine(s) || s.university}
                     </span>
                   </Link>
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-[0.85rem]">
+            <p className="mt-4 text-[0.86rem]">
               <Link href="/universities" className="text-navy underline underline-offset-4">
                 {universityCount()}大学の分析をすべて見る
               </Link>

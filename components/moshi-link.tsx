@@ -32,7 +32,7 @@ export function MoshiLink({ slug }: { slug: string }) {
           <h2 id="moshi-link" className="serif mt-1.5 text-[1.15rem] leading-snug text-ink">
             {m.university} {m.exam}
           </h2>
-          <p className="prose-ja mt-2 text-[0.88rem] leading-[1.9] text-ink-2">
+          <p className="prose-ja mt-2 text-[0.93rem] leading-[1.9] text-ink-2">
             このページの分析をもとに、{m.university}の形式で作る大学別の数学模試を開きます。
             記述答案は人の手で採点し、講評と今後の学習の助言までお返しします。
             {roundLabel}。受験料は{priceLabel}です。
@@ -41,7 +41,7 @@ export function MoshiLink({ slug }: { slug: string }) {
             <Link href={moshiPath(m)} className="btn btn-primary">
               {bare}の模試を見る
             </Link>
-            <span className="text-[0.78rem] text-ink-3">見本問題と採点表を公開中</span>
+            <span className="text-[0.8rem] text-ink-3">見本問題と採点表を公開中</span>
           </p>
         </div>
       </div>

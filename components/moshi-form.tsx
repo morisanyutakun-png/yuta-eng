@@ -75,9 +75,9 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
   return (
     <form onSubmit={submit} className="mt-6">
       <fieldset className="border-0 p-0">
-        <legend className="text-[0.95rem] font-semibold text-ink">
+        <legend className="text-[0.97rem] font-semibold text-ink">
           参加を希望する模試
-          <span className="ml-2 text-[0.74rem] font-normal text-ink-2">複数選べます</span>
+          <span className="ml-2 text-[0.8rem] font-normal text-ink-2">複数選べます</span>
         </legend>
 
         {/*
@@ -103,8 +103,8 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
                     className="size-4 shrink-0 accent-[#1b3a63]"
                   />
                   <span className="min-w-0">
-                    <span className="block text-[0.85rem] font-semibold leading-snug text-ink sm:text-[0.93rem]">{u.university}</span>
-                    <span className="block text-[0.74rem] text-ink-2">{u.exam.replace(moshi.title, "").trim()}</span>
+                    <span className="block text-[0.86rem] font-semibold leading-snug text-ink sm:text-[0.93rem]">{u.university}</span>
+                    <span className="block text-[0.8rem] text-ink-2">{u.exam.replace(moshi.title, "").trim()}</span>
                   </span>
                 </label>
               </li>
@@ -115,7 +115,7 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
 
       <div className="mt-7 grid gap-5 sm:grid-cols-2">
         <p className="sm:col-span-2">
-          <label htmlFor={`${base}-name`} className="block text-[0.85rem] font-semibold text-ink">
+          <label htmlFor={`${base}-name`} className="block text-[0.86rem] font-semibold text-ink">
             お名前
           </label>
           <input
@@ -124,12 +124,12 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
             required
             maxLength={60}
             autoComplete="name"
-            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.95rem] text-ink focus:border-navy focus:outline-none"
+            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.97rem] text-ink focus:border-navy focus:outline-none"
           />
         </p>
 
         <p className="sm:col-span-2">
-          <label htmlFor={`${base}-email`} className="block text-[0.85rem] font-semibold text-ink">
+          <label htmlFor={`${base}-email`} className="block text-[0.86rem] font-semibold text-ink">
             メールアドレス
           </label>
           <input
@@ -140,15 +140,15 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
             maxLength={254}
             inputMode="email"
             autoComplete="email"
-            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.95rem] text-ink focus:border-navy focus:outline-none"
+            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.97rem] text-ink focus:border-navy focus:outline-none"
           />
-          <span className="mt-1 block text-[0.74rem] leading-relaxed text-ink-3">
+          <span className="mt-1 block text-[0.8rem] leading-relaxed text-ink-3">
             受験日程とお支払い方法のご案内に使います。他の目的には使いません。
           </span>
         </p>
 
         <p>
-          <label htmlFor={`${base}-grade`} className="block text-[0.85rem] font-semibold text-ink">
+          <label htmlFor={`${base}-grade`} className="block text-[0.86rem] font-semibold text-ink">
             学年
           </label>
           <select
@@ -156,7 +156,7 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
             name="grade"
             required
             defaultValue=""
-            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.95rem] text-ink focus:border-navy focus:outline-none"
+            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.97rem] text-ink focus:border-navy focus:outline-none"
           >
             <option value="" disabled>
               選んでください
@@ -170,15 +170,15 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
         </p>
 
         <p>
-          <label htmlFor={`${base}-faculty`} className="block text-[0.85rem] font-semibold text-ink">
+          <label htmlFor={`${base}-faculty`} className="block text-[0.86rem] font-semibold text-ink">
             志望学部
-            <span className="ml-1.5 text-[0.74rem] font-normal text-ink-3">任意</span>
+            <span className="ml-1.5 text-[0.8rem] font-normal text-ink-3">任意</span>
           </label>
           <select
             id={`${base}-faculty`}
             name="faculty"
             defaultValue=""
-            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.95rem] text-ink focus:border-navy focus:outline-none"
+            className="mt-1.5 min-h-11 w-full border border-rule bg-white px-3 text-[0.97rem] text-ink focus:border-navy focus:outline-none"
           >
             <option value="">未選択</option>
             {moshi.faculties.map((f) => (
@@ -196,7 +196,7 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
         押す直前に目が通る位置へ、項目として置く。
       */}
       <div className="mt-7 border border-rule">
-        <p className="border-b border-rule bg-paper-2 px-4 py-2 text-[0.74rem] font-bold tracking-wide text-navy">
+        <p className="border-b border-rule bg-paper-2 px-4 py-2 text-[0.8rem] font-bold tracking-wide text-navy">
           お申し込みの前に
         </p>
         <ul className="divide-y divide-rule">
@@ -206,7 +206,7 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
             ["支払い", `${paymentShortLine}${cancelLine}`],
           ].map(([k, v]) => (
             <li key={k} className="grid grid-cols-[4rem_1fr] gap-x-4 px-4 py-3">
-              <span className="text-[0.78rem] leading-relaxed text-ink-3">{k}</span>
+              <span className="text-[0.8rem] leading-relaxed text-ink-3">{k}</span>
               <span className="prose-ja text-[0.86rem] leading-[1.9] text-ink-2">{v}</span>
             </li>
           ))}
@@ -223,7 +223,7 @@ export function MoshiForm({ preselect = [] }: { preselect?: string[] }) {
         <button type="submit" disabled={sending} className="btn btn-primary disabled:opacity-60">
           {sending ? "送信しています…" : "参加申込"}
         </button>
-        <Link href="/moshi/privacy" className="text-[0.82rem] text-navy underline underline-offset-4">
+        <Link href="/moshi/privacy" className="text-[0.86rem] text-navy underline underline-offset-4">
           個人情報の取り扱い
         </Link>
       </div>

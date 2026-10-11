@@ -209,7 +209,7 @@ export function FigureView({ fig }: { fig: Figure }) {
           </text>
         ))}
       </svg>
-      <figcaption className="prose-ja mt-1.5 text-[0.78rem] leading-relaxed text-ink-3">
+      <figcaption className="prose-ja mt-1.5 text-[0.8rem] leading-relaxed text-ink-3">
         <MathText>{fig.caption}</MathText>
       </figcaption>
     </figure>

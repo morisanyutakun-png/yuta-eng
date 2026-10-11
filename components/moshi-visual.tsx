@@ -214,12 +214,12 @@ export function Flow() {
       {steps.map((s) => (
         <li key={s.n} className="bg-white p-4 lg:p-5">
           <p className="flex items-center gap-2">
-            <span className="serif flex size-6 items-center justify-center bg-navy text-[0.78rem] font-bold text-white">
+            <span className="serif flex size-6 items-center justify-center bg-navy text-[0.8rem] font-bold text-white">
               {s.n}
             </span>
-            <span className="text-[0.92rem] font-semibold text-ink">{s.h}</span>
+            <span className="text-[0.93rem] font-semibold text-ink">{s.h}</span>
           </p>
-          <p className="prose-ja mt-2 text-[0.82rem] leading-[1.85] text-ink-2">{s.b}</p>
+          <p className="prose-ja mt-2 text-[0.86rem] leading-[1.85] text-ink-2">{s.b}</p>
         </li>
       ))}
     </ol>

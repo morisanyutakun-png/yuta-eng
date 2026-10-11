@@ -61,7 +61,7 @@ export default function KaisetsuTop() {
         className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
         style={sectionStyle("kaisetsu")}
       >
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+        <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
           </Link>
@@ -99,7 +99,7 @@ export default function KaisetsuTop() {
           }
         />
 
-        <p className="prose-ja mt-5 text-[0.82rem] leading-[1.9] text-ink-3">
+        <p className="prose-ja mt-5 text-[0.86rem] leading-[1.9] text-ink-3">
           {NOT_OFFICIAL}
           {lastUpdated && `　最終更新 ${lastUpdated.replace(/-/g, "/")}。`}
           <Link href="/kaisetsu/policy" className="ml-1 text-navy underline underline-offset-4">
@@ -131,7 +131,7 @@ export default function KaisetsuTop() {
                       <span className="text-[0.97rem] font-semibold leading-snug text-ink transition-colors group-hover:text-navy">
                         {subject(u)}
                       </span>
-                      <span className="mt-0.5 text-[0.73rem] text-ink-3">
+                      <span className="mt-0.5 text-[0.75rem] text-ink-3">
                         {u.university}
                         {u.course && `・${u.course}`}
                       </span>
@@ -160,7 +160,7 @@ export default function KaisetsuTop() {
               <div key={y}>
                 <h3 className="serif text-[1rem] text-ink">
                   {y}年度入試
-                  <span className="ml-2 font-sans text-[0.72rem] font-normal text-ink-3">
+                  <span className="ml-2 font-sans text-[0.75rem] font-normal text-ink-3">
                     {published.filter((s) => s.year === y).length}区分
                   </span>
                 </h3>

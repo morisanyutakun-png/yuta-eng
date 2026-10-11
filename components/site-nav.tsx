@@ -81,7 +81,7 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
   return (
     <>
       {/* 広い画面：横に並べる */}
-      <nav aria-label="サイト内" className="hidden items-center gap-5 text-[0.8rem] text-ink-2 lg:flex">
+      <nav aria-label="サイト内" className="hidden items-center gap-5 text-[0.86rem] text-ink-2 lg:flex">
         {items.map((it) => (
           <Link
             key={it.href}
@@ -135,11 +135,11 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
                     className="block px-4 py-3 transition-colors hover:bg-paper-2"
                   >
                     <span
-                      className={`block text-[0.9rem] font-semibold ${here(it.href) ? "text-navy" : "text-ink"}`}
+                      className={`block text-[0.93rem] font-semibold ${here(it.href) ? "text-navy" : "text-ink"}`}
                     >
                       {it.label}
                     </span>
-                    <span className="mt-0.5 block text-[0.74rem] leading-snug text-ink-3">{it.note}</span>
+                    <span className="mt-0.5 block text-[0.8rem] leading-snug text-ink-3">{it.note}</span>
                   </Link>
                 </li>
               ))}

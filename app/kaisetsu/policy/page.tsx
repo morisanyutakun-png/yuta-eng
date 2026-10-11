@@ -81,7 +81,7 @@ export default function PolicyPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:px-8">
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+        <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
           </Link>
@@ -95,7 +95,7 @@ export default function PolicyPage() {
 
         <header className="pb-6 pt-4">
           <h1 className="serif text-[1.7rem] leading-snug text-ink sm:text-[2.05rem]">解答・解説の掲載方針</h1>
-          <p className="prose-ja mt-3 text-[0.92rem] leading-[1.95] text-ink-2">
+          <p className="prose-ja mt-3 text-[0.93rem] leading-[1.95] text-ink-2">
             当サイトの過去問解説を、どういう考えで作って出しているかをまとめています。
           </p>
         </header>
@@ -106,7 +106,7 @@ export default function PolicyPage() {
               <h2 id={s.h} className="rule-mark serif text-[1.25rem] leading-snug text-ink">
                 {s.h}
               </h2>
-              <div className="prose-ja mt-3 space-y-3 text-[0.9rem] leading-[1.95] text-ink-2">
+              <div className="prose-ja mt-3 space-y-3 text-[0.93rem] leading-[1.95] text-ink-2">
                 {s.body.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}
@@ -115,7 +115,7 @@ export default function PolicyPage() {
           ))}
         </div>
 
-        <p className="mt-14 border-t border-rule pt-6 text-[0.88rem]">
+        <p className="mt-14 border-t border-rule pt-6 text-[0.93rem]">
           <Link href="/kaisetsu" className="font-semibold text-navy underline underline-offset-4">
             過去問の解答・解説に戻る
           </Link>

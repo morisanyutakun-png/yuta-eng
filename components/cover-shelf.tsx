@@ -38,14 +38,14 @@ export function CoverShelf({ labelled = false }: { labelled?: boolean }) {
                 sizes="(max-width: 640px) 104px, 116px"
                 className="w-full rounded-[2px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)] transition-shadow group-hover:shadow-[0_2px_6px_rgba(21,24,28,0.12)]"
               />
-              <span className="mt-1.5 block truncate text-[0.74rem] text-ink-2 transition-colors group-hover:text-navy">
+              <span className="mt-1.5 block truncate text-[0.8rem] text-ink-2 transition-colors group-hover:text-navy">
                 {shortName(u)}数学
               </span>
             </Link>
           </li>
         ))}
       </ul>
-      <p className="mt-1 text-[0.68rem] text-ink-3">
+      <p className="mt-1 text-[0.75rem] text-ink-3">
         横にスクロールすると{universityCount()}大学・{universities.length}区分すべて出てきます
       </p>
     </section>

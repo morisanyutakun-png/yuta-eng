@@ -100,8 +100,8 @@ export function SampleViewer({ pages, title, layout = "thumbnails" }: {
                 />
               </span>
               <span className="mt-1.5 flex items-baseline justify-between gap-2">
-                <span className="text-[0.78rem] font-semibold text-ink group-hover:text-navy">{p.label}</span>
-                {p.page > 0 && <span className="shrink-0 text-[0.68rem] tabular-nums text-ink-3">p.{p.page}</span>}
+                <span className="text-[0.8rem] font-semibold text-ink group-hover:text-navy">{p.label}</span>
+                {p.page > 0 && <span className="shrink-0 text-[0.75rem] tabular-nums text-ink-3">p.{p.page}</span>}
               </span>
             </a>
           </li>
@@ -118,7 +118,7 @@ export function SampleViewer({ pages, title, layout = "thumbnails" }: {
           onClick={close}
         >
           <div className="flex shrink-0 items-center justify-between gap-3 pb-2 text-white">
-            <p className="min-w-0 text-[0.8rem]">
+            <p className="min-w-0 text-[0.86rem]">
               <span className="font-semibold">{current.label}</span>
               {current.page > 0 && <span className="ml-2 tabular-nums text-white/70">p.{current.page}</span>}
               <span className="ml-2 truncate text-white/60">{title}</span>
@@ -158,22 +158,22 @@ export function SampleViewer({ pages, title, layout = "thumbnails" }: {
               type="button"
               onClick={() => move(-1)}
               aria-label="前のページ"
-              className="flex min-h-11 items-center gap-1 rounded-[4px] px-2 text-[0.82rem] hover:bg-white/10"
+              className="flex min-h-11 items-center gap-1 rounded-[4px] px-2 text-[0.86rem] hover:bg-white/10"
             >
               <svg viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="m13 4-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
               前へ
             </button>
-            <button type="button" onClick={() => setZoomed((z) => !z)} aria-pressed={zoomed} className="min-h-11 rounded-[4px] border border-white/30 px-2 text-[0.78rem] hover:bg-white/10">{zoomed ? "全体を表示" : "文字を拡大"}</button>
-            <span className="text-[0.78rem] tabular-nums text-white/70">
+            <button type="button" onClick={() => setZoomed((z) => !z)} aria-pressed={zoomed} className="min-h-11 rounded-[4px] border border-white/30 px-2 text-[0.8rem] hover:bg-white/10">{zoomed ? "全体を表示" : "文字を拡大"}</button>
+            <span className="text-[0.8rem] tabular-nums text-white/70">
               {open! + 1} / {pages.length}
             </span>
             <button
               type="button"
               onClick={() => move(1)}
               aria-label="次のページ"
-              className="flex min-h-11 items-center gap-1 rounded-[4px] px-2 text-[0.82rem] hover:bg-white/10"
+              className="flex min-h-11 items-center gap-1 rounded-[4px] px-2 text-[0.86rem] hover:bg-white/10"
             >
               次へ
               <svg viewBox="0 0 20 20" className="size-4" fill="none" stroke="currentColor" strokeWidth="2">

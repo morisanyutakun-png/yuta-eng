@@ -58,9 +58,9 @@ export function ProductPanel({ p, priority = false }: { p: Product; priority?: b
           </Link>
         </h3>
 
-        <p className="mt-1.5 text-[0.78rem] leading-snug text-navy">{p.audience}</p>
+        <p className="mt-1.5 text-[0.8rem] leading-snug text-navy">{p.audience}</p>
 
-        <ul className="prose-ja mt-2 space-y-1 text-[0.84rem] leading-[1.8] text-ink-2">
+        <ul className="prose-ja mt-2 space-y-1 text-[0.86rem] leading-[1.8] text-ink-2">
           {p.points.map((t) => (
             <li key={t} className="flex gap-1.5">
               <span aria-hidden="true" className="shrink-0 text-ink-3">
@@ -71,7 +71,7 @@ export function ProductPanel({ p, priority = false }: { p: Product; priority?: b
           ))}
         </ul>
 
-        {p.meta && <p className="mt-2 text-[0.73rem] tabular-nums text-ink-3">{p.meta}</p>}
+        {p.meta && <p className="mt-2 text-[0.75rem] tabular-nums text-ink-3">{p.meta}</p>}
 
         <div className="mt-3 flex flex-wrap items-center gap-2.5">
           <Link href={p.href} className="btn">

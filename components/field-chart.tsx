@@ -26,7 +26,7 @@ export function FieldChart({
       <h2 id="field-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
         {name}の頻出分野
       </h2>
-      <p className="prose-ja mt-2.5 text-[0.9rem] text-ink-2">
+      <p className="prose-ja mt-2.5 text-[0.93rem] text-ink-2">
         {fieldChartCaption(data, yearCount)}棒が長い分野ほど、繰り返し狙われています。
       </p>
 
@@ -36,10 +36,10 @@ export function FieldChart({
           return (
             <li key={it.label}>
               <div className="flex items-baseline justify-between gap-3">
-                <span className="text-[0.88rem] font-semibold leading-snug text-ink">{it.label}</span>
+                <span className="text-[0.93rem] font-semibold leading-snug text-ink">{it.label}</span>
                 <span className="shrink-0 serif text-[1.1rem] tabular-nums text-navy">
                   {it.count}
-                  <span className="ml-0.5 font-sans text-[0.68rem] font-normal text-ink-3">
+                  <span className="ml-0.5 font-sans text-[0.75rem] font-normal text-ink-3">
                     {denom ? `題/${denom}題` : "題"}
                   </span>
                 </span>
@@ -52,7 +52,16 @@ export function FieldChart({
                   aria-label={`${it.label} ${it.count}題`}
                 />
               </div>
-              {it.note && <p className="prose-ja mt-1.5 text-[0.8rem] text-ink-3">{it.note}</p>}
+              {/*
+                原稿から拾った説明が、助詞から始まっていることがある
+                （「三角関数」＋「の置換、加法定理…」のように、分野名のところで切れている）。
+                そのまま出すと助詞で始まる文になって読めないので、分野名を頭に補う。
+              */}
+              {it.note && (
+                <p className="prose-ja mt-1.5 text-[0.86rem] text-ink-3">
+                  {/^[のはがをにでとやへも]/.test(it.note) ? `${it.label}${it.note}` : it.note}
+                </p>
+              )}
             </li>
           );
         })}

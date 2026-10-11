@@ -213,7 +213,7 @@ export default async function KanseiPage({ params }: Props) {
         }
       >
         <header className="pb-2 pt-4">
-          <p className="text-[0.72rem] font-semibold tracking-wide text-navy">
+          <p className="text-[0.75rem] font-semibold tracking-wide text-navy">
             {k.university}
             {k.alias ? `（${k.alias}）` : ""}・2027年度対策
           </p>
@@ -224,7 +224,7 @@ export default async function KanseiPage({ params }: Props) {
                 <br />
                 <span className="text-[0.72em]">分野別完成演習</span>
               </h1>
-              <p className="mt-2.5 text-[0.8rem] font-semibold text-ink-2">{seriesTagline}</p>
+              <p className="mt-2.5 text-[0.86rem] font-semibold text-ink-2">{seriesTagline}</p>
             </div>
             <a
               href={url}
@@ -256,10 +256,10 @@ export default async function KanseiPage({ params }: Props) {
               { k: "目標時間の合計", v: String(k.total.minutes), u: "分" },
             ].map((r) => (
               <div key={r.k}>
-                <dt className="text-[0.63rem] leading-tight text-ink-3">{r.k}</dt>
+                <dt className="text-[0.75rem] leading-tight text-ink-3">{r.k}</dt>
                 <dd className="serif mt-1 leading-none text-ink">
                   <span className="text-[1.45rem] tabular-nums">{r.v}</span>
-                  <span className="ml-0.5 font-sans text-[0.66rem] font-normal text-ink-3">{r.u}</span>
+                  <span className="ml-0.5 font-sans text-[0.75rem] font-normal text-ink-3">{r.u}</span>
                 </dd>
               </div>
             ))}
@@ -267,7 +267,7 @@ export default async function KanseiPage({ params }: Props) {
 
           <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
             <AmazonButton href={url} size="lg" />
-            <p className="text-[0.74rem] tabular-nums text-ink-3">{[yen(c.price), meta].filter(Boolean).join("・")}</p>
+            <p className="text-[0.8rem] tabular-nums text-ink-3">{[yen(c.price), meta].filter(Boolean).join("・")}</p>
           </div>
         </header>
 
@@ -277,14 +277,14 @@ export default async function KanseiPage({ params }: Props) {
           <h2 id="fields-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
             {k.uni}数学の頻出{k.total.fields}分野と、本書の章立て
           </h2>
-          <p className="prose-ja mt-3 text-[0.9rem] text-ink-2">
+          <p className="prose-ja mt-3 text-[0.93rem] text-ink-2">
             {yearsOf(k)}の{k.university}の出題を分析して、次の{k.total.fields}分野を選んでいます。
             章は数学I・A から数学III へ進む順に並び、{k.beforeIII.label ? `${k.beforeIII.label}は数学III を学ぶ前でも解けます。` : ""}
           </p>
           {/* スマホ幅に収めるため、範囲は分野名の下に置き、レベル内訳は略記（標・や・本）にする */}
-          <table className="mt-4 w-full border-collapse text-left text-[0.8rem] leading-relaxed">
+          <table className="mt-4 w-full border-collapse text-left text-[0.86rem] leading-relaxed">
             <thead>
-              <tr className="border-y border-rule bg-paper-2/60 text-[0.66rem] text-ink-2">
+              <tr className="border-y border-rule bg-paper-2/60 text-[0.75rem] text-ink-2">
                 <th scope="col" className="w-7 px-1.5 py-2 text-right font-bold">章</th>
                 <th scope="col" className="px-2 py-2 font-bold">分野・範囲</th>
                 <th scope="col" className="px-1.5 py-2 text-right font-bold">題</th>
@@ -302,7 +302,7 @@ export default async function KanseiPage({ params }: Props) {
                     <a href={`#ch${ch.no}`} className="font-semibold text-ink underline decoration-rule underline-offset-4 hover:text-navy">
                       {ch.field}
                     </a>
-                    <span className="block text-[0.7rem] text-ink-3">{ch.range}</span>
+                    <span className="block text-[0.75rem] text-ink-3">{ch.range}</span>
                   </th>
                   <td className="px-1.5 py-2.5 text-right align-top tabular-nums">{ch.problems}</td>
                   <td className="whitespace-nowrap px-1.5 py-2.5 align-top tabular-nums text-ink-2">
@@ -322,8 +322,8 @@ export default async function KanseiPage({ params }: Props) {
               </tr>
             </tbody>
           </table>
-          <p className="mt-1.5 text-[0.7rem] text-ink-3">「標・や・本」は標準・やや難・本番接続の題数。</p>
-          <p className="prose-ja mt-3 text-[0.8rem] text-ink-3">
+          <p className="mt-1.5 text-[0.75rem] text-ink-3">「標・や・本」は標準・やや難・本番接続の題数。</p>
+          <p className="prose-ja mt-3 text-[0.86rem] text-ink-3">
             目標時間の合計{k.total.minutes}分は、1日90分ならおよそ{daysAt(k.total.minutes)}日でひととおり終わる分量です。
             時間を計って解く本ではないので、目標時間を超えてもかまいません。
           </p>
@@ -331,7 +331,7 @@ export default async function KanseiPage({ params }: Props) {
 
         {analysis && (
           <aside className="mt-8 border-l-2 border-navy/40 bg-paper-2/60 px-4 py-3">
-            <p className="text-[0.82rem] text-ink-2">
+            <p className="text-[0.86rem] text-ink-2">
               {k.university}の数学の形式（{factsLine(analysis) || "試験の形式"}）や年度別の出題は、
               <Link href={`/univ/${analysis.slug}`} className="font-semibold text-navy underline underline-offset-4">
                 {k.uni}数学の傾向と対策
@@ -345,37 +345,37 @@ export default async function KanseiPage({ params }: Props) {
           <h2 id="trend-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
             分野ごとの出題傾向と収録問題
           </h2>
-          <p className="prose-ja mt-3 text-[0.9rem] text-ink-2">
+          <p className="prose-ja mt-3 text-[0.93rem] text-ink-2">
             各章の扉に置いた「その分野で{k.uni}が何を要求するか」と、収録した問題の題材・レベル・目標時間です（問題文は載せていません）。
           </p>
 
           {k.chapters.map((ch) => (
             <section key={ch.no} id={`ch${ch.no}`} className="mt-9 scroll-mt-20" aria-labelledby={`ch${ch.no}-h`}>
-              <p className="text-[0.7rem] font-semibold tabular-nums text-ink-3">
+              <p className="text-[0.75rem] font-semibold tabular-nums text-ink-3">
                 第{ch.no}章・{ch.range}
               </p>
               <h3 id={`ch${ch.no}-h`} className="serif mt-0.5 text-[1.12rem] leading-snug text-ink">
                 {ch.field}
               </h3>
-              {ch.lead && <p className="mt-1 text-[0.85rem] font-semibold text-navy">{ch.lead}</p>}
+              {ch.lead && <p className="mt-1 text-[0.86rem] font-semibold text-navy">{ch.lead}</p>}
               {ch.strategy.length > 0 && (
-                <div className="prose-ja mt-3 space-y-3 text-[0.9rem] text-ink-2">
+                <div className="prose-ja mt-3 space-y-3 text-[0.93rem] text-ink-2">
                   <Blocks blocks={ch.strategy} />
                 </div>
               )}
               <ul className="mt-4 divide-y divide-rule/70 border-y border-rule">
                 {ch.list.map((p) => (
                   <li key={p.id} className="flex items-baseline gap-2.5 py-2">
-                    <span className="w-8 shrink-0 text-[0.72rem] tabular-nums text-ink-3">{p.id}</span>
+                    <span className="w-8 shrink-0 text-[0.75rem] tabular-nums text-ink-3">{p.id}</span>
                     <span
-                      className={`shrink-0 border px-1.5 py-px text-[0.62rem] font-bold leading-normal ${levelStyle[p.level] ?? "border-rule text-ink-2"}`}
+                      className={`shrink-0 border px-1.5 py-px text-[0.75rem] font-bold leading-normal ${levelStyle[p.level] ?? "border-rule text-ink-2"}`}
                     >
                       {p.level}
                     </span>
-                    <span className="min-w-0 flex-1 text-[0.85rem] leading-snug text-ink">
+                    <span className="min-w-0 flex-1 text-[0.86rem] leading-snug text-ink">
                       <Spans spans={p.title} />
                     </span>
-                    <span className="shrink-0 text-[0.72rem] tabular-nums text-ink-3">{p.minutes}分</span>
+                    <span className="shrink-0 text-[0.75rem] tabular-nums text-ink-3">{p.minutes}分</span>
                   </li>
                 ))}
               </ul>
@@ -391,20 +391,20 @@ export default async function KanseiPage({ params }: Props) {
           </h2>
           <dl className="mt-4 divide-y divide-rule border-y border-rule">
             <div className="grid gap-1 py-3 sm:grid-cols-[10rem_1fr] sm:gap-4">
-              <dt className="text-[0.88rem] font-semibold text-ink">3段階で上げる</dt>
+              <dt className="text-[0.93rem] font-semibold text-ink">3段階で上げる</dt>
               <dd className="prose-ja text-[0.86rem] text-ink-2">
                 標準{k.total.standard}題・やや難{k.total.hard}題・本番接続{k.total.honban}題。「本番接続」は{k.uni}の実際の大問に近づけた問題で、ここまで解ければ過去問演習に入ってかまいません。
               </dd>
             </div>
             <div className="grid gap-1 py-3 sm:grid-cols-[10rem_1fr] sm:gap-4">
-              <dt className="text-[0.88rem] font-semibold text-ink">手が止まったら</dt>
+              <dt className="text-[0.93rem] font-semibold text-ink">手が止まったら</dt>
               <dd className="prose-ja text-[0.86rem] text-ink-2">
                 問題の下のヒント、解答冒頭の着眼の順に読んで問題に戻ります。解いたあとは、定石でその問題で使った手を整理します。
               </dd>
             </div>
             {k.honban && (
               <div className="grid gap-1 py-3 sm:grid-cols-[10rem_1fr] sm:gap-4">
-                <dt className="text-[0.88rem] font-semibold text-ink">本番ならこう出る</dt>
+                <dt className="text-[0.93rem] font-semibold text-ink">本番ならこう出る</dt>
                 <dd className="prose-ja text-[0.86rem] text-ink-2">
                   解答の末尾に、その問題から誘導を外して{k.uni}の本番の形に近づけた問題を載せています。
                 </dd>
@@ -412,7 +412,7 @@ export default async function KanseiPage({ params }: Props) {
             )}
             {k.beforeIII.label && (
               <div className="grid gap-1 py-3 sm:grid-cols-[10rem_1fr] sm:gap-4">
-                <dt className="text-[0.88rem] font-semibold text-ink">数学III の前から</dt>
+                <dt className="text-[0.93rem] font-semibold text-ink">数学III の前から</dt>
                 <dd className="prose-ja text-[0.86rem] text-ink-2">
                   {k.beforeIII.label}（{k.beforeIII.problems}題）は数学III を使わずに解けます。
                 </dd>
@@ -420,7 +420,7 @@ export default async function KanseiPage({ params }: Props) {
             )}
             {k.appendices.length > 0 && (
               <div className="grid gap-1 py-3 sm:grid-cols-[10rem_1fr] sm:gap-4">
-                <dt className="text-[0.88rem] font-semibold text-ink">付録</dt>
+                <dt className="text-[0.93rem] font-semibold text-ink">付録</dt>
                 <dd className="text-[0.86rem] text-ink-2">
                   <ul className="space-y-0.5">
                     {k.appendices.map((a) => (
@@ -440,7 +440,7 @@ export default async function KanseiPage({ params }: Props) {
             <h2 id="after-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
               本書を終えたら：本番形式の予想問題集へ
             </h2>
-            <p className="prose-ja mt-3 text-[0.9rem] text-ink-2">
+            <p className="prose-ja mt-3 text-[0.93rem] text-ink-2">
               次に置くのは、同じ著者による本番と同じ形式の予想問題集「合格答案をつくる」シリーズです。
               加点・減点つきの採点表で、自分の答案のどこが減点されるかを照合できます。本書の問題とは題材が重複しないように作られています。
             </p>
@@ -455,12 +455,12 @@ export default async function KanseiPage({ params }: Props) {
                     sizes="48px"
                     className="w-12 shrink-0 rounded-[2px] border border-rule"
                   />
-                  <span className="min-w-0 flex-1 text-[0.85rem] leading-snug text-ink">{b.title}</span>
-                  <AmazonButton href={b.amazonUrl} label="Amazon" className="shrink-0 !min-h-9 !px-3 !text-[0.78rem]" />
+                  <span className="min-w-0 flex-1 text-[0.86rem] leading-snug text-ink">{b.title}</span>
+                  <AmazonButton href={b.amazonUrl} label="Amazon" className="shrink-0 !min-h-9 !px-3 !text-[0.8rem]" />
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-[0.85rem]">
+            <p className="mt-4 text-[0.86rem]">
               <Link href={`/univ/${analysis.slug}#books`} className="text-navy underline underline-offset-4">
                 {k.uni}数学の傾向と対策と、予想問題集の詳細を見る
               </Link>
@@ -469,14 +469,14 @@ export default async function KanseiPage({ params }: Props) {
         )}
 
         <aside className="mt-12 border-y border-navy/20 bg-paper-2/70 px-4 py-5">
-          <p className="text-[0.68rem] font-bold tracking-wide text-accent">志望校をまだ決めきれていないなら</p>
+          <p className="text-[0.75rem] font-bold tracking-wide text-accent">志望校をまだ決めきれていないなら</p>
           <p className="serif mt-1 text-[1.02rem] leading-snug text-ink">
             志望校診断模試で、{shindan.universities.length}大学との相性を先に確かめる
           </p>
-          <p className="prose-ja mt-1.5 text-[0.82rem] text-ink-2">
+          <p className="prose-ja mt-1.5 text-[0.86rem] text-ink-2">
             {shindan.rounds}回の模試で「得点の形」を分析し、{shindan.universities.map((u) => u.name).join("・")}との相性を判定します。
           </p>
-          <Link href="/shindan" className="mt-2 inline-block text-[0.85rem] font-semibold text-navy underline underline-offset-4">
+          <Link href="/shindan" className="mt-2 inline-block text-[0.86rem] font-semibold text-navy underline underline-offset-4">
             志望校診断模試を見る
           </Link>
         </aside>
@@ -484,7 +484,7 @@ export default async function KanseiPage({ params }: Props) {
         <FaqSection items={faqs} name={`${k.name} 分野別完成演習`} />
 
         <section aria-labelledby="buy-heading" className="mt-14 border border-navy/25 bg-white p-5 sm:p-7">
-          <p className="text-[0.68rem] font-bold tracking-wide text-accent">{seriesName}</p>
+          <p className="text-[0.75rem] font-bold tracking-wide text-accent">{seriesName}</p>
           <h2 id="buy-heading" className="serif mt-1.5 text-[1.2rem] leading-snug text-ink sm:text-[1.35rem]">
             {k.name} 分野別完成演習 2027年度対策
           </h2>
@@ -500,15 +500,15 @@ export default async function KanseiPage({ params }: Props) {
               />
             </div>
             <div className="flex min-w-0 flex-1 flex-col">
-              <p className="prose-ja text-[0.85rem] text-ink-2">
+              <p className="prose-ja text-[0.86rem] text-ink-2">
                 {k.total.fields}分野・全{k.total.problems}題
                 {k.total.subquestions ? `（${k.total.subquestions}小問）` : ""}。問題はすべて書き下ろしです。
               </p>
-              <p className="mt-1 text-[0.74rem] tabular-nums text-ink-3">{[yen(c.price), meta].filter(Boolean).join("・")}</p>
+              <p className="mt-1 text-[0.8rem] tabular-nums text-ink-3">{[yen(c.price), meta].filter(Boolean).join("・")}</p>
               <AmazonButton href={url} className="mt-auto" />
             </div>
           </div>
-          <p className="mt-5 border-t border-rule pt-3 text-[0.7rem] leading-relaxed text-ink-3">
+          <p className="mt-5 border-t border-rule pt-3 text-[0.75rem] leading-relaxed text-ink-3">
             非公式の独自教材です。{k.university}とは関係ありません。価格・在庫は Amazon の表示が優先されます。
           </p>
         </section>

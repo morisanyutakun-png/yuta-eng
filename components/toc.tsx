@@ -24,7 +24,7 @@ export function Toc({
       aria-labelledby={aside ? "toc-aside-heading" : "toc-heading"}
       className={aside ? "border border-rule bg-white px-4 py-4" : "mt-7 bg-paper-2/70 px-4 py-4 sm:px-5 lg:hidden"}
     >
-      <h2 id={aside ? "toc-aside-heading" : "toc-heading"} className="text-[0.68rem] font-bold tracking-wide text-ink-3">
+      <h2 id={aside ? "toc-aside-heading" : "toc-heading"} className="text-[0.75rem] font-bold tracking-wide text-ink-3">
         このページの内容
       </h2>
       <ol className="mt-2">
@@ -32,7 +32,7 @@ export function Toc({
           <li key={i}>
             <a
               href={`#${sectionId(i)}`}
-              className="flex gap-2.5 py-1.5 text-[0.88rem] leading-relaxed text-ink-2 transition-colors hover:text-navy"
+              className="flex gap-2.5 py-1.5 text-[0.93rem] leading-relaxed text-ink-2 transition-colors hover:text-navy"
             >
               <span aria-hidden="true" className="serif shrink-0 tabular-nums text-ink-3">
                 {String(i + 1).padStart(2, "0")}
@@ -45,7 +45,7 @@ export function Toc({
           <li key={e.href} className={i === 0 ? "mt-1.5 border-t border-rule pt-1.5" : undefined}>
             <a
               href={e.href}
-              className="flex gap-2.5 py-1.5 text-[0.88rem] leading-relaxed text-ink-2 transition-colors hover:text-navy"
+              className="flex gap-2.5 py-1.5 text-[0.93rem] leading-relaxed text-ink-2 transition-colors hover:text-navy"
             >
               <span aria-hidden="true" className="serif shrink-0 tabular-nums text-ink-3">
                 {String(titles.length + i + 1).padStart(2, "0")}

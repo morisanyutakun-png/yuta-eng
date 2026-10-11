@@ -57,7 +57,7 @@ export default function UniversitiesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8" style={sectionStyle("universities")}>
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+        <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
           </Link>
@@ -85,7 +85,7 @@ export default function UniversitiesPage() {
           <UniversityFinder items={items} groups={usedGroups} headingLevel="h2" />
         </div>
 
-        <p className="prose-ja mb-6 mt-7 border-l-2 border-navy/40 bg-paper-2/60 px-4 py-3 text-[0.82rem] text-ink-2">
+        <p className="prose-ja mb-6 mt-7 border-l-2 border-navy/40 bg-paper-2/60 px-4 py-3 text-[0.86rem] text-ink-2">
           旧帝大・難関国公立の理系で志望校を決めきれていない場合は、
           <Link href="/shindan" className="font-semibold text-navy underline underline-offset-4">
             志望校診断模試

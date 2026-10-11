@@ -150,7 +150,7 @@ export default function ShindanPage() {
         }
       >
         <header className="pb-2 pt-4">
-          <p className="text-[0.72rem] font-semibold tracking-wide text-navy">{seriesName}・2027年度対策</p>
+          <p className="text-[0.75rem] font-semibold tracking-wide text-navy">{seriesName}・2027年度対策</p>
           <div className="mt-2.5 grid grid-cols-[1fr_auto] gap-x-4">
             <div className="min-w-0">
               <h1 className="serif text-[1.55rem] leading-[1.4] text-ink sm:text-[2rem]">
@@ -158,7 +158,7 @@ export default function ShindanPage() {
                 <br />
                 理系数学 志望校診断模試
               </h1>
-              <p className="mt-2.5 text-[0.8rem] font-semibold text-ink-2">{seriesTagline}</p>
+              <p className="mt-2.5 text-[0.86rem] font-semibold text-ink-2">{seriesTagline}</p>
             </div>
             <a
               href={s.amazonUrl}
@@ -177,7 +177,7 @@ export default function ShindanPage() {
                 className="w-full rounded-[2px] border border-rule shadow-[0_1px_3px_rgba(21,24,28,0.09)]"
               />
             </a>
-            <p className="prose-ja col-span-2 mt-5 text-[0.95rem] text-ink-2 sm:col-span-1">
+            <p className="prose-ja col-span-2 mt-5 text-[0.97rem] text-ink-2 sm:col-span-1">
               では、どの大学の過去問に進むべきか。{s.rounds}回の模試で自分の「得点の形」を取り出し、
               {s.universities.length}大学の数学の出題傾向とどれだけ噛み合うかを判定する、志望校を決めるための模試です。
             </p>
@@ -191,10 +191,10 @@ export default function ShindanPage() {
               { k: "判定する大学", v: String(s.universities.length), u: "大学" },
             ].map((r) => (
               <div key={r.k}>
-                <dt className="text-[0.63rem] leading-tight text-ink-3">{r.k}</dt>
+                <dt className="text-[0.75rem] leading-tight text-ink-3">{r.k}</dt>
                 <dd className="serif mt-1 leading-none text-ink">
                   <span className="text-[1.45rem] tabular-nums">{r.v}</span>
-                  <span className="ml-0.5 font-sans text-[0.66rem] font-normal text-ink-3">{r.u}</span>
+                  <span className="ml-0.5 font-sans text-[0.75rem] font-normal text-ink-3">{r.u}</span>
                 </dd>
               </div>
             ))}
@@ -202,7 +202,7 @@ export default function ShindanPage() {
 
           <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
             <AmazonButton href={s.amazonUrl} label="Amazonで見る" size="lg" />
-            <p className="text-[0.74rem] tabular-nums text-ink-3">
+            <p className="text-[0.8rem] tabular-nums text-ink-3">
               {[yen(c.price), meta].filter(Boolean).join("・")}
             </p>
           </div>
@@ -214,7 +214,7 @@ export default function ShindanPage() {
           <h2 className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
             測るのは「学力の高さ」ではなく「得点の形」
           </h2>
-          <div className="prose-ja mt-4 space-y-4 text-[0.95rem] text-ink-2">
+          <div className="prose-ja mt-4 space-y-4 text-[0.97rem] text-ink-2">
             <p>
               全体で6割取った人が2人いても、片方は確率と整数で稼ぎ、もう片方は図形と記述で稼いでいるかもしれません。
               この模試が見るのは<strong className="font-semibold text-ink">その形のほう</strong>です。
@@ -237,20 +237,20 @@ export default function ShindanPage() {
           <h2 id="univ-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
             判定する{s.universities.length}大学と、数学の出題の違い
           </h2>
-          <p className="prose-ja mt-3 text-[0.9rem] text-ink-2">
+          <p className="prose-ja mt-3 text-[0.93rem] text-ink-2">
             同じ「記述式」でも、中身はかなり違います。形式を並べると次のとおりです（2019〜2026年度）。
             大学名から、それぞれの出題分析と分野別完成演習に進めます。
           </p>
-          <p className="mt-4 flex items-center gap-1 text-[0.68rem] text-ink-3 sm:hidden">
+          <p className="mt-4 flex items-center gap-1 text-[0.75rem] text-ink-3 sm:hidden">
             <svg aria-hidden="true" viewBox="0 0 20 20" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M3 10h14M13 6l4 4-4 4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
             横にスクロールできます
           </p>
           <div className="scroll-hint -mx-5 mt-1.5 overflow-x-auto px-5 sm:mx-0 sm:mt-4 sm:px-0">
-            <table className="w-full min-w-[34rem] border-collapse text-left text-[0.78rem] leading-relaxed">
+            <table className="w-full min-w-[34rem] border-collapse text-left text-[0.8rem] leading-relaxed">
               <thead>
-                <tr className="border-y border-rule bg-paper-2/60 text-[0.7rem] text-ink-2">
+                <tr className="border-y border-rule bg-paper-2/60 text-[0.75rem] text-ink-2">
                   <th scope="col" className="px-3 py-2 font-bold">大学</th>
                   <th scope="col" className="px-2 py-2 text-right font-bold">時間</th>
                   <th scope="col" className="px-2 py-2 text-right font-bold">大問</th>
@@ -291,16 +291,16 @@ export default function ShindanPage() {
             <div className="mt-6 space-y-4">
               {s.differences.same && (
                 <div>
-                  <h3 className="text-[0.9rem] font-semibold text-ink">差がつかない分野</h3>
-                  <p className="prose-ja mt-1 text-[0.88rem] text-ink-2">
+                  <h3 className="text-[0.93rem] font-semibold text-ink">差がつかない分野</h3>
+                  <p className="prose-ja mt-1 text-[0.93rem] text-ink-2">
                     <Spans spans={s.differences.same} />
                   </p>
                 </div>
               )}
               {s.differences.differ && s.differences.differ.length > 0 && (
                 <div>
-                  <h3 className="text-[0.9rem] font-semibold text-ink">差がつくのは「確率」「整数」「時間の使い方」</h3>
-                  <ul className="prose-ja mt-1 list-disc space-y-1 pl-5 text-[0.88rem] text-ink-2 marker:text-ink-3">
+                  <h3 className="text-[0.93rem] font-semibold text-ink">差がつくのは「確率」「整数」「時間の使い方」</h3>
+                  <ul className="prose-ja mt-1 list-disc space-y-1 pl-5 text-[0.93rem] text-ink-2 marker:text-ink-3">
                     {s.differences.differ.map((d, i) => (
                       <li key={i}>
                         <Spans spans={d} />
@@ -317,7 +317,7 @@ export default function ShindanPage() {
           <h2 id="tag-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
             9つの観点で得点を切り分ける
           </h2>
-          <p className="prose-ja mt-3 text-[0.9rem] text-ink-2">
+          <p className="prose-ja mt-3 text-[0.93rem] text-ink-2">
             各小問に「分野」と「能力」の観点が1つずつ付いています。同じ{s.points}点を2通りに切り分けるので、どちらの合計も
             {s.points}点になります。
           </p>
@@ -329,20 +329,20 @@ export default function ShindanPage() {
               ] as const
             ).map(([label, tags]) => (
               <div key={label}>
-                <h3 className="border-b border-rule pb-1.5 text-[0.88rem] font-semibold text-ink">
+                <h3 className="border-b border-rule pb-1.5 text-[0.93rem] font-semibold text-ink">
                   {label}（{tags.length}つ）
                 </h3>
                 <dl className="divide-y divide-rule/70">
                   {tags.map((t) => (
                     <div key={t.name} className="py-2.5">
                       <dt className="flex items-baseline justify-between gap-3">
-                        <span className="text-[0.88rem] font-semibold text-ink">{t.name}</span>
-                        <span className="serif text-[0.95rem] tabular-nums text-navy">
+                        <span className="text-[0.93rem] font-semibold text-ink">{t.name}</span>
+                        <span className="serif text-[0.97rem] tabular-nums text-navy">
                           {t.points}
-                          <span className="ml-0.5 font-sans text-[0.66rem] font-normal text-ink-3">点</span>
+                          <span className="ml-0.5 font-sans text-[0.75rem] font-normal text-ink-3">点</span>
                         </span>
                       </dt>
-                      <dd className="prose-ja mt-0.5 text-[0.8rem] text-ink-2">
+                      <dd className="prose-ja mt-0.5 text-[0.86rem] text-ink-2">
                         <Spans spans={t.desc} />
                       </dd>
                     </div>
@@ -351,7 +351,7 @@ export default function ShindanPage() {
               </div>
             ))}
           </div>
-          <p className="prose-ja mt-4 text-[0.85rem] text-ink-2">
+          <p className="prose-ja mt-4 text-[0.86rem] text-ink-2">
             計算力と処理速度は別物として数えます。計算力は1本の長い計算を完走する深さ（九州大・東京科学大が求める）、
             処理速度は方針の違う問題を次々に切り替える幅（東北大・北海道大が求める）です。これを分けないと、九州大と東北大が区別できません。
           </p>
@@ -364,22 +364,22 @@ export default function ShindanPage() {
           <dl className="mt-4 divide-y divide-rule border-y border-rule">
             {s.judgements.map((j) => (
               <div key={j.label} className="grid gap-1 py-3 sm:grid-cols-[9rem_1fr] sm:gap-4">
-                <dt className="text-[0.9rem] font-semibold text-ink">{j.label}</dt>
+                <dt className="text-[0.93rem] font-semibold text-ink">{j.label}</dt>
                 <dd className="prose-ja text-[0.86rem] text-ink-2">
                   <Spans spans={j.desc} />
                 </dd>
               </div>
             ))}
           </dl>
-          <p className="prose-ja mt-4 text-[0.9rem] text-ink-2">
+          <p className="prose-ja mt-4 text-[0.93rem] text-ink-2">
             第1回から暫定判定が出て、第{s.rounds}回の判定がそのまま最終判定になります。
             模試の点は同じ実力でも日によって上下するので、小問が増えるほど当たり外れが打ち消し合い、判定のぶれは小さくなります。
           </p>
           {s.noise.length === s.rounds && (
             <div className="scroll-hint -mx-5 mt-4 overflow-x-auto px-5 sm:mx-0 sm:px-0">
-              <table className="w-full min-w-[28rem] border-collapse text-[0.78rem]">
+              <table className="w-full min-w-[28rem] border-collapse text-[0.8rem]">
                 <thead>
-                  <tr className="border-y border-rule bg-paper-2/60 text-[0.7rem] text-ink-2">
+                  <tr className="border-y border-rule bg-paper-2/60 text-[0.75rem] text-ink-2">
                     <th scope="col" className="px-3 py-2 text-left font-bold" />
                     {s.noise.map((_, i) => (
                       <th key={i} scope="col" className="px-2 py-2 text-right font-bold">
@@ -403,7 +403,7 @@ export default function ShindanPage() {
               </table>
             </div>
           )}
-          <p className="mt-2 text-[0.72rem] leading-relaxed text-ink-3">
+          <p className="mt-2 text-[0.75rem] leading-relaxed text-ink-3">
             数値は本書の配点と難易度から見積もった目安で、実際に受けた人のデータではありません。第1回だけで志望校を決めず、同じ判定が続くかで確かめてください。
           </p>
         </section>
@@ -416,16 +416,16 @@ export default function ShindanPage() {
             <dl className="mt-4 divide-y divide-rule border-y border-rule">
               {s.scope.knows && (
                 <div className="grid gap-1 py-3 sm:grid-cols-[9rem_1fr] sm:gap-4">
-                  <dt className="text-[0.9rem] font-semibold text-ink">わかる</dt>
-                  <dd className="prose-ja text-[0.88rem] text-ink-2">
+                  <dt className="text-[0.93rem] font-semibold text-ink">わかる</dt>
+                  <dd className="prose-ja text-[0.93rem] text-ink-2">
                     <Spans spans={s.scope.knows} />
                   </dd>
                 </div>
               )}
               {s.scope.unknown && (
                 <div className="grid gap-1 py-3 sm:grid-cols-[9rem_1fr] sm:gap-4">
-                  <dt className="text-[0.9rem] font-semibold text-ink">わからない</dt>
-                  <dd className="prose-ja text-[0.88rem] text-ink-2">
+                  <dt className="text-[0.93rem] font-semibold text-ink">わからない</dt>
+                  <dd className="prose-ja text-[0.93rem] text-ink-2">
                     <Spans spans={s.scope.unknown} />
                   </dd>
                 </div>
@@ -438,14 +438,14 @@ export default function ShindanPage() {
           <h2 id="next-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
             判定のあとは、その大学の分野別完成演習へ
           </h2>
-          <p className="prose-ja mt-3 text-[0.9rem] text-ink-2">
+          <p className="prose-ja mt-3 text-[0.93rem] text-ink-2">
             第1志望候補が決まったら、その大学の分野別完成演習に進み、ずれがマイナスに出た観点から埋めていきます。
             過去問はそのあとで十分です。順番を逆にすると、過去問が「解けなかった問題の山」になって終わってしまいます。
           </p>
           <div className="mt-6">
             <KanseiCards />
           </div>
-          <p className="mt-5 text-[0.85rem]">
+          <p className="mt-5 text-[0.86rem]">
             <Link href="/kansei" className="text-navy underline underline-offset-4">
               分野別完成演習のシリーズ全体を見る
             </Link>
@@ -465,7 +465,7 @@ export default function ShindanPage() {
         <FaqSection items={faqs} name="志望校診断模試" />
 
         <section aria-labelledby="buy-heading" className="mt-14 border border-navy/25 bg-white p-5 sm:p-7">
-          <p className="text-[0.68rem] font-bold tracking-wide text-accent">{seriesName}</p>
+          <p className="text-[0.75rem] font-bold tracking-wide text-accent">{seriesName}</p>
           <h2 id="buy-heading" className="serif mt-1.5 text-[1.2rem] leading-snug text-ink sm:text-[1.35rem]">
             旧帝大・難関国公立大理系数学 志望校診断模試 2027年度対策
           </h2>
@@ -481,14 +481,14 @@ export default function ShindanPage() {
               />
             </div>
             <div className="flex min-w-0 flex-1 flex-col">
-              <p className="prose-ja text-[0.85rem] text-ink-2">
+              <p className="prose-ja text-[0.86rem] text-ink-2">
                 模試{s.rounds}回（全{s.problems}題）・毎回の診断ページ・最終判定。問題はすべて書き下ろしです。
               </p>
-              <p className="mt-1 text-[0.74rem] tabular-nums text-ink-3">{[yen(c.price), meta].filter(Boolean).join("・")}</p>
+              <p className="mt-1 text-[0.8rem] tabular-nums text-ink-3">{[yen(c.price), meta].filter(Boolean).join("・")}</p>
               <AmazonButton href={s.amazonUrl} className="mt-auto" />
             </div>
           </div>
-          <p className="mt-5 border-t border-rule pt-3 text-[0.7rem] leading-relaxed text-ink-3">
+          <p className="mt-5 border-t border-rule pt-3 text-[0.75rem] leading-relaxed text-ink-3">
             非公式の独自教材です。各大学とは関係ありません。価格・在庫は Amazon の表示が優先されます。
           </p>
         </section>

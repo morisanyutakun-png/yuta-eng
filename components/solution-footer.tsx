@@ -31,7 +31,7 @@ export function SolutionFooter({ set }: { set: SolutionSet }) {
     <section aria-labelledby="next" className="mt-16 border-t-2 border-ink/80 pt-8">
       {book && (
         <>
-          <p className="text-[0.68rem] font-bold tracking-wide text-ink-3">当サイト運営者が制作した教材</p>
+          <p className="text-[0.75rem] font-bold tracking-wide text-ink-3">当サイト運営者が制作した教材</p>
           <h2 id="next" className="serif mt-1.5 text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
             同じ形式の問題を、{book.rounds ?? 5}回分
           </h2>
@@ -50,7 +50,7 @@ export function SolutionFooter({ set }: { set: SolutionSet }) {
 
             <div className="min-w-0 flex-1">
               <p className="text-[1rem] font-semibold leading-snug text-ink">{book.title}</p>
-              <p className="prose-ja mt-2 text-[0.88rem] leading-[1.95] text-ink-2">
+              <p className="prose-ja mt-2 text-[0.93rem] leading-[1.95] text-ink-2">
                 {subject(u)}の出題を分析して書き下ろした予想問題集です。過去問そのものは入っていません。
                 本番と同じ試験時間・大問構成で{book.rounds ?? 5}回分、
                 解答・詳解{u.books.some((b) => b.altSolutions) ? "・別解" : ""}に加えて、
@@ -60,11 +60,11 @@ export function SolutionFooter({ set }: { set: SolutionSet }) {
                 <AmazonButton href={amazonUrl(book.asin)} label="Amazonで見る" />
                 <Link
                   href={`/univ/${u.slug}#books`}
-                  className="text-[0.85rem] font-semibold text-navy underline underline-offset-4"
+                  className="text-[0.86rem] font-semibold text-navy underline underline-offset-4"
                 >
                   {u.books.length > 1 ? `全${u.books.length}巻を見る` : "収録内容を見る"}
                 </Link>
-                <span className="text-[0.74rem] tabular-nums text-ink-3">
+                <span className="text-[0.8rem] tabular-nums text-ink-3">
                   {[yen(book.price), bookMetaLine(book)].filter(Boolean).join("・")}
                 </span>
               </div>
@@ -73,12 +73,12 @@ export function SolutionFooter({ set }: { set: SolutionSet }) {
 
           {sample && (
             <div className="mt-8">
-              <h3 className="text-[0.92rem] font-semibold text-ink">中身を試し読みする</h3>
-              <p className="prose-ja mt-1.5 text-[0.84rem] leading-[1.9] text-ink-2">
+              <h3 className="text-[0.93rem] font-semibold text-ink">中身を試し読みする</h3>
+              <p className="prose-ja mt-1.5 text-[0.86rem] leading-[1.9] text-ink-2">
                 {SAMPLE_NOTICE}画像を押すと拡大できます。
               </p>
               <SampleViewer pages={sample.pages} title={book.title} />
-              <p className="mt-3 text-[0.82rem]">
+              <p className="mt-3 text-[0.86rem]">
                 <a
                   href={sample.pdf}
                   target="_blank"
@@ -95,8 +95,8 @@ export function SolutionFooter({ set }: { set: SolutionSet }) {
       )}
 
       <div className="mt-10 border-t border-rule pt-6">
-        <h3 className="text-[0.92rem] font-semibold text-ink">関連するページ</h3>
-        <ul className="mt-2.5 space-y-2 text-[0.88rem]">
+        <h3 className="text-[0.93rem] font-semibold text-ink">関連するページ</h3>
+        <ul className="mt-2.5 space-y-2 text-[0.93rem]">
           <li>
             <Link href={`/univ/${u.slug}`} className="font-semibold text-navy underline underline-offset-4">
               {subject(u)}の傾向と対策

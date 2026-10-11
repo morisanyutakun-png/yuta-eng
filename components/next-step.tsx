@@ -22,8 +22,8 @@ export function NextStep({
 }) {
   return (
     <div className="mt-9 border border-rule bg-paper-2 px-5 py-5 sm:px-6">
-      <p className="text-[0.95rem] font-semibold text-ink">{heading}</p>
-      {note && <p className="prose-ja mt-1.5 text-[0.84rem] leading-[1.9] text-ink-2">{note}</p>}
+      <p className="text-[0.97rem] font-semibold text-ink">{heading}</p>
+      {note && <p className="prose-ja mt-1.5 text-[0.86rem] leading-[1.9] text-ink-2">{note}</p>}
       <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
         {primary.external ? (
           <a href={primary.href} className="btn btn-primary">
@@ -35,7 +35,7 @@ export function NextStep({
           </Link>
         )}
         {secondary.map((x) => (
-          <Link key={x.href} href={x.href} className="text-[0.85rem] text-navy underline underline-offset-4">
+          <Link key={x.href} href={x.href} className="text-[0.86rem] text-navy underline underline-offset-4">
             {x.label}
           </Link>
         ))}

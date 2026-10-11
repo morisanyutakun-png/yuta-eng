@@ -16,7 +16,7 @@ import type { Source } from "@/lib/solutions/types";
 export function SourceLink({ source, division }: { source: Source; division?: string }) {
   return (
     <section aria-labelledby="source" className="mt-6 border border-rule bg-paper-2/60 px-5 py-4">
-      <h2 id="source" className="text-[0.78rem] font-bold tracking-wide text-ink-2">
+      <h2 id="source" className="text-[0.8rem] font-bold tracking-wide text-ink-2">
         問題文について
       </h2>
 
@@ -32,7 +32,7 @@ export function SourceLink({ source, division }: { source: Source; division?: st
               target="_blank"
               rel="noopener noreferrer"
               data-outbound="source"
-              className="inline-flex min-h-11 items-center gap-1.5 text-[0.9rem] font-semibold text-navy underline underline-offset-4"
+              className="inline-flex min-h-11 items-center gap-1.5 text-[0.93rem] font-semibold text-navy underline underline-offset-4"
             >
               問題文を見る（{source.publisher}公式・外部サイト{source.target === "pdf" ? "・PDF" : ""}）
               <svg aria-hidden="true" viewBox="0 0 20 20" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2">
@@ -40,7 +40,7 @@ export function SourceLink({ source, division }: { source: Source; division?: st
               </svg>
             </a>
           </p>
-          <p className="mt-1.5 text-[0.72rem] leading-relaxed text-ink-3">
+          <p className="mt-1.5 text-[0.75rem] leading-relaxed text-ink-3">
             掲載ページ名「{source.pageTitle}」／{source.checked.replace(/-/g, "/")}に当サイトでリンク先を確認。
             公開年度は大学側の都合で入れ替わることがあります。
           </p>
@@ -52,7 +52,7 @@ export function SourceLink({ source, division }: { source: Source; division?: st
             {division && `${division}の`}問題文は、この年度については大学が公開していません
             （{source.checked.replace(/-/g, "/")}時点）。お手元の過去問集・赤本などでご確認ください。
           </p>
-          <p className="mt-1.5 text-[0.72rem] leading-relaxed text-ink-3">
+          <p className="mt-1.5 text-[0.75rem] leading-relaxed text-ink-3">
             問題を転載している非公式サイトへのリンクは、当サイトでは行っていません。
           </p>
         </>

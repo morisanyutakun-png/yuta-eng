@@ -132,6 +132,18 @@ footer :where(a, summary):focus-visible,
   }
 }
 
+/*
+ * パンくず。
+ *
+ * 文字が小さいので、そのままだと高さ13pxの行になり指で当たらない。
+ * リンクを行内ブロックにして上下に余白を入れ、押せる高さを確保する。
+ * 見た目の行間は変えず、当たり判定だけを広げる。
+ */
+.breadcrumb a {
+  display: inline-block;
+  padding-block: 0.55rem;
+}
+
 /* 押せるもの。寸法と当たり判定をそろえる */
 .btn {
   display: inline-flex;
@@ -142,7 +154,7 @@ footer :where(a, summary):focus-visible,
   padding-inline: 1.25rem;
   border: 1px solid var(--color-rule-2);
   background: #fff;
-  font-size: 0.88rem;
+  font-size: 0.93rem;
   font-weight: 600;
   color: var(--color-navy);
   transition: background-color 0.12s, border-color 0.12s;
@@ -216,8 +228,14 @@ body {
 /*
  * 日本語の本文組版。
  * auto-phrase は文節で折り返すので、助詞だけが行頭に落ちる改行が減る。
+ *
+ * 1行の長さは、文字の大きさに対する比で止める。和文は全角45字あたりが
+ * 読みやすさの上限で、それを超えると目が次の行の頭に戻れなくなる。
+ * `em` で指定しているので、小さい文字ほど自動的に細い段になる。
+ * 画面の広いページでは、これが無いと1行が90字を超えていた。
  */
 .prose-ja {
+  max-inline-size: 46em;
   line-height: 1.95;
   word-break: auto-phrase;
   line-break: strict;
@@ -257,7 +275,7 @@ body {
  * 大きな見出しだけが続くページより流れが追いやすくなる。
  */
 .eyebrow {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--sec, var(--color-accent));
@@ -302,8 +320,8 @@ a.card:hover,
   gap: 0.25rem;
   border: 1px solid var(--color-rule);
   background: var(--color-paper-2);
-  padding: 0.1rem 0.45rem;
-  font-size: 0.7rem;
+  padding: 0.12rem 0.5rem;
+  font-size: 0.75rem;
   line-height: 1.5;
   color: var(--color-ink-2);
   white-space: nowrap;

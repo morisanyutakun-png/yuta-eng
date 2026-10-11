@@ -87,20 +87,20 @@ export function LearningPath({
                 >
                   <span
                     aria-hidden="true"
-                    className={`serif flex size-6 shrink-0 items-center justify-center text-[0.8rem] tabular-nums ${
+                    className={`serif flex size-6 shrink-0 items-center justify-center text-[0.86rem] tabular-nums ${
                       here ? "bg-navy text-white" : "border border-rule text-ink-3"
                     }`}
                   >
                     {s.no}
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-[0.9rem] font-semibold leading-snug text-ink group-hover:text-navy">
+                    <span className="block text-[0.93rem] font-semibold leading-snug text-ink group-hover:text-navy">
                       {s.label}
                     </span>
-                    <span className="block truncate text-[0.72rem] text-ink-3">{s.hint}</span>
+                    <span className="block truncate text-[0.75rem] text-ink-3">{s.hint}</span>
                   </span>
                   {here ? (
-                    <span className="shrink-0 text-[0.62rem] font-bold text-accent">いまここ</span>
+                    <span className="shrink-0 text-[0.75rem] font-bold text-accent">いまここ</span>
                   ) : (
                     <svg aria-hidden="true" viewBox="0 0 20 20" className="size-3.5 shrink-0 text-ink-3" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="m7 4 6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
@@ -131,18 +131,18 @@ export function LearningPath({
                 <span className="flex items-center gap-2">
                   <span
                     aria-hidden="true"
-                    className={`serif flex size-6 shrink-0 items-center justify-center text-[0.8rem] tabular-nums ${
+                    className={`serif flex size-6 shrink-0 items-center justify-center text-[0.86rem] tabular-nums ${
                       here ? "bg-navy text-white" : "border border-rule text-ink-3"
                     }`}
                   >
                     {s.no}
                   </span>
-                  <span className="text-[0.88rem] font-semibold leading-snug text-ink">{s.label}</span>
-                  {here && <span className="ml-auto shrink-0 text-[0.62rem] font-bold text-accent">いまここ</span>}
+                  <span className="text-[0.93rem] font-semibold leading-snug text-ink">{s.label}</span>
+                  {here && <span className="ml-auto shrink-0 text-[0.75rem] font-bold text-accent">いまここ</span>}
                 </span>
-                <span className="prose-ja mt-1.5 text-[0.76rem] leading-relaxed text-ink-2">{s.body}</span>
+                <span className="prose-ja mt-1.5 text-[0.8rem] leading-relaxed text-ink-2">{s.body}</span>
                 {!here && (
-                  <span className="mt-auto pt-2 text-[0.76rem] font-semibold text-navy underline decoration-navy/30 underline-offset-4 group-hover:decoration-navy">
+                  <span className="mt-auto pt-2 text-[0.8rem] font-semibold text-navy underline decoration-navy/30 underline-offset-4 group-hover:decoration-navy">
                     {s.cta} →
                   </span>
                 )}

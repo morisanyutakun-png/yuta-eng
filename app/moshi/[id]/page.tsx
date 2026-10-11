@@ -229,7 +229,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
 
       <div className="page page-wide mobile-compact" style={sectionStyle("moshi")}>
         <MobileActions primary={{href: "#apply", label: "参加申込"}} secondary={{href: "#sample", label: "見本を見る"}} />
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+        <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
           </Link>
@@ -262,7 +262,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
                 <br className="sm:hidden" />
                 <span className="sm:ml-3">{m.exam}</span>
               </h1>
-              <p className="prose-ja mt-4 max-w-[38rem] text-[0.95rem] leading-[1.95] text-ink-2">
+              <p className="prose-ja mt-4 max-w-[38rem] text-[0.97rem] leading-[1.95] text-ink-2">
                 {m.university}の数学の形式に合わせて作る
                 <strong className="font-semibold text-ink">大学別の数学模試</strong>
                 （冠模試の形式）です。記述答案は人の手で採点し、講評と今後の学習の助言までお返しします。
@@ -276,7 +276,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
                   見本問題を見る
                 </Link>
               </p>
-              <p className="mt-2.5 text-[0.78rem] text-ink-3">参加申込の時点では料金は発生しません。</p>
+              <p className="mt-2.5 text-[0.8rem] text-ink-3">参加申込の時点では料金は発生しません。</p>
             </div>
 
             <MoshiReportCover className="mt-9 hidden w-full max-w-[22rem] sm:block lg:mt-0" />
@@ -295,7 +295,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
             <h2 id="form" className="rule-mark serif h-sect text-ink">
               {bare}の数学は、こういう試験です
             </h2>
-            <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
+            <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.93rem] leading-[1.9] text-ink-2">
               当サイトが{yearsLabel(u) ?? "過去"}の過去問を分析した結果です。本模試は、この形式に合わせて作問します。
             </p>
 
@@ -315,9 +315,9 @@ export default async function MoshiUniversityPage({ params }: Props) {
                 },
               ].map((x) => (
                 <div key={x.k} className="bg-white px-4 py-4">
-                  <dt className="text-[0.7rem] text-ink-3">{x.k}</dt>
+                  <dt className="text-[0.75rem] text-ink-3">{x.k}</dt>
                   <dd className="serif mt-1 text-[1.15rem] leading-snug text-ink">{x.v}</dd>
-                  {x.n && <dd className="mt-1 text-[0.72rem] leading-relaxed text-ink-3">{x.n}</dd>}
+                  {x.n && <dd className="mt-1 text-[0.75rem] leading-relaxed text-ink-3">{x.n}</dd>}
                 </div>
               ))}
             </dl>
@@ -330,8 +330,8 @@ export default async function MoshiUniversityPage({ params }: Props) {
 
             {top.length > 0 && u.fieldChart && (
               <div className="mt-7">
-                <h3 className="text-[0.95rem] font-semibold text-ink">よく出ている分野</h3>
-                <p className="mt-1.5 text-[0.74rem] leading-relaxed text-ink-3">
+                <h3 className="text-[0.97rem] font-semibold text-ink">よく出ている分野</h3>
+                <p className="mt-1.5 text-[0.8rem] leading-relaxed text-ink-3">
                   {fieldChartCaption(u.fieldChart, u.yearCount)}
                 </p>
                 <ul className="mt-3 flex flex-wrap gap-2">
@@ -342,7 +342,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
                     </li>
                   ))}
                 </ul>
-                <p className="mt-3 text-[0.82rem]">
+                <p className="mt-3 text-[0.86rem]">
                   <Link href={`/univ/${u.slug}`} className="text-navy underline underline-offset-4">
                     {bare}数学の出題分析をくわしく読む
                   </Link>
@@ -356,7 +356,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
           <h2 id="back" className="rule-mark serif h-sect text-ink">
             受験後にお返しするもの
           </h2>
-          <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
+          <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.93rem] leading-[1.9] text-ink-2">
             答案は人の手で最後まで読みます。{bare}の出題傾向と照らして、
             どの分野をどの順で詰めるかまで書いてお返しします。
           </p>
@@ -368,7 +368,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
           <h2 id="sample-heading" className="rule-mark serif h-sect text-ink">
             問題・返却の見本
           </h2>
-          <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
+          <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.93rem] leading-[1.9] text-ink-2">
             返却PDFと、問題・解答・採点基準を公開しています。
           </p>
           <MoshiSample />
@@ -388,8 +388,8 @@ export default async function MoshiUniversityPage({ params }: Props) {
               ["採点と返却", `記述答案を人力で採点し、${deliverableLine}をまとめてお返しします`],
             ].map(([k, v]) => (
               <div key={k} className="grid gap-x-5 px-4 py-3.5 sm:grid-cols-[7rem_1fr]">
-                <dt className="text-[0.78rem] leading-relaxed text-ink-3">{k}</dt>
-                <dd className="prose-ja mt-1 text-[0.88rem] leading-[1.9] text-ink-2 sm:mt-0">{v}</dd>
+                <dt className="text-[0.8rem] leading-relaxed text-ink-3">{k}</dt>
+                <dd className="prose-ja mt-1 text-[0.93rem] leading-[1.9] text-ink-2 sm:mt-0">{v}</dd>
               </div>
             ))}
           </dl>
@@ -400,7 +400,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
           <h2 id="apply-heading" className="rule-mark rule-mark-accent serif h-sect text-ink">
             {bare}の模試に申し込む
           </h2>
-          <p className="prose-ja mt-2.5 max-w-[38rem] text-[0.9rem] leading-[1.95] text-ink-2">
+          <p className="prose-ja mt-2.5 max-w-[38rem] text-[0.93rem] leading-[1.95] text-ink-2">
             {m.university}にはあらかじめ印を付けてあります。ほかの大学も受けたい場合は、続けてお選びください。
             正式な受験日程をメールでご案内します。参加申込の時点では料金は発生しません。
           </p>
@@ -451,7 +451,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
                         <span className="block text-[0.93rem] font-semibold text-ink transition-colors group-hover:text-navy">
                           {l.h}
                         </span>
-                        <span className="mt-1 block text-[0.82rem] leading-relaxed text-ink-3">{l.body}</span>
+                        <span className="mt-1 block text-[0.86rem] leading-relaxed text-ink-3">{l.body}</span>
                       </span>
                       <svg
                         aria-hidden="true"
@@ -483,7 +483,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
             {faq.map((f) => (
               <details key={f.q}>
                 <summary className="min-h-11 cursor-pointer py-3 text-[0.86rem] font-semibold leading-relaxed text-ink">{f.q}</summary>
-                <p className="prose-ja pb-4 text-[0.88rem] text-ink-2">{f.a}</p>
+                <p className="prose-ja pb-4 text-[0.93rem] text-ink-2">{f.a}</p>
               </details>
             ))}
           </div>
@@ -503,14 +503,14 @@ export default async function MoshiUniversityPage({ params }: Props) {
               </li>
             ))}
           </ul>
-          <p className="mt-4 text-[0.84rem]">
+          <p className="mt-4 text-[0.86rem]">
             <Link href="/moshi" className="text-navy underline underline-offset-4">
               {sections.moshi.eyebrow}の案内をまとめて見る
             </Link>
           </p>
         </section>
 
-        <p className="prose-ja mt-14 border-t border-rule pt-6 text-[0.78rem] leading-[1.9] text-ink-3">
+        <p className="prose-ja mt-14 border-t border-rule pt-6 text-[0.8rem] leading-[1.9] text-ink-3">
           本模試は{m.university}とは関係のない、当サイトが独自に制作・実施するものです。
           大学の過去問そのものは出題しません。出題形式の分析は当サイトが過去問にあたって行ったもので、
           配点・採点基準は本模試のものです。大学が公表しているものではありません。

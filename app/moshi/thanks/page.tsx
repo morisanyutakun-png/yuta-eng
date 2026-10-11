@@ -63,7 +63,7 @@ export default async function MoshiThanks() {
 
   return (
     <div className="page">
-      <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+      <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
         <Link href="/" className="hover:text-navy">
           トップ
         </Link>
@@ -86,7 +86,7 @@ export default async function MoshiThanks() {
       {/* 申し込んだ大学と、メールを送れたかどうか。画面側の控えから読む */}
       {done ? (
         <section aria-labelledby="applied" className="mt-8">
-          <h2 id="applied" className="text-[0.74rem] font-bold tracking-wide text-ink-3">
+          <h2 id="applied" className="text-[0.8rem] font-bold tracking-wide text-ink-3">
             申込済み
           </h2>
           <ul className="mt-2.5 border border-rule">
@@ -96,26 +96,26 @@ export default async function MoshiThanks() {
                 className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 border-b border-rule px-4 py-3 last:border-0 sm:px-5"
               >
                 <span className="text-[1rem] font-semibold text-ink">{u.university}</span>
-                <span className="text-[0.82rem] text-ink-2">{u.exam}</span>
+                <span className="text-[0.86rem] text-ink-2">{u.exam}</span>
               </li>
             ))}
           </ul>
 
           {done.returning && (
-            <p className="prose-ja mt-3 text-[0.84rem] leading-[1.9] text-ink-2">
+            <p className="prose-ja mt-3 text-[0.86rem] leading-[1.9] text-ink-2">
               以前のお申し込みと同じメールアドレスでしたので、同じ申込にまとめました。
               上の一覧が、現在お申し込みいただいているすべての模試です。
             </p>
           )}
 
-          <p className="prose-ja mt-3 text-[0.82rem] leading-[1.9] text-ink-3">
+          <p className="prose-ja mt-3 text-[0.86rem] leading-[1.9] text-ink-3">
             {done.mailed
               ? "確認メールをお送りしました。数分たっても届かない場合は、迷惑メールフォルダをご確認ください。"
               : "確認メールの送信ができませんでした。お申し込み自体は受け付けていますので、そのままお待ちください。"}
           </p>
         </section>
       ) : (
-        <p className="prose-ja mt-7 text-[0.9rem] leading-[1.95] text-ink-2">
+        <p className="prose-ja mt-7 text-[0.93rem] leading-[1.95] text-ink-2">
           お申し込みいただいた内容は、確認メールに記載しています。ご確認ください。
         </p>
       )}
@@ -130,8 +130,8 @@ export default async function MoshiThanks() {
               key={k}
               className="grid grid-cols-[4.5rem_1fr] gap-x-4 border-b border-rule px-4 py-3.5 last:border-0 sm:grid-cols-[6rem_1fr] sm:px-5"
             >
-              <dt className="text-[0.8rem] leading-relaxed text-ink-3">{k}</dt>
-              <dd className="prose-ja text-[0.88rem] leading-[1.9] text-ink-2">{v}</dd>
+              <dt className="text-[0.86rem] leading-relaxed text-ink-3">{k}</dt>
+              <dd className="prose-ja text-[0.93rem] leading-[1.9] text-ink-2">{v}</dd>
             </div>
           ))}
         </dl>
@@ -153,7 +153,7 @@ export default async function MoshiThanks() {
                   <span className="block text-[0.93rem] font-semibold text-ink transition-colors group-hover:text-navy">
                     {l.h}
                   </span>
-                  <span className="mt-1 block text-[0.82rem] leading-relaxed text-ink-3">{l.b}</span>
+                  <span className="mt-1 block text-[0.86rem] leading-relaxed text-ink-3">{l.b}</span>
                 </span>
                 <svg
                   aria-hidden="true"
@@ -171,7 +171,7 @@ export default async function MoshiThanks() {
         </ul>
       </section>
 
-      <p className="prose-ja mt-14 border-t border-rule pt-6 text-[0.78rem] leading-[1.9] text-ink-3">
+      <p className="prose-ja mt-14 border-t border-rule pt-6 text-[0.8rem] leading-[1.9] text-ink-3">
         お申し込みの取り消しや内容の変更をご希望の場合は、
         {site.contact ? (
           <a href={`mailto:${site.contact}`} className="mx-1 underline underline-offset-4 hover:text-navy">

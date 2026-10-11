@@ -69,7 +69,7 @@ export default function MoshiPrivacy() {
 
   return (
     <div className="page">
-      <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+      <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
         <Link href="/" className="hover:text-navy">
           トップ
         </Link>
@@ -92,12 +92,12 @@ export default function MoshiPrivacy() {
         {items.map((i) => (
           <div key={i.h}>
             <dt className="serif text-[1.05rem] text-ink">{i.h}</dt>
-            <dd className="prose-ja mt-2 text-[0.9rem] leading-[1.95] text-ink-2">{i.body}</dd>
+            <dd className="prose-ja mt-2 text-[0.93rem] leading-[1.95] text-ink-2">{i.body}</dd>
           </div>
         ))}
       </dl>
 
-      <p className="mt-12 border-t border-rule pt-6 text-[0.85rem]">
+      <p className="mt-12 border-t border-rule pt-6 text-[0.86rem]">
         <Link href="/moshi" className="text-navy underline underline-offset-4">
           {moshi.title}のご案内に戻る
         </Link>

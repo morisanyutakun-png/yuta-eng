@@ -171,7 +171,7 @@ export default async function QuestionPage({ params }: Props) {
           <h1 className="serif mt-1 text-[1.6rem] leading-snug text-ink sm:text-[1.95rem]">
             第{question.no}問 {question.field}の解答・解説
           </h1>
-          <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.74rem] text-ink-3">
+          <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.8rem] text-ink-3">
             <span>{question.topics.join("・")}</span>
             {question.ownDifficulty && (
               <span className="border border-rule px-1.5 py-0.5">
@@ -211,7 +211,7 @@ export default async function QuestionPage({ params }: Props) {
           </Link>
         </p>
 
-        <p className="prose-ja mt-10 border-t border-rule pt-5 text-[0.78rem] leading-[1.9] text-ink-3">
+        <p className="prose-ja mt-10 border-t border-rule pt-5 text-[0.8rem] leading-[1.9] text-ink-3">
           {NOT_OFFICIAL}
           解答は当サイトで検算していますが、誤りが残っている可能性はあります。
           <Link href="/kaisetsu/policy" className="ml-1 underline underline-offset-4 hover:text-navy">

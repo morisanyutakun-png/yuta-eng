@@ -194,7 +194,7 @@ export default function EducatorsPage() {
         style={sectionStyle("educators")}
       >
         <MobileActions primary={{href: mailTemplate ?? "#contact", label: "団体申込・相談"}} secondary={{href: "#moshi", label: "団体受験の条件"}} />
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+        <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
           </Link>
@@ -255,14 +255,14 @@ export default function EducatorsPage() {
                 >
                   <span className="sec-rule" />
                   <span className="flex flex-1 flex-col px-5 py-5 sm:px-6">
-                    <span className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
+                    <span className="text-[0.75rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
                       0{x.n}
                     </span>
                     <span className="serif mt-2 text-[1.15rem] leading-snug text-ink">{x.want}</span>
                     <span className="prose-ja mt-2.5 hidden text-[0.86rem] leading-[1.9] text-ink-2 sm:block">{x.body}</span>
                     <span className="mt-4 hidden space-y-1.5 border-t border-rule pt-3.5 sm:block">
                       {x.points.map((pt) => (
-                        <span key={pt} className="flex gap-2 text-[0.82rem] leading-relaxed text-ink-2">
+                        <span key={pt} className="flex gap-2 text-[0.86rem] leading-relaxed text-ink-2">
                           <span aria-hidden="true" className="shrink-0 text-[var(--sec)]">
                             ・
                           </span>
@@ -270,7 +270,7 @@ export default function EducatorsPage() {
                         </span>
                       ))}
                     </span>
-                    <span className="mt-4 flex items-center gap-1.5 pt-1 text-[0.85rem] font-semibold text-[var(--sec)]">
+                    <span className="mt-4 flex items-center gap-1.5 pt-1 text-[0.86rem] font-semibold text-[var(--sec)]">
                       {x.label}
                       <svg
                         aria-hidden="true"
@@ -325,14 +325,14 @@ export default function EducatorsPage() {
                     sizes="(max-width: 640px) 96px, 108px"
                     className="w-full rounded-[2px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)] transition-shadow group-hover:shadow-[0_2px_6px_rgba(21,24,28,0.12)]"
                   />
-                  <span className="mt-1.5 block truncate text-[0.72rem] text-ink-2 transition-colors group-hover:text-navy">
+                  <span className="mt-1.5 block truncate text-[0.75rem] text-ink-2 transition-colors group-hover:text-navy">
                     {shortName(u)}数学
                   </span>
                 </Link>
               </li>
             ))}
           </ul>
-          <p className="mt-1.5 text-[0.72rem] text-ink-3">
+          <p className="mt-1.5 text-[0.75rem] text-ink-3">
             横にスクロールできます。表紙を選ぶと、その大学の出題分析と抜粋をご覧いただけます。
           </p>
         </section>
@@ -350,7 +350,7 @@ export default function EducatorsPage() {
           <h3 id="series" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
             刊行している教材
           </h3>
-          <p className="mt-3 text-[0.84rem] leading-relaxed text-ink-2">大学別予想問題集・分野別完成演習・志望校診断模試の3シリーズです。</p>
+          <p className="mt-3 text-[0.86rem] leading-relaxed text-ink-2">大学別予想問題集・分野別完成演習・志望校診断模試の3シリーズです。</p>
           <InfoDetails title="教材の内容・試し読みを見る">
           <ul className="mt-4 space-y-10">
             {series.map((p, i) => (
@@ -360,7 +360,7 @@ export default function EducatorsPage() {
             ))}
           </ul>
           </InfoDetails>
-          <p className="mt-5 text-[0.78rem] leading-relaxed text-ink-3">
+          <p className="mt-5 text-[0.8rem] leading-relaxed text-ink-3">
             価格・在庫・配送は Amazon の商品ページの表示が優先されます。
           </p>
         </section>
@@ -373,8 +373,8 @@ export default function EducatorsPage() {
           <dl className="mt-4 space-y-7">
             {features.map((f) => (
               <div key={f.h}>
-                <dt className="text-[0.95rem] font-semibold leading-snug text-ink">{f.h}</dt>
-                <dd className="prose-ja mt-1.5 text-[0.9rem] leading-[2] text-ink-2">{f.body}</dd>
+                <dt className="text-[0.97rem] font-semibold leading-snug text-ink">{f.h}</dt>
+                <dd className="prose-ja mt-1.5 text-[0.93rem] leading-[2] text-ink-2">{f.body}</dd>
               </div>
             ))}
           </dl>
@@ -409,7 +409,7 @@ export default function EducatorsPage() {
                     <span className="block text-[0.93rem] font-semibold text-ink transition-colors group-hover:text-navy">
                       {l.h}
                     </span>
-                    <span className="mt-1 block text-[0.82rem] leading-relaxed text-ink-3">{l.body}</span>
+                    <span className="mt-1 block text-[0.86rem] leading-relaxed text-ink-3">{l.body}</span>
                   </span>
                   <svg
                     aria-hidden="true"
@@ -431,9 +431,9 @@ export default function EducatorsPage() {
           <h3 id="multiple" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
             複数冊でのご利用について
           </h3>
-          <div className="prose-ja mt-5 space-y-3 text-[0.9rem] leading-[2] text-ink-2">
+          <div className="prose-ja mt-5 space-y-3 text-[0.93rem] leading-[2] text-ink-2">
             <p>複数名でのご利用も、通常の商品ページから購入いただけます。</p>
-            <p className="text-[0.84rem] text-ink-3">
+            <p className="text-[0.86rem] text-ink-3">
               まとめてのご購入にあたっての条件（在庫・配送・支払い方法など）は、Amazon の案内をご確認ください。
               当サイトではそれらの可否を判断しかねます。
             </p>
@@ -461,7 +461,7 @@ export default function EducatorsPage() {
           <h2 id="moshi-heading" className="serif h-sect mt-1.5 border-b-2 border-ink/80 pb-3 text-ink">
             模試をクラスで受けさせる
           </h2>
-          <div className="prose-ja mt-5 space-y-3 text-[0.9rem] leading-[2] text-ink-2">
+          <div className="prose-ja mt-5 space-y-3 text-[0.93rem] leading-[2] text-ink-2">
             <p>
               <Link href="/moshi" className="font-semibold text-navy underline underline-offset-4">
                 {moshi.title}
@@ -486,11 +486,11 @@ export default function EducatorsPage() {
               ["受験料", `1名 ${priceLabel}`],
               ["ご請求", "受験後・実受験人数分"],
               ["支払期限", `請求書発行から${moshi.group.paymentDays}日`],
-            ].map(([label, value]) => <div key={label} className="bg-white px-3 py-3"><dt className="text-[0.7rem] text-ink-3">{label}</dt><dd className="mt-1 text-[0.83rem] font-semibold leading-relaxed text-ink">{value}</dd></div>)}
+            ].map(([label, value]) => <div key={label} className="bg-white px-3 py-3"><dt className="text-[0.75rem] text-ink-3">{label}</dt><dd className="mt-1 text-[0.86rem] font-semibold leading-relaxed text-ink">{value}</dd></div>)}
           </dl>
-          <p className="prose-ja mt-3 text-[0.84rem] leading-relaxed text-ink-2">{groupPaymentLine}</p>
-          <p className="mt-2 text-[0.78rem] leading-relaxed text-ink-2">人数変更・取り消しは受験の前日まで無料です。人数による割引はありません。</p>
-          {!moshi.group.invoiceRegistered && <p className="mt-2 text-[0.75rem] leading-relaxed text-ink-3">適格請求書（インボイス）は発行できません。必要な場合は、お申し込み前にご確認ください。</p>}
+          <p className="prose-ja mt-3 text-[0.86rem] leading-relaxed text-ink-2">{groupPaymentLine}</p>
+          <p className="mt-2 text-[0.8rem] leading-relaxed text-ink-2">人数変更・取り消しは受験の前日まで無料です。人数による割引はありません。</p>
+          {!moshi.group.invoiceRegistered && <p className="mt-2 text-[0.8rem] leading-relaxed text-ink-3">適格請求書（インボイス）は発行できません。必要な場合は、お申し込み前にご確認ください。</p>}
           <InfoDetails title="実施の流れ・書類・人数変更の条件を見る">
           {/*
             いちばん大事なのは「いつ何が決まるか」。
@@ -532,12 +532,12 @@ export default function EducatorsPage() {
                 className="grid gap-x-5 border-b border-rule px-4 py-4 last:border-b-0 sm:grid-cols-[11rem_1fr]"
               >
                 <p className="flex items-baseline gap-2.5">
-                  <span className="serif shrink-0 tabular-nums text-[0.82rem] text-[var(--sec)]">
+                  <span className="serif shrink-0 tabular-nums text-[0.86rem] text-[var(--sec)]">
                     0{i + 1}
                   </span>
                   <span className="min-w-0">
-                    <span className="block text-[0.92rem] font-semibold leading-snug text-ink">{x.h}</span>
-                    <span className="mt-0.5 block text-[0.74rem] text-ink-3">{x.when}</span>
+                    <span className="block text-[0.93rem] font-semibold leading-snug text-ink">{x.h}</span>
+                    <span className="mt-0.5 block text-[0.8rem] text-ink-3">{x.when}</span>
                   </span>
                 </p>
                 <p className="prose-ja mt-1.5 text-[0.86rem] leading-[1.9] text-ink-2 sm:mt-0">{x.body}</p>
@@ -575,7 +575,7 @@ export default function EducatorsPage() {
                 ],
               ].map(([k, v]) => (
                 <li key={k} className="grid gap-x-5 px-4 py-3.5 sm:grid-cols-[8.5rem_1fr]">
-                  <span className="text-[0.78rem] leading-relaxed text-ink-3">{k}</span>
+                  <span className="text-[0.8rem] leading-relaxed text-ink-3">{k}</span>
                   <span className="prose-ja mt-1 text-[0.86rem] leading-[1.9] text-ink-2 sm:mt-0">{v}</span>
                 </li>
               ))}
@@ -588,7 +588,7 @@ export default function EducatorsPage() {
             受験後にお渡しするもの ──「{moshi.deliverableName}」
           </h3>
           <MoshiDeliverables />
-          <p className="prose-ja mt-4 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
+          <p className="prose-ja mt-4 max-w-[40rem] text-[0.93rem] leading-[1.9] text-ink-2">
             {moshi.group.reportMin}名以上でお申し込みいただいた場合は、これに加えて
             <strong className="font-semibold text-ink">受験者全体の分野別の得点状況</strong>
             をまとめたものを、先生あてにお渡しします。どの分野が落ちているかが講座の単位で分かるので、
@@ -618,7 +618,7 @@ export default function EducatorsPage() {
           <h2 id="contact" className="serif border-b border-rule pb-2.5 text-[1.2rem] text-ink">
             お問い合わせ
           </h2>
-          <div className="prose-ja mt-5 space-y-4 text-[0.9rem] leading-[2] text-ink-2">
+          <div className="prose-ja mt-5 space-y-4 text-[0.93rem] leading-[2] text-ink-2">
             <p>
               収録範囲、難易度、進度に合わせた使い方、模試の団体でのお申し込みについてお答えします。
             </p>
@@ -627,13 +627,13 @@ export default function EducatorsPage() {
                 // 学校によっては mailto が開かないので、住所そのものも文字で出す。
                 // 先生がコピーして、ふだん使っているメールソフトから送れるようにする。
                 <div className="border border-rule bg-paper-2/50 px-5 py-4">
-                  <p className="text-[0.74rem] text-ink-3">メールでお送りください</p>
-                  <p className="mt-1 break-all font-mono text-[0.98rem] text-ink">
+                  <p className="text-[0.8rem] text-ink-3">メールでお送りください</p>
+                  <p className="mt-1 break-all font-mono text-[0.97rem] text-ink">
                     <a href={`mailto:${site.contact}`} className="text-navy underline underline-offset-4">
                       {site.contact}
                     </a>
                   </p>
-                  <p className="mt-2 text-[0.78rem] leading-relaxed text-ink-3">
+                  <p className="mt-2 text-[0.8rem] leading-relaxed text-ink-3">
                     ご所属とお名前を添えていただけると、こちらの回答が早くなります。
                   </p>
                 </div>
@@ -643,7 +643,7 @@ export default function EducatorsPage() {
                     href={site.contact}
                     target="_blank"
                     rel="noopener"
-                    className="inline-flex min-h-11 items-center border border-rule bg-paper-2/60 px-5 text-[0.9rem] font-semibold text-navy transition-colors hover:border-navy/40"
+                    className="inline-flex min-h-11 items-center border border-rule bg-paper-2/60 px-5 text-[0.93rem] font-semibold text-navy transition-colors hover:border-navy/40"
                   >
                     お問い合わせフォームへ
                   </a>
@@ -658,7 +658,7 @@ export default function EducatorsPage() {
             <div className="sticky top-6 pt-2">
               {/* 長いページなので、どこに何があるかを出しっぱなしにする */}
               <nav aria-labelledby="toc-edu" className="mb-4 border border-rule bg-white px-4 py-4">
-                <p id="toc-edu" className="text-[0.7rem] font-bold tracking-wide text-ink-3">
+                <p id="toc-edu" className="text-[0.75rem] font-bold tracking-wide text-ink-3">
                   このページの中身
                 </p>
                 <ol className="mt-2 space-y-1.5">
@@ -672,7 +672,7 @@ export default function EducatorsPage() {
                     <li key={href}>
                       <a
                         href={href}
-                        className="block whitespace-pre text-[0.84rem] leading-relaxed text-ink-2 transition-colors hover:text-navy"
+                        className="block whitespace-pre text-[0.86rem] leading-relaxed text-ink-2 transition-colors hover:text-navy"
                       >
                         {label}
                       </a>
@@ -686,7 +686,7 @@ export default function EducatorsPage() {
                 <div className="px-5 py-5">
                   <p className="eyebrow">学校・塾・予備校の方へ</p>
                   <p className="serif mt-1.5 text-[1.02rem] leading-snug text-ink">ご相談・お問い合わせ</p>
-                  <p className="prose-ja mt-2.5 text-[0.82rem] leading-[1.9] text-ink-2">
+                  <p className="prose-ja mt-2.5 text-[0.86rem] leading-[1.9] text-ink-2">
                     複数冊でのご利用、模試の団体でのお申し込み、採用検討時の内容確認、教材選定について承ります。
                   </p>
                   {site.contact &&
@@ -699,7 +699,7 @@ export default function EducatorsPage() {
                             </a>
                           </p>
                         )}
-                        <p className="mt-3 break-all font-mono text-[0.88rem]">
+                        <p className="mt-3 break-all font-mono text-[0.93rem]">
                           <a href={`mailto:${site.contact}`} className="text-navy underline underline-offset-4">
                             {site.contact}
                           </a>
@@ -712,20 +712,20 @@ export default function EducatorsPage() {
                         </a>
                       </p>
                     ))}
-                  <p className="mt-2.5 text-[0.74rem] leading-relaxed text-ink-3">
+                  <p className="mt-2.5 text-[0.8rem] leading-relaxed text-ink-3">
                     ご所属とお名前を添えていただけると、こちらの回答が早くなります。
                   </p>
                 </div>
               </div>
 
-              <p className="mt-4 text-[0.78rem] leading-relaxed text-ink-3">
+              <p className="mt-4 text-[0.8rem] leading-relaxed text-ink-3">
                 価格・在庫・配送は Amazon の商品ページの表示が優先されます。
               </p>
             </div>
           </aside>
         </div>
 
-        <p className="prose-ja mt-14 border-t border-rule pt-6 text-[0.78rem] leading-[1.9] text-ink-3">
+        <p className="prose-ja mt-14 border-t border-rule pt-6 text-[0.8rem] leading-[1.9] text-ink-3">
           本サイトおよび教材は、各大学とは関係のない、独自に制作した非公式の教材です。
           問題文の転載は行っていません。
         </p>

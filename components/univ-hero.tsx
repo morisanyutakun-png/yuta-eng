@@ -54,7 +54,7 @@ export function UnivHero({ u }: { u: University }) {
 
   return (
     <header className="pb-2 pt-4">
-      <p className="text-[0.72rem] font-semibold tracking-wide text-navy">
+      <p className="text-[0.75rem] font-semibold tracking-wide text-navy">
         {u.university}
         {u.course && `・${u.course}`}
       </p>
@@ -70,7 +70,7 @@ export function UnivHero({ u }: { u: University }) {
             <br />
             傾向と対策
           </h1>
-          <p className="mt-2.5 text-[0.74rem] tabular-nums text-ink-3">
+          <p className="mt-2.5 text-[0.8rem] tabular-nums text-ink-3">
             {years ? `${years}の過去問分析` : "過去問の出題分析"}
           </p>
         </div>
@@ -92,15 +92,20 @@ export function UnivHero({ u }: { u: University }) {
             sizes="(max-width: 640px) 92px, 124px"
             className="w-full rounded-[2px] border border-rule shadow-[0_1px_3px_rgba(21,24,28,0.09)] transition-shadow group-hover:shadow-[0_2px_8px_rgba(21,24,28,0.12)]"
           />
-          <span className="mt-1.5 block text-center text-[0.62rem] leading-tight text-ink-3">
-            分析からつくった
+          {/*
+            表紙の幅は92pxしかない。文字を大きくしたぶん「分析からつくった」が
+            この幅に収まらず、「た」だけが次の行に落ちていた。
+            改行位置を自分で決めず、収まる長さに言い換える。
+          */}
+          <span className="mt-1.5 block whitespace-nowrap text-center text-[0.75rem] leading-tight text-ink-3">
+            この分析から
             <br />
-            予想問題集
+            つくった問題集
           </span>
         </a>
 
         {u.summary && !leadIsChange && !leadRepeatsBody && (
-          <p className="prose-ja col-span-2 col-start-1 mt-5 text-[0.95rem] text-ink-2 sm:col-span-1">
+          <p className="prose-ja col-span-2 col-start-1 mt-5 text-[0.97rem] text-ink-2 sm:col-span-1">
             {lead}
           </p>
         )}
@@ -111,10 +116,10 @@ export function UnivHero({ u }: { u: University }) {
         併記しないと「もう通用しない数字」を最初の画面で見せることになる。
       */}
       {u.change && (
-        <p className="prose-ja mt-5 border-l-2 border-accent bg-paper-2/70 px-3.5 py-3 text-[0.85rem] text-ink-2">
+        <p className="prose-ja mt-5 border-l-2 border-accent bg-paper-2/70 px-3.5 py-3 text-[0.86rem] text-ink-2">
           <strong className="font-semibold text-ink">次年度からの変更：</strong>
           {u.change}
-          <span className="mt-1 block text-[0.78rem] text-ink-3">
+          <span className="mt-1 block text-[0.8rem] text-ink-3">
             下の数字と分析は、変更前の過去問にもとづくものです。
           </span>
         </p>
@@ -125,7 +130,7 @@ export function UnivHero({ u }: { u: University }) {
         どちらも「大問◯題」という数字が存在しないので、数字の代わりに方式を書く。
       */}
       {u.facts.selective && (
-        <p className="prose-ja mt-5 border-y border-rule py-3 text-[0.85rem] text-ink-2">
+        <p className="prose-ja mt-5 border-y border-rule py-3 text-[0.86rem] text-ink-2">
           <strong className="font-semibold text-ink">解く大問が決まっていません。</strong>
           1冊の問題冊子から、志望学部ごとの指定または受験生自身の選択で解く大問が決まる方式です。
           自分がどれを解くのかは、下の一覧表で確認してください。
@@ -137,14 +142,14 @@ export function UnivHero({ u }: { u: University }) {
         <dl className="mt-6 grid grid-cols-4 gap-x-2 border-y border-rule py-4">
           {rows.map((r) => (
             <div key={r.label}>
-              <dt className="text-[0.63rem] leading-tight text-ink-3">{r.label}</dt>
+              <dt className="text-[0.75rem] leading-tight text-ink-3">{r.label}</dt>
               <dd className="serif mt-1 leading-none text-ink">
-                <span className={r.value.length <= 3 && r.sub ? "text-[1.45rem] tabular-nums" : "text-[0.92rem]"}>
+                <span className={r.value.length <= 3 && r.sub ? "text-[1.45rem] tabular-nums" : "text-[0.93rem]"}>
                   {r.value}
                 </span>
-                {r.sub && <span className="ml-0.5 font-sans text-[0.66rem] font-normal text-ink-3">{r.sub}</span>}
+                {r.sub && <span className="ml-0.5 font-sans text-[0.75rem] font-normal text-ink-3">{r.sub}</span>}
                 {r.note && (
-                  <span className="mt-1 block font-sans text-[0.6rem] font-normal leading-tight text-ink-3">
+                  <span className="mt-1 block font-sans text-[0.75rem] font-normal leading-tight text-ink-3">
                     {r.note}
                   </span>
                 )}
@@ -157,13 +162,13 @@ export function UnivHero({ u }: { u: University }) {
       {/* 頻出分野の上位3つ。ページの中身を最初の画面で予告する */}
       {top.length === 3 && (
         <div className="mt-4">
-          <p className="text-[0.63rem] text-ink-3">
+          <p className="text-[0.75rem] text-ink-3">
             よく出る分野{denom ? `（全${denom}題中の出題数）` : "（出題された題数）"}
           </p>
           <ul className="mt-2 space-y-1.5">
             {top.map((t) => (
               <li key={t.label} className="flex items-center gap-2.5">
-                <span className="w-[7.5rem] shrink-0 truncate text-[0.76rem] text-ink sm:w-[10rem]">
+                <span className="w-[7.5rem] shrink-0 truncate text-[0.8rem] text-ink sm:w-[10rem]">
                   {t.label.replace(/（.*?）/g, "")}
                 </span>
                 <span className="h-1 flex-1 overflow-hidden rounded-full bg-paper-2">
@@ -172,7 +177,7 @@ export function UnivHero({ u }: { u: University }) {
                     style={{ width: `${Math.round((t.count / max) * 100)}%` }}
                   />
                 </span>
-                <span className="serif w-6 shrink-0 text-right text-[0.85rem] tabular-nums text-navy">
+                <span className="serif w-6 shrink-0 text-right text-[0.86rem] tabular-nums text-navy">
                   {t.count}
                 </span>
               </li>

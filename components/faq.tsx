@@ -10,7 +10,7 @@ export function FaqSection({ items, name }: { items: Faq[]; name: string }) {
       <dl className="mt-5 divide-y divide-rule border-y border-rule">
         {items.map((f) => (
           <div key={f.q} className="py-4">
-            <dt className="flex gap-2.5 text-[0.92rem] font-semibold leading-relaxed text-ink">
+            <dt className="flex gap-2.5 text-[0.93rem] font-semibold leading-relaxed text-ink">
               <span aria-hidden="true" className="serif shrink-0 text-navy">
                 Q.
               </span>
@@ -20,7 +20,7 @@ export function FaqSection({ items, name }: { items: Faq[]; name: string }) {
               <span aria-hidden="true" className="serif shrink-0 text-ink-3">
                 A.
               </span>
-              <span className="prose-ja text-[0.88rem] text-ink-2">{f.a}</span>
+              <span className="prose-ja text-[0.93rem] text-ink-2">{f.a}</span>
             </dd>
           </div>
         ))}

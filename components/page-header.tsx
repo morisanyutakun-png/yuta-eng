@@ -51,7 +51,7 @@ export function PageHeader({
           <p className="eyebrow">{sections[section].eyebrow}</p>
           <h1 className="serif h-page mt-2 text-ink">{title}</h1>
           {lead && (
-            <p className="prose-ja mt-4 max-w-[38rem] text-[0.95rem] text-ink-2">{lead}</p>
+            <p className="prose-ja mt-4 max-w-[38rem] text-[0.97rem] text-ink-2">{lead}</p>
           )}
         </div>
 
@@ -75,10 +75,10 @@ export function HeaderStats({ items }: { items: { k: string; v: React.ReactNode;
     <dl className="flex flex-wrap gap-x-9 gap-y-4">
       {items.map((s) => (
         <div key={s.k}>
-          <dt className="text-[0.68rem] text-ink-3">{s.k}</dt>
+          <dt className="text-[0.75rem] text-ink-3">{s.k}</dt>
           <dd className="serif mt-1 leading-none text-ink">
             <span className="text-[1.6rem] tabular-nums">{s.v}</span>
-            {s.u && <span className="ml-0.5 font-sans text-[0.7rem] font-normal text-ink-3">{s.u}</span>}
+            {s.u && <span className="ml-0.5 font-sans text-[0.75rem] font-normal text-ink-3">{s.u}</span>}
           </dd>
         </div>
       ))}

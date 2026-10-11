@@ -97,7 +97,7 @@ export function StudyPlan({ u }: { u: University }) {
       <h2 id="plan-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
         {short}数学の対策の進め方
       </h2>
-      <p className="prose-ja mt-3 text-[0.9rem] text-ink-2">
+      <p className="prose-ja mt-3 text-[0.93rem] text-ink-2">
         {short}の数学は、出題の形が年度をまたいでよく似ています。だから
         <strong className="font-semibold text-ink">形式と頻出分野を先に押さえてから演習する</strong>
         ほうが、いきなり過去問に入るより速く仕上がります。
@@ -108,13 +108,13 @@ export function StudyPlan({ u }: { u: University }) {
           <li key={s.no} className="flex gap-3.5 border-t border-rule pt-4 first:border-0 first:pt-0">
             <span
               aria-hidden="true"
-              className="serif flex size-7 shrink-0 items-center justify-center border border-navy/30 text-[0.85rem] tabular-nums text-navy"
+              className="serif flex size-7 shrink-0 items-center justify-center border border-navy/30 text-[0.86rem] tabular-nums text-navy"
             >
               {s.no}
             </span>
             <div className="min-w-0">
-              <h3 className="text-[0.95rem] font-semibold leading-snug text-ink">{s.title}</h3>
-              <p className="prose-ja mt-1.5 text-[0.88rem] text-ink-2">{s.body}</p>
+              <h3 className="text-[0.97rem] font-semibold leading-snug text-ink">{s.title}</h3>
+              <p className="prose-ja mt-1.5 text-[0.93rem] text-ink-2">{s.body}</p>
             </div>
           </li>
         ))}
@@ -133,21 +133,21 @@ export function StudyPlan({ u }: { u: University }) {
             />
           </Link>
           <div className="min-w-0">
-            <p className="text-[0.68rem] font-bold tracking-wide text-accent">過去問の前にシリーズ</p>
+            <p className="text-[0.75rem] font-bold tracking-wide text-accent">過去問の前にシリーズ</p>
             <p className="serif mt-1 text-[1.02rem] leading-snug text-ink">
               <Link href={`/kansei/${kansei.slug}`} className="hover:text-navy">
                 {kansei.name} 分野別完成演習
               </Link>
             </p>
-            <p className="mt-1 text-[0.76rem] tabular-nums text-ink-3">
+            <p className="mt-1 text-[0.8rem] tabular-nums text-ink-3">
               {kansei.total.fields}分野・{kansei.total.problems}題
               {kansei.total.subquestions ? `・${kansei.total.subquestions}小問` : ""}・目標時間 計{kansei.total.minutes}分
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-              <AmazonButton href={kansei.amazonUrl} className="!min-h-10 !text-[0.85rem]" />
+              <AmazonButton href={kansei.amazonUrl} className="!min-h-10 !text-[0.86rem]" />
               <Link
                 href={`/kansei/${kansei.slug}`}
-                className="text-[0.82rem] font-semibold text-navy underline underline-offset-4"
+                className="text-[0.86rem] font-semibold text-navy underline underline-offset-4"
               >
                 収録分野と出題傾向を見る
               </Link>
@@ -157,7 +157,7 @@ export function StudyPlan({ u }: { u: University }) {
       )}
 
       {kansei && (
-        <p className="prose-ja mt-4 text-[0.85rem] text-ink-2">
+        <p className="prose-ja mt-4 text-[0.86rem] text-ink-2">
           {short}に決めきれていない場合は、
           <Link href="/shindan" className="font-semibold text-navy underline underline-offset-4">
             志望校診断模試

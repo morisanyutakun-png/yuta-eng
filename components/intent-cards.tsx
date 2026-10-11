@@ -40,12 +40,12 @@ export function IntentCards({ items }: { items: Intent[] }) {
           >
             <span className="sec-rule" />
             <span className="flex flex-1 flex-col px-3 pb-4 pt-3 sm:px-5 sm:pb-5 sm:pt-4">
-              <span className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
+              <span className="text-[0.75rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
                 {it.kind}
               </span>
-              <span className="serif mt-2 text-[0.95rem] leading-snug text-ink sm:text-[1.05rem]">{it.want}</span>
-              <span className="prose-ja mt-2.5 hidden text-[0.82rem] leading-[1.85] text-ink-2 sm:block">{it.body}</span>
-              <span className="mt-4 flex items-center gap-1.5 pt-1 text-[0.8rem] font-semibold text-[var(--sec)]">
+              <span className="serif mt-2 text-[0.97rem] leading-snug text-ink sm:text-[1.05rem]">{it.want}</span>
+              <span className="prose-ja mt-2.5 hidden text-[0.86rem] leading-[1.85] text-ink-2 sm:block">{it.body}</span>
+              <span className="mt-4 flex items-center gap-1.5 pt-1 text-[0.86rem] font-semibold text-[var(--sec)]">
                 {it.to}
                 <svg
                   aria-hidden="true"

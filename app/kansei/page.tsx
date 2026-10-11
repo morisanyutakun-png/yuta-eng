@@ -119,7 +119,7 @@ export default function KanseiSeriesPage() {
         className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
         style={sectionStyle("kansei")}
       >
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+        <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
           </Link>
@@ -130,14 +130,14 @@ export default function KanseiSeriesPage() {
         <div className="sec-rule mt-3" />
 
         <header className="pb-6 pt-4">
-          <p className="text-[0.72rem] font-semibold tracking-wide text-navy">{seriesName}・2027年度対策</p>
+          <p className="text-[0.75rem] font-semibold tracking-wide text-navy">{seriesName}・2027年度対策</p>
           <h1 className="serif mt-2 text-[1.75rem] leading-[1.35] text-ink sm:text-[2.2rem]">
             大学別 数学
             <br className="sm:hidden" />
             分野別完成演習
           </h1>
-          <p className="mt-2 text-[0.85rem] font-semibold text-ink-2">{seriesTagline}——その間を埋める。</p>
-          <p className="prose-ja mt-4 max-w-[36rem] text-[0.95rem] text-ink-2">
+          <p className="mt-2 text-[0.86rem] font-semibold text-ink-2">{seriesTagline}——その間を埋める。</p>
+          <p className="prose-ja mt-4 max-w-[36rem] text-[0.97rem] text-ink-2">
             志望校の過去問を分析して頻出分野を選び、分野ごとに標準から本番水準まで段階的に並べた数学の問題集です。
             {pubNames.join("・")}の{kanseiPublished.length}冊を刊行しています。
           </p>
@@ -149,10 +149,10 @@ export default function KanseiSeriesPage() {
               { k: "頻出分野", v: range(kanseiPublished.map((k) => k.total.fields)), u: "分野" },
             ].map((r) => (
               <div key={r.k}>
-                <dt className="text-[0.68rem] text-ink-3">{r.k}</dt>
+                <dt className="text-[0.75rem] text-ink-3">{r.k}</dt>
                 <dd className="serif mt-1 leading-none text-ink">
                   <span className="text-[1.7rem] tabular-nums">{r.v}</span>
-                  <span className="ml-0.5 font-sans text-[0.7rem] font-normal text-ink-3">{r.u}</span>
+                  <span className="ml-0.5 font-sans text-[0.75rem] font-normal text-ink-3">{r.u}</span>
                 </dd>
               </div>
             ))}
@@ -174,7 +174,7 @@ export default function KanseiSeriesPage() {
           <h2 id="place-heading" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
             過去問の前に置く問題集
           </h2>
-          <div className="prose-ja mt-4 space-y-4 text-[0.95rem] text-ink-2">
+          <div className="prose-ja mt-4 space-y-4 text-[0.97rem] text-ink-2">
             <p>
               難関大の過去問を初めて開くと、「解法は分かるのに、どこから手をつければよいか分からない」「答案が最後まで書けない」と手が止まりがちです。
               それは能力の問題ではなく、誘導の少ない問題や1小問の重い問題を、自分で分解して解いた経験がないというだけのことです。
@@ -185,7 +185,7 @@ export default function KanseiSeriesPage() {
               本番形式の訓練は、そのあと過去問と『合格答案をつくる』で行います。
             </p>
           </div>
-          <ol className="mt-5 grid gap-px border border-rule bg-rule text-[0.85rem]">
+          <ol className="mt-5 grid gap-px border border-rule bg-rule text-[0.86rem]">
             {[
               ["基礎・標準問題集", "教科書傍用・網羅系"],
               ["分野別完成演習", "分野別に、標準から本番水準まで段階的に"],
@@ -194,7 +194,7 @@ export default function KanseiSeriesPage() {
               <li key={a} className={`flex items-baseline gap-3 px-4 py-3 ${i === 1 ? "bg-white" : "bg-paper"}`}>
                 <span className="serif w-5 shrink-0 tabular-nums text-ink-3">{i + 1}</span>
                 <span className={i === 1 ? "font-semibold text-navy" : "font-semibold text-ink"}>{a}</span>
-                <span className="text-[0.78rem] text-ink-3">{b}</span>
+                <span className="text-[0.8rem] text-ink-3">{b}</span>
               </li>
             ))}
           </ol>
@@ -215,7 +215,7 @@ export default function KanseiSeriesPage() {
               ["過去問演習への移行プラン", "付録に、本書を終えたあと過去問演習へ移る順序をまとめています。"],
             ].map(([k, v]) => (
               <div key={k} className="grid gap-1 py-3 sm:grid-cols-[13rem_1fr] sm:gap-4">
-                <dt className="text-[0.9rem] font-semibold text-ink">{k}</dt>
+                <dt className="text-[0.93rem] font-semibold text-ink">{k}</dt>
                 <dd className="prose-ja text-[0.86rem] text-ink-2">{v}</dd>
               </div>
             ))}
@@ -227,9 +227,9 @@ export default function KanseiSeriesPage() {
             {kanseiAll.length}冊の構成を比べる
           </h2>
           <div className="scroll-hint -mx-5 mt-4 overflow-x-auto px-5 sm:mx-0 sm:px-0">
-            <table className="w-full min-w-[40rem] border-collapse text-left text-[0.78rem] leading-relaxed">
+            <table className="w-full min-w-[40rem] border-collapse text-left text-[0.8rem] leading-relaxed">
               <thead>
-                <tr className="border-y border-rule bg-paper-2/60 text-[0.7rem] text-ink-2">
+                <tr className="border-y border-rule bg-paper-2/60 text-[0.75rem] text-ink-2">
                   <th scope="col" className="px-3 py-2 font-bold">書名</th>
                   <th scope="col" className="px-2 py-2 font-bold">分析した年度</th>
                   <th scope="col" className="px-2 py-2 text-right font-bold">分野</th>
@@ -250,7 +250,7 @@ export default function KanseiSeriesPage() {
                       ) : (
                         <>
                           {k.name}
-                          <span className="ml-1.5 text-[0.66rem] font-bold text-accent">近日</span>
+                          <span className="ml-1.5 text-[0.75rem] font-bold text-accent">近日</span>
                         </>
                       )}
                     </th>
@@ -275,7 +275,7 @@ export default function KanseiSeriesPage() {
               </tbody>
             </table>
           </div>
-          <p className="prose-ja mt-3 text-[0.8rem] text-ink-3">
+          <p className="prose-ja mt-3 text-[0.86rem] text-ink-3">
             目標時間の合計は、1日90分ならおよそ
             {range(kanseiPublished.map((k) => daysAt(k.total.minutes)))}日でひととおり終わる分量です。
           </p>
@@ -294,15 +294,15 @@ export default function KanseiSeriesPage() {
               />
             </Link>
             <div className="min-w-0">
-              <p className="text-[0.68rem] font-bold tracking-wide text-accent">まだ志望校が決まっていないなら</p>
+              <p className="text-[0.75rem] font-bold tracking-wide text-accent">まだ志望校が決まっていないなら</p>
               <h2 id="shindan-heading" className="serif mt-1 text-[1.05rem] leading-snug text-ink">
                 先に志望校診断模試で、{shindan.universities.length}大学との相性を確かめる
               </h2>
-              <p className="prose-ja mt-1.5 text-[0.82rem] text-ink-2">
+              <p className="prose-ja mt-1.5 text-[0.86rem] text-ink-2">
                 {shindan.rounds}回の模試で「得点の形」を分析し、{shindan.universities.map((u) => u.name).join("・")}
                 との相性を判定します。第1志望候補が決まったら、その大学の完成演習へ。
               </p>
-              <Link href="/shindan" className="mt-2 inline-block text-[0.85rem] font-semibold text-navy underline underline-offset-4">
+              <Link href="/shindan" className="mt-2 inline-block text-[0.86rem] font-semibold text-navy underline underline-offset-4">
                 志望校診断模試を見る
               </Link>
             </div>

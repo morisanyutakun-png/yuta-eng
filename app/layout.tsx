@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <header className="border-b border-rule">
           <div className="mx-auto flex max-w-[46rem] items-center justify-between px-5 py-3.5 sm:px-6 lg:max-w-[74rem] lg:px-8">
-            <Link href="/" className="flex items-center gap-2.5 text-ink">
+            <Link href="/" className="flex min-h-11 items-center gap-2.5 text-ink">
               <LogoMark className="size-7 shrink-0 text-navy" />
               <span className="serif text-[0.97rem] leading-tight tracking-tight">
                 {site.name}
@@ -63,13 +63,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           白文字との明暗比は 11.5:1 あり、薄い字でも 7:1 を下回らない。
         */}
         <footer className="mt-20 bg-navy py-10 text-white">
-          <div className="mx-auto max-w-[46rem] space-y-4 px-5 text-[0.72rem] leading-relaxed text-white/75 sm:px-6 lg:max-w-[74rem] lg:px-8">
+          <div className="prose-ja mx-auto max-w-[46rem] space-y-4 px-5 text-[0.8rem] leading-relaxed text-white/75 sm:px-6 lg:max-w-[74rem] lg:px-8">
             <p className="flex items-center gap-2.5 pb-1 text-white">
               <LogoMark
                 className="size-6 shrink-0"
                 style={{ "--logo-ink": "#1b3a63" } as React.CSSProperties}
               />
-              <span className="serif text-[0.95rem] tracking-tight">{site.name}</span>
+              <span className="serif text-[0.97rem] tracking-tight">{site.name}</span>
             </p>
             <p>{site.author}が制作・運営する、各大学とは関係のない非公式サイトです。</p>
             <nav aria-label="サイトのご案内">

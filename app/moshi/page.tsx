@@ -116,7 +116,7 @@ export default function MoshiPage() {
 
       <div className="page page-wide mobile-compact" style={sectionStyle("moshi")}>
         <MobileActions primary={{href: "#apply", label: "参加申込"}} secondary={{href: "#unis", label: "大学を選ぶ"}} />
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+        <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
           </Link>
@@ -143,7 +143,7 @@ export default function MoshiPage() {
               <p className="prose-ja mt-4 text-[1rem] leading-[1.95] text-ink-2 sm:text-[1.05rem]">
                 志望校の形式で解く、大学別のオンライン数学模試。記述答案を人力で採点し、成績・講評をPDFで返却します。
               </p>
-              <p className="mt-3 text-[0.82rem] font-semibold leading-relaxed text-ink">{roundLabel}／{priceLabel}</p>
+              <p className="mt-3 text-[0.86rem] font-semibold leading-relaxed text-ink">{roundLabel}／{priceLabel}</p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
                 <a href="#apply" className="btn btn-primary">
                   参加申込に進む
@@ -152,7 +152,7 @@ export default function MoshiPage() {
                   開催大学を見る
                 </a>
               </div>
-              <p className="mt-3 text-[0.78rem] text-ink-3">
+              <p className="mt-3 text-[0.8rem] text-ink-3">
                 参加申込の時点では料金は発生しません。
               </p>
             </div>
@@ -173,7 +173,7 @@ export default function MoshiPage() {
           その下を読む理由がない。札はそのまま大学別のページへの入口にする。
         */}
         <section aria-labelledby="unis-top" className="mt-9 scroll-mt-20" id="unis">
-          <h2 id="unis-top" className="text-[0.95rem] font-semibold text-ink">
+          <h2 id="unis-top" className="text-[0.97rem] font-semibold text-ink">
             開催する{moshi.universities.length}大学
           </h2>
           <ul className="mt-3 flex flex-wrap gap-2">
@@ -188,7 +188,7 @@ export default function MoshiPage() {
               </li>
             ))}
           </ul>
-          <p className="mt-2.5 text-[0.78rem] text-ink-3">
+          <p className="mt-2.5 text-[0.8rem] text-ink-3">
             大学名を選ぶと、その大学の出題形式・頻出分野と、全大学共通の見本をご覧いただけます。
           </p>
         </section>
@@ -203,8 +203,8 @@ export default function MoshiPage() {
             {points.map((p) => (
               <li key={p.h} className="bg-white p-5 lg:p-6">
                 <p.icon className="hidden h-12 w-auto sm:block" />
-                <h3 className="mt-3 text-[0.98rem] font-semibold leading-snug text-ink">{p.h}</h3>
-                <p className="prose-ja mt-2 text-[0.87rem] leading-[1.9] text-ink-2">{p.body}</p>
+                <h3 className="mt-3 text-[0.97rem] font-semibold leading-snug text-ink">{p.h}</h3>
+                <p className="prose-ja mt-2 text-[0.93rem] leading-[1.9] text-ink-2">{p.body}</p>
               </li>
             ))}
           </ul>
@@ -239,10 +239,10 @@ export default function MoshiPage() {
                   key={r.k}
                   className="grid grid-cols-[5.5rem_1fr] gap-x-4 border-b border-rule bg-white px-4 py-3.5 last:border-b-0 sm:grid-cols-[7rem_1fr] sm:px-5 lg:border-b lg:[&:nth-last-child(-n+2)]:border-b-0"
                 >
-                  <dt className="text-[0.8rem] leading-relaxed text-ink-3">{r.k}</dt>
+                  <dt className="text-[0.86rem] leading-relaxed text-ink-3">{r.k}</dt>
                   <dd className="min-w-0">
                     <span className="block text-[0.93rem] font-semibold leading-snug text-ink">{r.v}</span>
-                    <span className="mt-0.5 block text-[0.78rem] leading-relaxed text-ink-3">{r.note}</span>
+                    <span className="mt-0.5 block text-[0.8rem] leading-relaxed text-ink-3">{r.note}</span>
                   </dd>
                 </div>
               ))}
@@ -256,7 +256,7 @@ export default function MoshiPage() {
           <h2 id="back" className="rule-mark serif h-sect text-ink">
             受験後にお返しするもの
           </h2>
-          <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.9rem] leading-[1.95] text-ink-2">
+          <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.93rem] leading-[1.95] text-ink-2">
             採点済み答案と、数学の成績・参考判定・復習の助言をお返しします。
           </p>
           <MoshiDeliverables />
@@ -278,7 +278,7 @@ export default function MoshiPage() {
             大学別模試（冠模試）とは
           </h2>
           <InfoDetails title="大学別模試の特徴を読む">
-          <div className="prose-ja mt-3 max-w-[40rem] space-y-3 text-[0.9rem] leading-[1.95] text-ink-2">
+          <div className="prose-ja mt-3 max-w-[40rem] space-y-3 text-[0.93rem] leading-[1.95] text-ink-2">
             <p>
               志望校1校の入試形式に合わせて作る模試を、大学別模試（冠模試）と呼びます。
               全国共通の模試が「全体の中での位置」を測るのに対し、大学別模試は
@@ -302,13 +302,13 @@ export default function MoshiPage() {
           <h2 id="not-provided" className="rule-mark serif h-sect text-ink">
             判定・偏差値について
           </h2>
-          <p className="mt-3 text-[0.84rem] leading-relaxed text-ink-2">A〜Dは数学単体の現状評価です。合格確率・他教科を含む総合判定ではありません。</p>
-          <p className="mt-2 text-[0.8rem] leading-relaxed text-ink-3">平均点・偏差値・順位は、各大学の受験者が{moshi.statsMin}名以上の回で掲載します。</p>
+          <p className="mt-3 text-[0.86rem] leading-relaxed text-ink-2">A〜Dは数学単体の現状評価です。合格確率・他教科を含む総合判定ではありません。</p>
+          <p className="mt-2 text-[0.86rem] leading-relaxed text-ink-3">平均点・偏差値・順位は、各大学の受験者が{moshi.statsMin}名以上の回で掲載します。</p>
           <InfoDetails title="判定・統計の方針を詳しく見る">
           <div className="mt-4 border border-rule">
             <ul className="flex flex-wrap gap-x-6 gap-y-2 border-b border-rule bg-paper-2 px-5 py-3.5">
               {moshi.notProvided.map((x) => (
-                <li key={x} className="flex items-center gap-1.5 text-[0.9rem] font-semibold text-ink">
+                <li key={x} className="flex items-center gap-1.5 text-[0.93rem] font-semibold text-ink">
                   <svg
                     aria-hidden="true"
                     viewBox="0 0 20 20"
@@ -324,7 +324,7 @@ export default function MoshiPage() {
                 </li>
               ))}
             </ul>
-            <div className="prose-ja space-y-3 px-5 py-4 text-[0.88rem] leading-[1.95] text-ink-2">
+            <div className="prose-ja space-y-3 px-5 py-4 text-[0.93rem] leading-[1.95] text-ink-2">
               <p>
                 {moshi.judgementNote}
               </p>
@@ -349,7 +349,7 @@ export default function MoshiPage() {
           <h2 id="sample-heading" className="rule-mark serif h-sect text-ink">
             問題・返却の見本
           </h2>
-          <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.88rem] leading-[1.9] text-ink-2">
+          <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.93rem] leading-[1.9] text-ink-2">
             返却PDFと、問題・解答・採点基準を公開しています。
           </p>
           <MoshiSample />
@@ -359,7 +359,7 @@ export default function MoshiPage() {
           <h2 id="apply-heading" className="rule-mark rule-mark-accent serif h-sect text-ink">
             参加申込
           </h2>
-          <p className="prose-ja mt-2.5 max-w-[38rem] text-[0.9rem] leading-[1.95] text-ink-2">
+          <p className="prose-ja mt-2.5 max-w-[38rem] text-[0.93rem] leading-[1.95] text-ink-2">
             受験を希望する大学を選び、お名前・メールアドレス・学年をご記入ください。
             正式な受験日程をメールでご案内します。参加申込の時点では料金は発生しません。
           </p>
@@ -372,13 +372,13 @@ export default function MoshiPage() {
         */}
         {site.contact && (
           <section aria-labelledby="ask-moshi" className="mt-10 border border-rule bg-paper-2 px-5 py-5 sm:px-6">
-            <h2 id="ask-moshi" className="text-[0.95rem] font-semibold text-ink">
+            <h2 id="ask-moshi" className="text-[0.97rem] font-semibold text-ink">
               お支払いや受験の仕方について、ご不明な点は
             </h2>
             <p className="prose-ja mt-2 max-w-[40rem] text-[0.86rem] leading-[1.9] text-ink-2">
               {groupPaymentLine}
             </p>
-            <p className="mt-3 break-all font-mono text-[0.95rem]">
+            <p className="mt-3 break-all font-mono text-[0.97rem]">
               <a href={`mailto:${site.contact}`} className="text-navy underline underline-offset-4">
                 {site.contact}
               </a>
@@ -416,7 +416,7 @@ export default function MoshiPage() {
           <h2 id="who" className="serif h-sect text-ink">
             つくっているのは
           </h2>
-          <p className="prose-ja mt-3 max-w-[38rem] text-[0.92rem] leading-[1.95] text-ink-2">
+          <p className="prose-ja mt-3 max-w-[38rem] text-[0.93rem] leading-[1.95] text-ink-2">
             このサイトでは、{universityCount()}大学・{totals.sections}区分の数学入試を{totals.span}にわたって分析し、
             その形式に合わせて書き下ろした予想問題集「{site.seriesName}」{totals.books}冊と、
             分野別の演習書{kanseiPublished.length}冊を刊行しています。模試の作問と採点も同じ人間が行います。
@@ -440,7 +440,7 @@ export default function MoshiPage() {
             ))}
           </ul>
 
-          <p className="mt-4 text-[0.85rem]">
+          <p className="mt-4 text-[0.86rem]">
             <Link href="/books" className="text-navy underline underline-offset-4">
               刊行している教材を見る
             </Link>
@@ -451,7 +451,7 @@ export default function MoshiPage() {
           </p>
         </section>
 
-        <p className="prose-ja mt-14 border-t border-rule pt-6 text-[0.78rem] leading-[1.9] text-ink-3">
+        <p className="prose-ja mt-14 border-t border-rule pt-6 text-[0.8rem] leading-[1.9] text-ink-3">
           本模試は各大学とは関係のない、当サイトが独自に制作するものです。問題文の転載は行いません。
           受験日程・受験料・実施方法は予定であり、確定しだいお申し込みいただいた方にメールでご案内します。
           <Link href="/moshi/privacy" className="ml-1 underline underline-offset-4 hover:text-navy">

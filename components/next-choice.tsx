@@ -77,19 +77,19 @@ export function NextChoice({ u }: { u: University }) {
       <h2 id="next-choice" className="rule-mark serif text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
         この分析のあと、何をするか
       </h2>
-      <p className="prose-ja mt-3 max-w-[38rem] text-[0.9rem] leading-[1.95] text-ink-2">
+      <p className="prose-ja mt-3 max-w-[38rem] text-[0.93rem] leading-[1.95] text-ink-2">
         やりたいことを選ぶと、{short}数学で用意しているものに移ります。
       </p>
       <ul className="mt-5 grid gap-px border border-rule bg-rule sm:grid-cols-2">
         {items.map((x, i) => (
           <li key={x.href} style={sectionStyle(x.section)} className="bg-white">
             <Link href={x.href} className="group flex h-full flex-col px-5 py-5">
-              <span className="text-[0.68rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
+              <span className="text-[0.75rem] font-bold tabular-nums tracking-[0.1em] text-[var(--sec)]">
                 0{i + 1}
               </span>
               <span className="serif mt-1.5 text-[1.02rem] leading-snug text-ink">{x.want}</span>
-              <span className="prose-ja mt-2 text-[0.84rem] leading-[1.9] text-ink-2">{x.body}</span>
-              <span className="mt-3 flex items-center gap-1.5 pt-1 text-[0.82rem] font-semibold text-[var(--sec)]">
+              <span className="prose-ja mt-2 text-[0.86rem] leading-[1.9] text-ink-2">{x.body}</span>
+              <span className="mt-3 flex items-center gap-1.5 pt-1 text-[0.86rem] font-semibold text-[var(--sec)]">
                 {x.to}
                 <svg
                   aria-hidden="true"

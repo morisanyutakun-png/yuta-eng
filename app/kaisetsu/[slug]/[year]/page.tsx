@@ -157,17 +157,17 @@ export default async function YearPage({ params }: Props) {
           <h1 className="serif mt-1 text-[1.65rem] leading-snug text-ink sm:text-[2rem]">
             {s.short} {s.year}年度 {s.subject}の解答・解説
           </h1>
-          <p className="prose-ja mt-3 text-[0.92rem] leading-[1.95] text-ink-2">
+          <p className="prose-ja mt-3 text-[0.93rem] leading-[1.95] text-ink-2">
             全{s.questions.length}問。当サイトで独自に解いた解答・計算過程・詳解・別解を、大問ごとに載せています。
           </p>
-          <p className="mt-2 text-[0.72rem] tabular-nums text-ink-3">最終更新 {updated.replace(/-/g, "/")}</p>
+          <p className="mt-2 text-[0.75rem] tabular-nums text-ink-3">最終更新 {updated.replace(/-/g, "/")}</p>
         </header>
 
         {s.source && <SourceLink source={s.source} division={s.division} />}
 
         {/* 画面が広いときは袖に同じものを出しているので、こちらは出さない */}
         <nav aria-labelledby="qlist" className="mt-7 border-y border-rule py-3.5 lg:hidden">
-          <h2 id="qlist" className="text-[0.72rem] font-bold tracking-wide text-ink-2">
+          <h2 id="qlist" className="text-[0.75rem] font-bold tracking-wide text-ink-2">
             この年度の大問
           </h2>
           <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-1.5 text-[0.86rem]">
@@ -188,7 +188,7 @@ export default async function YearPage({ params }: Props) {
               <h2 className="serif text-[1.35rem] leading-snug text-ink">
                 第{q.no}問　{q.field}
               </h2>
-              <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.74rem] text-ink-3">
+              <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.8rem] text-ink-3">
                 <span>{q.topics.join("・")}</span>
                 {q.ownDifficulty && (
                   <span className="border border-rule px-1.5 py-0.5">
@@ -202,7 +202,7 @@ export default async function YearPage({ params }: Props) {
               <SubQuestionBlock key={sub.label || "x"} sub={sub} qNo={q.no} />
             ))}
 
-            <p className="mt-5 text-[0.82rem]">
+            <p className="mt-5 text-[0.86rem]">
               <Link href={questionPath(s, q.no)} className="text-navy underline underline-offset-4">
                 第{q.no}問だけのページ
               </Link>
@@ -210,7 +210,7 @@ export default async function YearPage({ params }: Props) {
           </article>
         ))}
 
-        <p className="prose-ja mt-14 border-t border-rule pt-5 text-[0.78rem] leading-[1.9] text-ink-3">
+        <p className="prose-ja mt-14 border-t border-rule pt-5 text-[0.8rem] leading-[1.9] text-ink-3">
           {NOT_OFFICIAL}
           解答は当サイトで検算していますが、誤りが残っている可能性はあります。
           <Link href="/kaisetsu/policy" className="ml-1 underline underline-offset-4 hover:text-navy">

@@ -39,15 +39,15 @@ export function KanseiCards({ headingLevel: H = "h3" }: { headingLevel?: "h2" | 
               <H className="mt-2 text-[0.86rem] font-semibold leading-snug text-ink transition-colors group-hover:text-navy">
                 {k.name}
               </H>
-              <p className="mt-0.5 text-[0.7rem] tabular-nums text-ink-3">{kanseiFacts(k)}</p>
+              <p className="mt-0.5 text-[0.75rem] tabular-nums text-ink-3">{kanseiFacts(k)}</p>
             </Link>
           </li>
         ))}
       </ul>
       {/* 近日追加予定は表紙を出さない（発売までに変わりうる）。ASIN が入れば上の並びに加わる */}
       {upcoming.length > 0 && (
-        <p className="mt-5 border-t border-dashed border-rule pt-3 text-[0.8rem] text-ink-2">
-          <span className="mr-2 text-[0.7rem] font-bold text-accent">近日追加予定</span>
+        <p className="mt-5 border-t border-dashed border-rule pt-3 text-[0.86rem] text-ink-2">
+          <span className="mr-2 text-[0.75rem] font-bold text-accent">近日追加予定</span>
           {upcoming.map((k) => k.name).join("・")}
         </p>
       )}

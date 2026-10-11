@@ -50,13 +50,13 @@ function UniversityRow({ u }: { u: University }) {
   return (
     <li className="border-b border-rule py-4">
       <div className="flex items-baseline justify-between gap-3">
-        <h3 className="text-[0.95rem] font-semibold text-ink">
+        <h3 className="text-[0.97rem] font-semibold text-ink">
           <Link href={`/univ/${u.slug}`} className="underline decoration-rule underline-offset-4 hover:text-navy">
             {shortName(u)}数学
           </Link>
         </h3>
         {books.length > 1 && (
-          <span className="shrink-0 text-[0.7rem] tabular-nums text-ink-3">全{books.length}巻</span>
+          <span className="shrink-0 text-[0.75rem] tabular-nums text-ink-3">全{books.length}巻</span>
         )}
       </div>
       <ul className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -79,8 +79,8 @@ function UniversityRow({ u }: { u: University }) {
                 className="w-9 shrink-0 rounded-[2px] border border-rule"
               />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-[0.82rem] text-ink">{b.title}</span>
-                <span className="block text-[0.68rem] tabular-nums text-ink-3">
+                <span className="block truncate text-[0.86rem] text-ink">{b.title}</span>
+                <span className="block text-[0.75rem] tabular-nums text-ink-3">
                   {[yen(b.price), bookMetaLine(b)].filter(Boolean).join("・")}
                 </span>
               </span>
@@ -88,7 +88,7 @@ function UniversityRow({ u }: { u: University }) {
             <span className="hidden shrink-0 sm:block"><AmazonButton
               href={`https://www.amazon.co.jp/dp/${b.asin}`}
               label="Amazon"
-              className="!min-h-11 !px-2.5 !text-[0.72rem]"
+              className="!min-h-11 !px-2.5 !text-[0.75rem]"
             /></span>
           </li>
         ))}
@@ -141,7 +141,7 @@ export default function BooksPage() {
         className="mx-auto max-w-[46rem] px-5 sm:px-6 lg:max-w-[74rem] lg:px-8"
         style={sectionStyle("books")}
       >
-        <nav aria-label="パンくず" className="pt-5 text-[0.72rem] text-ink-3">
+        <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
           </Link>
@@ -183,7 +183,7 @@ export default function BooksPage() {
           <h2 id="series-heading" className="rule-mark serif h-sect text-ink">
             3つのシリーズ
           </h2>
-          <p className="prose-ja mt-3 max-w-[38rem] text-[0.9rem] text-ink-2">
+          <p className="prose-ja mt-3 max-w-[38rem] text-[0.93rem] text-ink-2">
             使う順に並べています。志望校を決め、頻出分野を固め、本番の形式で仕上げる、という流れです。
           </p>
 
@@ -248,11 +248,11 @@ export default function BooksPage() {
         </section>
 
         <section aria-labelledby="gokaku-heading" className="mt-16">
-          <p className="text-[0.68rem] font-bold tracking-wide text-accent">{site.seriesName}</p>
+          <p className="text-[0.75rem] font-bold tracking-wide text-accent">{site.seriesName}</p>
           <h2 id="gokaku-heading" className="rule-mark serif mt-1 text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
             本番形式の予想問題集（{universityCount()}大学・{gokakuCount}冊）
           </h2>
-          <p className="prose-ja mt-3 max-w-[38rem] text-[0.9rem] text-ink-2">
+          <p className="prose-ja mt-3 max-w-[38rem] text-[0.93rem] text-ink-2">
             各大学の過去問を分析して書き下ろした予想問題に、どこで何点入るかを示した採点基準を付けた問題集です。
             大学名から、その大学の出題分析（傾向と対策）に移れます。
           </p>
@@ -262,7 +262,7 @@ export default function BooksPage() {
               <section key={g} className="mt-8 break-inside-avoid first:mt-0 lg:mb-8 lg:mt-0">
                 <h3 className="serif border-b border-rule pb-1.5 text-[1rem] text-ink">
                   {g}
-                  <span className="ml-2 text-[0.72rem] font-normal text-ink-3">{universityCount(list)}大学</span>
+                  <span className="ml-2 text-[0.75rem] font-normal text-ink-3">{universityCount(list)}大学</span>
                 </h3>
                 <ul>
                   {list.map((u) => (
@@ -274,7 +274,7 @@ export default function BooksPage() {
           </div>
         </section>
 
-        <p className="mt-12 text-[0.85rem]">
+        <p className="mt-12 text-[0.86rem]">
           <Link href="/universities" className="text-navy underline underline-offset-4">
             大学ごとの出題分析（傾向と対策）をすべて見る
           </Link>

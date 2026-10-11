@@ -16,7 +16,7 @@ export function AmazonButton({
       rel="noopener nofollow sponsored"
       target="_blank"
       className={`inline-flex items-center justify-center gap-1.5 rounded-[4px] bg-[#ffa41c] px-5 font-bold text-[#111] transition-colors hover:bg-[#ffb454] ${
-        size === "lg" ? "min-h-12 text-[0.95rem]" : "min-h-11 text-[0.88rem]"
+        size === "lg" ? "min-h-12 text-[0.97rem]" : "min-h-11 text-[0.93rem]"
       } ${className}`}
     >
       {label}

@@ -88,7 +88,7 @@ export function FactStrip({
           >
             {paths[f.icon]}
           </svg>
-          <span className="text-center text-[0.74rem] font-medium leading-relaxed text-ink-2 sm:text-left sm:text-[0.78rem]">
+          <span className="text-center text-[0.8rem] font-medium leading-relaxed text-ink-2 sm:text-left sm:text-[0.8rem]">
             {f.label}
           </span>
         </li>

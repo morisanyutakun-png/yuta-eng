@@ -70,7 +70,7 @@ export default function HomePage() {
         <section aria-labelledby="analysis-heading" className="-mx-5 border-b border-rule bg-paper-2/60 px-5 py-5 sm:mx-0 sm:px-7 sm:py-7">
           <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_25rem] lg:items-center lg:gap-x-12">
             <div>
-              <p className="text-[0.7rem] font-bold tracking-[0.1em] text-navy">
+              <p className="text-[0.75rem] font-bold tracking-[0.1em] text-navy">
                 {t.universities}大学・{t.sections}区分の出題傾向と対策
               </p>
               <h1 id="analysis-heading" className="serif h-page mt-1.5 text-ink">
@@ -99,12 +99,12 @@ export default function HomePage() {
         </section>
 
         <InfoDetails title="分析で分かること・掲載範囲">
-          <p className="prose-ja text-[0.84rem] text-ink-2">大学ごとの試験時間・大問構成、年度別の出題、分野別の頻度、難易度と目標点を掲載しています。分析対象は{t.minYears}〜{t.maxYears}年分で、大学により異なります。</p>
-          <p className="prose-ja mt-2 text-[0.8rem] text-ink-3">問題文は転載せず、各大学の公表資料と問題冊子を確認して独自に分析しています。詳しい対象年度は各大学のページに明記しています。</p>
+          <p className="prose-ja text-[0.86rem] text-ink-2">大学ごとの試験時間・大問構成、年度別の出題、分野別の頻度、難易度と目標点を掲載しています。分析対象は{t.minYears}〜{t.maxYears}年分で、大学により異なります。</p>
+          <p className="prose-ja mt-2 text-[0.86rem] text-ink-3">問題文は転載せず、各大学の公表資料と問題冊子を確認して独自に分析しています。詳しい対象年度は各大学のページに明記しています。</p>
         </InfoDetails>
 
-        <Link href="/moshi" style={sectionStyle("moshi")} className="mt-5 flex min-h-11 items-center justify-between gap-3 border-y border-rule py-3 text-[0.82rem] text-ink-2 hover:text-[var(--sec)]">
-          <span>{sections.moshi.eyebrow}<span className="ml-2 text-[0.72rem] text-ink-3">{moshi.title}・{moshi.universities.length}大学</span></span>
+        <Link href="/moshi" style={sectionStyle("moshi")} className="mt-5 flex min-h-11 items-center justify-between gap-3 border-y border-rule py-3 text-[0.86rem] text-ink-2 hover:text-[var(--sec)]">
+          <span>{sections.moshi.eyebrow}<span className="ml-2 text-[0.75rem] text-ink-3">{moshi.title}・{moshi.universities.length}大学</span></span>
           <span aria-hidden="true">→</span>
         </Link>
 
@@ -125,7 +125,7 @@ export default function HomePage() {
           <h2 id="intent-heading" className="rule-mark serif h-sect text-ink">
             いまのあなたに合うもの
           </h2>
-          <p className="prose-ja mt-2.5 max-w-[36rem] text-[0.9rem] text-ink-2">
+          <p className="prose-ja mt-2.5 max-w-[36rem] text-[0.93rem] text-ink-2">
             やりたいことを選ぶと、その段階で使うものに移ります。
           </p>
           <IntentCards
@@ -177,7 +177,7 @@ export default function HomePage() {
             </h2>
             <div className="card mt-4 flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-7">
               <div className="min-w-0">
-                <p className="prose-ja text-[0.9rem] leading-[1.9] text-ink-2">
+                <p className="prose-ja text-[0.93rem] leading-[1.9] text-ink-2">
                   当サイトで独自に解いた解答・計算過程・詳解・別解です。
                   どの方針をなぜ選ぶのか、答案で省略しない方がよい説明は何かまで書いています。
                 </p>
@@ -188,10 +188,10 @@ export default function HomePage() {
                     { k: "解いた大問", v: questionCount, u: "問" },
                   ].map((x) => (
                     <div key={x.k}>
-                      <dt className="text-[0.68rem] text-ink-3">{x.k}</dt>
+                      <dt className="text-[0.75rem] text-ink-3">{x.k}</dt>
                       <dd className="serif mt-0.5 leading-none text-ink">
                         <span className="text-[1.3rem] tabular-nums">{x.v}</span>
-                        <span className="ml-0.5 font-sans text-[0.68rem] font-normal text-ink-3">{x.u}</span>
+                        <span className="ml-0.5 font-sans text-[0.75rem] font-normal text-ink-3">{x.u}</span>
                       </dd>
                     </div>
                   ))}
@@ -213,7 +213,7 @@ export default function HomePage() {
           <div className="card mt-4 flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:gap-7">
             <MoshiReportCover className="hidden w-[230px] shrink-0 sm:block" />
             <div className="min-w-0">
-              <p className="prose-ja text-[0.9rem] leading-[1.9] text-ink-2">
+              <p className="prose-ja text-[0.93rem] leading-[1.9] text-ink-2">
                 「{moshi.title}」はオンラインで受験できます。{moshi.season}・{moshi.universities.length}大学。{roundLabel}。
                 志望校と同じ形式の記述答案を、人の手で採点して返します。
               </p>
@@ -221,7 +221,7 @@ export default function HomePage() {
                 <Link href="/moshi" className="btn btn-primary">
                   模試のご案内と参加申込
                 </Link>
-                <span className="text-[0.78rem] text-ink-3">参加申込を受け付けています</span>
+                <span className="text-[0.8rem] text-ink-3">参加申込を受け付けています</span>
               </p>
             </div>
           </div>
@@ -237,7 +237,7 @@ export default function HomePage() {
           <h2 id="shelf-heading" className="rule-mark serif h-sect text-ink">
             表紙から探す
           </h2>
-          <p className="prose-ja mt-2.5 max-w-[36rem] text-[0.9rem] text-ink-2">
+          <p className="prose-ja mt-2.5 max-w-[36rem] text-[0.93rem] text-ink-2">
             刊行している大学別の予想問題集です。表紙を選ぶと、その大学の出題分析に移ります。
           </p>
           <CoverShelf labelled />
@@ -249,7 +249,7 @@ export default function HomePage() {
           <h2 id="series-heading" className="serif mt-1 text-[1.3rem] leading-snug text-ink sm:text-[1.5rem]">
             {seriesTagline}
           </h2>
-          <p className="prose-ja mt-2.5 max-w-[36rem] text-[0.9rem] text-ink-2">
+          <p className="prose-ja mt-2.5 max-w-[36rem] text-[0.93rem] text-ink-2">
             旧帝大・難関国公立の理系数学を目指す人向けに、過去問に入る前の段階を2冊に分けました。
             志望校診断模試で行き先を決め、その大学の分野別完成演習で頻出分野を固めてから過去問へ進みます。
           </p>
@@ -267,11 +267,11 @@ export default function HomePage() {
               className="w-[76px] shrink-0 self-start rounded-[2px] border border-rule shadow-[0_1px_2px_rgba(21,24,28,0.07)]"
             />
             <span className="min-w-0">
-              <span className="block text-[0.68rem] font-bold text-navy">1　志望校が決まっていないなら</span>
+              <span className="block text-[0.75rem] font-bold text-navy">1　志望校が決まっていないなら</span>
               <span className="serif mt-1 block text-[1.05rem] leading-snug text-ink group-hover:text-navy">
                 旧帝大・難関国公立大 理系数学 志望校診断模試
               </span>
-              <span className="prose-ja mt-1.5 block text-[0.82rem] text-ink-2">
+              <span className="prose-ja mt-1.5 block text-[0.86rem] text-ink-2">
                 {shindan.rounds}回の模試で「得点の形」を分析し、{shindan.universities.map((u) => u.name).join("・")}
                 の{shindan.universities.length}大学との相性を判定します。
               </span>
@@ -279,14 +279,14 @@ export default function HomePage() {
           </Link>
 
           <div className="mt-8">
-            <h3 className="text-[0.9rem] font-semibold text-ink">
-              <span className="mr-2 text-[0.68rem] font-bold text-navy">2</span>
+            <h3 className="text-[0.93rem] font-semibold text-ink">
+              <span className="mr-2 text-[0.75rem] font-bold text-navy">2</span>
               志望校が決まったら、大学別の分野別完成演習（{kanseiPublished.length}冊刊行）
             </h3>
             <InfoDetails title="大学別の完成演習を選ぶ">
               <KanseiCards />
             </InfoDetails>
-            <p className="mt-4 text-[0.85rem]">
+            <p className="mt-4 text-[0.86rem]">
               <Link href="/kansei" className="text-navy underline underline-offset-4">
                 分野別完成演習のシリーズ全体を見る
               </Link>
@@ -301,9 +301,9 @@ export default function HomePage() {
             教材やシリーズの紹介は上の節で済んでいるので、ここでは繰り返さない。
           */}
           <h2 className="serif text-[1.1rem] text-ink">このサイトについて</h2>
-          <p className="prose-ja mt-3 text-[0.84rem] text-ink-2">{site.author}が制作・運営する、各大学とは関係のない非公式サイトです。</p>
+          <p className="prose-ja mt-3 text-[0.86rem] text-ink-2">{site.author}が制作・運営する、各大学とは関係のない非公式サイトです。</p>
           <InfoDetails title="分析の出どころ・掲載内容を見る">
-          <p className="text-[0.82rem] leading-relaxed text-ink-2">{t.universities}大学・{t.sections}区分、合計{t.totalYears}年分の入試を分析。予想問題集は{t.books}冊を刊行しています。</p>
+          <p className="text-[0.86rem] leading-relaxed text-ink-2">{t.universities}大学・{t.sections}区分、合計{t.totalYears}年分の入試を分析。予想問題集は{t.books}冊を刊行しています。</p>
           <dl className="mt-4 grid gap-px border border-rule bg-rule sm:grid-cols-3">
             {[
               {
@@ -320,8 +320,8 @@ export default function HomePage() {
               },
             ].map((x) => (
               <div key={x.k} className="bg-white px-5 py-4">
-                <dt className="text-[0.72rem] font-bold tracking-wide text-ink-3">{x.k}</dt>
-                <dd className="prose-ja mt-1.5 text-[0.84rem] leading-[1.9] text-ink-2">{x.v}</dd>
+                <dt className="text-[0.75rem] font-bold tracking-wide text-ink-3">{x.k}</dt>
+                <dd className="prose-ja mt-1.5 text-[0.86rem] leading-[1.9] text-ink-2">{x.v}</dd>
               </div>
             ))}
           </dl>
