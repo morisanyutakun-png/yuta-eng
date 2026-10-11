@@ -1518,6 +1518,111 @@ ok("京大理6 p_n=(1-(1/2)^(n//2))/2",
    all(kyodai_pn(n) == Fraction(1, 2)*(1 - Fraction(1, 2**(n//2))) for n in range(2, 17)),
    f"n=2..16 を全探索と照合　p_2={kyodai_pn(2)} p_5={kyodai_pn(5)} p_8={kyodai_pn(8)}")
 
+# ── 東大理系2025 ─────────────────────────────────────────
+# 1 … 内分を定義どおり3段階たどって U_t を作り、式と突き合わせる
+def todai_U(t):
+    A, B, C, D = (0, 0), (0, 1), (1, 1), (1, 0)
+    dv = lambda P, Q: ((1-t)*P[0] + t*Q[0], (1-t)*P[1] + t*Q[1])
+    P, Q, R = dv(A, B), dv(B, C), dv(C, D)
+    return dv(dv(P, Q), dv(Q, R))
+ok("東大理1(1) U_t=(3t^2-2t^3, 3t-3t^2)",
+   all(abs(todai_U(t)[0] - (3*t*t - 2*t**3)) < 1e-12 and abs(todai_U(t)[1] - (3*t - 3*t*t)) < 1e-12
+       for t in (i/500 for i in range(501))))
+ar = quad(lambda t: (3*t - 3*t*t)*(6*t - 6*t*t), 0, 1)[0]
+ok("東大理1(2) 面積 3/5", abs(ar - 0.6) < 1e-9, f"数値{ar:.10f}")
+arc = lambda a: quad(lambda t: math.hypot(6*t - 6*t*t, 3 - 6*t), 0, a)[0]
+ok("東大理1(3) 弧長 2a^3-3a^2+3a",
+   all(abs(arc(a) - (2*a**3 - 3*a*a + 3*a)) < 1e-6 for a in (0.3, 0.5, 0.7, 1.0)),
+   f"a=0.7 数値{arc(0.7):.8f}")
+
+# 2 … n を大きくして極限に近づくか
+todai_I = lambda n: n*quad(lambda x: math.log((1 + x**(1/n))/2), 1, 2)[0]
+vs = [todai_I(n) for n in (200, 1000, 4000)]
+lim = math.log(2) - 0.5
+ok("東大理2(2) 極限 log2-1/2", abs(vs[-1] - lim) < 2e-4, f"n=4000 で {vs[-1]:.7f} / 式 {lim:.7f}")
+ok("東大理2(2) n を増やすと近づく", all(abs(vs[i+1]-lim) < abs(vs[i]-lim) for i in range(2)))
+
+# 3 … 長方形を座標で組み立てて面積を出す
+def todai_S(a, b, th):
+    ang = math.pi/3 + th
+    return (a*math.cos(ang) + b*math.sin(th)) * (a*math.sin(ang) + b*math.cos(th))
+todai_Sf = lambda a, b, th: a*a/2*math.sin(2*th + 2*math.pi/3) + b*b/2*math.sin(2*th) + a*b/2
+ok("東大理3(1) S の式",
+   all(abs(todai_S(a, b, th) - todai_Sf(a, b, th)) < 1e-12
+       for a, b in ((1, 1), (1, 2), (1.3, 1.5)) for th in (0, 0.1, 0.3, math.pi/6)))
+def todai_Smax(a, b):
+    if b <= math.sqrt(2)*a:
+        return a*b/2 + 0.5*math.sqrt(a**4 - a*a*b*b + b**4)
+    return math.sqrt(3)*b*b/4 + a*b/2
+ok("東大理3(2) 最大値の場合分け",
+   all(abs(max(todai_S(a, b, math.pi/6*i/50000) for i in range(50001)) - todai_Smax(a, b)) < 1e-6
+       for a, b in ((1, 1), (1, 1.4), (1, 2), (1.5, 4))))
+
+# 4 … 平方数になる n を全探索して個数を数える
+def todai_Na(a):
+    return sum(1 for n in range(1, a+1)
+               if n*n + n - a >= 0 and math.isqrt(n*n + n - a)**2 == n*n + n - a)
+def todai_prime(m):
+    return m >= 2 and all(m % p for p in range(2, math.isqrt(m)+1))
+ok("東大理4(1) 平方数なら n ≦ a",
+   all(not (n > a and (n*n+n-a) >= 0 and math.isqrt(n*n+n-a)**2 == n*n+n-a)
+       for a in range(1, 200) for n in range(1, 260)))
+ok("東大理4(2) N_a=1 ⟺ 4a+1 が素数",
+   all((todai_Na(a) == 1) == todai_prime(4*a+1) for a in range(1, 400)),
+   "a=1..399 を全探索と照合")
+
+# 6 … 反転の像と、その外での実部の最大最小
+# θ=π は z=0 になり C から除かれている点なので飛ばす
+ok("東大理6(1) C 上で Re(1/z)=1",
+   all(abs((1/z).real - 1) < 1e-9
+       for z in (0.5 + 0.5*complex(math.cos(2*math.pi*k/4000), math.sin(2*math.pi*k/4000))
+                 for k in range(1, 4000))
+       if abs(z) > 1e-9))
+bad = 0
+for i in range(400):
+    for j in range(400):
+        s_, t_ = -20 + i*0.1, -20 + j*0.1
+        if abs(s_ - t_) < 1e-12:
+            continue
+        w = (1 + s_*1j)**2 + (1 + t_*1j)**2
+        if w.real >= 2 - w.imag**2/8 - 1e-9:
+            bad += 1
+ok("東大理6(2) 像は放物線の左側のみ", bad == 0, f"外れ {bad} 点")
+# 主張する最大最小の点が、まず条件をみたしているか
+re_inv = lambda x, y: x/(x*x + y*y)
+outside = lambda x, y: y*y >= 16 - 8*x - 1e-12          # (2) の範囲に属さない
+ok("東大理6(3) γ=2 は範囲外で Re=1/2",
+   outside(2.0, 0.0) and abs(re_inv(2.0, 0.0) - 0.5) < 1e-12)
+ok("東大理6(3) γ=-4±4√3i は範囲外で Re=-1/16",
+   outside(-4.0, 4*math.sqrt(3)) and abs(re_inv(-4.0, 4*math.sqrt(3)) + 1/16) < 1e-12)
+# そのうえで、条件をみたす点がこの2つを超えないか（格子の刻みぶんの余裕を見る）
+over = under = 0
+for i in range(0, 4001):
+    x = -200 + i*(260/4000)
+    for k in range(0, 2001):
+        y = k*0.06
+        if not outside(x, y) or x*x + y*y < 1e-12:
+            continue
+        v = re_inv(x, y)
+        if v > 0.5 + 1e-9: over += 1
+        if v < -1/16 - 1e-9: under += 1
+ok("東大理6(3) 1/2 を超える点はない", over == 0, f"超えた点 {over}")
+ok("東大理6(3) -1/16 を下回る点はない", under == 0, f"下回った点 {under}")
+
+# 5 … まだ公開していない。成立条件だけ記録として確かめておく
+def todai_valid(A):
+    b = list(A)
+    for i in range(len(b)-1):
+        if b[i] > b[i+1]: b[i], b[i+1] = b[i+1], b[i]
+    for i in range(len(b)-2, -1, -1):
+        if b[i] > b[i+1]: b[i], b[i+1] = b[i+1], b[i]
+    return b == sorted(b)
+import itertools as _it
+_c = {n: sum(1 for p in _it.permutations(range(1, n+1)) if todai_valid(p)) for n in range(2, 9)}
+ok("東大理5 c_n = 4c_(n-1) - 2c_(n-2)（未公開・記録のみ）",
+   all(_c[n] == 4*_c[n-1] - 2*_c[n-2] for n in range(4, 9)),
+   f"c_2..c_8 = {[_c[n] for n in range(2, 9)]}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
