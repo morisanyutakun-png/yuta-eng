@@ -10,6 +10,7 @@
 模試の見本問題（assets/moshi-sample/moshi-sample.tex）も、ここで同じように確かめる。
 公開する以上、解説と同じ基準で確かめておく。
 """
+import itertools
 import math
 from fractions import Fraction
 
@@ -2757,6 +2758,128 @@ _det23 = (_w23[0] * (_u23[1] * _v23[2] - _u23[2] * _v23[1])
 ok("東大文23-4(1)(2) 面積 3/4、体積 √11/9",
    abs(0.5 * 2.5 * 0.6 - 0.75) < 1e-12 and abs(abs(_det23) / 6 - math.sqrt(11) / 9) < 1e-12,
    f"体積 {abs(_det23) / 6:.9f}")
+
+# ---------------------------------------------------------------- 東大文系2022
+# 第1問：原点を通る2接線が直交するとき b=(a^2+1)/4、半径比は |a+2√b|
+def _bunkei22_radii(a):
+    b = (a * a + 1) / 4
+    s = math.sqrt(b)
+    m1, m2 = a - 2 * s, a + 2 * s
+    P1 = (-s, 2 * b - a * s)
+    P2 = (s, 2 * b + a * s)
+    ax = -a / 2
+    # 接点を通る法線（傾きは -1/m1 = m2、-1/m2 = m1）と軸 x = ax の交点が中心
+    c1 = (ax, P1[1] + m2 * (ax - P1[0]))
+    c2 = (ax, P2[1] + m1 * (ax - P2[0]))
+    return math.dist(c1, P1), math.dist(c2, P2), m1, m2, b
+
+
+_perp22 = max(abs(_bunkei22_radii(i / 100000)[2] * _bunkei22_radii(i / 100000)[3] + 1)
+              for i in range(-300000, 300001, 7))
+ok("東大文22-1(1) b=(a²+1)/4 なら2接線はつねに直交", _perp22 < 1e-9,
+   f"傾きの積と -1 の最大のずれ {_perp22:.2e}")
+_ratio22 = max(abs((lambda r: r[1] / r[0] - abs(r[3]))(_bunkei22_radii(i / 100000)))
+               for i in range(-300000, 300001, 7) if i)
+ok("東大文22-1(2) 半径比 r₂/r₁ は |a+2√b| に一致", _ratio22 < 1e-9,
+   f"最大のずれ {_ratio22:.2e}")
+_sol22 = [i / 100000 for i in range(-300000, 300001)
+          if abs((lambda r: r[1] / r[0])(_bunkei22_radii(i / 100000)) - 2) < 1e-7]
+_r22 = _bunkei22_radii(0.75)
+ok("東大文22-1(2) a = 3/4（r₁=√5/4, r₂=√5/2）",
+   _sol22 == [0.75] and abs(_r22[0] - math.sqrt(5) / 4) < 1e-12
+   and abs(_r22[1] - math.sqrt(5) / 2) < 1e-12,
+   f"解 {_sol22}  r₁={_r22[0]:.9f} r₂={_r22[1]:.9f}")
+
+# 第2問：法線が3点で交わる α の範囲と u の値域
+def _bunkei22_disc(al):
+    T = 3 * al * al - 1
+    if T == 0:
+        return None
+    m = -1 / T
+    return al * al - 4 * (al * al - 1 - m), m
+
+
+_good22 = [i / 100000 for i in range(-100000, 100001)
+           if (_d := _bunkei22_disc(i / 100000)) and _d[0] > 0]
+ok("東大文22-2(1) 3交点になるのは |α| < 1/√3",
+   abs(min(_good22) + 1 / math.sqrt(3)) < 2e-5 and abs(max(_good22) - 1 / math.sqrt(3)) < 2e-5
+   and len(_good22) == max(0, int(round((max(_good22) - min(_good22)) * 100000)) + 1),
+   f"{min(_good22):.5f} 〜 {max(_good22):.5f}（1/√3 = {1 / math.sqrt(3):.5f}）")
+_bad22 = 0
+for _i in range(-57000, 57001):
+    _al = _i / 100000
+    _D, _m = _bunkei22_disc(_al)
+    _rt = math.sqrt(_D)
+    _b, _c = (-_al - _rt) / 2, (-_al + _rt) / 2
+    if abs((_b * _b + _b * _c + _c * _c - 1) - _m) > 1e-9:
+        _bad22 += 1
+ok("東大文22-2(2) β²+βγ+γ²-1 は法線の傾き m に等しい（≠0）", _bad22 == 0,
+   f"11万4001点で不一致 {_bad22} 件")
+_u22 = [4 * (i / 200000) ** 3 - 3 * (i / 200000) ** 2 + 1 for i in range(-115000, 115001)]
+ok("東大文22-2(3) u の範囲は -4√3/9 < u ≦ 1",
+   abs(max(_u22) - 1) < 1e-12 and -4 * math.sqrt(3) / 9 < min(_u22) < -0.75,
+   f"最大 {max(_u22):.9f}、最小 {min(_u22):.6f}（下限 {-4 * math.sqrt(3) / 9:.6f} は含まない）")
+
+# 第3問：a_{n+1} = a_n^2 + n(n+2)、a_1 = 4
+def _a22mod(N, M):
+    x = 4 % M
+    for n in range(1, N):
+        x = (x * x + n * (n + 2)) % M
+    return x
+
+
+_cyc22 = [_a22mod(n, 3) for n in range(1, 25)]
+ok("東大文22-3(1) a_n mod 3 は 1,1,0,0,0,2 の周期6",
+   _cyc22 == [1, 1, 0, 0, 0, 2] * 4 and _a22mod(2022, 3) == 2 and 2022 % 6 == 0,
+   f"先頭12項 {_cyc22[:12]}  a_2022 mod 3 = {_a22mod(2022, 3)}")
+_g22 = math.gcd(2022 * 2024, 2023 * 2025)
+ok("東大文22-3(2) 最大公約数は 1（d | 3 かつ a_2022 ≡ 2 (mod 3)）",
+   _g22 == 3 and _a22mod(2022, 3) == 2 and _a22mod(2023, 3) == 1 and _a22mod(2024, 3) == 1
+   and 2022 * 2024 == 4092528 and 2023 * 2025 == 4096575,
+   f"gcd(2022·2024, 2023·2025) = {_g22}")
+
+# 第4問：硬貨で v_k を足していく歩み。X_N = O ⟺ 余り類ごとの表の本数が等しい
+_v22 = [(math.cos(2 * k * math.pi / 3), math.sin(2 * k * math.pi / 3)) for k in range(3)]
+
+
+def _walk22(N):
+    """2^N 通りを全探索して、原点に戻る並びを表の回数別に数える。"""
+    per = {}
+    for bits in itertools.product((0, 1), repeat=N):
+        k = 0
+        x = y = 0.0
+        r = 0
+        for b in bits:
+            if b:
+                x += _v22[k % 3][0]
+                y += _v22[k % 3][1]
+                r += 1
+            else:
+                k += 1
+        if abs(x) < 1e-9 and abs(y) < 1e-9:
+            per[r] = per.get(r, 0) + 1
+    return per
+
+
+_p22 = _walk22(5)
+ok("東大文22-4(1) N=5 で原点に戻るのは2通り、確率 1/16",
+   sum(_p22.values()) == 2 and _p22 == {0: 1, 3: 1}
+   and Fraction(sum(_p22.values()), 2 ** 5) == Fraction(1, 16),
+   f"表の回数別の内訳 {_p22}")
+_fit22 = []
+for _N, _r in ((5, 3), (8, 6), (11, 9), (11, 3), (14, 6), (14, 12)):
+    _t = _N - _r
+    if (_t + 1) % 3:
+        continue
+    _n = (_t + 1) // 3
+    _s = _r // 3
+    _fit22.append(_walk22(_N).get(_r, 0) == math.comb(_s + _n - 1, _n - 1) ** 3)
+ok("東大文22-4(2) 数え方（各類 n 個の和を s にする重複組合せの3乗）が全探索と一致",
+   all(_fit22) and len(_fit22) == 6, f"確かめた (N, r) の組 {len(_fit22)} 通り")
+ok("東大文22-4(2) N=98・表90回の確率は 31³/2⁸⁶",
+   math.comb(32, 2) == 496 and math.comb(32, 2) ** 3 == 122023936
+   and Fraction(496 ** 3, 2 ** 98) == Fraction(31 ** 3, 2 ** 86) == Fraction(29791, 2 ** 86),
+   f"496³ = {math.comb(32, 2) ** 3}")
 
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
