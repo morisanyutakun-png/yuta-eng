@@ -73,6 +73,10 @@ export const sources: Record<string, Record<number, Source>> = {
       kind: "none",
       checked: "2026-10-12",
       note: "2024年度ぶんと同じ確認。京都大学は直近2年度ぶんしか公開していない。",
+    }, 2022: {
+      kind: "none",
+      checked: "2026-10-12",
+      note: "2024年度ぶんと同じ確認。京都大学は直近2年度ぶんしか公開していない。",
     } },
   "kyodai-bunkei": { 2026: {
       kind: "official",

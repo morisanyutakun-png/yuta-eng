@@ -4005,6 +4005,67 @@ for _p in (3, 5, 7, 11, 13):
 ok("京大理23-6 c_k ≡ 2^{k-1} (mod p) で p では割り切れない（m,n は存在しない）", _ok23c,
    "p=3,5,7,11,13 について k≦8 で確認")
 
+# ---------------------------------------------------------------- 京大理系2022
+# 第2問：3枚の札の間隔がともに2以上
+_ok22r = True
+for _n in range(5, 13):
+    _c = sum(1 for t in itertools.combinations(range(1, _n + 1), 3)
+             if t[1] - t[0] >= 2 and t[2] - t[1] >= 2)
+    if Fraction(_c, math.comb(_n, 3)) != Fraction((_n - 3) * (_n - 4), _n * (_n - 1)):
+        _ok22r = False
+ok("京大理22-2 確率は (n-3)(n-4)/(n(n-1))", _ok22r, "n=5..12 を全探索で確認")
+
+# 第3問：A_n = gcd(n²+2, n⁴+2, n⁶+2)
+_pred22 = {0: 2, 1: 3, 2: 6, 3: 1, 4: 6, 5: 3}
+ok("京大理22-3 A_n = gcd(n²+2, 6)（n mod 6 で 2,3,6,1,6,3）",
+   all(math.gcd(math.gcd(n * n + 2, n ** 4 + 2), n ** 6 + 2) == _pred22[n % 6]
+       == math.gcd(n * n + 2, 6) for n in range(1, 2000)),
+   "n=1..1999 で確認")
+
+# 第5問：S = 2/3、f(t)=t cos³t の最大と不等式
+_S22 = 0.0
+_N22 = 2_000_000
+for _i in range(_N22):
+    _x = (math.pi / 2) * (_i + 0.5) / _N22
+    _S22 += math.cos(_x) ** 3 * (math.pi / 2) / _N22
+_f22 = lambda t: t * math.cos(t) ** 3
+_best22b = (-9.0, None)
+for _i in range(1, 2_000_000):
+    _t = (math.pi / 2) * _i / 2_000_000
+    _v = _f22(_t)
+    if _v > _best22b[0]:
+        _best22b = (_v, _t)
+_al22 = _best22b[1]
+_h22 = lambda u: 8 * u ** 4 - 16 * u * u - 9 * u + 8
+ok("京大理22-5 S=2/3、f(α)=cos⁴α/(3sinα)、f(α)/S < 9/16",
+   abs(_S22 - 2 / 3) < 1e-7
+   and abs(math.cos(_al22) - 3 * _al22 * math.sin(_al22)) < 1e-5
+   and abs(_best22b[0] - math.cos(_al22) ** 4 / (3 * math.sin(_al22))) < 1e-6
+   and _best22b[0] / (2 / 3) < 9 / 16
+   and math.sin(_al22) > 0.5 and _al22 > math.pi / 6
+   and math.sqrt(3) / 2 - math.pi / 4 > 0
+   and abs(_h22(0.5)) < 1e-12
+   and all(abs(_h22(u / 100) - (2 * u / 100 - 1)
+                * (4 * (u / 100) ** 3 + 2 * (u / 100) ** 2 - 7 * (u / 100) - 8)) < 1e-12
+           for u in range(101)),
+   f"α={_al22:.6f}、f(α)/S={_best22b[0] / (2 / 3):.6f}（9/16 = {9 / 16}）")
+
+# 第6問：x_n - y_n = n(n-1)/2
+_x22 = [None, 0.0]
+for _n in range(1, 16):
+    _x22.append(_x22[_n] + _n + 2 * math.cos(2 * math.pi * _x22[_n] / 3))
+
+
+def _y22(n):
+    m, r = (n - 1) // 3, (n - 1) % 3
+    return (3 * m, 3 * m + 2, 3 * m + 4)[r]
+
+
+ok("京大理22-6 x_n - y_n = n(n-1)/2",
+   all(abs(_x22[n] - _y22(n) - n * (n - 1) / 2) < 1e-9 for n in range(1, 16))
+   and all(round(_x22[n]) % 3 == (1 if n % 3 == 0 else 0) for n in range(1, 16)),
+   f"x_n-y_n（n=1..12）= {[round(_x22[n] - _y22(n)) for n in range(1, 13)]}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
