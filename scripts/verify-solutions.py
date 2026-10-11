@@ -2630,6 +2630,134 @@ ok("東大文25-4 S の最大は 19/6（a=-1/4）",
 ok("東大文25-4 S(0)=3, S(-1)=7/3, S(-2)=1/3",
    abs(_S25(0.0) - 3) < 1e-4 and abs(_S25(-1.0) - 7 / 3) < 1e-4 and abs(_S25(-2.0) - 1 / 3) < 1e-4)
 
+# ── 東大文系2024 ─────────────────────────────────────────
+import itertools as _it24b
+
+# 1 … a,b,c の式から放物線を作り、2点を通ることと接線の傾きを確かめる
+def _para24(s):
+    return -1 / (2 * s), 0.0, (s * s + 1) / (2 * s)
+
+_ok24 = True
+for _th in (0.3, 0.6, math.pi / 4, 1.2, 1.5):
+    _s, _c = math.sin(_th), math.cos(_th)
+    _a, _b, _cc = _para24(_s)
+    _f = lambda x: _a * x * x + _b * x + _cc
+    _fp = lambda x: 2 * _a * x + _b
+    if (abs(_f(_c) - _s) > 1e-12 or abs(_f(-_c) - _s) > 1e-12
+            or abs(_fp(_c) + _c / _s) > 1e-12 or abs(_fp(-_c) - _c / _s) > 1e-12):
+        _ok24 = False
+ok("東大文24-1(1) a,b,c の式が2点と共通接線をみたす", _ok24)
+_A24 = lambda s: 2 * (s * s + 1) ** 1.5 / (3 * s)
+ok("東大文24-1(2) 面積は 2(s²+1)^(3/2)/(3s)",
+   all(abs(_A24(s) - quad(lambda x, s=s: -x * x / (2 * s) + (s * s + 1) / (2 * s),
+                          -math.sqrt(s * s + 1), math.sqrt(s * s + 1), 20001)[0]) < 1e-7
+       for s in (0.2, 0.5, 1 / math.sqrt(2), 0.9)))
+_mn24 = min((_A24(i / 100000), i / 100000) for i in range(1, 100000))
+ok("東大文24-1(3) A の最小は √3（s=1/√2）",
+   abs(_mn24[0] - math.sqrt(3)) < 1e-8 and abs(_mn24[1] - 1 / math.sqrt(2)) < 1e-4,
+   f"{_mn24[0]:.9f} at s={_mn24[1]:.6f}")
+
+# 2 … 多倍長整数で直接
+ok("東大文24-2(1) 最小の n は 28",
+   5 ** 27 < 10 ** 19 < 5 ** 28 and min(n for n in range(1, 60) if 5 ** n > 10 ** 19) == 28)
+ok("東大文24-2(2) 最小の m も 28",
+   5 ** 27 + 4 ** 27 < 10 ** 19 < 5 ** 28 + 4 ** 28
+   and min(m for m in range(1, 60) if 5 ** m + 4 ** m > 10 ** 19) == 28)
+ok("東大文24-2(2) (4/5)^9 < 1/4 と 5^28/4 < 10^19",
+   Fraction(4, 5) ** 9 < Fraction(1, 4) and Fraction(5 ** 28, 4) < 10 ** 19)
+
+# 3 … 角を内積から直接計算して q の式を確かめる
+def _ang24(U, V, W):
+    a = (U[0] - V[0], U[1] - V[1])
+    b = (W[0] - V[0], W[1] - V[1])
+    return math.acos(max(-1, min(1, (a[0] * b[0] + a[1] * b[1]) / math.hypot(*a) / math.hypot(*b))))
+
+_q24 = lambda p: p * (3 - p * p) / (2 * (1 - p * p))
+ok("東大文24-3(1) q の式で ∠OAP = ∠PMQ",
+   all(abs(_ang24((0, 0), (0, 1), (p / 500, 0)) - _ang24((p / 500, 0), (p / 1000, 0.5), (_q24(p / 500), 0))) < 1e-9
+       for p in range(1, 500)))
+_p24 = (math.sqrt(7) - 2) / 3
+ok("東大文24-3(2) q=1/3 となるのは p=(√7-2)/3", abs(_q24(_p24) - 1 / 3) < 1e-12, f"p={_p24:.7f}")
+_lo24 = [p / 2000 for p in range(1, 2000) if p / 2000 / 2 > (_q24(p / 2000) - p / 2000) / 4]
+ok("東大文24-3(3) S>T は 0<p<√15/5",
+   abs(max(_lo24) - math.sqrt(15) / 5) < 1e-3 and len(_lo24) == int(math.sqrt(15) / 5 * 2000),
+   f"上限 {max(_lo24)} / √15/5 = {math.sqrt(15) / 5:.7f}")
+
+# 4 … 4点の選び方をすべて列挙し、偏角の最大の隙間で判定
+def _p24n(n):
+    good = tot = 0
+    for S in _it24b.combinations(range(n), 4):
+        tot += 1
+        ths = sorted(2 * math.pi * j / n for j in S)
+        gaps = [ths[i + 1] - ths[i] for i in range(3)] + [ths[0] + 2 * math.pi - ths[3]]
+        if max(gaps) < math.pi:
+            good += 1
+    return Fraction(good, tot)
+
+ok("東大文24-4 p_n = (n+1)/(2(n-2))",
+   all(_p24n(n) == Fraction(n + 1, 2 * (n - 2)) for n in (5, 7, 9, 11, 13, 15, 21)))
+
+# ── 東大文系2023 ─────────────────────────────────────────
+# 1 … 解から直接計算した値と、k の式・最小値を突き合わせる
+def _e23(k):
+    d = math.sqrt(1 + 4 * k)
+    a, b = (-1 + d) / 2, (-1 - d) / 2
+    return a ** 3 / (1 - b) + b ** 3 / (1 - a)
+
+ok("東大文23-1 式 2u+15+24/u（u=k-2）が解からの値と一致",
+   all(abs(_e23(k) - (2 * (k - 2) + 15 + 24 / (k - 2))) < 1e-7 for k in (2.5, 3, 4, 6, 10)))
+_b23 = min((_e23(2 + i / 20000), 2 + i / 20000) for i in range(1, 600000))
+ok("東大文23-1 最小は 15+8√3（k=2+2√3）",
+   abs(_b23[0] - (15 + 8 * math.sqrt(3))) < 1e-7 and abs(_b23[1] - (2 + 2 * math.sqrt(3))) < 1e-3,
+   f"{_b23[0]:.9f} at k={_b23[1]:.6f}")
+
+# 2 … 距離を数値積分して g(a) の式と比べる
+_f23 = lambda t: 3 * abs(t * (2 - t)) / math.sqrt(5)
+_g23 = lambda a: ((a ** 3 - 3 * a * a + 4) if a <= 0 else (-a ** 3 + 3 * a * a + 4)) / math.sqrt(5)
+ok("東大文23-2(1) g(a) の式が数値積分と一致",
+   all(abs(quad(_f23, -1.0, a, 40001)[0] - _g23(a)) < 1e-7 for a in (-0.5, 0.0, 0.7, 1.5, 2.0)))
+_gf23 = [(_g23(2 * i / 20000) - _f23(2 * i / 20000), 2 * i / 20000) for i in range(20001)]
+ok("東大文23-2(2) 最大 8/√5（a=2）、最小 (8-4√2)/√5（a=2-√2）",
+   abs(max(_gf23)[0] - 8 / math.sqrt(5)) < 1e-7 and abs(max(_gf23)[1] - 2) < 1e-3
+   and abs(min(_gf23)[0] - (8 - 4 * math.sqrt(2)) / math.sqrt(5)) < 1e-7
+   and abs(min(_gf23)[1] - (2 - math.sqrt(2))) < 1e-3,
+   f"最大 {max(_gf23)[0]:.8f} / 最小 {min(_gf23)[0]:.8f} at a={min(_gf23)[1]:.5f}")
+
+# 3 … 理科2023第2問と同じ問題なので、同じ全探索で確かめる
+ok("東大文23-3 p=14/55, q=103/168（理科第2問と同じ）",
+   Fraction(_norr, _tot) == Fraction(14, 55) and Fraction(_both, _norr) == Fraction(103, 168))
+
+# 4 … 条件から出した座標が全条件をみたし、体積が √11/9 になるか
+_A23 = (-0.5, 0.0, 0.0)
+_B23 = (0.5, 0.0, 0.0)
+_h23 = math.sqrt(11 / 12)
+_y23 = 2 / math.sqrt(3)
+_C23 = (0.0, _y23, _h23)
+_D23 = (0.0, _y23, -_h23)
+_O23 = (0.0, math.sqrt(3) / 2, 0.0)
+
+
+def _cos23(P, Q, R):
+    a = [P[i] - Q[i] for i in range(3)]
+    b = [R[i] - Q[i] for i in range(3)]
+    return sum(a[i] * b[i] for i in range(3)) / math.dist(P, Q) / math.dist(R, Q)
+
+ok("東大文23-4 4点が単位球面上で条件をすべてみたす",
+   all(abs(math.dist(_O23, P) - 1) < 1e-12 for P in (_A23, _B23, _C23, _D23))
+   and abs(math.dist(_A23, _B23) - 1) < 1e-12
+   and all(abs(math.dist(X, Y) - math.sqrt(2.5)) < 1e-12
+           for X, Y in ((_A23, _C23), (_B23, _C23), (_A23, _D23), (_B23, _D23)))
+   and abs(_cos23(_A23, _C23, _B23) - 0.8) < 1e-12 and abs(_cos23(_A23, _D23, _B23) - 0.8) < 1e-12)
+_u23 = [_C23[i] - _A23[i] for i in range(3)]
+_v23 = [_D23[i] - _A23[i] for i in range(3)]
+_w23 = [_B23[i] - _A23[i] for i in range(3)]
+_det23 = (_w23[0] * (_u23[1] * _v23[2] - _u23[2] * _v23[1])
+          - _w23[1] * (_u23[0] * _v23[2] - _u23[2] * _v23[0])
+          + _w23[2] * (_u23[0] * _v23[1] - _u23[1] * _v23[0]))
+ok("東大文23-4(1)(2) 面積 3/4、体積 √11/9",
+   abs(0.5 * 2.5 * 0.6 - 0.75) < 1e-12 and abs(abs(_det23) / 6 - math.sqrt(11) / 9) < 1e-12,
+   f"体積 {abs(_det23) / 6:.9f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
