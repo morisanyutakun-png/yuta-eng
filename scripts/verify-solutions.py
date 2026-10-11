@@ -1435,6 +1435,89 @@ ok("模試見本(3) T_n=3(n-1)2^(n+1)+6-3n(n+1)/2",
    all(Tm_direct(n) == Tm_closed(n) for n in range(1, 25)),
    f"T_1..T_4 = {[Tm_direct(n) for n in range(1, 5)]}")
 
+# ── 京大理系2025 ─────────────────────────────────────────
+# どれも、立てた式をたどり直すのではなく別の道で確かめる。
+import itertools
+
+# 1問1 … 円周上を全探索して最大最小を取る
+vals = [abs(complex(2*math.cos(t), 2*math.sin(t)) - 1j/complex(2*math.cos(t), 2*math.sin(t)))
+        for t in (2*math.pi*k/200000 for k in range(200001))]
+ok("京大理1問1 最大 5/2", abs(max(vals) - 2.5) < 1e-8, f"全探索 {max(vals):.10f}")
+ok("京大理1問1 最小 3/2", abs(min(vals) - 1.5) < 1e-8, f"全探索 {min(vals):.10f}")
+
+# 1問2 … 数値積分
+v = quad(lambda x: (x*math.sqrt(x*x+1) + 2*x**3 + 1)/(x*x+1), 0, math.sqrt(3))[0]
+ok("京大理1問2(1) 4-2log2+π/3", abs(v - (4 - 2*math.log(2) + math.pi/3)) < 1e-7, f"数値{v:.10f}")
+v = quad(lambda x: math.sqrt((1-math.cos(x))/(1+math.cos(x))), 0, math.pi/2)[0]
+ok("京大理1問2(2) log2", abs(v - math.log(2)) < 1e-7, f"数値{v:.10f}")
+
+# 2 … N=9z^2=x^6+y^4 の最小を全探索
+best = None
+for x in range(1, 25):
+    for y in range(1, 120):
+        N = x**6 + y**4
+        if N > 2 * 10**6:
+            break
+        r = math.isqrt(N)
+        if r*r == N and r % 3 == 0 and (best is None or N < best[0]):
+            best = (N, x, y, r//3)
+ok("京大理2 最小 N=2025", best == (2025, 3, 6, 15), f"全探索 {best}")
+
+# 3 … 接線の傾きを数値微分で取り直し、p(t) を定義どおり作って最大最小を見る
+def kyodai_p(t):
+    h = 1e-6
+    f = lambda x: x*x*math.log(x)
+    fp = (f(t+h) - f(t-h))/(2*h)
+    g = t*t*math.log(t) - 1/(1 + 2*math.log(t))
+    return t - g/(-1/fp)
+lo = 1/math.sqrt(math.e)
+ps = [kyodai_p(lo + (math.e - lo)*i/100000) for i in range(1, 100001)]
+ok("京大理3 最小 -1/(9√e)", abs(min(ps) + 1/(9*math.sqrt(math.e))) < 1e-6, f"全探索{min(ps):.10f}")
+ok("京大理3 最大 3e^3", abs(max(ps) - 3*math.e**3) < 1e-2, f"全探索{max(ps):.6f}")
+
+# 4 … 具体のベクトルで、P が平面 LMN 上にあるか（行列式が 0 か）
+def det3(u, v, w):
+    return (u[0]*(v[1]*w[2]-v[2]*w[1]) - u[1]*(v[0]*w[2]-v[2]*w[0]) + u[2]*(v[0]*w[1]-v[1]*w[0]))
+sub = lambda u, v: tuple(u[i]-v[i] for i in range(3))
+A, B, C = (1.0, 0.3, -0.2), (0.1, 2.0, 0.4), (-0.3, 0.5, 1.7)
+P = tuple(0.25*A[i] + 0.5*B[i] + 0.75*C[i] for i in range(3))
+flat = True
+for i in range(1, 60):
+    for j in range(1, 60):
+        s_, t_ = 0.2 + i*0.08, 0.2 + j*0.08
+        rest = 4 - 1/s_ - 2/t_
+        if abs(rest) < 1e-9:
+            continue
+        u_ = 3/rest
+        L = tuple(s_*x for x in A); M = tuple(t_*x for x in B); N = tuple(u_*x for x in C)
+        if abs(det3(sub(M, L), sub(N, L), sub(P, L))) > 1e-9:
+            flat = False
+ok("京大理4(1) P=(a+2b+3c)/4 が平面LMN上", flat)
+V = abs(det3(A, B, C))/6
+VP = abs(det3(sub(A, P), sub(B, P), sub(C, P)))/6
+ok("京大理4(2) 四面体PABC = V/2", abs(VP - V/2) < 1e-12, f"V={V:.8f} VP={VP:.8f}")
+
+# 5 … Q を定義どおり作り、双曲線の式を相対誤差で確かめる
+worst, xmax = 0.0, -1e18
+for i in range(1, 100000):
+    th = -math.pi/4 + (math.pi/2)*i/100000
+    d = math.sqrt(2) - 2*math.cos(th)
+    x, y = math.sqrt(2)*math.cos(th)/d, math.sqrt(2)*math.sin(th)/d
+    lhs = (x + math.sqrt(2))**2 - y*y
+    worst = max(worst, abs(lhs - 1)/max(1.0, (x + math.sqrt(2))**2, y*y))
+    xmax = max(xmax, x)
+ok("京大理5 (x+√2)^2-y^2=1", worst < 1e-12, f"相対誤差の最大 {worst:.2e}")
+ok("京大理5 左の分枝（x ≦ -(√2+1)）", xmax <= -(math.sqrt(2)+1) + 1e-9, f"x の最大 {xmax:.9f}")
+
+# 6 … 2^n 通りを全探索して Y_n の偶奇を数える
+def kyodai_pn(n):
+    c = sum(1 for b in itertools.product((0, 1), repeat=n)
+            if sum(b[k-1]*b[k] for k in range(1, n)) % 2)
+    return Fraction(c, 2**n)
+ok("京大理6 p_n=(1-(1/2)^(n//2))/2",
+   all(kyodai_pn(n) == Fraction(1, 2)*(1 - Fraction(1, 2**(n//2))) for n in range(2, 17)),
+   f"n=2..16 を全探索と照合　p_2={kyodai_pn(2)} p_5={kyodai_pn(5)} p_8={kyodai_pn(8)}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
