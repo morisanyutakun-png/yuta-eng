@@ -3069,6 +3069,95 @@ ok("東大文20-4(3) a_{n+1,k+1}/a_{n,k} = 2^k(2^{n+1}-1)/(2^{k+1}-1)",
        for n in range(1, 11) for k in range(1, n + 1)),
    f"n=3,k=2 で {Fraction(_a20(4, 3), _a20(3, 2))}")
 
+# ---------------------------------------------------------------- 東大文系2019
+# 第1問：正方形の辺上の3点。面積の条件から q, r を p で表す
+def _pqr19(p):
+    q = 2 / (3 * p)
+    r = 2 * p - 1.5 * p * p
+    s1 = abs(p * q) / 2                       # △OPQ
+    s2 = abs((-p) * 1 - q * (r - p)) / 2      # △PQR（外積で直接）
+    return q, r, s1, s2
+
+
+ok("東大文19-1(1) q=2/(3p)、r=2p-3p²/2 で両方の面積が 1/3",
+   all(abs(_pqr19(p)[2] - 1 / 3) < 1e-12 and abs(_pqr19(p)[3] - 1 / 3) < 1e-12
+       for p in (2 / 3, 0.7, 0.75, 8 / 9, 0.95, 1.0)))
+_g19 = [(3 * (2 / 3 + i / 3e6) ** 2 - 2.25 * (2 / 3 + i / 3e6) ** 3, 2 / 3 + i / 3e6)
+        for i in range(0, 1000001)]
+ok("東大文19-1(2) CR/OQ の最大 64/81（p=8/9）、最小 2/3（p=2/3）",
+   abs(max(_g19)[0] - 64 / 81) < 1e-9 and abs(max(_g19)[1] - 8 / 9) < 1e-6
+   and abs(min(_g19)[0] - 2 / 3) < 1e-9 and abs(min(_g19)[1] - 2 / 3) < 1e-6,
+   f"最大 {max(_g19)[0]:.9f} at p={max(_g19)[1]:.6f}／最小 {min(_g19)[0]:.9f}")
+
+# 第2問：D は放物線 q=(p²-4p+9)/2 と直線 q=17/2-p ではさまれた部分
+_low19 = lambda p: (p * p - 4 * p + 9) / 2
+_up19 = lambda p: 8.5 - p
+_rnd19b = random.Random(20190225)
+_hit19 = 0
+_N19 = 4_000_000
+for _ in range(_N19):
+    _p = _rnd19b.uniform(-3.0, 5.0)
+    _q = _rnd19b.uniform(0.0, 12.0)
+    if _low19(_p) <= _q <= _up19(_p):
+        _hit19 += 1
+_area19 = _hit19 / _N19 * 8.0 * 12.0
+ok("東大文19-2(1) D の面積は 18", abs(_area19 - 18) < 0.05,
+   f"モンテカルロ {_N19} 点で {_area19:.4f}")
+_best19 = (-9.0, None)
+_worst19 = (9.0, None)
+for _i in range(400_001):
+    _p = -2 + 6 * _i / 400_000
+    for _q in (_low19(_p), _up19(_p)):
+        _c = _p / math.hypot(_p, _q)
+        if _c > _best19[0]:
+            _best19 = (_c, (_p, _q))
+        if _c < _worst19[0]:
+            _worst19 = (_c, (_p, _q))
+ok("東大文19-2(2) cosθ の範囲は -4/√457 ≦ cosθ ≦ 1/√2",
+   abs(_best19[0] - 1 / math.sqrt(2)) < 1e-9
+   and abs(_worst19[0] + 4 / math.sqrt(457)) < 1e-9
+   and abs(_best19[1][0] - 3) < 1e-4 and abs(_worst19[1][0] + 2) < 1e-4,
+   f"最大 {_best19[0]:.9f} at ({_best19[1][0]:.3f}, {_best19[1][1]:.3f})／"
+   f"最小 {_worst19[0]:.9f} at ({_worst19[1][0]:.3f}, {_worst19[1][1]:.3f})")
+
+# 第3問：正八角形の上のランダムウォーク。表 +1、裏 -1 を 10 回
+_s19 = _st19 = 0
+for _bits in itertools.product((1, -1), repeat=10):
+    _x = 0
+    _f = False
+    for _b in _bits:
+        _x += _b
+        if _x % 8 == 5:
+            _f = True
+    if _x % 8 == 0:
+        _s19 += 1
+        if _f:
+            _st19 += 1
+ok("東大文19-3(1) 10回後に A にある確率は 17/64",
+   _s19 == 272 and Fraction(_s19, 1024) == Fraction(17, 64),
+   f"全探索 {_s19} 通り（10C1+10C5+10C9 = {math.comb(10, 1) + math.comb(10, 5) + math.comb(10, 9)}）")
+ok("東大文19-3(2) S かつ T の確率は 33/512",
+   _st19 == 66 and Fraction(_st19, 1024) == Fraction(33, 512)
+   and math.comb(10, 10) == 1 and math.comb(10, 2) == 45,
+   f"全探索 {_st19} 通り（10+10+1+45 = {10 + 10 + 1 + 45}）")
+
+# 第4問：D = {|x|+|y|≦1} に対し E = {P-Q} = {|x|+|y|≦2}
+_rnd19c = random.Random(419)
+_out19 = 0
+for _ in range(300_000):
+    _pt = []
+    while len(_pt) < 2:
+        _u, _v = _rnd19c.uniform(-1, 1), _rnd19c.uniform(-1, 1)
+        if abs(_u) + abs(_v) <= 1:
+            _pt.append((_u, _v))
+    if abs(_pt[0][0] - _pt[1][0]) + abs(_pt[0][1] - _pt[1][1]) > 2 + 1e-12:
+        _out19 += 1
+ok("東大文19-4 P-Q はつねに |x|+|y|≦2 に入り、逆も (x/2, y/2) で作れる",
+   _out19 == 0
+   and all(abs(x / 2) + abs(y / 2) <= 1 + 1e-12
+           for x, y in ((2, 0), (0, 2), (1, 1), (-1.5, 0.5), (-2, 0), (0.3, -1.7))),
+   f"30万組で範囲外 {_out19} 件")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
