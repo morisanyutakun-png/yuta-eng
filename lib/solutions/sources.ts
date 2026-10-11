@@ -69,6 +69,10 @@ export const sources: Record<string, Record<number, Source>> = {
       kind: "none",
       checked: "2026-10-12",
       note: "京都大学の過去問公開ページには令和7年度と令和8年度しか載っておらず、令和6年度（2024年度）のページ（r6-eq）は応答しない。古い年度は取り下げられている。",
+    }, 2023: {
+      kind: "none",
+      checked: "2026-10-12",
+      note: "2024年度ぶんと同じ確認。京都大学は直近2年度ぶんしか公開していない。",
     } },
   "kyodai-bunkei": { 2026: {
       kind: "official",

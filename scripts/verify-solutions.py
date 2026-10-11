@@ -3900,6 +3900,111 @@ ok("京大理24-6 極限は log10(2)",
    and all(_rat24[i] < _rat24[i + 1] for i in range(len(_rat24) - 1)),
    f"n=10,50,200,1000,5000 で {[round(r, 5) for r in _rat24]}（log10 2 = {math.log10(2):.5f}）")
 
+# ---------------------------------------------------------------- 京大理系2023
+# 第1問 問1：∫₁⁴ √x log(x²) dx
+_n23r = 4_000_000
+_i23 = 0.0
+for _i in range(_n23r):
+    _x = 1 + 3 * (_i + 0.5) / _n23r
+    _i23 += math.sqrt(_x) * math.log(_x * _x) * 3 / _n23r
+ok("京大理23-1問1 (64/3)log2 - 56/9",
+   abs(_i23 - ((64 / 3) * math.log(2) - 56 / 9)) < 1e-7,
+   f"数値積分 {_i23:.9f}（厳密値 {(64 / 3) * math.log(2) - 56 / 9:.9f}）")
+
+# 第1問 問2：x^2023-1 を x⁴+x³+x²+x+1 で割った余り
+def _pdivmod23(A, B):
+    A = A[:]
+    while len(A) >= len(B):
+        if A[-1] == 0:
+            A.pop()
+            continue
+        c = A[-1] // B[-1]
+        sh = len(A) - len(B)
+        for i, b in enumerate(B):
+            A[sh + i] -= c * b
+        while A and A[-1] == 0:
+            A.pop()
+    return A
+
+
+_A23r = [0] * 2024
+_A23r[2023] = 1
+_A23r[0] = -1
+ok("京大理23-1問2 余りは x³-1", _pdivmod23(_A23r, [1, 1, 1, 1, 1]) == [-1, 0, 0, 1],
+   "整数係数のまま多項式除算して確認")
+
+# 第3問：さいころ n 回の積が 5 / 15 で割り切れる確率
+_ok23p = True
+for _n in range(1, 8):
+    _c5 = _c15 = 0
+    for _d in itertools.product(range(1, 7), repeat=_n):
+        _Y = math.prod(_d)
+        if _Y % 5 == 0:
+            _c5 += 1
+        if _Y % 15 == 0:
+            _c15 += 1
+    if (Fraction(_c5, 6 ** _n) != 1 - Fraction(5, 6) ** _n
+            or Fraction(_c15, 6 ** _n) != 1 - Fraction(5, 6) ** _n
+            - Fraction(2, 3) ** _n + Fraction(1, 2) ** _n):
+        _ok23p = False
+ok("京大理23-3 1-(5/6)ⁿ と 1-(5/6)ⁿ-(2/3)ⁿ+(1/2)ⁿ", _ok23p,
+   "n=1..7 を全探索で確認")
+
+# 第4問：f = g + 1/g の最大最小
+_g23 = lambda x: math.exp(-x * x) + x * x / 4 + 1
+_f23r = lambda x: _g23(x) + 1 / _g23(x)
+_best23 = (-9.0, None)
+_worst23 = (9.0, None)
+for _i in range(2_000_001):
+    _x = -1 + 2 * _i / 2_000_000
+    _v = _f23r(_x)
+    if _v > _best23[0]:
+        _best23 = (_v, _x)
+    if _v < _worst23[0]:
+        _worst23 = (_v, _x)
+_m23 = 1.25 + 1 / math.e
+ok("京大理23-4 最大 5/2（x=0）、最小 m+1/m（m=5/4+1/e、x=±1）",
+   abs(_best23[0] - 2.5) < 1e-12 and abs(_best23[1]) < 1e-6
+   and abs(_worst23[0] - (_m23 + 1 / _m23)) < 1e-9 and abs(abs(_worst23[1]) - 1) < 1e-6,
+   f"最大 {_best23[0]:.9f}、最小 {_worst23[0]:.9f}（m={_m23:.9f}）")
+
+# 第5問：線分 PQ の通過範囲と体積
+_rnd23r = random.Random(2023)
+_out23 = 0
+for _ in range(200_000):
+    _a = _rnd23r.random()
+    _t = _rnd23r.random()
+    _sg = _rnd23r.choice((1, -1))
+    _th = _rnd23r.uniform(0, 2 * math.pi)
+    _b = 1 - _a
+    _px = (1 - _t) * _sg * _a
+    _py = _t * _b * math.cos(_th)
+    _pz = _t * _b * math.sin(_th)
+    if math.sqrt(abs(_px)) + math.sqrt(math.hypot(_py, _pz)) > 1 + 1e-9:
+        _out23 += 1
+_vol23 = 0.0
+_n23v = 2_000_000
+for _i in range(_n23v):
+    _x = (_i + 0.5) / _n23v
+    _vol23 += 2 * math.pi * (1 - math.sqrt(_x)) ** 4 / _n23v
+ok("京大理23-5 通過範囲は √|x|+√r ≦ 1、体積 2π/15",
+   _out23 == 0 and abs(_vol23 - 2 * math.pi / 15) < 1e-6,
+   f"線分上の20万点で範囲外 {_out23} 件、体積 {_vol23:.9f}（2π/15 = {2 * math.pi / 15:.9f}）")
+
+# 第6問：c_k = p^k cos(kθ) が整数で p で割り切れない
+_ok23c = True
+for _p in (3, 5, 7, 11, 13):
+    _th23 = math.acos(1 / _p)
+    _ck = [1, 1]
+    for _k in range(2, 20):
+        _ck.append(2 * _ck[-1] - _p * _p * _ck[-2])
+    for _k in range(1, 9):
+        if (abs(_p ** _k * math.cos(_k * _th23) - _ck[_k]) > 1e-4
+                or _ck[_k] % _p != pow(2, _k - 1, _p) or _ck[_k] % _p == 0):
+            _ok23c = False
+ok("京大理23-6 c_k ≡ 2^{k-1} (mod p) で p では割り切れない（m,n は存在しない）", _ok23c,
+   "p=3,5,7,11,13 について k≦8 で確認")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
