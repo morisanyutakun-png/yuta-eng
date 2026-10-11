@@ -1775,6 +1775,201 @@ for a in range(-120, 121):
 ok("東大理24-6(2) 素数になる n は高々3個（241^2 通りの (a,b) で確認）", _worst == 3,
    f"最大 {_worst} 個／ちょうど3個になる組 {_three} 通り")
 
+# ── 東大理系2023 ─────────────────────────────────────────
+import itertools as _it23
+import random as _rnd23
+
+# 1 … 置換とは別に、|sin(x^2)| をそのまま数値積分してはさみうちを確かめる
+_f23 = lambda x: abs(math.sin(x * x))
+ok("東大理23-1(1) 1/√((k+1)π) ≦ A_k ≦ 1/√(kπ)",
+   all(1 / math.sqrt((k + 1) * math.pi) <= quad(_f23, math.sqrt(k * math.pi), math.sqrt((k + 1) * math.pi), 8001)[0]
+       <= 1 / math.sqrt(k * math.pi) for k in (1, 2, 5, 20, 100)))
+_B = lambda n: quad(_f23, math.sqrt(n * math.pi), math.sqrt(2 * n * math.pi), 60001)[0] / math.sqrt(n)
+ok("東大理23-1(2) lim B_n = 2(√2-1)/√π",
+   abs(_B(400) - 2 * (math.sqrt(2) - 1) / math.sqrt(math.pi)) < 1e-6,
+   f"B_400 = {_B(400):.8f}")
+
+# 2 … 12 か所への置き方を全探索して数え上げ
+_tot = _norr = _both = 0
+for _pos in _it23.combinations(range(12), 4):
+    _rest = [i for i in range(12) if i not in _pos]
+    for _bp in _it23.combinations(_rest, 3):
+        _tot += 1
+        _a = sorted(_pos)
+        _b = sorted(_bp)
+        if any(_a[i + 1] - _a[i] == 1 for i in range(3)):
+            continue
+        _norr += 1
+        if not any(_b[i + 1] - _b[i] == 1 for i in range(2)):
+            _both += 1
+ok("東大理23-2(1) p = 14/55", Fraction(_norr, _tot) == Fraction(14, 55), f"{_norr}/{_tot}")
+ok("東大理23-2(2) q = 103/168", Fraction(_both, _norr) == Fraction(103, 168), f"{_both}/{_norr}")
+
+# 3 … 接線が切り取る長さを傾きから直接計算し、単調性で境目を探す
+def _L23(a, m):
+    c = a - math.sqrt(1 + m * m)
+    d = m * m + 4 * c
+    return math.sqrt(1 + m * m) * math.sqrt(d) if d > 0 else -1.0
+
+def _mono23(a):
+    v = [_L23(a, i * 0.004) for i in range(3000)]
+    return all(v[i + 1] > v[i] - 1e-15 for i in range(len(v) - 1))
+
+ok("東大理23-3(1) cos^2θ-sinθ の最大は 5/4",
+   abs(max(1 - s * s - s for s in [(-1000 + i) / 1000 for i in range(2001)]) - 1.25) < 1e-9)
+ok("東大理23-3(2) a < 11/8 でのみ L が単調でなくなる",
+   all(not _mono23(a) for a in (1.26, 1.30, 1.35, 1.3749)) and all(_mono23(a) for a in (1.375, 1.38, 1.5, 2.0)))
+
+# 4 … 成分計算と、三角形 OHB の走査
+_dot23 = lambda u, v: sum(p * q for p, q in zip(u, v))
+_P23 = (0, -1, 1)
+ok("東大理23-4(1) P=(0,-1,1)",
+   _dot23(_P23, (2, 0, 0)) == 0 and _dot23(_P23, (1, 1, 1)) == 0 and _dot23(_P23, (1, 2, 3)) == 1)
+_H23 = (Fraction(4, 3), Fraction(2, 3), Fraction(2, 3))
+ok("東大理23-4(2) OH = OA/3 + 2OB/3",
+   _H23 == tuple(Fraction(1, 3) * a + Fraction(2, 3) * b for a, b in zip((2, 0, 0), (1, 1, 1)))
+   and _dot23([h - p for h, p in zip(_H23, _P23)], (-1, 1, 1)) == 0)
+_Q23 = (1.5, -1.0, 1.0)
+_Hf = (4 / 3, 2 / 3, 2 / 3)
+_mn = 1e9
+_mx = -1e9
+for _i in range(301):
+    for _j in range(301 - _i):
+        _s, _t = _i / 300, _j / 300
+        _X = (_s * _Hf[0] + _t, _s * _Hf[1] + _t, _s * _Hf[2] + _t)
+        _d = math.dist(_X, _Q23)
+        _mn = min(_mn, _d)
+        _mx = max(_mx, _d)
+ok("東大理23-4(3) √11/2 ≦ r ≦ √17/2",
+   abs(_mn - math.sqrt(11) / 2) < 1e-4 and abs(_mx - math.sqrt(17) / 2) < 1e-9,
+   f"走査 {_mn:.7f} 〜 {_mx:.7f}")
+
+# 5 … h^49 を f で割った余りを有理数のまま計算する
+_F23 = [Fraction(-2), Fraction(5), Fraction(-4), Fraction(1)]  # (x-1)^2(x-2) 昇冪
+
+
+def _pmul23(a, b):
+    r = [Fraction(0)] * (len(a) + len(b) - 1)
+    for i, x in enumerate(a):
+        if x:
+            for j, y in enumerate(b):
+                r[i + j] += x * y
+    return r
+
+
+def _pmod23(a):
+    a = a[:]
+    while len(a) > 3:
+        d = len(a) - 1
+        c = a[d]
+        if c:
+            for k in range(4):
+                a[d - 3 + k] -= c * _F23[k]
+        a.pop()
+    while len(a) < 3:
+        a.append(Fraction(0))
+    return a
+
+
+def _ppow23(p, e):
+    r = [Fraction(1), Fraction(0), Fraction(0)]
+    b = _pmod23(p[:])
+    while e:
+        if e & 1:
+            r = _pmod23(_pmul23(r, b))
+        b = _pmod23(_pmul23(b, b))
+        e >>= 1
+    return r
+
+
+def _h2_23(a, b):
+    h = [Fraction(b), Fraction(a), Fraction(1)]
+    return _ppow23(_ppow23(h, 7), 7), h
+
+_sols23 = sorted({(a, b) for a in (Fraction(n, 2) for n in range(-16, 17))
+                  for b in (Fraction(n, 2) for n in range(-16, 17))
+                  if (lambda r: r[0] == r[1])(_h2_23(a, b))})
+ok("東大理23-5(2) (a,b) = (-2,0), (-2,1) だけ",
+   _sols23 == [(Fraction(-2), Fraction(0)), (Fraction(-2), Fraction(1))], f"{_sols23}")
+
+# 6 … 条件を線分と面の交点から直接判定し、当方の形と突き合わせる
+_S3 = math.sqrt(3)
+
+
+def _hits23(A, B, endpoint_ok):
+    for ax, val in ((0, 1.0), (0, -1.0), (1, 1.0), (1, -1.0), (2, -1.0)):
+        d = B[ax] - A[ax]
+        if abs(d) < 1e-15:
+            continue
+        t = (val - A[ax]) / d
+        if t < 1e-12 or t > 1 + 1e-12:
+            continue
+        X = tuple(A[k] + t * (B[k] - A[k]) for k in range(3))
+        if max(abs(X[k]) for k in range(3)) > 1 + 1e-9 or X[2] >= 1 - 1e-12:
+            continue
+        if endpoint_ok and t > 1 - 1e-9:
+            continue
+        return True
+    return False
+
+
+_lip23 = [p for i in range(201) for s in [(-1 + 2 * i / 200)]
+          for p in ((1.0, s, 1.0), (-1.0, s, 1.0), (s, 1.0, 1.0), (s, -1.0, 1.0))]
+
+
+def _bruteW23(p):
+    if math.dist((0, 0, 0), p) > _S3:
+        return False
+    if not _hits23((0, 0, 0), p, True):
+        return True
+    for N in _lip23:
+        if math.dist((0, 0, 0), N) + math.dist(N, p) <= _S3 + 1e-9:
+            if not _hits23((0, 0, 0), N, False) and not _hits23(N, p, True):
+                return True
+    return False
+
+
+def _formV23(p):
+    x, y, z = p
+    if max(abs(x), abs(y), abs(z)) <= 1:
+        return True
+    return math.dist((0, 0, 0), p) <= _S3 and z >= abs(x) and z >= abs(y)
+
+
+def _formW23(p):
+    if _formV23(p):
+        return True
+    x, y, z = p
+    for u, v, ax in ((x - 1, z - 1, y), (-x - 1, z - 1, y), (y - 1, z - 1, x), (-y - 1, z - 1, x)):
+        if u > 0 and v < u and abs(ax) <= 1 and math.hypot(u, v) <= math.sqrt(3 - ax * ax) - math.sqrt(2):
+            return True
+    return False
+
+_rnd23.seed(5)
+_bad23 = 0
+for _ in range(40000):
+    _p = tuple(_rnd23.uniform(-1.75, 1.75) for _ in range(3))
+    if _bruteW23(_p) != _formW23(_p) and abs(math.dist((0, 0, 0), _p) - _S3) > 3e-3:
+        _bad23 += 1
+ok("東大理23-6 条件の直接判定と、導いた形が一致", _bad23 == 0, f"食い違い {_bad23} 点")
+_cv = _cw = 0
+_M23 = 300000
+for _ in range(_M23):
+    _p = tuple(_rnd23.uniform(-1.75, 1.75) for _ in range(3))
+    if _formV23(_p):
+        _cv += 1
+        _cw += 1
+    elif _formW23(_p):
+        _cw += 1
+_vol23 = 3.5 ** 3
+_al23 = math.asin(1 / _S3)
+_V23 = 20 / 3 + 2 * math.sqrt(3) * math.pi / 3
+_W23 = _V23 + 8 * math.pi - 9 * math.sqrt(2) * math.pi * _al23
+ok("東大理23-6(1) V = 20/3 + 2√3π/3", abs(_cv / _M23 * _vol23 - _V23) < 0.06,
+   f"MC {_cv / _M23 * _vol23:.4f} / 式 {_V23:.4f}")
+ok("東大理23-6(2) W = 20/3 + (8 + 2√3/3 - 9√2α)π", abs(_cw / _M23 * _vol23 - _W23) < 0.06,
+   f"MC {_cw / _M23 * _vol23:.4f} / 式 {_W23:.4f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
