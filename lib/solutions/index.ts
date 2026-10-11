@@ -2,6 +2,7 @@ import { getUniversity, universities } from "@/lib/data";
 import { kyudaiBunkei2026 } from "@/lib/solutions/kyudai-bunkei-2026";
 import { kyudaiRikei2026 } from "@/lib/solutions/kyudai-rikei-2026";
 import { kagakudai2026 } from "@/lib/solutions/kagakudai-2026";
+import { kyodaiBunkei2023 } from "@/lib/solutions/kyodai-bunkei-2023";
 import { kyodaiBunkei2024 } from "@/lib/solutions/kyodai-bunkei-2024";
 import { kyodaiBunkei2025 } from "@/lib/solutions/kyodai-bunkei-2025";
 import { kyodaiBunkei2026 } from "@/lib/solutions/kyodai-bunkei-2026";
@@ -62,6 +63,7 @@ const all: SolutionSet[] = [
   kyodaiBunkei2026,
   kyodaiBunkei2025,
   kyodaiBunkei2024,
+  kyodaiBunkei2023,
   kyodaiRikei2025,
   kyudaiRikei2026,
   kyudaiBunkei2026,

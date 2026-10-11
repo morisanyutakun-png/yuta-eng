@@ -3346,6 +3346,75 @@ ok("京大文24-5 領域の面積は (50-20√5)/3",
    abs(_ar24 - (50 - 20 * math.sqrt(5)) / 3) < 0.005 and _mis24 == 0,
    f"モンテカルロ {_ar24:.5f}（厳密値 {(50 - 20 * math.sqrt(5)) / 3:.5f}）、不等式との不一致 {_mis24} 件")
 
+# ---------------------------------------------------------------- 京大文系2023
+# 第1問 問1：さいころ n 回の積が 5 の倍数
+_pr23k = [Fraction(sum(1 for d in itertools.product(range(1, 7), repeat=n)
+                       if math.prod(d) % 5 == 0), 6 ** n) for n in range(1, 7)]
+ok("京大文23-1問1 確率は 1-(5/6)^n",
+   all(p == Fraction(6 ** n - 5 ** n, 6 ** n) for p, n in zip(_pr23k, range(1, 7))),
+   f"n=1..6 で {[str(p) for p in _pr23k]}")
+
+# 第1問 問2：3乗根の有理化
+_t23 = 3 ** (1 / 3)
+ok("京大文23-1問2 55/(2∛9+∛3+5) = (19+7∛3-9∛9)/2",
+   abs((2 * _t23 ** 2 + _t23 + 5) * (9 * _t23 ** 2 - 7 * _t23 - 19) + 110) < 1e-9
+   and abs(55 / (2 * _t23 ** 2 + _t23 + 5) - (19 + 7 * _t23 - 9 * _t23 ** 2) / 2) < 1e-12,
+   f"両辺とも {55 / (2 * _t23 ** 2 + _t23 + 5):.9f}")
+
+# 第2問：OA, OB, OC を基本ベクトルにとって交点を確かめる
+_D23k = (1, 2, 3)
+_R23 = tuple(v / 10 for v in _D23k)      # OR = OD/10
+_Q23 = (0, 0.5, 0)
+_P23 = (1 / 3, 0, 0)
+_C23k = (0, 0, 1)
+_X1 = tuple(_Q23[i] + (5 / 3) * (_R23[i] - _Q23[i]) for i in range(3))
+_X2 = tuple(_P23[i] + 0.5 * (_C23k[i] - _P23[i]) for i in range(3))
+ok("京大文23-2 OR:RD = 1:9（直線 QR と PC が交わる）",
+   all(abs(_X1[i] - _X2[i]) < 1e-12 for i in range(3)),
+   f"交点は {tuple(round(v, 9) for v in _X1)}（OA, OB, OC 成分）")
+
+# 第3問：正五角形の一辺
+_c36 = math.cos(math.radians(36))
+_side23 = 2 * math.sin(math.radians(36))
+ok("京大文23-3 cos36° = (1+√5)/4、一辺 = √((5-√5)/2) > 1.15",
+   abs(_c36 - (1 + math.sqrt(5)) / 4) < 1e-15
+   and abs(_side23 - math.sqrt((5 - math.sqrt(5)) / 2)) < 1e-15
+   and _side23 > 1.15 and 2.355 ** 2 > 5,
+   f"一辺 {_side23:.9f}（1.15 より大きい）")
+
+# 第4問：a_n = S_n/n + (n-1)2^n
+_a23 = {1: 3.0}
+_S23 = {1: 3.0}
+for _n in range(2, 15):
+    _a23[_n] = _S23[_n - 1] / (_n - 1) + _n * 2 ** _n   # 漸化式を S_{n-1} で書き直した形
+    _S23[_n] = _S23[_n - 1] + _a23[_n]
+ok("京大文23-4 一般項は (n+1)2ⁿ-1",
+   all(abs(_a23[n] - ((n + 1) * 2 ** n - 1)) < 1e-6 for n in range(1, 15))
+   and all(abs(_S23[n] - n * (2 ** (n + 1) - 1)) < 1e-6 for n in range(1, 15)),
+   f"a_1..a_9 = {[round(_a23[n]) for n in range(1, 10)]}")
+
+# 第5問：f(x) + ∫(x-y)²f(y)dy = 2x²+x+5/3
+_f23 = lambda y: 1 - 3 * y
+
+
+def _int23(g, n=2_000_000):
+    s = 0.0
+    for i in range(n):
+        y = -1 + 2 * (i + 0.5) / n
+        s += g(y) * 2 / n
+    return s
+
+
+_A23k = _int23(_f23)
+_B23k = _int23(lambda y: y * _f23(y))
+_C23k2 = _int23(lambda y: y * y * _f23(y))
+ok("京大文23-5 f(x) = -3x+1",
+   abs(_A23k - 2) < 1e-9 and abs(_B23k + 2) < 1e-9 and abs(_C23k2 - 2 / 3) < 1e-9
+   and all(abs(_f23(x) + _A23k * x * x - 2 * _B23k * x + _C23k2
+                - (2 * x * x + x + 5 / 3)) < 1e-9
+           for x in (-1.0, -0.3, 0.0, 0.7, 2.0)),
+   f"A={_A23k:.9f}, B={_B23k:.9f}, C={_C23k2:.9f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
