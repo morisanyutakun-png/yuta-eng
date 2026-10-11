@@ -3239,6 +3239,113 @@ for _ in range(200_000):
 ok("京大文25-5 α+β+γ=1（定点 OA/4 + OB/2 + 3OC/4 を通る）", _bad25v == 0,
    f"20万組で不一致 {_bad25v} 件")
 
+# ---------------------------------------------------------------- 京大文系2024
+# 第1問：cosθ = 1-√2/2 とした座標が条件をすべてみたし、体積が √(2√2-2)/6 になる
+_ct24 = 1 - math.sqrt(2) / 2
+_z24 = math.sqrt(1 - 2 * _ct24 * _ct24)
+_A24, _B24, _C24, _O24 = (1, 0, 0), (0, 1, 0), (_ct24, _ct24, _z24), (0, 0, 0)
+
+
+def _ang24(P, Q, R):
+    a = [P[i] - Q[i] for i in range(3)]
+    b = [R[i] - Q[i] for i in range(3)]
+    return math.degrees(math.acos(sum(a[i] * b[i] for i in range(3))
+                                  / math.dist(P, Q) / math.dist(R, Q)))
+
+
+_th24 = math.degrees(math.acos(_ct24))
+ok("京大文24-1 条件をみたす四面体の体積は √(2√2-2)/6",
+   all(abs(math.dist(_O24, X) - 1) < 1e-12 for X in (_A24, _B24, _C24))
+   and abs(_ang24(_A24, _O24, _B24) - 90) < 1e-9
+   and abs(_ang24(_C24, _O24, _A24) - _th24) < 1e-9
+   and abs(_ang24(_C24, _O24, _B24) - _th24) < 1e-9
+   and abs(_ang24(_A24, _C24, _B24) - _th24) < 1e-9
+   and abs(_z24 / 6 - math.sqrt(2 * math.sqrt(2) - 2) / 6) < 1e-15,
+   f"θ = {_th24:.4f}°、体積 {_z24 / 6:.9f}")
+
+# 第2問：立方体の塗り分け。対面でない2面は必ず辺を共有する
+_adj24 = [(i, j) for i in range(6) for j in range(i + 1, 6)
+          if (i, j) not in ((0, 1), (2, 3), (4, 5))]
+_cnt24 = {}
+for _n in (2, 3, 4, 5, 6):
+    _cnt24[_n] = sum(1 for _c in itertools.product(range(_n), repeat=6)
+                     if all(_c[i] != _c[j] for i, j in _adj24))
+_perm24 = lambda n, k: math.perm(n, k) if k <= n else 0
+ok("京大文24-2 p3 = 2/243、p4 = 3/128",
+   _cnt24[3] == 6 and _cnt24[4] == 96
+   and Fraction(_cnt24[3], 3 ** 6) == Fraction(2, 243)
+   and Fraction(_cnt24[4], 4 ** 6) == Fraction(3, 128)
+   and all(_cnt24[n] == _perm24(n, 3) + 3 * _perm24(n, 4) + 3 * _perm24(n, 5) + _perm24(n, 6)
+           for n in (2, 3, 4, 5, 6)),
+   f"全探索 n=2..6 で {[_cnt24[n] for n in (2, 3, 4, 5, 6)]}")
+
+# 第3問：f(x) = |x²-g(x)| + g(x) = max(x², h(x)) の [-1,1] での最大値
+def _fmax24(a, n=400_000):
+    best = -9.0
+    for i in range(n + 1):
+        x = -1 + 2 * i / n
+        g = a * x + 0.75 * a * a
+        best = max(best, abs(x * x - g) + g)
+    return best
+
+
+_r24 = math.sqrt(0.4)
+
+
+def _pred24(a):
+    if a < _r24:
+        return 1.0
+    if a <= 1:
+        return 2.5 * a * a
+    return 1.5 * a * a + 2 * a - 1
+
+
+ok("京大文24-3 最大値は 1 / (5/2)a² / (3/2)a²+2a-1 の3通り",
+   all(abs(_fmax24(a) - _pred24(a)) < 1e-9
+       for a in (0.3, 0.6, _r24 - 1e-4, _r24, 0.8, 1.0, 1.5, 2.5))
+   and abs(_r24 - math.sqrt(10) / 5) < 1e-15,
+   f"境目 √10/5 = {_r24:.9f}、a=1.5 で {_fmax24(1.5):.9f}")
+
+# 第4問：八・九・十進法で桁数が同じになる最大の自然数
+def _dig24(N, b):
+    k = 0
+    while N:
+        N //= b
+        k += 1
+    return k
+
+
+_max24 = max(N for N in range(10 ** 9, 2 ** 30)
+             if _dig24(N, 8) == _dig24(N, 9) == _dig24(N, 10))
+ok("京大文24-4 最大は 2³⁰-1 = 1073741823",
+   _max24 == 2 ** 30 - 1 and 8 ** 11 < 10 ** 10 and 8 ** 10 > 10 ** 9,
+   f"走査の最大 {_max24}（8^10 = {8 ** 10}、8^11 = {8 ** 11}）")
+
+# 第5問：C と直線が異なる2点で交わる (a,b) の領域の面積
+def _two24(a, b):
+    D = (4 + a) ** 2 - 4 * (5 - b)
+    return D > 0 and ((4 + a) - math.sqrt(D)) / 2 > 1
+
+
+_rnd24 = random.Random(2024)
+_hit24 = 0
+_N24 = 4_000_000
+for _ in range(_N24):
+    _a = _rnd24.uniform(0, 2.2)
+    _b = _rnd24.uniform(0, 2.2)
+    if _a > 0 and _b > 0 and _two24(_a, _b):
+        _hit24 += 1
+_ar24 = _hit24 / _N24 * 2.2 * 2.2
+_mis24 = 0
+for _ in range(300_000):
+    _a = _rnd24.uniform(0.001, 2.5)
+    _b = _rnd24.uniform(0.001, 2.5)
+    if ((_a + _b < 2) and ((_a + 4) ** 2 + 4 * _b > 20)) != _two24(_a, _b):
+        _mis24 += 1
+ok("京大文24-5 領域の面積は (50-20√5)/3",
+   abs(_ar24 - (50 - 20 * math.sqrt(5)) / 3) < 0.005 and _mis24 == 0,
+   f"モンテカルロ {_ar24:.5f}（厳密値 {(50 - 20 * math.sqrt(5)) / 3:.5f}）、不等式との不一致 {_mis24} 件")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
