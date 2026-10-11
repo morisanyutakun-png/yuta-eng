@@ -2967,6 +2967,108 @@ ok("東大文21-4 2021C37 を 4 で割った余りは 3（理科第4問と同じ
    math.comb(2021, 37) % 4 == 3 and math.comb(505, 9) % 4 == 3 and math.comb(126, 2) % 4 == 3,
    f"126C2 = {math.comb(126, 2)}")
 
+# ---------------------------------------------------------------- 東大文系2020
+# 第1問：b=4a^3 のとき y=(x+a)(x-2a)^2。囲まれた部分の格子点をそのまま数える
+def _lat20(a):
+    n = 0
+    for x in range(-10, 11):
+        if -a < x < 2 * a:
+            v = (x + a) * (x - 2 * a) ** 2
+            if v > 0:
+                n += math.ceil(v) - 1
+    return n
+
+
+_lo20 = (1 / 4) ** (1 / 3)
+_hi20 = (1 / 2) ** (1 / 3)
+ok("東大文20-1 格子点ちょうど1個の境目は (1/4)^(1/3) と (1/2)^(1/3)",
+   _lat20(_lo20 - 1e-6) == 0 and _lat20(_lo20 + 1e-6) == 1
+   and _lat20(_hi20 - 1e-6) == 1 and _lat20(_hi20 + 1e-6) == 2
+   and _lat20(0.4) == 0 and _lat20(0.6) == 0 and _lat20(0.9) == 3,
+   f"(1/4)^(1/3) = {_lo20:.9f}、(1/2)^(1/3) = {_hi20:.9f}")
+ok("東大文20-1 x³-3ax²+4a³ = (x+a)(x-2a)²",
+   all(abs((x + 0.7) * (x - 1.4) ** 2 - (x ** 3 - 2.1 * x * x + 4 * 0.343)) < 1e-12
+       for x in (-2, 0, 1, 3, 5)))
+
+# 第2問：4×4 の16点から5点。8本の直線のうち点を含まないものの本数で数える
+_c20a = _c20b = 0
+for _S in itertools.combinations([(i, j) for i in range(4) for j in range(4)], 5):
+    _e = (4 - len({p[0] for p in _S})) + (4 - len({p[1] for p in _S}))
+    if _e == 2:
+        _c20a += 1
+    elif _e == 0:
+        _c20b += 1
+ok("東大文20-2(1) 点を含まない直線がちょうど2本なのは 1824 通り", _c20a == 1824,
+   f"全探索 {_c20a}（192+192+1440 = {192 + 192 + 1440}）")
+_inc20 = sum((-1) ** (i + j) * math.comb(4, i) * math.comb(4, j)
+             * math.comb((4 - i) * (4 - j), 5) for i in range(5) for j in range(5))
+ok("東大文20-2(2) 8本すべてが点を含むのは 432 通り", _c20b == 432 and _inc20 == 432,
+   f"全探索 {_c20b}／包除原理 {_inc20}")
+
+# 第3問：半直線の通過領域と、正三角形がとれる a の範囲
+ok("東大文20-3(1) OP の傾き t+4/t-2 の最小は 2（t=2）",
+   abs(min((i / 10000) + 4 / (i / 10000) - 2 for i in range(1, 200000)) - 2) < 1e-9)
+_b20 = math.atan(2.0)
+_iv20 = ((math.tan(_b20 - math.pi / 3), math.tan(math.pi / 6)),
+         (math.tan(_b20 + math.pi / 3), math.tan(5 * math.pi / 6)))
+
+
+def _tri20(a, n=400_000):
+    """C 上の点を細かくとり、±60° 回した向きが ℓ と一致するものがあるか。"""
+    al = math.atan(a)
+    for i in range(n + 1):
+        t = i / n * 12
+        th = math.atan2(t * t - 2 * t + 4, t)
+        for sgn in (1, -1):
+            d = (th + sgn * math.pi / 3 - al) % math.pi
+            if min(d, math.pi - d) < 2e-5:
+                return True
+    return False
+
+
+ok("東大文20-3(2) a の範囲は2区間 [(5√3-8)/11, 1/√3] と [-(8+5√3)/11, -1/√3]",
+   abs(_iv20[0][0] - (5 * math.sqrt(3) - 8) / 11) < 1e-12
+   and abs(_iv20[0][1] - 1 / math.sqrt(3)) < 1e-12
+   and abs(_iv20[1][0] + (8 + 5 * math.sqrt(3)) / 11) < 1e-12
+   and abs(_iv20[1][1] + 1 / math.sqrt(3)) < 1e-12
+   and all(_tri20(a) == any(lo <= a <= hi for lo, hi in _iv20)
+           for a in (-2.0, -1.6, -1.5, -1.0, -0.6, -0.5, 0.0, 0.03, 0.07, 0.3, 0.57, 0.6, 1.0)),
+   f"[{_iv20[0][0]:.6f}, {_iv20[0][1]:.6f}] ∪ [{_iv20[1][0]:.6f}, {_iv20[1][1]:.6f}]")
+
+# 第4問：a_{n,k} は 2^0,…,2^{n-1} の基本対称式
+def _a20(n, k):
+    return sum(math.prod(2 ** m for m in c) for c in itertools.combinations(range(n), k))
+
+
+def _polydiv20(A, B):
+    A = [Fraction(x) for x in A]
+    q = [Fraction(0)] * (len(A) - len(B) + 1)
+    for i in range(len(A) - len(B), -1, -1):
+        c = A[i + len(B) - 1] / B[-1]
+        q[i] = c
+        for j, b in enumerate(B):
+            A[i + j] -= c * b
+    return q, [x for x in A if x != 0]
+
+
+ok("東大文20-4(1) a_{n,2} = (2^n-1)(2^n-2)/3",
+   _a20(4, 3) == 120 and all(_a20(n, 2) == (2 ** n - 1) * (2 ** n - 2) // 3 for n in range(2, 13)),
+   f"a_4,3 = {_a20(4, 3)}（問題文の例）、a_5,2 = {_a20(5, 2)}")
+_div20 = []
+for _n in range(1, 10):
+    _f = [_a20(_n, k) for k in range(_n + 1)]
+    _f1 = [_a20(_n + 1, k) for k in range(_n + 2)]
+    _q, _r = _polydiv20(_f1, _f)
+    _q2, _r2 = _polydiv20(_f1, [c * 2 ** k for k, c in enumerate(_f)])
+    _div20.append(_q == [1, 2 ** _n] and not _r and _q2 == [1, 1] and not _r2)
+ok("東大文20-4(2) f_{n+1}/f_n = 1+2ⁿx、f_{n+1}/f_n(2x) = 1+x", all(_div20),
+   f"n=1..9 を多項式の割り算で確認")
+ok("東大文20-4(3) a_{n+1,k+1}/a_{n,k} = 2^k(2^{n+1}-1)/(2^{k+1}-1)",
+   all(Fraction(_a20(n + 1, k + 1), _a20(n, k))
+       == Fraction(2 ** k * (2 ** (n + 1) - 1), 2 ** (k + 1) - 1)
+       for n in range(1, 11) for k in range(1, n + 1)),
+   f"n=3,k=2 で {Fraction(_a20(4, 3), _a20(3, 2))}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
