@@ -2381,6 +2381,132 @@ ok("東大理20-6(2) c=1/(2√2) で c+√(c²+1)=√2（境目）",
 ok("東大理20-6(2) 縮閉線上で √(2x²+y²) の最小は 1/2",
    abs(min(math.hypot(math.cos(u) ** 3, math.sin(u) ** 3) for u in [i * math.pi / 2 / 20000 for i in range(20001)]) - 0.5) < 1e-9)
 
+# ── 東大理系2019 ─────────────────────────────────────────
+from math import gcd as _gcd19
+import random as _rnd19
+
+# 1 … 被積分関数をそのまま数値積分
+_f19 = lambda x: (x * x + x / math.sqrt(1 + x * x)) * (1 + x / ((1 + x * x) * math.sqrt(1 + x * x)))
+_I19 = quad(_f19, 0.0, 1.0, 120001)[0]
+_c19 = 5 * math.sqrt(2) / 2 + math.pi / 8 - 35 / 12
+ok("東大理19-1 積分は 5√2/2 + π/8 - 35/12", abs(_I19 - _c19) < 1e-9,
+   f"数値積分 {_I19:.10f} / 式 {_c19:.10f}")
+
+# 2 … q を細かく動かし、面積条件を毎回確かめたうえで DR/AQ を全探索
+_best19 = (-1.0, 0.0)
+_worst19 = (9.0, 0.0)
+_area_ok19 = True
+for _i in range(1, 60001):
+    q = _i / 60000
+    if q < 2 / 3 - 1e-15:
+        continue
+    p = 2 / (3 * q)
+    if p > 1 + 1e-12:
+        continue
+    r = 4 / (3 * q) - 2 / (3 * q * q)
+    if r < -1e-12 or r > 1 + 1e-12:
+        continue
+    if abs(0.5 * p * q - 1 / 3) > 1e-9 or abs(0.5 * abs(p + q * r - q * p) - 1 / 3) > 1e-9:
+        _area_ok19 = False
+    v = r / q
+    if v > _best19[0]:
+        _best19 = (v, q)
+    if v < _worst19[0]:
+        _worst19 = (v, q)
+ok("東大理19-2 2つの三角形の面積はどちらも 1/3", _area_ok19)
+ok("東大理19-2 最大 64/81、最小 2/3",
+   abs(_best19[0] - 64 / 81) < 1e-8 and abs(_worst19[0] - 2 / 3) < 1e-8,
+   f"最大 {_best19[0]:.9f} at q={_best19[1]:.5f} / 最小 {_worst19[0]:.9f}")
+
+# 3 … 八面体を不等式で書き、面の符号から切られる面の数を数える
+def _inOcta19(x, y, z, p):
+    if z >= 0:
+        return z <= 2 and abs(x - p * z / 2) + abs(y) <= 2 - z + 1e-12
+    return z >= -2 and abs(x) + abs(y) <= 2 + z + 1e-12
+
+
+def _nfaces19(p):
+    V = {"A": (2, 0, 0), "B": (0, 2, 0), "C": (-2, 0, 0), "D": (0, -2, 0), "E": (0, 0, -2), "P": (p, 0, 2)}
+    faces = [("P", "A", "B"), ("P", "B", "C"), ("P", "C", "D"), ("P", "D", "A"),
+             ("E", "A", "B"), ("E", "B", "C"), ("E", "C", "D"), ("E", "D", "A")]
+    g = lambda v: V[v][0] - V[v][2] - 1
+    return sum(1 for f in faces if max(g(v) for v in f) > 1e-12 and min(g(v) for v in f) < -1e-12)
+
+ok("東大理19-3(2) 八角形になるのは 3<p<4",
+   all(_nfaces19(p) == 6 for p in (2.2, 2.5, 2.9, 3.0)) and all(_nfaces19(p) == 8 for p in (3.001, 3.2, 3.6, 3.9)))
+
+
+def _area19(p, M=900):
+    c = 0
+    for i in range(M):
+        z = 2.0 * (i + 0.5) / M
+        for j in range(M):
+            y = 2.5 * (j + 0.5) / M
+            if _inOcta19(z + 1, y, z, p):
+                c += 1
+    return c * 2.5 * 2.0 / M / M
+
+ok("東大理19-3(3) 面積は (7p-18)/(p(p-2))",
+   all(abs(_area19(p) - (7 * p - 18) / (p * (p - 2))) < 0.01 for p in (3.2, 3.5, 3.9)),
+   f"p=3.5: 格子 {_area19(3.5):.5f} / 式 {(7 * 3.5 - 18) / (3.5 * 1.5):.5f}")
+
+# 4 … 最大公約数と平方数を多倍長整数で
+ok("東大理19-4(1) d_n は n が奇数なら 2、偶数なら 1",
+   all(_gcd19(n * n + 1, 5 * n * n + 9) == (2 if n % 2 else 1) for n in range(1, 300)))
+ok("東大理19-4(2) (n²+1)(5n²+9) は平方数にならない",
+   all(math.isqrt((n * n + 1) * (5 * n * n + 9)) ** 2 != (n * n + 1) * (5 * n * n + 9) for n in range(1, 60000)))
+ok("東大理19-4(2) n 奇数のとき (5n²+9)/2 を 4 で割った余りは 3",
+   all((5 * n * n + 9) // 2 % 4 == 3 for n in range(1, 400, 2)))
+
+# 5 … a_n を二分法で出し、a_n^n = √(a_n cos a_n) を確かめる
+def _an19(n):
+    lo, hi = 0.0, 1.0
+    for _ in range(200):
+        m = (lo + hi) / 2
+        if m ** (2 * n - 1) - math.cos(m) < 0:
+            lo = m
+        else:
+            hi = m
+    return (lo + hi) / 2
+
+ok("東大理19-5(3) a_n^n = √(a_n cos a_n)",
+   all(abs(_an19(n) ** n - math.sqrt(_an19(n) * math.cos(_an19(n)))) < 1e-12 for n in (1, 2, 5, 20, 100, 2000)))
+ok("東大理19-5(3) a=1, b=√cos1",
+   abs(_an19(5000) - 1) < 1e-3 and abs(_an19(5000) ** 5000 - math.sqrt(math.cos(1))) < 1e-3,
+   f"a_5000 = {_an19(5000):.8f}, a^n = {_an19(5000) ** 5000:.8f}, √cos1 = {math.sqrt(math.cos(1)):.8f}")
+_a19 = _an19(20000)
+_cc19 = (math.cos(1) - math.sin(1)) / (2 * math.sqrt(math.cos(1)))
+ok("東大理19-5(3) c = (cos1-sin1)/(2√cos1)",
+   abs((_a19 ** 20000 - math.sqrt(math.cos(1))) / (_a19 - 1) - _cc19) < 1e-4,
+   f"n=20000 で {(_a19 ** 20000 - math.sqrt(math.cos(1))) / (_a19 - 1):.8f} / 式 {_cc19:.8f}")
+
+# 6 … 条件をみたす根の組を作って確かめる
+_rnd19.seed(1900)
+_bad19 = 0
+for _ in range(1500):
+    y = _rnd19.uniform(0.05, 3) * _rnd19.choice([1, -1])
+    if _rnd19.random() < 0.5:
+        r1 = math.sqrt(1 + y * y) * _rnd19.choice([1, -1])
+        r2 = -r1
+        u = complex(1, y)
+    else:
+        sq = math.sqrt(1 + y * y)
+        r1, r2 = 1 + sq, 1 - sq
+        u = complex(0, y)
+    roots = [r1, r2, u, u.conjugate()]
+    e1 = sum(roots)
+    e2 = sum(roots[i] * roots[j] for i in range(4) for j in range(i + 1, 4))
+    e3 = sum(roots[i] * roots[j] * roots[k] for i in range(4) for j in range(i + 1, 4) for k in range(j + 1, 4))
+    e4 = roots[0] * roots[1] * roots[2] * roots[3]
+    a = e3.real / 2
+    b = e4.real
+    v = r1 * u + r2 * u.conjugate()
+    S = r1 + u
+    if not (abs(e1 - 2) < 1e-9 and abs(e2) < 1e-9 and abs(v.real) < 1e-9 and abs(v.imag) > 1e-9
+            and abs(b + a * a) < 1e-7 and abs((S.real - 1) ** 2 - S.imag ** 2 - 1) < 1e-9):
+        _bad19 += 1
+ok("東大理19-6 b=-a² と α+β が (x-1)²-y²=1 の上にある", _bad19 == 0, f"外れ {_bad19}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
