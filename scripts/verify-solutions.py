@@ -4245,6 +4245,75 @@ ok("京大理20-6 体積は 2π(5/3 - log2)",
    abs(_vol20 - 2 * math.pi * (5 / 3 - math.log(2))) < 1e-6,
    f"数値積分 {_vol20:.9f}（厳密値 {2 * math.pi * (5 / 3 - math.log(2)):.9f}）")
 
+# ---------------------------------------------------------------- 京大理系2019
+# 第1問 問1：cosθ は無理数、cos2θ と cos3θ は有理数
+ok("京大理19-1問1 θ = π/6",
+   abs(math.cos(math.pi / 6) - math.sqrt(3) / 2) < 1e-15
+   and abs(math.cos(2 * math.pi / 6) - 0.5) < 1e-15
+   and abs(math.cos(3 * math.pi / 6)) < 1e-15,
+   "cosθ=√3/2（無理数）、cos2θ=1/2、cos3θ=0")
+
+# 第1問 問2：2つの定積分
+_n19 = 2_000_000
+_I1 = _I2 = 0.0
+for _i in range(_n19):
+    _x = (math.pi / 4) * (_i + 0.5) / _n19
+    _I1 += _x / math.cos(_x) ** 2 * (math.pi / 4) / _n19
+    _I2 += 1 / math.cos(_x) * (math.pi / 4) / _n19
+ok("京大理19-1問2 π/4-(1/2)log2 と log(1+√2)",
+   abs(_I1 - (math.pi / 4 - 0.5 * math.log(2))) < 1e-7
+   and abs(_I2 - math.log(1 + math.sqrt(2))) < 1e-7,
+   f"(1) {_I1:.9f}、(2) {_I2:.9f}")
+
+# 第2問：|f(n)| と |f(n+1)| がともに素数
+def _isp19(m):
+    m = abs(m)
+    if m < 2:
+        return False
+    for d in range(2, int(m ** 0.5) + 1):
+        if m % d == 0:
+            return False
+    return True
+
+
+_f19 = lambda x: x ** 3 + 2 * x * x + 2
+_good19 = [n for n in range(-2000, 2001) if _isp19(_f19(n)) and _isp19(_f19(n + 1))]
+ok("京大理19-2 n = -3, -2, -1, 0",
+   _good19 == [-3, -2, -1, 0]
+   and not [m for m in range(-50, 50) if m * m * (m + 2) == -4],
+   f"-2000..2000 で {_good19}")
+
+# 第3問：曲線 P(t) と線分 BC で囲む面積は S/3
+_rnd19r = random.Random(2019)
+_ok19a = True
+for _ in range(5):
+    _A = (_rnd19r.uniform(-3, 3), _rnd19r.uniform(-3, 3))
+    _Bp = (_rnd19r.uniform(-3, 3), _rnd19r.uniform(-3, 3))
+    _Cp = (_rnd19r.uniform(-3, 3), _rnd19r.uniform(-3, 3))
+    _S19 = abs((_Bp[0] - _A[0]) * (_Cp[1] - _A[1]) - (_Bp[1] - _A[1]) * (_Cp[0] - _A[0])) / 2
+    if _S19 < 0.5:
+        continue
+    _ar = 0.0
+    _N = 200_000
+    for _i in range(_N):
+        _t = (_i + 0.5) / _N
+        _P = tuple(_t * (1 - _t) * _A[k] + (1 - _t) * _Bp[k] + _t * _t * _Cp[k] for k in range(2))
+        _dP = tuple((1 - 2 * _t) * _A[k] - _Bp[k] + 2 * _t * _Cp[k] for k in range(2))
+        _ar += 0.5 * (_P[0] * _dP[1] - _P[1] * _dP[0]) / _N
+    _ar += 0.5 * (_Cp[0] * (_Bp[1] - _Cp[1]) - _Cp[1] * (_Bp[0] - _Cp[0]))
+    if abs(abs(_ar) - _S19 / 3) > 1e-5:
+        _ok19a = False
+ok("京大理19-3 囲む面積は S/3", _ok19a, "三角形3つで数値積分して確認")
+
+# 第6問：(1+i)^n + (1-i)^n > 10^10 となる最小の n
+_vals19 = {n: round(((1 + 1j) ** n + (1 - 1j) ** n).real) for n in range(1, 90)}
+_min19 = min(n for n in range(1, 90) if _vals19[n] > 10 ** 10)
+ok("京大理19-6 最小の n は 71",
+   _min19 == 71 and _vals19[71] == 2 ** 36
+   and _vals19[64] == 2 ** 33 and _vals19[65] == 2 ** 33 and 2 ** 33 < 10 ** 10
+   and 33 * 0.3011 < 10 < 34 * 0.3010,
+   f"n=71 で {_vals19[71]} = 2^36")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
