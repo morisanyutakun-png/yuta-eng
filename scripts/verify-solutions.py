@@ -5693,6 +5693,92 @@ for _n in range(1, 9):
 ok("名理23-4 Σ[j=k..n] nB_j·jC_k = (n+1)B_{k+1}", _ok23s,
    "1≦n≦8、1≦k≦n のすべてで整数のまま一致")
 
+# ---- 名大理系2022 ----
+
+# 第1問：x³ を (x-a)² / (x²+αx+β) で割った余り
+ok("名理22-1 x³ を (x-a)² で割った余りは 3a²x-2a³（商は x+2a）",
+   all(abs((_x ** 3 - (3 * _a * _a * _x - 2 * _a ** 3)) / ((_x - _a) ** 2) - (_x + 2 * _a)) < 1e-9
+       for _a in (0.7, -1.3, 2.0, 0.0) for _x in (0.3, 1.1, -2.0, 5.0) if abs(_x - _a) > 1e-6),
+   "a 4通り × x 4通りで確認")
+
+def _nroot22(b):
+    # α³-3α-b=0 の実数解の個数（判別式 Δ = 108-27b²）
+    _D = 108 - 27 * b * b
+    return 3 if _D > 1e-12 else (2 if abs(_D) <= 1e-12 else 1)
+
+ok("名理22-1 f(x) の個数は |b|<2 で3個、|b|=2 で2個、|b|>2 で1個",
+   all(_nroot22(_b) == (1 if abs(_b) > 2 else (2 if abs(_b) == 2 else 3))
+       for _b in (-5, -2.5, -2, -1, 0, 1, 1.9999, 2, 2.0001, 2.5, 5)),
+   "判別式 108-27b² の符号で数えて予想と一致")
+
+# 第2問：サイコロ3回
+_c1_22n = _c2_22n = 0
+for _a, _b, _c in itertools.product(range(1, 7), repeat=3):
+    if _a * _b + 2 * _c >= _a * _b * _c:
+        _c1_22n += 1
+    if math.gcd(_a * _b + 2 * _c, 2 * _a * _b * _c) == 1:
+        _c2_22n += 1
+ok("名理22-2 ab+2c ≧ abc が 29/108、ab+2c と 2abc が互いに素が 13/72",
+   Fraction(_c1_22n, 216) == Fraction(29, 108) and Fraction(_c2_22n, 216) == Fraction(13, 72),
+   f"{_c1_22n}/216, {_c2_22n}/216")
+
+# 第3問：正六角形と複素数
+_w22 = 1 + math.sqrt(3) * 1j
+def _hex22(p):
+    _s3 = math.sqrt(3)
+    return {"O": 0 * p, "A": p, "B": p * (3 + _s3 * 1j) / 2, "C": p * (1 + _s3 * 1j),
+            "D": p * _s3 * 1j, "E": p * (-1 + _s3 * 1j) / 2}
+
+_pv22 = complex(0.7, -0.4)
+_ord22 = [_hex22(_pv22)[_k] for _k in ("O", "A", "B", "C", "D", "E")]
+ok("名理22-3 β/α = 1+√3i（|w|=2、arg=60°）、頂点の並びは正六角形",
+   abs(4 - 2 * _w22 + _w22 * _w22) < 1e-12
+   and abs(abs(_w22) - 2) < 1e-12
+   and abs(math.degrees(cmath.phase(_w22)) - 60) < 1e-9
+   and max(abs(abs(_ord22[(_i + 1) % 6] - _ord22[_i]) - abs(_pv22)) for _i in range(6)) < 1e-12,
+   "6辺がすべて |p| に等しい")
+
+_ok22h = True
+_got22 = []
+for _name, _pp in (("B", (1 - math.sqrt(3) * 1j) / 2),
+                   ("D", (-1 - math.sqrt(3) * 1j) / 4),
+                   ("E", (-3 - math.sqrt(3) * 1j) / 6)):
+    _al = _pp
+    _be = _al * (1 + math.sqrt(3) * 1j)
+    _ga = _al + 1
+    _V = _hex22(_al)
+    _eq3 = 2 * _ga ** 2 - (3 * _al + _be + 2) * _ga + (_al + 1) * (_al + _be)
+    _hit = [_k for _k, _v in _V.items() if abs(_v - _ga) < 1e-9]
+    _got22.append((_name, _hit))
+    if (abs(_eq3) > 1e-12 or _hit != [_name]
+            or abs(_V["A"] - _al) > 1e-12 or abs(_V["C"] - _be) > 1e-12):
+        _ok22h = False
+ok("名理22-3 γ = α+1 が B, D, E になる3組（α は A、β は C）", _ok22h,
+   f"γ の頂点 {[_g[1] for _g in _got22]}、第3式はいずれも 0")
+
+# 第4問：増加関数と a_n < 4
+_ok22f = True
+_a22list = []
+for _f22, _nm in ((lambda x: 1 + x, "1+x"), (lambda x: math.exp(x), "e^x"),
+                  (lambda x: 1 + math.sqrt(x), "1+√x")):
+    for _n in (2, 5, 20, 100):
+        _I = quad(lambda x: _f22(x) / (2 - x), 0, 2 - 1 / _n, 100001)[0]
+        _Fn = lambda y: quad(lambda x: _f22(x) / (x - 2), 2 + 1 / _n, y, 100001)[0]
+        if not (_Fn(4.0) > _I):
+            _ok22f = False
+        _lo, _hi = 2 + 1 / _n + 1e-9, 4.0
+        for _ in range(50):
+            _mid = (_lo + _hi) / 2
+            if _Fn(_mid) < _I:
+                _lo = _mid
+            else:
+                _hi = _mid
+        _a22list.append((_lo + _hi) / 2)
+        if (_lo + _hi) / 2 >= 4:
+            _ok22f = False
+ok("名理22-4 F_n(4) > I_n（x↦4-x の置換）なので a_n < 4", _ok22f,
+   f"3つの f × n=2,5,20,100 で a_n は {min(_a22list):.3f}〜{max(_a22list):.3f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
