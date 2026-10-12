@@ -35,6 +35,7 @@ import { nagoyaBunkei2026 } from "@/lib/solutions/nagoya-bunkei-2026";
 import { mie2026 } from "@/lib/solutions/mie-2026";
 import { ncuMed2026 } from "@/lib/solutions/ncu-med-2026";
 import { nitech2026 } from "@/lib/solutions/nitech-2026";
+import { nagoyaRikei2019 } from "@/lib/solutions/nagoya-rikei-2019";
 import { nagoyaRikei2020 } from "@/lib/solutions/nagoya-rikei-2020";
 import { nagoyaRikei2021 } from "@/lib/solutions/nagoya-rikei-2021";
 import { nagoyaRikei2022 } from "@/lib/solutions/nagoya-rikei-2022";
@@ -135,6 +136,7 @@ const all: SolutionSet[] = [
   nagoyaRikei2022,
   nagoyaRikei2021,
   nagoyaRikei2020,
+  nagoyaRikei2019,
 ];
 
 /**

@@ -6071,6 +6071,123 @@ ok(
     + f" 後攻={sum(c for n, c in _cnt20.items() if n % 2 == 0)/_N20:.5f}",
 )
 
+# ---- 名古屋大学 理科系 2019 ----
+
+_I19 = lambda n: quad(lambda t: 1 / math.cos(t) ** n, 0, math.pi / 3, 40001)[0]
+ok(
+    "名理19-1 I_1 = log(2+√3)、n≧3 で I_n = {√3·2^{n-2} + (n-2)I_{n-2}}/(n-1)",
+    abs(_I19(1) - math.log(2 + math.sqrt(3))) < 1e-9
+    and all(
+        abs(_I19(n) - (math.sqrt(3) * 2 ** (n - 2) + (n - 2) * _I19(n - 2)) / (n - 1)) < 1e-7
+        for n in range(3, 9)
+    ),
+    f"I_1 数値={_I19(1):.10f} / log(2+√3)={math.log(2+math.sqrt(3)):.10f}、n=3〜8 で漸化式と一致",
+)
+
+
+def _seg19(r, d=0.5):
+    if r <= d:
+        return 0.0
+    return r * r * math.acos(d / r) - d * math.sqrt(r * r - d * d)
+
+
+_V19 = quad(lambda z: _seg19(1 - z), 0, 0.5, 40001)[0]
+_pv19 = math.pi / 9 - math.sqrt(3) / 6 + math.log(2 + math.sqrt(3)) / 24
+ok(
+    "名理19-1 円錐を x=1/2 で切った小さいほうの体積は π/9 - √3/6 + log(2+√3)/24",
+    abs(_V19 - _pv19) < 1e-8,
+    f"弓形の面積を z で数値積分 {_V19:.10f} / 式 {_pv19:.10f}",
+)
+
+_ok19 = True
+for _ab, _ac in [(4.0, math.sqrt(21)), (math.sqrt(21), 4.0)]:
+    _cosA = (_ab * _ab + _ac * _ac - 49) / (2 * _ab * _ac)
+    _Bp = (_ab, 0.0, 0.0)
+    _Cp = (_ac * _cosA, _ac * math.sqrt(1 - _cosA**2), 0.0)
+    _dot = _Bp[0] * _Cp[0] + _Bp[1] * _Cp[1]
+    _k19 = -_dot
+    _df = _ac * _ac - _ab * _ab
+    _b = math.sqrt((_df + math.sqrt(_df * _df + 4 * _k19 * _k19)) / 2)
+    _c = _k19 / _b
+    _B = (_Bp[0], _Bp[1], _b)
+    _C = (_Cp[0], _Cp[1], _c)
+    if not (
+        _cosA < 0
+        and abs(_dot + _b * _c) < 1e-9
+        and abs(math.dist((0, 0, 0), _B) - 5) < 1e-9
+        and abs(math.dist((0, 0, 0), _C) - 5) < 1e-9
+        and abs(sum(_B[i] * _C[i] for i in range(3))) < 1e-9
+        and abs(math.dist(_Bp, _Cp) - 7) < 1e-9
+    ):
+        _ok19 = False
+ok(
+    "名理19-2 AB'·AC' + B'B·C'C = 0、∠B'AC' は鈍角、3辺 4・√21・7 から AB = 5",
+    _ok19,
+    "AB'=4 の場合 (b,c)=(3,2)、AB'=√21 の場合 (b,c)=(2,3)。どちらも AB=AC=5 で AB·AC=0",
+)
+
+_ns19 = []
+_n19 = 1
+while len(_ns19) < 12:
+    _m19 = math.isqrt(_n19)
+    if _m19 * _m19 != _n19 and 0.01 <= math.sqrt(_n19) - _m19 < 0.1:
+        _ns19.append(_n19)
+    _n19 += 1
+ok(
+    "名理19-3 √n の小数第1位が 0、第2位が 0 以外になる n は 26 が最小、10番目は 145",
+    _ns19[0] == 26 and _ns19[9] == 145,
+    f"小さい順に {_ns19}",
+)
+
+
+def _cyc19(p):
+    n = len(p)
+    seen = [False] * n
+    out = []
+    for i in range(n):
+        if seen[i]:
+            continue
+        L = 0
+        j = i
+        while not seen[j]:
+            seen[j] = True
+            j = p[j] - 1
+            L += 1
+        out.append(L)
+    return out
+
+
+_all3 = list(itertools.permutations(range(1, 4)))
+_four19 = [p for p in itertools.permutations(range(1, 5)) if _cyc19(p) == [4]]
+ok(
+    "名理19-4 n=3 で長さ1のサイクルを含む確率は 2/3、n=4 で長さ4のサイクルを含むのは6個",
+    Fraction(sum(1 for p in _all3 if 1 in _cyc19(p)), 6) == Fraction(2, 3)
+    and sorted(_four19) == [(2, 3, 4, 1), (2, 4, 1, 3), (3, 1, 4, 2), (3, 4, 2, 1), (4, 1, 2, 3), (4, 3, 1, 2)],
+    f"n=4 の6個 = {sorted(_four19)}",
+)
+_bad19 = sum(
+    1
+    for n in range(1, 60)
+    for k in range(1, n + 1)
+    if not sum(1 / j for j in range(k, n + 1)) > math.log(n + 1) - math.log(k)
+)
+_p19 = {}
+for _n in (5, 7, 9):
+    _tot = 0
+    _hit = 0
+    for _p in itertools.permutations(range(1, _n + 1)):
+        _tot += 1
+        if max(_cyc19(_p)) >= (_n + 1) // 2:
+            _hit += 1
+    _p19[_n] = Fraction(_hit, _tot)
+ok(
+    "名理19-4 Σ[j=k..n] 1/j > log(n+1)-log k、n が奇数なら p = Σ[L=(n+1)/2..n] 1/L > log 2",
+    _bad19 == 0
+    and all(_p19[n] == sum(Fraction(1, L) for L in range((n + 1) // 2, n + 1)) for n in _p19)
+    and all(float(_p19[n]) > math.log(2) for n in _p19),
+    f"1≦k≦n≦59 で反例 0 件、p(5)={_p19[5]}, p(7)={_p19[7]}, p(9)={_p19[9]} はいずれも log2={math.log(2):.6f} 超",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
