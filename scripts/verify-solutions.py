@@ -4953,6 +4953,109 @@ ok("九大理20-5 回転体をモンテカルロでも確認",
    abs(_mc20 - (28 * math.pi / 3 + 6 * math.pi ** 2)) < 0.5,
    f"60万点で {_mc20:.3f} / 理論値 {28 * math.pi / 3 + 6 * math.pi ** 2:.3f}")
 
+# ---- 九大理系2019 ----
+
+# 第1問：∫[0,1](sin(2nπt) - xt - y)² dt の最小値
+_ok19a = True
+for _n in (1, 2, 3, 5):
+    _A = -1 / (2 * _n * math.pi)
+    _x, _y = 12 * _A, -6 * _A
+    _J = quad(lambda t: (math.sin(2 * _n * math.pi * t) - _x * t - _y) ** 2, 0, 1, 400001)[0]
+    if abs(_J - (0.5 - 3 / (_n * _n * math.pi ** 2))) > 1e-8:
+        _ok19a = False
+ok("九大理19-1 I_n = 1/2 - 3/(n²π²)、極限は 1/2", _ok19a,
+   "n=1,2,3,5 で数値積分して確認（n=1 で 0.196036449）")
+_ok19b = True
+for _n in (1, 3):
+    _A = -1 / (2 * _n * math.pi)
+    _x0, _y0 = 12 * _A, -6 * _A
+    _base = 0.5 - 3 / (_n * _n * math.pi ** 2)
+    for _i in range(-3, 4):
+        for _j in range(-3, 4):
+            _v = quad(lambda t: (math.sin(2 * _n * math.pi * t) - (_x0 + _i / 50) * t - (_y0 + _j / 50)) ** 2,
+                      0, 1, 20001)[0]
+            if _v < _base - 1e-6:
+                _ok19b = False
+ok("九大理19-1 その (x,y) が本当に最小を与える", _ok19b, "近傍 7×7 通りで下回る点なし")
+
+# 第2問：f(x²) = (x²+2)g(x) + 7、g(x³) = x⁴f(x) - 3x²g(x) - 6x² - 2
+_f19 = lambda x: x * x + 3
+_g19 = lambda x: x * x - 2
+ok("九大理19-2 f(x)=x²+3, g(x)=x²-2",
+   all(abs(_f19(_x * _x) - ((_x * _x + 2) * _g19(_x) + 7)) < 1e-9
+       and abs(_g19(_x ** 3) - (_x ** 4 * _f19(_x) - 3 * _x * _x * _g19(_x) - 6 * _x * _x - 2)) < 1e-9
+       for _x in (_i / 100 for _i in range(-500, 501))),
+   "x を -5〜5 まで 0.01 刻みで両方の恒等式を確認")
+
+# 第3問：サイコロ3回と ax²+bx+c = 0
+_c1_19 = _c2_19 = _c3_19 = 0
+for _a, _b, _c in itertools.product(range(1, 7), repeat=3):
+    _D = _b * _b - 4 * _a * _c
+    if _D == 0:
+        _c1_19 += 1
+    if _D < 0:
+        _z = complex(-_b / (2 * _a), math.sqrt(-_D) / (2 * _a))
+        if abs(abs(_z) - 1) < 1e-12:
+            _c2_19 += 1
+        _ang = abs(2 * math.degrees(cmath.phase(_z))) % 180
+        if abs(min(_ang, 180 - _ang) - 60) < 1e-9:
+            _c3_19 += 1
+    else:
+        _r1 = (-_b + math.sqrt(_D)) / (2 * _a)
+        _r2 = (-_b - math.sqrt(_D)) / (2 * _a)
+        if abs(abs(_r1) - 1) < 1e-12 and abs(abs(_r2) - 1) < 1e-12:
+            _c2_19 += 1
+ok("九大理19-3 重解 5/216、単位円周上 5/36、なす鋭角 60° が 7/108",
+   Fraction(_c1_19, 216) == Fraction(5, 216)
+   and Fraction(_c2_19, 216) == Fraction(5, 36)
+   and Fraction(_c3_19, 216) == Fraction(7, 108),
+   f"{_c1_19}/216, {_c2_19}/216, {_c3_19}/216")
+_n1_19 = sum(1 for _a, _b, _c in itertools.product(range(1, 7), repeat=3) if _a * _c == _b * _b)
+_n2_19 = sum(1 for _a, _b, _c in itertools.product(range(1, 7), repeat=3) if 3 * _a * _c == _b * _b)
+ok("九大理19-3 内訳は ac=b² が 8 通り、3ac=b² が 6 通り",
+   (_n1_19, _n2_19) == (8, 6) and _n1_19 + _n2_19 == _c3_19,
+   f"{_n1_19} + {_n2_19} = {_n1_19 + _n2_19}")
+
+# 第4問：正三角形 OAB での垂線の繰り返し
+_A19 = (2.0, 0.0)
+_B19 = (1.0, math.sqrt(3))
+def _step19(P):
+    _e = (0.5, math.sqrt(3) / 2)
+    _d = P[0] * _e[0] + P[1] * _e[1]
+    _R = (_d * _e[0], 0.0)
+    _dd = (-0.5, math.sqrt(3) / 2)
+    _s = (_R[0] - _A19[0]) * _dd[0] + (_R[1] - _A19[1]) * _dd[1]
+    return (_A19[0] + _s * _dd[0], _A19[1] + _s * _dd[1])
+
+_ok19d = True
+for _t0 in (0.05, 0.5, 0.95):
+    _P = (2 - _t0, math.sqrt(3) * _t0)
+    for _ in range(60):
+        _P = _step19(_P)
+    if abs(_P[0] - 5 / 3) > 1e-9 or abs(_P[1] - math.sqrt(3) / 3) > 1e-9:
+        _ok19d = False
+ok("九大理19-4 極限の点は (5/3, √3/3)", _ok19d,
+   "t₁ = 0.05, 0.5, 0.95 から 60 回くり返して確認")
+
+# 第5問：w = (az+b)/(cz+1)
+_w19 = lambda z: (z + 1) / (-z + 1)
+_pts19 = [_w19(1j * _t / 100) for _t in range(-100000, 100001)]
+ok("九大理19-5 a=1, b=1, c=-1、C は単位円から -1 を除いたもの",
+   abs(_w19(1j) - 1j) < 1e-12 and abs(_w19(-1j) + 1j) < 1e-12
+   and max(abs(abs(_p) - 1) for _p in _pts19) < 1e-9
+   and min(abs(_p + 1) for _p in _pts19) > 1e-4,
+   f"|w|-1 の最大 {max(abs(abs(_p) - 1) for _p in _pts19):.1e}、-1 への最接近 {min(abs(_p + 1) for _p in _pts19):.6f}")
+_ok19e = True
+for _th in (0.3, 1.0, 2.0):
+    _cc = cmath.exp(1j * _th)
+    _ww = lambda z: (z - _cc) / (_cc * z + 1)
+    if max(abs(abs(_ww(1j * _t / 50)) - 1) for _t in range(-2000, 2001)) > 1e-9:
+        _ok19e = False
+    if abs(_ww(1j * math.tan(_th / 2)) + 1) > 1e-9:
+        _ok19e = False
+ok("九大理19-5 |c|=1 なら |w|=1、c≠-1 だと -1 が C に入ってしまう", _ok19e,
+   "c = e^{0.3i}, e^{i}, e^{2i} で t = tan(θ/2) のとき w = -1")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
