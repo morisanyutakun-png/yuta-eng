@@ -6248,6 +6248,74 @@ ok(
     f"n=2,3,4 の全列挙で判定が完全一致。p_2={Fraction(_c2,36)}、p_4={Fraction(_c4,6**4)}（n が奇数なら 0）",
 )
 
+# ---- 名古屋大学 文科系 2024 ----
+
+ok(
+    "名文24-1 x³-3x²-50=(x-5)(x²+2x+10) で実数解は x=5、(p,q)=((5±√5)/2)",
+    all(
+        abs((x - 5) * (x * x + 2 * x + 10) - (x**3 - 3 * x * x - 50)) < 1e-9 for x in (-2.3, 0.7, 4, 11)
+    )
+    and 2 * 2 - 4 * 10 < 0
+    and abs(((5 - math.sqrt(5)) / 2) ** 3 + ((5 + math.sqrt(5)) / 2) ** 3 - 50) < 1e-9
+    and abs(2 / (5 - math.sqrt(5)) + 2 / (5 + math.sqrt(5)) - 1) < 1e-12,
+    f"p={(5-math.sqrt(5))/2:.9f}, q={(5+math.sqrt(5))/2:.9f}、p+q=pq=5、p³+q³=50、1/p+1/q=1",
+)
+
+_b24 = True
+for _t in (-3.0, 1.0, 2.0, -1.0, -5.0, 3.5):
+    _m = (_t + 4) / 2
+    _P = (_t / 2, _t * _t / 4 + _t)
+    _Q = (-2.0, -_t - 4)
+    _X = _t * _t / 4 + _t
+    _A = (-1.0, -2.0)
+    _AP2 = (_P[0] - _A[0]) ** 2 + (_P[1] - _A[1]) ** 2
+    _AQ2 = (_Q[0] - _A[0]) ** 2 + (_Q[1] - _A[1]) ** 2
+    if not (
+        abs(-_Q[0] ** 2 + _t * _Q[0] + _t - _Q[1]) < 1e-9
+        and abs(_m * _Q[0] - _Q[1]) < 1e-9
+        and abs(_AP2 - (_X * _X + 5 * _X + 5)) < 1e-9
+        and abs(_AQ2 - (4 * _X + 5)) < 1e-9
+        and abs((_AP2 - _AQ2) - (_X * _X + _X)) < 1e-9
+    ):
+        _b24 = False
+_good24 = [
+    i / 1000
+    for i in range(-6000, 6001)
+    if i != 0 and i != -4000 and ((i / 1000) ** 2 / 4 + i / 1000) ** 2 + ((i / 1000) ** 2 / 4 + i / 1000) < 0
+]
+ok(
+    "名文24-2 P(t/2, t²/4+t)、Q(-2, -t-4)（t≠-4）、AP²-AQ²=X²+X、AP<AQ は -4<t<0 かつ t≠-2",
+    _b24 and min(_good24) == -3.999 and max(_good24) == -0.001 and -2.0 not in _good24,
+    f"t を6通りで照合、AP<AQ の範囲は [{min(_good24)}, {max(_good24)}] で t=-2 を除く",
+)
+
+
+def _sc24(seq):
+    n = len(seq)
+    pos = 0
+    a = []
+    for ch in seq:
+        pos += 2 if ch == "H" else 3
+        a.append(pos)
+    return sum(a) if a[-1] == 2 * n + 2 else 0
+
+
+_n4 = list(itertools.product("HT", repeat=4))
+_n9 = list(itertools.product("HT", repeat=9))
+ok(
+    "名文24-3 a_n = 2n+r、n=4 で得点≠0 が 3/8・得点25 が 1/8、n=9 で得点100 が 1/128・奇数が 5/128",
+    all(
+        2 * (len(s) - s.count("T")) + 3 * s.count("T") == 2 * len(s) + s.count("T")
+        for n in range(1, 8)
+        for s in itertools.product("HT", repeat=n)
+    )
+    and Fraction(sum(1 for s in _n4 if _sc24(s) != 0), 16) == Fraction(3, 8)
+    and Fraction(sum(1 for s in _n4 if _sc24(s) == 25), 16) == Fraction(1, 8)
+    and Fraction(sum(1 for s in _n9 if _sc24(s) == 100), 512) == Fraction(1, 128)
+    and Fraction(sum(1 for s in _n9 if _sc24(s) % 2 == 1), 512) == Fraction(5, 128),
+    "n=4 の16通り・n=9 の512通りを全列挙して確認（n=9 の 0 以外の得点は 93〜107）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
