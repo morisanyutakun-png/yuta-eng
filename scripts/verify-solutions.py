@@ -5910,6 +5910,167 @@ ok(
     "a=1/400〜399/400 の減少が続く範囲すべてを分数のまま照合して反例 0 件",
 )
 
+# ---- 名古屋大学 理科系 2020 ----
+
+
+def _hyp20(a, b):
+    """ax - by = 1 と x²-y²=1 の交点。なければ None。"""
+    if b == 0:
+        return None
+    A, B, C = b * b - a * a, 2 * a, -(1 + b * b)
+    if A == 0:
+        return None
+    D = B * B - 4 * A * C
+    if D < 0:
+        return None
+    xs = [(-B + math.sqrt(D)) / (2 * A), (-B - math.sqrt(D)) / (2 * A)]
+    return [(x, (a * x - 1) / b) for x in xs]
+
+
+_br20 = []
+for _a, _b in [(0.3, 1.0), (1.0, 0.3), (2.0, 3.0), (3.0, -2.0), (0.0, 1.0), (1.0, 1.0), (-1.5, 2.5)]:
+    _r = _hyp20(_a, _b)
+    _both = bool(_r) and min(q[0] for q in _r) < 0 < max(q[0] for q in _r)
+    _br20.append(_both == (_a * _a < _b * _b))
+ok(
+    "名理20-1 直線 ax-by=1 が双曲線の両方の枝と1点ずつで交わるのは a²<b² のとき",
+    all(_br20),
+    "(a,b) を7通り試し、交点の x 座標が正と負に分かれるかどうかが a²<b² と完全に一致した",
+)
+_s20 = []
+for _a, _b in [(0.3, 1.0), (2.0, 3.0), (3.0, -4.0), (-1.5, 2.5), (0.0, 2.0)]:
+    _P, _Q = _hyp20(_a, _b)
+    _area = abs((_P[0] - _a) * (_Q[1] - _b) - (_Q[0] - _a) * (_P[1] - _b)) / 2
+    _pred = (1 + _b * _b - _a * _a) ** 1.5 / (_b * _b - _a * _a)
+    _s20.append(abs(_area - _pred) < 1e-9 and all(abs(q[0] ** 2 - q[1] ** 2 - 1) < 1e-9 for q in (_P, _Q)))
+_min20 = min(((u * 1e-5, (1 + u * 1e-5) ** 1.5 / (u * 1e-5)) for u in range(1, 500000)), key=lambda pr: pr[1])
+ok(
+    "名理20-1 S = (1+b²-a²)^{3/2}/(b²-a²)、最小は b²-a²=2 での 3√3/2",
+    all(_s20) and abs(_min20[0] - 2) < 1e-4 and abs(_min20[1] - 3 * math.sqrt(3) / 2) < 1e-9,
+    f"外積で出した面積と式が5通りで一致、最小 u={_min20[0]:.5f} S={_min20[1]:.10f} / 3√3/2={3*math.sqrt(3)/2:.10f}",
+)
+
+
+def _isp20(n):
+    if n < 2:
+        return False
+    for d in range(2, math.isqrt(n) + 1):
+        if n % d == 0:
+            return False
+    return True
+
+
+_ms20 = [m for m in range(1, 100) if len({2, m * m + 1, m**4 + 1}) == 3 and all(_isp20(t) for t in (2, m * m + 1, m**4 + 1))]
+_a20ok = True
+for _m in _ms20[:6]:
+    _tri = [2, _m * _m + 1, _m**4 + 1]
+    _pr = _tri[0] * _tri[1] * _tri[2]
+    if [a for a in _tri if a * a < _pr // a] != [2, _m * _m + 1]:
+        _a20ok = False
+ok(
+    "名理20-2 a²<bc となるのは a=2 と a=m²+1 の2つ",
+    _a20ok and all(m % 2 == 0 for m in _ms20),
+    f"条件を満たす m（100未満）={_ms20}、いずれも偶数",
+)
+_sol20 = True
+for _m in _ms20[:5]:
+    _N = 2 * (_m * _m + 1) * (_m**4 + 1)
+    _found = []
+    for _s in range(2, round(_N ** (1 / 3)) + 3):
+        if _N % _s:
+            continue
+        _r = _N // _s - _s * _s
+        if _r > 0 and math.isqrt(_r) ** 2 == _r:
+            _y = math.isqrt(_r)
+            if 0 < _y < _s:
+                _found.append((_s - _y, _y))
+    if _found != [(2, _m * _m - 1)]:
+        _sol20 = False
+ok(
+    "名理20-2 (x+y)(x²+2y²+2xy)=2(m²+1)(m⁴+1) の正の整数解は (x,y)=(2, m²-1) だけ",
+    _sol20,
+    f"m={_ms20[:5]} のそれぞれで N の約数を総当たりして確認",
+)
+
+_f20s = [
+    (lambda x: x * x, "x²"),
+    (lambda x: math.exp(0.4 * x), "e^{0.4x}"),
+    (lambda x: math.cosh(x - 3), "cosh(x-3)"),
+    (lambda x: x**4 - 3 * x + 1, "x⁴-3x+1"),
+]
+_f20ok = True
+for _f, _nm in _f20s:
+    _F = lambda x, f=_f: f(x) - f(math.pi - x) - f(math.pi + x) + f(2 * math.pi - x)
+    if min(_F(i * math.pi / 4000) for i in range(2001)) < -1e-9:
+        _f20ok = False
+    if quad(lambda x, f=_f: f(x) * math.cos(x), 0, 2 * math.pi, 20001)[0] < 0:
+        _f20ok = False
+_g20s = [
+    (lambda x: -x, "-x"),
+    (lambda x: math.exp(-x), "e^{-x}"),
+    (lambda x: 5 - x**3 / 30, "5-x³/30"),
+    (lambda x: math.cos(x / 4), "cos(x/4)"),
+]
+_g20ok = True
+for _g, _nm in _g20s:
+    _G = lambda t, g=_g: g(t) + g(math.pi - t) - g(math.pi + t) - g(2 * math.pi - t)
+    if min(_G(i * math.pi / 4000) for i in range(2001)) <= 0:
+        _g20ok = False
+    if quad(lambda x, g=_g: g(x) * math.sin(x), 0, 2 * math.pi, 20001)[0] < 0:
+        _g20ok = False
+ok(
+    "名理20-3 f''>0 なら F≧0 かつ ∫f cos ≧0、g'<0 なら G>0 かつ ∫g sin ≧0",
+    _f20ok and _g20ok,
+    "f を4つ、g を4つ試し、[0,π/2] の2001点と数値積分で確認",
+)
+
+_u20, _v20 = Fraction(1), Fraction(0)
+_p20 = []
+for _n in range(1, 25):
+    _p20.append(_v20 / 3)
+    _u20, _v20 = (_u20 + _v20) / 3, (2 * _u20 + _v20) / 3
+_cf20 = lambda n: ((1 + math.sqrt(2)) ** (n - 1) - (1 - math.sqrt(2)) ** (n - 1)) / (math.sqrt(2) * 3**n)
+ok(
+    "名理20-4 p_1=0、p_2=2/9、p_3=4/27、p_n = {(1+√2)^{n-1}-(1-√2)^{n-1}}/(√2·3^n)",
+    _p20[0] == 0
+    and _p20[1] == Fraction(2, 9)
+    and _p20[2] == Fraction(4, 27)
+    and max(abs(float(_p20[n - 1]) - _cf20(n)) for n in range(1, 25)) < 1e-15,
+    f"p_1..p_6 = {[str(x) for x in _p20[:6]]}",
+)
+ok(
+    "名理20-4 N≧2 で Σp_{2m-1} < Σp_{2m}（後攻が有利）",
+    all(_p20[n - 1] > _p20[n] for n in range(2, 24))
+    and all(
+        sum(_p20[2 * m - 2] for m in range(1, (N + 1) // 2 + 1)) < sum(_p20[2 * m - 1] for m in range(1, N // 2 + 1))
+        for N in range(2, 25)
+    ),
+    "n≧2 で p_n>p_{n+1}、N=2〜24 で奇数番の和 < 偶数番の和",
+)
+random.seed(20200226)
+_cnt20 = {}
+_N20 = 120000
+for _ in range(_N20):
+    _pos = [0, 2]
+    _k = 0
+    while True:
+        _who = _k % 2
+        _k += 1
+        _r = random.randint(1, 6) % 3
+        if _r == 1:
+            _pos[_who] = (_pos[_who] + 1) % 4
+        elif _r == 2:
+            _pos[_who] = (_pos[_who] - 1) % 4
+        if _pos[0] == _pos[1]:
+            _cnt20[_k] = _cnt20.get(_k, 0) + 1
+            break
+ok(
+    "名理20-4 シミュレーションでも同じ",
+    all(abs(_cnt20.get(n, 0) / _N20 - float(_p20[n - 1])) < 0.006 for n in range(2, 8)),
+    " ".join(f"p{n}={_cnt20.get(n,0)/_N20:.5f}" for n in range(2, 7))
+    + f" 後攻={sum(c for n, c in _cnt20.items() if n % 2 == 0)/_N20:.5f}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
