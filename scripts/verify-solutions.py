@@ -5469,6 +5469,116 @@ ok("九大文19-3 体積の最大 3+√2、最小 3-√2",
    abs(min(_v19) - (3 - math.sqrt(2))) < 1e-7 and abs(max(_v19) - (3 + math.sqrt(2))) < 1e-7,
    f"最小 {min(_v19):.9f}、最大 {max(_v19):.9f}")
 
+# ---- 名大理系2024 ----
+
+# 第1問：f(x) = √x + 2/√x への接線
+_f24n = lambda x: math.sqrt(x) + 2 / math.sqrt(x)
+_df24n = lambda x: (x - 2) / (2 * x ** 1.5)
+ok("名理24-1 極小は x=2 の 2√2",
+   abs(_df24n(2)) < 1e-15 and abs(_f24n(2) - 2 * math.sqrt(2)) < 1e-12
+   and _df24n(1) < 0 and _df24n(3) > 0,
+   f"f(2) = {_f24n(2):.10f} / 2√2 = {2 * math.sqrt(2):.10f}")
+
+def _roots24n(t):
+    _D = (6 + t) ** 2 + 8 * t
+    if _D < 0:
+        return []
+    return sorted({round(x, 9) for x in ((-(6 + t) + _s * math.sqrt(_D)) / 2 for _s in (1, -1))
+                   if x > 1e-9})
+
+ok("名理24-1 接線がちょうど2本なのは t < -18",
+   all(len(_roots24n(_t)) == 2 for _t in (-18.0001, -19, -20, -27, -50, -1000))
+   and all(len(_roots24n(_t)) != 2 for _t in (5, 1, 0, -1, -6, -10, -18))
+   and len(_roots24n(-18)) == 1,
+   "判別式 t²+20t+36 = (t+2)(t+18)、t=-18 では重解 a=6")
+
+_int24n = []
+for _al in range(3, 7):
+    _t = -_al * (_al + 6) / (_al - 2)
+    _rs = _roots24n(_t)
+    if len(_rs) == 2 and all(abs(_r - round(_r)) < 1e-9 for _r in _rs):
+        _int24n.append((int(round(_rs[0])), int(round(_rs[1]))))
+ok("名理24-1 (α,β) = (3,18), (4,10)", _int24n == [(3, 18), (4, 10)],
+   f"α=3〜6 を試して {_int24n}（(α-2)(β-2)=16）")
+
+# 第2問：P(z) と Q(z)
+_al24 = (1 - 1j) / math.sqrt(2)
+_P24 = lambda z, c: z ** 3 - 3 * z * z + (c + 2) * z - c
+_Q24 = lambda z, c: -_al24 ** 7 * z ** 3 + 3 * _al24 ** 6 * z * z + (c + 2) * _al24 * z - c
+ok("名理24-2 α⁸=1 で Q(z) = P(αz)",
+   abs(_al24 ** 8 - 1) < 1e-12
+   and all(abs(_Q24(_z, _c) - _P24(_al24 * _z, _c)) < 1e-9
+           for _c in (2.0, 3.5, 4 - 2 * math.sqrt(2))
+           for _z in (complex(0.3, 0.7), complex(-1, 2), complex(2, -0.5))),
+   "3つの c と3つの z で確認")
+
+_c24 = 4 - 2 * math.sqrt(2)
+_k24 = math.sqrt(_c24 - 1)
+_qs24 = [(1 + 0j) / _al24, (1 + 1j * _k24) / _al24, (1 - 1j * _k24) / _al24]
+_be24 = complex(1, math.sqrt(2) - 1)
+ok("名理24-2 Q の実部最大は (1+√(c-1))/√2、共通解は c=4-2√2 で β=1+(√2-1)i",
+   abs(max(_z.real for _z in _qs24) - (1 + _k24) / math.sqrt(2)) < 1e-12
+   and abs(_P24(_be24, _c24)) < 1e-12 and abs(_Q24(_be24, _c24)) < 1e-12
+   and abs(_k24 - (math.sqrt(2) - 1)) < 1e-12,
+   f"c = {_c24:.9f}、β = 1+{math.sqrt(2) - 1:.9f}i、|P(β)|={abs(_P24(_be24, _c24)):.1e}")
+
+# 第3問：平面 H と領域 K
+_A24n, _B24n, _C24n = (3, 1, 3), (4, 2, 2), (4, 0, 1)
+_AB24 = tuple(_B24n[_i] - _A24n[_i] for _i in range(3))
+_AC24 = tuple(_C24n[_i] - _A24n[_i] for _i in range(3))
+_dt24 = lambda u, v: sum(u[_i] * v[_i] for _i in range(3))
+_Q24p = tuple(_A24n[_i] - _AB24[_i] + _AC24[_i] for _i in range(3))
+ok("名理24-3 内積は 3, 6, 2、AQ = -AB + AC",
+   (_dt24(_AB24, _AB24), _dt24(_AC24, _AC24), _dt24(_AB24, _AC24)) == (3, 6, 2)
+   and abs(_dt24(_Q24p, _AB24)) < 1e-12 and abs(_dt24(_Q24p, _AC24)) < 1e-12,
+   f"Q = {_Q24p}")
+
+_ok24r = True
+for _s, _t in ((0, 0), (1, 0), (0, 3), (2, 5), (0.5, 0.2)):
+    _u = 1 / (1 + _s)
+    _r = (_s + _t) / (1 + _s)
+    _P = tuple(_A24n[_k] + _s * _AB24[_k] + _t * _AC24[_k] for _k in range(3))
+    _X = tuple((1 - _u) * _Q24p[_k] + _u * _P[_k] for _k in range(3))
+    _R = tuple(_A24n[_k] + _r * _AC24[_k] for _k in range(3))
+    if any(abs(_X[_k] - _R[_k]) > 1e-9 for _k in range(3)) or _dt24(_R, _R) > _dt24(_P, _P) + 1e-9:
+        _ok24r = False
+ok("名理24-3 線分 QP 上に AR = rAC（r≧0）の点がある", _ok24r,
+   "u = 1/(1+s)、r = (s+t)/(1+s) で5通り確認")
+
+_S24n = tuple(_A24n[_k] + (2 / 3) * _AC24[_k] for _k in range(3))
+_best24 = (9e9, None)
+for _i in range(0, 801):
+    for _j in range(0, 801):
+        _s, _t = _i / 100, _j / 100
+        _P = tuple(_A24n[_k] + _s * _AB24[_k] + _t * _AC24[_k] for _k in range(3))
+        _v = _dt24(_P, _P)
+        if _v < _best24[0]:
+            _best24 = (_v, (_s, _t))
+ok("名理24-3 最短の点は S(11/3, 1/3, 5/3)、|OS|² = 49/3",
+   abs(_dt24(_S24n, _S24n) - 49 / 3) < 1e-9
+   and abs(_best24[0] - 49 / 3) < 1e-4 and _best24[1][0] == 0,
+   f"格子探索 {_best24[0]:.6f}（s,t）={_best24[1]} / 49/3 = {49 / 3:.6f}")
+
+# 第4問：f(k) の積分表示と I
+_fk24 = lambda n, k, p: sum(math.comb(n, _j) * p ** _j * (1 - p) ** (n - _j) for _j in range(k, n + 1))
+_ok24i = True
+for _n in (3, 5, 7):
+    for _k in range(1, _n + 1):
+        for _p in (0.2, 0.5, 0.73):
+            _lhs = _fk24(_n, _k, _p)
+            _rhs = (math.factorial(_n) / (math.factorial(_k - 1) * math.factorial(_n - _k))
+                    * quad(lambda x: x ** (_k - 1) * (1 - x) ** (_n - _k), 0, _p, 20001)[0])
+            if abs(_lhs - _rhs) > 1e-7:
+                _ok24i = False
+ok("名理24-4 f(k) = n!/{(k-1)!(n-k)!} ∫[0,p] x^{k-1}(1-x)^{n-k} dx", _ok24i,
+   "n=3,5,7 × k=1..n × p=0.2,0.5,0.73 で確認")
+
+ok("名理24-4 ∫[0,1/2] x^k(1-x)^k dx = (k!)²/{2(2k+1)!}",
+   all(abs(quad(lambda x: x ** _k * (1 - x) ** _k, 0, 0.5, 200001)[0]
+           - math.factorial(_k) ** 2 / (2 * math.factorial(2 * _k + 1))) < 1e-12
+       for _k in (1, 2, 3, 4)),
+   "k=1,2,3,4 で小数12桁まで一致")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
