@@ -4835,6 +4835,124 @@ ok("九大理21-5 nCk = p となるのは (p,1) と (p,p-1) だけ",
    all(_set21[_p] == ([(_p, 1)] if _p == 2 else [(_p, 1), (_p, _p - 1)]) for _p in _pr21),
    f"p=2:{_set21[2]}, p=3:{_set21[3]}, p=5:{_set21[5]}")
 
+# ---- 九大理系2020 ----
+
+# 第1問：(a,0) を通り y = e^{-x} - e^{-2x} に接する直線
+_f20 = lambda x: math.exp(-x) - math.exp(-2 * x)
+_df20 = lambda x: -math.exp(-x) + 2 * math.exp(-2 * x)
+_g20 = lambda u: -math.log(u) + (u - 1) / (2 * u - 1)
+_ok20a = True
+for _i in range(1, 4000):
+    _t = -4 + _i * 8 / 4000
+    _u = math.exp(-_t)
+    if abs(2 * _u - 1) < 1e-6:
+        continue
+    if abs((_t - _f20(_t) / _df20(_t)) - _g20(_u)) > 1e-7:
+        _ok20a = False
+        break
+ok("九大理20-1 a = -log u + (u-1)/(2u-1)（u = e^{-t}）", _ok20a, "t を4000点で確認")
+
+_lo20 = 2 * math.log(2) + 1.5
+_hit20 = 0
+for _i in range(1, 2000000):
+    _u = _i / 200000.0
+    if abs(2 * _u - 1) < 1e-9:
+        continue
+    if 1e-6 < _g20(_u) < _lo20 - 1e-6:
+        _hit20 += 1
+ok("九大理20-1 a ≦ 0 または a ≧ 3/2 + 2log2",
+   _hit20 == 0 and abs(_g20(0.25) - _lo20) < 1e-12 and abs(_g20(1.0)) < 1e-12,
+   f"(0, {_lo20:.6f}) に入る値は {_hit20} 個、g(1/4)={_g20(0.25):.6f}、g(1)={_g20(1.0):.6f}")
+
+# 第2問：f(x) = x^4 + ax^3 + bx^2 + cx + d、f((1+√3i)/2) = 0
+_w20 = complex(0.5, math.sqrt(3) / 2)
+_f20p = lambda x, a, b: x ** 4 + a * x ** 3 + b * x ** 2 + (1 - b) * x + (a + b)
+ok("九大理20-2 c = 1-b, d = a+b なら f(ω)=0",
+   all(abs(_f20p(_w20, _a, _b)) < 1e-9
+       for _a in (-3, 0, 6, 11) for _b in (-5, 2, 29)),
+   "ω = (1+√3i)/2 で確認")
+
+_cand20 = [(_a, _b) for _a in range(-40, 41) for _b in range(-40, 41)
+           if (2 * _a + _b + 2) % 7 == 1 and (2 * _a + _b + 2) % 11 == 10
+           and (3 * _b) % 7 == 3 and (3 * _b) % 11 == 10]
+ok("九大理20-2 (a,b) = (6,29)、解は (1±√3i)/2 と (-7±√91 i)/2",
+   _cand20 == [(6, 29)]
+   and all(abs(_f20p(_z, 6, 29)) < 1e-6
+           for _z in (_w20, _w20.conjugate(),
+                      complex(-3.5, math.sqrt(91) / 2), complex(-3.5, -math.sqrt(91) / 2))),
+   f"全探索 {_cand20}、f(1)={int(_f20p(1, 6, 29).real) if isinstance(_f20p(1, 6, 29), complex) else _f20p(1, 6, 29)}")
+
+# 第3問：中点を結ぶ3直線が互いに直交する四面体
+_U20, _V20, _W20 = math.sqrt(12), math.sqrt(8), 2.0
+_u20, _v20, _w20v = (_U20, 0, 0), (0, _V20, 0), (0, 0, _W20)
+_mid20 = lambda p, q: tuple((p[k] + q[k]) / 2 for k in range(3))
+_O20 = (0.0, 0.0, 0.0)
+_A20 = _mid20(_v20, _w20v)
+_B20 = _mid20(_w20v, _u20)
+_C20 = _mid20(_u20, _v20)
+_dot20 = lambda p, q: sum(p[k] * q[k] for k in range(3))
+_l20 = tuple(_mid20(_B20, _C20)[k] - _mid20(_O20, _A20)[k] for k in range(3))
+_m20 = tuple(_mid20(_C20, _A20)[k] - _mid20(_O20, _B20)[k] for k in range(3))
+_n20 = tuple(_mid20(_A20, _B20)[k] - _mid20(_O20, _C20)[k] for k in range(3))
+ok("九大理20-3 |u|²=12, |v|²=8, |w|²=4 で条件がすべて成り立つ",
+   abs(math.dist(_A20, _B20) - math.sqrt(5)) < 1e-12
+   and abs(math.dist(_B20, _C20) - math.sqrt(3)) < 1e-12
+   and abs(math.dist(_C20, _A20) - 2) < 1e-12
+   and abs(_dot20(_l20, _m20)) < 1e-12 and abs(_dot20(_m20, _n20)) < 1e-12
+   and abs(_dot20(_n20, _l20)) < 1e-12,
+   f"AB={math.dist(_A20, _B20):.6f}, BC={math.dist(_B20, _C20):.6f}, CA={math.dist(_C20, _A20):.6f}")
+
+_ca20 = tuple(_A20[k] - _C20[k] for k in range(3))
+_cos20 = abs(_dot20(_B20, _ca20)) / (math.sqrt(_dot20(_B20, _B20)) * math.sqrt(_dot20(_ca20, _ca20)))
+_G20c = tuple((_A20[k] + _B20[k] + _C20[k]) / 4 for k in range(3))
+ok("九大理20-3 OB と CA のなす角は π/3、外接球の半径は √6/2",
+   abs(math.degrees(math.acos(_cos20)) - 60) < 1e-9
+   and all(abs(math.dist(_G20c, _P) - math.sqrt(6) / 2) < 1e-12
+           for _P in (_O20, _A20, _B20, _C20)),
+   f"角 {math.degrees(math.acos(_cos20)):.6f}°、半径 {math.dist(_G20c, _O20):.9f} / √6/2 = {math.sqrt(6) / 2:.9f}")
+
+# 第4問：4個のサイコロの積
+_c25 = _c4 = _c100 = 0
+for _d in itertools.product(range(1, 7), repeat=4):
+    _X = _d[0] * _d[1] * _d[2] * _d[3]
+    if _X % 25 == 0:
+        _c25 += 1
+    if _X % 4 == 0:
+        _c4 += 1
+    if _X % 100 == 0:
+        _c100 += 1
+ok("九大理20-4 25 の倍数 19/144、4 の倍数 37/48、100 の倍数 41/648",
+   Fraction(_c25, 1296) == Fraction(19, 144)
+   and Fraction(_c4, 1296) == Fraction(37, 48)
+   and Fraction(_c100, 1296) == Fraction(41, 648),
+   f"{_c25}/1296, {_c4}/1296, {_c100}/1296")
+
+# 第5問：円柱を平面 z = y で切った立体 T
+_VT20 = quad(lambda t: 4 * math.sqrt(max(0.0, 1 - t * t)), -1, 1, 400001)[0]
+ok("九大理20-5 S(t) = 4√(1-t²)、T の体積は 2π",
+   abs(_VT20 - 2 * math.pi) < 1e-6,
+   f"数値積分 {_VT20:.7f} / 2π = {2 * math.pi:.7f}")
+_VR20 = quad(lambda t: math.pi * (5 - t * t + 12 * math.sqrt(max(0.0, 1 - t * t))), -1, 1, 400001)[0]
+ok("九大理20-5 回転体の体積は 28π/3 + 6π²",
+   abs(_VR20 - (28 * math.pi / 3 + 6 * math.pi ** 2)) < 1e-5,
+   f"数値積分 {_VR20:.7f} / 28π/3+6π² = {28 * math.pi / 3 + 6 * math.pi ** 2:.7f}")
+random.seed(20200505)
+_N20 = 600000
+_hit20r = 0
+_RX, _RY = 1.0, 3 * math.sqrt(2)
+for _ in range(_N20):
+    _x = random.uniform(-_RX, _RX)
+    _y = random.uniform(-_RY, _RY)
+    _z = random.uniform(-_RY, _RY)
+    _r = math.hypot(_y, _z)
+    _s = math.sqrt(max(0.0, 1 - _x * _x))
+    if 2 - _s <= _r <= math.sqrt(2) * (2 + _s):
+        _hit20r += 1
+_mc20 = _hit20r / _N20 * (2 * _RX * 2 * _RY * 2 * _RY)
+ok("九大理20-5 回転体をモンテカルロでも確認",
+   abs(_mc20 - (28 * math.pi / 3 + 6 * math.pi ** 2)) < 0.5,
+   f"60万点で {_mc20:.3f} / 理論値 {28 * math.pi / 3 + 6 * math.pi ** 2:.3f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
