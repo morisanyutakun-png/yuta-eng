@@ -6188,6 +6188,66 @@ ok(
     f"1≦k≦n≦59 で反例 0 件、p(5)={_p19[5]}, p(7)={_p19[7]}, p(9)={_p19[9]} はいずれも log2={math.log(2):.6f} 超",
 )
 
+# ---- 名古屋大学 文科系 2025（第2問・第3問は理科系の第2問・第4問と同じ問題） ----
+
+_b25 = True
+for _p, _q, _t in [(-2, 3, 0.4), (1, 5, 1.0), (-4, -1, 0.75), (0, 7, 0.1)]:
+    _bb = -(_p + _q)
+    _cc = _p * _q
+    _D = _bb * _bb - 4 * _cc
+    _r = (1 + _t) / 2 * _p + (1 - _t) / 2 * _q
+    _s = (1 - _t) / 2 * _p + (1 + _t) / 2 * _q
+    _area = quad(lambda x, b=_bb, c=_cc: -(x * x + b * x + c), _r, _s, 20001)[0]
+    if not (
+        abs((_q - _s) - (1 - _t) * math.sqrt(_D) / 2) < 1e-9
+        and abs((_r - _p) - (1 - _t) * math.sqrt(_D) / 2) < 1e-9
+        and abs((_s + _r) + _bb) < 1e-9
+        and abs((_s - _r) - _t * math.sqrt(_D)) < 1e-9
+        and abs(_s * _r - (_bb * _bb - _t * _t * _D) / 4) < 1e-9
+        and abs(_s * _s + _r * _r - (_bb * _bb + _t * _t * _D) / 2) < 1e-9
+        and abs(_area - _t * (3 - _t * _t) * _D**1.5 / 12) < 1e-8
+    ):
+        _b25 = False
+ok(
+    "名文25-1 q-s=r-p=(1-t)√(b²-4c)/2、s+r=-b、s-r=t√(b²-4c)、sr と s²+r²、面積 t(3-t²)(b²-4c)^{3/2}/12",
+    _b25,
+    "(p,q,t) を4通りとって、すべての式と数値積分した面積が一致した（t=1 では 1/6 公式に戻る）",
+)
+
+_adj25 = {1: [2, 4], 2: [1, 3, 5], 3: [2, 6], 4: [1, 5], 5: [2, 4, 6], 6: [3, 5]}
+
+
+def _cnt25(n):
+    c = 0
+    for seq in itertools.product(range(1, 7), repeat=n):
+        st = [0] * 7
+        for ch in seq:
+            for j in _adj25[ch]:
+                st[j] ^= 1
+        if all(st[i] == 1 for i in range(1, 7)):
+            c += 1
+    return c
+
+
+_c2, _c4 = _cnt25(2), _cnt25(4)
+_par25 = True
+for _n in (2, 3, 4):
+    for _seq in itertools.product(range(1, 7), repeat=_n):
+        _st = [0] * 7
+        for _ch in _seq:
+            for _j in _adj25[_ch]:
+                _st[_j] ^= 1
+        _allrev = all(_st[i] == 1 for i in range(1, 7))
+        _cs = [_seq.count(i) for i in range(1, 7)]
+        _cond = _cs[1] % 2 == 1 and _cs[4] % 2 == 1 and all(_cs[i] % 2 == 0 for i in (0, 2, 3, 5))
+        if _allrev != _cond:
+            _par25 = False
+ok(
+    "名文25-3 A={②,⑤} が奇数回・B={①,③,④,⑥} が偶数回が必要十分、p_2=1/18、p_4=7/162",
+    _par25 and Fraction(_c2, 36) == Fraction(1, 18) and Fraction(_c4, 6**4) == Fraction(7, 162),
+    f"n=2,3,4 の全列挙で判定が完全一致。p_2={Fraction(_c2,36)}、p_4={Fraction(_c4,6**4)}（n が奇数なら 0）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
