@@ -6316,6 +6316,96 @@ ok(
     "n=4 の16通り・n=9 の512通りを全列挙して確認（n=9 の 0 以外の得点は 93〜107）",
 )
 
+# ---- 名古屋大学 文科系 2023 ----
+
+_f23ok = True
+for _a in (-3.0, -1.0, 0.0, 2.0, 5.0):
+    _f = lambda x, a=_a: x**3 - (a + 2) * x * x + (a - 2) * x + 2 * a + 1
+    _g = lambda x: -x * x + 1
+    if not all(abs(_f(x) - _g(x) - (x + 1) * (x - 2) * (x - _a)) < 1e-9 for x in (-2.5, -0.3, 1.1, 3.7)):
+        _f23ok = False
+    if (len({-1.0, 2.0, _a}) == 2) != (_a in (-1.0, 2.0)):
+        _f23ok = False
+_ext = {}
+for _a in (-1.0, 2.0):
+    _f = lambda x, a=_a: x**3 - (a + 2) * x * x + (a - 2) * x + 2 * a + 1
+    _D = 4 * (_a + 2) ** 2 - 12 * (_a - 2)
+    _ext[_a] = _f((2 * (_a + 2) - math.sqrt(_D)) / 6)
+ok(
+    "名文23-1 f-g=(x+1)(x-2)(x-a)、共有点2個は a=-1 または a=2、極大値>1 は a=2 だけ",
+    _f23ok and _ext[-1.0] < 1 and _ext[2.0] > 1 and abs(_ext[2.0] - 5) < 1e-9,
+    f"a=-1 の極大値 {_ext[-1.0]:.6f}、a=2 の極大値 {_ext[2.0]:.6f}（極小は -121/27={-121/27:.6f}）",
+)
+
+_A23 = (0, 0, 1)
+_B23 = (1, 0, 1)
+_E23 = (0, 0, 0)
+_F23v = (1, 0, 0)
+_G23 = (1, 1, 0)
+
+
+def _vol23(p1, p2, p3, p4):
+    u = [p2[i] - p1[i] for i in range(3)]
+    v = [p3[i] - p1[i] for i in range(3)]
+    w = [p4[i] - p1[i] for i in range(3)]
+    cr = (v[1] * w[2] - v[2] * w[1], v[2] * w[0] - v[0] * w[2], v[0] * w[1] - v[1] * w[0])
+    return abs(sum(u[i] * cr[i] for i in range(3))) / 6
+
+
+_g23ok = True
+for _p in (0.0, 0.2, 0.5, math.sqrt(2) - 1, 0.9, 1.0):
+    _t = _p / (1 + _p)
+    _X = (_t, _t, 1 - _t)
+    _P = (0, _p, 1)
+    _s = 1 / (1 + _p)
+    _cr = (
+        (_p * (-_t) - 0 * _t),
+        (0 * _t - 0 * (-_t)),
+        (0 * _t - _p * _t),
+    )
+    _ar = math.sqrt(sum(c * c for c in _cr)) / 2
+    _V = _vol23(_A23, _B23, _P, _X) + _vol23(_E23, _F23v, _G23, _X)
+    if not (
+        all(abs(_X[i] - (_F23v[i] + _s * (_P[i] - _F23v[i]))) < 1e-12 for i in range(3))
+        and abs(math.dist(_A23, _X) - math.sqrt(3) * _p / (1 + _p)) < 1e-9
+        and abs(_ar - math.sqrt(2) * _p * _p / (2 * (1 + _p))) < 1e-9
+        and abs(_V - (_p * _p + 1) / (6 * (1 + _p))) < 1e-9
+    ):
+        _g23ok = False
+_mn23 = min((((i / 100000), (((i / 100000) ** 2 + 1) / (6 * (i / 100000 + 1)))) for i in range(100001)), key=lambda z: z[1])
+ok(
+    "名文23-2 AX=√3p/(1+p)、△APX=√2p²/(2(1+p))、V=(p²+1)/(6(1+p))、最小は p=√2-1 での (√2-1)/3",
+    _g23ok and abs(_mn23[0] - (math.sqrt(2) - 1)) < 1e-4 and abs(_mn23[1] - (math.sqrt(2) - 1) / 3) < 1e-9,
+    f"X は AG 上にも FP 上にもある。最小 p={_mn23[0]:.5f} V={_mn23[1]:.9f} / (√2-1)/3={(math.sqrt(2)-1)/3:.9f}",
+)
+
+_d23 = {8: Fraction(1)}
+for _ in range(8):
+    _nd = {}
+    for _c, _pr in _d23.items():
+        for _k in (1, 2, 3, 4):
+            _nc = _c - 1 if _c >= _k else _c
+            _nd[_nc] = _nd.get(_nc, Fraction(0)) + _pr * Fraction(1, 4)
+    _d23 = _nd
+_balls23 = (1, 1, 2, 2, 3, 3, 4, 4)
+_tot23 = 0
+_hit23 = 0
+for _perm in set(itertools.permutations(_balls23)):
+    _tot23 += 1
+    _c = 8
+    for _k in _perm:
+        if _c >= _k:
+            _c -= 1
+    if _c == 0:
+        _hit23 += 1
+ok(
+    "名文23-3 復元で1枚残るのは 9/16、非復元で 0 枚になるのは 1/14",
+    _d23[1] == Fraction(9, 16)
+    and sum(_d23.values()) == 1
+    and Fraction(_hit23, _tot23) == Fraction(1, 14),
+    f"残り枚数の分布 {{0:{_d23[0]}, 1:{_d23[1]}, 2:{_d23[2]}, 3:{_d23[3]}}}、非復元は {_hit23}/{_tot23}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
