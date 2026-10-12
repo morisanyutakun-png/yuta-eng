@@ -55,6 +55,7 @@ export const sources: Record<string, Record<number, Source>> = {
     2024: { kind: "none", checked: "2026-10-05", note: "名古屋大学が公開しているのは令和8年度分のみ。令和7・令和6年度のページは目次にリンクが残っているが 404。" },
     2023: { kind: "none", checked: "2026-10-12", note: "2024年度ぶんと同じ確認。名古屋大学は令和8年度分しか公開していない。" },
     2022: { kind: "none", checked: "2026-10-12", note: "2024年度ぶんと同じ確認。名古屋大学は令和8年度分しか公開していない。" },
+    2021: { kind: "none", checked: "2026-10-12", note: "2024年度ぶんと同じ確認。名古屋大学は令和8年度分しか公開していない。" },
   },
   "kyodai-rikei": { 2026: {
       kind: "official",
