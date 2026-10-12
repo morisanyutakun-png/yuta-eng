@@ -5056,6 +5056,72 @@ for _th in (0.3, 1.0, 2.0):
 ok("九大理19-5 |c|=1 なら |w|=1、c≠-1 だと -1 が C に入ってしまう", _ok19e,
    "c = e^{0.3i}, e^{i}, e^{2i} で t = tan(θ/2) のとき w = -1")
 
+# ---- 九大文系2025（第3問・第4問は理科系と共通なので省く） ----
+
+# 第1問：y = x³+x²-x-1 と y = x² の共通接線
+_fb25 = lambda x: x ** 3 + x * x - x - 1
+_dfb25 = lambda x: 3 * x * x + 2 * x - 1
+_hits25 = []
+for _i in range(-400000, 400001):
+    _t = _i / 100000
+    _m = _dfb25(_t)
+    _b = _fb25(_t) - _t * _m
+    if abs(_b + _m * _m / 4) < 1e-9:
+        if not _hits25 or abs(_t - _hits25[-1]) > 1e-3:
+            _hits25.append(_t)
+ok("九大文25-1 共通接線は y=0 と y=4x-4（t = ±1 のみ）",
+   [round(_t, 6) for _t in _hits25] == [-1.0, 1.0]
+   and abs(_dfb25(1) - 4) < 1e-12 and abs(_fb25(1) - 1 * _dfb25(1) + 4) < 1e-12
+   and abs(_dfb25(-1)) < 1e-12 and abs(_fb25(-1)) < 1e-12,
+   f"t = {[round(_t, 6) for _t in _hits25]}、9t²+4t+3 の判別式 {16 - 108}")
+
+# 第2問：半径1の円周上で AB=√3 のときの AP²+BP² の最大
+_A25b = (math.cos(math.pi / 3), math.sin(math.pi / 3))
+_B25b = (math.cos(-math.pi / 3), math.sin(-math.pi / 3))
+_mx25b = max((math.cos(2 * math.pi * _k / 200000) - _A25b[0]) ** 2
+             + (math.sin(2 * math.pi * _k / 200000) - _A25b[1]) ** 2
+             + (math.cos(2 * math.pi * _k / 200000) - _B25b[0]) ** 2
+             + (math.sin(2 * math.pi * _k / 200000) - _B25b[1]) ** 2
+             for _k in range(200001))
+ok("九大文25-2 AP²+BP² の最大値は 6",
+   abs(math.dist(_A25b, _B25b) - math.sqrt(3)) < 1e-12 and abs(_mx25b - 6) < 1e-9,
+   f"AB={math.dist(_A25b, _B25b):.9f}、最大 {_mx25b:.9f}")
+
+# ---- 九大文系2024（第3問・第4問は理科系と共通なので省く） ----
+
+# 第1問：y=2x² と y=2x²-8x+16 の共通接線と、囲まれた面積
+_hit24b = []
+for _i in range(-400000, 400001):
+    _s = _i / 100000
+    _m, _b = 4 * _s, -2 * _s * _s
+    if abs((8 + _m) ** 2 - 8 * (16 - _b)) < 1e-7:
+        if not _hit24b or abs(_s - _hit24b[-1]) > 1e-3:
+            _hit24b.append(_s)
+_S24b = (quad(lambda x: 2 * x * x - (4 * x - 2), 1, 2, 200001)[0]
+         + quad(lambda x: (2 * x * x - 8 * x + 16) - (4 * x - 2), 2, 3, 200001)[0])
+ok("九大文24-1 共通接線は y=4x-2（s=1 のみ）、囲む面積は 4/3",
+   [round(_s, 6) for _hit24b_s in [0] for _s in _hit24b] == [1.0]
+   and abs(_S24b - 4 / 3) < 1e-9,
+   f"s = {[round(_s, 6) for _s in _hit24b]}、面積 {_S24b:.9f} / 4/3 = {4 / 3:.9f}")
+
+# 第2問：B の座標と s, t
+_B24 = [(_p / 1000, 5 - 2 * (_p / 1000)) for _p in range(1, 10001)
+        if abs((_p / 1000) ** 2 + (5 - 2 * (_p / 1000)) ** 2 - 10) < 1e-6 and 5 - 2 * (_p / 1000) > 0]
+_B24u = []
+for _pq in _B24:
+    if not _B24u or abs(_pq[0] - _B24u[-1][0]) > 1e-2:
+        _B24u.append(_pq)
+_A24v, _B24v = (2.0, 1.0), (1.0, 3.0)
+_cr24 = lambda u, v: u[0] * v[1] - u[1] * v[0]
+_s24 = 0.8
+_C24 = (_s24 * _A24v[0] + _s24 * _B24v[0], _s24 * _A24v[1] + _s24 * _B24v[1])
+ok("九大文24-2 B(1,3)、s = t = 4/5",
+   [(round(_p, 6), round(_q, 6)) for _p, _q in _B24u] == [(1.0, 3.0)]
+   and abs(math.hypot(*_C24) - 4) < 1e-9
+   and abs(abs(_cr24(_A24v, _C24)) - abs(_cr24(_B24v, _C24))) < 1e-12,
+   f"B の候補 {[(round(_p, 3), round(_q, 3)) for _p, _q in _B24u]}、|OC|={math.hypot(*_C24):.9f}、"
+   f"面積 {abs(_cr24(_A24v, _C24)) / 2:.9f} = {abs(_cr24(_B24v, _C24)) / 2:.9f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
