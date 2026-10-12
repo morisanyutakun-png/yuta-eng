@@ -6904,6 +6904,130 @@ ok(
     f"∫r²dθ={_I6:.10f}（8/3）、T={_T6:.10f} / √2(3π-4)/6={math.sqrt(2)*(3*math.pi-4)/6:.10f}",
 )
 
+# ---- 東北大学 理系 2023 ----
+
+_draw = _aw = _bw = 0
+for _pos in itertools.combinations(range(9), 4):
+    _col = ["W"] * 9
+    for _i in _pos:
+        _col[_i] = "R"
+    _res = "draw"
+    for _i, _c in enumerate(_col):
+        if _i % 2 == 0:
+            if _c == "R":
+                _res = "A"
+                break
+        else:
+            if _c == "W":
+                _res = "B"
+                break
+    if _res == "draw":
+        _draw += 1
+    elif _res == "A":
+        _aw += 1
+    else:
+        _bw += 1
+ok(
+    "東北理23-1 引き分け 1/126、A の勝ち 38/63（B は 7/18）",
+    Fraction(_draw, 126) == Fraction(1, 126) and Fraction(_aw, 126) == Fraction(38, 63) and _draw + _aw + _bw == 126,
+    f"126通りの全列挙で 引き分け {_draw}、A {_aw}、B {_bw}",
+)
+
+_f2w = lambda x: math.sin(3 * x) + math.sin(x)
+_p2 = lambda m: int(2 * m / math.pi)
+ok(
+    "東北理23-2 解は x=kπ/2（最小 π/2）、p(m)=[2m/π]、lim p(m)/m = 2/π",
+    all(abs(_f2w(k * math.pi / 2)) < 1e-12 for k in range(1, 41))
+    and all(abs(_f2w(x) - 2 * math.sin(2 * x) * math.cos(x)) < 1e-12 for x in (0.3, 1.1, 2.5, 4.2))
+    and abs(_p2(100000) / 100000 - 2 / math.pi) < 1e-4,
+    f"p(10)/10={_p2(10)/10}, p(1000)/1000={_p2(1000)/1000}, p(10^5)/10^5={_p2(100000)/100000}（2/π={2/math.pi:.7f}）",
+)
+
+_ok3w = True
+for _s3 in (Fraction(3), Fraction(-1, 2), Fraction(0), Fraction(7, 3)):
+    _a3 = _s3
+    for _n in range(1, 9):
+        if _a3 != 1 + 2 * (_s3 - 1) / Fraction(_n * (_n + 1)):
+            _ok3w = False
+        _a3 = (_n * _a3 + 2) / Fraction(_n + 2)
+_sum3ok = True
+for _m in range(1, 8):
+    _s3 = Fraction(1 - _m, 2)
+    _a3 = _s3
+    _t3 = Fraction(0)
+    for _n in range(1, _m + 1):
+        _t3 += _a3
+        _a3 = (_n * _a3 + 2) / Fraction(_n + 2)
+    if _t3 != 0:
+        _sum3ok = False
+ok(
+    "東北理23-3 a_n = 1 + 2(s-1)/(n(n+1))、Σ[n=1..m] a_n = 0 ⟺ s = (1-m)/2",
+    _ok3w and _sum3ok,
+    "s を4通り・m を 1〜7 で分数のまま照合",
+)
+
+_a4w = (math.sqrt(5) - 1) / 2
+_b4w = -(1 + math.sqrt(5)) / 2
+_al4 = cmath.exp(2j * math.pi / 5)
+ok(
+    "東北理23-4 x⁴+x³+x²+x+1=(x²-ax+1)(x²-bx+1)、α=cos72°+isin72°、α^2023+α^-2023 = -(1+√5)/2",
+    all(
+        abs((x**2 - _a4w * x + 1) * (x**2 - _b4w * x + 1) - (x**4 + x**3 + x**2 + x + 1)) < 1e-9
+        for x in (-2.3, -0.7, 0.4, 1.9, 3.1)
+    )
+    and abs(_al4**2 - _a4w * _al4 + 1) < 1e-12
+    and abs(_al4**2023 + _al4 ** (-2023) - (-(1 + math.sqrt(5)) / 2)) < 1e-9,
+    f"α^2023+α^-2023={(_al4**2023 + _al4**(-2023)).real:.10f} / -(1+√5)/2={-(1+math.sqrt(5))/2:.10f}",
+)
+
+_A5 = (2.0, 0.0, 0.0)
+_B5 = (1.5, 3 * math.sqrt(3) / 2, 0.0)
+_c5y = 0.75 / (3 * math.sqrt(3) / 2)
+_C5 = (1.5, _c5y, math.sqrt(6 - 1.5**2 - _c5y**2))
+_dot5 = lambda u, v: sum(u[i] * v[i] for i in range(3))
+_H5 = tuple(2 / 3 * _A5[i] + 1 / 9 * _B5[i] for i in range(3))
+_K5 = tuple(2 / 3 * _A5[i] + 1 / 9 * _B5[i] + 2 / 9 * _C5[i] for i in range(3))
+_HK5 = tuple(_K5[i] - _H5[i] for i in range(3))
+ok(
+    "東北理23-5 a·b=3、c·a=3、OH=(2/3)a+(1/9)b、OK=OH+(2/9)c（係数の和1）、HK=(2/9)c",
+    abs(_dot5(_A5, _B5) - 3) < 1e-9
+    and abs(_dot5(_C5, _A5) - 3) < 1e-9
+    and abs(_dot5(_C5, _B5) - 3) < 1e-9
+    and all(abs(_dot5(tuple(_C5[i] - _H5[i] for i in range(3)), v)) < 1e-9 for v in (_A5, _B5))
+    and abs(_dot5(_K5, tuple(_B5[i] - _A5[i] for i in range(3)))) < 1e-9
+    and abs(_dot5(_K5, tuple(_C5[i] - _A5[i] for i in range(3)))) < 1e-9
+    and max(abs(_HK5[i] - 2 / 9 * _C5[i]) for i in range(3)) < 1e-9,
+    "座標を組んで内積・垂線の足・平行性をすべて確認（HK は c の 2/9 倍）",
+)
+
+_f6w = lambda x: -x / 2 - 4 / (6 * x + 1)
+_g6w = lambda x: _f6w(x) - x
+
+
+def _Mm6(X):
+    lo = max(0.0, X - 1)
+    hi = min(2.0, X)
+    xs = [lo, hi] + ([0.5] if lo <= 0.5 <= hi else [])
+    vs = [_g6w(t) for t in xs]
+    return max(vs), min(vs)
+
+
+_area6 = 0.0
+_N6 = 600000
+for _i in range(_N6):
+    _X = 3 * (_i + 0.5) / _N6
+    _M6, _m6 = _Mm6(_X)
+    _area6 += (_M6 - _m6) * 3 / _N6
+ok(
+    "東北理23-6 接線 y=x-7/4、S の上下の境界、面積 237/52 - (4/3)log2",
+    abs(_f6w(0.5) - (0.5 - 7 / 4)) < 1e-12
+    and abs(_g6w(1 / 6) - _g6w(7 / 6)) < 1e-12
+    and abs(_g6w(1 / 6) + 9 / 4) < 1e-12
+    and abs(_g6w(2) + 43 / 13) < 1e-12
+    and abs(_area6 - (237 / 52 - 4 / 3 * math.log(2))) < 1e-6,
+    f"区分求積 {_area6:.9f} / 237/52-(4/3)log2 = {237/52 - 4/3*math.log(2):.9f}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

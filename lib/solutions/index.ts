@@ -59,6 +59,7 @@ import { todaiRikei2024 } from "@/lib/solutions/todai-rikei-2024";
 import { todaiRikei2025 } from "@/lib/solutions/todai-rikei-2025";
 import { todaiRikei2026 } from "@/lib/solutions/todai-rikei-2026";
 import { uec2026 } from "@/lib/solutions/uec-2026";
+import { tohokuRikei2023 } from "@/lib/solutions/tohoku-rikei-2023";
 import { tohokuRikei2024 } from "@/lib/solutions/tohoku-rikei-2024";
 import { tohokuRikei2025 } from "@/lib/solutions/tohoku-rikei-2025";
 import { tohokuRikei2026 } from "@/lib/solutions/tohoku-rikei-2026";
@@ -147,6 +148,7 @@ const all: SolutionSet[] = [
   tohokuRikei2026,
   tohokuRikei2025,
   tohokuRikei2024,
+  tohokuRikei2023,
   tohokuBunkei2026,
   nagoyaRikei2025,
   nagoyaRikei2024,
