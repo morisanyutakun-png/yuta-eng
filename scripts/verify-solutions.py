@@ -6770,6 +6770,140 @@ ok(
     f"5通りの θ で多角形クリッピングの周と式が一致（いずれも十角形）。最小 θ={_min6t[0]:.3f}° ℓ={_min6t[1]:.9f} / 2√5={2*math.sqrt(5):.9f}",
 )
 
+# ---- 東北大学 理系 2024 ----
+
+_ok1u = True
+for _a in (0.25, 0.5, 1.0, 2.0):
+    _f = lambda x, a=_a: x * x - 2 * a * x + 4 * a * a
+    if abs(_f(4 * _a) / (4 * _a) - 3 * _a) > 1e-12 or abs(_f(2 * _a) / (2 * _a) - (2 * (2 * _a) - 2 * _a)) > 1e-12:
+        _ok1u = False
+    _S = quad(lambda x, a=_a: 3 * a * x - 2 * a * x, 0, 2 * _a, 20001)[0] + quad(
+        lambda x, a=_a, f=_f: 3 * a * x - f(x), 2 * _a, 4 * _a, 20001
+    )[0]
+    if abs(_S - 16 * _a**3 / 3) > 1e-9:
+        _ok1u = False
+ok(
+    "東北理24-1 A(a,3a²)、p=4a、q=2a、S=16a³/3、S=2/3 なら a=1/2",
+    _ok1u and abs((2 / 3 * 3 / 16) ** (1 / 3) - 0.5) < 1e-12,
+    "a=0.25,0.5,1,2 で頂点・交点・接点・面積をすべて照合",
+)
+
+random.seed(20240226)
+_bad2u = 0
+for _ in range(200000):
+    _t = random.uniform(1.0001, 50)
+    _L = math.log(_t)
+    _x = random.uniform(0.001, 200)
+    if _x > 1 / (math.sqrt(_t) - 1) and _x >= 2 * math.log(_x) / _L:
+        if not (_x + 1 > 2 * math.log(_x + 1) / _L):
+            _bad2u += 1
+ok(
+    "東北理24-2 (a)(b) ⟹ x+1>2log_t(x+1)、n≦2log₂n は n=2,3,4 だけ",
+    _bad2u == 0 and [n for n in range(1, 200) if n <= 2 * math.log2(n) + 1e-12] == [2, 3, 4],
+    f"(t,x) を20万組とって反例 {_bad2u} 件",
+)
+
+
+def _okstr(t):
+    return "AAA" not in t and "BB" not in t
+
+
+_pqr = {}
+for _n in range(2, 9):
+    _P = _Q = _R = Fraction(0)
+    for _s in itertools.product("AB", repeat=_n):
+        _st = "".join(_s)
+        if not _okstr(_st):
+            continue
+        _pr = Fraction(2, 3) ** _st.count("A") * Fraction(1, 3) ** _st.count("B")
+        if _st[-2:] == "AA":
+            _P += _pr
+        elif _st[-2:] == "BA":
+            _Q += _pr
+        if _st[-1] == "B":
+            _R += _pr
+    _pqr[_n] = (_P, _Q, _R)
+_p3, _q3, _r3 = Fraction(4, 9), Fraction(2, 9), Fraction(2, 9)
+_rec = {2: (_p3, _q3, _r3)}
+for _n in range(2, 21):
+    _p3, _q3, _r3 = Fraction(2, 3) * _q3, Fraction(2, 3) * _r3, Fraction(1, 3) * (_p3 + _q3)
+    _rec[_n + 1] = (_p3, _q3, _r3)
+_v3ok = True
+for _n in range(2, 9):
+    _P, _Q, _R = _pqr[_n]
+    _v = complex(_P) + 1j * complex(_Q) - (1 + 1j) * complex(_R)
+    if abs(_v - 2 / 3**_n * (-(1 + 1j)) ** (_n - 2)) > 1e-15:
+        _v3ok = False
+ok(
+    "東北理24-3 漸化式、p+2q+2r = 2^n/3^{n-1}、p+iq-(1+i)r = 2{-(1+i)}^{n-2}/3^n、p=r ⟺ 4|n",
+    all(_pqr[n] == _rec[n] for n in range(2, 9))
+    and all(_pqr[n][0] + 2 * _pqr[n][1] + 2 * _pqr[n][2] == Fraction(2**n, 3 ** (n - 1)) for n in range(2, 9))
+    and _v3ok
+    and [n for n in range(2, 21) if _rec[n][0] == _rec[n][2]] == [4, 8, 12, 16, 20],
+    "n=2〜8 を全列挙して漸化式・2つの1次結合を照合、p=r は n=4,8,12,16,20",
+)
+
+_P1 = (3.0, -1.0, 1.0)
+_P2 = (5.0, 0.0, -1.0)
+_d4 = math.dist(_P1, _P2)
+_h4 = (_d4**2 + 5 - 2) / (2 * _d4)
+_P3 = tuple(_P1[i] + (_h4 / _d4) * (_P2[i] - _P1[i]) for i in range(3))
+_w4 = (4 / 9, 2 / 9, 5 / 9)
+_wn4 = math.hypot(*_w4)
+_Q4 = tuple(_P3[i] - _w4[i] / _wn4 for i in range(3))
+ok(
+    "東北理24-4 |P1P2|=3、交円は半径1・中心(13/3,-1/3,-1/3)、単位ベクトルは ±(√5/5,-2√5/5,0)、d の最大は (1+√5)/3",
+    abs(_d4 - 3) < 1e-12
+    and abs(_h4 - 2) < 1e-12
+    and abs(math.sqrt(5 - _h4**2) - 1) < 1e-9
+    and max(abs(_P3[i] - (13 / 3, -1 / 3, -1 / 3)[i]) for i in range(3)) < 1e-12
+    and abs(math.dist(_Q4, _P1) - math.sqrt(5)) < 1e-9
+    and abs(math.dist(_Q4, _P2) - math.sqrt(2)) < 1e-9
+    and abs(abs(_Q4[2]) - (1 + math.sqrt(5)) / 3) < 1e-12,
+    f"Q={tuple(round(c,9) for c in _Q4)}、|z|={abs(_Q4[2]):.9f} = (1+√5)/3={(1+math.sqrt(5))/3:.9f}",
+)
+
+_f5u = lambda x: math.log(2 * x - 3) / x
+_g5u = lambda x: 2 * x - (2 * x - 3) * math.log(2 * x - 3)
+_lo5, _hi5 = 2.0, 20.0
+for _ in range(200):
+    _m5 = (_lo5 + _hi5) / 2
+    if _g5u(_m5) > 0:
+        _lo5 = _m5
+    else:
+        _hi5 = _m5
+_al5 = (_lo5 + _hi5) / 2
+ok(
+    "東北理24-5 g(x)=2x-(2x-3)log(2x-3)、α はただ1つ（3<α<5）、f(α)=2/(2α-3)、(m,n)=(3,6) のみ",
+    _g5u(2) > 0
+    and 3 < _al5 < 5
+    and abs(_f5u(_al5) - 2 / (2 * _al5 - 3)) < 1e-12
+    and 3**4 < 5**3
+    and 5**5 > 7**4
+    and [(m, n) for m in range(2, 60) for n in range(m + 1, 60) if (2 * m - 3) ** n == (2 * n - 3) ** m] == [(3, 6)],
+    f"α={_al5:.9f}、f(α)={_f5u(_al5):.9f}、f(3)=f(6)={_f5u(3):.9f}",
+)
+
+_r6u = lambda th: math.sqrt(2) / (1 + math.cos(th))
+_ok6u = True
+for _th in (0.0, 0.5, 1.0, math.pi / 2, -math.pi / 2):
+    _s6 = 1 / (1 + math.cos(_th))
+    _R6 = (_s6 * math.cos(_th), _s6 * math.sin(_th), 1 - _s6)
+    if abs(_R6[2] - _R6[0]) > 1e-12 or abs(math.dist((0, 0, 1), _R6) - _r6u(_th)) > 1e-12:
+        _ok6u = False
+_I6 = quad(lambda th: _r6u(th) ** 2, -math.pi / 2, math.pi / 2, 40001)[0]
+_T6 = math.pi / math.sqrt(2) - _I6 / (2 * math.sqrt(2))
+_S6 = lambda t: quad(lambda x: _r6u(x) ** 2, -math.pi / 2, t, 4001)[0] / (2 * math.sqrt(2))
+_ineq6 = all(
+    h * _r6u(th) ** 2 / (2 * math.sqrt(2)) <= _S6(th + h) - _S6(th) + 1e-9 <= h * _r6u(th + h) ** 2 / (2 * math.sqrt(2)) + 2e-9
+    for th, h in [(0, 0.3), (0.2, 0.5), (0.5, 1.0), (1.0, 0.5), (0.0, math.pi / 2)]
+)
+ok(
+    "東北理24-6 r(θ)=√2/(1+cosθ)、展開図ではさみうち、T = √2(3π-4)/6",
+    _ok6u and _ineq6 and abs(_I6 - 8 / 3) < 1e-9 and abs(_T6 - math.sqrt(2) * (3 * math.pi - 4) / 6) < 1e-9,
+    f"∫r²dθ={_I6:.10f}（8/3）、T={_T6:.10f} / √2(3π-4)/6={math.sqrt(2)*(3*math.pi-4)/6:.10f}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
