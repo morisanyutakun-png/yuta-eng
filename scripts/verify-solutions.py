@@ -4735,6 +4735,106 @@ ok("九大理22-5 |z| は 4 と 6 の間を動き、尖点 t=kπ/3 で 6",
    and all(abs(abs(_z22(_k * math.pi / 3)) - 6) < 1e-12 for _k in range(6)),
    f"最小 {min(_r22):.6f}、最大 {max(_r22):.6f}")
 
+# ---- 九大理系2021 ----
+
+# 第1問：四面体 OABC の内接球と、座標平面に接する球の切り口
+_pl21 = lambda c: abs(2 * c[0] + 2 * c[1] + c[2] - 2) / 3
+ok("九大理21-1 内接球の中心は (1/4,1/4,1/4)",
+   abs(_pl21((0.25, 0.25, 0.25)) - 0.25) < 1e-12,
+   "3つの座標平面までの距離も 0.25")
+_S21 = lambda r: math.pi * (r * r - _pl21((r, r, r)) ** 2)
+_mx21 = max((_S21(_i / 20000 * 1.2), _i / 20000 * 1.2) for _i in range(1, 20001)
+            if _pl21((_i / 20000 * 1.2,) * 3) < _i / 20000 * 1.2)
+ok("九大理21-1 交わりの円の面積の最大は π/4（r=5/8）",
+   abs(_mx21[0] - math.pi / 4) < 1e-7 and abs(_mx21[1] - 0.625) < 1e-4,
+   f"r={_mx21[1]:.6f} で {_mx21[0]:.9f} / π/4 = {math.pi / 4:.9f}")
+
+# 第2問：x² - (4cosθ)x + 1/tanθ = 0
+_D21 = lambda th: 4 * math.cos(th) ** 2 - 1 / math.tan(th)
+ok("九大理21-2 実数解をもたないのは 0<θ<π/12",
+   _D21(math.pi / 24) < 0 and _D21(math.pi / 12 - 1e-9) < 0
+   and _D21(math.pi / 12 + 1e-9) > 0 and _D21(math.pi / 8) > 0,
+   f"θ=π/24 で D/4={_D21(math.pi / 24):.6f}、θ=π/8 で {_D21(math.pi / 8):.6f}")
+
+def _abg21(th):
+    _s = math.sqrt(1 / math.tan(th) - 4 * math.cos(th) ** 2)
+    return complex(2 * math.cos(th), _s), complex(2 * math.cos(th), -_s), 1 / (4 * math.sin(th))
+
+ok("九大理21-2 外心は γ = 1/(4 sinθ)",
+   all(abs(abs(_g) - abs(_g - _al)) < 1e-9 and abs(abs(_g) - abs(_g - _be)) < 1e-9
+       for _th in (0.05, 0.1, 0.2) for _al, _be, _g in [_abg21(_th)]),
+   "θ=0.05,0.1,0.2 で O, A, B までの距離が一致")
+
+_th21 = math.asin(0.25) / 2
+_al21, _be21, _g21 = _abg21(_th21)
+ok("九大理21-2 直角になるのは sin2θ=1/4、tanθ = 4-√15",
+   abs(_g21 - 2 * math.cos(_th21)) < 1e-12
+   and abs(math.tan(_th21) - (4 - math.sqrt(15))) < 1e-12
+   and 0 < math.tan(_th21) < 2 - math.sqrt(3),
+   f"tanθ = {math.tan(_th21):.9f} / 4-√15 = {4 - math.sqrt(15):.9f}")
+
+# 第3問：すべての t で y ≦ e^t - xt
+random.seed(20210303)
+_ok21m = True
+for _ in range(20000):
+    _x = random.uniform(0.01, 5)
+    _m = min(math.exp(_t) - _x * _t
+             for _t in (math.log(_x) + _k / 200 for _k in range(-600, 601)))
+    if abs(_m - (_x - _x * math.log(_x))) > 1e-6:
+        _ok21m = False
+        break
+ok("九大理21-3 min_t(e^t - xt) = x - x log x（x>0）", _ok21m, "2万通りで確認")
+ok("九大理21-3 x<0 では下に有界でない",
+   min(math.exp(-_k) + (-1) * _k for _k in range(0, 60)) < -50,
+   "x=-1 で t=-59 まで下がる")
+_V21 = math.pi * quad(lambda x: (x * (1 - math.log(x))) ** 2, 1, math.e, 400001)[0]
+ok("九大理21-3 体積は π(2e³-17)/27",
+   abs(_V21 - math.pi * (2 * math.e ** 3 - 17) / 27) < 1e-9,
+   f"数値積分 {_V21:.8f} / π(2e³-17)/27 = {math.pi * (2 * math.e ** 3 - 17) / 27:.8f}")
+
+# 第4問：平均値の性質
+def _minmv21(f, df, al, be, N=400000):
+    _rhs = (f(be) - f(al)) / (be - al)
+    return min(abs(df(al + (be - al) * _i / N) - _rhs) for _i in range(N + 1))
+
+ok("九大理21-4 n=2 では γ が中点になる",
+   abs((complex(1, 2) + complex(-3, 1)) / 2 - complex(-1, 1.5)) < 1e-12
+   and abs(6 * complex(-1, 1.5) - 2
+           - ((3 * complex(-3, 1) ** 2 - 2 * complex(-3, 1) + 5)
+              - (3 * complex(1, 2) ** 2 - 2 * complex(1, 2) + 5)) / (complex(-3, 1) - complex(1, 2))) < 1e-12,
+   "α=1+2i, β=-3+i, f=3x²-2x+5 で確認")
+
+_mv21 = {_a: _minmv21(lambda z, _a=_a: z ** 3 + _a * z * z + 2 * z + 1,
+                      lambda z, _a=_a: 3 * z * z + 2 * _a * z + 2,
+                      complex(1, -1), complex(1, 1))
+         for _a in (-3, -2, 0, 1)}
+ok("九大理21-4 平均値の性質をもつのは a=-3 のときだけ",
+   _mv21[-3] < 1e-5 and all(_mv21[_a] > 0.5 for _a in (-2, 0, 1)),
+   "最小 |f'(γ)-左辺| = " + ", ".join(f"a={_a}:{_v:.3f}" for _a, _v in _mv21.items()))
+
+_al7 = complex(1, -1) / math.sqrt(2)
+_be7 = complex(1, 1) / math.sqrt(2)
+_m7 = _minmv21(lambda z: z ** 7, lambda z: 7 * z ** 6, _al7, _be7)
+ok("九大理21-4 x^7 は平均値の性質をもたない",
+   _m7 > 0.5 and abs((_be7 ** 7 - _al7 ** 7) / (_be7 - _al7) + 1) < 1e-12
+   and abs((2 / 3) ** 3 - 1 / 7) > 0.1,
+   f"線分上の最小 {_m7:.6f}、r⁶=8/27={8 / 27:.6f} ≠ 1/7={1 / 7:.6f}")
+
+# 第5問：nCk と素数
+ok("九大理21-5 2≦k≦n-2 なら nCk > n",
+   all(math.comb(_n, _k) > _n for _n in range(4, 60) for _k in range(2, _n - 1)),
+   "4 ≦ n ≦ 59 で確認")
+_pr21 = [_p for _p in range(2, 200) if all(_p % _q for _q in range(2, int(_p ** 0.5) + 1))]
+_set21 = {}
+for _n in range(1, 300):
+    for _k in range(1, _n + 1):
+        _v = math.comb(_n, _k)
+        if _v in _pr21:
+            _set21.setdefault(_v, []).append((_n, _k))
+ok("九大理21-5 nCk = p となるのは (p,1) と (p,p-1) だけ",
+   all(_set21[_p] == ([(_p, 1)] if _p == 2 else [(_p, 1), (_p, _p - 1)]) for _p in _pr21),
+   f"p=2:{_set21[2]}, p=3:{_set21[3]}, p=5:{_set21[5]}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
