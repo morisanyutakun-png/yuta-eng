@@ -352,6 +352,11 @@ export const sources: Record<string, Record<number, Source>> = {
       checked: "2026-10-06",
       note: "学部ごとのページに一部の試験問題はあるが、一般選抜前期の数学は見つからなかった。",
     },
+    2025: {
+      kind: "none",
+      checked: "2026-10-12",
+      note: "2026年度ぶんと同じ確認。東北大学は一般選抜前期の数学の問題を公開していない。",
+    },
   },
   "tohoku-bunkei": {
     2026: {

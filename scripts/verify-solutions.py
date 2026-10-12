@@ -6607,6 +6607,169 @@ ok(
     f"全列挙で {_n1}/36、{_n2}/216、{_n3}/216（(3) の a ごとの内訳は 7,5,3,2,1,0）",
 )
 
+# ---- 東北大学 理系 2025 ----
+
+_d1t = {0: Fraction(1)}
+_p1t = {}
+for _n in range(1, 10):
+    _nd = {}
+    for _pos, _pr in _d1t.items():
+        _nd[_pos + 1] = _nd.get(_pos + 1, Fraction(0)) + _pr * Fraction(3, 4)
+        _nd[_pos - 2] = _nd.get(_pos - 2, Fraction(0)) + _pr * Fraction(1, 4)
+    _d1t = _nd
+    _p1t[_n] = _d1t.get(0, Fraction(0))
+ok(
+    "東北理25-1 1回で +1 が 3/4・-2 が 1/4、n回後の位置は n-3k。P(3)=27/64、P(6)=1215/4096、3∤n なら 0",
+    _p1t[3] == Fraction(27, 64)
+    and _p1t[6] == Fraction(1215, 4096)
+    and all(_p1t[n] == 0 for n in (1, 2, 4, 5, 7, 8))
+    and _p1t[9] == Fraction(15309, 65536),
+    f"P(3)={_p1t[3]}, P(6)={_p1t[6]}, P(9)={_p1t[9]}、n=1,2,4,5,7,8 は 0",
+)
+
+_x2t, _y2t = Fraction(2), Fraction(1, 2)
+_xs2t = [_x2t]
+for _ in range(4):
+    _x2t, _y2t = _x2t**5 * _y2t**2, _x2t * _y2t**6
+    _xs2t.append(_x2t)
+_a2t, _b2t = 1, -1
+_c2a, _c2b = [], []
+for _ in range(6):
+    _c2a.append(_a2t + 2 * _b2t)
+    _c2b.append(_a2t - _b2t)
+    _a2t, _b2t = 5 * _a2t + 2 * _b2t, _a2t + 6 * _b2t
+ok(
+    "東北理25-2 k=2（公比7）と k=-1（公比4）、x_n = 2^{(4^n - 7^{n-1})/3}",
+    all(_c2a[i + 1] == 7 * _c2a[i] for i in range(5))
+    and all(_c2b[i + 1] == 4 * _c2b[i] for i in range(5))
+    and all(
+        _xs2t[n - 1] == Fraction(2) ** Fraction(4**n - 7 ** (n - 1), 3) for n in range(1, 6)
+    ),
+    f"a_n+2b_n={_c2a[:4]}（公比7）、a_n-b_n={_c2b[:4]}（公比4）、指数は "
+    + str([Fraction(4**n - 7 ** (n - 1), 3) for n in range(1, 6)]),
+)
+
+
+def _has3t(a):
+    """f(x)=x⁴+(4a/3)x³+(a+2)x² が極大値をもつか、x=0 で極大か。"""
+    f = lambda x: x**4 + 4 * a / 3 * x**3 + (a + 2) * x * x
+    g = lambda x: 2 * x * x + 2 * a * x + (a + 2)
+    D = a * a - 2 * (a + 2)
+    rs = [0.0]
+    if D > 0:
+        rs += [(-2 * a - 2 * math.sqrt(D)) / 4, (-2 * a + 2 * math.sqrt(D)) / 4]
+    rs = sorted(set(round(r, 10) for r in rs))
+    mx = [r for r in rs if f(r - 1e-5) < f(r) > f(r + 1e-5)]
+    return len(mx) > 0, any(abs(r) < 1e-12 for r in mx)
+
+
+_b3a = _b3b = 0
+for _i in range(-6000, 6001):
+    _a = _i / 1000
+    _h, _z = _has3t(_a)
+    if _h != (_a * _a - 2 * _a - 4 > 1e-9 and abs(_a + 2) > 1e-9):
+        _b3a += 1
+    if _z != (_a < -2 - 1e-9):
+        _b3b += 1
+ok(
+    "東北理25-3 極大値をもつ ⟺ a²-2a-4>0 かつ a≠-2、x=0 で極大 ⟺ a<-2",
+    _b3a == 0 and _b3b == 0,
+    f"a を -6〜6 まで 0.001 刻みの12001点で照合、差異 {_b3a} 件 / {_b3b} 件（1±√5 = {1-math.sqrt(5):.6f}, {1+math.sqrt(5):.6f}）",
+)
+
+_ok4t = True
+for _n in (1, 2, 3, 5, 10):
+    _t = math.exp(1 / _n)
+    _f = lambda x, n=_n: n * math.log(x)
+    _g = lambda x, n=_n: x**n / math.e
+    if abs(_f(_t) - 1) > 1e-12 or abs(_g(_t) - 1) > 1e-12 or abs(_n / _t - _n * _t ** (_n - 1) / math.e) > 1e-12:
+        _ok4t = False
+    _S = quad(_g, 1e-9, 1, 20001)[0] + quad(lambda x, f=_f, g=_g: g(x) - f(x), 1, _t, 20001)[0]
+    if abs(_S - (_n * _n * math.exp(1 / _n) / (_n + 1) - _n)) > 1e-7:
+        _ok4t = False
+_lim4t = 100000**2 * math.exp(1e-5) / 100001 - 100000
+ok(
+    "東北理25-4 a=1/e、接点 (e^{1/n},1)、S_n = n²e^{1/n}/(n+1) - n、lim S_n = 0",
+    _ok4t and _lim4t < 1e-4,
+    f"n=1,2,3,5,10 で接点・面積を確認。n=100000 で S_n={_lim4t:.9f}（≒1/(2n)）",
+)
+
+random.seed(20250226)
+_b5t = 0
+for _ in range(20000):
+    _v = [random.gauss(0, 1) for _ in range(3)]
+    _nn = math.hypot(*_v)
+    if _nn < 1e-6:
+        continue
+    _a5, _b5, _c5 = (t / _nn for t in _v)
+    if abs(_c5 - 1) < 1e-9:
+        continue
+    _p5, _q5 = _a5 / (1 - _c5), _b5 / (1 - _c5)
+    _s5 = 1 / (1 - _c5)
+    _D5 = _p5 * _p5 + _q5 * _q5 + 1
+    _back = (2 * _p5 / _D5, 2 * _q5 / _D5, (_p5 * _p5 + _q5 * _q5 - 1) / _D5)
+    if abs(_p5 - _s5 * _a5) > 1e-9 or abs(_q5 - _s5 * _b5) > 1e-9:
+        _b5t += 1
+    if max(abs(_back[i] - (_a5, _b5, _c5)[i]) for i in range(3)) > 1e-9:
+        _b5t += 1
+_circ5 = []
+for _ in range(400000):
+    _v = [random.gauss(0, 1) for _ in range(3)]
+    _nn = math.hypot(*_v)
+    _a5, _b5, _c5 = (t / _nn for t in _v)
+    if abs(3 * _a5 + 4 * _b5 + 5 * _c5 - 2.5) < 1e-3 and abs(_c5 - 1) > 1e-6:
+        _circ5.append(math.hypot(_a5 / (1 - _c5) + 1.2, _b5 / (1 - _c5) + 1.6))
+ok(
+    "東北理25-5 Q=(a/(1-c), b/(1-c))、逆写像、平面 3x+4y+5z=5/2 との交わりの像は中心(-6/5,-8/5)・半径√7 の円",
+    _b5t == 0 and _circ5 and max(abs(d - math.sqrt(7)) for d in _circ5) < 5e-3,
+    f"2万点で立体射影と逆写像の反例 0 件。平面上の{len(_circ5)}点で距離は √7={math.sqrt(7):.6f} の近く",
+)
+
+_R6t = 1 / (2 * math.sin(math.radians(36)))
+_r6t = 1 / (2 * math.tan(math.radians(36)))
+
+
+def _peri6t(th_deg):
+    th = math.radians(th_deg)
+    return 2 * _r6t * 5 * (math.tan(th / 2) + math.tan((math.radians(72) - th) / 2))
+
+
+def _clip6t(poly, a, b, c):
+    out = []
+    for i in range(len(poly)):
+        P, Q = poly[i], poly[(i + 1) % len(poly)]
+        fp = a * P[0] + b * P[1] - c
+        fq = a * Q[0] + b * Q[1] - c
+        if fp <= 0:
+            out.append(P)
+        if fp * fq < 0:
+            t = fp / (fp - fq)
+            out.append((P[0] + t * (Q[0] - P[0]), P[1] + t * (Q[1] - P[1])))
+    return out
+
+
+_ok6t = True
+for _th in (10, 24, 36, 50, 70):
+    _poly = [
+        (_R6t * math.cos(math.radians(90 + 72 * i)), _R6t * math.sin(math.radians(90 + 72 * i)))
+        for i in range(5)
+    ]
+    for _i in range(5):
+        _ang = math.radians(126 + 72 * _i + _th)
+        _poly = _clip6t(_poly, math.cos(_ang), math.sin(_ang), _r6t)
+    _per = sum(math.dist(_poly[i], _poly[(i + 1) % len(_poly)]) for i in range(len(_poly)))
+    if len(_poly) != 10 or abs(_per - _peri6t(_th)) > 1e-9:
+        _ok6t = False
+_min6t = min(((t / 1000, _peri6t(t / 1000)) for t in range(1, 72000)), key=lambda z: z[1])
+ok(
+    "東北理25-6 対角線 (1+√5)/2、ℓ_θ = 10r{tan(θ/2)+tan(36°-θ/2)}、最小は θ=36° での 2√5",
+    abs(2 * _R6t * math.sin(math.radians(72)) - (1 + math.sqrt(5)) / 2) < 1e-12
+    and _ok6t
+    and abs(_min6t[0] - 36) < 1e-2
+    and abs(_min6t[1] - 2 * math.sqrt(5)) < 1e-9,
+    f"5通りの θ で多角形クリッピングの周と式が一致（いずれも十角形）。最小 θ={_min6t[0]:.3f}° ℓ={_min6t[1]:.9f} / 2√5={2*math.sqrt(5):.9f}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
