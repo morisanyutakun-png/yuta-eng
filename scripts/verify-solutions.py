@@ -6442,6 +6442,171 @@ ok(
     f"最大 a={_mx22[0]:.5f} S={_mx22[1]:.9f} / 5√10/2={5*math.sqrt(10)/2:.9f}",
 )
 
+# ---- 名古屋大学 文科系 2020 ----
+
+_lim20 = math.sqrt(3) - 1
+_c20 = all(
+    (max(abs(a * (1 - math.sqrt(3)) / 2), abs(a * (1 + math.sqrt(3)) / 2)) <= 1 + 1e-12)
+    == (abs(a) <= _lim20 + 1e-12)
+    for a in (-1.0, -0.8, -0.73, -0.4, 0.0, 0.3849, 0.7, 0.73, 0.8, 1.2)
+)
+_s20 = all(
+    abs(
+        quad(lambda x, a=a: abs(2 * x * x - 2 * a * x - a * a), -1, 1, 20001)[0]
+        - (2 * math.sqrt(3) * abs(a) ** 3 - 2 * a * a + 4 / 3)
+    )
+    < 1e-7
+    for a in (-0.6, -0.2, 0.0, 0.2, 0.3849, 0.6, 0.73)
+)
+_m20 = min(
+    ((i / 100000, 2 * math.sqrt(3) * (i / 100000) ** 3 - 2 * (i / 100000) ** 2 + 4 / 3) for i in range(int(_lim20 * 100000) + 1)),
+    key=lambda z: z[1],
+)
+ok(
+    "名文20-1 解が [-1,1] に入るのは |a|≦√3-1、S(a)=2√3|a|³-2a²+4/3、最小は a=±2√3/9 での 100/81",
+    _c20 and _s20 and abs(_m20[0] - 2 * math.sqrt(3) / 9) < 1e-4 and abs(_m20[1] - 100 / 81) < 1e-9,
+    f"最小 a={_m20[0]:.6f} S={_m20[1]:.10f} / 2√3/9={2*math.sqrt(3)/9:.6f}, 100/81={100/81:.10f}",
+)
+
+random.seed(20200226)
+_bad20 = 0
+for _ in range(20000):
+    _th = random.uniform(0, 2 * math.pi)
+    _p = (math.cos(_th), math.sin(_th))
+    for _sg in (1, -1):
+        _q = (math.cos(_th + _sg * 2 * math.pi / 3), math.sin(_th + _sg * 2 * math.pi / 3))
+        _r = (-_p[0] - _q[0], -_p[1] - _q[1])
+        _d = [math.dist(_p, _q), math.dist(_q, _r), math.dist(_r, _p)]
+        if abs(math.hypot(*_r) - 1) > 1e-9 or max(_d) - min(_d) > 1e-9 or abs(_d[0] - math.sqrt(3)) > 1e-9:
+            _bad20 += 1
+_hn = 1 / 3
+_R20 = math.sqrt(1 - _hn * _hn)
+_pts20 = [(_R20 * math.cos(2 * math.pi * k / 3), _R20 * math.sin(2 * math.pi * k / 3), _hn) for k in range(3)]
+_D20 = (0.0, 0.0, -1.0)
+_sum20 = tuple(sum(q[i] for q in _pts20) + _D20[i] for i in range(3))
+_edges20 = [
+    math.dist(_pts20[0], _pts20[1]),
+    math.dist(_pts20[1], _pts20[2]),
+    math.dist(_pts20[2], _pts20[0]),
+    math.dist(_pts20[0], _D20),
+    math.dist(_pts20[1], _D20),
+    math.dist(_pts20[2], _D20),
+]
+ok(
+    "名文20-2 単位ベクトル3本の和が 0 なら正三角形、|OH|=1/3 の配置では正四面体（1辺 2√6/3）",
+    _bad20 == 0
+    and math.hypot(*_sum20) < 1e-12
+    and max(_edges20) - min(_edges20) < 1e-12
+    and abs(_edges20[0] - 2 * math.sqrt(6) / 3) < 1e-12,
+    f"2万通りで反例 0 件、6辺 {_edges20[0]:.9f} = 2√6/3 = {2*math.sqrt(6)/3:.9f}",
+)
+
+
+def _RS20(n):
+    r = 0
+    s = 0
+    for x2 in range(1, n + 1):
+        for y2 in range(1, n - x2 + 1):
+            r += x2 * y2
+            s += x2
+    return r, s
+
+
+ok(
+    "名文20-3 R(n)=(n-1)n(n+1)(n+2)/24、S(n)=(n-1)n(n+1)/6、R(n)=1001 は n=12 だけ",
+    all(
+        _RS20(n) == ((n - 1) * n * (n + 1) * (n + 2) // 24, (n - 1) * n * (n + 1) // 6) for n in range(1, 13)
+    )
+    and [n for n in range(1, 60) if (n - 1) * n * (n + 1) * (n + 2) // 24 == 1001] == [12],
+    f"R(3)={_RS20(3)[0]}, R(4)={_RS20(4)[0]}, S(3)={_RS20(3)[1]}, S(4)={_RS20(4)[1]}",
+)
+
+# ---- 名古屋大学 文科系 2019 ----
+
+
+def _cnt19(a):
+    """g(x) = x³/3 + (a/2-1)x² - 2ax + a の相異なる実数解の個数（2分法で数える）。"""
+    g = lambda x: x**3 / 3 + (a / 2 - 1) * x * x - 2 * a * x + a
+    xs = [-a, 2.0]
+    xs.sort()
+    if abs(xs[0] - xs[1]) < 1e-12:
+        return 1
+    v0, v1 = g(xs[0]), g(xs[1])
+    if v0 * v1 < 0:
+        return 3
+    if v0 == 0 or v1 == 0:
+        return 2
+    return 1
+
+
+_lo19 = -3 - math.sqrt(3)
+_hi19 = -3 + math.sqrt(3)
+_bad19 = 0
+for _i in range(-9000, 6001):
+    _a = _i / 1000
+    _pred = (_a < _lo19 - 1e-9) or (-4 / 3 + 1e-9 < _a < _hi19 - 1e-9) or (_a > 1e-9)
+    if _pred != (_cnt19(_a) == 3):
+        _bad19 += 1
+ok(
+    "名文19-1 g'=(x+a)(x-2)、極値の積 <0 ⟺ a<-3-√3 または -4/3<a<-3+√3 または a>0",
+    _bad19 == 0,
+    f"a を -9〜6 まで 0.001 刻みの15001点で照合して差異 0 件（-3-√3={_lo19:.6f}, -4/3={-4/3:.6f}, -3+√3={_hi19:.6f}）",
+)
+
+_ok19b = True
+for _al in (0.3, 1.0, 2.0, 3.0):
+    _k = math.tan(_al / 2)
+    _z = complex(1, 0)
+    _pts = [_z]
+    for _ in range(5):
+        _den = 1 + _k * _k
+        _nx = ((1 - _k * _k) * _z.real - 2 * _k * _z.imag) / _den
+        _ny = (2 * _k * _z.real + (1 - _k * _k) * _z.imag) / _den
+        _z = complex(_nx, _ny)
+        _pts.append(_z)
+    if max(abs(_pts[n] - cmath.exp(1j * n * _al)) for n in range(len(_pts))) > 1e-12:
+        _ok19b = False
+    _ar = abs(_pts[1].real * _pts[2].imag - _pts[2].real * _pts[1].imag) / 2
+    if abs(_ar - _k / (1 + _k * _k)) > 1e-12:
+        _ok19b = False
+ok(
+    "名文19-2 P_n = (cos nα, sin nα)（k=tan(α/2)）、△P_nOP_{n+1} = k/(1+k²)",
+    _ok19b,
+    "α=0.3,1,2,3 で漸化式を5回まわし、回転公式と面積の両方が一致した",
+)
+
+
+def _hasint19(a, b, c):
+    D = b * b - 4 * a * c
+    if D < 0:
+        return False
+    sq = math.isqrt(D)
+    if sq * sq != D:
+        return False
+    return (b + sq) % (2 * a) == 0 or (b - sq) % (2 * a) == 0
+
+
+def _allint19(a, b, c):
+    D = b * b - 4 * a * c
+    if D < 0:
+        return False
+    sq = math.isqrt(D)
+    if sq * sq != D:
+        return False
+    return (b + sq) % (2 * a) == 0 and (b - sq) % (2 * a) == 0
+
+
+_n1 = sum(1 for b in range(1, 7) for c in range(1, 7) if _hasint19(1, b, c))
+_n2 = sum(1 for a in range(1, 7) for b in range(1, 7) for c in range(1, 7) if _allint19(a, b, c))
+_n3 = sum(1 for a in range(1, 7) for b in range(1, 7) for c in range(1, 7) if _hasint19(a, b, c))
+ok(
+    "名文19-3 (1) 7/36、(2) 10/216=5/108、(3) 18/216=1/12",
+    Fraction(_n1, 36) == Fraction(7, 36)
+    and Fraction(_n2, 216) == Fraction(5, 108)
+    and Fraction(_n3, 216) == Fraction(1, 12),
+    f"全列挙で {_n1}/36、{_n2}/216、{_n3}/216（(3) の a ごとの内訳は 7,5,3,2,1,0）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
