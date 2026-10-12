@@ -5579,6 +5579,120 @@ ok("名理24-4 ∫[0,1/2] x^k(1-x)^k dx = (k!)²/{2(2k+1)!}",
        for _k in (1, 2, 3, 4)),
    "k=1,2,3,4 で小数12桁まで一致")
 
+# ---- 名大理系2023 ----
+
+# 第1問：|α-1|=1 上の共役な解をもつ4次方程式
+random.seed(20230001)
+_ok23a = True
+for _ in range(20000):
+    _th = random.uniform(0.01, 2 * math.pi - 0.01)
+    _ph = random.uniform(0.01, 2 * math.pi - 0.01)
+    _al = 1 + cmath.exp(1j * _th)
+    _be = 1 + cmath.exp(1j * _ph)
+    if abs(_al.imag) < 1e-6 or abs(_be.imag) < 1e-6:
+        continue
+    if abs(_al + _al.conjugate() - _al * _al.conjugate()) > 1e-9:
+        _ok23a = False
+        break
+    _t = (_al + _al.conjugate()).real
+    _u = (_be + _be.conjugate()).real
+    _p, _q, _r, _sv = _t + _u, _t + _u + _t * _u, 2 * _t * _u, _t * _u
+    if any(abs((_x * _x - _t * _x + _t) * (_x * _x - _u * _x + _u)
+               - (_x ** 4 - _p * _x ** 3 + _q * _x * _x - _r * _x + _sv)) > 1e-6
+           for _x in (0.3, 1.7, -2.1)):
+        _ok23a = False
+        break
+ok("名理23-1 α+ᾱ=αᾱ、p=t+u, q=t+u+tu, r=2tu, s=tu", _ok23a, "円周上の点を2万組とって確認")
+
+random.seed(20230002)
+_ok23b = True
+for _ in range(200000):
+    _p = random.uniform(-1, 10)
+    _sv = random.uniform(-1, 30)
+    _D = _p * _p - 4 * _sv
+    _real = False
+    if _D > 0:
+        _t1 = (_p - math.sqrt(_D)) / 2
+        _t2 = (_p + math.sqrt(_D)) / 2
+        _real = 0 < _t1 < 4 and 0 < _t2 < 4
+    _pred = (0 < _p < 8) and (_sv > 0) and (_sv > 4 * _p - 16) and (_sv < _p * _p / 4)
+    if _real != _pred:
+        _ok23b = False
+        break
+ok("名理23-1 (p,s) の範囲は 0<p<8, 0<s, 4p-16<s, s<p²/4", _ok23b, "20万組で判定が完全一致")
+
+# 第2問：2円の交わりと回転体
+_ok23v = True
+_ok23m = True
+for _a23, _b23 in ((3.0, 1.2), (5.0, 2.0), (2.0, 0.5)):
+    _h23 = lambda r, a=_a23, b=_b23: (a * a - b * b + r * r) / (2 * a)
+    def _Vd(r, a=_a23, b=_b23):
+        _hh = _h23(r, a, b)
+        _k2 = r * r - _hh * _hh
+        return (math.pi * _k2 * (_hh - a + b) / 3
+                + math.pi * (2 * r ** 3 / 3 - r * r * _hh + _hh ** 3 / 3))
+    _Vf = lambda r, a=_a23, b=_b23: (math.pi / 3 * (r - _h23(r, a, b))
+                                     * (2 * r * r - (a - b) * (r + _h23(r, a, b))))
+    for _i in range(1, 6):
+        _r = _a23 - _b23 + 2 * _b23 * _i / 6
+        if abs(_Vd(_r) - _Vf(_r)) > 1e-9:
+            _ok23v = False
+    _bm = max((_Vf(_a23 - _b23 + 2 * _b23 * _i / 200000), _a23 - _b23 + 2 * _b23 * _i / 200000)
+              for _i in range(1, 200000))
+    _rA = (3 * _a23 ** 2 + 2 * _a23 * _b23 + _b23 ** 2) / (3 * _a23 + _b23)
+    if abs(_bm[1] - _rA) > 1e-4:
+        _ok23m = False
+ok("名理23-2 V(r) = (π/3)(r-h){2r² - (a-b)(r+h)}", _ok23v,
+   "(a,b)=(3,1.2),(5,2),(2,0.5) × 5点で円錐＋球欠と一致")
+ok("名理23-2 最大を与える r は (3a²+2ab+b²)/(3a+b)、lim(r(a)-a) = b/3",
+   _ok23m and all(abs((3 * _A ** 2 + 2 * _A * 1.2 + 1.44) / (3 * _A + 1.2) - _A - 0.4) < 0.04
+                  for _A in (100, 1000, 100000)),
+   "b=1.2 で a=100,1000,100000 のとき r(a)-a → 0.4 = b/3")
+
+# 第3問：e^x との共有点
+_phi23 = lambda x: 2 * x ** 3 / (x - 1)
+_r1_23 = [_x / 100000 for _x in range(-1000000, 0)
+          if (_phi23(_x / 100000) - math.exp(_x / 100000))
+          * (_phi23((_x + 1) / 100000) - math.exp((_x + 1) / 100000)) < 0]
+_psi23 = lambda x: x ** 3 - 3 * x - math.exp(x)
+_r2_23 = [_x / 100000 for _x in range(-1000000, 0)
+          if _psi23(_x / 100000) * _psi23((_x + 1) / 100000) < 0]
+ok("名理23-3 (1) は1個、(2) は2個",
+   len(_r1_23) == 1 and len(_r2_23) == 2,
+   f"(1) {[round(_v, 5) for _v in _r1_23]}、(2) {[round(_v, 5) for _v in _r2_23]}")
+
+_G23 = lambda x: x * x - math.exp(x) / x
+_min23 = min((_G23(_x / 200000), _x / 200000) for _x in range(-2000000, -1))
+ok("名理23-3 G(x)=x²-e^x/x は両端で +∞、極小は1つでそこが最小",
+   abs(_min23[0] - 1.192251753) < 1e-6 and abs(_min23[1] + 0.745385) < 1e-4
+   and _G23(-1e-5) > 1e4 and _G23(-10) > 50
+   and abs(_min23[1] - _r1_23[0]) < 1e-3,
+   f"最小 {_min23[0]:.9f}（x={_min23[1]:.6f}、(1) の解と一致）")
+
+# 第4問：P_n(x) = x(x+1)...(x+n-1) の係数
+def _Bco23(n):
+    _poly = [1]
+    for _i in range(n):
+        _new = [0] * (len(_poly) + 1)
+        for _d, _c in enumerate(_poly):
+            _new[_d + 1] += _c
+            _new[_d] += _c * _i
+        _poly = _new
+    return _poly
+
+ok("名理23-4 Σ[m=1..n] nB_m = n!",
+   all(sum(_Bco23(_n)[1:]) == math.factorial(_n) for _n in range(1, 10)),
+   "n=1〜9 で確認")
+_ok23s = True
+for _n in range(1, 9):
+    _B = _Bco23(_n)
+    _B1 = _Bco23(_n + 1)
+    for _k in range(1, _n + 1):
+        if sum(_B[_j] * math.comb(_j, _k) for _j in range(_k, _n + 1)) != _B1[_k + 1]:
+            _ok23s = False
+ok("名理23-4 Σ[j=k..n] nB_j·jC_k = (n+1)B_{k+1}", _ok23s,
+   "1≦n≦8、1≦k≦n のすべてで整数のまま一致")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
