@@ -147,7 +147,11 @@ export const sources: Record<string, Record<number, Source>> = {
       target: "page",
       checked: "2026-10-05",
       note: "大学サイトに試験問題の利用についての記載がある。",
-    } },
+    },
+    2024: { kind: "none", checked: "2026-10-12", note: "九州大学の「試験問題、解答例等について」に載っているのは令和8年度（2026年度）と令和7年度（2025年度）の2年度ぶんだけ。それより前は取り下げられている。" },
+    2023: { kind: "none", checked: "2026-10-12", note: "2024年度ぶんと同じ確認。九州大学は直近2年度ぶんしか公開していない。" },
+    2022: { kind: "none", checked: "2026-10-12", note: "2024年度ぶんと同じ確認。九州大学は直近2年度ぶんしか公開していない。" },
+  },
   "kyudai-bunkei": { 2026: {
       kind: "official",
       url: "https://www.kyushu-u.ac.jp/ja/admission/faculty/exam_question",

@@ -10,6 +10,7 @@
 模試の見本問題（assets/moshi-sample/moshi-sample.tex）も、ここで同じように確かめる。
 公開する以上、解説と同じ基準で確かめておく。
 """
+import cmath
 import random
 import itertools
 import math
@@ -4313,6 +4314,426 @@ ok("京大理19-6 最小の n は 71",
    and _vals19[64] == 2 ** 33 and _vals19[65] == 2 ** 33 and 2 ** 33 < 10 ** 10
    and 33 * 0.3011 < 10 < 34 * 0.3010,
    f"n=71 で {_vals19[71]} = 2^36")
+
+# ---- 九大理系2025 ----
+
+# 第1問：平面 α の法線と、P から下ろした垂線が xy 平面と交わる点 Q
+_n25 = None
+_A25, _B25, _C25 = (1, 1, -5), (-1, -1, 7), (1, -1, 3)
+_ab25 = tuple(_B25[k] - _A25[k] for k in range(3))
+_ac25 = tuple(_C25[k] - _A25[k] for k in range(3))
+_cr25 = (
+    _ab25[1] * _ac25[2] - _ab25[2] * _ac25[1],
+    _ab25[2] * _ac25[0] - _ab25[0] * _ac25[2],
+    _ab25[0] * _ac25[1] - _ab25[1] * _ac25[0],
+)
+ok("九大理25-1 法線ベクトルは (2,4,1) の定数倍",
+   _cr25 == (8, 16, 4) and all(_cr25[k] == 4 * (2, 4, 1)[k] for k in range(3)),
+   f"外積 = {_cr25}")
+
+_ok25q = True
+random.seed(20250101)
+for _ in range(200000):
+    _a, _b, _t = (random.uniform(-9, 9) for _ in range(3))
+    # P + s*(2,4,1) の z 成分が 0 になる s を解く
+    _s = -_t
+    _Q = (_a + 2 * _s, _b + 4 * _s, _t + _s)
+    if abs(_Q[0] - (_a - 2 * _t)) > 1e-9 or abs(_Q[1] - (_b - 4 * _t)) > 1e-9 or abs(_Q[2]) > 1e-9:
+        _ok25q = False
+        break
+ok("九大理25-1 Q = (a-2t, b-4t, 0)", _ok25q, "(a,b,t) を20万組とって確認")
+
+_ok25m = True
+for _a, _b in [(1, 0), (0, 1), (1, 2), (2, 1), (3, 1)]:
+    _best = min(math.hypot(_a - 2 * (_i / 25000 - 4), _b - 4 * (_i / 25000 - 4)) for _i in range(200001))
+    if abs(_best - abs(2 * _a - _b) / math.sqrt(5)) > 1e-5:
+        _ok25m = False
+ok("九大理25-1 min OQ = |2a-b|/√5、条件は |2a-b| ≦ √5", _ok25m,
+   "t を20万点動かした直接計算と一致")
+
+# 第2問：∫(tan^4 x - tan^2 x - 2)/(tan^2 x - 4) dx
+_i25 = quad(lambda x: (math.tan(x) ** 4 - math.tan(x) ** 2 - 2) / (math.tan(x) ** 2 - 4), 0, math.pi / 4, 400001)[0]
+ok("九大理25-2 積分は 1 - (1/2)log 3",
+   abs(_i25 - (1 - 0.5 * math.log(3))) < 1e-7,
+   f"数値積分 {_i25:.9f} / 1-(1/2)log3 = {1 - 0.5 * math.log(3):.9f}")
+
+# 第3問：n^2 の 8 での余りと 2^m = n^2 + 3
+ok("九大理25-3 n^2 mod 8 は 0,1,4 のみ",
+   {n * n % 8 for n in range(-20, 21)} == {0, 1, 4},
+   f"現れる余りは {sorted({n * n % 8 for n in range(-20, 21)})}")
+_sol25 = [(m, n) for m in range(40) for n in range(10000) if 2 ** m == n * n + 3]
+ok("九大理25-3 2^m = n^2+3 の解は (m,n)=(2,1) のみ", _sol25 == [(2, 1)], f"全探索 {_sol25}")
+
+# 第4問：円に内接する A,B,C,D と交点 E
+_PA25 = (1.0, 0.0)
+_PB25 = (math.sqrt(2) / 2, math.sqrt(2) / 2)
+_PC25 = (0.0, 1.0)
+_PD25 = (-1.0, 0.0)
+_d25 = lambda p, q: math.hypot(p[0] - q[0], p[1] - q[1])
+ok("九大理25-4 配置が条件をみたす（AD が直径、AC=CD、AB=BC）",
+   abs(_d25(_PA25, _PD25) - 2) < 1e-12
+   and abs(_d25(_PA25, _PC25) - _d25(_PC25, _PD25)) < 1e-12
+   and abs(_d25(_PA25, _PB25) - _d25(_PB25, _PC25)) < 1e-12
+   and all(abs(math.hypot(*_p) - 1) < 1e-12 for _p in (_PA25, _PB25, _PC25, _PD25)),
+   f"AC={_d25(_PA25, _PC25):.6f} AB={_d25(_PA25, _PB25):.6f}")
+_v1_25 = (_PA25[0] - _PC25[0], _PA25[1] - _PC25[1])
+_v2_25 = (_PB25[0] - _PC25[0], _PB25[1] - _PC25[1])
+_ang25 = math.degrees(math.acos((_v1_25[0] * _v2_25[0] + _v1_25[1] * _v2_25[1])
+                                / (math.hypot(*_v1_25) * math.hypot(*_v2_25))))
+ok("九大理25-4 ∠ACB = 22.5° = π/8", abs(_ang25 - 22.5) < 1e-9, f"{_ang25:.6f}°")
+ok("九大理25-4 BC = √(2-√2)",
+   abs(_d25(_PB25, _PC25) - math.sqrt(2 - math.sqrt(2))) < 1e-12,
+   f"{_d25(_PB25, _PC25):.9f}")
+_PE25 = (math.sqrt(2) - 1, 2 - math.sqrt(2))
+_cross25 = ((_PB25[0] - _PD25[0]) * (_PE25[1] - _PD25[1])
+            - (_PB25[1] - _PD25[1]) * (_PE25[0] - _PD25[0]))
+_S25 = 0.5 * abs((_PC25[0] - _PB25[0]) * (_PE25[1] - _PB25[1])
+                 - (_PC25[1] - _PB25[1]) * (_PE25[0] - _PB25[0]))
+ok("九大理25-4 E = (√2-1, 2-√2)、△BCE = (3-2√2)/2",
+   abs(_PE25[0] + _PE25[1] - 1) < 1e-12 and abs(_cross25) < 1e-12
+   and abs(_S25 - (3 - 2 * math.sqrt(2)) / 2) < 1e-12,
+   f"面積 {_S25:.9f} / (3-2√2)/2 = {(3 - 2 * math.sqrt(2)) / 2:.9f}")
+
+# 第5問：f(x) = (x^2-ax+b)(x-c) の実数解・自然数解の個数
+def _roots25(a, b, c):
+    rs = {Fraction(c)}
+    d = a * a - 4 * b
+    if d == 0:
+        rs.add(Fraction(a, 2))
+    elif d > 0:
+        rs |= {("irr", a, b, 1), ("irr", a, b, -1)} if not math.isqrt(d) ** 2 == d else {
+            Fraction(a + math.isqrt(d), 2), Fraction(a - math.isqrt(d), 2)}
+    return rs
+
+_cnt1_25 = _cnt3_25 = 0
+for _a in range(1, 7):
+    for _b in range(1, 7):
+        for _c in range(1, 7):
+            _rs = _roots25(_a, _b, _c)
+            if len(_rs) == 1:
+                _cnt1_25 += 1
+            _nat = [r for r in _rs if isinstance(r, Fraction) and r.denominator == 1 and r > 0]
+            if len(_nat) == 3:
+                _cnt3_25 += 1
+ok("九大理25-5 実数解がちょうど1個になる確率は 13/27",
+   Fraction(_cnt1_25, 216) == Fraction(13, 27), f"{_cnt1_25}/216")
+ok("九大理25-5 自然数解がちょうど3個になる確率は 5/54",
+   Fraction(_cnt3_25, 216) == Fraction(5, 54), f"{_cnt3_25}/216")
+
+# ---- 九大理系2024 ----
+
+# 第1問：P(-1,1,-1), Q(1,1,1), R(a,a^2,a^3) の三角形
+def _tri24(a):
+    _P, _Q, _R = (-1, 1, -1), (1, 1, 1), (a, a * a, a ** 3)
+    _u = tuple(_Q[k] - _P[k] for k in range(3))
+    _v = tuple(_R[k] - _P[k] for k in range(3))
+    _c = (_u[1] * _v[2] - _u[2] * _v[1],
+          _u[2] * _v[0] - _u[0] * _v[2],
+          _u[0] * _v[1] - _u[1] * _v[0])
+    return 0.5 * math.sqrt(sum(x * x for x in _c))
+
+ok("九大理24-1 面積は |a^2-1|√(a^2+2)",
+   all(abs(_tri24(_i / 100) - abs((_i / 100) ** 2 - 1) * math.sqrt((_i / 100) ** 2 + 2)) < 1e-9
+       for _i in range(-300, 301)),
+   "a を -3〜3 まで 0.01 刻みで確認")
+_mx24 = max((_tri24(_i / 200000), _i / 200000) for _i in range(-199999, 200000))
+ok("九大理24-1 -1<a<1 での最大は a=0 の √2",
+   abs(_mx24[0] - math.sqrt(2)) < 1e-9 and abs(_mx24[1]) < 1e-5,
+   f"a={_mx24[1]:.5f} で {_mx24[0]:.10f}")
+
+# 第2問：f(z) = z^6+z^4+z^2+1 = (z^2+1)(z^4+1) = (z^8-1)/(z^2-1)
+_f24 = lambda z: z ** 6 + z ** 4 + z ** 2 + 1
+_r8 = [complex(math.cos(math.pi * k / 4), math.sin(math.pi * k / 4)) for k in range(8)]
+_S24 = [z for z in _r8 if abs(_f24(z)) < 1e-9]
+ok("九大理24-2 解は 1 の8乗根から ±1 を除いた6個、すべて |z|=1",
+   len(_S24) == 6 and all(abs(abs(z) - 1) < 1e-12 for z in _S24)
+   and abs(_f24(1 + 0j)) > 1 and abs(_f24(-1 + 0j)) > 1,
+   f"解 {len(_S24)} 個、f(1)={_f24(1 + 0j).real:.0f}")
+_w24 = [k for k in range(8) if all(abs(_f24(_r8[k] * z)) < 1e-9 for z in _S24)]
+ok("九大理24-2 条件をみたす w は 1 と -1 だけ", _w24 == [0, 4],
+   f"1 の8乗根のうち k={_w24}（偏角 0°, 180°）")
+
+# 第3問：階乗の不定方程式
+_ft24 = [math.factorial(k) for k in range(0, 80)]
+ok("九大理24-3(1) a<b なら b!/a! ≧ b",
+   all(_ft24[b] // _ft24[a] >= b for a in range(1, 40) for b in range(a + 1, 60)),
+   "1 ≦ a < b ≦ 59 で確認")
+_s24b = [(a, b) for a in range(1, 60) for b in range(1, 60) if 2 * _ft24[a] == _ft24[b]]
+ok("九大理24-3(2) 2·a! = b! の解は (1,2) のみ", _s24b == [(1, 2)], f"全探索 {_s24b}")
+_s24c = [(a, b, c) for a in range(1, 40) for b in range(1, 40) for c in range(1, 40)
+         if _ft24[a] + _ft24[b] == 2 * _ft24[c]]
+ok("九大理24-3(3) a!+b! = 2·c! の解は a=b=c のみ",
+   len(_s24c) == 39 and all(t[0] == t[1] == t[2] for t in _s24c),
+   f"{len(_s24c)} 組すべて a=b=c")
+
+# 第4問：n×n の格子点のうち3点以上を通る直線の本数 L(n)
+def _L24(n):
+    pts = [(x, y) for x in range(1, n + 1) for y in range(1, n + 1)]
+    lines = set()
+    for p, q in itertools.combinations(pts, 2):
+        A, B = q[1] - p[1], p[0] - q[0]
+        C = -(A * p[0] + B * p[1])
+        g = math.gcd(math.gcd(abs(A), abs(B)), abs(C))
+        A, B, C = A // g, B // g, C // g
+        if A < 0 or (A == 0 and B < 0):
+            A, B, C = -A, -B, -C
+        lines.add((A, B, C))
+    return sum(1 for (A, B, C) in lines
+               if sum(1 for (x, y) in pts if A * x + B * y + C == 0) >= 3)
+
+ok("九大理24-4 L(3)=8, L(4)=14, L(5)=32",
+   (_L24(3), _L24(4), _L24(5)) == (8, 14, 32),
+   f"全探索 {(_L24(3), _L24(4), _L24(5))}")
+
+# 第5問：I(m,n) = ∫[1,e] x^m e^x (log x)^n dx
+_I24 = lambda m, n: quad(lambda x: x ** m * math.exp(x) * math.log(x) ** n, 1, math.e, 100001)[0]
+_ok24i = True
+for _m in range(1, 4):
+    for _n in range(1, 4):
+        _lhs = _I24(_m + 1, _n + 1)
+        _rhs = math.e ** (_m + math.e + 1) - (_m + 1) * _I24(_m, _n + 1) - (_n + 1) * _I24(_m, _n)
+        if abs(_lhs - _rhs) > 1e-6 * max(1.0, abs(_lhs)):
+            _ok24i = False
+ok("九大理24-5 I(m+1,n+1) = e^(m+e+1) - (m+1)I(m,n+1) - (n+1)I(m,n)", _ok24i,
+   "m,n = 1,2,3 の9通りで数値積分して確認")
+_vals24 = [_I24(2, _n) for _n in (1, 5, 20, 80)]
+ok("九大理24-5 I(m,n) → 0（評価 e^(m+e+1)/(n+1) の下にある）",
+   all(_vals24[k] > _vals24[k + 1] for k in range(3))
+   and all(_v <= math.e ** (2 + math.e + 1) / (_n + 1)
+           for _v, _n in zip(_vals24, (1, 5, 20, 80))),
+   "I(2,n) = " + ", ".join(f"{_v:.3f}" for _v in _vals24))
+
+# ---- 九大理系2023 ----
+
+# 第1問：相反方程式と、正三角形になる条件
+_r23 = [complex(0.5, math.sqrt(3) / 2), complex(0.5, -math.sqrt(3) / 2)]
+_p23 = lambda z: z ** 4 - 2 * z ** 3 + 3 * z ** 2 - 2 * z + 1
+_dp23 = lambda z: 4 * z ** 3 - 6 * z ** 2 + 6 * z - 2
+ok("九大理23-1 解は (1±√3i)/2 でどちらも重解",
+   all(abs(_p23(z)) < 1e-12 and abs(_dp23(z)) < 1e-12 for z in _r23),
+   "4次式と導関数の両方が 0")
+
+random.seed(20230101)
+_ok23a = True
+for _ in range(20000):
+    _p = complex(random.uniform(-3, 3), random.uniform(-3, 3))
+    _q = complex(random.uniform(-3, 3), random.uniform(-3, 3))
+    _r = -_p - _q
+    if abs((_p ** 4 + _q ** 4 + _r ** 4) - (_p * _p + _q * _q + _r * _r) ** 2 / 2) > 1e-8:
+        _ok23a = False
+        break
+ok("九大理23-1 p+q+r=0 なら p⁴+q⁴+r⁴ = (p²+q²+r²)²/2", _ok23a, "2万組で確認")
+
+_tri23 = lambda a, b, c: abs((a - b) ** 4 + (b - c) ** 4 + (c - a) ** 4)
+_eq23 = (0j, 1 + 0j, complex(0.5, math.sqrt(3) / 2))
+ok("九大理23-1 正三角形でのみ与式が 0",
+   _tri23(*_eq23) < 1e-12
+   and _tri23(0j, 1 + 0j, 1j) > 1e-6
+   and _tri23(0j, 2 + 0j, complex(0.3, 1.1)) > 1e-6,
+   f"正三角形 {_tri23(*_eq23):.1e} / 直角二等辺 {_tri23(0j, 1 + 0j, 1j):.3f}")
+
+# 第2問：a_{n+1} = |a_n - 1| + a_n - 1
+def _seq23(al, N=200):
+    a = al
+    for _ in range(N):
+        a = abs(a - 1) + a - 1
+    return a
+
+ok("九大理23-2 α≦1、1<α<3/2、3/2≦α<2 では 0 に収束",
+   all(abs(_seq23(_al)) < 1e-12 for _al in (-5, 0, 1, 1.2, 1.49, 1.5, 1.7, 1.99)),
+   "α を8通りとって a_200 = 0")
+ok("九大理23-2 α>2 では正の無限大に発散（α=2 だけ 2 のまま）",
+   abs(_seq23(2) - 2) < 1e-12 and _seq23(2.0001) > 1e50 and _seq23(3) > 1e50,
+   f"α=2.0001 で a_200 = {_seq23(2.0001):.3g}")
+
+# 第3問：m=(a,c), n=(b,d), D=ad-bc
+random.seed(20230303)
+_ok23v = True
+for _ in range(20000):
+    _a, _b, _c, _d = (random.uniform(-3, 3) for _ in range(4))
+    _D = _a * _d - _b * _c
+    if abs(_D) < 1e-3:
+        continue
+    _v = (_d / _D, -_b / _D)
+    _w = (-_c / _D, _a / _D)
+    _m, _n = (_a, _c), (_b, _d)
+    _dot = lambda u, z: u[0] * z[0] + u[1] * z[1]
+    if (abs(_dot(_m, _v) - 1) > 1e-6 or abs(_dot(_n, _w) - 1) > 1e-6
+            or abs(_dot(_m, _w)) > 1e-6 or abs(_dot(_n, _v)) > 1e-6):
+        _ok23v = False
+        break
+ok("九大理23-3 v=(d/D, -b/D)、w=(-c/D, a/D)", _ok23v, "2万組で4つの内積を確認")
+
+_ds23 = set()
+for _a in range(-4, 5):
+    for _b in range(-4, 5):
+        for _c in range(-4, 5):
+            for _d in range(-4, 5):
+                _D = _a * _d - _b * _c
+                if _D == 0:
+                    continue
+                if all((_q1 * _d - _q2 * _b) % _D == 0 and (-_q1 * _c + _q2 * _a) % _D == 0
+                       for _q1 in range(-3, 4) for _q2 in range(-3, 4)):
+                    _ds23.add(_D)
+ok("九大理23-3 D のとりうる値は ±1 のみ", sorted(_ds23) == [-1, 1], f"全探索 {sorted(_ds23)}")
+
+# 第4問：f(x)=e^{ax}cos bx, g(x)=e^{ax}sin bx
+random.seed(20230404)
+_ok23f = True
+for _ in range(20000):
+    _a = random.uniform(-2, 2)
+    _b = random.choice((1, -1)) * random.uniform(0.2, 2)
+    _x, _y = random.uniform(-2, 2), random.uniform(-2, 2)
+    _f = lambda t: math.exp(_a * t) * math.cos(_b * t)
+    _g = lambda t: math.exp(_a * t) * math.sin(_b * t)
+    if (abs(_f(_x + _y) - (_f(_x) * _f(_y) - _g(_x) * _g(_y))) > 1e-8
+            or abs(_g(_x + _y) - (_f(_x) * _g(_y) + _g(_x) * _f(_y))) > 1e-8):
+        _ok23f = False
+        break
+ok("九大理23-4 f=e^{ax}cos bx, g=e^{ax}sin bx が加法定理 (A)(B) をみたす", _ok23f, "2万組で確認")
+_h23 = 1e-6
+_ok23d = True
+for _a, _b in ((0.7, 1.3), (-1.1, 0.4)):
+    _f = lambda t: math.exp(_a * t) * math.cos(_b * t)
+    _g = lambda t: math.exp(_a * t) * math.sin(_b * t)
+    if (abs(_f(0) - 1) > 1e-12 or abs(_g(0)) > 1e-12
+            or abs((_f(_h23) - _f(-_h23)) / (2 * _h23) - _a) > 1e-5
+            or abs((_g(_h23) - _g(-_h23)) / (2 * _h23) - _b) > 1e-5):
+        _ok23d = False
+ok("九大理23-4 f(0)=1, g(0)=0, f'(0)=a, g'(0)=b", _ok23d, "数値微分で確認")
+
+# 第5問：x = t + 2sin²t, y = t + sin t
+_X23 = lambda t: t + 2 * math.sin(t) ** 2
+_Y23 = lambda t: t + math.sin(t)
+_dx23 = lambda t: 1 + 2 * math.sin(2 * t)
+_t23 = (7 * math.pi / 12, 11 * math.pi / 12)
+ok("九大理23-5 y 軸に平行な接線は2本",
+   all(abs(_dx23(_t)) < 1e-12 and 1 + math.cos(_t) > 0 for _t in _t23)
+   and abs(_X23(_t23[0]) - _X23(_t23[1])) > 0.5,
+   f"x = {_X23(_t23[0]):.6f}, {_X23(_t23[1]):.6f}")
+_S23 = quad(lambda t: (_X23(t) - _Y23(t)) * (1 + math.cos(t)), math.pi / 6, 5 * math.pi / 6, 2000001)[0]
+ok("九大理23-5 面積は 2π/3 - √3/2",
+   abs(_S23 - (2 * math.pi / 3 - math.sqrt(3) / 2)) < 1e-9,
+   f"数値積分 {_S23:.10f} / 2π/3-√3/2 = {2 * math.pi / 3 - math.sqrt(3) / 2:.10f}")
+
+# ---- 九大理系2022 ----
+
+# 第1問：平面 α（O, A, B を通る）と、対称点・折れ線の最短
+_A22, _B22 = (1, 1, 0), (2, 1, 2)
+_P22, _Q22 = (4, 0, -1), (4, 0, 5)
+_cr22 = (_A22[1] * _B22[2] - _A22[2] * _B22[1],
+         _A22[2] * _B22[0] - _A22[0] * _B22[2],
+         _A22[0] * _B22[1] - _A22[1] * _B22[0])
+_n22 = tuple(c / 3 for c in _cr22)
+_dot3 = lambda u, v: sum(u[k] * v[k] for k in range(3))
+ok("九大理22-1 n = (2,-2,-1)/3（a,b に垂直・大きさ1・x 成分が正）",
+   _cr22 == (2, -2, -1) and abs(_dot3(_A22, _n22)) < 1e-12 and abs(_dot3(_B22, _n22)) < 1e-12
+   and abs(_dot3(_n22, _n22) - 1) < 1e-12 and _n22[0] > 0,
+   f"a×b = {_cr22}")
+
+_d22 = _dot3(_P22, _n22)
+_Pp22 = tuple(_P22[k] - 2 * _d22 * _n22[k] for k in range(3))
+_mid22 = tuple((_P22[k] + _Pp22[k]) / 2 for k in range(3))
+ok("九大理22-1 P' = (0,4,1)",
+   all(abs(_Pp22[k] - (0, 4, 1)[k]) < 1e-12 for k in range(3))
+   and abs(_dot3(_mid22, _n22)) < 1e-12,
+   f"d = {_d22:.1f}、中点 {tuple(round(v, 6) for v in _mid22)} は平面上")
+
+_R22 = (3, 1, 4)
+_best22 = (1e18, None)
+for _i in range(-200, 201):
+    for _j in range(-200, 201):
+        _u, _v = _i / 50, _j / 50
+        _X = tuple(_u * _A22[k] + _v * _B22[k] for k in range(3))
+        _val = math.dist(_X, _P22) + math.dist(_X, _Q22)
+        if _val < _best22[0]:
+            _best22 = (_val, _X)
+ok("九大理22-1 R = (3,1,4)、最小値は 4√3",
+   abs(_dot3(_R22, _n22)) < 1e-12
+   and abs(math.dist(_R22, _P22) + math.dist(_R22, _Q22) - 4 * math.sqrt(3)) < 1e-12
+   and abs(_best22[0] - 4 * math.sqrt(3)) < 1e-9,
+   f"格子探索の最小 {_best22[0]:.6f} / 4√3 = {4 * math.sqrt(3):.6f}")
+
+# 第2問：x^n を (x-α)(x-β)^2 で割ったときの A, B, C
+def _ABC22(n, al, be):
+    C = al ** n
+    B = (be ** n - al ** n) / (be - al)
+    A = (n * be ** (n - 1) * (be - al) - (be ** n - al ** n)) / (be - al) ** 2
+    return A, B, C
+
+random.seed(20220202)
+_ok22 = True
+for _ in range(3000):
+    _n = random.randint(3, 9)
+    _al, _be = random.uniform(-3, 3), random.uniform(-3, 3)
+    if abs(_al - _be) < 0.2:
+        continue
+    _A, _B, _C = _ABC22(_n, _al, _be)
+    _f = lambda x: x ** _n - _A * (x - _al) * (x - _be) - _B * (x - _al) - _C
+    _df = lambda x: _n * x ** (_n - 1) - _A * ((x - _be) + (x - _al)) - _B
+    _sc = max(1.0, abs(_al) ** _n, abs(_be) ** _n)
+    if abs(_f(_al)) > 1e-6 * _sc or abs(_f(_be)) > 1e-6 * _sc or abs(_df(_be)) > 1e-6 * _sc:
+        _ok22 = False
+        break
+ok("九大理22-2 C=α^n, B=(β^n-α^n)/(β-α), A の式", _ok22,
+   "3000 組で (x-α)(x-β)² で割り切れることを確認")
+
+_ok22l = True
+for _n, _al in ((3, 2.0), (5, 1.5), (7, -1.2)):
+    _lim = _ABC22(_n, _al, _al + 1e-5)[0]
+    if abs(_lim - _n * (_n - 1) / 2 * _al ** (_n - 2)) > 2e-3 * max(1.0, abs(_al) ** (_n - 2)):
+        _ok22l = False
+ok("九大理22-2 β→α で A → n(n-1)/2・α^(n-2)", _ok22l,
+   "n=3,5,7 で β=α+10⁻⁵ として確認")
+
+# 第3問：n^4 = 1 + 210 m^2
+_s22 = [(m, n) for n in range(1, 300) for m in range(1, 2000) if n ** 4 == 1 + 210 * m * m]
+ok("九大理22-3 (m,n) = (116,41)、n²-1 は 168 の倍数",
+   _s22 == [(116, 41)] and (41 ** 2 - 1) % 168 == 0,
+   f"全探索 {_s22}、(41²-1)/168 = {(41 ** 2 - 1) // 168}")
+
+# 第4問：増加関数に対する区分求積の評価 ③
+_ok22r = True
+for _f22 in (lambda x: x ** 3 + math.exp(x), lambda x: math.sqrt(x + 1)):
+    _I = quad(_f22, 0, 1, 200001)[0]
+    for _n in (10, 100, 1000):
+        _S = sum(_f22((_i - 1) / _n) for _i in range(1, _n + 1)) / _n
+        if not (-1e-9 <= _I - _S <= (_f22(1) - _f22(0)) / _n + 1e-9):
+            _ok22r = False
+ok("九大理22-4 0 ≦ ∫f - S_n ≦ (f(1)-f(0))/n", _ok22r,
+   "増加関数2つ × n=10,100,1000 で確認")
+
+# 第5問：x = 5cos t + cos 5t, y = 5 sin t - sin 5t
+_X22 = lambda t: 5 * math.cos(t) + math.cos(5 * t)
+_Y22 = lambda t: 5 * math.sin(t) - math.sin(5 * t)
+_dX22 = lambda t: -10 * math.sin(3 * t) * math.cos(2 * t)
+_dY22 = lambda t: 10 * math.sin(3 * t) * math.sin(2 * t)
+_h22 = 1e-6
+ok("九大理22-5 dx/dt = -10 sin3t cos2t、dy/dt = 10 sin3t sin2t",
+   all(abs(_dX22(t) - (_X22(t + _h22) - _X22(t - _h22)) / (2 * _h22)) < 1e-4
+       and abs(_dY22(t) - (_Y22(t + _h22) - _Y22(t - _h22)) / (2 * _h22)) < 1e-4
+       for t in (0.1, 0.3, 0.5, 1.4, 2.7)),
+   "数値微分と一致")
+ok("九大理22-5 0<t<π/6 で dx/dt<0、dy/dx = -tan2t < 0",
+   all(_dX22(t) < 0 and abs(_dY22(t) / _dX22(t) + math.tan(2 * t)) < 1e-9
+       and _dY22(t) / _dX22(t) < 0 for t in (0.01, 0.2, 0.4, 0.52)),
+   "4点で確認")
+_S22a = quad(lambda t: _X22(t) * _dY22(t) - _Y22(t) * _dX22(t), 0, math.pi / 6, 400001)[0] / 2
+ok("九大理22-5 面積は 5π/3",
+   abs(_S22a - 5 * math.pi / 3) < 1e-9
+   and abs(_X22(math.pi / 6) - 2 * math.sqrt(3)) < 1e-12 and abs(_Y22(math.pi / 6) - 2) < 1e-12,
+   f"数値積分 {_S22a:.7f} / 5π/3 = {5 * math.pi / 3:.7f}")
+_z22 = lambda t: 5 * cmath.exp(1j * t) + cmath.exp(-5j * t)
+ok("九大理22-5 x 軸対称と π/3 回転で C に移る",
+   all(abs(_X22(-t) - _X22(t)) < 1e-12 and abs(_Y22(-t) + _Y22(t)) < 1e-12
+       and abs(cmath.exp(1j * math.pi / 3) * _z22(t) - _z22(t + math.pi / 3)) < 1e-12
+       for t in (0.3, 1.1, -2.5)),
+   "z(t) = 5e^{it} + e^{-5it} で確認")
+_r22 = [abs(_z22(_k * math.pi / 300)) for _k in range(601)]
+ok("九大理22-5 |z| は 4 と 6 の間を動き、尖点 t=kπ/3 で 6",
+   abs(min(_r22) - 4) < 1e-9 and abs(max(_r22) - 6) < 1e-9
+   and all(abs(abs(_z22(_k * math.pi / 3)) - 6) < 1e-12 for _k in range(6)),
+   f"最小 {min(_r22):.6f}、最大 {max(_r22):.6f}")
 
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
