@@ -5122,6 +5122,353 @@ ok("九大文24-2 B(1,3)、s = t = 4/5",
    f"B の候補 {[(round(_p, 3), round(_q, 3)) for _p, _q in _B24u]}、|OC|={math.hypot(*_C24):.9f}、"
    f"面積 {abs(_cr24(_A24v, _C24)) / 2:.9f} = {abs(_cr24(_B24v, _C24)) / 2:.9f}")
 
+# ---- 九大文系2023 ----
+
+# 第1問：y=|x²-9| と y=a で分かれる2つの面積
+_a23 = 9 * (4 ** (1 / 3) - 1)
+def _areas23(a):
+    _p, _q = math.sqrt(9 - a), math.sqrt(9 + a)
+    _S1 = quad(lambda x: (9 - x * x) - a, -_p, _p, 200001)[0]
+    _S2 = 2 * (quad(lambda x: a - (9 - x * x), _p, 3, 200001)[0]
+               + quad(lambda x: a - (x * x - 9), 3, _q, 200001)[0])
+    return _S1, _S2
+
+_s1_23, _s2_23 = _areas23(_a23)
+ok("九大文23-1 S1 = S2 となるのは a = 9(∛4 - 1)",
+   abs(_s1_23 - _s2_23) < 1e-6
+   and abs((9 + _a23) ** 1.5 - 54) < 1e-9
+   and _areas23(3.0)[0] > _areas23(3.0)[1] and _areas23(7.0)[0] < _areas23(7.0)[1],
+   f"a={_a23:.9f}、S1={_s1_23:.7f}、S2={_s2_23:.7f}、q³={(9 + _a23) ** 1.5:.6f}")
+
+# 第2問：y=x³-x の接線と y=-x の交点 B、外心 P
+_cu23 = lambda x: x ** 3 - x
+_ok23b = True
+for _i in range(1, 4000):
+    _t = _i / 500
+    _m = 3 * _t * _t - 1
+    _Bx = 2 * _t / 3
+    if abs(-_Bx - (_m * (_Bx - _t) + _cu23(_t))) > 1e-9:
+        _ok23b = False
+        break
+ok("九大文23-2 B = (2t/3, -2t/3)", _ok23b, "t を4000点で接線上にあることを確認")
+
+def _sin2_23(t):
+    _A = (t, _cu23(t))
+    _B = (2 * t / 3, -2 * t / 3)
+    _BO = (-_B[0], -_B[1])
+    _BA = (_A[0] - _B[0], _A[1] - _B[1])
+    _cr = _BO[0] * _BA[1] - _BO[1] * _BA[0]
+    return _cr * _cr / ((_BO[0] ** 2 + _BO[1] ** 2) * (_BA[0] ** 2 + _BA[1] ** 2))
+
+_f23 = lambda t: 9 * t ** 4 / (2 * (9 * t ** 4 - 6 * t * t + 2))
+ok("九大文23-2 sin²θ = 9t⁴ / {2(9t⁴-6t²+2)}",
+   all(abs(_sin2_23(_i / 500) - _f23(_i / 500)) < 1e-9 for _i in range(1, 4000)),
+   "外積から直接計算した値と一致")
+
+def _circum23(A, B):
+    _d = 2 * (A[0] * B[1] - A[1] * B[0])
+    _ux = ((A[0] ** 2 + A[1] ** 2) * B[1] - (B[0] ** 2 + B[1] ** 2) * A[1]) / _d
+    _uy = ((B[0] ** 2 + B[1] ** 2) * A[0] - (A[0] ** 2 + A[1] ** 2) * B[0]) / _d
+    return (_ux, _uy)
+
+_best23 = (9e9, None)
+for _i in range(1, 400000):
+    _t = _i / 10000
+    _A = (_t, _cu23(_t))
+    _B = (2 * _t / 3, -2 * _t / 3)
+    if abs(_A[0] * _B[1] - _A[1] * _B[0]) < 1e-12:
+        continue
+    _P = _circum23(_A, _B)
+    _v = math.hypot(*_P) / math.hypot(*_A)
+    if _v < _best23[0]:
+        _best23 = (_v, _t)
+ok("九大文23-2 f(t) の最小は t=√6/3 での 1/2",
+   abs(_best23[0] - 0.5) < 1e-9 and abs(_best23[1] - math.sqrt(6) / 3) < 1e-3
+   and abs(_sin2_23(math.sqrt(6) / 3) - 1) < 1e-12,
+   f"最小 {_best23[0]:.9f} / t = {_best23[1]:.6f}（√6/3 = {math.sqrt(6) / 3:.6f}）")
+
+# 第3問：r = q·v、s = q·w
+random.seed(20230303 + 1)
+_ok23r = True
+for _ in range(20000):
+    _a, _b, _c, _d = (random.uniform(-3, 3) for _ in range(4))
+    _D = _a * _d - _b * _c
+    if abs(_D) < 1e-3:
+        continue
+    _m, _n = (_a, _c), (_b, _d)
+    _v = (_d / _D, -_b / _D)
+    _w = (-_c / _D, _a / _D)
+    _q = (random.uniform(-5, 5), random.uniform(-5, 5))
+    _dot = lambda u, z: u[0] * z[0] + u[1] * z[1]
+    _r, _s = _dot(_q, _v), _dot(_q, _w)
+    if (abs(_r * _m[0] + _s * _n[0] - _q[0]) > 1e-6
+            or abs(_r * _m[1] + _s * _n[1] - _q[1]) > 1e-6):
+        _ok23r = False
+        break
+ok("九大文23-3 r = q·v、s = q·w で rm + sn = q", _ok23r, "2万組で確認")
+
+# 第4問：1 の3乗根を並べる確率の列
+def _nxt23(state, t):
+    if state == 0:
+        return 1 + (t % 3)
+    _j = state - 1
+    if t in (1, 2):
+        return 0
+    if t == 3:
+        return 1 + ((_j + 1) % 3)
+    if t == 4:
+        return 1 + ((-(_j + 1)) % 3)
+    if t == 5:
+        return 1 + _j
+    return 1 + ((-_j) % 3)
+
+_P23 = {0: Fraction(1), 1: Fraction(0), 2: Fraction(0), 3: Fraction(0)}
+_rows23 = []
+for _n in range(1, 9):
+    _rows23.append((_n, _P23[0], _P23[1], _P23[2], _P23[3]))
+    _Q23 = {0: Fraction(0), 1: Fraction(0), 2: Fraction(0), 3: Fraction(0)}
+    for _st, _pr in _P23.items():
+        for _t in range(1, 7):
+            _Q23[_nxt23(_st, _t)] += _pr * Fraction(1, 6)
+    _P23 = _Q23
+ok("九大文23-4 P(z_n=0) = 1/4 + (3/4)(-1/3)^{n-1}、P(z_n=1) = (1/4){1-(-1/3)^{n-1}}",
+   all(_r[1] == Fraction(1, 4) + Fraction(3, 4) * Fraction(-1, 3) ** (_r[0] - 1)
+       and _r[2] == Fraction(1, 4) * (1 - Fraction(-1, 3) ** (_r[0] - 1))
+       and _r[2] == _r[3] == _r[4]
+       for _r in _rows23),
+   f"n=3 で P(0)={_rows23[2][1]}、P(1)=P(ω)=P(ω²)={_rows23[2][2]}")
+
+# ---- 九大文系2022（第2問・第4問の大半は理科系と共通なので省く） ----
+
+# 第1問：C: y=|(x+3)(x-a)| と ℓ: y=-x+13 が接する a と、面積
+_D1_22 = lambda a: (a - 2) ** 2 + 4 * (3 * a - 13)
+_hit22b = []
+for _i in range(-29999, 130000):
+    _a = _i / 10000
+    if abs(_D1_22(_a)) < 1e-4:
+        if not _hit22b or abs(_a - _hit22b[-1]) > 1e-2:
+            _hit22b.append(_a)
+_C22b = lambda x: abs(x * x - x - 12)
+_L22b = lambda x: -x + 13
+_S22b = (quad(lambda x: _L22b(x) - _C22b(x), 1, 4, 200001)[0]
+         + quad(lambda x: _L22b(x) - _C22b(x), 4, 5, 200001)[0])
+ok("九大文22-1 a=4、(4,0) を境界にもつ図形の面積は 41/3",
+   [round(_a, 4) for _a in _hit22b] == [4.0]
+   and all((_a + 4) ** 2 + 64 > 0 for _a in (-3, 0, 4, 12))
+   and abs(_S22b - 41 / 3) < 1e-9,
+   f"a = {[round(_a, 4) for _a in _hit22b]}、面積 {_S22b:.9f} / 41/3 = {41 / 3:.9f}")
+
+# 第2問：PQ の長さ（n と P' は理科系2022第1問で確認済み）
+_A22b, _B22b, _P22b = (1, 1, 0), (2, 1, 2), (4, 0, -1)
+_cr22b = (_A22b[1] * _B22b[2] - _A22b[2] * _B22b[1],
+          _A22b[2] * _B22b[0] - _A22b[0] * _B22b[2],
+          _A22b[0] * _B22b[1] - _A22b[1] * _B22b[0])
+_n22b = tuple(_c / 3 for _c in _cr22b)
+_d22b = sum(_P22b[_k] * _n22b[_k] for _k in range(3))
+_Q22b = tuple(_P22b[_k] - _d22b * _n22b[_k] for _k in range(3))
+ok("九大文22-2 PQ = 3、Q = (2,2,0)",
+   abs(_d22b - 3) < 1e-12
+   and all(abs(_Q22b[_k] - (2, 2, 0)[_k]) < 1e-12 for _k in range(3))
+   and abs(sum(_Q22b[_k] * _n22b[_k] for _k in range(3))) < 1e-12,
+   f"OP·n = {_d22b:.6f}、Q = {tuple(round(_v, 6) for _v in _Q22b)}")
+
+# 第3問：f(x) = x⁴+6x³-kx²+2kx-64
+_f22b = lambda x, k: x ** 4 + 6 * x ** 3 - k * x * x + 2 * k * x - 64
+_sol22b = []
+for _m in range(1, 33):
+    if 32 % _m or (_m - 8) % 2:
+        continue
+    _p = (_m - 8) // 2
+    _rest = 32 // _m - _p * _p
+    if _rest > 0 and math.isqrt(_rest) ** 2 == _rest:
+        _q = math.isqrt(_rest)
+        _sol22b.append((_m, _p, _q, 16 - (_p * _p + _q * _q + 2 * _p * (-_m))))
+ok("九大文22-3 k = -8, 12",
+   all(abs(_f22b(2, _k)) < 1e-9 for _k in (-5, 0, 7, 13))
+   and sorted(_s[3] for _s in _sol22b) == [-8, 12]
+   and all(abs(_f22b(_z, -8)) < 1e-9
+           for _z in (2, -4, complex(-2, 2), complex(-2, -2)))
+   and all(abs(_f22b(_z, 12)) < 1e-9
+           for _z in (2, -8, complex(0, 2), complex(0, -2))),
+   f"(m,p,q,k) = {_sol22b}")
+
+# 第4問：整式の増加関数に対する区分求積（理科系と同じ評価式を整式で確認）
+_ok22b4 = True
+for _f in (lambda x: x ** 3 + x, lambda x: x ** 5 + 2 * x):
+    _I = quad(_f, 0, 1, 200001)[0]
+    for _n in (10, 100, 1000):
+        _S = sum(_f((_i - 1) / _n) for _i in range(1, _n + 1)) / _n
+        if not (-1e-9 <= _I - _S <= (_f(1) - _f(0)) / _n + 1e-9):
+            _ok22b4 = False
+ok("九大文22-4 整式の増加関数でも 0 ≦ ∫f - S_n ≦ (f(1)-f(0))/n", _ok22b4,
+   "x³+x と x⁵+2x × n=10,100,1000 で確認")
+
+# ---- 九大文系2021 ----
+
+# 第1問：三角形 OAB の内接円と、両軸に接する円が AB から切り取る弦
+_r21 = (3 - math.sqrt(5)) / 2
+_d21 = lambda R: abs(3 * R - 2) / math.sqrt(5)
+ok("九大文21-1 内心は ((3-√5)/2, (3-√5)/2)",
+   abs(_d21(_r21) - _r21) < 1e-12,
+   f"r = {_r21:.9f}、AB までの距離 {_d21(_r21):.9f}")
+_mx21b = max((2 * math.sqrt(_R * _R - _d21(_R) ** 2), _R)
+             for _R in (_i / 100000 * 3 for _i in range(1, 100001))
+             if _d21(_R) < _R)
+ok("九大文21-1 PQ の最大値は 2（半径 3/2）",
+   abs(_mx21b[0] - 2) < 1e-7 and abs(_mx21b[1] - 1.5) < 1e-4,
+   f"r = {_mx21b[1]:.5f} で PQ = {_mx21b[0]:.9f}")
+
+# 第2問：すべての t（または |t|≦1）で y ≧ xt - 2t²
+_ok21a = _ok21b = True
+for _i in range(-200, 201):
+    _x = _i / 20
+    _m1 = max(_x * (_t / 1000) - 2 * (_t / 1000) ** 2 for _t in range(-20000, 20001))
+    _m2 = max(_x * (_t / 100000) - 2 * (_t / 100000) ** 2 for _t in range(-100000, 100001))
+    if abs(_m1 - _x * _x / 8) > 1e-5:
+        _ok21a = False
+    _pred = _x * _x / 8 if abs(_x) <= 4 else abs(_x) - 2
+    if abs(_m2 - _pred) > 1e-5:
+        _ok21b = False
+ok("九大文21-2 条件 A は y ≧ x²/8、条件 B は |x|≦4 で x²/8、|x|>4 で |x|-2",
+   _ok21a and _ok21b, "x を -10〜10 まで 0.05 刻みで最大を数値計算して確認")
+
+# 第3問：C: y = -x²-2ax-a³+10a と ℓ: y = 8x+6
+_D21c = lambda a: (2 * a + 8) ** 2 - 4 * (a ** 3 - 10 * a + 6)
+_hit21c = []
+for _i in range(1, 200000):
+    _a = _i / 10000
+    if abs(_D21c(_a)) < 1e-3:
+        if not _hit21c or abs(_a - _hit21c[-1]) > 1e-2:
+            _hit21c.append(_a)
+_C21c = lambda x: -x * x - 10 * x - 75
+_L21c = lambda x: 8 * x + 6
+_S21c = quad(lambda x: _L21c(x) - _C21c(x), -9, 0, 200001)[0]
+ok("九大文21-3 a=5、囲む面積は 243",
+   [round(_a, 4) for _a in _hit21c] == [5.0]
+   and abs(_C21c(-9) - _L21c(-9)) < 1e-12
+   and abs(_S21c - 243) < 1e-6
+   and -2 + math.sqrt(2) < 0,
+   f"a = {[round(_a, 4) for _a in _hit21c]}、接点 (-9,{_C21c(-9):.0f})、面積 {_S21c:.6f}")
+
+# 第4問：Σ k2^{k-1} と、和の形の漸化式
+ok("九大文21-4 Σ[k=1..n] k·2^{k-1} = (n-1)2^n + 1",
+   all(sum(_k * 2 ** (_k - 1) for _k in range(1, _n + 1)) == (_n - 1) * 2 ** _n + 1
+       for _n in range(1, 15)),
+   "n = 1〜14 で確認")
+_a21 = [None, Fraction(2)]
+for _n in range(1, 13):
+    _a21.append(1 + Fraction(1, 2) * sum((_n + 1 - _k) * _a21[_k] for _k in range(1, _n + 1)))
+ok("九大文21-4 a_1 = 2、n ≧ 2 で a_n = 2^{n-1}",
+   _a21[1] == 2 and all(_a21[_n] == 2 ** (_n - 1) for _n in range(2, 14)),
+   "a_1〜a_13 = " + ", ".join(str(_a21[_n]) for _n in range(1, 8)) + ", ...")
+
+# ---- 九大文系2020（第4問は理科系と共通なので省く） ----
+
+# 第1問：C1: y=x² と C2: y=3(x-a)²+a³-40
+_D20b = lambda a: -2 * a ** 3 + 3 * a * a + 80
+_S20b = lambda a: _D20b(a) ** 1.5 / 3
+_mx20b = max((_S20b(_i / 100000 * 4), _i / 100000 * 4) for _i in range(0, 100000))
+ok("九大文20-1 0 ≦ a < 4、S の最大は a=1 での 243",
+   abs(_D20b(4)) < 1e-12
+   and all(_D20b(_a / 1000) > 0 for _a in range(0, 4000))
+   and 25 - 160 < 0
+   and abs(_mx20b[0] - 243) < 1e-6 and abs(_mx20b[1] - 1) < 1e-4,
+   f"a = {_mx20b[1]:.5f} で S = {_mx20b[0]:.6f}")
+_r20b = ((3 - math.sqrt(_D20b(1))) / 2, (3 + math.sqrt(_D20b(1))) / 2)
+_A20b = quad(lambda x: x * x - (3 * (x - 1) ** 2 + 1 - 40), _r20b[0], _r20b[1], 200001)[0]
+ok("九大文20-1 a=1 のとき交点は x=-3,6、面積は 243",
+   abs(_r20b[0] + 3) < 1e-12 and abs(_r20b[1] - 6) < 1e-12 and abs(_A20b - 243) < 1e-6,
+   f"交点 {tuple(round(_v, 6) for _v in _r20b)}、面積 {_A20b:.6f}")
+
+# 第2問：正四面体と z 軸に垂直な断面
+_O20b = (0.0, 0.0, 0.0)
+_A20v = (1.0, 1.0, 0.0)
+_B20v = (1.0, 0.0, 1.0)
+_C20v = (0.0, 1.0, 1.0)
+ok("九大文20-2 p=1, q=0, r=1, s=1（6辺がすべて √2）",
+   all(abs(math.dist(_P, _Q) - math.sqrt(2)) < 1e-12
+       for _P, _Q in itertools.combinations((_O20b, _A20v, _B20v, _C20v), 2)),
+   "4点の6辺をすべて計算して確認")
+
+_ok20b2 = True
+for _t in (0.25, 0.5, 0.75):
+    _P1 = tuple(_t * _B20v[_k] for _k in range(3))
+    _P2 = tuple(_t * _C20v[_k] for _k in range(3))
+    _P3 = tuple(_A20v[_k] + _t * (_C20v[_k] - _A20v[_k]) for _k in range(3))
+    _v1 = tuple(_P2[_k] - _P1[_k] for _k in range(3))
+    _v2 = tuple(_P3[_k] - _P2[_k] for _k in range(3))
+    if (abs(sum(_v1[_k] * _v2[_k] for _k in range(3))) > 1e-12
+            or abs(math.dist(_P1, _P2) * math.dist(_P2, _P3) - 2 * _t * (1 - _t)) > 1e-12):
+        _ok20b2 = False
+ok("九大文20-2 断面は長方形で面積 2t(1-t)、最大は t=1/2 の 1/2", _ok20b2,
+   "t = 0.25, 0.5, 0.75 で内積 0・面積一致を確認")
+
+# 第3問：f(x) = x³+ax²+bx+c、f((1+√3i)/2)=0
+_w20b = complex(0.5, math.sqrt(3) / 2)
+_f20b = lambda x, c: x ** 3 + (c - 1) * x * x + (1 - c) * x + c
+_c20b = [_c for _c in range(-40, 41) if (1 + _c) % 7 == 4 and (3 * _c - 3) % 11 == 2]
+ok("九大文20-3 a=c-1, b=1-c、c=31、解は (1±√3i)/2 と -31",
+   all(abs(_f20b(_w20b, _c)) < 1e-9 for _c in (-5, 0, 7, 31))
+   and _c20b == [31]
+   and abs(_f20b(-31, 31)) < 1e-9
+   and _f20b(1, 31) == 32 and _f20b(-1, 31) == 90,
+   f"c の候補 {_c20b}、f(1)={_f20b(1, 31)}、f(-1)={_f20b(-1, 31)}")
+
+# ---- 九大文系2019（第4問は理科系2019第2問と共通なので省く） ----
+
+# 第1問：3 と 8 の硬貨を10回投げて積が8桁
+_cnt19 = sum(math.comb(10, _k) for _k in range(11) if len(str(3 ** _k * 8 ** (10 - _k))) == 8)
+_dig19 = [_k for _k in range(11) if len(str(3 ** _k * 8 ** (10 - _k))) == 8]
+ok("九大文19-1 積が8桁になる確率は 165/512（表が3回か4回）",
+   _dig19 == [3, 4] and Fraction(_cnt19, 1024) == Fraction(165, 512),
+   f"8桁になるのは k={_dig19}、{_cnt19}/1024")
+
+# 第2問：y = x³-kx²+kx+1 の極大値 - 極小値
+def _dif19(k):
+    _D = k * k - 3 * k
+    if _D <= 0:
+        return None
+    _a = (2 * k - 2 * math.sqrt(_D)) / 6
+    _b = (2 * k + 2 * math.sqrt(_D)) / 6
+    _f = lambda x: x ** 3 - k * x * x + k * x + 1
+    return _f(_a) - _f(_b)
+
+ok("九大文19-2 極大値-極小値 = (4/27)(k²-3k)^{3/2}",
+   all(abs(_dif19(_k) - 4 / 27 * (_k * _k - 3 * _k) ** 1.5) < 1e-9
+       for _k in (-3 / 8, -1, -2.5, 4, 5)),
+   "k = -3/8, -1, -2.5, 4, 5 で確認")
+_hit19 = []
+for _i in range(-200000, 500000):
+    _k = _i / 100000
+    if _k * _k - 3 * _k <= 1e-9:
+        continue
+    if abs(4 / 27 * (_k * _k - 3 * _k) ** 1.5 - 4 * abs(_k) ** 3) < 1e-6:
+        if not _hit19 or abs(_k - _hit19[-1]) > 1e-3:
+            _hit19.append(_k)
+ok("九大文19-2 k = -3/8",
+   any(abs(_k + 0.375) < 1e-4 for _k in _hit19)
+   and all(abs(_k + 0.375) < 1e-4 or abs(_k) < 1e-3 for _k in _hit19),
+   f"候補 {[round(_k, 6) for _k in _hit19]}（k→0 の側は極値が消えるので不適）")
+
+# 第3問：平面 α と四面体 ABCP
+_A19b, _B19b, _C19b = (1, 2, 3), (3, 2, 3), (4, 5, 6)
+_ab19 = tuple(_B19b[_i] - _A19b[_i] for _i in range(3))
+_ac19 = tuple(_C19b[_i] - _A19b[_i] for _i in range(3))
+_cr19 = (_ab19[1] * _ac19[2] - _ab19[2] * _ac19[1],
+         _ab19[2] * _ac19[0] - _ab19[0] * _ac19[2],
+         _ab19[0] * _ac19[1] - _ab19[1] * _ac19[0])
+_nrm19 = math.sqrt(sum(_c * _c for _c in _cr19))
+ok("九大文19-3 法線は (0,-6,6)、△ABC = 3√2、PH = |q-p-1|/√2",
+   _cr19 == (0, -6, 6) and abs(_nrm19 / 2 - 3 * math.sqrt(2)) < 1e-12
+   and all(abs(abs(_q - _p - 1) / math.sqrt(2)
+                - abs(sum(_cr19[_i] * ((6, _p, _q)[_i] - _A19b[_i]) for _i in range(3))) / _nrm19) < 1e-12
+           for _p, _q in ((9, 7), (10, 7), (9, 8))),
+   f"外積 {_cr19}、面積 {_nrm19 / 2:.9f}")
+_v19 = [abs((7 + math.sin(_t / 10000)) - (9 + math.cos(_t / 10000)) - 1) for _t in range(0, 62832)]
+ok("九大文19-3 体積の最大 3+√2、最小 3-√2",
+   abs(min(_v19) - (3 - math.sqrt(2))) < 1e-7 and abs(max(_v19) - (3 + math.sqrt(2))) < 1e-7,
+   f"最小 {min(_v19):.9f}、最大 {max(_v19):.9f}")
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

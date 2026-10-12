@@ -1,4 +1,9 @@
 import { getUniversity, universities } from "@/lib/data";
+import { kyudaiBunkei2019 } from "@/lib/solutions/kyudai-bunkei-2019";
+import { kyudaiBunkei2020 } from "@/lib/solutions/kyudai-bunkei-2020";
+import { kyudaiBunkei2021 } from "@/lib/solutions/kyudai-bunkei-2021";
+import { kyudaiBunkei2022 } from "@/lib/solutions/kyudai-bunkei-2022";
+import { kyudaiBunkei2023 } from "@/lib/solutions/kyudai-bunkei-2023";
 import { kyudaiBunkei2024 } from "@/lib/solutions/kyudai-bunkei-2024";
 import { kyudaiBunkei2025 } from "@/lib/solutions/kyudai-bunkei-2025";
 import { kyudaiBunkei2026 } from "@/lib/solutions/kyudai-bunkei-2026";
@@ -105,6 +110,11 @@ const all: SolutionSet[] = [
   kyudaiBunkei2026,
   kyudaiBunkei2025,
   kyudaiBunkei2024,
+  kyudaiBunkei2023,
+  kyudaiBunkei2022,
+  kyudaiBunkei2021,
+  kyudaiBunkei2020,
+  kyudaiBunkei2019,
   kagakudai2026,
   nagoyaRikei2026,
   nagoyaBunkei2026,
