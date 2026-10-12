@@ -5779,6 +5779,137 @@ for _f22, _nm in ((lambda x: 1 + x, "1+x"), (lambda x: math.exp(x), "e^x"),
 ok("名理22-4 F_n(4) > I_n（x↦4-x の置換）なので a_n < 4", _ok22f,
    f"3つの f × n=2,5,20,100 で a_n は {min(_a22list):.3f}〜{max(_a22list):.3f}")
 
+# ---- 名古屋大学 理科系 2021 ----
+
+_A21 = 0.5
+_D21 = math.sqrt(_A21**2 - 2 * _A21**4)
+_T1_21 = _A21 - _D21
+_S21 = quad(lambda x: x * x - (2 * _T1_21 * x - _T1_21**2), _T1_21, _A21, 20001)[0]
+ok(
+    "名理21-1 2接線は t²-2at+2a⁴=0 で決まり、交点は (a, 2a⁴)、S(a) = a³(1-2a²)^{3/2}/3",
+    abs(_S21 - _A21**3 * (1 - 2 * _A21**2) ** 1.5 / 3) < 1e-9
+    and all(
+        abs((4 * a - 2 * t) ** 2 - 4 * (4 * a * a - 4 * a**4 - t * t)) < 1e-9
+        for a in (0.2, 0.3, 0.5, 0.6)
+        for t in (a - math.sqrt(a * a - 2 * a**4), a + math.sqrt(a * a - 2 * a**4))
+    ),
+    f"a=1/2 の面積 数値積分 {_S21:.10f} / 式 {_A21**3*(1-2*_A21**2)**1.5/3:.10f}",
+)
+_cand = max(
+    ((i * 1e-5, (i * 1e-5) ** 3 * (1 - 2 * (i * 1e-5) ** 2) ** 1.5 / 3) for i in range(1, 70710)),
+    key=lambda pr: pr[1],
+)
+ok(
+    "名理21-1 共通接線が2本あるのは 0<a<√2/2、S(a) の最大は a=1/2 での √2/96",
+    abs(_cand[0] - 0.5) < 1e-4 and abs(_cand[1] - math.sqrt(2) / 96) < 1e-9,
+    f"最大 a={_cand[0]:.5f} S={_cand[1]:.10f} / √2/96={math.sqrt(2)/96:.10f}",
+)
+
+_al = math.log(3) / math.log(2)
+_be = math.log(5) / math.log(3)
+_ga = math.log(2) / math.log(5)
+_p21 = _al + _be + _ga
+_q21 = 1 / _al + 1 / _be + 1 / _ga
+_f21 = lambda x: x**3 + _p21 * x * x + _q21 * x + 1
+ok(
+    "名理21-2 αβγ=1、小さい順は γ<β<δ<α、f(x)=(x+α)(x+β)(x+γ)",
+    abs(_al * _be * _ga - 1) < 1e-12
+    and _ga < _be < 1.5 < _al
+    and all(abs(_f21(x) - (x + _al) * (x + _be) * (x + _ga)) < 1e-9 for x in (-0.5, -1, -1.5, 0.3, 2)),
+    f"α={_al:.6f} β={_be:.6f} γ={_ga:.6f}",
+)
+ok(
+    "名理21-2 f(-1/2)<0、f(-1)<0、f(-3/2)>0",
+    _f21(-0.5) < 0 and _f21(-1) < 0 and _f21(-1.5) > 0,
+    f"{_f21(-0.5):+.9f} / {_f21(-1):+.9f} / {_f21(-1.5):+.9f}",
+)
+
+_rows21 = [[1, 2, 3, 4, 5], [6, 7, 8, 9], [10, 11], [12]]
+_pos21 = {v: (r, c) for r, row in enumerate(_rows21) for c, v in enumerate(row)}
+
+
+def _mv21(v):
+    r, c = _pos21[v]
+    out = list(_rows21[r][c + 1 :])
+    out += [_rows21[rr][c] for rr in range(r + 1, 4) if c < len(_rows21[rr])]
+    return out
+
+
+_vis21 = {v: Fraction(0) for v in range(1, 13)}
+for _v in range(1, 13):
+    _vis21[_v] += Fraction(1, 12)
+    _ms = _mv21(_v)
+    for _m in _ms:
+        _vis21[_m] += _vis21[_v] * Fraction(1, len(_ms))
+ok(
+    "名理21-3 行き止まりは 5,9,11,12 だけで、p5+p9+p11+p12 = 1",
+    [v for v in range(1, 13) if not _mv21(v)] == [5, 9, 11, 12]
+    and all(m > v for v in range(1, 13) for m in _mv21(v))
+    and _vis21[5] + _vis21[9] + _vis21[11] + _vis21[12] == 1,
+    "移動はつねに番号を大きくするので、番号順に1回なぞるだけで確率が決まる",
+)
+ok(
+    "名理21-3 p2=2/21、p5=8/35、p11=1/5、最大は p9=2/5",
+    _vis21[2] == Fraction(2, 21)
+    and _vis21[5] == Fraction(8, 35)
+    and _vis21[11] == Fraction(1, 5)
+    and _vis21[9] == Fraction(2, 5)
+    and max(_vis21[j] for j in (5, 9, 11, 12)) == _vis21[9],
+    f"p5={_vis21[5]} p9={_vis21[9]} p11={_vis21[11]} p12={_vis21[12]}",
+)
+
+random.seed(20210226)
+_cnt21 = {v: 0 for v in range(1, 13)}
+_N21 = 120000
+for _ in range(_N21):
+    _v = random.randint(1, 12)
+    _seen = [_v]
+    while _mv21(_v):
+        _v = random.choice(_mv21(_v))
+        _seen.append(_v)
+    for _s in _seen:
+        _cnt21[_s] += 1
+ok(
+    "名理21-3 モンテカルロでも同じ値",
+    all(abs(_cnt21[j] / _N21 - float(_vis21[j])) < 0.006 for j in (2, 5, 9, 11, 12)),
+    " ".join(f"p{j}={_cnt21[j]/_N21:.5f}" for j in (2, 5, 9, 11, 12)),
+)
+
+_nx21 = lambda x: 3 * math.floor(x + Fraction(1, 2)) - 2 * x
+random.seed(7)
+_bad2, _bad3 = 0, 0
+for _ in range(120000):
+    _x = random.uniform(-50, 50)
+    if _x - math.floor(_x) >= 0.5 and not 3 * math.floor(_x + 0.5) - 2 * _x > _x:
+        _bad2 += 1
+    _y = 3 * math.floor(_x + 0.5) - 2 * _x
+    if _y < _x and (abs(_y - (3 * math.floor(_x) - 2 * _x)) > 1e-9 or math.floor(_y) != math.floor(_x) - 1):
+        _bad3 += 1
+ok(
+    "名理21-4 小数部≧1/2 なら増加、減少するなら a_{n+1}=3[a_n]-2a_n かつ [a_{n+1}]=[a_n]-1",
+    _bad2 == 0 and _bad3 == 0,
+    f"-50〜50 の12万点で反例 {_bad2} 件 / {_bad3} 件",
+)
+_bad4 = 0
+for _i in range(1, 400):
+    _a = Fraction(_i, 400)
+    _seq = [_a]
+    while True:
+        _x = _seq[-1]
+        _y = 3 * Fraction(math.floor(_x + Fraction(1, 2))) - 2 * _x
+        if _y < _x:
+            _seq.append(_y)
+        else:
+            break
+    for _k in range(2, len(_seq) + 1):
+        if Fraction(4, 3) - _k + Fraction((-2) ** _k, 6) * (1 - 3 * _a) != _seq[_k - 1]:
+            _bad4 += 1
+ok(
+    "名理21-4 a_k = 4/3 - k + (-2)^k(1-3a)/6",
+    _bad4 == 0,
+    "a=1/400〜399/400 の減少が続く範囲すべてを分数のまま照合して反例 0 件",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
