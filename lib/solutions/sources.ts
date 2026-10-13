@@ -227,6 +227,11 @@ export const sources: Record<string, Record<number, Source>> = {
       checked: "2026-10-13",
       note: "2026年度ぶんと同じ確認。旧・東京工業大学の年度ぶんも含め、数学の問題は公開されていない。",
     },
+    2019: {
+      kind: "none",
+      checked: "2026-10-13",
+      note: "2026年度ぶんと同じ確認。旧・東京工業大学の年度ぶんも含め、数学の問題は公開されていない。",
+    },
   },
   "todai-rikei": {
     2026: {

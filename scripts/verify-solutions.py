@@ -10,6 +10,7 @@
 模試の見本問題（assets/moshi-sample/moshi-sample.tex）も、ここで同じように確かめる。
 公開する以上、解説と同じ基準で確かめておく。
 """
+import bisect
 import cmath
 import random
 import itertools
@@ -8998,6 +8999,195 @@ ok(
     and abs(float(10000**3 * _a20k - 10000**2 - _B20)) < 5e-3
     and abs(float(10000**4 * _a20k - 10000**3 - 10000 * _B20 - 3 * _c20**2)) < 5e-3,
     f"k=10000 で k·a_k={float(10000*_a20k):.9f}、k³a_k-k²={float(10000**3*_a20k-10000**2):.6f}（-π²/4={float(_B20):.6f}）、k⁴a_k-k³-kB={float(10000**4*_a20k-10000**3-10000*_B20):.6f}（3π²/4={float(3*_c20**2):.6f}）",
+)
+
+# ---- 東京科学大2019 ----
+random.seed(20190)
+
+
+def _tri19(h, s, t):
+    return (h * h + s * s) + (h * h + t * t) + (t - s) ** 2, 4 * math.sqrt(3) * (0.5 * h * (t - s))
+
+
+_bad19a = 0
+_min19a = 1e9
+for _ in range(60000):
+    _h = random.uniform(0.01, 5)
+    _s = random.uniform(-5, 5)
+    _t = random.uniform(_s + 1e-6, _s + 10)
+    _L, _R = _tri19(_h, _s, _t)
+    if _L < _R - 1e-9:
+        _bad19a += 1
+    _min19a = min(_min19a, _L - _R)
+_h19 = 1.7
+_Le, _Re = _tri19(_h19, -math.sqrt(3) * _h19 / 3, math.sqrt(3) * _h19 / 3)
+
+
+def _tetra19(pts):
+    def _ar(P, Q, R):
+        u = [Q[i] - P[i] for i in range(3)]
+        v = [R[i] - P[i] for i in range(3)]
+        cr = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]]
+        return 0.5 * math.sqrt(sum(x * x for x in cr))
+
+    A, B, C, D = pts
+    e = [math.dist(B, C), math.dist(C, A), math.dist(A, B), math.dist(A, D), math.dist(B, D), math.dist(C, D)]
+    T = _ar(A, B, C) + _ar(A, B, D) + _ar(A, C, D) + _ar(B, C, D)
+    return sum(x * x for x in e), 2 * math.sqrt(3) * T
+
+
+_bad19b = 0
+_min19b = 1e9
+for _ in range(30000):
+    _P = [[random.uniform(-3, 3) for _ in range(3)] for _ in range(4)]
+    _L, _R = _tetra19(_P)
+    if _L < _R - 1e-9:
+        _bad19b += 1
+    _min19b = min(_min19b, _L - _R)
+_Lr, _Rr = _tetra19([[1, 1, 1], [1, -1, -1], [-1, 1, -1], [-1, -1, 1]])
+ok(
+    "科学大19-1 p²+q²+r²≧4√3S（等号は s=-√3h/3, t=√3h/3）、四面体では Σ辺²≧2√3T（等号は正四面体）",
+    _bad19a == 0 and abs(_Le - _Re) < 1e-9 and _bad19b == 0 and abs(_Lr - _Rr) < 1e-9,
+    f"三角形は乱数6万通りで反例 {_bad19a} 件・最小差 {_min19a:.6f}、等号の s,t で差 {_Le-_Re:.1e}。四面体は乱数3万通りで反例 {_bad19b} 件・最小差 {_min19b:.6f}、正四面体で両辺とも {_Lr:.6f}",
+)
+
+_log2 = math.log(2)
+_A19 = 5 - 8 * _log2
+_B19 = 4 * _log2**2 + 5 * _log2
+_f19 = lambda u: 6 * u * math.log(u) + 2.5 - 4 * _log2
+_lhs19 = lambda x: quad(lambda y: abs(math.log(y)) * _f19(x * y), 1 / x, 2 / x, 40001)[0]
+_ok19b = all(abs(_lhs19(x) - (3 * x * (math.log(x) - 1) + _A19 + _B19 / x)) < 1e-7 for x in (1.0, 1.3, 1.7, 2.0))
+ok(
+    "科学大19-2 f(x)=6x log x+5/2-4log2、A=5-8log2、B=4(log2)²+5log2",
+    _ok19b,
+    f"x=1,1.3,1.7,2 で数値積分した左辺と右辺が一致。A={_A19:.9f}、B={_B19:.9f}、x=1.3 で左辺 {_lhs19(1.3):.9f}",
+)
+
+_M19 = {}
+for _m in range(-20, 21):
+    for _n in range(-20, 21):
+        _z = complex(_m, _n) / complex(3, 2)
+        _M19[(round(_z.real * 13), round(_z.imag * 13))] = True
+_nn19 = sorted(u * u + v * v for (u, v) in _M19)
+_N19 = lambda r: bisect.bisect_right(_nn19, 169 * r * r + 1e-9)
+_good19 = [i / 20000 for i in range(1, 30000) if 10 <= _N19(i / 20000) < 25]
+_inside19 = lambda x, y: -1e-9 <= x <= 1 + 1e-9 and -1e-9 <= y <= 1 + 1e-9 and not (x > 0.5 + 1e-9 and y > 0.5 + 1e-9)
+_cnt19 = sum(1 for (u, v) in _M19 if _inside19(u / 13, v / 13))
+ok(
+    "科学大19-3 10≦N(r)<25 は 2√13/13≦r<2√26/13、L字形の領域に入る M の要素は 12 個",
+    abs(min(_good19) - 2 / math.sqrt(13)) < 1e-4
+    and abs(max(_good19) - 2 * math.sqrt(2) / math.sqrt(13)) < 1e-4
+    and _cnt19 == 12,
+    f"走査した r の範囲は {min(_good19):.5f}〜{max(_good19):.5f}（2√13/13={2/math.sqrt(13):.6f}、2√26/13={2*math.sqrt(2)/math.sqrt(13):.6f}）、領域内の個数は {_cnt19}",
+)
+
+
+def _dot19(u, v):
+    return sum(a * b for a, b in zip(u, v))
+
+
+def _basis19(nrm):
+    vs = []
+    for e in ((1, 0, 0), (0, 1, 0), (0, 0, 1)):
+        s = _dot19(nrm, nrm)
+        w = tuple(Fraction(e[i]) * s - nrm[i] * _dot19(nrm, e) for i in range(3))
+        if any(x != 0 for x in w):
+            if not vs:
+                vs.append(w)
+            else:
+                a = vs[0]
+                cr = (a[1] * w[2] - a[2] * w[1], a[2] * w[0] - a[0] * w[2], a[0] * w[1] - a[1] * w[0])
+                if any(x != 0 for x in cr):
+                    vs.append(w)
+                    break
+    return vs[0], vs[1]
+
+
+def _onplane19(nrm, d):
+    for i in range(3):
+        if nrm[i] != 0:
+            p = [Fraction(0), Fraction(0), Fraction(0)]
+            p[i] = Fraction(d) / nrm[i]
+            return tuple(p)
+
+
+def _regions2d19(lines):
+    L = sorted(set(lines))
+    pts = {}
+    for i in range(len(L)):
+        for j in range(i + 1, len(L)):
+            a1, b1, c1 = L[i]
+            a2, b2, c2 = L[j]
+            det = a1 * b2 - a2 * b1
+            if det == 0:
+                continue
+            key = ((c1 * b2 - c2 * b1) / det, (a1 * c2 - a2 * c1) / det)
+            pts.setdefault(key, set()).update([L[i], L[j]])
+    return 1 + len(L) + sum(len(v) - 1 for v in pts.values())
+
+
+def _regions3d19(planes):
+    T = 1
+    for k, (nrm, d) in enumerate(planes):
+        p0 = _onplane19(nrm, d)
+        u, v = _basis19(nrm)
+        lines = []
+        for (n2, d2) in planes[:k]:
+            A, B = _dot19(n2, u), _dot19(n2, v)
+            if A == 0 and B == 0:
+                continue
+            C = Fraction(d2) - _dot19(n2, p0)
+            lines.append((Fraction(1), B / A, C / A) if A != 0 else (Fraction(0), Fraction(1), C / B))
+        T += _regions2d19(lines)
+    return T
+
+
+_pl19 = set()
+for _a in range(-2, 3):
+    for _b in range(-2, 3):
+        for _c in range(-2, 3):
+            if (_a, _b, _c) == (0, 0, 0):
+                continue
+            for _d in range(-2, 3):
+                _g = math.gcd(math.gcd(abs(_a), abs(_b)), math.gcd(abs(_c), abs(_d)))
+                _p = (_a // _g, _b // _g, _c // _g, _d // _g) if _g else (_a, _b, _c, _d)
+                for _x in _p[:3]:
+                    if _x != 0:
+                        if _x < 0:
+                            _p = (-_p[0], -_p[1], -_p[2], -_p[3])
+                        break
+                _pl19.add(_p)
+_pl19 = sorted(_pl19)
+_top19 = {}
+for _n4 in (3, 4, 5):
+    _seen = set()
+    for _ in range(1500 if _n4 == 5 else 6000):
+        _ch = random.sample(_pl19, _n4)
+        _seen.add(_regions3d19([((Fraction(a), Fraction(b), Fraction(c)), d) for (a, b, c, d) in _ch]))
+    _top19[_n4] = sorted(_seen, reverse=True)
+_f19max = lambda n: (n**3 + 5 * n + 6) // 6
+ok(
+    "科学大19-4 最大は (n³+5n+6)/6、2番目は 1 小さい値、3番目は n=4 だけ 12 で他は 2 小さい値",
+    all(_top19[n][:2] == [_f19max(n), _f19max(n) - 1] for n in (3, 4, 5))
+    and _top19[3][2] == 6
+    and _top19[4][2] == 12
+    and 13 not in _top19[4]
+    and _top19[5][2] == 24,
+    f"無作為な平面の組で現れた値（大きい順）は n=3 で {_top19[3][:4]}、n=4 で {_top19[4][:5]}、n=5 で {_top19[5][:4]}",
+)
+
+_a19 = Fraction(2**8, 3**4)
+_b19 = lambda k: Fraction((k + 1) ** (k + 1)) / (_a19**k * math.factorial(k))
+_vals19 = [(_b19(k), k) for k in range(1, 40)]
+_Mx19 = max(v for v, _ in _vals19)
+_f19dec = lambda x: (x + 1) * math.log(1 + 1 / x)
+_xs19 = [0.01 * i for i in range(1, 3000)]
+ok(
+    "科学大19-5 f(x)=(x+1)log(1+1/x) は減少、max bₖ=3¹¹/2¹⁷ で k=2,3",
+    all(_f19dec(_xs19[i]) > _f19dec(_xs19[i + 1]) for i in range(len(_xs19) - 1))
+    and _Mx19 == Fraction(3**11, 2**17)
+    and [k for v, k in _vals19 if v == _Mx19] == [2, 3],
+    f"最大値は {_Mx19}（3¹¹/2¹⁷={Fraction(3**11, 2**17)}）で k={[k for v, k in _vals19 if v == _Mx19]}、比 b_(k+1)/b_k は k=1..6 で {[round(float(_b19(k+1)/_b19(k)), 5) for k in range(1, 7)]}",
 )
 
 print()
