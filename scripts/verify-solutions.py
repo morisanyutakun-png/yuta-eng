@@ -7028,6 +7028,134 @@ ok(
     f"区分求積 {_area6:.9f} / 237/52-(4/3)log2 = {237/52 - 4/3*math.log(2):.9f}",
 )
 
+# ---- 東北大学 理系 2022 ----
+
+
+def _N22(K):
+    return sum(
+        1 for l in range(1, K, 2) for m in range(1, K, 2) if 1 <= K - l - m and (K - l - m) % 2 == 1
+    )
+
+
+_same22 = sum(
+    1
+    for l in range(1, 99, 2)
+    for m in range(1, 99, 2)
+    if 1 <= 99 - l - m and (99 - l - m) % 2 == 1 and len({l, m, 99 - l - m}) < 3
+)
+ok(
+    "東北理22-1 N=(K²-1)/8、K=99 で N=1225・同じ奇数を2つ以上含むのは73、N>K の最小は K=9",
+    all(_N22(K) == (K * K - 1) // 8 for K in (5, 7, 9, 11, 99))
+    and _same22 == 73
+    and min(k for k in range(5, 200, 2) if (k * k - 1) // 8 > k) == 9,
+    f"N(99)={_N22(99)}、同じ奇数2つ以上={_same22}、4+√17={4+math.sqrt(17):.6f}",
+)
+
+
+def _f22(x, a):
+    return (x * x + 3 * x + a) * (x + 1) ** 2
+
+
+def _crit22(a):
+    D = 73 - 32 * a
+    rs = [-1.0]
+    if D > 0:
+        rs += [(-11 - math.sqrt(D)) / 8, (-11 + math.sqrt(D)) / 8]
+    elif D == 0:
+        rs += [-11 / 8]
+    return sorted(set(round(r, 12) for r in rs))
+
+
+_b22 = 0
+for _i in range(-1000, 301):
+    _a = _i / 100
+    _cs = _crit22(_a)
+    _gm = min(_f22(c, _a) for c in _cs)
+    _b0 = min(c for c in _cs if abs(_f22(c, _a) - _gm) < 1e-12)
+    _dec = all(_f22(x, _a) > _f22(x + 1e-4, _a) for x in [_b0 - 6 + 0.01 * j for j in range(600)])
+    if _dec != (_a <= 9 / 4 + 1e-12 or _a >= 73 / 32 - 1e-12):
+        _b22 += 1
+_min22ok = all(
+    (min(_f22(-6 + 0.0005 * j, a) for j in range(20000)) < -1e-12) == (a < 9 / 4 - 1e-9)
+    for a in (2.2, 2.25, 2.3)
+)
+_pair22 = all(
+    _f22((-11 - math.sqrt(73 - 32 * a)) / 8, a) < _f22((-11 + math.sqrt(73 - 32 * a)) / 8, a)
+    for a in (-5, 0, 1, 1.5, 1.99)
+)
+ok(
+    "東北理22-2 最小値<0 ⟺ a<9/4、f(α₁)<f(α₂)、x<β で減少かつ最小は a≦9/4 または a≧73/32",
+    _min22ok and _pair22 and _b22 == 0,
+    f"a を -10〜3 まで 0.01 刻みの1301点で照合して差異 {_b22} 件（9/4=2.25、73/32=2.28125）",
+)
+
+_b3v = sum(
+    1
+    for i in range(1, 200000)
+    if not (i / 1000 / (2 + i / 1000) <= math.sqrt(1 + i / 1000) - 1 + 1e-15 <= i / 1000 / 2 + 1e-15)
+)
+_S22 = lambda n: sum(math.sqrt(1 + k / n**2) - 1 for k in range(1, n + 1))
+ok(
+    "東北理22-3 x/(2+x) ≦ √(1+x)-1 ≦ x/2、lim S_n = 1/4",
+    _b3v == 0 and abs(_S22(100000) - 0.25) < 1e-5,
+    f"不等式の反例 {_b3v} 件、S(10^5)={_S22(100000):.9f}",
+)
+
+_ok4v = True
+for _m in (0.3, 1.0, 2.0, 5.0):
+    _t = (math.sqrt(1 + _m * _m) - 1) / _m
+    _ba = (math.sqrt(1 + _t * _t) + _t) ** 2
+    _d = math.dist((1 / _t, 1.0), (_ba / _t, _ba))
+    if abs(_t - math.tan(math.atan(_m) / 2)) > 1e-12 or abs(_d - (1 + _ba)) > 1e-9:
+        _ok4v = False
+_lim4v = (lambda m: ((math.sqrt(1 + ((math.sqrt(1 + m * m) - 1) / m) ** 2) + (math.sqrt(1 + m * m) - 1) / m) ** 2 - 1) / m)(1e-4)
+ok(
+    "東北理22-4 t=(√(1+m²)-1)/m、b/a=(√(1+t²)+t)²、lim (1/m)(b/a-1) = 1",
+    _ok4v and abs(_lim4v - 1) < 1e-3,
+    f"m を4通りで t と外接を照合、m=10⁻⁴ で (1/m)(b/a-1)={_lim4v:.9f}",
+)
+
+_s5v = 0.0
+for _ in range(200):
+    _t5v = (1 + 2 * _s5v) / 3
+    _s5v = (2 * _t5v + 1) / 6
+_A5v = [5 / 14 * c for c in (1, 2, 1)]
+_B5v = [4 / 7 * c for c in (1, 1, -1)]
+_B5v[2] += 1
+_AB5v = [_B5v[i] - _A5v[i] for i in range(3)]
+ok(
+    "東北理22-5 s_{n+1}=(4s_n+5)/18、S=5/14、T=4/7、AB は ℓ,ℓ' の両方と直交",
+    abs(_s5v - 5 / 14) < 1e-12
+    and abs((1 + 2 * _s5v) / 3 - 4 / 7) < 1e-12
+    and abs(sum(_AB5v[i] * (1, 2, 1)[i] for i in range(3))) < 1e-12
+    and abs(sum(_AB5v[i] * (1, 1, -1)[i] for i in range(3))) < 1e-12,
+    f"S={_s5v:.12f}（5/14）、AB={[round(14*c,9) for c in _AB5v]}/14 = (3,-2,1)/14",
+)
+
+
+def _V22(r):
+    if r <= 1:
+        return 2 / 3 * math.pi * r**3
+    if r <= math.sqrt(3):
+        return 2 * math.pi / 3 * (r**3 - (r * r - 1) ** 1.5)
+    if r <= 2:
+        return math.sqrt(3) * math.pi * (r * r - 1) - 2 * math.pi / 3 * (r * r - 1) ** 1.5
+    return math.sqrt(3) * math.pi
+
+
+ok(
+    "東北理22-6 V(r) の4つの場合分け（r≧2 では円柱の体積 √3π）",
+    all(
+        abs(
+            quad(lambda z, R=r: math.pi * min(1.0, max(0.0, R * R - z * z)), 0, min(math.sqrt(3), r), 20001)[0]
+            - _V22(r)
+        )
+        < 1e-6
+        for r in (0.5, 1.0, 1.3, math.sqrt(3), 1.8, 2.0, 2.5)
+    ),
+    f"7通りの r で断面積の数値積分と一致。√3π={math.sqrt(3)*math.pi:.9f}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
