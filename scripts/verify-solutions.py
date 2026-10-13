@@ -9355,6 +9355,109 @@ ok(
     f"a=0.5,1,2,2.9 で2接線のなす鋭角はどれも π/6、面積は数値 {_S25:.9f}／式 {_R3-3*_R3/4*math.log(3)**2:.9f}（交点の x は {_c25:.7f}）",
 )
 
+# ---- 名市大医2024 ----
+_a24 = (1.0, 0.0, 0.0)
+_b24 = (0.5, math.sqrt(3) / 2, 0.0)
+_c24 = (0.5, math.sqrt(3) / 6, math.sqrt(6) / 3)
+
+
+def _lin24(*terms):
+    r = [0.0, 0.0, 0.0]
+    for co, v in terms:
+        for i in range(3):
+            r[i] += co * v[i]
+    return tuple(r)
+
+
+_dot24 = lambda u, v: sum(x * y for x, y in zip(u, v))
+_P24 = _lin24((1 / 3, _a24), (-1, _b24))
+_PA24 = tuple(_a24[i] - _P24[i] for i in range(3))
+_PB24 = tuple(_b24[i] - _P24[i] for i in range(3))
+_G24 = _lin24((1 / 3, _a24), (1 / 3, _b24), (1 / 3, _c24))
+_Q24 = _lin24((1 / 3, _a24), (0.25, _c24))
+_d1 = tuple(_P24[i] - _G24[i] for i in range(3))
+_d2 = tuple(_Q24[i] - _G24[i] for i in range(3))
+_cr24 = (
+    _d1[1] * _d2[2] - _d1[2] * _d2[1],
+    _d1[2] * _d2[0] - _d1[0] * _d2[2],
+    _d1[0] * _d2[1] - _d1[1] * _d2[0],
+)
+_s24 = (7 + 3 * math.sqrt(41)) / 48
+_R24 = _lin24((_s24, _a24))
+_RP24 = tuple(_P24[i] - _R24[i] for i in range(3))
+_RQ24 = tuple(_Q24[i] - _R24[i] for i in range(3))
+_sother = 1 / 3 - (3 + math.sqrt(41)) / 16
+ok(
+    "名市医24-1 OP=a/3-b、OQ=a/3+c/4、OR/OA=(7+3√41)/48",
+    all(abs(5 * _P24[i] - (_PA24[i] - 3 * _PB24[i])) < 1e-12 for i in range(3))
+    and all(abs(x) < 1e-12 for x in _cr24)
+    and abs(_dot24(_RP24, _RQ24)) < 1e-12
+    and 0 < _s24 < 1
+    and not (0 <= _sother <= 1),
+    f"1辺1の正四面体で 5OP-(PA-3PB)=0、Q は直線 GP 上（外積 0）、s={_s24:.7f} で RP・RQ={_dot24(_RP24,_RQ24):.1e}、もう一方の解 {_sother:.7f} は線分 OA 上にない",
+)
+
+_bag24 = {"R": Fraction(2, 10), "B": Fraction(4, 10), "W": Fraction(4, 10)}
+_dist24 = {}
+for _c1, _p1 in _bag24.items():
+    for _c2, _p2 in _bag24.items():
+        _k = tuple(sorted([_c1, _c2]))
+        _dist24[_k] = _dist24.get(_k, Fraction(0)) + _p1 * _p2
+_one24 = sum(v for k, v in _dist24.items() if k.count("R") == 1)
+_two24 = sum(v for k, v in _dist24.items() if k.count("R") == 2)
+_post24 = {k: _dist24[k] * Fraction(k.count("R"), 2) ** 2 for k in _dist24}
+_tot24 = sum(_post24.values())
+_post24 = {k: v / _tot24 for k, v in _post24.items() if v}
+_ans24 = Fraction(0)
+for _k, _pk in _post24.items():
+    for _ca in ("R", "B"):
+        for _cb in _k:
+            if {_ca, _cb} == {"R", "B"}:
+                _ans24 += _pk * Fraction(1, 2) * Fraction(1, 2)
+ok(
+    "名市医24-2 赤1個だけ 8/25・赤2個 1/25、条件付きで 2/3 と 1/3、操作4は 5/12",
+    _one24 == Fraction(8, 25)
+    and _two24 == Fraction(1, 25)
+    and _tot24 == Fraction(3, 25)
+    and sum(v for k, v in _post24.items() if k.count("R") == 1) == Fraction(2, 3)
+    and _post24[("R", "R")] == Fraction(1, 3)
+    and _ans24 == Fraction(5, 12),
+    f"操作1のあとの分布は {dict((''.join(k), str(v)) for k, v in _dist24.items())}、記録が2回とも赤になる確率は {_tot24}、条件付き分布は {dict((''.join(k), str(v)) for k, v in _post24.items())}、操作4の確率は {_ans24}",
+)
+
+_r24 = lambda n: (3**n - 2**n + 4 * n) % 10
+_hits24 = [n for n in range(1, 700) if _r24(n) == 7]
+ok(
+    "名市医24-3 3ⁿ-2ⁿ の余りは周期4で 1,5,9,5、rₙ=7 は 20 ごとに 7,8,9,18、a₁₀₀=498",
+    [(3**n - 2**n) % 10 for n in range(1, 9)] == [1, 5, 9, 5, 1, 5, 9, 5]
+    and [_r24(n) for n in range(1, 21)] == [5, 3, 1, 1, 1, 9, 7, 7, 7, 5, 3, 3, 3, 1, 9, 9, 9, 7, 5, 5]
+    and _hits24[:12] == [7, 8, 9, 18, 27, 28, 29, 38, 47, 48, 49, 58]
+    and _hits24[99] == 498,
+    f"rₙ は n=1..20 で {[_r24(n) for n in range(1, 21)]}、rₙ=7 の n は {_hits24[:12]}…、100 番目は {_hits24[99]}",
+)
+
+_p24v, _q24v = 2 + math.sqrt(3), 1.0
+_al24v = math.atan(_q24v / _p24v)
+_be24v = _al24v + math.pi
+_k24 = math.hypot(_p24v, _q24v)
+_S1v = (
+    quad(lambda x: _p24v * math.sin(x) - _q24v * math.cos(x), _al24v, math.pi / 2, 20001)[0]
+    + quad(lambda x: _p24v * math.sin(x), math.pi / 2, math.pi, 20001)[0]
+)
+_S2v = (
+    quad(lambda x: -_q24v * math.cos(x), math.pi / 2, math.pi, 20001)[0]
+    + quad(lambda x: _p24v * math.sin(x) - _q24v * math.cos(x), math.pi, _be24v, 20001)[0]
+)
+ok(
+    "名市医24-4 S₁=√(p²+q²)+p-q、S₂=√(p²+q²)-p+q、α=π/12・β=13π/12",
+    abs(_S1v - (_k24 + _p24v - _q24v)) < 1e-7
+    and abs(_S2v - (_k24 - _p24v + _q24v)) < 1e-7
+    and abs(_S1v / _S2v - (math.sqrt(2) + 1) / (math.sqrt(2) - 1)) < 1e-7
+    and abs(_al24v - math.pi / 12) < 1e-12
+    and abs(_be24v - 13 * math.pi / 12) < 1e-12,
+    f"p=2+√3・q=1 で S₁={_S1v:.9f}（式 {_k24+_p24v-_q24v:.9f}）、S₂={_S2v:.9f}（式 {_k24-_p24v+_q24v:.9f}）、比 {_S1v/_S2v:.9f}（(√2+1)/(√2-1)={(math.sqrt(2)+1)/(math.sqrt(2)-1):.9f}）、α={_al24v:.9f}（π/12={math.pi/12:.9f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
