@@ -9458,6 +9458,103 @@ ok(
     f"p=2+√3・q=1 で S₁={_S1v:.9f}（式 {_k24+_p24v-_q24v:.9f}）、S₂={_S2v:.9f}（式 {_k24-_p24v+_q24v:.9f}）、比 {_S1v/_S2v:.9f}（(√2+1)/(√2-1)={(math.sqrt(2)+1)/(math.sqrt(2)-1):.9f}）、α={_al24v:.9f}（π/12={math.pi/12:.9f}）",
 )
 
+# ---- 名市大医2023 ----
+_an23 = lambda n: 2 * 3 ** (n - 1)
+_S23 = 0
+_ok23a = True
+for _n in range(1, 15):
+    _S23 += _an23(_n)
+    if _S23 != 3**_n - 1:
+        _ok23a = False
+_b15 = 3 * 15 * _an23(15)
+_T23 = lambda n: Fraction(3 * ((2 * n - 1) * 3**n + 1), 2)
+ok(
+    "名市医23-1 aₙ=2·3^(n-1)、b₁₅ は9桁、Tₙ=3{(2n-1)3ⁿ+1}/2",
+    _ok23a
+    and len(str(_b15)) == 9
+    and abs(1 + 16 * 0.4771 - 8.6336) < 1e-9
+    and all(sum(3 * k * _an23(k) for k in range(1, n + 1)) == _T23(n) for n in range(1, 15)),
+    f"n=1..14 で和が 3ⁿ-1 と一致、b₁₅={_b15}（{len(str(_b15))}桁、log₁₀b₁₅=1+16·0.4771={1+16*0.4771:.4f}）、T₁,T₂,T₃={[_T23(n) for n in range(1, 4)]}",
+)
+
+_p23 = lambda n: Fraction(3 * n, 3**n)
+_q23 = lambda n: Fraction(3**n - 3 * 2**n + 6, 3**n)
+_beats23 = lambda x, y: (x - y) % 3 == 1
+_ok23b = True
+for _n in range(2, 7):
+    _w = _ai = 0
+    for _h in itertools.product(range(3), repeat=_n):
+        _st = set(_h)
+        if len(_st) != 2:
+            _ai += 1
+        else:
+            _x, _y = sorted(_st)
+            _win = _x if _beats23(_x, _y) else _y
+            if _h.count(_win) == 1:
+                _w += 1
+    if Fraction(_w, 3**_n) != _p23(_n) or Fraction(_ai, 3**_n) != _q23(_n):
+        _ok23b = False
+_ans23 = _q23(5) * _p23(5) + sum(Fraction(3 * math.comb(5, k), 3**5) * _p23(k) for k in (2, 3, 4))
+ok(
+    "名市医23-2 pₙ=n/3^(n-1)、qₙ=(3ⁿ-3·2ⁿ+6)/3ⁿ、5人で2回目に決まる確率は 125/729",
+    _ok23b and _ans23 == Fraction(125, 729),
+    f"n=2..6 で全列挙と式が一致（p₅={_p23(5)}、q₅={_q23(5)}）、2回目に決まる確率は {_ans23}={float(_ans23):.7f}",
+)
+
+_A23, _B23, _C23 = (-1, 1, 3), (2, 1, 0), (0, 3, 1)
+_D23, _P23 = (5, 1, -3), (5, 3, 5)
+_sub23 = lambda u, v: tuple(a - b for a, b in zip(u, v))
+_dot23 = lambda u, v: sum(a * b for a, b in zip(u, v))
+_cross23 = lambda u, v: (u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0])
+_n23 = (2, 1, 2)
+_H23 = tuple(_P23[i] - 2 * _n23[i] for i in range(3))
+
+
+def _vol23(p0, p1, p2, p3):
+    return abs(_dot23(_sub23(p1, p0), _cross23(_sub23(p2, p0), _sub23(p3, p0)))) / 6
+
+
+_ok23c = all(
+    abs(_vol23((2 * t + 5, t + 3, 2 * t - 4), _A23, _B23, _C23) / _vol23((2 * u + 3, u - 1, 2 * u), _A23, _C23, _D23) - t / (2 * u))
+    < 1e-12
+    for t, u in ((1, 1), (2, 3), (0.7, 1.9))
+)
+ok(
+    "名市医23-3 n=(2,1,2)、H(1,1,1)、QABC:RACD=t:2u",
+    _dot23(_n23, _sub23(_B23, _A23)) == 0
+    and _dot23(_n23, _sub23(_C23, _A23)) == 0
+    and _dot23(_n23, _D23) == 5
+    and _dot23(_n23, _H23) == 5
+    and _cross23(_sub23(_H23, _P23), _n23) == (0, 0, 0)
+    and _ok23c,
+    f"平面は 2x+y+2z=5 で D も上にある。H={_H23}、PH は n の -2 倍。体積比は (t,u)=(1,1),(2,3),(0.7,1.9) で t/(2u) と一致",
+)
+
+_l23 = 3 * math.pi / 4 + 1
+_f23 = lambda th: th + 1 - math.pi / 4
+_pc23 = lambda th: (
+    math.cos(th) + _f23(th) * math.sin(th),
+    math.sin(th) - _f23(th) * math.cos(th),
+)
+_ys23 = [_pc23(math.pi / 4 + i * (math.pi - math.pi / 4) / 20000)[1] for i in range(1, 20001)]
+_len23 = 0.0
+_prev23 = _pc23(math.pi / 4)
+for _i in range(1, 100001):
+    _cur23 = _pc23(math.pi / 4 + _i * (math.pi - math.pi / 4) / 100000)
+    _len23 += math.dist(_prev23, _cur23)
+    _prev23 = _cur23
+ok(
+    "名市医23-4 糸の全長 3π/4+1、伸開線の長さ (ℓ²-1)/2、全体は 21π²/32+5π/4",
+    abs(_pc23(math.pi / 4)[0] - math.sqrt(2)) < 1e-12
+    and abs(_pc23(math.pi / 4)[1]) < 1e-12
+    and abs(_pc23(math.pi)[0] + 1) < 1e-12
+    and abs(_pc23(math.pi)[1] - _l23) < 1e-12
+    and min(_ys23) > 0
+    and abs(_len23 - (_l23**2 - 1) / 2) < 1e-6
+    and abs(_len23 + math.pi / 2 * _l23 - (21 * math.pi**2 / 32 + 5 * math.pi / 4)) < 1e-6,
+    f"ℓ={_l23:.7f}、P(π/4)=(√2,0)・P(π)=(-1,ℓ)、π/4<θ≦π の y の最小は {min(_ys23):.1e}（正）、伸開線 {_len23:.7f}（式 {(_l23**2-1)/2:.7f}）、全体 {_len23+math.pi/2*_l23:.7f}（式 {21*math.pi**2/32+5*math.pi/4:.7f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
