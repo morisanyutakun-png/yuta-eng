@@ -9190,6 +9190,98 @@ ok(
     f"最大値は {_Mx19}（3¹¹/2¹⁷={Fraction(3**11, 2**17)}）で k={[k for v, k in _vals19 if v == _Mx19]}、比 b_(k+1)/b_k は k=1..6 で {[round(float(_b19(k+1)/_b19(k)), 5) for k in range(1, 7)]}",
 )
 
+# ---- 三重大2025（数学②） ----
+_ac25 = -1 / math.sqrt(3)
+_a25 = complex(1, 0)
+_c25 = cmath.exp(1j * math.acos(_ac25))
+_b25 = -(_a25 + math.sqrt(3) * _c25) / math.sqrt(2)
+ok(
+    "三重大25-1(1) OA・OC=-√3/3",
+    abs(abs(_b25) - 1) < 1e-12 and abs(_ac25 + math.sqrt(3) / 3) < 1e-15,
+    f"その内積から作った OB の大きさは {abs(_b25):.9f}（1 になる）、-√3/3={-math.sqrt(3)/3:.9f}",
+)
+ok(
+    "三重大25-1(2) tan(π/10)tan(2π/5)=1",
+    abs(math.tan(math.pi / 10) * math.tan(2 * math.pi / 5) - 1) < 1e-12,
+    f"数値は {math.tan(math.pi/10)*math.tan(2*math.pi/5):.12f}",
+)
+_an25 = lambda n: 3 * 2 ** (n - 1) - 2 * 3**n
+_S25 = 0
+_ok25c = True
+for _n in range(1, 15):
+    _S25 += _an25(_n)
+    if _S25 != 3**_n + 2 * _an25(_n):
+        _ok25c = False
+ok(
+    "三重大25-1(3) aₙ=3·2^(n-1)-2·3ⁿ",
+    _ok25c,
+    f"n=1..14 で和が 3ⁿ+2aₙ と一致。a₁..a₅={[_an25(n) for n in range(1, 6)]}",
+)
+_A1, _B1 = -(2 + math.sqrt(3)), 2 + math.sqrt(3)
+_A2, _B2 = -math.sqrt(3), -math.sqrt(3)
+_mx25, _mn25 = -9.0, 9.0
+_G = 1200
+for _i in range(_G + 1):
+    _x = -1 + 2 * _i / _G
+    for _j in range(_G + 1):
+        _y = -1 + 2 * _j / _G
+        if _x * _x + _y * _y <= 1 and _y <= _A1 * _x + _B1 and _y >= _A2 * _x + _B2:
+            if _x + _y > _mx25:
+                _mx25 = _x + _y
+            if _x + _y < _mn25:
+                _mn25 = _x + _y
+ok(
+    "三重大25-1(4) 領域は単位円から2つの弓形を除いた形、x+y の最大 √2・最小 -(1+√3)/2",
+    abs(_A1 * 1 + _B1) < 1e-12
+    and abs(_A1 * math.sqrt(3) / 2 + _B1 - 0.5) < 1e-12
+    and abs(_A2 * -1 + _B2) < 1e-12
+    and abs(_A2 * -0.5 + _B2 + math.sqrt(3) / 2) < 1e-12
+    and 0 < math.sqrt(2) - _mx25 < 2e-3
+    and 0 < _mn25 + (1 + math.sqrt(3)) / 2 < 2e-3,
+    f"格子走査で最大 {_mx25:.5f}（√2={math.sqrt(2):.5f}）、最小 {_mn25:.5f}（-(1+√3)/2={-(1+math.sqrt(3))/2:.5f}）",
+)
+_sol25 = set()
+for _i in range(72000):
+    _t1 = 2 * math.pi * _i / 72000
+    _c, _s = math.cos(_t1), math.sin(_t1) - 1
+    if abs(_c * _c + _s * _s - 1) < 1e-9:
+        _t2 = math.atan2(_s, _c) % (2 * math.pi)
+        if _t1 <= _t2 + 1e-12:
+            _sol25.add((round(_t1 / math.pi, 4), round(_t2 / math.pi, 4)))
+_zs25 = []
+for _t1, _t2 in ((math.pi / 6, 11 * math.pi / 6), (5 * math.pi / 6, 7 * math.pi / 6)):
+    _z1, _z2 = 2 * cmath.exp(1j * _t1), 3 * cmath.exp(1j * _t2)
+    _zs25.append(
+        abs(abs(_z1) + abs(_z2) - 5) < 1e-9
+        and abs(abs(_z1 * _z2) - 6) < 1e-9
+        and abs(_z1 * abs(_z2) - abs(_z1) * _z2 - 6j) < 1e-9
+    )
+ok(
+    "三重大25-1(5) (θ₁,θ₂)=(π/6,11π/6),(5π/6,7π/6)、z₁=±√3+i と対応する z₂",
+    sorted(_sol25) == [(0.1667, 1.8333), (0.8333, 1.1667)] and all(_zs25),
+    f"全探索で出た (θ₁/π, θ₂/π) は {sorted(_sol25)}、どちらの (z₁,z₂) も3つの条件を満たした",
+)
+
+ok(
+    "三重大25-2 1-((k-1)/k)ⁿ≧a、n≧log(1-a)/log((k-1)/k)、k=5・a=0.99 で n=21",
+    abs(1 - (2 / 3) ** 2 - 5 / 9) < 1e-15
+    and abs((2 * 0.43 + 2) / (1 - 2 * 0.43) - 143 / 7) < 1e-12
+    and 0.8**20 > 0.01
+    and 0.8**21 < 0.01,
+    f"k=3,n=2 の確率 {1-(2/3)**2:.6f}（5/9={5/9:.6f}）、log₅2=0.43 での下界 {(2*0.43+2)/(1-2*0.43):.6f}、0.8^20={0.8**20:.6f}・0.8^21={0.8**21:.6f}",
+)
+
+_f25 = lambda x: 1 - math.sqrt(1 - (x + 1) ** 2) if x < 0 else 1 - math.sqrt(1 - (x - 1) ** 2)
+_mx25b = max(_x * _x + _f25(_x) ** 2 for _x in [-1 + 2 * _i / 200000 for _i in range(200001)])
+_volD25 = quad(lambda x: math.pi * _f25(x) ** 2, -1, 1, 200001)[0]
+ok(
+    "三重大25-3 f''>0 で下に凸、D⊂B、B から D の内部を除いた体積は π²-2π",
+    abs(_mx25b - 1) < 1e-12
+    and abs(_volD25 - (10 * math.pi / 3 - math.pi**2)) < 1e-6
+    and abs((4 * math.pi / 3 - _volD25) - (math.pi**2 - 2 * math.pi)) < 1e-6,
+    f"x²+f² の最大は {_mx25b:.12f}、D の体積は数値 {_volD25:.7f}／式 {10*math.pi/3-math.pi**2:.7f}、答え {4*math.pi/3-_volD25:.7f}（π²-2π={math.pi**2-2*math.pi:.7f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

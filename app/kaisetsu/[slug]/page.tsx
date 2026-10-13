@@ -112,12 +112,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : `収録しているのは${span}のうち${sets.length}年度ぶんです。`;
   // 公式の公開先がない大学で「公式ページへリンク」と書くと、ないものを案内することになる。
   const hasOfficial = sets.some((s) => s.source?.kind === "official");
-  const description =
+  const head =
     `${u.university}${u.course ? `（${u.course}）` : ""}の数学の過去問について、当サイトが独自に解いた解答・計算過程・詳解・別解。` +
-    `${span}の全${total}問を大問ごとに掲載しています。${coverage}` +
-    (hasOfficial
-      ? `問題文は載せず、${u.university}公式の問題公開ページへリンクしています。公式解答ではありません。`
-      : "問題文は載せていません。公式解答ではありません。");
+    `${span}の全${total}問を大問ごとに掲載しています。`;
+  const tail = hasOfficial
+    ? `問題文は載せず、${u.university}公式の問題公開ページへリンクしています。公式解答ではありません。`
+    : "問題文は載せていません。公式解答ではありません。";
+  // 区分名が長い大学（三重大の「数学②（医学部医学科）」など）では coverage を足すと
+  // 160字を超える。入れられるときだけ入れる。
+  const description =
+    head.length + coverage.length + tail.length <= 160 ? head + coverage + tail : head + tail;
   const short = shortName(u);
   return {
     title,
