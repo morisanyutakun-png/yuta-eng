@@ -10209,6 +10209,123 @@ ok(
     f"3つの z で n=1..5 まで式と一致。b₃=0 の4解 0,1,(3±√3i)/2 で |b₃|<10⁻¹²。bₖ=0 の解が実数だけになる k は {_realonly22}",
 )
 
+
+# ---- 名工大2021 ----
+
+
+def _f21(x):
+    return (x - 1) * math.sqrt(abs(x - 2))
+
+
+def _df21(x, h=1e-6):
+    return (_f21(x + h) - _f21(x - h)) / (2 * h)
+
+
+_sg21 = [1 if _df21(x) > 0 else -1 for x in (1.0, 1.6, 1.8, 2.5)]
+_ar21 = quad(lambda x: (x - 1) * math.sqrt(2 - x), 1.0, 2.0, 200001)[0]
+_t21 = (-1 + math.sqrt(17)) / 2
+ok(
+    "名工大21-1 極大 2√3/9・極小 0、面積 4/15、接点 t=(-1+√17)/2",
+    abs(_f21(5 / 3) - 2 * math.sqrt(3) / 9) < 1e-12
+    and abs(_f21(2)) < 1e-12
+    and _sg21 == [1, 1, -1, 1]
+    and abs(_ar21 - 4 / 15) < 1e-6
+    and abs(_f21(_t21) / _t21 - _df21(_t21)) < 1e-6
+    and 1 < _t21 < 2,
+    f"f(5/3)={_f21(5/3):.7f}（2√3/9={2*math.sqrt(3)/9:.7f}）、f(2)={_f21(2):.7f}、"
+    f"f' の符号は x=1,1.6,1.8,2.5 で {_sg21}、面積 {_ar21:.7f}（4/15={4/15:.7f}）、"
+    f"t={_t21:.7f} で f(t)/t={_f21(_t21)/_t21:.7f}・f'(t)={_df21(_t21):.7f}",
+)
+
+
+def _g21(t):
+    return 8 * t**4 + (t - 1) ** 4
+
+
+_tmin21 = min((i / 1000000 for i in range(-1000000, 1000001)), key=_g21)
+_d21 = math.sqrt(_g21(_tmin21))
+_X21 = 2 * math.sqrt(2)
+
+
+def _s21(x):
+    return math.sqrt(x / _X21)
+
+
+_s2a21 = quad(lambda x: (1 - _s21(x)) ** 2, 0.0, _X21, 200001)[0]
+_s2v21 = quad(
+    lambda x: math.pi * max(abs((_s21(x) + 1) ** 2 - 1), abs(1 - (1 - _s21(x)) ** 2)) ** 2,
+    0.0,
+    _X21,
+    200001,
+)[0]
+ok(
+    "名工大21-2 d=2√6/9、面積 √2/3、体積 118√2π/15",
+    abs(_d21 - 2 * math.sqrt(6) / 9) < 1e-9
+    and abs(_tmin21 - 1 / 3) < 1e-5
+    and abs(_s2a21 - math.sqrt(2) / 3) < 1e-6
+    and abs(_s2v21 - 118 * math.sqrt(2) * math.pi / 15) < 1e-5,
+    f"最小は t={_tmin21:.6f} で距離 {_d21:.7f}（2√6/9={2*math.sqrt(6)/9:.7f}）、"
+    f"面積 {_s2a21:.7f}（√2/3={math.sqrt(2)/3:.7f}）、"
+    f"体積 {_s2v21:.7f}（118√2π/15={118*math.sqrt(2)*math.pi/15:.7f}）",
+)
+
+_a21 = [None, Fraction(1)]
+_b21 = [None, Fraction(0)]
+for _n in range(1, 13):
+    _a21.append((_n + 3) * _a21[_n])
+    _b21.append((_n + 3) * _b21[_n] + Fraction(math.factorial(_n + 1)))
+_S21 = []
+_acc = Fraction(0)
+for _n in range(1, 13):
+    _acc += _b21[_n] / Fraction(3) ** _n
+    _S21.append(_acc)
+ok(
+    "名工大21-3 P₄=120x+120、aₙ=(n+2)!/6、差は 6/((n+2)(n+3))、bₙ=(n-1)(n+1)!/3、Sₙ=(n+2)!/3^(n+1)-2/3",
+    _a21[4] == 120
+    and _b21[4] == 120
+    and all(_a21[n] == Fraction(math.factorial(n + 2), 6) for n in range(1, 13))
+    and all(_b21[n] == Fraction((n - 1) * math.factorial(n + 1), 3) for n in range(1, 13))
+    and all(
+        _b21[n + 1] / _a21[n + 1] - _b21[n] / _a21[n] == Fraction(6, (n + 2) * (n + 3))
+        for n in range(1, 12)
+    )
+    and all(_b21[n] / _a21[n] == Fraction(2 * (n - 1), n + 2) for n in range(1, 13))
+    and all(
+        _S21[n - 1] == Fraction(math.factorial(n + 2), 3 ** (n + 1)) - Fraction(2, 3)
+        for n in range(1, 13)
+    ),
+    f"P₄={_a21[4]}x+{_b21[4]}、a₁..a₅={[int(_a21[n]) for n in range(1,6)]}、"
+    f"b₁..b₅={[int(_b21[n]) for n in range(1,6)]}、S₁..S₃={[str(x) for x in _S21[:3]]}",
+)
+
+_B21 = (-math.sqrt(6), math.sqrt(2))
+_A21 = (2 * math.sqrt(2), 0.0)
+_m21 = ((_A21[0] + _B21[0]) / 2, (_A21[1] + _B21[1]) / 2)
+_ang21 = math.degrees(math.atan2(_B21[1], _B21[0]))
+_err21 = 0.0
+for _i in range(0, 31416):
+    _th = _i * math.pi / 31415
+    _r = 7 / (3 + math.sqrt(2) * math.cos(_th + math.pi / 6))
+    _P = (_r * math.cos(_th), _r * math.sin(_th))
+    _pb = math.hypot(_P[0] - _B21[0], _P[1] - _B21[1])
+    _err21 = max(_err21, abs(_pb - abs(6 - _r)))
+_th21 = min(
+    (i * math.pi / 1000000 for i in range(0, 1000001)),
+    key=lambda t: abs(7 / (3 + math.sqrt(2) * math.cos(t + math.pi / 6)) - 3.5),
+)
+ok(
+    "名工大21-4 ∠AOB=150°・B(-√6,√2)、BP²=r²+4√2rcos(θ+π/6)+8、r=7/(3+√2cos(θ+π/6))、θ=7π/12",
+    abs(math.hypot(*_B21) - 2 * math.sqrt(2)) < 1e-12
+    and abs(_m21[1] - (2 + math.sqrt(3)) * _m21[0]) < 1e-12
+    and abs((_B21[1] - _A21[1]) * (2 + math.sqrt(3)) + (_B21[0] - _A21[0])) < 1e-12
+    and abs(_ang21 - 150) < 1e-9
+    and _err21 < 1e-12
+    and abs(_th21 - 7 * math.pi / 12) < 1e-5,
+    f"B=({_B21[0]:.7f}, {_B21[1]:.7f}) は OB={math.hypot(*_B21):.7f}=2√2 で中点が直線上・AB は直線と垂直、"
+    f"動径の角は {_ang21:.1f}°、BP と PQ の差は最大 {_err21:.1e}、"
+    f"r=7/2 は θ={_th21:.7f}（7π/12={7*math.pi/12:.7f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
