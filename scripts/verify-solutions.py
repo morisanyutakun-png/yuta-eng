@@ -10741,6 +10741,134 @@ ok(
     f"bₙ={[round(float(_b24[n]), 4) for n in range(1, 12)]}、最大は n={_best24[1]}（{_best24[0]}）",
 )
 
+
+# ---- 電通大2023 ----
+
+
+def _f23u(x):
+    return math.sin(x) * math.sin(2 * x) - abs(math.cos(x)) * math.cos(x) ** 2
+
+
+_id23 = max(
+    abs(
+        _f23u(math.pi * i / 1000)
+        - (
+            2 * math.cos(math.pi * i / 1000)
+            - 2 * math.cos(math.pi * i / 1000) ** 3
+            - abs(math.cos(math.pi * i / 1000)) * math.cos(math.pi * i / 1000) ** 2
+        )
+    )
+    for i in range(1001)
+)
+_N23 = 0
+_prev = _f23u(0.0)
+_mx23 = (-1e18, 0.0)
+_mn23 = (1e18, 0.0)
+for _i in range(1, 400001):
+    _x = math.pi * _i / 400000
+    _cur = _f23u(_x)
+    if _prev == 0 or _prev * _cur < 0:
+        _N23 += 1
+    if _cur > _mx23[0]:
+        _mx23 = (_cur, _x)
+    if _cur < _mn23[0]:
+        _mn23 = (_cur, _x)
+    _prev = _cur
+_J23 = quad(lambda x: abs(_f23u(x)), 0.0, math.pi, 200001)[0]
+ok(
+    "電通大23-1 sinx sin2x=2cosx-2cos³x、N=2、M=4√2/9・m=-4√6/9、I=sinx-sin³x/3、J=(12+4√3)/9",
+    _id23 < 1e-14
+    and _N23 == 2
+    and abs(_mx23[0] - 4 * math.sqrt(2) / 9) < 1e-8
+    and abs(_mn23[0] + 4 * math.sqrt(6) / 9) < 1e-8
+    and abs(_J23 - (12 + 4 * math.sqrt(3)) / 9) < 1e-7,
+    f"(i) の差は最大 {_id23:.1e}、零点は {_N23} 個、最大 {_mx23[0]:.7f}（4√2/9={4*math.sqrt(2)/9:.7f}）・"
+    f"最小 {_mn23[0]:.7f}（-4√6/9={-4*math.sqrt(6)/9:.7f}）、J={_J23:.9f}（(12+4√3)/9={(12+4*math.sqrt(3))/9:.9f}）",
+)
+
+
+def _g23u(x):
+    return math.log(x) / (x + math.e) ** 2
+
+
+def _gg23(x):
+    return x + math.e - 2 * x * math.log(x)
+
+
+_d23 = max(
+    abs((_g23u(x + 1e-7) - _g23u(x - 1e-7)) / 2e-7 - _gg23(x) / (x * (x + math.e) ** 3))
+    for x in (0.5, 1.5, 3.0)
+)
+_I23 = quad(lambda x: 1 / (x * (x + math.e)), 1.0, math.e, 20001)[0]
+_S23 = quad(_g23u, 1.0, math.e, 20001)[0]
+ok(
+    "電通大23-2 g=x+e-2x logx、極大 e+2e^(-1/2)、f の極大 1/(4e²)、I=log((1+e)/2)/e、S=I-1/(2e)",
+    _d23 < 1e-8
+    and abs(_gg23(math.exp(-0.5)) - (math.e + 2 / math.sqrt(math.e))) < 1e-12
+    and abs(_gg23(math.e)) < 1e-12
+    and abs(_g23u(math.e) - 1 / (4 * math.e**2)) < 1e-15
+    and abs(_I23 - math.log((1 + math.e) / 2) / math.e) < 1e-8
+    and abs(_S23 - (math.log((1 + math.e) / 2) / math.e - 1 / (2 * math.e))) < 1e-8,
+    f"f' と式の差は最大 {_d23:.1e}、g の極大 {_gg23(math.exp(-0.5)):.9f}（e+2e^(-1/2)={math.e+2/math.sqrt(math.e):.9f}）、"
+    f"g(e)={_gg23(math.e):.1e}、f(e)={_g23u(math.e):.10f}（1/(4e²)={1/(4*math.e**2):.10f}）、"
+    f"I={_I23:.9f}、S={_S23:.9f}",
+)
+
+
+def _fx23(t):
+    return t * math.sqrt(t)
+
+
+def _gy23(t):
+    return math.sqrt(t * (2 * t - 1))
+
+
+_df23 = max(_gy23(0.5 + i / 200000) - _fx23(0.5 + i / 200000) for i in range(0, 2000001))
+_pts23 = [(0.0, 0.0)] + [
+    (_fx23(0.5 + 0.5 * (i / 200000) ** 2), _gy23(0.5 + 0.5 * (i / 200000) ** 2))
+    for i in range(200001)
+]
+_A23 = 0.0
+for _i in range(len(_pts23)):
+    _x1, _y1 = _pts23[_i]
+    _x2, _y2 = _pts23[(_i + 1) % len(_pts23)]
+    _A23 += _x1 * _y2 - _x2 * _y1
+_A23 = abs(_A23) / 2
+_sl23 = ((4 * 5 - 1) / (2 * math.sqrt(2 * 25 - 5))) / (1.5 * math.sqrt(5))
+ok(
+    "電通大23-3 x軸と (√2/4,0)、y=x と (1,1)、C は y≦x、t=5 の接線 y=19x/45+8√5/9、S=1/10",
+    abs(_fx23(0.5) - math.sqrt(2) / 4) < 1e-15
+    and abs(_gy23(0.5)) < 1e-15
+    and abs(_fx23(1) - 1) < 1e-15
+    and abs(_gy23(1) - 1) < 1e-15
+    and _df23 <= 1e-12
+    and abs(_sl23 - 19 / 45) < 1e-12
+    and abs(_gy23(5) - _sl23 * _fx23(5) - 8 * math.sqrt(5) / 9) < 1e-12
+    and abs(_A23 - 0.1) < 1e-8,
+    f"t=1/2 で ({_fx23(0.5):.7f}, {_gy23(0.5):.1f})、t=1 で (1, 1)、g-f の最大 {_df23:.1e}、"
+    f"t=5 の傾き {_sl23:.7f}（19/45={19/45:.7f}）・切片 {_gy23(5)-_sl23*_fx23(5):.7f}（8√5/9={8*math.sqrt(5)/9:.7f}）、"
+    f"面積 {_A23:.9f}（1/10）",
+)
+
+_a23 = lambda n: (2 * n + 1) * math.sqrt(3)
+_T23 = [sum(_a23(k) * _a23(k + 1) for k in range(1, n + 1)) for n in (1, 2, 3, 5)]
+_U23 = [sum(1 / (_a23(k) * _a23(k + 1)) for k in range(1, n + 1)) for n in (1, 2, 5, 10)]
+_n23 = 2000000
+_ratio23 = (_n23 * (4 * _n23**2 + 18 * _n23 + 23)) / (_n23 * math.sqrt(3) * _n23 * (_n23 + 2))
+ok(
+    "電通大23-4 aₙ=(2n+1)√3、Tₙ=n(4n²+18n+23)、Tₙ/(nSₙ)→4√3/3、Uₙ=n/(9(2n+3))→1/18",
+    abs(_a23(1) * _a23(2) - 45) < 1e-9
+    and abs(_a23(2) * _a23(3) - 105) < 1e-9
+    and all(abs(_T23[i] - n * (4 * n * n + 18 * n + 23)) < 1e-6 for i, n in enumerate((1, 2, 3, 5)))
+    and all(
+        abs(_U23[i] - n / (9 * (2 * n + 3))) < 1e-12 for i, n in enumerate((1, 2, 5, 10))
+    )
+    and abs(_ratio23 - 4 * math.sqrt(3) / 3) < 1e-5,
+    f"a₁a₂={_a23(1)*_a23(2):.6f}・a₂a₃={_a23(2)*_a23(3):.6f}、Tₙ（n=1,2,3,5）={[round(v) for v in _T23]}、"
+    f"Tₙ/(nSₙ) は n=2×10⁶ で {_ratio23:.7f}（4√3/3={4*math.sqrt(3)/3:.7f}）、"
+    f"Uₙ（n=1,2,5,10）={[round(v, 9) for v in _U23]}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
