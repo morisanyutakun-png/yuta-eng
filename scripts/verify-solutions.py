@@ -10869,6 +10869,151 @@ ok(
     f"Uₙ（n=1,2,5,10）={[round(v, 9) for v in _U23]}",
 )
 
+
+# ---- 電通大2022 ----
+
+
+def _f22(x, a):
+    return (
+        math.cos(3 * x)
+        - (2 * a + 1) * math.cos(2 * x)
+        + (2 * a + 3) * math.cos(x)
+        - (2 * a + 1)
+    )
+
+
+_ok22a = True
+for _a in (-0.8, 0.0, 0.3, 0.5, 0.9):
+    if abs(_f22(4 * math.pi / 3, _a) + (2 * _a + 1)) > 1e-9:
+        _ok22a = False
+    for _i in range(1001):
+        _x = math.pi + math.pi * _i / 1000
+        _t = math.cos(_x)
+        if abs(_f22(_x, _a) - 2 * _t * (2 * _t - 1) * (_t - _a)) > 1e-12:
+            _ok22a = False
+_cnt22 = [len({0.0, 0.5, a}) for a in (-0.8, 0.0, 0.25, 0.5, 0.9)]
+_d22u = lambda x: (_f22(x + 1e-6, 0.5) - _f22(x - 1e-6, 0.5)) / 2e-6
+_loc22 = []
+_prev = _d22u(math.pi + 1e-4)
+for _i in range(1, 400001):
+    _x = math.pi + 1e-4 + (math.pi - 2e-4) * _i / 400000
+    _cur = _d22u(_x)
+    if _prev > 0 and _cur < 0:
+        _loc22.append(math.cos(_x))
+    _prev = _cur
+_S22 = quad(lambda x: _f22(x, 0.5), 3 * math.pi / 2, 5 * math.pi / 3, 20001)[0]
+ok(
+    "電通大22-1 f(4π/3)=-(2a+1)、f=2t(2t-1)(t-a)、共有点2個は a=0,1/2、cosβ=1/6、S=(22-2π-9√3)/6",
+    _ok22a
+    and _cnt22 == [3, 2, 3, 2, 3]
+    and len(_loc22) == 1
+    and abs(_loc22[0] - 1 / 6) < 1e-5
+    and abs(_S22 - (22 - 2 * math.pi - 9 * math.sqrt(3)) / 6) < 1e-8,
+    f"f(4π/3) と因数分解は 5 つの a で一致、相異なる t の解は {_cnt22} 個、"
+    f"極大での cos x={_loc22[0]:.7f}（1/6={1/6:.7f}）、面積 {_S22:.9f}"
+    f"（(22-2π-9√3)/6={(22-2*math.pi-9*math.sqrt(3))/6:.9f}）",
+)
+
+_y22 = lambda x: math.sqrt(x) * math.log(x)
+_min22 = min(_y22(i / 200000) for i in range(1, 200001))
+_g22 = lambda x: math.exp(-x * math.log(x))
+_d1_22 = lambda x: (_g22(x + 1e-7) - _g22(x - 1e-7)) / 2e-7
+_d2_22 = lambda x: (_g22(x + 1e-5) - 2 * _g22(x) + _g22(x - 1e-5)) / 1e-10
+_ok22b = True
+for _x in (0.3, 1.0, 2.0):
+    if abs(_d1_22(_x) / _g22(_x) - (-1 - math.log(_x))) > 1e-6:
+        _ok22b = False
+    if abs(_d2_22(_x) / _g22(_x) - ((1 + math.log(_x)) ** 2 - 1 / _x)) > 1e-4:
+        _ok22b = False
+for _a, _b in ((0.5, 2.0), (1.0, 3.0)):
+    _I = quad(lambda x: (1 + math.log(x)) * _g22(x), _a, _b, 20001)[0]
+    if abs(_I - (_a ** (-_a) - _b ** (-_b))) > 1e-8:
+        _ok22b = False
+_ineq22 = []
+for _n, _m in ((1, 5), (2, 6), (3, 9)):
+    _L = sum(k ** (-k) for k in range(_n + 1, _m + 1))
+    _R = (_n ** (-_n) - _m ** (-_m)) / (1 + math.log(_n))
+    _ineq22.append(_L < _R)
+ok(
+    "電通大22-2 値域 [-2/e, 0]、極限は 1 と 0、f'/f=-1-logx、極大 e^(1/e)、∫=a^(-a)-b^(-b) と不等式",
+    _ok22b
+    and abs(_min22 + 2 / math.e) < 1e-9
+    and abs(_g22(1e-9) - 1) < 1e-7
+    and _g22(50) < 1e-80
+    and abs(_g22(1 / math.e) - math.e ** (1 / math.e)) < 1e-12
+    and all(_ineq22),
+    f"√x logx の最小 {_min22:.7f}（-2/e={-2/math.e:.7f}）、f(10⁻⁹)={_g22(1e-9):.7f}・f(50)={_g22(50):.1e}、"
+    f"極大 {_g22(1/math.e):.9f}（e^(1/e)={math.e**(1/math.e):.9f}）、不等式は {_ineq22}",
+)
+
+_a22 = [None, Fraction(12)]
+for _n in range(1, 12):
+    _a22.append(
+        ((3 ** (_n + 1) + 1) * _a22[_n] - 3 ** (_n + 3))
+        / (3 ** (_n - 1) * _a22[_n] - (3 ** (_n + 1) - 1))
+    )
+_b22 = [None] + [Fraction(3) / (_a22[n] - 9) for n in range(1, 12)]
+_pr22 = []
+_p = Fraction(1)
+for _n in range(1, 12):
+    _p *= _a22[_n]
+    _pr22.append(_p / Fraction(9) ** _n)
+ok(
+    "電通大22-3 aₙ>9、b_(n+1)-bₙ=3ⁿ、bₙ=(3ⁿ-1)/2、aₙ=9+6/(3ⁿ-1)、α=9・β=3/2",
+    all(_a22[n] > 9 for n in range(1, 12))
+    and all(_b22[n + 1] - _b22[n] == 3**n for n in range(1, 11))
+    and all(_b22[n] == Fraction(3**n - 1, 2) for n in range(1, 12))
+    and all(_a22[n] == 9 + Fraction(6, 3**n - 1) for n in range(1, 12))
+    and all(
+        _pr22[n - 1] == Fraction(3 ** (n + 1) - 1, 2 * 3**n) for n in range(1, 12)
+    ),
+    f"a₁..a₄={[str(_a22[n]) for n in range(1, 5)]}、bₙ・aₙ・積の式は n=1..11 で一致、"
+    f"積/9ⁿ は n=10 で {float(_pr22[9]):.9f}（3/2 に近づく）",
+)
+
+
+def _geo22(h):
+    L = math.sqrt(h * h + 2)
+    return L, (L - 1) / math.sqrt(1 + h * h), (L - 2) / h, math.sqrt(2) * (L - 1) / h
+
+
+_ok22d = True
+for _h in (0.5, 1.0, math.sqrt(2), 3.0):
+    _L, _r, _k, _R = _geo22(_h)
+    if abs(_r - math.sqrt(1 + _h * _h) / (1 + _L)) > 1e-12:
+        _ok22d = False
+    if abs(_R - math.sqrt(1 + _k * _k)) > 1e-12:
+        _ok22d = False
+_minR22 = min((_geo22(0.001 + i / 100000)[3], 0.001 + i / 100000) for i in range(0, 500000))
+_L5, _r5, _k5, _R5 = _geo22(0.5)
+
+
+def _A22(z):
+    rho2 = 2 - (1 + z) ** 2
+    if rho2 <= 0:
+        return 0.0
+    rho = math.sqrt(rho2)
+    c = 1 - 2 * z
+    if c >= rho:
+        return 0.0
+    return 4 * (rho2 * math.acos(c / rho) - c * math.sqrt(rho2 - c * c))
+
+
+_V22 = quad(_A22, 0.0, 0.4, 200001)[0]
+ok(
+    "電通大22-4 OA=√(h²+2)、r=(√(h²+2)-1)/√(h²+1)、AP=AQ=1、R=√2(√(h²+2)-1)/h、h₀=√2、h=1/2 で KM=3√5/5、V",
+    _ok22d
+    and abs(_minR22[0] - 1) < 1e-9
+    and abs(_minR22[1] - math.sqrt(2)) < 1e-4
+    and abs(_R5 - math.sqrt(2)) < 1e-12
+    and abs(_k5 + 1) < 1e-12
+    and abs(math.sqrt(_R5**2 - _r5**2) - 3 / math.sqrt(5)) < 1e-12
+    and abs(_V22 - 4 * math.pi * (100 * math.sqrt(2) - 63 * math.sqrt(5)) / 75) < 1e-9,
+    f"r・R の式は h=0.5,1,√2,3 で座標と一致、R の最小 {_minR22[0]:.7f} は h={_minR22[1]:.5f}（√2={math.sqrt(2):.7f}）、"
+    f"h=1/2 で R={_R5:.7f}・K の z 座標 {_k5:.1f}・KM={math.sqrt(_R5**2-_r5**2):.7f}（3√5/5={3*math.sqrt(5)/5:.7f}）、"
+    f"V={_V22:.9f}（式 {4*math.pi*(100*math.sqrt(2)-63*math.sqrt(5))/75:.9f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
