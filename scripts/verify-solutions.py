@@ -7789,6 +7789,101 @@ ok(
     f"bₙ n=1..8 は {_bn24[1:9]}、bₙ₊₁bₙ₋₁-bₙ² は n=2..8 で {[_bn24[n+1]*_bn24[n-1]-_bn24[n]**2 for n in range(2,9)]}、70p-29q=1 の解は {_pq24}",
 )
 
+# --- 東北大学 2023年度（文系） -------------------------------------------------
+# 第1問は理系と同じ問題なので、確認も理系の側（東北理23-1）で済ませている。
+
+_LM23 = math.sqrt(15)
+_M23 = (0.25, math.sqrt(15) / 4)
+_N23 = (0.25, -math.sqrt(15) / 4)
+_L23 = (4.0, 0.0)
+_MN23 = math.dist(_M23, _N23)
+_S23 = abs((_M23[0] - 4) * (_N23[1]) - (_M23[1]) * (_N23[0] - 4)) / 2
+_s23 = (2 * math.dist(_L23, _M23) + _MN23) / 2
+ok(
+    "東北文23-2 △LMN の面積は 15√15/16、内接円 r=3/4、外接円 R=2",
+    abs(math.hypot(*_M23) - 1) < 1e-12
+    and abs((_M23[0] - 4) * _M23[0] + _M23[1] * _M23[1]) < 1e-12
+    and abs(math.dist(_L23, _M23) - _LM23) < 1e-12
+    and abs(_MN23 - math.sqrt(15) / 2) < 1e-12
+    and abs(_S23 - 15 * math.sqrt(15) / 16) < 1e-9
+    and abs(_S23 / _s23 - 0.75) < 1e-9
+    and abs(math.dist(_L23, _M23) ** 2 * _MN23 / (4 * _S23) - 2) < 1e-9,
+    f"LM={math.dist(_L23,_M23):.9f}、MN={_MN23:.9f}、面積={_S23:.9f}（15√15/16={15*math.sqrt(15)/16:.9f}）、r={_S23/_s23:.9f}、R={math.dist(_L23,_M23)**2*_MN23/(4*_S23):.9f}",
+)
+
+
+def _M23f(a):
+    return 3 * a * a - 3 if a <= -0.75 else 3 * a * a + 12 * a + 6
+
+
+def _m23f(a):
+    if a > 0:
+        return 3 * a * a - 3
+    if a >= -1.5:
+        return -a * a - 3
+    return 3 * a * a + 12 * a + 6
+
+
+_okM23 = True
+_okm23 = True
+for _i23 in range(-200, 201):
+    _a23 = _i23 / 25
+    _vs23 = [(_a23 + 3 * j / 2000) ** 2 + 2 * _a23 * (_a23 + 3 * j / 2000) - 3 for j in range(2001)]
+    if abs(max(_vs23) - _M23f(_a23)) > 1e-5:
+        _okM23 = False
+    if abs(min(_vs23) - _m23f(_a23)) > 1e-5:
+        _okm23 = False
+_best23 = min((_m23f(i / 10000), i / 10000) for i in range(-50000, 50001))
+ok(
+    "東北文23-3 M(a)・m(a) の場合分けが合い、m(a) の最小は a=-2 での -6",
+    _okM23 and _okm23 and abs(_best23[0] + 6) < 1e-9 and abs(_best23[1] + 2) < 1e-6,
+    f"a を 0.04 刻みで 401 通り、各区間を2000分割して照合。m(a) の最小 {_best23[0]:.9f} at a={_best23[1]}",
+)
+
+
+def _sweep23(f, lo=0.0, hi=2.0, N=3000, M=3000):
+    """(X, c) = (x, y-x) 座標で、高さ c ごとの区間の和集合の長さを積分する。"""
+    g = [f(lo + (hi - lo) * i / N) - (lo + (hi - lo) * i / N) for i in range(N + 1)]
+    cmin, cmax = min(g), max(g)
+    dc = (cmax - cmin) / M
+    total = 0.0
+    for j in range(M):
+        c = cmin + (j + 0.5) * dc
+        iv = []
+        for i in range(N):
+            a1, a2 = g[i] - c, g[i + 1] - c
+            if a1 == 0 or a1 * a2 < 0:
+                x1 = lo + (hi - lo) * i / N
+                x2 = lo + (hi - lo) * (i + 1) / N
+                x = x1 + (x2 - x1) * abs(a1) / (abs(a1) + abs(a2))
+                iv.append((x, x + 1))
+        if not iv:
+            continue
+        iv.sort()
+        cs, ce = iv[0]
+        L = 0.0
+        for s2, e2 in iv[1:]:
+            if s2 > ce:
+                L += ce - cs
+                cs, ce = s2, e2
+            else:
+                ce = max(ce, e2)
+        L += ce - cs
+        total += L * dc
+    return total
+
+
+_S1_23 = _sweep23(lambda x: -2 * abs(x - 1) + 2)
+_S3_23 = _sweep23(lambda x: 0.5 * (x - 1) ** 2)
+ok(
+    "東北文23-4 折れ線のとき S=29/8、接線は y=x-3/2、放物線のとき S=2",
+    abs(_S1_23 - 29 / 8) < 2e-3
+    and abs(_S3_23 - 2) < 2e-3
+    and abs((2 - 1) - 1) < 1e-12
+    and abs(0.5 * (2 - 1) ** 2 - 0.5) < 1e-12,
+    f"(1) S={_S1_23:.6f}（29/8={29/8}、∫|f'-1|=4 とは違う）、(3) S={_S3_23:.6f}（2）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
