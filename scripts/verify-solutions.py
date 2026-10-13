@@ -7884,6 +7884,154 @@ ok(
     f"(1) S={_S1_23:.6f}（29/8={29/8}、∫|f'-1|=4 とは違う）、(3) S={_S3_23:.6f}（2）",
 )
 
+# --- 東北大学 2022年度（文系） -------------------------------------------------
+# 第1問は理系と同じ問題なので、確認も理系の側（東北理22-1）で済ませている。
+
+_F22 = lambda t: quad(lambda x: abs(x * x - t * t), 0, 1, 20001)[0]
+_Fa22 = lambda t: 4 * t**3 / 3 - t * t + 1 / 3
+_Fb22 = lambda t: t * t - 1 / 3
+_best22 = min(
+    ((_Fa22(i / 20000) if i <= 20000 else _Fb22(i / 20000)), i / 20000) for i in range(0, 60001)
+)
+ok(
+    "東北文22-2 0≦t≦1 で F(t)=4t³/3-t²+1/3、t≧1 で t²-1/3、最小は T=1/2 での 1/4",
+    all(abs(_F22(t) - _Fa22(t)) < 1e-7 for t in (0.0, 0.2, 0.5, 0.8, 1.0))
+    and all(abs(_F22(t) - _Fb22(t)) < 1e-7 for t in (1.0, 1.5, 2.0))
+    and abs(_best22[0] - 0.25) < 1e-9
+    and abs(_best22[1] - 0.5) < 1e-4,
+    f"t=0.2 で数値 {_F22(0.2):.9f}／式 {_Fa22(0.2):.9f}、t=1.5 で {_F22(1.5):.9f}／{_Fb22(1.5):.9f}。最小 {_best22[0]:.9f} at t={_best22[1]}",
+)
+
+
+def _inD22(a, b):
+    if a <= 0 or b <= 0:
+        return False
+    if 2 / math.hypot(a, b) < 2 - 1e-12:
+        return False
+    if (2 - a) / b < 2 - 1e-12:
+        return False
+    return True
+
+
+_okD22 = True
+for _i22 in range(1, 300):
+    for _j22 in range(1, 300):
+        _a22, _b22 = _i22 / 200, _j22 / 200
+        if _inD22(_a22, _b22) != (
+            _a22 * _a22 + _b22 * _b22 <= 1 + 1e-12 and _a22 + 2 * _b22 <= 2 + 1e-12
+        ):
+            _okD22 = False
+_bb22 = None
+for _i22 in range(1, 1001):
+    for _j22 in range(1, 1001):
+        _a22, _b22 = _i22 / 1000, _j22 / 1000
+        if _a22 * _a22 + _b22 * _b22 <= 1 and _a22 + 2 * _b22 <= 2:
+            _v22 = 3 * _a22 + 2 * _b22
+            if _bb22 is None or _v22 > _bb22[0]:
+                _bb22 = (_v22, _a22, _b22)
+ok(
+    "東北文22-3 D は a>0, b>0, a²+b²≦1, a+2b≦2。3a+2b の最大は √13（a=3/√13, b=2/√13）",
+    _okD22
+    and abs(_bb22[0] - math.sqrt(13)) < 2e-3
+    and abs(_bb22[1] - 3 / math.sqrt(13)) < 5e-3
+    and abs(_bb22[2] - 2 / math.sqrt(13)) < 5e-3
+    and _inD22(3 / math.sqrt(13), 2 / math.sqrt(13))
+    and abs(0.8**2 + 0.6**2 - 1) < 1e-12
+    and abs(0.8 + 2 * 0.6 - 2) < 1e-12,
+    f"格子探索の最大 {_bb22[0]:.6f} at ({_bb22[1]:.4f}, {_bb22[2]:.4f})、√13={math.sqrt(13):.6f}、接点 ({3/math.sqrt(13):.6f}, {2/math.sqrt(13):.6f}) は D の中",
+)
+
+_A22 = (1.0, math.sqrt(2), math.sqrt(3))
+_B22 = (-math.sqrt(3), 0.0, 1.0)
+_C22 = (math.sqrt(6), -math.sqrt(3), math.sqrt(2))
+_n22 = (
+    _A22[1] * _B22[2] - _A22[2] * _B22[1],
+    _A22[2] * _B22[0] - _A22[0] * _B22[2],
+    _A22[0] * _B22[1] - _A22[1] * _B22[0],
+)
+_nn22 = math.sqrt(sum(c * c for c in _n22))
+_H22 = tuple(c / _nn22 for c in _n22)
+_d22 = abs(sum(_n22[i] * _C22[i] for i in range(3))) / _nn22
+ok(
+    "東北文22-4 H=(√3/6, -√6/3, 1/2)、平面 OAB と C の距離 2√2、体積 4√3/3",
+    abs(_nn22 - 2 * math.sqrt(6)) < 1e-9
+    and abs(_H22[0] - math.sqrt(3) / 6) < 1e-9
+    and abs(_H22[1] + math.sqrt(6) / 3) < 1e-9
+    and abs(_H22[2] - 0.5) < 1e-9
+    and abs(math.sqrt(sum(c * c for c in _H22)) - 1) < 1e-12
+    and abs(_d22 - 2 * math.sqrt(2)) < 1e-9
+    and abs(abs(sum(_n22[i] * _C22[i] for i in range(3))) / 6 - 4 * math.sqrt(3) / 3) < 1e-9
+    and abs(sum(_A22[i] * _B22[i] for i in range(3))) < 1e-12,
+    f"n=({_n22[0]:.9f}, {_n22[1]:.9f}, {_n22[2]:.9f})、|n|={_nn22:.9f}、H=({_H22[0]:.9f}, {_H22[1]:.9f}, {_H22[2]:.9f})、距離={_d22:.9f}、体積={abs(sum(_n22[i]*_C22[i] for i in range(3)))/6:.9f}",
+)
+
+# --- 東北大学 2021年度（文系） -------------------------------------------------
+# 第1問・第2問は理系と同じ問題なので、確認も理系の側（東北理21-1、東北理21-3）で済ませている。
+
+_Rof21 = lambda r: (r + math.sqrt(4 - 3 * r * r)) / 2
+_r21 = math.sqrt(3) / 3
+_RR21 = _Rof21(_r21)
+_P21 = (1.0, _r21)
+
+
+def _ang21(V, U, W):
+    a = (U[0] - V[0], U[1] - V[1])
+    b = (W[0] - V[0], W[1] - V[1])
+    return math.degrees(math.acos((a[0] * b[0] + a[1] * b[1]) / (math.hypot(*a) * math.hypot(*b))))
+
+
+random.seed(20210225)
+_hit21 = 0
+_n21 = 400000
+for _ in range(_n21):
+    _x21 = random.uniform(-1.3, 1.7)
+    _y21 = random.uniform(-1.3, 1.3)
+    if _x21 * _x21 + _y21 * _y21 <= _RR21**2 and (_x21 - 1) ** 2 + _y21 * _y21 <= _r21**2:
+        _hit21 += 1
+_mc21 = _hit21 / _n21 * (3.0 * 2.6)
+_ex21 = 7 * math.pi / 18 - math.sqrt(3) / 3
+ok(
+    "東北文21-3 C₁ の半径は (r+√(4-3r²))/2、r=√3/3 で ∠PAO=90°、共通部分は 7π/18 - √3/3",
+    all(abs(_Rof21(r) ** 2 + r * r - _Rof21(r) * r - 1) < 1e-12 for r in (0.3, 0.5, _r21, 0.8, 0.95))
+    and abs(_RR21 - 2 * math.sqrt(3) / 3) < 1e-12
+    and abs(math.hypot(*_P21) - _RR21) < 1e-12
+    and abs(math.dist((1.0, 0.0), _P21) - _r21) < 1e-12
+    and abs(_ang21(_P21, (0.0, 0.0), (1.0, 0.0)) - 60) < 1e-9
+    and abs(_ang21((1.0, 0.0), _P21, (0.0, 0.0)) - 90) < 1e-9
+    and abs(math.pi * _r21**2 / 2 + 0.5 * _RR21**2 * (math.pi / 3 - math.sin(math.pi / 3)) - _ex21)
+    < 1e-12
+    and abs(_mc21 - _ex21) < 5e-3,
+    f"R={_RR21:.9f}（2√3/3={2*math.sqrt(3)/3:.9f}）、∠OPA={_ang21(_P21,(0,0),(1,0)):.6f}°、∠PAO={_ang21((1,0),_P21,(0,0)):.6f}°、面積 モンテカルロ {_mc21:.6f}／式 {_ex21:.9f}",
+)
+
+_poly21 = lambda t: 9 * t**4 + 4 * t**3 - 24 * t * t - 16 * t - 48
+_roots21 = []
+_prev21 = _poly21(-10.0)
+for _i21 in range(-99999, 100001):
+    _t21 = _i21 / 10000
+    _cur21 = _poly21(_t21)
+    if _cur21 == 0 or _prev21 * _cur21 < 0:
+        _roots21.append(round(_t21, 3))
+    _prev21 = _cur21
+_S21 = (
+    quad(lambda x: x * x + 4 * x + 16 - (8 * x + 12), 2, 4, 20001)[0]
+    + quad(lambda x: x * x + 4 * x + 16 - (16 * x - 20), 4, 6, 20001)[0]
+)
+ok(
+    "東北文21-4 共通接線は y=16x-20 と y=8x+12、囲まれた部分の面積は 16/3",
+    abs(3 * 4 + 2 * 2 - 16) < 1e-12
+    and abs(-2 * 8 - 4 - (-20)) < 1e-12
+    and abs(3 * 4 - 4 - 8) < 1e-12
+    and abs(16 - 4 - 12) < 1e-12
+    and abs((2 * 6 + 4) - 16) < 1e-12
+    and abs(-36 + 16 - (-20)) < 1e-12
+    and abs((2 * 2 + 4) - 8) < 1e-12
+    and abs(-4 + 16 - 12) < 1e-12
+    and sorted(set(_roots21)) == [-2.0, 2.0]
+    and abs(_S21 - 16 / 3) < 1e-9,
+    f"4次式の実数解は {sorted(set(_roots21))}、面積 {_S21:.9f}（16/3={16/3:.9f}）、2直線の交点は (4, 44)",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
