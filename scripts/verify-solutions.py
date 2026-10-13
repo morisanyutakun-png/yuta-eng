@@ -10019,6 +10019,101 @@ ok(
     f"c·a=-7/5 で作った四面体は AB=√7・BC=3√2 を満たし、折り出した O' は O'A=2・O'C=√14 で外接円上（距離 {_d2o24:.7f}／半径 {_rad24:.7f}）。DG を最小にする t は走査で {_best24:.5f}（11/70={11/70:.7f}）",
 )
 
+# ---- 名工大2023 ----
+_X23 = lambda t: t - 2 * math.sin(t)
+_Y23 = lambda t: 2 - 2 * math.cos(t)
+_N23 = 200000
+_pts23 = [(_X23(2 * math.pi * i / _N23), _Y23(2 * math.pi * i / _N23)) for i in range(_N23 + 1)]
+_pts23.append((0.0, 0.0))
+_A23 = 0.0
+for _i in range(len(_pts23) - 1):
+    _A23 += _pts23[_i][0] * _pts23[_i + 1][1] - _pts23[_i + 1][0] * _pts23[_i][1]
+_A23 = abs(_A23) / 2
+_cross23 = sum(
+    1
+    for i in range(1, 2000)
+    if abs(2 * math.pi * i / 2000 - (2 * math.pi - 2 * math.pi * i / 2000)) > 1e-9
+    and abs(_X23(2 * math.pi * i / 2000) - _X23(2 * math.pi - 2 * math.pi * i / 2000)) < 1e-9
+)
+_V23 = math.pi * quad(lambda t: _Y23(t) ** 2 * (1 - 2 * math.cos(t)), 0, 2 * math.pi, 200001)[0]
+ok(
+    "名工大23-1 x の範囲 [π/3-√3, 5π/3+√3]、面積 8π、体積 28π²",
+    abs(_X23(math.pi / 3) - (math.pi / 3 - math.sqrt(3))) < 1e-12
+    and abs(_X23(5 * math.pi / 3) - (5 * math.pi / 3 + math.sqrt(3))) < 1e-12
+    and _cross23 == 0
+    and abs(_A23 - 8 * math.pi) < 1e-5
+    and abs(_V23 - 28 * math.pi**2) < 1e-5,
+    f"x の最小 {_X23(math.pi/3):.7f}・最大 {_X23(5*math.pi/3):.7f}、自己交差 {_cross23} 件、面積 {_A23:.7f}（8π={8*math.pi:.7f}）、体積 {_V23:.7f}（28π²={28*math.pi**2:.7f}）",
+)
+
+_a23 = {1: 1}
+for _n in range(1, 120):
+    _a23[2 * _n] = 3 * _a23[2 * _n - 1] - _n
+    _a23[2 * _n + 1] = _a23[2 * _n] + 1
+_b23 = lambda n: Fraction(3**n + 1, 2)
+_f23 = lambda n: Fraction(3 ** (n + 1) + 2 * n + 1, 4)
+ok(
+    "名工大23-2 a₅=8、bₙ=(3ⁿ+1)/2、a_(2n+1)=(3^(n+1)+2n+1)/4、a₁₉₉ は48桁",
+    _a23[5] == 8
+    and all(_a23[2 * n + 1] - _a23[2 * n - 1] == _b23(n) for n in range(1, 50))
+    and all(_a23[2 * n + 1] == _f23(n) for n in range(0, 90))
+    and len(str(_a23[199])) == 48
+    and 47 < 100 * 0.4771 - 2 * 0.3010 < 48,
+    f"a₁..a₅={[_a23[i] for i in range(1,6)]}、a₁₉₉ は {len(str(_a23[199]))} 桁で log₁₀a₁₉₉={math.log10(_a23[199]):.7f}（概算 {100*0.4771-2*0.3010:.3f}）",
+)
+
+_A23v = (5.0, 0.0, 0.0)
+_B23v = (1.0, math.sqrt(48), 0.0)
+_c23x = 20 / 5
+_c23y = (44 - _B23v[0] * _c23x) / _B23v[1]
+_c23z = math.sqrt(64 - _c23x**2 - _c23y**2)
+_C23v = (_c23x, _c23y, _c23z)
+_sub23 = lambda u, v: tuple(x - y for x, y in zip(u, v))
+_dot23 = lambda u, v: sum(x * y for x, y in zip(u, v))
+_nrm23 = lambda u: math.sqrt(_dot23(u, u))
+_H23 = (19 / 30 * 5 + 5 / 6 * 1, 5 / 6 * math.sqrt(48), 0.0)
+# ℓ：B を x 軸について折り返した点と A を通る直線
+_Bp23 = (1.0, -math.sqrt(48), 0.0)
+_d23 = _sub23(_Bp23, _A23v)
+# t*H = A + v*d を解く
+_det23 = _H23[0] * (-_d23[1]) - (-_d23[0]) * _H23[1]
+_t23 = (_A23v[0] * (-_d23[1]) - (-_d23[0]) * _A23v[1]) / _det23
+ok(
+    "名工大23-3 a·b=5・b·c=44・c·a=20、OH=19a/30+5b/6、OK/OA=1/5、OD/OH=15/2",
+    abs(_nrm23(_sub23(_B23v, _A23v)) - 8) < 1e-12
+    and abs(_nrm23(_sub23(_C23v, _B23v)) - 5) < 1e-9
+    and abs(_nrm23(_sub23(_C23v, _A23v)) - 7) < 1e-9
+    and abs(_dot23(_sub23(_C23v, _H23), _A23v)) < 1e-9
+    and abs(_dot23(_sub23(_C23v, _H23), _B23v)) < 1e-9
+    and abs(_dot23(_B23v, _A23v) / _dot23(_A23v, _A23v) - 0.2) < 1e-12
+    and abs(_t23 - 7.5) < 1e-9,
+    f"6辺は 5,7,8,{_nrm23(_sub23(_B23v,_A23v)):.0f},{_nrm23(_sub23(_C23v,_B23v)):.0f},{_nrm23(_sub23(_C23v,_A23v)):.0f}。H={tuple(round(x,6) for x in _H23)} で CH は平面 OAB に垂直、OK/OA={_dot23(_B23v,_A23v)/_dot23(_A23v,_A23v)}、OD/OH={_t23:.7f}",
+)
+
+_ff23 = lambda x: (2 * x**3 + x**2 - 4 * x - 3) / (x**2 - 3)
+_S23b = quad(_ff23, -1, 1.5, 100001)[0]
+
+
+def _cnt23(m):
+    roots = {0.0}
+    if abs(m - 2) > 1e-12:
+        r = (4 - 3 * m) / (2 - m)
+        if r > 1e-12:
+            roots |= {math.sqrt(r), -math.sqrt(r)}
+    return len([x for x in roots if abs(abs(x) - math.sqrt(3)) > 1e-9])
+
+
+ok(
+    "名工大23-4 極値 1∓8√6/3・0・2、面積 15/4+log(3/8)、共有点は 3 個か 1 個",
+    abs(_ff23(-math.sqrt(6)) - (1 - 8 * math.sqrt(6) / 3)) < 1e-9
+    and abs(_ff23(math.sqrt(6)) - (1 + 8 * math.sqrt(6) / 3)) < 1e-9
+    and abs(_ff23(-1)) < 1e-12
+    and abs(_ff23(1) - 2) < 1e-12
+    and abs(_S23b - (15 / 4 + math.log(3 / 8))) < 1e-7
+    and [_cnt23(m) for m in (-3, 0, 1, 4 / 3, 1.5, 2, 2.5, 5)] == [3, 3, 3, 1, 1, 1, 3, 3],
+    f"極値は {_ff23(-math.sqrt(6)):.7f},{_ff23(-1):.1f},{_ff23(1):.1f},{_ff23(math.sqrt(6)):.7f}、面積 {_S23b:.7f}（15/4+log(3/8)={15/4+math.log(3/8):.7f}）、m=-3,0,1,4/3,1.5,2,2.5,5 の共有点は {[_cnt23(m) for m in (-3,0,1,4/3,1.5,2,2.5,5)]}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
