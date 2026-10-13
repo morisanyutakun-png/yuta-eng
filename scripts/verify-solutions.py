@@ -10608,6 +10608,139 @@ ok(
     f"垂直条件を満たす z を 20 万通り作ると |z| の最大は {_mx19:.8f}（1 未満）",
 )
 
+
+# ---- 電通大2024 ----
+
+
+def _f24(x):
+    return 1 / math.cos(x) ** 2 - 16 * math.sin(x) ** 2
+
+
+_dd24 = lambda x: (_f24(x + 1e-6) - _f24(x - 1e-6)) / 2e-6
+_sg24 = [1 if _dd24(x) > 0 else -1 for x in (-1.3, -0.5, 0.5, 1.3)]
+_S24 = quad(
+    lambda x: 16 * math.sin(x) ** 2 - 1 / math.cos(x) ** 2, math.pi / 12, 5 * math.pi / 12, 20001
+)[0]
+ok(
+    "電通大24-1 α=π/12・β=5π/12、tan は 2∓√3、f'=0 は 0・±π/3、極値 1 と -8、S=8π/3-2√3",
+    abs(_f24(math.pi / 12)) < 1e-12
+    and abs(_f24(5 * math.pi / 12)) < 1e-12
+    and abs(math.tan(math.pi / 12) - (2 - math.sqrt(3))) < 1e-12
+    and abs(math.tan(5 * math.pi / 12) - (2 + math.sqrt(3))) < 1e-12
+    and all(abs(_dd24(x)) < 1e-6 for x in (0.0, math.pi / 3, -math.pi / 3))
+    and abs(_f24(0) - 1) < 1e-12
+    and abs(_f24(math.pi / 3) + 8) < 1e-9
+    and _sg24 == [-1, 1, -1, 1]
+    and abs(_S24 - (8 * math.pi / 3 - 2 * math.sqrt(3))) < 1e-8,
+    f"f(π/12)・f(5π/12) は 0、tan は {math.tan(math.pi/12):.7f}・{math.tan(5*math.pi/12):.7f}、"
+    f"f(0)={_f24(0):.6f}・f(±π/3)={_f24(math.pi/3):.6f}、f' の符号は {_sg24}、"
+    f"面積 {_S24:.9f}（8π/3-2√3={8*math.pi/3-2*math.sqrt(3):.9f}）",
+)
+
+
+def _g1_24(x):
+    return math.exp(x) * math.sqrt(max(0.0, 6 - math.exp(x)))
+
+
+def _g2_24(x):
+    return 2 * math.sqrt(2) * math.exp(x / 2)
+
+
+_Fp24 = lambda x: -(2 / 3) * (6 - math.exp(x)) ** 1.5
+_S2_24 = quad(lambda x: _g1_24(x) - _g2_24(x), math.log(2), math.log(4), 20001)[0]
+_V2_24 = math.pi * quad(lambda x: _g1_24(x) ** 2 - _g2_24(x) ** 2, math.log(2), math.log(4), 20001)[0]
+ok(
+    "電通大24-2 x₀=log6、共有点 (log2,4)・(log4,4√2)、極大 4√2、I=-2(6-eˣ)^(3/2)/3、S=(40-28√2)/3、V=4π/3",
+    abs(_g1_24(math.log(2)) - 4) < 1e-12
+    and abs(_g2_24(math.log(2)) - 4) < 1e-12
+    and abs(_g1_24(math.log(4)) - 4 * math.sqrt(2)) < 1e-12
+    and abs(_g2_24(math.log(4)) - 4 * math.sqrt(2)) < 1e-12
+    and max(
+        abs((_Fp24(x + 1e-6) - _Fp24(x - 1e-6)) / 2e-6 - _g1_24(x)) for x in (0.5, 1.0, 1.5)
+    )
+    < 1e-6
+    and abs(_S2_24 - (40 - 28 * math.sqrt(2)) / 3) < 1e-8
+    and abs(_V2_24 - 4 * math.pi / 3) < 1e-7,
+    f"x₀=log6={math.log(6):.7f}、x=log2 で f=g={_g1_24(math.log(2)):.7f}・x=log4 で f=g={_g1_24(math.log(4)):.7f}、"
+    f"面積 {_S2_24:.9f}（(40-28√2)/3={(40-28*math.sqrt(2))/3:.9f}）、体積 {_V2_24:.9f}（4π/3={4*math.pi/3:.9f}）",
+)
+
+_mx24 = None
+_my24 = None
+_N24 = 4000
+for _i in range(_N24 + 1):
+    _th = 2 * math.pi * _i / _N24
+    _x, _y = math.cos(_th), 2 * math.sin(_th)
+    _v = _x + math.sqrt(2) * _y
+    if _mx24 is None or _v > _mx24[0]:
+        _mx24 = (_v, _x, _y)
+    _w = _y / (_x - 3)
+    if _my24 is None or _w > _my24[0]:
+        _my24 = (_w, _x, _y)
+
+
+def _other24(a):
+    """円 Cₐ と楕円 E の、A(-1,0) 以外の共有点があるか。2次方程式の解の公式で直接調べる。"""
+    A, B, C = -3.0, -2 * a, 3 - 2 * a
+    disc = B * B - 4 * A * C
+    if disc < 0:
+        return False
+    for u in ((-B + math.sqrt(disc)) / (2 * A), (-B - math.sqrt(disc)) / (2 * A)):
+        if not (-1 + 1e-9 < u < 1 + 1e-12):
+            continue
+        u = min(1.0, u)
+        y = math.sqrt(max(0.0, 4 * (1 - u * u)))
+        for yy in {y, -y}:
+            if math.hypot(u + 1, yy) > 1e-6:
+                if (
+                    abs((u - a) ** 2 + yy * yy - (a + 1) ** 2) < 1e-9
+                    and abs(u * u + yy * yy / 4 - 1) < 1e-9
+                ):
+                    return True
+    return False
+
+
+_as24 = (-2.0, -0.5, -0.01, 0.0, 0.5, 1.0, 2.0, 2.99, 3.0, 3.01, 3.5)
+_has24 = [_other24(a) for a in _as24]
+ok(
+    "電通大24-3 max(x+√2y)=3 で (1/3, 4√2/3)、max(y/(x-3))=√2/2 で (1/3, -4√2/3)、x₀=(3-2a)/3、0≦a<3",
+    abs(_mx24[0] - 3) < 1e-5
+    and abs(_mx24[1] - 1 / 3) < 1e-3
+    and abs(_my24[0] - math.sqrt(2) / 2) < 1e-6
+    and abs(_my24[2] + 4 * math.sqrt(2) / 3) < 1e-3
+    and _has24 == [False, False, False, True, True, True, True, True, False, False, False],
+    f"max(x+√2y)={_mx24[0]:.7f} は ({_mx24[1]:.4f}, {_mx24[2]:.4f})、"
+    f"max(y/(x-3))={_my24[0]:.7f} は ({_my24[1]:.4f}, {_my24[2]:.4f})、"
+    f"a={_as24} の A 以外の共有点は {_has24}",
+)
+
+_a24 = [None, Fraction(1)]
+for _n in range(1, 12):
+    _a24.append(Fraction(_n + 2, 2 * _n) * _a24[_n])
+_b24 = [None, Fraction(1)]
+for _n in range(1, 12):
+    _b24.append(Fraction(_n + 2, 2 * _n) * _b24[_n] + Fraction((_n + 1) * (_n * _n - 4), 2**_n))
+_P24 = lambda n: -(n + 1) * (n - 2) * (n * n - 7 * n + 1)
+_best24 = max((float(_b24[n]), n) for n in range(1, 12))
+ok(
+    "電通大24-4 aₙ=n(n+1)/2ⁿ、b₂=b₃=-3/2・b₄=5/4、dₙ=(n²-5n+5)/2、bₙ、P(n)、最大は n=7",
+    all(_a24[n] == Fraction(n * (n + 1), 2**n) for n in range(1, 12))
+    and _b24[2] == Fraction(-3, 2)
+    and _b24[3] == Fraction(-3, 2)
+    and _b24[4] == Fraction(5, 4)
+    and all(
+        Fraction(2 ** (n - 1)) * _b24[n] / Fraction(n * (n + 1)) == Fraction(n * n - 5 * n + 5, 2)
+        for n in range(1, 12)
+    )
+    and all(
+        _b24[n] == Fraction(n * (n + 1) * (n * n - 5 * n + 5), 2**n) for n in range(1, 12)
+    )
+    and all(_b24[n + 1] - _b24[n] == Fraction(_P24(n), 2 ** (n + 1)) for n in range(1, 11))
+    and _best24[1] == 7,
+    f"aₙ・dₙ・bₙ・P(n) は n=1..11 で式と一致、b₂..b₄={[str(_b24[n]) for n in (2,3,4)]}、"
+    f"bₙ={[round(float(_b24[n]), 4) for n in range(1, 12)]}、最大は n={_best24[1]}（{_best24[0]}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

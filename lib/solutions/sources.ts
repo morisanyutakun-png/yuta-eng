@@ -417,6 +417,18 @@ export const sources: Record<string, Record<number, Source>> = {
         "手元のPDFには問題4ページのほかに他社の解答解説と思われるページが続いていたが、" +
         "冊子が「問題用紙は4ページ」と明記しているので、その4ページだけを読んだ。",
     },
+    2024: {
+      kind: "official",
+      url: "https://www.uec.ac.jp/education/undergraduate/admission/exam.html",
+      publisher: "電気通信大学",
+      pageTitle: "過去の入試問題",
+      target: "page",
+      checked: "2026-10-14",
+      note:
+        "2026-10-14 時点で、この一覧ページに2024年度から2026年度までの一般選抜（前期日程）の問題が載っている。" +
+        "教科別ではなく年度ごとに1つのPDFで、年度が進むと落ちるので一覧ページへリンクしている。" +
+        "大学の解答例は読んでいないし、言い換えてもいない。当サイトの解答は独自に解いたもの。問題文・図は1つも載せない。",
+    },
   },
   "ncu-med": {
     2026: {
