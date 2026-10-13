@@ -8869,6 +8869,137 @@ ok(
     f"a=0.5 は両方とも可、a=0.501 は両方とも不可。a=0.3 の体積 {_vol21(0.3):.9f}（式 {(3-4*0.3)*math.pi/64:.9f}）",
 )
 
+# --- 東京科学大学 2020年度 -----------------------------------------------------
+
+_sol20K = [x for x in range(1, 500) if abs(x * x - x - 23) % 3 == 2]
+
+
+def _isp20(m):
+    if m < 2:
+        return False
+    i = 2
+    while i * i <= m:
+        if m % i == 0:
+            return False
+        i += 1
+    return True
+
+
+_runs20 = []
+for _x20 in range(1, 3000):
+    _k20 = 0
+    while _isp20(abs((_x20 + _k20) ** 2 - (_x20 + _k20) - 23)):
+        _k20 += 1
+    if _k20 >= 4:
+        _runs20.append((_x20, _k20))
+ok(
+    "科学大20-1 |x²-x-23|≡2 (mod 3) は x=1,3,4、連続して素数になる最大は k=5 で 3,4,5,6,7",
+    _sol20K == [1, 3, 4]
+    and max(k for _, k in _runs20) == 5
+    and [x for x, k in _runs20 if k == 5] == [3],
+    f"x={_sol20K}、長さ4以上の連続は {_runs20}、x=3..7 の値は {[abs(x*x-x-23) for x in range(3,8)]}",
+)
+
+_w20 = complex(math.cos(2 * math.pi / 3), math.sin(2 * math.pi / 3))
+random.seed(20200225)
+_ok20a = True
+for _ in range(5000):
+    _al = complex(random.uniform(-3, 3), random.uniform(-3, 3))
+    _t20 = random.uniform(0, 2 * math.pi)
+    _r20 = random.uniform(0.1, 3)
+    _be = _al + complex(_r20 * math.cos(_t20), _r20 * math.sin(_t20))
+    for _sg in (1, -1):
+        _ga = _al + (_be - _al) * complex(math.cos(_sg * math.pi / 3), math.sin(_sg * math.pi / 3))
+        if abs(_al**2 + _be**2 + _ga**2 - (_al * _be + _be * _ga + _ga * _al)) > 1e-6:
+            _ok20a = False
+_R20 = 2.3
+_A20p = complex(_R20, 0)
+_B20p = _R20 * _w20
+_C20p = _R20 * _w20**2
+_ok20b = True
+for _th20 in (0.0, 0.7, 2.0, 4.5):
+    _P20 = _R20 * complex(math.cos(_th20), math.sin(_th20))
+    _s2 = abs(_P20 - _A20p) ** 2 + abs(_P20 - _B20p) ** 2 + abs(_P20 - _C20p) ** 2
+    _s4 = abs(_P20 - _A20p) ** 4 + abs(_P20 - _B20p) ** 4 + abs(_P20 - _C20p) ** 4
+    if abs(_s2 - 6 * _R20**2) > 1e-9 or abs(_s4 - 18 * _R20**4) > 1e-9:
+        _ok20b = False
+ok(
+    "科学大20-2 正三角形 ⟺ α²+β²+γ²=αβ+βγ+γα、ΣAP²=6R²、ΣAP⁴=18R⁴",
+    _ok20a and _ok20b,
+    f"乱数5000個の正三角形で条件式を確認。R={_R20} で ΣAP²=6R²={6*_R20**2:.6f}、ΣAP⁴=18R⁴={18*_R20**4:.6f}",
+)
+
+
+def _TS20(a, b):
+    T = (9 * a / (3 + 2 * a), 0.0, 4 * (3 - a) / (3 + 2 * a))
+    S = (0.0, 9 * b / (3 + 2 * b), 4 * (3 - b) / (3 + 2 * b))
+    return T, S
+
+
+def _pow20(a, b):
+    P = (0.0, 0.0, -2.0)
+    Q = (a, 0.0, 0.0)
+    R = (0.0, b, 0.0)
+    T, S = _TS20(a, b)
+    return math.dist(P, Q) * math.dist(P, T) - math.dist(P, R) * math.dist(P, S)
+
+
+_ok20c = True
+for _i20 in range(1, 30):
+    for _j20 in range(1, 30):
+        _a20, _b20 = _i20 / 10, _j20 / 10
+        _T20, _S20 = _TS20(_a20, _b20)
+        if abs(_T20[0] / _a20 + _T20[1] / _b20 - _T20[2] / 2 - 1) > 1e-9:
+            _ok20c = False
+        if abs(_S20[0] / _a20 + _S20[1] / _b20 - _S20[2] / 2 - 1) > 1e-9:
+            _ok20c = False
+        _cond = (_a20 - _b20) * (3 * (_a20 + _b20) + 2 * _a20 * _b20 - 8)
+        if (abs(_pow20(_a20, _b20)) < 1e-9) != (abs(_cond) < 1e-9):
+            _ok20c = False
+ok(
+    "科学大20-3 T・S の座標、同一円周上 ⟺ a=b または 2ab+3a+3b=8",
+    _ok20c,
+    f"0.1 刻みの格子で T,S が平面上にあることと、方べきの条件が (a-b)(3(a+b)+2ab-8)=0 と一致することを確認",
+)
+
+_ok20d = all(
+    abs(
+        quad(lambda x: 2 * math.pi * x * math.sin(x) * (1 - math.cos(x)) / math.sqrt(2),
+             (n - 1) * math.pi, n * math.pi, 8001)[0]
+        - math.sqrt(2) * (8 * n - 3) * math.pi**2 / 4
+    )
+    < 1e-6
+    for n in (1, 3, 5)
+)
+ok(
+    "科学大20-4 断面は面積 2πx sin x の円環、Vₙ=√2(8n-3)π²/4",
+    _ok20d,
+    f"n=1,3,5 で数値積分と式が一致（n=1 で {math.sqrt(2)*5*math.pi**2/4:.9f}）",
+)
+
+_pi20 = Fraction(314159265358979323846264338327950288419716939937510, 10**50)
+_c20 = _pi20 / 2
+
+
+def _ak20(k):
+    """a_k=∫₀¹x^(k-1)sin(πx/2)dx を sin の級数から分数で厳密に出す（k⁴a_k の桁落ちを避ける）。"""
+    s = Fraction(0)
+    for j in range(22):
+        s += Fraction((-1) ** j) * _c20 ** (2 * j + 1) / (math.factorial(2 * j + 1) * (k + 2 * j + 1))
+    return s
+
+
+_B20 = -_c20 * _c20
+_a20k = _ak20(10000)
+ok(
+    "科学大20-5 a_(k+2)=4(k+1)/π²·(1-k a_k)、A=1、m=3・n=2・B=-π²/4、p=4・q=3・r=1 で 3π²/4",
+    all(abs(float(_ak20(k + 2) - 4 * (k + 1) / _pi20**2 * (1 - k * _ak20(k)))) < 1e-30 for k in (1, 2, 3, 5))
+    and abs(float(10000 * _a20k) - 1) < 1e-6
+    and abs(float(10000**3 * _a20k - 10000**2 - _B20)) < 5e-3
+    and abs(float(10000**4 * _a20k - 10000**3 - 10000 * _B20 - 3 * _c20**2)) < 5e-3,
+    f"k=10000 で k·a_k={float(10000*_a20k):.9f}、k³a_k-k²={float(10000**3*_a20k-10000**2):.6f}（-π²/4={float(_B20):.6f}）、k⁴a_k-k³-kB={float(10000**4*_a20k-10000**3-10000*_B20):.6f}（3π²/4={float(3*_c20**2):.6f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
