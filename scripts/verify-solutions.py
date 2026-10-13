@@ -9810,6 +9810,104 @@ ok(
     f"乱数6通りの A,B で P が楕円上にあることを確認。体積は数値 {_V20:.7f}／式 {15*math.pi/4+27*math.pi**2/8:.7f}",
 )
 
+# ---- 名市大医2019 ----
+_f19 = lambda x: 2 * math.log(x) / x
+_F19 = lambda x: math.log(x) ** 2
+
+
+def _S19(a):
+    if a >= 1:
+        return _F19(2 * a) - _F19(a)
+    if 2 * a <= 1:
+        return _F19(a) - _F19(2 * a)
+    return _F19(a) + _F19(2 * a)
+
+
+_ok19a = all(
+    abs(quad(lambda x: abs(_f19(x)), a, 2 * a, 20001)[0] - _S19(a)) < 1e-7
+    for a in (0.3, 0.6, 1 / math.sqrt(2), 0.9, 1.5)
+)
+_best19 = min((0.001 * i for i in range(1, 3000)), key=_S19)
+ok(
+    "名市医19-1 S(a) の場合分け、最小は a=1/√2 で (log2)²/2",
+    _ok19a and abs(_best19 - 1 / math.sqrt(2)) < 1e-3 and abs(_S19(_best19) - math.log(2) ** 2 / 2) < 1e-6,
+    f"a=0.3,0.6,1/√2,0.9,1.5 で数値積分と式が一致。0.001 刻みの最小は a={_best19:.3f}（1/√2={1/math.sqrt(2):.6f}）で S={_S19(_best19):.7f}（(log2)²/2={math.log(2)**2/2:.7f}）",
+)
+
+_mn19 = [(m, n) for m in range(-4, 5) for n in range(-4, 5) if m and n and 1 <= m * n <= 4]
+_th19 = sorted({round(math.degrees(math.acos(math.copysign(math.sqrt(m * n) / 2, m))), 6) for m, n in _mn19})
+_q19 = sorted({(m, round(math.sqrt(max(0.0, 4 * m / n - m * m)), 9)) for m, n in _mn19 if 4 * m / n - m * m >= -1e-12})
+ok(
+    "名市医19-2 θ は8通り、q は16点",
+    len(_mn19) == 16
+    and _th19 == [0.0, 30.0, 45.0, 60.0, 120.0, 135.0, 150.0, 180.0]
+    and len(_q19) == 16,
+    f"(m,n) の組は {len(_mn19)} 個、θ（度）は {_th19}、q の点は {len(_q19)} 個で x 座標は ±1,±2,±3,±4",
+)
+
+_deg19 = {1: 0, 2: 30, 3: 75, 4: 135, 5: 210, 6: 300}
+_A19 = {k: (math.cos(math.radians(d)), math.sin(math.radians(d))) for k, d in _deg19.items()}
+
+
+def _right19(t):
+    for p in itertools.permutations(t):
+        v1 = (_A19[p[1]][0] - _A19[p[0]][0], _A19[p[1]][1] - _A19[p[0]][1])
+        v2 = (_A19[p[2]][0] - _A19[p[0]][0], _A19[p[2]][1] - _A19[p[0]][1])
+        if abs(v1[0] * v2[0] + v1[1] * v2[1]) < 1e-9:
+            return True
+    return False
+
+
+_rt19 = [t for t in itertools.combinations(range(1, 7), 3) if _right19(t)]
+_cnt19 = {"tri": Fraction(0), "rt": Fraction(0), "has": Fraction(0)}
+
+
+def _rec19(seq, prob):
+    for d in range(1, 7):
+        p = prob * Fraction(1, 6)
+        s = seq + [d]
+        if d in seq:
+            m = len(s)
+            if m == 4 and d == s[0]:
+                _cnt19["tri"] += p
+                if {2, 5} <= set(s[:3]):
+                    _cnt19["rt"] += p
+            if m >= 4 and d == s[m - 4] and {2, 5} <= set(s[m - 4 : m - 1]):
+                _cnt19["has"] += p
+        else:
+            _rec19(s, p)
+
+
+_rec19([], Fraction(1))
+ok(
+    "名市医19-3 6点は単位円周上で直角は A₂A₅ が直径のときだけ、確率は 5/54・1/54・61/1944",
+    abs(_A19[3][0] - (math.sqrt(3) - 1) / (2 * math.sqrt(2))) < 1e-12
+    and _rt19 == [(1, 2, 5), (2, 3, 5), (2, 4, 5), (2, 5, 6)]
+    and _cnt19["tri"] == Fraction(5, 54)
+    and _cnt19["rt"] == Fraction(1, 54)
+    and _cnt19["has"] == Fraction(61, 1944),
+    f"直角三角形になる3点組は {_rt19}。全列挙の確率は 三角形 {_cnt19['tri']}、直角三角形 {_cnt19['rt']}、三角形を含む {_cnt19['has']}={float(_cnt19['has']):.7f}",
+)
+
+_a19 = [None, 1]
+for _n in range(1, 30000):
+    _a19.append(_a19[_n] - 1 if _a19[_n] > 0 else _n)
+_n1 = next(n for n in range(1, 30000) if _a19[n] == 10000)
+_s19 = 0
+for _n in range(1, 30000):
+    _s19 += _a19[_n]
+    if _s19 >= 10000:
+        _n2, _S2 = _n, _s19
+        break
+ok(
+    "名市医19-4 aₙ=10000 の最小は n=14575、Sₙ≧10000 の最小は n=213",
+    _n1 == 14575
+    and _n2 == 213
+    and _S2 == 10020
+    and [n for n in range(1, 400) if _a19[n] == 0] == [2, 5, 11, 23, 47, 95, 191, 383],
+    f"先頭は {_a19[1:13]}、aₙ=0 となる n は {[n for n in range(1, 400) if _a19[n] == 0]}、aₙ=10000 の最小 n={_n1}、Sₙ≧10000 の最小 n={_n2}（S={_S2}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
