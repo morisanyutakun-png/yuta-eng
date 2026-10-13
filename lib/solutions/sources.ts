@@ -392,6 +392,18 @@ export const sources: Record<string, Record<number, Source>> = {
         "問題冊子の表紙には「許可なしに転載、複製することを禁じます。」とあるが、" +
         "当サイトは問題文・図を1つも載せないので複製にあたらない。",
     },
+    2025: {
+      kind: "official",
+      url: "https://www.nagoya-cu.ac.jp/media/R7_zenki_math_med.pdf",
+      publisher: "名古屋市立大学",
+      pageTitle: "令和7年度 前期日程 医学部 数学",
+      target: "pdf",
+      checked: "2026-10-13",
+      note:
+        "2026年度ぶんと同じ場所で公開されている。PDFの表紙に「令和7年度個別学力検査 医学部（医）前期日程 数学問題」とあり、" +
+        "手元の問題冊子と同じものであることを確かめた。" +
+        "表紙には「許可なしに転載、複製することを禁じます。」とあるが、当サイトは問題文・図を1つも載せないので複製にあたらない。",
+    },
   },
   "tohoku-rikei": {
     2026: {

@@ -9282,6 +9282,79 @@ ok(
     f"x²+f² の最大は {_mx25b:.12f}、D の体積は数値 {_volD25:.7f}／式 {10*math.pi/3-math.pi**2:.7f}、答え {4*math.pi/3-_volD25:.7f}（π²-2π={math.pi**2-2*math.pi:.7f}）",
 )
 
+# ---- 名市大医2025 ----
+def _ip25(u, v):
+    """|a|=2, |b|=6, a·b=10 のときの内積。u,v は (a,b) の係数。"""
+    return u[0] * v[0] * 4 + (u[0] * v[1] + u[1] * v[0]) * 10 + u[1] * v[1] * 36
+
+
+_OH25 = (Fraction(13, 10), Fraction(-3, 10))
+_ON25 = (Fraction(13, 7), Fraction(-3, 7))
+_s25 = Fraction(-6, 7)
+ok(
+    "名市医25-1 OH=(13a-3b)/10、ON=(13a-3b)/7",
+    _ip25(_OH25, (Fraction(-1), Fraction(1))) == 0
+    and _OH25[0] + _OH25[1] == 1
+    and _ON25[0] / _OH25[0] == _ON25[1] / _OH25[1]
+    and 1 - _s25 == _ON25[0]
+    and _s25 / 2 == _ON25[1],
+    f"OH と b-a の内積は {_ip25(_OH25, (Fraction(-1), Fraction(1)))}、OH の係数の和は {_OH25[0]+_OH25[1]}、ON は OH の {_ON25[0]/_OH25[0]} 倍で s={_s25} の AM 上の点と一致",
+)
+
+_tie25 = {}
+for _m in (2, 3, 4):
+    _n = 2 * _m
+    _tot = _n * (_n - 1) // 2
+    _c = sum(1 for _s in itertools.combinations(range(_n), _m) if 2 * sum(_s) == _tot)
+    _tie25[_m] = Fraction(_c, math.comb(_n, _m))
+ok(
+    "名市医25-2(1) 引き分けの確率は m=2 で 1/3、m=3 で 0、m=4 で 4/35",
+    _tie25 == {2: Fraction(1, 3), 3: Fraction(0), 4: Fraction(4, 35)},
+    f"全探索の結果は {dict((k, str(v)) for k, v in _tie25.items())}。m=4 で和 14 の4個組は {sum(1 for s in itertools.combinations(range(8), 4) if sum(s) == 14)} 通り",
+)
+
+_cert25 = {}
+for _m in (3, 4):
+    _n = 2 * _m
+    _g = _t = 0
+    for _a1, _b1, _a2 in itertools.permutations(range(_n), 3):
+        _t += 1
+        _rest = sorted(set(range(_n)) - {_a1, _b1, _a2})
+        _kA = _m - 2
+        if _a1 + _a2 + sum(_rest[:_kA]) > _b1 + sum(_rest[_kA:]):
+            _g += 1
+    _cert25[_m] = Fraction(_g, _t)
+ok(
+    "名市医25-2(2) A の勝ちが確定している確率は m=3 で 11/60、m=4 で 1/56",
+    _cert25 == {3: Fraction(11, 60), 4: Fraction(1, 56)},
+    f"最初の3回の取り方をすべて調べた結果は {dict((k, str(v)) for k, v in _cert25.items())}",
+)
+
+_ak25 = lambda k: sum(1 for y in range(1, k) for x in range(1, y) if x + y > k)
+ok(
+    "名市医25-3 a₇=6・a₈=9、a_(2m-1)=(m-1)(m-2)・a_(2m)=(m-1)²、Σ=n(n-1)(4n-5)/6",
+    _ak25(7) == 6
+    and _ak25(8) == 9
+    and all(_ak25(2 * m - 1) == (m - 1) * (m - 2) and _ak25(2 * m) == (m - 1) ** 2 for m in range(1, 15))
+    and all(sum(_ak25(k) for k in range(1, 2 * n + 1)) == n * (n - 1) * (4 * n - 5) // 6 for n in range(1, 12)),
+    f"全探索の aₖ は k=1..12 で {[_ak25(k) for k in range(1, 13)]}、Σ は n=1..5 で {[sum(_ak25(k) for k in range(1, 2*n+1)) for n in range(1, 6)]}",
+)
+
+_R3 = math.sqrt(3)
+_ang25 = lambda a, b: math.atan((_R3 / a - _R3 / b) / (1 + 3 / (a * b)))
+_c25 = 1.5 * math.log(3)
+_t1 = lambda x: _R3 * (x - 1)
+_t2 = lambda x: _R3 * math.log(3) + (x - 3) / _R3
+_S25 = quad(lambda x: _t1(x) - _R3 * math.log(x), 1, _c25, 100001)[0] + quad(
+    lambda x: _t2(x) - _R3 * math.log(x), _c25, 3, 100001
+)[0]
+ok(
+    "名市医25-4 b=3(a+1)/(3-a)、a=1 のとき面積は √3-3√3(log3)²/4",
+    all(abs(_ang25(a, 3 * (a + 1) / (3 - a)) - math.pi / 6) < 1e-12 for a in (0.5, 1.0, 2.0, 2.9))
+    and abs(_S25 - (_R3 - 3 * _R3 / 4 * math.log(3) ** 2)) < 1e-9,
+    f"a=0.5,1,2,2.9 で2接線のなす鋭角はどれも π/6、面積は数値 {_S25:.9f}／式 {_R3-3*_R3/4*math.log(3)**2:.9f}（交点の x は {_c25:.7f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
