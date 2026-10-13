@@ -8032,6 +8032,129 @@ ok(
     f"4次式の実数解は {sorted(set(_roots21))}、面積 {_S21:.9f}（16/3={16/3:.9f}）、2直線の交点は (4, 44)",
 )
 
+# --- 東北大学 2020年度（文系） -------------------------------------------------
+# 第2問・第3問は理系と同じ問題なので、確認も理系の側（東北理20-3、東北理20-2）で済ませている。
+
+
+def _f20b(x, a):
+    if x < -2:
+        return 0.0
+    if x <= a:
+        return (x - a) * (x + 2)
+    if x <= 3:
+        return 2 * (x - a) * (x - 3)
+    return 0.0
+
+
+_S20 = lambda a: (a + 2) ** 3 / 6 + (3 - a) ** 3 / 3
+_ok20b = True
+for _a20 in (-2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 8 - 5 * math.sqrt(2)):
+    _num20 = -quad(lambda x, a=_a20: _f20b(x, a), -2, _a20, 8001)[0] - quad(
+        lambda x, a=_a20: _f20b(x, a), _a20, 3, 8001
+    )[0]
+    if abs(_num20 - _S20(_a20)) > 1e-6:
+        _ok20b = False
+    if any(_f20b(-2 + 5 * i / 500, _a20) > 1e-12 for i in range(501)):
+        _ok20b = False
+_vals20 = [(_S20(i / 20000 * 5 - 2), i / 20000 * 5 - 2) for i in range(20001)]
+_min20 = min(_vals20)
+_max20b = max(_vals20)
+ok(
+    "東北文20-1 S(a)=(a+2)³/6+(3-a)³/3、最大は a=-2、最小は a=8-5√2",
+    _ok20b
+    and abs(_min20[1] - (8 - 5 * math.sqrt(2))) < 1e-3
+    and abs(_min20[0] - 125 * (3 - 2 * math.sqrt(2)) / 3) < 1e-6
+    and abs(_max20b[1] + 2) < 1e-6
+    and abs(_max20b[0] - 125 / 3) < 1e-9
+    and abs(_S20(3) - 125 / 6) < 1e-9,
+    f"最小 {_min20[0]:.9f} at a={_min20[1]:.6f}（8-5√2={8-5*math.sqrt(2):.6f}、125(3-2√2)/3={125*(3-2*math.sqrt(2))/3:.9f}）、最大 {_max20b[0]:.9f} at a={_max20b[1]:.1f}",
+)
+
+_xy20 = set()
+_c06_20 = 0
+_cang20 = 0
+_bys20 = []
+for _bits20 in itertools.product([0, 1], repeat=6):
+    _s20 = sum(_bits20)
+    _t20 = 6 - _s20
+    _x20, _y20 = 2 * _s20 - _t20, -_s20 + 2 * _t20
+    _xy20.add(_x20 + _y20)
+    if (_x20, _y20) == (0, 6):
+        _c06_20 += 1
+    _cos20 = (3 * _x20 + _y20) / (math.hypot(_x20, _y20) * math.hypot(3, 1))
+    if _cos20 >= math.cos(math.pi / 6) - 1e-12:
+        _cang20 += 1
+        _bys20.append(_s20)
+ok(
+    "東北文20-4 x+y=6、p=(0,6) の確率 15/64、q とのなす角 ≦π/6 の確率 35/64（s=3,4）",
+    _xy20 == {6}
+    and Fraction(_c06_20, 64) == Fraction(15, 64)
+    and Fraction(_cang20, 64) == Fraction(35, 64)
+    and sorted(set(_bys20)) == [3, 4],
+    f"x+y の値は {_xy20}、p=(0,6) は {_c06_20}/64、なす角 ≦30° は {_cang20}/64（s={sorted(set(_bys20))}）",
+)
+
+# --- 東北大学 2019年度（文系） -------------------------------------------------
+# 第2問は理系と同じ問題なので、確認も理系の側（東北理19-2）で済ませている。
+
+_b19 = (1 - math.sqrt(5)) / 2
+_a19 = 2 - math.sqrt(5)
+_c19 = _b19 * _b19
+_best19 = None
+_k19 = -300000
+while _k19 < 0:
+    _bb19 = _k19 / 100000
+    _aa19 = _bb19**3
+    _err19 = abs(_bb19 + _bb19 * _bb19 - _aa19)
+    if _best19 is None or _err19 < _best19[0]:
+        _best19 = (_err19, _bb19)
+    _k19 += 1
+ok(
+    "東北文19-1 a=2-√5、b=(1-√5)/2（c=b²、b+c=bc=a、判別式 a²-4a=1>0）",
+    abs(_b19 + _c19 - _a19) < 1e-12
+    and abs(_b19 * _c19 - _a19) < 1e-12
+    and abs(_b19**3 - _a19) < 1e-12
+    and abs(_b19 * _b19 + _a19 - _a19 * _b19) < 1e-12
+    and abs(_c19 * _c19 + _a19 - _a19 * _c19) < 1e-12
+    and abs(_a19 * _a19 - 4 * _a19 - 1) < 1e-12
+    and _b19 < 0
+    and abs(_best19[1] - _b19) < 1e-4,
+    f"a={_a19:.9f}、b={_b19:.9f}、c={_c19:.9f}、b+c={_b19+_c19:.9f}、bc={_b19*_c19:.9f}、判別式={_a19*_a19-4*_a19:.9f}、走査の b={_best19[1]:.5f}",
+)
+
+_A19 = [None, Fraction(1), Fraction(3)]
+for _n19 in range(1, 10):
+    _A19.append(2 * _A19[_n19 + 1] ** 2 / _A19[_n19])
+_f19seq = lambda n: Fraction(3) ** (n - 1) * Fraction(2) ** ((n - 1) * (n - 2) // 2)
+ok(
+    "東北文19-3 aₙ はすべて正、aₙ=3^(n-1)·2^((n-1)(n-2)/2)",
+    all(_A19[n] > 0 for n in range(1, 11))
+    and all(_A19[n] == _f19seq(n) for n in range(1, 11))
+    and all(_A19[n + 1] / _A19[n] == Fraction(3) * Fraction(2) ** (n - 1) for n in range(1, 10)),
+    f"aₙ n=1..8 は {[str(_A19[n]) for n in range(1,9)]}、比は {[str(_A19[n+1]/_A19[n]) for n in range(1,8)]}",
+)
+
+_P19k = lambda n, k, j: Fraction(math.comb(n, j)) * Fraction((2**k - 1) ** (n - j), 2 ** (k * n))
+_step19 = {0: {3: Fraction(1)}}
+for _k in range(1, 5):
+    _nx19 = {}
+    for _j, _pr in _step19[_k - 1].items():
+        for _m in range(_j + 1):
+            _nx19[_m] = _nx19.get(_m, Fraction(0)) + _pr * Fraction(math.comb(_j, _m), 2**_j)
+    _step19[_k] = _nx19
+_ans19 = _step19[3].get(0, Fraction(0)) - _step19[2].get(0, Fraction(0))
+ok(
+    "東北文19-4 P₁(j)=nCj/2ⁿ、Pₖ(j)=nCj(2ᵏ-1)^(n-j)/2^(kn)、n=3 の (3) は 127/512",
+    all(
+        abs(_step19[k].get(j, Fraction(0)) - _P19k(3, k, j)) == 0
+        for k in range(1, 5)
+        for j in range(4)
+    )
+    and _P19k(3, 1, 1) == Fraction(3, 8)
+    and _ans19 == Fraction(127, 512),
+    f"P₂(j)={[str(_step19[2].get(j, Fraction(0))) for j in range(4)]}、P₃(j)={[str(_step19[3].get(j, Fraction(0))) for j in range(4)]}、P₃(0)-P₂(0)={_ans19}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
