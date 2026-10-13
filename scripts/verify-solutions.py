@@ -10114,6 +10114,101 @@ ok(
     f"極値は {_ff23(-math.sqrt(6)):.7f},{_ff23(-1):.1f},{_ff23(1):.1f},{_ff23(math.sqrt(6)):.7f}、面積 {_S23b:.7f}（15/4+log(3/8)={15/4+math.log(3/8):.7f}）、m=-3,0,1,4/3,1.5,2,2.5,5 の共有点は {[_cnt23(m) for m in (-3,0,1,4/3,1.5,2,2.5,5)]}",
 )
 
+# ---- 名工大2022 ----
+_X22 = lambda t: math.cos(t) ** 2
+_sp22 = lambda t: math.hypot(-2 * math.sin(2 * t), -math.sin(3 * t))
+_h22 = lambda X: (1 - X) * (4 * X + 1) ** 2
+_mx22 = max(_sp22(math.pi * i / 200000) for i in range(200001))
+_L22 = quad(lambda t: math.sin(t) * (4 * math.cos(t) ** 2 + 1), 0, math.pi, 100001)[0]
+ok(
+    "名工大22-1 sin²2t=4X(1-X)・sin²3t=(1-X)(4X-1)²、|v| の最大 5√15/9、道のり 14/3",
+    all(
+        abs(math.sin(2 * t) ** 2 - 4 * _X22(t) * (1 - _X22(t))) < 1e-12
+        and abs(math.sin(3 * t) ** 2 - (1 - _X22(t)) * (4 * _X22(t) - 1) ** 2) < 1e-12
+        for t in (0.3, 0.9, 2.0)
+    )
+    and abs(_mx22 - 5 * math.sqrt(15) / 9) < 1e-6
+    and abs(math.sqrt(_h22(7 / 12)) - 5 * math.sqrt(15) / 9) < 1e-12
+    and abs(_L22 - 14 / 3) < 1e-9,
+    f"t=0.3,0.9,2.0 で (1) の式が一致。速さの最大は走査で {_mx22:.7f}（5√15/9={5*math.sqrt(15)/9:.7f}、X=7/12）、道のり {_L22:.7f}（14/3={14/3:.7f}）",
+)
+
+_g22 = lambda x: -x * (x + 2)
+_f22 = lambda x: x**3 - 3 * x**2 - 6 * x + 8
+_S22 = quad(lambda x: _f22(x) - _g22(x), -2, 2, 100001)[0]
+_I22 = quad(lambda x: _g22(x) / _f22(x), 2, 3, 100001)[0]
+ok(
+    "名工大22-2 a=-2・g=-x(x+2)、f-g=(x+2)(x-b)²、b=2・f=x³-3x²-6x+8、∫=5log2/3",
+    abs(_g22(-1) - 1) < 1e-12
+    and abs(_g22(-2)) < 1e-12
+    and abs(_g22(0)) < 1e-12
+    and all(abs(_f22(x) - _g22(x) - (x + 2) * (x - 2) ** 2) < 1e-9 for x in (-3, 0, 1, 5))
+    and abs(_S22 - 64 / 3) < 1e-6
+    and _f22(0) - _g22(0) > 0
+    and abs(_I22 - 5 / 3 * math.log(2)) < 1e-7,
+    f"g(-1)={_g22(-1)}、f-g=(x+2)(x-2)² を確認、面積 {_S22:.7f}（64/3={64/3:.7f}）、∫ {_I22:.7f}（5log2/3={5/3*math.log(2):.7f}）",
+)
+
+_a22v = (3.0, 0.0, 0.0)
+_c22x = -1.0
+_c22y = math.sqrt(4 - 1)
+_c22v = (_c22x, _c22y, 0.0)
+_d22x = 4.5 / 3
+_d22y = (0 - _c22v[0] * _d22x) / _c22v[1]
+_d22z = math.sqrt(9 - _d22x**2 - _d22y**2)
+_d22v = (_d22x, _d22y, _d22z)
+_sb22 = lambda u, v: tuple(x - y for x, y in zip(u, v))
+_dt22 = lambda u, v: sum(x * y for x, y in zip(u, v))
+_cr22 = lambda u, v: (u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0])
+_nr22 = lambda u: math.sqrt(_dt22(u, u))
+_B22 = tuple(_a22v[i] + _c22v[i] for i in range(3))
+_P22 = tuple(2 / 3 * _a22v[i] + 1 / 2 * _c22v[i] + 1 / 3 * _d22v[i] for i in range(3))
+_Q22 = tuple(2 / 3 * _P22[i] for i in range(3))
+_R22 = tuple(3 / 5 * _c22v[i] + 2 / 5 * _d22v[i] for i in range(3))
+ok(
+    "名工大22-3 a·c=-3・a·d=9/2、∠BAD=60°、OP=2a/3+c/2+d/3、OQ=2OP/3・OR=3c/5+2d/5",
+    abs(_nr22(_d22v) - 3) < 1e-9
+    and abs(_nr22(_sb22(_d22v, _a22v)) - 3) < 1e-9
+    and abs(_dt22(_sb22(_B22, _a22v), _sb22(_d22v, _a22v)) / (_nr22(_sb22(_B22, _a22v)) * _nr22(_sb22(_d22v, _a22v))) - 0.5) < 1e-9
+    and abs(_dt22(_P22, _sb22(_B22, _a22v))) < 1e-9
+    and abs(_dt22(_P22, _sb22(_d22v, _a22v))) < 1e-9
+    and _nr22(_cr22(_sb22(_Q22, _a22v), _sb22(_R22, _a22v))) < 1e-9
+    and _nr22(_cr22(_sb22(_R22, _c22v), _sb22(_d22v, _c22v))) < 1e-9,
+    f"|d|={_nr22(_d22v):.6f}・|d-a|={_nr22(_sb22(_d22v,_a22v)):.6f}（正三角形）、cos∠BAD={_dt22(_sb22(_B22,_a22v),_sb22(_d22v,_a22v))/(_nr22(_sb22(_B22,_a22v))*_nr22(_sb22(_d22v,_a22v))):.6f}、OP は AB・AD と直交、A・Q・R は一直線で R は CD 上",
+)
+
+
+def _bseq22(z, n):
+    A = [None, z * (z - 1)]
+    B = [None, z * (z - 1)]
+    for k in range(1, n + 1):
+        A.append((z - 1) * A[k])
+        B.append(A[k + 1] - B[k])
+    return A, B
+
+
+_ok22d = True
+for _z in (0.3 + 0.7j, 2.0 + 0j, -1.5 + 0.2j):
+    _A, _B = _bseq22(_z, 6)
+    for _n in range(1, 6):
+        if abs(_A[_n] - _z * (_z - 1) ** _n) > 1e-9:
+            _ok22d = False
+        if abs(_B[_n] - (_z - 1) * ((_z - 1) ** _n - (-1) ** _n)) > 1e-9:
+            _ok22d = False
+_r22 = [0 + 0j, 1 + 0j, (3 + math.sqrt(3) * 1j) / 2, (3 - math.sqrt(3) * 1j) / 2]
+_realonly22 = []
+for _k in range(1, 8):
+    _zs = [1 + 0j] + [1 - cmath.exp(2j * math.pi * j / _k) for j in range(_k)]
+    if all(abs(z.imag) < 1e-12 for z in _zs):
+        _realonly22.append(_k)
+ok(
+    "名工大22-4 aₙ=z(z-1)ⁿ、bₙ=(z-1){(z-1)ⁿ-(-1)ⁿ}、b₃=0 は4つ、実数のみは k=1,2",
+    _ok22d
+    and all(abs(_bseq22(z, 4)[1][3]) < 1e-12 for z in _r22)
+    and _realonly22 == [1, 2],
+    f"3つの z で n=1..5 まで式と一致。b₃=0 の4解 0,1,(3±√3i)/2 で |b₃|<10⁻¹²。bₖ=0 の解が実数だけになる k は {_realonly22}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
