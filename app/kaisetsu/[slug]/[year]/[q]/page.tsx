@@ -32,11 +32,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!s || !u || !question) return {};
   const short = shortName(u);
   const title = `${s.short} ${s.year}年度 数学 第${question.no}問の解答・解説｜${question.field}`;
-  const description =
+  const head =
     `${s.university}${s.year}年度（${s.schedule}・${s.division}）数学 第${question.no}問（${question.field}）の、当サイト独自の解答・計算過程・詳解` +
-    `${question.subs.some((x) => x.alts?.length) ? "・別解" : ""}。` +
-    `${question.topics.join("、")}を使います。小問は${question.subs.map((x) => x.label).filter(Boolean).join("")}の${question.subs.length}問。` +
-    `問題文は載せていません。公式解答ではありません。`;
+    `${question.subs.some((x) => x.alts?.length) ? "・別解" : ""}。`;
+  const topicsPart = `${question.topics.join("、")}を使います。`;
+  const subsPart = `小問は${question.subs.map((x) => x.label).filter(Boolean).join("")}の${question.subs.length}問。`;
+  const tailPart = "問題文は載せていません。公式解答ではありません。";
+  // 小問の記号が長い大問（電通大2020の第3問のような [III](iii) 形式）では、
+  // topics まで入れると160字を超える。入れられるときだけ入れる。
+  const description =
+    head.length + topicsPart.length + subsPart.length + tailPart.length <= 160
+      ? head + topicsPart + subsPart + tailPart
+      : head + subsPart + tailPart;
   return {
     title,
     description,

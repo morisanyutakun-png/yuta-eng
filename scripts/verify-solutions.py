@@ -11147,6 +11147,160 @@ ok(
     f"I(m)={_I21}・L(m)={_L21}（m=2..5）、M(k)={_M21}（k=1,2,3）",
 )
 
+
+# ---- 電通大2020 ----
+
+
+def _f20u(x):
+    return math.sin(x) + math.sin(2 * x) / 2 + math.sin(3 * x) / 3
+
+
+def _fp20(x):
+    return math.cos(x) + math.cos(2 * x) + math.cos(3 * x)
+
+
+_dd20 = max(
+    abs((_f20u(x + 1e-6) - _f20u(x - 1e-6)) / 2e-6 - _fp20(x)) for x in (0.3, 1.0, 2.0, 3.0)
+)
+_fac20 = max(
+    abs(_fp20(math.pi * i / 1000) - math.cos(2 * math.pi * i / 1000) * (2 * math.cos(math.pi * i / 1000) + 1))
+    for i in range(1001)
+)
+_rt20 = []
+_prev = _fp20(math.pi * 0.5 / 400000)
+for _i in range(1, 400000):
+    _x = math.pi * (_i + 0.5) / 400000
+    _cur = _fp20(_x)
+    if _prev * _cur < 0:
+        _rt20.append(_x)
+    _prev = _cur
+_V20 = math.pi * quad(lambda x: _f20u(x) ** 2, 0.0, math.pi, 200001)[0]
+ok(
+    "電通大20-1 f'=cosx+cos2x+cos3x=cos2x(2cosx+1)、解は π/4・2π/3・3π/4、極値、V=49π²/72",
+    _dd20 < 1e-6
+    and _fac20 < 1e-12
+    and len(_rt20) == 3
+    and max(abs(_rt20[i] - v) for i, v in enumerate((math.pi / 4, 2 * math.pi / 3, 3 * math.pi / 4))) < 1e-4
+    and abs(_f20u(math.pi / 4) - (2 * math.sqrt(2) / 3 + 0.5)) < 1e-12
+    and abs(_f20u(2 * math.pi / 3) - math.sqrt(3) / 4) < 1e-12
+    and abs(_f20u(3 * math.pi / 4) - (2 * math.sqrt(2) / 3 - 0.5)) < 1e-12
+    and abs(_V20 - 49 * math.pi**2 / 72) < 1e-7,
+    f"f' の式の差 {_dd20:.1e}・因数分解の差 {_fac20:.1e}、解は {[round(r, 6) for r in _rt20]}、"
+    f"極値 {_f20u(math.pi/4):.7f}・{_f20u(2*math.pi/3):.7f}・{_f20u(3*math.pi/4):.7f}、"
+    f"V={_V20:.9f}（49π²/72={49*math.pi**2/72:.9f}）",
+)
+
+_ok20b = True
+for _n in (2, 3, 5, 10):
+    _sl = _n / math.sqrt(_n * _n - 1)
+    if abs((_n - math.sqrt(_n * _n - 1) / _sl) - 1 / _n) > 1e-12:
+        _ok20b = False
+    _t = math.log(_n + math.sqrt(_n * _n - 1))
+    if abs((math.exp(_t) + math.exp(-_t)) / 2 - _n) > 1e-9:
+        _ok20b = False
+    _Iv = lambda tt: (math.exp(2 * tt) - math.exp(-2 * tt)) / 8 - tt / 2
+    _ar = quad(lambda x: math.sqrt(max(0.0, x * x - 1)), 1.0, float(_n), 200001)[0]
+    if abs(_ar - (_Iv(_t) - _Iv(0.0))) > 1e-6:
+        _ok20b = False
+    _Sn = (_n * _n - 1) ** 1.5 / (2 * _n) - _ar
+    _fs = 0.5 * math.log(_n + math.sqrt(_n * _n - 1)) - math.sqrt(_n * _n - 1) / (2 * _n)
+    if abs(_Sn - _fs) > 1e-6:
+        _ok20b = False
+_Tn20 = [
+    (0.5 * math.log(n + math.sqrt(n * n - 1)) - math.sqrt(n * n - 1) / (2 * n)) / math.log(n)
+    for n in (10**2, 10**4, 10**6)
+]
+ok(
+    "電通大20-2 f'=x/√(x²-1)、xₙ=1/n、t=log(x+√(x²-1))、I=(e^(2t)-e^(-2t))/8-t/2、Sₙ、T=1/2",
+    _ok20b and all(0.45 < v < 0.5 for v in _Tn20) and _Tn20[2] > _Tn20[1] > _Tn20[0],
+    f"n=2,3,5,10 で xₙ=1/n、t の式、I、Sₙ がすべて一致。"
+    f"Tₙ は n=10²,10⁴,10⁶ で {[round(v, 7) for v in _Tn20]}（1/2 にゆっくり近づく）",
+)
+
+_z20 = complex(3, -1)
+_lhs20 = (2 + 1j) * _z20 - (1 - 1j) * _z20.conjugate()
+_k20ok = abs((3 + 4j) * complex(-2, 1) - 5 * complex(-2, 1).conjugate()) < 1e-12
+
+
+def _cross20(t):
+    a1, b1, c1 = 1.0, t, 2 * t - 4
+    a2, b2, c2 = 1 - t, 1 + t, 0.0
+    det = a1 * b2 - a2 * b1
+    return ((c1 * b2 - c2 * b1) / det, (a1 * c2 - a2 * c1) / det)
+
+
+_pts20 = [_cross20(t) for t in (-5.0, -1.0, 0.0, 0.5, 2.0, 10.0)]
+_cos20 = [
+    abs((1 * (1 - t) + t * (1 + t)) / (math.hypot(1, t) * math.hypot(1 - t, 1 + t)))
+    for t in (-3.0, 0.0, 1.0, 5.0)
+]
+_lim20 = _cross20(1e8)
+ok(
+    "電通大20-3 z=3-i、k=0、α=-4+2i、θ=π/4、軌跡は中心 -1+3i・半径 √10 の円（2+2i を除く）",
+    abs(_lhs20 - (3 + 3j)) < 1e-12
+    and _k20ok
+    and all(abs(1 * (-4) + t * 2 - (2 * t - 4)) < 1e-12 for t in (-3.0, 0.0, 1.0, 5.0))
+    and all(abs((x + 1) ** 2 + (y - 3) ** 2 - 10) < 1e-9 for x, y in _pts20)
+    and all(abs(c - 1 / math.sqrt(2)) < 1e-12 for c in _cos20)
+    and abs(_lim20[0] - 2) < 1e-6
+    and abs(_lim20[1] - 2) < 1e-6,
+    f"z=3-i で左辺 {_lhs20}、k=0 で z=-2+i が解、A(-4,2) はすべての t で ℓ 上、"
+    f"交点はすべて円の上、法線の余弦はつねに {_cos20[0]:.9f}、t=10⁸ で ({_lim20[0]:.7f}, {_lim20[1]:.7f})",
+)
+
+
+def _mul1_20(p):
+    q = [Fraction(0)] * (len(p) + 1)
+    for i, c in enumerate(p):
+        q[i + 1] += c
+        q[i] += c
+    return q
+
+
+_pol20 = {1: [Fraction(3), Fraction(1)]}
+for _n in range(1, 21):
+    _g = list(_pol20[_n])
+    _g[0] -= _n
+    _h = _mul1_20(_g)
+    while len(_h) < _n + 2:
+        _h.append(Fraction(0))
+    _h[_n + 1] += 1
+    _pol20[_n + 1] = _h
+_dv20 = lambda p: [p[i] * i for i in range(1, len(p))]
+_a20 = {n: _pol20[n][0] for n in range(1, 21)}
+_b20 = {n: sum(_pol20[n]) for n in range(1, 21)}
+_c20 = {n: _dv20(_pol20[n])[0] for n in range(1, 21)}
+_d20 = {n: sum(_dv20(_pol20[n])) for n in range(1, 21)}
+
+
+def _signchg20(n):
+    p = _dv20(_pol20[n])
+    ev = lambda x: sum(float(c) * x**i for i, c in enumerate(p))
+    N = 20000
+    prev = ev(0.5 / N)
+    ch = 0
+    for i in range(1, N):
+        cur = ev((i + 0.5) / N)
+        if prev * cur < 0:
+            ch += 1
+        prev = cur
+    return ch
+
+
+_chg20 = [_signchg20(n) for n in range(1, 11)]
+ok(
+    "電通大20-4 aₙ=3-n(n-1)/2、bₙ-2n-1=2^(n-1)、cₙ、dₙ>0、極値をもつのは n≧5",
+    all(_a20[n] == 3 - Fraction(n * (n - 1), 2) for n in range(1, 21))
+    and all(_b20[n] - 2 * n - 1 == 2 ** (n - 1) for n in range(1, 21))
+    and all(_c20[n] == 3 * n - 2 - Fraction((n - 1) * n * (n + 1), 6) for n in range(1, 21))
+    and all(_c20[n + 1] - _c20[n] == 3 - Fraction(n * (n + 1), 2) for n in range(1, 20))
+    and all(_d20[n] > 0 for n in range(1, 21))
+    and [n for n in range(1, 21) if _c20[n] < 0] == list(range(5, 21))
+    and _chg20 == [0, 0, 0, 0, 1, 1, 1, 1, 1, 1],
+    f"aₙ・bₙ・cₙ の式は n=1..20 で一致、dₙ はすべて正（d₁..d₅={[str(_d20[n]) for n in range(1, 6)]}）、"
+    f"cₙ<0 は n≧5、0<x<1 での fₙ' の符号変化は n=1..10 で {_chg20}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
