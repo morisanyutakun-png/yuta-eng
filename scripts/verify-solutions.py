@@ -10487,6 +10487,127 @@ ok(
     f"面積の最小 {_best20[0]:.7f} は x={_best20[1]:.5f}（576√7/49={576*math.sqrt(7)/49:.7f}）",
 )
 
+
+# ---- 名工大2019 ----
+
+_ok19a = True
+for _k in (0.6, 1.0, 2.5):
+    _a = 2 * _k - 1
+    # 接点 (2k-1, 1/2) における接線に x=-1 を入れると 1 になるか
+    _tl = _k / (1 + _a) - _k / (1 + _a) ** 2 * (-1 - _a)
+    if abs(_tl - 1) > 1e-12 or abs(_k / (1 + _a) - 0.5) > 1e-12:
+        _ok19a = False
+    _S = quad(lambda x: (-x / 2 + _k) - _k / (1 + x), 0.0, _a, 20001)[0]
+    _V = math.pi * quad(
+        lambda x: ((-x / 2 + _k) - 0.5) ** 2 - (_k / (1 + x) - 0.5) ** 2, 0.0, _a, 20001
+    )[0]
+    if abs(_S - (_k * _k - 0.25 - _k * math.log(2 * _k))) > 1e-8:
+        _ok19a = False
+    if abs(_V - math.pi * ((2 * _k - 1) ** 3 / 12 - _k * _k + 0.25 + _k * math.log(2 * _k))) > 1e-8:
+        _ok19a = False
+_S1 = quad(lambda x: (-x / 2 + 1) - 1 / (1 + x), 0.0, 1.0, 20001)[0]
+_V1 = math.pi * quad(lambda x: ((-x / 2 + 1) - 0.5) ** 2 - (1 / (1 + x) - 0.5) ** 2, 0.0, 1.0, 20001)[0]
+ok(
+    "名工大19-1 P(2k-1, 1/2)、ℓ: y=-x/2+k、S=k²-1/4-k log2k、V=π{(2k-1)³/12-k²+1/4+k log2k}",
+    _ok19a,
+    f"k=0.6,1,2.5 で接線は (-1,1) を通り接点の y は 1/2。k=1 で面積 {_S1:.9f}"
+    f"（式 {1 - 0.25 - math.log(2):.9f}）・体積 {_V1:.9f}（式 {math.pi*(1/12-1+0.25+math.log(2)):.9f}）",
+)
+
+_h19 = min(math.exp(i / 1000) - (i / 1000) ** 2 / 2 for i in range(0, 20001))
+_F19 = lambda x: -2 * (math.sqrt(x) + 1) * math.exp(-math.sqrt(x))
+_d19 = max(
+    abs((_F19(x + 1e-6) - _F19(x - 1e-6)) / 2e-6 - math.exp(-math.sqrt(x))) for x in (0.5, 2.0, 9.0)
+)
+_I19 = quad(lambda x: math.exp(-math.sqrt(x)), 0.0, 400.0, 200001)[0]
+ok(
+    "名工大19-2 eˣ>x²/2、xe^(-x)→0、∫e^(-√x)dx=-2(√x+1)e^(-√x)、極限は 2",
+    abs(_h19 - 1) < 1e-12 and _d19 < 1e-6 and abs(_I19 - 2) < 1e-4,
+    f"eˣ-x²/2 の最小は {_h19:.6f}（x=0）、原始関数の数値微分の差は最大 {_d19:.1e}、"
+    f"∫₀⁴⁰⁰={_I19:.7f}（極限 2）",
+)
+
+
+def _P19(t):
+    return complex(math.cos(t), math.sin(t))
+
+
+def _Q19(t):
+    return complex(2 * math.cos(2 * t), 2 * math.sin(2 * t))
+
+
+_A19 = complex(2, 0)
+_ok19c = True
+for _t in (0.0, 0.4, math.pi / 3, 1.5, 3.0):
+    _p, _q = _P19(_t), _Q19(_t)
+    if abs(abs(_q - _p) - abs(_A19 - _p)) > 1e-9:
+        _ok19c = False
+    _u1 = (_A19 - _p) / abs(_A19 - _p)
+    _u2 = (_q - _p) / abs(_q - _p) if abs(_q - _p) > 1e-12 else _u1
+    _bis = _u1 + _u2
+    if abs(_bis.real * _p.imag - _bis.imag * _p.real) > 1e-12:
+        _ok19c = False
+_in19 = []
+for _t in (1.0272, 1.0672):
+    _p = _P19(_t)
+    _in19.append(any(abs(_A19 + (_p - _A19) * i / 20000) < 1 - 1e-9 for i in range(20000)))
+_sec19 = 0.0
+_N19 = 100000
+for _i in range(_N19):
+    _q1, _q2 = _Q19(math.pi / 3 * _i / _N19), _Q19(math.pi / 3 * (_i + 1) / _N19)
+    _sec19 += 0.5 * (_q1.real * _q2.imag - _q1.imag * _q2.real)
+_tri19 = 0.5 * abs(_Q19(0).real * _Q19(math.pi / 3).imag - _Q19(0).imag * _Q19(math.pi / 3).real)
+_seg19 = _sec19 - _tri19
+_R19 = lambda t: (4 * _P19(t) + _Q19(t)) / 5
+_L19 = sum(
+    abs(_R19(math.pi / 3 * (i + 1) / 200000) - _R19(math.pi / 3 * i / 200000)) for i in range(200000)
+)
+ok(
+    "名工大19-3 a=0・b=π/3、Q=(2cos2θ, 2sin2θ)、弓形 4π/3-√3、長さ 8/5",
+    _ok19c
+    and _in19 == [False, True]
+    and abs(_seg19 - (4 * math.pi / 3 - math.sqrt(3))) < 1e-7
+    and abs(_L19 - 1.6) < 1e-7,
+    f"PQ=PA かつ OP が二等分、線分 AP が円の内部に入るかは θ=1.0272,1.0672 で {_in19}（π/3={math.pi/3:.4f}）、"
+    f"弓形 {_seg19:.9f}（4π/3-√3={4*math.pi/3-math.sqrt(3):.9f}）、長さ {_L19:.9f}（8/5=1.6）",
+)
+
+_coll19 = lambda z: abs(((z**5 - z) / (z**3 - z)).imag) < 1e-9
+_eq19 = []
+for _z in (cmath.exp(1j * math.pi / 3), -cmath.exp(1j * math.pi / 3)):
+    _a, _b, _c = _z, _z**3, _z**5
+    _eq19.append(
+        abs(abs(_b - _a) - math.sqrt(3)) < 1e-12
+        and abs(abs(_c - _b) - math.sqrt(3)) < 1e-12
+        and abs(abs(_a - _c) - math.sqrt(3)) < 1e-12
+        and (_b - _a).real * (_c - _b).imag - (_b - _a).imag * (_c - _b).real > 0
+        and abs(_z * _z - complex(-0.5, math.sqrt(3) / 2)) < 1e-12
+    )
+random.seed(19)
+_mx19 = 0.0
+_bad19 = 0
+for _ in range(200000):
+    _k = random.uniform(-50, 50)
+    if abs(_k) < 1e-6:
+        continue
+    _z2 = 1 / complex(-1, _k)
+    for _z in (cmath.sqrt(_z2), -cmath.sqrt(_z2)):
+        _r = (_z**5 - _z) / (_z**5 - _z**3)
+        if abs(_r.real) > 1e-9:
+            _bad19 += 1
+        _mx19 = max(_mx19, abs(_z))
+ok(
+    "名工大19-4 異なる3点は z≠0 かつ z⁴≠1、一直線は z² が実数、正三角形は z²=(-1±√3i)/2、垂直なら |z|<1",
+    _coll19(complex(0.7, 0))
+    and _coll19(complex(0, 0.7))
+    and not _coll19(complex(0.5, 0.5))
+    and _eq19 == [True, True]
+    and _bad19 == 0
+    and _mx19 < 1,
+    f"z=0.7・0.7i は一直線上、0.5+0.5i はそうでない。z=±e^(πi/3) は3辺が √3 で反時計回り。"
+    f"垂直条件を満たす z を 20 万通り作ると |z| の最大は {_mx19:.8f}（1 未満）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
