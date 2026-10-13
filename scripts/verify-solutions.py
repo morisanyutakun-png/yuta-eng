@@ -11014,6 +11014,139 @@ ok(
     f"V={_V22:.9f}（式 {4*math.pi*(100*math.sqrt(2)-63*math.sqrt(5))/75:.9f}）",
 )
 
+
+# ---- 電通大2021 ----
+
+
+def _f21u(x):
+    return math.cos(x) / (1 + math.sin(x))
+
+
+def _g21u(x):
+    return _f21u(math.pi / 2 - x)
+
+
+_d21 = max(
+    abs((_f21u(x + 1e-6) - _f21u(x - 1e-6)) / 2e-6 + 1 / (1 + math.sin(x)))
+    for x in (-1.0, 0.0, 1.0, 2.0, 4.0)
+)
+_dd21 = max(
+    abs(
+        (_f21u(x + 1e-4) - 2 * _f21u(x) + _f21u(x - 1e-4)) / 1e-8
+        - math.cos(x) / (1 + math.sin(x)) ** 2
+    )
+    for x in (-1.0, 0.0, 1.0, 2.0, 4.0)
+)
+_sq21 = max(
+    abs(_f21u(-1.5 + 3.0 * i / 1000) ** 2 - 2 / (1 + math.sin(-1.5 + 3.0 * i / 1000)) + 1)
+    for i in range(1001)
+)
+_V21 = math.pi * quad(lambda x: _f21u(x) ** 2 - _g21u(x) ** 2, 0.0, math.pi / 4, 20001)[0]
+ok(
+    "電通大21-1 f'=-1/(1+sinx)、f''=cosx/(1+sinx)²、交点 (π/4, √2-1)、f²=-2f'-1、V=(6-4√2)π",
+    _d21 < 1e-6
+    and _dd21 < 1e-3
+    and abs(_f21u(math.pi / 4) - (math.sqrt(2) - 1)) < 1e-12
+    and abs(_g21u(math.pi / 4) - (math.sqrt(2) - 1)) < 1e-12
+    and _sq21 < 1e-9
+    and abs(_V21 - (6 - 4 * math.sqrt(2)) * math.pi) < 1e-8,
+    f"f'・f'' と数値微分の差は {_d21:.1e}・{_dd21:.1e}、x=π/4 で両曲線とも {_f21u(math.pi/4):.7f}（√2-1={math.sqrt(2)-1:.7f}）、"
+    f"f²+2f'+1 の最大 {_sq21:.1e}、V={_V21:.9f}（(6-4√2)π={(6-4*math.sqrt(2))*math.pi:.9f}）",
+)
+
+_ok21b = True
+for _k in (1.0, 2.0, 5.0):
+    _g = lambda t: 2 * t * math.exp(-_k * t * t)
+    _best = max((_g(i / 200000), i / 200000) for i in range(1, 400000))
+    if abs(_best[0] - math.sqrt(2 / (_k * math.e))) > 1e-8:
+        _ok21b = False
+    if abs(_best[1] - 1 / math.sqrt(2 * _k)) > 1e-4:
+        _ok21b = False
+    _h = lambda s: s * s + math.exp(-2 * _k * s * s)
+    _s0 = math.sqrt(math.log(2 * _k) / (2 * _k))
+    _dh = lambda s: (_h(s + 1e-7) - _h(s - 1e-7)) / 2e-7
+    if max(abs(_dh(1e-9)), abs(_dh(_s0)), abs(_dh(-_s0))) > 1e-6:
+        _ok21b = False
+    if abs(_h(_s0) - (math.log(2 * _k) + 1) / (2 * _k)) > 1e-12:
+        _ok21b = False
+    _rm = math.sqrt((math.log(2 * _k) + 1) / (2 * _k))
+    _inside = all(
+        math.sqrt(max(0.0, _rm**2 - (_rm * i / 2000) ** 2)) <= math.exp(-_k * (_rm * i / 2000) ** 2) + 1e-12
+        for i in range(2001)
+    )
+    _big = _rm * 1.001
+    _out = any(
+        math.sqrt(max(0.0, _big**2 - (_big * i / 2000) ** 2)) > math.exp(-_k * (_big * i / 2000) ** 2) + 1e-12
+        for i in range(2001)
+    )
+    if not (_inside and _out):
+        _ok21b = False
+_Ns21 = []
+for _N in range(1, 9):
+    _k = 4**_N / math.e
+    _S1 = math.sqrt(2 / (_k * math.e))
+    _S2 = math.pi * (1 + math.log(2 * _k)) / (4 * _k)
+    _Ns21.append(2 * _S2 < _S1)
+ok(
+    "電通大21-2 g'=2e^(-kt²)(1-2kt²)、S₁=√(2/(ke))、h の極値は 0 と ±√(log2k/2k)、S₂=π(1+log2k)/(4k)、N=5",
+    _ok21b and _Ns21 == [False, False, False, False, True, True, True, True],
+    f"S₁ と最大の位置、h の極値と極小値、半円が入る条件は k=1,2,5 で一致。"
+    f"2S₂<S₁ は N=1..8 で {_Ns21}（最小は N=5）、A=eπlog2/√2={math.e*math.pi*math.log(2)/math.sqrt(2):.7f}",
+)
+
+_f3_21 = lambda x: x + 1 / x
+_g3_21 = lambda x: x + 5 / (9 * x)
+_ok21c = True
+for _t in (0.5, 1.0, 2.5):
+    _x1, _x2 = 3 * _t / 5, 3 * _t
+    for _s in (_x1, _x2):
+        if abs((1 - 1 / _s**2) * _t + 2 / _s - _g3_21(_t)) > 1e-12:
+            _ok21c = False
+    _P = (_t, _g3_21(_t))
+    _Q = (_x1, _f3_21(_x1))
+    _R = (_x2, _f3_21(_x2))
+    _PQ = (_Q[0] - _P[0], _Q[1] - _P[1])
+    _PR = (_R[0] - _P[0], _R[1] - _P[1])
+    if abs(abs(_PQ[0] * _PR[1] - _PQ[1] * _PR[0]) / 2 - 16 / 15) > 1e-12:
+        _ok21c = False
+    _sl = (_R[1] - _Q[1]) / (_R[0] - _Q[0])
+    _ic = _Q[1] - _sl * _Q[0]
+    if abs(_sl - (1 - 5 / (9 * _t * _t))) > 1e-12 or abs(_ic - 2 / _t) > 1e-12:
+        _ok21c = False
+    _S2v = quad(lambda x: _sl * x + _ic - _f3_21(x), _x1, _x2, 20001)[0]
+    if abs(_S2v - (12 / 5 - math.log(5))) > 1e-9:
+        _ok21c = False
+ok(
+    "電通大21-3 接線 y=(1-1/s²)x+2/s、接点は 3t/5 と 3t、S₁=16/15、QR: y=(1-5/(9t²))x+2/t、S₂=12/5-log5",
+    _ok21c,
+    f"t=0.5,1,2.5 で 2 本の接線が P を通り、三角形の面積は {16/15:.9f}、"
+    f"QR の傾き・切片も式と一致、囲む面積は {12/5-math.log(5):.9f}",
+)
+
+_nums21 = []
+for _m in range(1, 7):
+    for _d in itertools.product("147", repeat=_m):
+        _nums21.append(int("".join(_d)))
+_nums21.sort()
+_t21m = [sum(1 for v in _nums21 if len(str(v)) == m) for m in (1, 2, 3, 4)]
+_T21m = [sum(1 for v in _nums21 if len(str(v)) <= m) for m in (1, 2, 3, 4)]
+_S21m = [sum(v for v in _nums21 if len(str(v)) == m) for m in (1, 2, 3, 4)]
+_I21 = [sum(1 for v in _nums21 if len(str(v)) == m and v <= int("7" + "1" * (m - 1))) for m in (2, 3, 4, 5)]
+_L21 = [_nums21.index(int("7" + "1" * (m - 1))) + 1 for m in (2, 3, 4, 5)]
+_M21 = [_nums21.index(int("71" * k)) + 1 for k in (1, 2, 3)]
+ok(
+    "電通大21-4 t(m)=3^m、T(m)=(3^(m+1)-3)/2、S(m)、a₁₀₀=7171、I(m)=2·3^(m-1)+1、L(m)、M(k)=5(9^k-1)/4",
+    _t21m == [3**m for m in (1, 2, 3, 4)]
+    and _T21m == [(3 ** (m + 1) - 3) // 2 for m in (1, 2, 3, 4)]
+    and _S21m == [4 * (10**m - 1) * 3 ** (m - 1) // 3 for m in (1, 2, 3, 4)]
+    and _nums21[99] == 7171
+    and _I21 == [2 * 3 ** (m - 1) + 1 for m in (2, 3, 4, 5)]
+    and _L21 == [(7 * 3 ** (m - 1) - 1) // 2 for m in (2, 3, 4, 5)]
+    and _M21 == [5 * (9**k - 1) // 4 for k in (1, 2, 3)],
+    f"個数 {_t21m}・累計 {_T21m}・和 {_S21m}、a₁₀₀={_nums21[99]}、"
+    f"I(m)={_I21}・L(m)={_L21}（m=2..5）、M(k)={_M21}（k=1,2,3）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
