@@ -9638,6 +9638,102 @@ ok(
     f"実際に並べた a₅₀₀={_terms22[499]}、先頭2022項の和は {sum(_terms22[:2022])}={float(sum(_terms22[:2022])):.7f}",
 )
 
+# ---- 名市大医2021 ----
+_e21 = math.e
+_ok21a = all(
+    abs(abs(math.log(x)) + abs(math.log(y)) - 1) < 1e-12
+    for x, y in ((1.5, _e21 / 1.5), (1.5, 1.5 / _e21), (0.5, _e21 * 0.5), (0.5, 1 / (_e21 * 0.5)))
+)
+_s21a = quad(lambda x: _e21 * x - 1 / (_e21 * x), 1 / _e21, 1, 50001)[0]
+_s21b = quad(lambda x: _e21 / x - x / _e21, 1, _e21, 50001)[0]
+ok(
+    "名市医21-1 4つの枝（xy=e, y=x/e, y=ex, xy=1/e）、面積は e-1/e",
+    _ok21a and abs(_s21a + _s21b - (_e21 - 1 / _e21)) < 1e-7,
+    f"4つの枝の上で |log x|+|log y|=1 を確認。面積は {_s21a:.7f}+{_s21b:.7f}={_s21a+_s21b:.7f}（e-1/e={_e21-1/_e21:.7f}）",
+)
+
+_ok21b = True
+for _n in range(3, 20):
+    _oa, _ob, _ab = 2 * _n + 1, 2 * _n - 1, 2 * _n
+    _cB = (_ob**2 + _ab**2 - _oa**2) / (2 * _ob * _ab)
+    _cO = (_oa**2 + _ob**2 - _ab**2) / (2 * _oa * _ob)
+    _cA = (_oa**2 + _ab**2 - _ob**2) / (2 * _oa * _ab)
+    if min(_cO, _cA, _cB) <= 0 or abs(_cB - (_n - 2) / (2 * _n - 1)) > 1e-12:
+        _ok21b = False
+    if abs((_n + 2) / (2 * _n) * _ab - (_n + 2)) > 1e-12:
+        _ok21b = False
+    if _oa**2 - (_n + 2) ** 2 != 3 * (_n**2 - 1):
+        _ok21b = False
+_sq21 = [n for n in range(3, 200) if math.isqrt(3 * (n * n - 1)) ** 2 == 3 * (n * n - 1)]
+ok(
+    "名市医21-2 鋭角三角形、t=(n+2)/(2n)、|OP|²=3(n²-1) で最小の n は 7",
+    _ok21b and _sq21[0] == 7 and math.isqrt(3 * (7 * 7 - 1)) == 12,
+    f"n=3..19 で3つの cos がすべて正、cos∠B=(n-2)/(2n-1)、AP=n+2、|OP|²=3(n²-1)。平方数になる n は {_sq21[:3]} で最小は {_sq21[0]}（|OP|={math.isqrt(3*48)}）",
+)
+
+_a21 = [None, Fraction(2)]
+for _n in range(1, 40):
+    _a21.append(_a21[_n] * Fraction(_n, _n + 2))
+ok(
+    "名市医21-3 aₙ=4/(n(n+1))、Σ=4",
+    all(_a21[n] == Fraction(4, n * (n + 1)) for n in range(1, 40))
+    and sum(_a21[1:41]) == 4 * (1 - Fraction(1, 41)),
+    f"漸化式から出した a₁..a₅ は {[str(_a21[n]) for n in range(1, 6)]}、第40項までの和は {float(sum(_a21[1:41])):.7f}（4 に近づく）",
+)
+
+
+def _play21(seq):
+    table = []
+    score = [0, 0]
+    turn = 0
+    i = 0
+    while i < len(seq):
+        table.append(seq[i])
+        table.append(seq[i + 1])
+        i += 2
+        pairs = [v for v in set(table) if table.count(v) == 2]
+        if pairs:
+            for v in pairs:
+                table.remove(v)
+                table.remove(v)
+                score[turn] += 2
+        else:
+            turn = 1 - turn
+    return score
+
+
+_res21 = {}
+for _n in (2, 3):
+    _cards = [v for v in range(1, _n + 1) for _ in range(2)]
+    _tot = _b = _d = 0
+    for _perm in itertools.permutations(range(2 * _n)):
+        _s = _play21([_cards[j] for j in _perm])
+        _tot += 1
+        if _s[1] > _s[0]:
+            _b += 1
+        elif _s[0] == _s[1]:
+            _d += 1
+    _res21[_n] = (Fraction(_b, _tot), Fraction(_d, _tot))
+random.seed(20210)
+_cards4 = [v for v in range(1, 5) for _ in range(2)]
+_T21 = 200000
+_b4 = _d4 = 0
+for _ in range(_T21):
+    random.shuffle(_cards4)
+    _s = _play21(_cards4)
+    if _s[1] > _s[0]:
+        _b4 += 1
+    elif _s[0] == _s[1]:
+        _d4 += 1
+ok(
+    "名市医21-4 P(2)=2/3、P(3)=14/15、P(4)=74/105、Q(4)=2/35",
+    _res21[2] == (Fraction(2, 3), Fraction(0))
+    and _res21[3] == (Fraction(14, 15), Fraction(0))
+    and abs(_b4 / _T21 - 74 / 105) < 0.005
+    and abs(_d4 / _T21 - 2 / 35) < 0.005,
+    f"全列挙で P(2)={_res21[2][0]}・P(3)={_res21[3][0]}（引き分けはどちらも {_res21[2][1]}）、n=4 はモンテカルロ {_T21} 回で B の勝ち {_b4/_T21:.5f}（74/105={74/105:.5f}）・引き分け {_d4/_T21:.5f}（2/35={2/35:.5f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

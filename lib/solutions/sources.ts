@@ -427,6 +427,11 @@ export const sources: Record<string, Record<number, Source>> = {
       checked: "2026-10-13",
       note: "2023年度ぶんと同じ理由。過去3年分しか載らないので、令和4年度（2022年度）の問題PDFは公開されていない。",
     },
+    2021: {
+      kind: "none",
+      checked: "2026-10-13",
+      note: "2023年度ぶんと同じ理由。過去3年分しか載らないので、令和3年度（2021年度）の問題PDFは公開されていない。",
+    },
   },
   "tohoku-rikei": {
     2026: {
