@@ -9555,6 +9555,89 @@ ok(
     f"ℓ={_l23:.7f}、P(π/4)=(√2,0)・P(π)=(-1,ℓ)、π/4<θ≦π の y の最小は {min(_ys23):.1e}（正）、伸開線 {_len23:.7f}（式 {(_l23**2-1)/2:.7f}）、全体 {_len23+math.pi/2*_l23:.7f}（式 {21*math.pi**2/32+5*math.pi/4:.7f}）",
 )
 
+# ---- 名市大医2022 ----
+_f22 = lambda x: math.log(x) / x
+_area22 = quad(lambda x: _f22(x) - math.log(2) / 2, 2, 4, 100001)[0]
+ok(
+    "名市医22-1 極大 1/e、変曲点 x=e^(3/2)、m^n=n^m は (2,4)、面積は 3(log2)²/2-log2",
+    abs(_f22(math.e) - 1 / math.e) < 1e-15
+    and abs(_f22(math.exp(1.5)) - 1.5 / math.exp(1.5)) < 1e-15
+    and [(m, n) for m in range(1, 60) for n in range(m + 1, 200) if m**n == n**m] == [(2, 4)]
+    and abs(_area22 - (1.5 * math.log(2) ** 2 - math.log(2))) < 1e-9,
+    f"f(e)={_f22(math.e):.7f}（1/e）、変曲点 x={math.exp(1.5):.7f}・y={_f22(math.exp(1.5)):.7f}、m<n≦199 の全探索は [(2,4)]、面積 {_area22:.7f}（式 {1.5*math.log(2)**2-math.log(2):.7f}）",
+)
+
+random.seed(20220)
+_ok22b = True
+for _ in range(5):
+    _A = (random.uniform(0.5, 3), random.uniform(-2, 2))
+    _B = (random.uniform(-3, 3), random.uniform(0.5, 3))
+    _a = math.hypot(*_A)
+    _b = math.hypot(*_B)
+    _c = math.dist(_A, _B)
+    _k = _a + _b + _c
+    _I = ((_b * _A[0] + _a * _B[0]) / _k, (_b * _A[1] + _a * _B[1]) / _k)
+
+    def _dl(P, X, Y):
+        return abs((Y[0] - X[0]) * (X[1] - P[1]) - (X[0] - P[0]) * (Y[1] - X[1])) / math.dist(X, Y)
+
+    _r1, _r2, _r3 = _dl(_I, (0, 0), _A), _dl(_I, (0, 0), _B), _dl(_I, _A, _B)
+    if max(abs(_r1 - _r2), abs(_r2 - _r3)) > 1e-12:
+        _ok22b = False
+    _L = (_A[0] / 2, _A[1] / 2)
+    _M = (_B[0] / 2, _B[1] / 2)
+    _N = ((_A[0] + _B[0]) / 2, (_A[1] + _B[1]) / 2)
+    # 直線 IN と直線 LM の交点を連立で解く
+    _d1 = (_N[0] - _I[0], _N[1] - _I[1])
+    _d2 = (_M[0] - _L[0], _M[1] - _L[1])
+    _det = _d1[0] * (-_d2[1]) - (-_d2[0]) * _d1[1]
+    _rhs = (_L[0] - _I[0], _L[1] - _I[1])
+    _t = (_rhs[0] * (-_d2[1]) - (-_d2[0]) * _rhs[1]) / _det
+    _P = (_I[0] + _t * _d1[0], _I[1] + _t * _d1[1])
+    _Pf = (
+        ((_c + _b - _a) * _A[0] + (_c + _a - _b) * _B[0]) / (4 * _c),
+        ((_c + _b - _a) * _A[1] + (_c + _a - _b) * _B[1]) / (4 * _c),
+    )
+    _AQ = (_a + _c - _b) / 2
+    _Q = (_A[0] + _AQ / _c * (_B[0] - _A[0]), _A[1] + _AQ / _c * (_B[1] - _A[1]))
+    if math.dist(_P, _Pf) > 1e-12 or math.dist(_Q, (2 * _P[0], 2 * _P[1])) > 1e-12:
+        _ok22b = False
+ok(
+    "名市医22-2 OI=(b·OA+a·OB)/(a+b+c)、OP={(b+c-a)OA+(a+c-b)OB}/(4c)、OQ=2OP",
+    _ok22b,
+    "乱数の三角形5通りで、内心から3辺までの距離が等しく、IN と LM の交点が式と一致し、接点 Q が 2OP に一致した",
+)
+
+_cnt22 = {h: Fraction(math.comb(10, h), 2**10) for h in range(11)}
+_Pc22 = ["A", "D", "C", "B"]
+_Qc22 = ["B", "C", "D", "A"]
+_Pp22 = {}
+_Qp22 = {}
+for _h, _pr in _cnt22.items():
+    _Pp22[_Pc22[(10 + _h) % 4]] = _Pp22.get(_Pc22[(10 + _h) % 4], Fraction(0)) + _pr
+    _Qp22[_Qc22[(10 + _h) % 4]] = _Qp22.get(_Qc22[(10 + _h) % 4], Fraction(0)) + _pr
+_same22 = sum(_Pp22[v] * _Qp22[v] for v in "ABCD")
+ok(
+    "名市医22-3 P は A1/4・B17/64・C1/4・D15/64、異なる頂点は 3/4",
+    _Pp22 == {"A": Fraction(1, 4), "B": Fraction(17, 64), "C": Fraction(1, 4), "D": Fraction(15, 64)}
+    and _Qp22 == {"A": Fraction(17, 64), "B": Fraction(1, 4), "C": Fraction(15, 64), "D": Fraction(1, 4)}
+    and 1 - _same22 == Fraction(3, 4),
+    f"P の分布 {dict((k, str(v)) for k, v in sorted(_Pp22.items()))}、Q の分布 {dict((k, str(v)) for k, v in sorted(_Qp22.items()))}、同じ頂点 {_same22}・異なる頂点 {1-_same22}",
+)
+
+_terms22 = []
+for _k in range(1, 14):
+    _terms22 += [Fraction(1, 2 ** (_k - 1))] * (_k + 2 ** (_k - 1))
+_Sk22 = lambda k: Fraction(k + 2 ** (k - 1), 2 ** (k - 1))
+ok(
+    "名市医22-4 a₅₀₀=1/256、Sₖ=1+k/2^(k-1)、ΣSᵢ=k+4-(k+2)/2^(k-1)、先頭2022項の和は 1907/128",
+    _terms22[499] == Fraction(1, 256)
+    and all(_Sk22(k) == 1 + Fraction(k, 2 ** (k - 1)) for k in range(1, 12))
+    and all(sum(_Sk22(i) for i in range(1, k + 1)) == k + 4 - Fraction(k + 2, 2 ** (k - 1)) for k in range(1, 12))
+    and sum(_terms22[:2022]) == Fraction(1907, 128),
+    f"実際に並べた a₅₀₀={_terms22[499]}、先頭2022項の和は {sum(_terms22[:2022])}={float(sum(_terms22[:2022])):.7f}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
