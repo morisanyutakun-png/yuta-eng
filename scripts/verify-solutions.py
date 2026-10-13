@@ -7472,6 +7472,323 @@ ok(
     f"6通りで対称性・漸化式・部分積分の関係を確認。A(2,3)={_A20f(2,3):.9f}（2/15={2/15:.9f}）、A(2,2)={_A20f(2,2):.9f}（π/16={math.pi/16:.9f}）",
 )
 
+# --- 東北大学 2019年度（理系） -------------------------------------------------
+
+_y19 = []
+_ok1x = True
+for _m19 in range(-2, 3):
+    for _n19 in range(-2, 3):
+        _a19, _b19 = 2 * _m19 * math.pi, (2 * _n19 + 1) * math.pi
+        _x19 = (2 * _m19 + 2 * _n19 + 1) * math.pi / 2
+        _yy = _x19 - 2 * _m19 * math.pi
+        if abs(math.cos(_a19) * math.cos(_b19) + 1) > 1e-12:
+            _ok1x = False
+        if abs(math.sin(_a19) + math.cos(_a19) * (_x19 - _a19) - _yy) > 1e-9:
+            _ok1x = False
+        if abs(math.sin(_b19) + math.cos(_b19) * (_x19 - _b19) - _yy) > 1e-9:
+            _ok1x = False
+        _y19.append(_yy / math.pi)
+ok(
+    "東北理19-1 直交する2接線の交点の y 座標は π/2 + kπ",
+    _ok1x
+    and all(abs(2 * v - round(2 * v)) < 1e-9 and round(2 * v) % 2 != 0 for v in _y19)
+    and abs(min(_y19) + 3.5) < 1e-9
+    and abs(max(_y19) - 4.5) < 1e-9,
+    f"y/π の値は {sorted({round(v,6) for v in _y19})}（すべて奇数の半分）",
+)
+
+
+def _sat19(a, n, x):
+    if not (x - n > 0 and 2 * n - x > 0):
+        return False
+    return math.log(x - n, a) > 0.5 * math.log(2 * n - x, a)
+
+
+_big19 = [sorted(x for x in range(1, 20) if _sat19(a, 6, x)) for a in (2.0, 10.0, 1.5)]
+_small19 = [sorted(x for x in range(1, 20) if _sat19(a, 6, x)) for a in (0.5, 0.1, 0.9)]
+_exist19 = {
+    a: [n for n in range(1, 25) if any(_sat19(a, n, x) for x in range(1, 3 * n))]
+    for a in (2.0, 0.5)
+}
+ok(
+    "東北理19-2 n=6 の整数解は a>1 で 9,10,11、0<a<1 で 7。整数解が存在する条件は n≧3",
+    all(v == [9, 10, 11] for v in _big19)
+    and all(v == [7] for v in _small19)
+    and all(v == list(range(3, 25)) for v in _exist19.values()),
+    f"a>1 で {_big19[0]}、0<a<1 で {_small19[0]}。存在する n は a=2 で {_exist19[2.0][:5]}…、a=0.5 で {_exist19[0.5][:5]}…",
+)
+
+_div19 = []
+for _a3 in (0.1, 0.5, 2.0):
+    _x3 = _a3
+    for _ in range(60):
+        _x3 = _x3 + _x3 * _x3
+        if _x3 > 1e300:
+            break
+    _div19.append(_x3 > 1e300)
+_ok3a = True
+_ok3b = True
+_last19 = None
+for _a3 in (-0.9, -0.5, -0.1, -0.999):
+    _x3 = _a3
+    _prev = _x3
+    for _ in range(100000):
+        _x3 = _x3 + _x3 * _x3
+        if not (-1 < _x3 < 0):
+            _ok3a = False
+        if _x3 < _prev - 1e-18:
+            _ok3b = False
+        _prev = _x3
+    _last19 = _x3
+ok(
+    "東北理19-3 a>0 で発散、-1<a<0 では常に -1<xₙ<0 で単調増加、極限は 0",
+    all(_div19) and _ok3a and _ok3b and abs(_last19) < 1e-4,
+    f"a>0 の3通りは60回で 10³⁰⁰ 超え。-1<a<0 の4通りは10万回まで -1<xₙ<0 と単調増加を保ち、最後は {_last19:.3e}",
+)
+
+
+def _rem19(c):
+    """係数リスト（低次から）を x²+1 で割った余り [c0, c1]。"""
+    c = list(c)
+    while len(c) > 2:
+        d = c.pop()
+        c[len(c) - 2] -= d
+    while len(c) < 2:
+        c.append(0)
+    return [c[0], c[1]]
+
+
+def _mul19(p, q):
+    r = [0] * (len(p) + len(q) - 1)
+    for i, pi in enumerate(p):
+        for j, qj in enumerate(q):
+            r[i + j] += pi * qj
+    return r
+
+
+random.seed(20190225)
+_ok4b = True
+for _ in range(200):
+    _A4 = [random.randint(-4, 4) for _ in range(random.randint(1, 6))]
+    _B4 = [random.randint(-4, 4) for _ in range(random.randint(1, 6))]
+    if _rem19(_mul19(_A4, _B4)) != _rem19(_mul19(_rem19(_A4), _rem19(_B4))):
+        _ok4b = False
+_ok4c = True
+for _k4 in range(20):
+    _th = _k4 * 0.37
+    _r4 = _rem19(_mul19([math.cos(_th), math.sin(_th)], [math.cos(_th), math.sin(_th)]))
+    if abs(_r4[0] - math.cos(2 * _th)) > 1e-12 or abs(_r4[1] - math.sin(2 * _th)) > 1e-12:
+        _ok4c = False
+_ok4d = True
+for _sa in (1, -1):
+    for _sb in (1, -1):
+        _p4 = [_sb / math.sqrt(2), _sa / math.sqrt(2)]
+        _r4 = _rem19(_mul19(_mul19(_p4, _p4), _mul19(_p4, _p4)))
+        if abs(_r4[0] + 1) > 1e-12 or abs(_r4[1]) > 1e-12:
+            _ok4d = False
+ok(
+    "東北理19-4 [2x²+x+3]=x+1、[x⁵-1]=x-1、3つめは -2。[AB]=[[A][B]]、[(x sinθ+cosθ)²]=x sin2θ+cos2θ、(4) は (±1/√2, ±1/√2)",
+    _rem19([3, 1, 2]) == [1, 1]
+    and _rem19([-1, 0, 0, 0, 0, 1]) == [-1, 1]
+    and _rem19(_mul19(_rem19([3, 1, 2]), _rem19([-1, 0, 0, 0, 0, 1]))) == [-2, 0]
+    and _ok4b
+    and _ok4c
+    and _ok4d,
+    "(1) は x+1, x-1, -2。(2) は乱数200組、(3) は θ を20通り、(4) は4組すべてで確認",
+)
+
+_I19 = quad(lambda x: math.sin(math.pi * x) ** 2 / (1 + math.exp(x)), -1, 1, 20001)[0]
+_J19 = quad(lambda x: math.sin(math.pi * x) ** 2, 0, 1, 20001)[0]
+_A5 = 1 / (2 * (math.e - 1 / math.e - 2))
+_B5 = _A5 + 0.5
+
+
+def _f19(x):
+    return (math.sin(math.pi * x) ** 2 + _A5 * math.exp(x) - 0.5) / (1 + math.exp(x))
+
+
+_Ac19 = quad(_f19, -1, 1, 20001)[0]
+_Bc19 = quad(lambda x: math.exp(x) * _f19(x), -1, 1, 20001)[0]
+_eq19 = all(
+    abs((1 + math.exp(x)) * _f19(x) - (math.sin(math.pi * x) ** 2 + math.exp(x) * _Ac19 - _Bc19 + _Ac19))
+    < 1e-7
+    for x in (-0.8, -0.3, 0.0, 0.4, 0.9)
+)
+ok(
+    "東北理19-5 ∫sin²(πx)/(1+eˣ)dx=1/2、f(x)={sin²(πx)-1/2+eˣ/(2(e-e⁻¹-2))}/(1+eˣ)",
+    abs(_I19 - 0.5) < 1e-7
+    and abs(_J19 - 0.5) < 1e-7
+    and abs(_Ac19 - _A5) < 1e-6
+    and abs(_Bc19 - _B5) < 1e-6
+    and abs(_A5 - math.e / (2 * (math.e**2 - 2 * math.e - 1))) < 1e-12
+    and _eq19,
+    f"積分は {_I19:.9f} と {_J19:.9f}。A={_A5:.9f}（実測 {_Ac19:.9f}）、B={_B5:.9f}（実測 {_Bc19:.9f}）。元の等式も5点で一致",
+)
+
+
+def _dist19(m):
+    st = {0: Fraction(1)}
+    for _ in range(m):
+        nx = {}
+        for j, pr in st.items():
+            red = 5 - j
+            if red > 0:
+                nx[j + 1] = nx.get(j + 1, Fraction(0)) + pr * Fraction(red, 10)
+            nx[j] = nx.get(j, Fraction(0)) + pr * Fraction(10 - red, 10)
+        st = nx
+    return st
+
+
+_P19 = {m: _dist19(m) for m in range(0, 13)}
+_p19 = lambda m, k: _P19[m].get(k, Fraction(0))
+_f1_19 = lambda n: 5 * Fraction(3, 5) ** n - 5 * Fraction(1, 2) ** n
+_f2_19 = lambda n: 10 * Fraction(7, 10) ** n - 20 * Fraction(3, 5) ** n + 10 * Fraction(1, 2) ** n
+ok(
+    "東北理19-6 p(n+1,2)=7/10·p(n,2)+2/5·p(n,1)、p(n,1)=5(3/5)ⁿ-5(1/2)ⁿ、p(n,2)=10(7/10)ⁿ-20(3/5)ⁿ+10(1/2)ⁿ",
+    all(_p19(n + 1, 2) == Fraction(7, 10) * _p19(n, 2) + Fraction(2, 5) * _p19(n, 1) for n in range(2, 12))
+    and all(_p19(n, 1) == _f1_19(n) for n in range(1, 13))
+    and all(_p19(n, 2) == _f2_19(n) for n in range(1, 13)),
+    f"p(n,1) n=1..5 は {[str(_p19(n,1)) for n in range(1,6)]}、p(n,2) n=1..5 は {[str(_p19(n,2)) for n in range(1,6)]}",
+)
+
+# --- 東北大学 2025年度（文系） -------------------------------------------------
+# 第1問・第2問は理系と同じ問題なので、確認も理系の側（東北理25-1、東北理25-2）で済ませている。
+
+
+def _shoe(pts):
+    t = 0
+    for i in range(len(pts)):
+        x1, y1 = pts[i]
+        x2, y2 = pts[(i + 1) % len(pts)]
+        t += x1 * y2 - x2 * y1
+    return abs(t) / 2
+
+
+_quad25 = _shoe([(0, 0), (1, 0), (3, 2), (0, 1)])
+_tri25 = _shoe([(0, 0), (1, 0), (0, 1)])
+_Av25 = (1.0, 0.0, 0.0)
+_Bv25 = (0.5, math.sqrt(3) / 2, 0.0)
+_Cv25 = (0.5, math.sqrt(3) / 6, math.sqrt(6) / 3)
+_Dv25 = tuple(-4 * _Av25[i] + 3 * _Bv25[i] + 2 * _Cv25[i] for i in range(3))
+
+
+def _vol25(p, q, r):
+    return (
+        abs(
+            p[0] * (q[1] * r[2] - q[2] * r[1])
+            - p[1] * (q[0] * r[2] - q[2] * r[0])
+            + p[2] * (q[0] * r[1] - q[1] * r[0])
+        )
+        / 6
+    )
+
+
+_V25 = _vol25(_Av25, _Bv25, _Cv25)
+_VP25 = _vol25(_Av25, _Bv25, _Dv25) + _vol25(_Av25, _Dv25, _Cv25)
+random.seed(20250225)
+_okOD25 = True
+_okP25 = True
+for _ in range(200):
+    _a25 = [random.uniform(-3, 3) for _ in range(3)]
+    _b25 = [random.uniform(-3, 3) for _ in range(3)]
+    _c25 = [random.uniform(-3, 3) for _ in range(3)]
+    _dd = [_a25[i] + 3 * (_b25[i] - _a25[i]) + 2 * (_c25[i] - _a25[i]) for i in range(3)]
+    if max(abs(_dd[i] - (-4 * _a25[i] + 3 * _b25[i] + 2 * _c25[i])) for i in range(3)) > 1e-9:
+        _okOD25 = False
+    _p1 = [_a25[i] + 0.2 * (_dd[i] - _a25[i]) for i in range(3)]
+    _p2 = [_b25[i] + 0.4 * (_c25[i] - _b25[i]) for i in range(3)]
+    _p3 = [0.6 * _b25[i] + 0.4 * _c25[i] for i in range(3)]
+    if max(abs(_p1[i] - _p2[i]) for i in range(3)) > 1e-9:
+        _okP25 = False
+    if max(abs(_p1[i] - _p3[i]) for i in range(3)) > 1e-9:
+        _okP25 = False
+ok(
+    "東北文25-3 四角錐 OABDC は 5V、OD = -4a+3b+2c、OP = (3/5)b+(2/5)c、正四面体で OD = √15",
+    _quad25 == 2.5
+    and _tri25 == 0.5
+    and abs(_VP25 / _V25 - 5) < 1e-9
+    and _okOD25
+    and _okP25
+    and abs(math.dist((0, 0, 0), _Dv25) - math.sqrt(15)) < 1e-9,
+    f"平面内の面積は四角形 {_quad25}・三角形 {_tri25}（比 {_quad25/_tri25:.0f}）、体積比 {_VP25/_V25:.9f}、|OD| = {math.dist((0,0,0), _Dv25):.9f}（√15 = {math.sqrt(15):.9f}）",
+)
+
+_k25 = 3 * math.sqrt(2) - 4
+_al25 = (4 + _k25 - math.sqrt((4 + _k25) ** 2 - 16)) / 2
+_be25 = (4 + _k25 + math.sqrt((4 + _k25) ** 2 - 16)) / 2
+_h25 = lambda x: x * (x - 2) ** 2 - _k25 * x * x
+_S1_25 = quad(_h25, 0, _al25, 20001)[0]
+_S2_25 = -quad(_h25, _al25, _be25, 20001)[0]
+ok(
+    "東北文25-4 k = 3√2 - 4 で交点は 0, √2, 2√2、2つの部分の面積はどちらも 1",
+    _k25 > 0
+    and abs(_al25 - math.sqrt(2)) < 1e-9
+    and abs(_be25 - 2 * math.sqrt(2)) < 1e-9
+    and abs(_S1_25 - _S2_25) < 1e-9
+    and abs(_S1_25 - 1) < 1e-9,
+    f"k = {_k25:.9f}、α = {_al25:.9f}、β = {_be25:.9f}、S₁ = {_S1_25:.9f}、S₂ = {_S2_25:.9f}",
+)
+
+# --- 東北大学 2024年度（文系） -------------------------------------------------
+# 第1問・第3問は理系と同じ問題なので、確認も理系の側（東北理24-1、東北理24-2）で済ませている。
+
+_d24 = math.sqrt(3)
+_a24 = 3 + 2 * math.sqrt(3)
+_b24 = 2 * math.sqrt(3) - 3
+_O24, _A24p, _B24p, _D24p = (0.0, 0.0), (_a24, 0.0), (_b24, 0.0), (0.0, _d24)
+
+
+def _ang24(P, Q, R):
+    u = (Q[0] - P[0], Q[1] - P[1])
+    v = (R[0] - P[0], R[1] - P[1])
+    c = (u[0] * v[0] + u[1] * v[1]) / (math.hypot(*u) * math.hypot(*v))
+    return math.degrees(math.acos(max(-1.0, min(1.0, c))))
+
+
+def _foot24(X, Y):
+    dx, dy = Y[0] - X[0], Y[1] - X[1]
+    t = -((X[0] * dx + X[1] * dy) / (dx * dx + dy * dy))
+    return (X[0] + t * dx, X[1] + t * dy)
+
+
+_P24 = _foot24(_A24p, _D24p)
+_Q24 = _foot24(_B24p, _D24p)
+_cen24, _r24 = (0.0, _d24 / 2), _d24 / 2
+_AP24 = math.dist(_A24p, _P24)
+_BQ24 = math.dist(_B24p, _Q24)
+ok(
+    "東北文24-2 tan75°=2+√3、a=3+2√3・b=2√3-3・d=√3、AP·AD=AO²・BQ·BD=BO²、AP·BQ=3/4",
+    abs(math.tan(math.radians(75)) - (2 + math.sqrt(3))) < 1e-12
+    and abs(_ang24(_A24p, _O24, _D24p) - 15) < 1e-9
+    and abs(_ang24(_B24p, _O24, _D24p) - 75) < 1e-9
+    and abs(_a24 - _b24 - 6) < 1e-12
+    and abs(math.dist(_P24, _cen24) - _r24) < 1e-12
+    and abs(math.dist(_Q24, _cen24) - _r24) < 1e-12
+    and abs(_AP24 * math.dist(_A24p, _D24p) - math.dist(_A24p, _O24) ** 2) < 1e-9
+    and abs(_BQ24 * math.dist(_B24p, _D24p) - math.dist(_B24p, _O24) ** 2) < 1e-9
+    and abs(_AP24 * _BQ24 - 0.75) < 1e-9,
+    f"∠OAD={_ang24(_A24p,_O24,_D24p):.9f}°、∠OBD={_ang24(_B24p,_O24,_D24p):.9f}°、AB={_a24-_b24:.9f}、AP·BQ={_AP24*_BQ24:.9f}",
+)
+
+_an24 = [None, 1]
+_bn24 = [None, 1]
+for _n24 in range(1, 15):
+    _an24.append(_an24[_n24] + 2 * _bn24[_n24])
+    _bn24.append(_an24[_n24] + _bn24[_n24])
+_s2 = math.sqrt(2)
+_pq24 = [
+    (p, q) for p in range(0, 101) for q in range(0, 101) if p * _bn24[6] - q * _bn24[5] == 1
+]
+ok(
+    "東北文24-4 aₙ₊₁=aₙ+2bₙ・bₙ₊₁=aₙ+bₙ、b₄,b₅,b₆=12,29,70、(1-√2)ⁿ=aₙ-bₙ√2、bₙ₊₁bₙ₋₁-bₙ²=(-1)ⁿ、(p,q)=(17,41)",
+    all(abs((1 + _s2) ** n - (_an24[n] + _bn24[n] * _s2)) < 1e-6 * (1 + _s2) ** n for n in range(1, 15))
+    and all(abs((1 - _s2) ** n - (_an24[n] - _bn24[n] * _s2)) < 1e-9 for n in range(1, 15))
+    and (_bn24[4], _bn24[5], _bn24[6]) == (12, 29, 70)
+    and all(_bn24[n + 1] * _bn24[n - 1] - _bn24[n] ** 2 == (-1) ** n for n in range(2, 14))
+    and _pq24 == [(17, 41)],
+    f"bₙ n=1..8 は {_bn24[1:9]}、bₙ₊₁bₙ₋₁-bₙ² は n=2..8 で {[_bn24[n+1]*_bn24[n-1]-_bn24[n]**2 for n in range(2,9)]}、70p-29q=1 の解は {_pq24}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
