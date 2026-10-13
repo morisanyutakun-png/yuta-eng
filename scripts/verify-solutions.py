@@ -9908,6 +9908,117 @@ ok(
     f"先頭は {_a19[1:13]}、aₙ=0 となる n は {[n for n in range(1, 400) if _a19[n] == 0]}、aₙ=10000 の最小 n={_n1}、Sₙ≧10000 の最小 n={_n2}（S={_S2}）",
 )
 
+# ---- 名工大2024 ----
+_f24 = lambda x: math.sqrt(x) * math.log(x)
+_F24 = lambda x: (2 / 9) * x**1.5 * (3 * math.log(x) - 2)
+_g24 = lambda x: (math.log(x) + 2) / (2 * math.sqrt(x))
+_h24 = lambda t: math.log(t) + 2 * math.sqrt(t) + 2
+_lo24, _hi24 = 1e-14, 10.0
+for _ in range(200):
+    _mid = (_lo24 + _hi24) / 2
+    if _h24(_mid) < 0:
+        _lo24 = _mid
+    else:
+        _hi24 = _mid
+_S24 = quad(_f24, 1, math.e**2, 100001)[0]
+ok(
+    "名工大24-1 原始関数 2x^(3/2)(3logx-2)/9、最小 -2/e、変曲点 (1,0)、直交する接線は1本、面積 (8e³+4)/9",
+    all(abs((_F24(x + 1e-6) - _F24(x - 1e-6)) / 2e-6 - _f24(x)) < 1e-7 for x in (0.5, 1.0, 2.0, 7.389))
+    and abs(_f24(math.exp(-2)) + 2 / math.e) < 1e-12
+    and abs(-math.log(0.5) / (4 * 0.5**1.5)) > 0
+    and abs(_g24(_lo24) + 1) < 1e-9
+    and abs(_S24 - (8 * math.e**3 + 4) / 9) < 1e-6,
+    f"最小 f(e^-2)={_f24(math.exp(-2)):.7f}（-2/e={-2/math.e:.7f}）、接点の方程式の解は t={_lo24:.7f} の1つで f'={_g24(_lo24):.9f}、面積 {_S24:.7f}（(8e³+4)/9={(8*math.e**3+4)/9:.7f}）",
+)
+
+_seq24 = []
+for _m in range(1, 40):
+    for _k in range(1, 2 * _m):
+        _seq24.append(_m * 2 ** (_k - 1))
+_T24 = lambda m: m * (2 ** (2 * m - 1) - 1)
+_S24m = lambda m: Fraction(2 * ((3 * m - 1) * 4**m + 1), 9) - Fraction(m * (m + 1), 2)
+ok(
+    "名工大24-2 a₇₀=288、aₙ=24 は n=8,28,123,530、Tₘ=m(2^(2m-1)-1)、Sₘ の式",
+    _seq24[69] == 288
+    and [i + 1 for i, v in enumerate(_seq24[:1000]) if v == 24] == [8, 28, 123, 530]
+    and all(sum(m * 2 ** (k - 1) for k in range(1, 2 * m)) == _T24(m) for m in range(1, 12))
+    and all(sum(_T24(i) for i in range(1, m + 1)) == _S24m(m) for m in range(1, 12)),
+    f"先頭は {_seq24[:9]}、a₇₀={_seq24[69]}、24 の出る位置は {[i+1 for i,v in enumerate(_seq24[:1000]) if v == 24]}、T₁,T₂,T₃={[_T24(m) for m in range(1,4)]}、S₁,S₂,S₃={[_S24m(m) for m in range(1,4)]}",
+)
+
+_x24 = lambda t: math.cos(t) + math.log(math.tan(t / 2))
+_dx24 = lambda t: math.cos(t) ** 2 / math.sin(t)
+_L24 = quad(lambda t: math.cos(t) / math.sin(t), math.pi / 6, math.pi / 2, 50001)[0]
+_A24 = -quad(lambda t: _x24(t) * math.cos(t), math.pi / 3, math.pi / 2, 50001)[0]
+_pq24 = []
+for _t in (0.3, 0.9, 1.4):
+    _Qx = _x24(_t) - math.cos(_t)
+    _pq24.append(math.hypot(_x24(_t) - _Qx, math.sin(_t)))
+ok(
+    "名工大24-3 dx/dθ=cos²θ/sinθ、PQ=1、L=log2、S=π/12+√3/8-√3log3/4",
+    all(abs((_x24(t + 1e-7) - _x24(t - 1e-7)) / 2e-7 - _dx24(t)) < 1e-6 for t in (0.2, 0.8, 1.5))
+    and all(abs(v - 1) < 1e-10 for v in _pq24)
+    and abs(_L24 - math.log(2)) < 1e-9
+    and abs(_A24 - (math.pi / 12 + math.sqrt(3) / 8 - math.sqrt(3) / 4 * math.log(3))) < 1e-9,
+    f"θ=0.3,0.9,1.4 で PQ={[round(v,12) for v in _pq24]}、長さ {_L24:.7f}（log2={math.log(2):.7f}）、面積 {_A24:.7f}（式 {math.pi/12+math.sqrt(3)/8-math.sqrt(3)/4*math.log(3):.7f}）",
+)
+
+_ab24, _bc24, _ca24 = 3.0, 2.5, -7 / 5
+_a24v = (2.0, 0.0, 0.0)
+_b24x = _ab24 / 2
+_b24y = math.sqrt(9 - _b24x**2)
+_b24v = (_b24x, _b24y, 0.0)
+_c24x = _ca24 / 2
+_c24y = (_bc24 - _b24x * _c24x) / _b24y
+_c24z = math.sqrt(14 - _c24x**2 - _c24y**2)
+_c24v = (_c24x, _c24y, _c24z)
+_sub24 = lambda u, v: tuple(x - y for x, y in zip(u, v))
+_dot24v = lambda u, v: sum(x * y for x, y in zip(u, v))
+_nrm24 = lambda u: math.sqrt(_dot24v(u, u))
+# 平面 ABC 上に OAC を折り出す
+_u24 = _sub24(_c24v, _a24v)
+_u24 = tuple(x / _nrm24(_u24) for x in _u24)
+_w24 = _sub24((0.0, 0.0, 0.0), _a24v)
+_par24 = _dot24v(_w24, _u24)
+_perp24 = tuple(_w24[i] - _par24 * _u24[i] for i in range(3))
+_r24 = _nrm24(_perp24)
+_v24 = _sub24(_b24v, _a24v)
+_v24 = tuple(_v24[i] - _dot24v(_v24, _u24) * _u24[i] for i in range(3))
+_v24 = tuple(x / _nrm24(_v24) for x in _v24)
+_Op24 = tuple(_a24v[i] + _par24 * _u24[i] - _r24 * _v24[i] for i in range(3))
+_to2 = lambda P: (_dot24v(_sub24(P, _a24v), _u24), _dot24v(_sub24(P, _a24v), _v24))
+
+
+def _circ24(p, q, r):
+    ax, ay = p
+    bx, by = q
+    cx, cy = r
+    d = 2 * (ax * (by - cy) + bx * (cy - ay) + cx * (ay - by))
+    ux = ((ax**2 + ay**2) * (by - cy) + (bx**2 + by**2) * (cy - ay) + (cx**2 + cy**2) * (ay - by)) / d
+    uy = ((ax**2 + ay**2) * (cx - bx) + (bx**2 + by**2) * (ax - cx) + (cx**2 + cy**2) * (bx - ax)) / d
+    return (ux, uy), math.hypot(ax - ux, ay - uy)
+
+
+_ctr24, _rad24 = _circ24(_to2(_a24v), _to2(_b24v), _to2(_c24v))
+_d2o24 = math.hypot(_to2(_Op24)[0] - _ctr24[0], _to2(_Op24)[1] - _ctr24[1])
+_DG24 = lambda t: _nrm24(
+    tuple(
+        ((1 - t) * _a24v[i] + t * _b24v[i] + _c24v[i]) / 3 - (2 * _a24v[i] + _b24v[i]) / 3
+        for i in range(3)
+    )
+)
+_best24 = min((0.0001 * i for i in range(0, 10001)), key=_DG24)
+ok(
+    "名工大24-4 a·b=3、b·c=5/2、c·a=-7/5、DG を最小にする t=11/70",
+    abs(_nrm24(_sub24(_b24v, _a24v)) - math.sqrt(7)) < 1e-12
+    and abs(_nrm24(_sub24(_c24v, _b24v)) - 3 * math.sqrt(2)) < 1e-12
+    and abs(_nrm24(_sub24(_Op24, _a24v)) - 2) < 1e-9
+    and abs(_nrm24(_sub24(_Op24, _c24v)) - math.sqrt(14)) < 1e-9
+    and abs(_d2o24 - _rad24) < 1e-9
+    and abs(_best24 - 11 / 70) < 2e-4,
+    f"c·a=-7/5 で作った四面体は AB=√7・BC=3√2 を満たし、折り出した O' は O'A=2・O'C=√14 で外接円上（距離 {_d2o24:.7f}／半径 {_rad24:.7f}）。DG を最小にする t は走査で {_best24:.5f}（11/70={11/70:.7f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
