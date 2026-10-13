@@ -9734,6 +9734,82 @@ ok(
     f"全列挙で P(2)={_res21[2][0]}・P(3)={_res21[3][0]}（引き分けはどちらも {_res21[2][1]}）、n=4 はモンテカルロ {_T21} 回で B の勝ち {_b4/_T21:.5f}（74/105={74/105:.5f}）・引き分け {_d4/_T21:.5f}（2/35={2/35:.5f}）",
 )
 
+# ---- 名市大医2020 ----
+_z20 = complex(1, 0)
+_ok20a = True
+_T20sum = 0.0
+_T20 = []
+for _n in range(1, 12):
+    _w20 = complex(math.sqrt(2 - 2 / 9**_n), math.sqrt(2) / 3**_n)
+    if abs(abs(_w20) - math.sqrt(2)) > 1e-12 or abs(_w20.imag / abs(_w20) - 1 / 3**_n) > 1e-12:
+        _ok20a = False
+    if abs(abs(_z20) - 2 ** ((_n - 1) / 2)) > 1e-9:
+        _ok20a = False
+    _z2 = _w20 * _z20
+    _t = 0.5 * abs(_z20) * abs(_z2) * (_w20.imag / abs(_w20))
+    if abs(_t - (1 / (2 * math.sqrt(2))) * (2 / 3) ** _n) > 1e-12:
+        _ok20a = False
+    _T20.append(_t)
+    _T20sum += _t
+    _z20 = _z2
+ok(
+    "名市医20-1 |z_(n+1)/z_n|=√2、sinθₙ=3^(-n)、ΣTₙ=√2/2",
+    _ok20a and abs(_T20sum - math.sqrt(2) / 2) < 0.01,
+    f"n=1..11 で比の大きさは √2、sinθₙ=3^(-n)、|zₙ|=2^((n-1)/2)。T₁,T₂,T₃={[round(t,7) for t in _T20[:3]]}、第11項までの和 {_T20sum:.7f}（√2/2={math.sqrt(2)/2:.7f}）",
+)
+
+_p20 = [Fraction(1)]
+for _n in range(1, 31):
+    _p20.append(Fraction(5, 8) * _p20[-1] + Fraction(1, 8))
+ok(
+    "名市医20-2 Pₙ=1/3+(2/3)(5/8)ⁿ、極限は 1/3",
+    all(_p20[n] == Fraction(1, 3) + Fraction(2, 3) * Fraction(5, 8) ** n for n in range(31))
+    and abs(float(_p20[30]) - 1 / 3) < 1e-6,
+    f"P₁,P₂,P₃={[float(_p20[n]) for n in (1, 2, 3)]}、P₁₀={float(_p20[10]):.9f}、P₃₀={float(_p20[30]):.9f}（1/3 に近づく）",
+)
+
+_al, _be, _ga = 2.0, 3.0, 5.0
+_a20 = (_al, 0.0, 0.0)
+_b20 = (0.0, _be, 0.0)
+_c20v = (0.0, 0.0, _ga)
+_den20 = _be**2 * _ga**2 + _ga**2 * _al**2 + _al**2 * _be**2
+_H20 = tuple(
+    (_be**2 * _ga**2 * _a20[i] + _ga**2 * _al**2 * _b20[i] + _al**2 * _be**2 * _c20v[i]) / _den20
+    for i in range(3)
+)
+_sub20 = lambda u, v: tuple(x - y for x, y in zip(u, v))
+_dot20 = lambda u, v: sum(x * y for x, y in zip(u, v))
+_cr20 = lambda u, v: (u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0])
+_S20 = math.sqrt(sum(t * t for t in _cr20(_sub20(_b20, _a20), _sub20(_c20v, _a20)))) / 2
+ok(
+    "名市医20-3 OH=(β²γ²a+γ²α²b+α²β²c)/(β²γ²+γ²α²+α²β²)、△ABC=√(α²β²+β²γ²+γ²α²)/2",
+    abs(_H20[0] / _al + _H20[1] / _be + _H20[2] / _ga - 1) < 1e-12
+    and abs(_dot20(_H20, _sub20(_b20, _a20))) < 1e-12
+    and abs(_dot20(_H20, _sub20(_c20v, _a20))) < 1e-12
+    and abs(_S20 - 0.5 * math.sqrt(_al**2 * _be**2 + _be**2 * _ga**2 + _ga**2 * _al**2)) < 1e-12,
+    f"α,β,γ=2,3,5 で OH={tuple(round(t,7) for t in _H20)}、平面 ABC 上（x/α+y/β+z/γ=1）、AB・AC と直交。外積から出した面積 {_S20}（式 {0.5*math.sqrt(_al**2*_be**2+_be**2*_ga**2+_ga**2*_al**2)}）",
+)
+
+random.seed(20200)
+_ok20d = True
+for _ in range(6):
+    _th = random.uniform(0, 2 * math.pi)
+    _A = (2 * math.sqrt(2) * math.cos(_th), 1.5)
+    _B = (0.0, 1.5 + 2 * math.sqrt(2) * math.sin(_th))
+    _P = (_A[0] / 4 + 3 * _B[0] / 4, _A[1] / 4 + 3 * _B[1] / 4)
+    if abs(2 * _P[0] ** 2 + (2 / 9) * (_P[1] - 1.5) ** 2 - 1) > 1e-12:
+        _ok20d = False
+_d20 = lambda x: 3 * math.sqrt(max(0.0, 1 - 2 * x * x)) / math.sqrt(2)
+_V20 = 2 * math.pi * (
+    quad(lambda x: (1.5 + _d20(x)) ** 2, 0, 0.5, 100001)[0]
+    + quad(lambda x: 6 * _d20(x), 0.5, 1 / math.sqrt(2), 100001)[0]
+)
+ok(
+    "名市医20-4 C は 2x²+(2/9)(y-3/2)²=1、回転体の体積は 15π/4+27π²/8",
+    _ok20d and abs(_V20 - (15 * math.pi / 4 + 27 * math.pi**2 / 8)) < 1e-5,
+    f"乱数6通りの A,B で P が楕円上にあることを確認。体積は数値 {_V20:.7f}／式 {15*math.pi/4+27*math.pi**2/8:.7f}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
