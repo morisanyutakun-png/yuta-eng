@@ -377,6 +377,11 @@ export const sources: Record<string, Record<number, Source>> = {
       checked: "2026-10-13",
       note: "2026年度ぶんと同じ確認。東北大学は一般選抜前期の数学の問題を公開していない。",
     },
+    2020: {
+      kind: "none",
+      checked: "2026-10-13",
+      note: "2026年度ぶんと同じ確認。東北大学は一般選抜前期の数学の問題を公開していない。",
+    },
   },
   "tohoku-bunkei": {
     2026: {

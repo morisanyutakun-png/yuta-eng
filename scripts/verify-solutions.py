@@ -7311,6 +7311,167 @@ ok(
     f"(a,n) を9通りで等式と不等式を確認。n=5 で {abs(math.e - sum(1/math.factorial(k) for k in range(6))):.3e}、n=6 で {abs(math.e - sum(1/math.factorial(k) for k in range(7))):.3e}",
 )
 
+# --- 東北大学 2020年度（理系） -------------------------------------------------
+
+_A20 = (0.0, 0.0)
+_C20 = (1.0, 0.0)
+_B20 = (7 / 8, math.sqrt(15) / 8)
+_d20 = lambda p, q: math.hypot(p[0] - q[0], p[1] - q[1])
+_best1z = (1e9, None)
+_s1 = 1
+while _s1 < 100000:
+    _ss = _s1 / 100000
+    _P = (7 / 8, math.sqrt(15) / 8 * (1 - _ss))
+    _v = _d20(_A20, _P) ** 2 + _d20(_B20, _P) ** 2 + _d20(_C20, _P) ** 2
+    if _v < _best1z[0]:
+        _best1z = (_v, _ss)
+    _s1 += 1
+ok(
+    "東北理20-1 cosθ=7/8、sinθ=√15/8、AP²+BP²+CP² の最小 15/16（s=2/3）",
+    abs(_d20(_A20, _B20) - 1) < 1e-12
+    and abs(_d20(_A20, _C20) - 1) < 1e-12
+    and abs(_d20(_B20, _C20) - 0.5) < 1e-12
+    and abs(_best1z[0] - 15 / 16) < 1e-9
+    and abs(_best1z[1] - 2 / 3) < 1e-4,
+    f"AB={_d20(_A20,_B20):.9f}、BC={_d20(_B20,_C20):.9f}、最小 {_best1z[0]:.9f} at s={_best1z[1]:.5f}",
+)
+
+
+def _cnt20(a, kind):
+    """円 C と直線 L（kind=0）または M（kind=1）の共有点の個数。"""
+    d = (3 * abs(a - 2) / 5) if kind == 0 else (4 * abs(a - 2) / 5)
+    r = abs(a)
+    if d < r - 1e-12:
+        return 2
+    if d > r + 1e-12:
+        return 0
+    return 1
+
+
+def _union20(a):
+    """和集合の要素数。重なるのは L と M の交点 (a,a) が C 上にあるとき（a=1）だけ。"""
+    n = _cnt20(a, 0) + _cnt20(a, 1)
+    if abs(((a - a) ** 2 + (a - 2) ** 2) - a * a) < 1e-12:
+        n -= 1
+    return n
+
+
+_hits20 = sorted(
+    {round(a, 6) for a in (-8.0, 8 / 9, 1.0) if _union20(a) == 3}
+)
+_scan20 = []
+_k20 = -100000
+while _k20 <= 100000:
+    _a20 = _k20 / 10000
+    if _a20 != 0 and _union20(_a20) == 3:
+        _scan20.append(round(_a20, 6))
+    _k20 += 1
+ok(
+    "東北理20-2 a=1 で交点が C 上、|C∩L|=2 ⟺ a<-3 または a>3/4、和集合3個は a=-8, 8/9, 1",
+    abs(1 - 2) ** 2 == 1
+    and _cnt20(-3.0, 0) == 1
+    and _cnt20(0.75, 0) == 1
+    and _cnt20(-4.0, 0) == 2
+    and _cnt20(1.0, 0) == 2
+    and _cnt20(0.5, 0) == 0
+    and _cnt20(-8.0, 1) == 1
+    and _cnt20(8 / 9, 1) == 1
+    and _hits20 == [-8.0, round(8 / 9, 6), 1.0]
+    and set(_scan20) <= {-8.0, round(8 / 9, 6), 1.0}
+    and -8.0 in _scan20
+    and 1.0 in _scan20,
+    f"a=-8, 8/9, 1 で和集合 {_union20(-8.0)}, {_union20(8/9)}, {_union20(1.0)} 個。0.0001 刻みの走査で見つかったのは {sorted(set(_scan20))}（8/9 は刻みに乗らない）",
+)
+
+_ge20 = [n for n in range(1, 12) if 2**n + n * n + 8 >= 3**n]
+_D20 = lambda n: 2**n + n * n + 8 - 3**n
+_tri20 = [
+    (a, b, n)
+    for n in range(1, 12)
+    for a in range(0, 30)
+    for b in range(0, 30)
+    if _D20(n) == a * n + b
+]
+ok(
+    "東北理20-3 2ⁿ+n²+8≧3ⁿ は n=1,2 のみ、D(1)=8・D(2)=7 で (a,b,n) は13組",
+    all(2**n + n * n + 8 < 3**n for n in range(3, 12))
+    and _ge20 == [1, 2]
+    and _D20(1) == 8
+    and _D20(2) == 7
+    and len(_tri20) == 13
+    and sorted({n for _, _, n in _tri20}) == [1, 2],
+    f"差 3ⁿ-(2ⁿ+n²+8) は n=3..8 で {[3**n-(2**n+n*n+8) for n in range(3,9)]}、組は {len(_tri20)} 個",
+)
+
+# 箱 (白, 赤) と手元 (白, 赤) の状態を分数のまま遷移させる。
+_st20 = {((3, 2), (0, 0)): Fraction(1)}
+_stop20 = {}
+for _t20 in range(1, 16):
+    _nx20 = {}
+    for (_box, _hand), _pr in _st20.items():
+        _w, _r = _box
+        _tot = _w + _r
+        for _pick, _pp in ((0, Fraction(_w, _tot)), (1, Fraction(_r, _tot))):
+            if _pp == 0:
+                continue
+            # 裏（確率 1/2）: 戻すので状態は変わらない
+            _nx20[(_box, _hand)] = _nx20.get((_box, _hand), Fraction(0)) + _pr * _pp / 2
+            # 表（確率 1/2）: 手元に残す
+            if _pick == 0:
+                _nb, _nh = (_w - 1, _r), (_hand[0] + 1, _hand[1])
+            else:
+                _nb, _nh = (_w, _r - 1), (_hand[0], _hand[1] + 1)
+            _q = _pr * _pp / 2
+            if _nb == (0, 0):
+                _stop20[_t20] = _stop20.get(_t20, Fraction(0)) + _q
+            else:
+                _nx20[(_nb, _nh)] = _nx20.get((_nb, _nh), Fraction(0)) + _q
+    _st20 = _nx20
+    if _t20 == 2:
+        _p2w20 = sum(_pr for (_b, _h), _pr in _st20.items() if _h == (2, 0))
+    if _t20 == 3:
+        _p11_20 = sum(_pr for (_b, _h), _pr in _st20.items() if _h == (1, 1))
+_fml20 = lambda n: Fraction(math.comb(n - 1, 4), 2**n)
+_max20 = max(_stop20, key=lambda n: (_stop20[n], -n))
+_argmax20 = sorted(n for n in _stop20 if _stop20[n] == _stop20[_max20])
+ok(
+    "東北理20-4 2回後に白2個は3/40、3回後に白1赤1は9/40、pₙ=₍n-1₎C₄/2ⁿ、最大は n=8,9",
+    _p2w20 == Fraction(3, 40)
+    and _p11_20 == Fraction(9, 40)
+    and all(_stop20[n] == _fml20(n) for n in range(5, 16))
+    and _argmax20 == [8, 9]
+    and _stop20[8] == Fraction(35, 256),
+    f"3/40={_p2w20}、9/40={_p11_20}、p5..p10={[str(_stop20[n]) for n in range(5,11)]}、最大 {_stop20[8]} at n={_argmax20}",
+)
+
+_z20 = lambda t: -1 / (t + 1j)
+_ts20 = (-1.0, -0.5, 0.0, 0.5, 1.0, 3.0)
+ok(
+    "東北理20-5 Re z=-t/(t²+1)、Im z=1/(t²+1)、|z-i/2|=1/2、-1≦t≦1 では上半円（両端込み）",
+    all(abs(_z20(t).real + t / (t * t + 1)) < 1e-12 for t in _ts20)
+    and all(abs(_z20(t).imag - 1 / (t * t + 1)) < 1e-12 for t in _ts20)
+    and all(abs(abs(_z20(t) - 0.5j) - 0.5) < 1e-12 for t in _ts20)
+    and abs(_z20(-1) - (0.5 + 0.5j)) < 1e-12
+    and abs(_z20(0) - 1j) < 1e-12
+    and abs(_z20(1) - (-0.5 + 0.5j)) < 1e-12
+    and all(_z20(k / 1000).imag >= 0.5 - 1e-12 for k in range(-1000, 1001)),
+    f"|z-i/2| は {[round(abs(_z20(t)-0.5j),9) for t in _ts20]}、t=-1,0,1 で z={_z20(-1):.3f}, {_z20(0):.3f}, {_z20(1):.3f}",
+)
+
+_A20f = lambda m, n: quad(lambda x: math.cos(x) ** m * math.sin(x) ** n, 0, math.pi / 2, 20001)[0]
+_pairs20 = ((1, 1), (2, 3), (3, 2), (4, 1), (5, 4), (2, 2))
+_sym20 = all(abs(_A20f(m, n) - _A20f(n, m)) < 1e-9 for m, n in _pairs20)
+_rec20 = all(abs(_A20f(m + 2, n) + _A20f(m, n + 2) - _A20f(m, n)) < 1e-9 for m, n in _pairs20)
+_m1_20 = all(abs(_A20f(m, 1) - 1 / (m + 1)) < 1e-9 for m in (1, 2, 3, 5))
+_pt20 = all(
+    abs(_A20f(m, n + 2) - (n + 1) / (m + 1) * _A20f(m + 2, n)) < 1e-9 for m, n in _pairs20
+)
+ok(
+    "東北理20-6 A(m,n)=A(n,m)、A(m+2,n)+A(m,n+2)=A(m,n)、A(m,1)=1/(m+1)、A(m,n+2)=(n+1)/(m+1)·A(m+2,n)",
+    _sym20 and _rec20 and _m1_20 and _pt20 and abs(_A20f(2, 2) - math.pi / 16) < 1e-9,
+    f"6通りで対称性・漸化式・部分積分の関係を確認。A(2,3)={_A20f(2,3):.9f}（2/15={2/15:.9f}）、A(2,2)={_A20f(2,2):.9f}（π/16={math.pi/16:.9f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
