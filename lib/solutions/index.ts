@@ -56,6 +56,7 @@ import { ncuMed2023 } from "@/lib/solutions/ncu-med-2023";
 import { ncuMed2024 } from "@/lib/solutions/ncu-med-2024";
 import { ncuMed2025 } from "@/lib/solutions/ncu-med-2025";
 import { ncuMed2026 } from "@/lib/solutions/ncu-med-2026";
+import { nitech2020 } from "@/lib/solutions/nitech-2020";
 import { nitech2021 } from "@/lib/solutions/nitech-2021";
 import { nitech2022 } from "@/lib/solutions/nitech-2022";
 import { nitech2023 } from "@/lib/solutions/nitech-2023";
@@ -193,6 +194,7 @@ const all: SolutionSet[] = [
   nitech2023,
   nitech2022,
   nitech2021,
+  nitech2020,
   uec2026,
   tohokuRikei2026,
   tohokuRikei2025,

@@ -10326,6 +10326,167 @@ ok(
     f"r=7/2 は θ={_th21:.7f}（7π/12={7*math.pi/12:.7f}）",
 )
 
+
+# ---- 名工大2020 ----
+
+
+def _g20(x):
+    return x * x / (x**3 + 1)
+
+
+def _f20(x, k):
+    return math.exp(k * x) / math.sqrt(x**3 + 1)
+
+
+_dok20 = True
+for _k in (-1.0, 0.3, 2.0):
+    for _x in (-0.5, 0.2, 1.3, 3.0):
+        _num = (_f20(_x + 1e-6, _k) - _f20(_x - 1e-6, _k)) / 2e-6
+        _fml = math.exp(_k * _x) * (2 * _k * (_x**3 + 1) - 3 * _x * _x) / (2 * (_x**3 + 1) ** 1.5)
+        if abs(_num - _fml) > 1e-5 * max(1.0, abs(_fml)):
+            _dok20 = False
+    _num = (_g20(_x + 1e-6) - _g20(_x - 1e-6)) / 2e-6
+    if abs(_num - _x * (2 - _x**3) / (_x**3 + 1) ** 2) > 1e-5:
+        _dok20 = False
+_kc20 = 4 ** (1 / 3) / 2
+
+
+def _cnt20(k, with_tangent):
+    """h(x)=2k(x³+1)-3x² の (-1,∞) での実数解（符号が変わるものだけ数えるか、重解も含めるか）。"""
+    n = 400000
+    pts = [-1 + 1e-9 + 61 * i / n for i in range(n + 1)]
+    hs = [2 * k * (p**3 + 1) - 3 * p * p for p in pts]
+    c = sum(1 for i in range(n) if hs[i] * hs[i + 1] < 0)
+    if with_tangent:
+        # 判別式 216k(1-2k³) が 0 になるのは k=0（重解 x=0）と k=∛4/2（重解 x=∛2）だけ
+        if abs(k) < 1e-12 or abs(k - _kc20) < 1e-12:
+            c += 1
+    return c
+
+
+_sol20 = [_cnt20(k, True) for k in (-1.0, 0.0, 0.1, 0.5, 0.7, _kc20, 0.9, 2.0)]
+_ext20 = [_cnt20(k, False) for k in (-1.0, 0.0, 0.1, 0.5, _kc20, 0.9, 2.0)]
+ok(
+    "名工大20-1 f' の式、g の極値 0 と ∛4/3、f'=0 の解は 0・1・3・2・1 個、極値は 0・0・3・1・1 個",
+    _dok20
+    and abs(_g20(0)) < 1e-15
+    and abs(_g20(2 ** (1 / 3)) - 4 ** (1 / 3) / 3) < 1e-12
+    and _sol20 == [0, 1, 3, 3, 3, 2, 1, 1]
+    and _ext20 == [0, 0, 3, 3, 1, 1, 1],
+    f"f'・g' は数値微分と一致、g の極大 {_g20(2**(1/3)):.7f}（∛4/3={4**(1/3)/3:.7f}）・極小 {_g20(0):.7f}、"
+    f"k=-1,0,0.1,0.5,0.7,∛4/2,0.9,2 の解の個数 {_sol20}、極値の個数 {_ext20}（境界 ∛4/2={_kc20:.7f}）",
+)
+
+_x20, _y20 = 2, 1
+_p20 = True
+for _n in range(1, 15):
+    if _x20 * _x20 - 5 * _y20 * _y20 != (-1) ** _n:
+        _p20 = False
+    if not (_x20 >= 2 * _y20 and _y20 >= 4 ** (_n - 1)):
+        _p20 = False
+    _x20, _y20 = 2 * _x20 + 5 * _y20, _x20 + 2 * _y20
+_x40, _y40 = 2, 1
+for _ in range(39):
+    _x40, _y40 = 2 * _x40 + 5 * _y40, _x40 + 2 * _y40
+_r40 = _x40 / _y40
+ok(
+    "名工大20-2 xₙ²-5yₙ²=(-1)ⁿ、(Pₙ) の帰納法、xₙ/yₙ→√5",
+    _p20 and abs(_r40 - math.sqrt(5)) < 1e-15,
+    f"n=1..14 で 2乗の差と (Pₙ) がどちらも成立、x₄₀/y₄₀={_r40:.14f}（√5={math.sqrt(5):.14f}）",
+)
+
+
+def _Bpt20(t):
+    return ((t + math.sqrt(1 - t * t)) / math.sqrt(2), (t - math.sqrt(1 - t * t)) / math.sqrt(2))
+
+
+def _Snum20(t):
+    def inner(ph):
+        return 0.5 * max(0.0, (t / math.cos(ph - math.pi / 4)) ** 2 - 1.0)
+
+    return quad(inner, 0.0, math.pi / 4, 4001)[0]
+
+
+def _Sfml20(t):
+    th = math.pi / 4 - math.acos(t)
+    return 0.5 * (math.sin(th) ** 2 + math.sin(th) * math.cos(th) - th)
+
+
+_t20ok = True
+for _t in (0.75, 0.85, 0.95, 1.0):
+    _bx, _by = _Bpt20(_t)
+    _th = math.atan2(_by, _bx)
+    if abs(math.hypot(_bx, _by) - 1) > 1e-12 or abs(math.cos(_th - math.pi / 4) - _t) > 1e-12:
+        _t20ok = False
+    if abs(_Snum20(_t) - _Sfml20(_t)) > 1e-7:
+        _t20ok = False
+_I20 = quad(_Snum20, 1 / math.sqrt(2), 1.0, 201)[0]
+
+
+def _A20(z):
+    a = math.sqrt(2) * (1 - z)
+    if a <= 1e-12:
+        return 0.0
+
+    def inte(xx):
+        v = a - xx
+        if xx < 1:
+            v -= math.sqrt(max(0.0, 1 - xx * xx))
+        return max(0.0, v)
+
+    return 4 * quad(inte, 0.0, a, 2001)[0]
+
+
+_V20 = quad(_A20, 0.0, 1.0, 201)[0]
+ok(
+    "名工大20-3 t=cos(θ-π/4)、S=(sin²θ+sinθcosθ-θ)/2、∫S dt=(1+√2)/6-π/8、K の体積=4(1+√2)/3-π",
+    _t20ok
+    and abs(_I20 - ((1 + math.sqrt(2)) / 6 - math.pi / 8)) < 1e-7
+    and abs(_V20 - (4 * (1 + math.sqrt(2)) / 3 - math.pi)) < 1e-4,
+    f"t=0.75,0.85,0.95,1 で |OB|=1 かつ cos(θ-π/4)=t、S も数値と式が一致。"
+    f"∫S dt={_I20:.7f}（式 {(1+math.sqrt(2))/6-math.pi/8:.7f}）、"
+    f"K の体積={_V20:.6f}（式 {4*(1+math.sqrt(2))/3-math.pi:.6f}）",
+)
+
+_A4 = (8.0, 0.0)
+_B4 = (10 / 8, math.sqrt(100 - (10 / 8) ** 2))
+_G4 = (32 / 8, (50 - 4 * (10 / 8)) / _B4[1])
+_S4 = abs(_A4[0] * _B4[1] - _A4[1] * _B4[0]) / 2
+_t4 = _G4[1] / _B4[1]
+_s4 = (_G4[0] - _B4[0] * _t4) / 8
+
+
+def _E20(x):
+    """直線 DG と直線 OB の交点の、OB に対する比。"""
+    D = (x * 8.0, 0.0)
+    a11, a12, b1 = _G4[0] - D[0], -_B4[0], -D[0]
+    a21, a22, b2 = _G4[1] - D[1], -_B4[1], -D[1]
+    det = a11 * a22 - a12 * a21
+    return (a11 * b2 - b1 * a21) / det
+
+
+_lo20 = min(i / 100000 for i in range(1, 100001) if 0 < _E20(i / 100000) <= 1 + 1e-15)
+_best20 = min(
+    ((x * _E20(x) * _S4, x) for x in (i / 100000 for i in range(78948, 100001)) if 0 < _E20(x) <= 1)
+)
+ok(
+    "名工大20-4 a·b=10、S=15√7、OG=3a/7+16b/35、15/19≦x≦1、最小 576√7/49（x=6/7）",
+    abs(_A4[0] * _B4[0] + _A4[1] * _B4[1] - 10) < 1e-12
+    and abs(math.hypot(_A4[0] - _B4[0], _A4[1] - _B4[1]) - 12) < 1e-12
+    and abs(_S4 - 15 * math.sqrt(7)) < 1e-9
+    and abs(math.hypot(*_G4) - math.hypot(_G4[0] - _A4[0], _G4[1] - _A4[1])) < 1e-9
+    and abs(math.hypot(*_G4) - math.hypot(_G4[0] - _B4[0], _G4[1] - _B4[1])) < 1e-9
+    and abs(_s4 - 3 / 7) < 1e-12
+    and abs(_t4 - 16 / 35) < 1e-12
+    and abs(_lo20 - 15 / 19) < 2e-5
+    and abs(_best20[1] - 6 / 7) < 2e-5
+    and abs(_best20[0] - 576 * math.sqrt(7) / 49) < 1e-6,
+    f"内積 {_A4[0]*_B4[0]+_A4[1]*_B4[1]:.1f}・AB={math.hypot(_A4[0]-_B4[0],_A4[1]-_B4[1]):.1f}、"
+    f"面積 {_S4:.7f}（15√7={15*math.sqrt(7):.7f}）、外心までの距離はどれも {math.hypot(*_G4):.7f} で係数は "
+    f"{_s4:.7f}・{_t4:.7f}、辺 OB と交わる最小の x={_lo20:.5f}（15/19={15/19:.7f}）、"
+    f"面積の最小 {_best20[0]:.7f} は x={_best20[1]:.5f}（576√7/49={576*math.sqrt(7)/49:.7f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
