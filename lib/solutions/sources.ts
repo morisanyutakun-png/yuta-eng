@@ -451,6 +451,11 @@ export const sources: Record<string, Record<number, Source>> = {
       checked: "2026-10-14",
       note: "2023年度ぶんと同じ理由。一覧ページは直近3年度分なので、令和2年度（2020年度）の問題は公開されていない。",
     },
+    2019: {
+      kind: "none",
+      checked: "2026-10-14",
+      note: "2023年度ぶんと同じ理由。一覧ページは直近3年度分なので、平成31年度（2019年度）の問題は公開されていない。",
+    },
   },
   "ncu-med": {
     2026: {
@@ -601,7 +606,8 @@ export const sources: Record<string, Record<number, Source>> = {
       note: "2026年度ぶんと同じ確認。東北大学は一般選抜前期の数学の問題を公開していない。",
     },
   },
-  "handai-rikei": { 2026: {
+  "handai-rikei": {
+    2026: {
       kind: "official",
       url: "https://www.osaka-u.ac.jp/ja/admissions/faculty/general/pastexam-answer/r8",
       publisher: "大阪大学",
@@ -609,7 +615,8 @@ export const sources: Record<string, Record<number, Source>> = {
       target: "page",
       checked: "2026-10-05",
       note: "「大阪大学入試問題等の利用について」が同じページから配られている。",
-    } },
+    },
+  },
   "handai-bunkei": { 2026: {
       kind: "official",
       url: "https://www.osaka-u.ac.jp/ja/admissions/faculty/general/pastexam-answer/r8",

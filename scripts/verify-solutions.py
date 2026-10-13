@@ -11301,6 +11301,133 @@ ok(
     f"cₙ<0 は n≧5、0<x<1 での fₙ' の符号変化は n=1..10 で {_chg20}",
 )
 
+
+# ---- 電通大2019 ----
+
+
+def _f19u(x):
+    return (2 * math.e - x) * math.log(x)
+
+
+_d19 = max(
+    abs((_f19u(x + 1e-6) - _f19u(x - 1e-6)) / 2e-6 - (-math.log(x) + 2 * math.e / x - 1))
+    for x in (0.5, 1.0, 3.0, 6.0)
+)
+_dd19 = max(
+    abs((_f19u(x + 1e-4) - 2 * _f19u(x) + _f19u(x - 1e-4)) / 1e-8 + (x + 2 * math.e) / x**2)
+    for x in (0.5, 1.0, 3.0, 6.0)
+)
+_mx19 = max((_f19u(1 + 5 * i / 400000), 1 + 5 * i / 400000) for i in range(1, 400001))
+_Fx19 = lambda x: (x * x / 2) * math.log(x) - x * x / 4
+_dI19 = max(
+    abs((_Fx19(x + 1e-6) - _Fx19(x - 1e-6)) / 2e-6 - x * math.log(x)) for x in (0.5, 2.0, 5.0)
+)
+_S19 = quad(_f19u, 1.0, 2 * math.e, 200001)[0]
+_S19f = 2 * math.e**2 * math.log(2) - math.e**2 + 2 * math.e - 0.25
+ok(
+    "電通大19-1 f=0 は x=1,2e、f'・f''、極大 f(e)=e、∫x logx dx、S=2e²log2-e²+2e-1/4",
+    abs(_f19u(1.0)) < 1e-12
+    and abs(_f19u(2 * math.e)) < 1e-12
+    and _d19 < 1e-6
+    and _dd19 < 1e-3
+    and abs(_mx19[0] - math.e) < 1e-6
+    and abs(_mx19[1] - math.e) < 1e-3
+    and _dI19 < 1e-6
+    and abs(_S19 - _S19f) < 1e-6,
+    f"f(1)=f(2e)=0、f'・f'' の差は {_d19:.1e}・{_dd19:.1e}、最大は x={_mx19[1]:.7f} で {_mx19[0]:.9f}（e={math.e:.9f}）、"
+    f"S={_S19:.7f}（式 {_S19f:.7f}）",
+)
+
+
+def _g19u(x):
+    return 1 / math.sin(x) - 2 * math.cos(2 * x) - 1
+
+
+_dg19 = max(
+    abs(
+        (_g19u(x + 1e-6) - _g19u(x - 1e-6)) / 2e-6
+        - math.cos(x) * (8 * math.sin(x) ** 3 - 1) / math.sin(x) ** 2
+    )
+    for x in (0.4, 1.0, 2.0, 2.8)
+)
+_min19 = min(_g19u(math.pi * i / 200000) for i in range(1, 200000))
+_Ig19 = lambda x: 0.5 * math.log((1 - math.cos(x)) / (1 + math.cos(x)))
+_dIg19 = max(
+    abs((_Ig19(x + 1e-6) - _Ig19(x - 1e-6)) / 2e-6 - 1 / math.sin(x)) for x in (0.5, 1.5, 2.5)
+)
+_S19b = quad(_g19u, math.pi / 6, 5 * math.pi / 6, 200001)[0]
+_S19bf = 2 * math.log(2 + math.sqrt(3)) + math.sqrt(3) - 2 * math.pi / 3
+ok(
+    "電通大19-2 f'=cosx(8sin³x-1)/sin²x、f=0 は π/6・5π/6、極小 0・極大 2、∫dx/sinx、S=2log(2+√3)+√3-2π/3",
+    _dg19 < 1e-6
+    and abs(_g19u(math.pi / 6)) < 1e-12
+    and abs(_g19u(5 * math.pi / 6)) < 1e-12
+    and abs(_g19u(math.pi / 2) - 2) < 1e-12
+    and _min19 > -1e-9
+    and _dIg19 < 1e-6
+    and abs(_S19b - _S19bf) < 1e-6,
+    f"f' の差 {_dg19:.1e}、f(π/6)=f(5π/6)=0・f(π/2)={_g19u(math.pi/2):.1f}、(0,π) の最小 {_min19:.1e}、"
+    f"S={_S19b:.7f}（式 {_S19bf:.7f}）",
+)
+
+random.seed(2019)
+_bad19 = 0
+for _ in range(200000):
+    _m = random.uniform(-50, 50)
+    if abs(_m * _m - 1) < 1e-9:
+        continue
+    _x = random.uniform(-30, 30)
+    _y = (2 * (_m * _m + 1) * _x - 16 * _m) / (_m * _m - 1)
+    if abs(_y) > 1e6:
+        continue
+    if 4 * _x * _x - _y * _y > 64 + 1e-6:
+        _bad19 += 1
+_pts19 = [(5.0, 6.0), (-5.0, 6.0), (5.0, -6.0), (4 * math.cosh(1.3), 8 * math.sinh(1.3))]
+_res19 = max(
+    abs(2 * ((2 * x1 + y1) / 8) ** 2 * x1 + 2 * x1 - (((2 * x1 + y1) / 8) ** 2 - 1) * y1 - 16 * (2 * x1 + y1) / 8)
+    for x1, y1 in _pts19
+)
+ok(
+    "電通大19-3 ℓ₁: y=2x・d=4√5/5、接線の傾き 10/3、m=-2±√6、D は 4x²-y²≦64、m=(2x₁+y₁)/8",
+    abs(abs(2 * 5 - 6) / math.sqrt(5) - 4 / math.sqrt(5)) < 1e-12
+    and abs(4 * 5 / 6 - 10 / 3) < 1e-12
+    and all(
+        abs(2 * (m * m + 1) * 1 - (m * m - 1) * 6 - 16 * m) < 1e-9
+        for m in (-2 + math.sqrt(6), -2 - math.sqrt(6))
+    )
+    and _bad19 == 0
+    and _res19 < 1e-9,
+    f"(5,6) と 2x-y=0 の距離 {abs(2*5-6)/math.sqrt(5):.7f}（4/√5={4/math.sqrt(5):.7f}）・2x+y=0 とは {abs(2*5+6)/math.sqrt(5):.7f}、"
+    f"接線の傾き {4*5/6:.7f}、m=-2±√6 で (1,6) を通る、ℓ 上の点で 4x²-y²>64 は {_bad19} 回、"
+    f"m=(2x₁+y₁)/8 の残差は最大 {_res19:.1e}",
+)
+
+_p19 = [None, Fraction(5, 6)]
+for _n in range(1, 12):
+    _p19.append((4 * _p19[_n] + 1) / 6)
+_dist19 = {0: Fraction(1, 3), 1: Fraction(1, 6), 2: Fraction(1, 2)}
+_st19 = {0: Fraction(1), 1: Fraction(0), 2: Fraction(0)}
+_q19 = []
+for _n in range(1, 13):
+    _new = {0: Fraction(0), 1: Fraction(0), 2: Fraction(0)}
+    for _s, _pr in _st19.items():
+        for _k, _pk in _dist19.items():
+            _new[(_s + _k) % 3] += _pr * _pk
+    _st19 = _new
+    _q19.append(_st19[0])
+ok(
+    "電通大19-4 p₁=5/6・p₂=13/18、pₙ={1+(2/3)ⁿ}/2、q₂=5/18、q_(n+2)=-q_n/12+13/36、lim qₙ=1/3",
+    _p19[1] == Fraction(5, 6)
+    and _p19[2] == Fraction(13, 18)
+    and all(_p19[n] == Fraction(1, 2) + Fraction(1, 2) * Fraction(2, 3) ** n for n in range(1, 12))
+    and _q19[1] == Fraction(5, 18)
+    and all(_q19[n + 1] == -_q19[n - 1] / 12 + Fraction(13, 36) for n in range(1, 11))
+    and all(_q19[n - 1] == Fraction(1, 3) for n in range(1, 13, 2))
+    and all(_q19[2 * m - 1] == Fraction(1, 3) + Fraction(2, 3) * Fraction(-1, 12) ** m for m in range(1, 7)),
+    f"p₁={_p19[1]}・p₂={_p19[2]}、pₙ の式は n=1..11 で一致、"
+    f"q₁..q₆={[str(v) for v in _q19[:6]]}、q_(n+2) の関係と偶奇の式もすべて一致",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
