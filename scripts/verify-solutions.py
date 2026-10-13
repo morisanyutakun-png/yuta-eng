@@ -7156,6 +7156,161 @@ ok(
     f"7通りの r で断面積の数値積分と一致。√3π={math.sqrt(3)*math.pi:.9f}",
 )
 
+# ---- 東北大学 理系 2021 ----
+
+_b1y = 0
+for _i in range(-150, 301):
+    for _j in range(-200, 201):
+        _a1 = _i / 50
+        _b1 = _j / 50
+        if _a1 == 0:
+            _has = _b1 != 0 and -1 / _b1 > 0
+        else:
+            _D1 = _b1 * _b1 - 4 * _a1
+            _has = _D1 >= 0 and any(
+                (-_b1 + sg * math.sqrt(_D1)) / (2 * _a1) > 0 for sg in (1, -1)
+            )
+        if (not _has) != (_a1 >= 0 and (_b1 >= 0 or _b1 * _b1 < 4 * _a1)):
+            _b1y += 1
+ok(
+    "東北理21-1 正の解をもたない ⟺ a≧0 かつ（b≧0 または b²<4a）",
+    _b1y == 0,
+    f"(a,b) を 0.02 刻みの18万点で照合して差異 {_b1y} 件",
+)
+
+random.seed(20210225)
+_b2y = 0
+for _ in range(20000):
+    _A2 = (random.uniform(-5, 5), random.uniform(-5, 5))
+    _B2 = (random.uniform(-5, 5), random.uniform(-5, 5))
+    _C2 = (random.uniform(-5, 5), random.uniform(-5, 5))
+    _a2 = random.uniform(0.01, 0.99)
+    _b2 = random.uniform(0.01, 0.99)
+    _P2 = tuple((1 - _a2) * _A2[i] + _a2 * _B2[i] for i in range(2))
+    _Q2 = tuple((1 - _b2) * _B2[i] + _b2 * _C2[i] for i in range(2))
+    _R2 = tuple((_C2[i] + _A2[i]) / 2 for i in range(2))
+    _cr = lambda X, Y, Z: abs((Y[0] - X[0]) * (Z[1] - X[1]) - (Y[1] - X[1]) * (Z[0] - X[0])) / 2
+    _S2 = _cr(_A2, _B2, _C2)
+    if _S2 < 1e-6:
+        continue
+    if abs(_cr(_P2, _Q2, _R2) / _S2 - (1 - _a2 - _b2 + 2 * _a2 * _b2) / 2) > 1e-9:
+        _b2y += 1
+_pq21 = [
+    (p, q)
+    for p in range(3, 200)
+    for q in range(3, 200)
+    if (2 * p * q) % (p * q - p - q + 2) == 0
+]
+ok(
+    "東北理21-2 T/S=(1-a-b+2ab)/2、0<a,b<1/2 で 1/4<T/S<1/2、S/T が整数は (p,q)=(4,6),(6,4)",
+    _b2y == 0 and sorted(_pq21) == [(4, 6), (6, 4)],
+    f"面積比の反例 {_b2y} 件、整数になる (p,q)={sorted(_pq21)}（いずれも S/T=3）",
+)
+
+_pt21 = lambda k: (math.cos(math.pi * k / 4), math.sin(math.pi * k / 4))
+
+
+def _right21(t):
+    P = [_pt21(k) for k in t]
+    for i in range(3):
+        u = (P[(i + 1) % 3][0] - P[i][0], P[(i + 1) % 3][1] - P[i][1])
+        w = (P[(i + 2) % 3][0] - P[i][0], P[(i + 2) % 3][1] - P[i][1])
+        if abs(u[0] * w[0] + u[1] * w[1]) < 1e-9:
+            return True
+    return False
+
+
+def _iso21(t):
+    P = [_pt21(k) for k in t]
+    d = sorted(round(math.dist(P[i], P[(i + 1) % 3]), 9) for i in range(3))
+    return d[0] == d[1] or d[1] == d[2]
+
+
+_tri21 = list(itertools.combinations(range(8), 3))
+ok(
+    "東北理21-3 直角三角形24個、どちらでもないもの16個、条件(*)の四角形54個",
+    sum(1 for t in _tri21 if _right21(t)) == 24
+    and sum(1 for t in _tri21 if not _right21(t) and not _iso21(t)) == 16
+    and sum(
+        1
+        for q in itertools.combinations(range(8), 4)
+        if any(_right21(t) for t in itertools.combinations(q, 3))
+    )
+    == 54,
+    "56個の三角形・70個の四角形を全列挙して確認（二等辺24、両方8）",
+)
+
+_ok4y = True
+for _a4 in (1.2, 1.5, 1.8):
+    _k4 = _a4**3 - 3 * _a4
+    _X4 = -_a4 / 2
+    if abs((_a4**3 - 3.5 * _a4) - (-8 * _X4**3 + 7 * _X4)) > 1e-12:
+        _ok4y = False
+    _p4 = (-_a4 - math.sqrt(12 - 3 * _a4 * _a4)) / 2
+    _q4 = (-_a4 + math.sqrt(12 - 3 * _a4 * _a4)) / 2
+    if abs(_p4**3 - 3 * _p4 - _k4) > 1e-9 or abs(_q4**3 - 3 * _q4 - _k4) > 1e-9:
+        _ok4y = False
+_ar4 = quad(lambda a: 1.5 * (a * a - 1) * math.sqrt(12 - 3 * a * a), 1, 2, 100001)[0]
+ok(
+    "東北理21-4 S(-a/2, a³-7a/2)、軌跡 y=-8x³+7x（-1<x<-1/2）、通過領域の面積 27/8",
+    _ok4y and abs(_ar4 - 27 / 8) < 1e-6,
+    f"a を3通りで照合、面積の数値積分 {_ar4:.9f} / 27/8 = {27/8}",
+)
+
+random.seed(2021)
+_b5y = 0
+for _ in range(200000):
+    _z5 = complex(random.uniform(-3, 3), random.uniform(-3, 3))
+    if (abs((_z5.conjugate() * _z5 * _z5).imag) < 1e-12) != (abs(_z5.imag) < 1e-12):
+        _b5y += 1
+
+
+def _iso5(z):
+    if abs(z.imag) < 1e-12:
+        return False
+    d = sorted([abs(z), abs(z * z), abs(z * z - z)])
+    return abs(d[0] - d[1]) < 1e-9 or abs(d[1] - d[2]) < 1e-9
+
+
+_best5 = None
+for _i in range(1, 60001):
+    _th5 = math.pi / 3 * _i / 60000
+    for _r5 in (2 * math.cos(_th5), 1.0, 1 / (2 * math.cos(_th5))):
+        _z5 = _r5 * cmath.exp(1j * _th5)
+        if not _iso5(_z5):
+            continue
+        _ar5 = 0.5 * _r5**3 * math.sin(_th5)
+        if _best5 is None or _ar5 > _best5[0]:
+            _best5 = (_ar5, _z5)
+ok(
+    "東北理21-5 同一直線上 ⟺ z が実数、二等辺は |z|=1・|z-1|=1・Re z=1/2、面積の最大は 3√3/4（z=3/2+(√3/2)i）",
+    _b5y == 0
+    and all(_iso5(z) for z in (1j, 0.5 + 0.3j, 1 + 1j, 1.5 + math.sqrt(3) / 2 * 1j))
+    and not _iso5(2 + 1j)
+    and abs(_best5[0] - 3 * math.sqrt(3) / 4) < 1e-6
+    and abs(_best5[1] - (1.5 + math.sqrt(3) / 2 * 1j)) < 1e-4,
+    f"最大 {_best5[0]:.9f}（3√3/4={3*math.sqrt(3)/4:.9f}）、z={_best5[1]}",
+)
+
+_ok6y = True
+for _a6 in (0.5, 1.0, 2.0):
+    for _n6 in (1, 2, 5):
+        _R6 = quad(lambda x, a=_a6, n=_n6: (a - x) ** n / math.factorial(n) * math.exp(x), 0, _a6, 20001)[0]
+        _s6 = sum(_a6**k / math.factorial(k) for k in range(_n6 + 1))
+        if abs(_s6 + _R6 - math.exp(_a6)) > 1e-9:
+            _ok6y = False
+        if not (
+            _a6 ** (_n6 + 1) / math.factorial(_n6 + 1) <= _R6 + 1e-12
+            <= math.exp(_a6) * _a6 ** (_n6 + 1) / math.factorial(_n6 + 1) + 1e-12
+        ):
+            _ok6y = False
+_n6min = min(n for n in range(1, 20) if abs(math.e - sum(1 / math.factorial(k) for k in range(n + 1))) < 1e-3)
+ok(
+    "東北理21-6 e^a の展開と剰余項、剰余の上下の評価、|e-Σ|<10⁻³ の最小は n=6",
+    _ok6y and _n6min == 6,
+    f"(a,n) を9通りで等式と不等式を確認。n=5 で {abs(math.e - sum(1/math.factorial(k) for k in range(6))):.3e}、n=6 で {abs(math.e - sum(1/math.factorial(k) for k in range(7))):.3e}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
