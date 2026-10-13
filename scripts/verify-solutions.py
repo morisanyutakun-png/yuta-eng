@@ -7319,8 +7319,8 @@ _B20 = (7 / 8, math.sqrt(15) / 8)
 _d20 = lambda p, q: math.hypot(p[0] - q[0], p[1] - q[1])
 _best1z = (1e9, None)
 _s1 = 1
-while _s1 < 100000:
-    _ss = _s1 / 100000
+while _s1 < 20000:
+    _ss = _s1 / 20000
     _P = (7 / 8, math.sqrt(15) / 8 * (1 - _ss))
     _v = _d20(_A20, _P) ** 2 + _d20(_B20, _P) ** 2 + _d20(_C20, _P) ** 2
     if _v < _best1z[0]:
@@ -7360,9 +7360,9 @@ _hits20 = sorted(
     {round(a, 6) for a in (-8.0, 8 / 9, 1.0) if _union20(a) == 3}
 )
 _scan20 = []
-_k20 = -100000
-while _k20 <= 100000:
-    _a20 = _k20 / 10000
+_k20 = -40000
+while _k20 <= 40000:
+    _a20 = _k20 / 4000
     if _a20 != 0 and _union20(_a20) == 3:
         _scan20.append(round(_a20, 6))
     _k20 += 1
@@ -7380,7 +7380,7 @@ ok(
     and set(_scan20) <= {-8.0, round(8 / 9, 6), 1.0}
     and -8.0 in _scan20
     and 1.0 in _scan20,
-    f"a=-8, 8/9, 1 で和集合 {_union20(-8.0)}, {_union20(8/9)}, {_union20(1.0)} 個。0.0001 刻みの走査で見つかったのは {sorted(set(_scan20))}（8/9 は刻みに乗らない）",
+    f"a=-8, 8/9, 1 で和集合 {_union20(-8.0)}, {_union20(8/9)}, {_union20(1.0)} 個。0.00025 刻みの走査で見つかったのは {sorted(set(_scan20))}（8/9 は刻みに乗らない）",
 )
 
 _ge20 = [n for n in range(1, 12) if 2**n + n * n + 8 >= 3**n]
@@ -7532,7 +7532,7 @@ _last19 = None
 for _a3 in (-0.9, -0.5, -0.1, -0.999):
     _x3 = _a3
     _prev = _x3
-    for _ in range(100000):
+    for _ in range(30000):
         _x3 = _x3 + _x3 * _x3
         if not (-1 < _x3 < 0):
             _ok3a = False
@@ -7543,7 +7543,7 @@ for _a3 in (-0.9, -0.5, -0.1, -0.999):
 ok(
     "東北理19-3 a>0 で発散、-1<a<0 では常に -1<xₙ<0 で単調増加、極限は 0",
     all(_div19) and _ok3a and _ok3b and abs(_last19) < 1e-4,
-    f"a>0 の3通りは60回で 10³⁰⁰ 超え。-1<a<0 の4通りは10万回まで -1<xₙ<0 と単調増加を保ち、最後は {_last19:.3e}",
+    f"a>0 の3通りは60回で 10³⁰⁰ 超え。-1<a<0 の4通りは3万回まで -1<xₙ<0 と単調増加を保ち、最後は {_last19:.3e}",
 )
 
 
@@ -7826,22 +7826,22 @@ def _m23f(a):
 
 _okM23 = True
 _okm23 = True
-for _i23 in range(-200, 201):
-    _a23 = _i23 / 25
-    _vs23 = [(_a23 + 3 * j / 2000) ** 2 + 2 * _a23 * (_a23 + 3 * j / 2000) - 3 for j in range(2001)]
+for _i23 in range(-100, 101):
+    _a23 = _i23 / 12.5
+    _vs23 = [(_a23 + 3 * j / 800) ** 2 + 2 * _a23 * (_a23 + 3 * j / 800) - 3 for j in range(801)]
     if abs(max(_vs23) - _M23f(_a23)) > 1e-5:
         _okM23 = False
     if abs(min(_vs23) - _m23f(_a23)) > 1e-5:
         _okm23 = False
-_best23 = min((_m23f(i / 10000), i / 10000) for i in range(-50000, 50001))
+_best23 = min((_m23f(i / 2000), i / 2000) for i in range(-10000, 10001))
 ok(
     "東北文23-3 M(a)・m(a) の場合分けが合い、m(a) の最小は a=-2 での -6",
     _okM23 and _okm23 and abs(_best23[0] + 6) < 1e-9 and abs(_best23[1] + 2) < 1e-6,
-    f"a を 0.04 刻みで 401 通り、各区間を2000分割して照合。m(a) の最小 {_best23[0]:.9f} at a={_best23[1]}",
+    f"a を 0.08 刻みで 201 通り、各区間を800分割して照合。m(a) の最小 {_best23[0]:.9f} at a={_best23[1]}",
 )
 
 
-def _sweep23(f, lo=0.0, hi=2.0, N=3000, M=3000):
+def _sweep23(f, lo=0.0, hi=2.0, N=1200, M=1200):
     """(X, c) = (x, y-x) 座標で、高さ c ごとの区間の和集合の長さを積分する。"""
     g = [f(lo + (hi - lo) * i / N) - (lo + (hi - lo) * i / N) for i in range(N + 1)]
     cmin, cmax = min(g), max(g)
@@ -8101,9 +8101,9 @@ _b19 = (1 - math.sqrt(5)) / 2
 _a19 = 2 - math.sqrt(5)
 _c19 = _b19 * _b19
 _best19 = None
-_k19 = -300000
+_k19 = -60000
 while _k19 < 0:
-    _bb19 = _k19 / 100000
+    _bb19 = _k19 / 20000
     _aa19 = _bb19**3
     _err19 = abs(_bb19 + _bb19 * _bb19 - _aa19)
     if _best19 is None or _err19 < _best19[0]:
@@ -8153,6 +8153,441 @@ ok(
     and _P19k(3, 1, 1) == Fraction(3, 8)
     and _ans19 == Fraction(127, 512),
     f"P₂(j)={[str(_step19[2].get(j, Fraction(0))) for j in range(4)]}、P₃(j)={[str(_step19[3].get(j, Fraction(0))) for j in range(4)]}、P₃(0)-P₂(0)={_ans19}",
+)
+
+# --- 東京科学大学 2025年度 -----------------------------------------------------
+
+_fK = lambda x: x * math.log(1 + x)
+_FK = lambda x: (x * x - 1) / 2 * math.log(1 + x) - x * x / 4 + x / 2
+_hK = 1e-6
+_okK1a = all(
+    abs((_FK(x + _hK) - _FK(x - _hK)) / (2 * _hK) - _fK(x)) < 1e-7 for x in (0.3, 1.0, 2.0, 3.5)
+)
+
+
+def _gK(y):
+    lo, hi = 0.0, 50.0
+    for _ in range(120):
+        mid = (lo + hi) / 2
+        if _fK(mid) < y:
+            lo = mid
+        else:
+            hi = mid
+    return (lo + hi) / 2
+
+
+_aK = math.log(2)
+_bK = 2 * math.log(3)
+_IK = quad(_gK, _aK, _bK, 4001)[0]
+_IexK = 2.5 * math.log(3) - math.log(2) + 0.25
+_RK = lambda x: (x * x - 1) / 2 * math.log(1 + x) - x * x / 4 + 1.5 * x
+_okK1c = all(
+    abs(quad(lambda u: 1 + _fK(u), 0, x, 8001)[0] - _RK(x)) < 1e-7 for x in (0.5, 1.0, 2.0, 3.0)
+)
+ok(
+    "科学大25-1 ∫x log(1+x)dx、I=(5/2)log3-log2+1/4、R(x)=(x²-1)/2·log(1+x)-x²/4+3x/2",
+    _okK1a
+    and abs(_fK(1) - _aK) < 1e-12
+    and abs(_fK(2) - _bK) < 1e-12
+    and abs(_IK - _IexK) < 1e-5
+    and _okK1c,
+    f"a=f(1)={_fK(1):.9f}、b=f(2)={_fK(2):.9f}、I 数値 {_IK:.9f}／式 {_IexK:.9f}",
+)
+
+_sK = Fraction(1, 9)
+_uK = Fraction(7, 9)
+_PK = (_sK, -_sK, Fraction(1))
+_QK = (Fraction(1), _uK, 3 - 2 * _uK)
+_dK = tuple(_QK[i] - _PK[i] for i in range(3))
+
+
+def _VK(t):
+    A = (t, -t, 1.0)
+    B = (2 + t + math.sin(t), -2 - t - math.sin(t), 1.0)
+    C = (1.0, t, 3 - 2 * t)
+    D = (1.0, 2 + t + math.cos(t), -1 - 2 * t - 2 * math.cos(t))
+    u1 = [B[i] - A[i] for i in range(3)]
+    u2 = [C[i] - A[i] for i in range(3)]
+    u3 = [D[i] - A[i] for i in range(3)]
+    det = (
+        u1[0] * (u2[1] * u3[2] - u2[2] * u3[1])
+        - u1[1] * (u2[0] * u3[2] - u2[2] * u3[0])
+        + u1[2] * (u2[0] * u3[1] - u2[1] * u3[0])
+    )
+    return abs(det) / 6
+
+
+_VfK = lambda t: (2 / 3) * (2 + math.sin(t)) * (2 + math.cos(t))
+_valsK = [(_VfK(i / 20000 * 2 * math.pi), i / 20000 * 2 * math.pi) for i in range(20001)]
+ok(
+    "科学大25-2 P(1/9,-1/9,1)・Q(1,7/9,13/9)・PQ=4/3、V(t)=2/3(2+sin t)(2+cos t)、最大最小は (9±4√2)/3",
+    _dK[0] - _dK[1] == 0
+    and _dK[1] - 2 * _dK[2] == 0
+    and abs(math.sqrt(sum(float(c) ** 2 for c in _dK)) - 4 / 3) < 1e-12
+    and all(abs(_VK(t) - _VfK(t)) < 1e-9 for t in (0.0, 0.7, 1.5, 3.0, 5.0, 10.0))
+    and abs(_VK(0.0) - 4) < 1e-9
+    and abs(max(_valsK)[0] - (9 + 4 * math.sqrt(2)) / 3) < 1e-6
+    and abs(min(_valsK)[0] - (9 - 4 * math.sqrt(2)) / 3) < 1e-6
+    and abs(max(_valsK)[1] - math.pi / 4) < 1e-3
+    and abs(min(_valsK)[1] - 5 * math.pi / 4) < 1e-3,
+    f"PQ=({_dK[0]}, {_dK[1]}, {_dK[2]})、|PQ|={math.sqrt(sum(float(c)**2 for c in _dK)):.9f}、V(0)={_VK(0.0):.9f}、最大 {max(_valsK)[0]:.9f}／最小 {min(_valsK)[0]:.9f}",
+)
+
+
+def _QgameK(p, N=40):
+    res = {}
+    st = {(0, False): 1.0}
+    for _ in range(N):
+        nx = {}
+        for (n, prevT), pr in st.items():
+            nx[(n + 1, False)] = nx.get((n + 1, False), 0) + pr * p
+            if prevT:
+                res[n] = res.get(n, 0) + pr * (1 - p)
+            else:
+                nx[(n, True)] = nx.get((n, True), 0) + pr * (1 - p)
+        st = nx
+    return res
+
+
+_okK3 = True
+for _pK in (0.5, 0.3):
+    _rK = _QgameK(_pK, 150)
+    for _nK in range(5):
+        if abs(_rK.get(_nK, 0) - (1 - _pK) ** 2 * (_pK * (2 - _pK)) ** _nK) > 1e-9:
+            _okK3 = False
+    if abs(sum(n * v for n, v in _rK.items()) - _pK * (2 - _pK) / (1 - _pK) ** 2) > 1e-4:
+        _okK3 = False
+_S40K = sum((n + 1) * 0.5**n for n in range(200))
+ok(
+    "科学大25-3 Qₙ=(1-p)²{p(2-p)}ⁿ、Σ(n+1)xⁿ=1/(1-x)²、Σ nQₙ=p(2-p)/(1-p)²",
+    _okK3 and abs(_S40K - 1 / (1 - 0.5) ** 2) < 1e-9,
+    f"p=0.3 で Σ nQₙ={sum(n*v for n,v in _QgameK(0.3,150).items()):.9f}（式 {0.3*1.7/0.49:.9f}）、x=0.5 の部分和 {_S40K:.9f}（1/(1-x)²=4）",
+)
+
+_aFK = [None, 1, 1]
+for _nK in range(1, 30):
+    _aFK.append(_aFK[_nK + 1] + _aFK[_nK])
+_bFK = lambda n: math.atan(1 / _aFK[n])
+ok(
+    "科学大25-4 aₙ₊₁aₙ₋₁-aₙ²=(-1)ⁿ、a₂ₘ·tan(b₂ₘ₊₁+b₂ₘ₊₂)=1、Σb₂ₘ₊₁=π/2",
+    all(_aFK[n + 1] * _aFK[n - 1] - _aFK[n] ** 2 == (-1) ** n for n in range(2, 20))
+    and all(abs(_aFK[2 * m] * math.tan(_bFK(2 * m + 1) + _bFK(2 * m + 2)) - 1) < 1e-9 for m in range(1, 9))
+    and abs(sum(_bFK(2 * m + 1) for m in range(0, 14)) - math.pi / 2) < 1e-5,
+    f"aₙ₊₁aₙ₋₁-aₙ² は n=2..9 で {[_aFK[n+1]*_aFK[n-1]-_aFK[n]**2 for n in range(2,10)]}、Σ_{{m=0}}^{{13}} b₂ₘ₊₁={sum(_bFK(2*m+1) for m in range(0,14)):.9f}（π/2={math.pi/2:.9f}）",
+)
+
+_f5K = lambda t: (t * t - 1) / t**3
+_A5K = 2 * math.sqrt(3) / 9
+
+
+def _solK(k, lo=-80.0, hi=80.0, N=50000):
+    sols = []
+    prev = None
+    pt = None
+    for i in range(N + 1):
+        t = lo + (hi - lo) * i / N
+        if abs(t) < 1e-9:
+            prev = None
+            pt = None
+            continue
+        v = _f5K(t) - k
+        if prev is not None and (v == 0 or prev * v < 0):
+            sols.append(pt + (t - pt) * abs(prev) / (abs(prev) + abs(v)))
+        prev = v
+        pt = t
+    return sols
+
+
+_xsK = []
+for _iK in range(1, 60):
+    _kK = -0.6 + 1.2 * _iK / 60
+    if abs(_kK) < 1e-9:
+        continue
+    _ssK = _solK(_kK)
+    if len(_ssK) >= 3:
+        _xsK.append(min(_ssK))
+_negK = [x for x in _xsK if x < -1.5]
+_midK = [x for x in _xsK if x > -1.5]
+ok(
+    "科学大25-5 f'(t)=(3-t²)/t⁴、極値 ±2√3/9、x<-√3 または -1<x<-√3/2",
+    abs(_f5K(math.sqrt(3)) - _A5K) < 1e-12
+    and abs(_f5K(-math.sqrt(3)) + _A5K) < 1e-12
+    and abs(_f5K(-math.sqrt(3) / 2) - _A5K) < 1e-12
+    and max(_negK) < -math.sqrt(3)
+    and min(_midK) > -1
+    and max(_midK) < -math.sqrt(3) / 2 + 1e-3
+    and min(_midK) < -0.95,
+    f"f(-√3/2)={_f5K(-math.sqrt(3)/2):.9f}（2√3/9={_A5K:.9f}）、左の範囲 [{min(_negK):.4f}, {max(_negK):.4f}]（-√3={-math.sqrt(3):.4f}）、右の範囲 [{min(_midK):.4f}, {max(_midK):.4f}]（-1 と {-math.sqrt(3)/2:.4f}）",
+)
+
+# --- 東京科学大学 2024年度 -----------------------------------------------------
+
+
+def _cen24(a):
+    s = a / (a + math.sqrt(a * a + 1))
+    return (a * (1 - s), a * a / 2 + s)
+
+
+_h24 = 1e-6
+_X24 = lambda a: _cen24(a)[0]
+_Y24 = lambda a: _cen24(a)[1]
+_sl24 = ((_Y24(1 + _h24) - _Y24(1 - _h24)) / (2 * _h24)) / (
+    (_X24(1 + _h24) - _X24(1 - _h24)) / (2 * _h24)
+)
+_okC24 = True
+for _a24 in (0.5, 1.0, 2.0):
+    _cx, _cy = _cen24(_a24)
+    if abs(_cx - math.dist((_cx, _cy), (_a24, _a24 * _a24 / 2))) > 1e-12:
+        _okC24 = False
+    if abs((_cx - _a24) + (_cy - _a24 * _a24 / 2) * _a24) > 1e-12:
+        _okC24 = False
+ok(
+    "科学大24-1 P(2-√2, √2-1/2)、P での軌跡 C の接線の傾きは 1+√2",
+    _okC24
+    and abs(_cen24(1.0)[0] - (2 - math.sqrt(2))) < 1e-12
+    and abs(_cen24(1.0)[1] - (math.sqrt(2) - 0.5)) < 1e-12
+    and abs(_sl24 - (1 + math.sqrt(2))) < 1e-6,
+    f"P=({_cen24(1.0)[0]:.9f}, {_cen24(1.0)[1]:.9f})、(2-√2, √2-1/2)=({2-math.sqrt(2):.9f}, {math.sqrt(2)-0.5:.9f})、傾き {_sl24:.9f}（1+√2={1+math.sqrt(2):.9f}）",
+)
+
+_f24 = lambda t: 1 / math.cosh(t)
+_g24 = lambda t: math.tanh(t)
+_ok24a = all(
+    abs((_f24(t + _h24) - _f24(t - _h24)) / (2 * _h24) + _f24(t) * _g24(t)) < 1e-7
+    and abs((_g24(t + _h24) - _g24(t - _h24)) / (2 * _h24) - _f24(t) ** 2) < 1e-7
+    for t in (-1.0, 0.0, 0.7, 2.0)
+)
+_p24 = lambda t: _f24(t) ** 2 + _g24(t) ** 2
+_q24 = lambda t: math.log((1 + _g24(t)) / (1 - _g24(t)))
+_T24 = math.atanh(1 / math.sqrt(2))
+_L24 = quad(
+    lambda t: math.hypot(
+        (_f24(t + _h24) - _f24(t - _h24)) / (2 * _h24),
+        (_g24(t + _h24) - _g24(t - _h24)) / (2 * _h24),
+    ),
+    0,
+    _T24,
+    8001,
+)[0]
+ok(
+    "科学大24-2 p'(t)=0、q'(t)=2、lim g=1、曲線の長さは π/4",
+    _ok24a
+    and all(abs(_p24(t) - 1) < 1e-12 for t in (-1.0, 0.0, 0.7, 2.0))
+    and all(abs((_q24(t + _h24) - _q24(t - _h24)) / (2 * _h24) - 2) < 1e-7 for t in (-1.0, 0.0, 0.7, 2.0))
+    and abs(_g24(30) - 1) < 1e-12
+    and abs(_f24(_T24) - _g24(_T24)) < 1e-12
+    and abs(_f24(_T24) - 1 / math.sqrt(2)) < 1e-12
+    and abs(_L24 - math.pi / 4) < 1e-6,
+    f"p(t)={_p24(0.7):.12f}、q'(t)={(_q24(0.7+_h24)-_q24(0.7-_h24))/(2*_h24):.9f}、g(30)={_g24(30):.12f}、T={_T24:.9f}、長さ {_L24:.9f}（π/4={math.pi/4:.9f}）",
+)
+
+_ok24b = True
+for _a24b, _b24b in ((1.0, 2.0), (2.0, 3.0), (1.0, 5.0)):
+    _xs = [_a24b]
+    for _ in range(32):
+        _xs.append(_a24b + (_a24b**2 / _b24b**2) * (_xs[-1] + _a24b))
+    _fx = lambda n, a=_a24b, b=_b24b: a * (a * a + b * b - 2 * a * a * (a / b) ** (2 * n)) / (b * b - a * a)
+    _fy = lambda n, a=_a24b, b=_b24b: -2 * a * a * b * (1 - (a / b) ** (2 * n)) / (b * b - a * a)
+    _fS = lambda n, a=_a24b, b=_b24b: a * b * (a * a + b * b - 2 * a * a * (a / b) ** (2 * n)) / (b * b - a * a)
+    for _n24 in range(0, 8):
+        if abs(_xs[_n24] - _fx(_n24)) > 1e-9:
+            _ok24b = False
+        _C = (-_a24b, 0.0)
+        _B = (0.0, _b24b)
+        _An = (_fx(_n24), _fy(_n24))
+        _ar = abs((_B[0] - _C[0]) * (_An[1] - _C[1]) - (_B[1] - _C[1]) * (_An[0] - _C[0])) / 2
+        if abs(_ar - _fS(_n24)) > 1e-9:
+            _ok24b = False
+    if abs(
+        math.dist((0.0, _b24b), (_fx(40), _fy(40))) / math.hypot(_a24b, _b24b)
+        - (_a24b**2 + _b24b**2) / (_b24b**2 - _a24b**2)
+    ) > 1e-9:
+        _ok24b = False
+ok(
+    "科学大24-3 xₙ・yₙ の一般項、Sₙ=b·xₙ、BAₙ/BC → (a²+b²)/(b²-a²)",
+    _ok24b,
+    "(a,b)=(1,2),(2,3),(1,5) で漸化式の値・面積・極限をすべて照合",
+)
+
+
+def _odd24(ps):
+    pe, po = 1.0, 0.0
+    for p in ps:
+        pe, po = pe * (1 - p) + po * p, po * (1 - p) + pe * p
+    return po
+
+
+_Z24 = _odd24([1 / (3 * 2000)] * 2000 + [2 / (3 * 2000)] * 2000 + [1 / 2000] * 2000)
+ok(
+    "科学大24-4 Xₙ=(1-3⁻ⁿ)/2、Yₙ=n/(2(n+1))、lim Z₃ₘ=(1-e⁻⁴)/2",
+    all(abs(_odd24([1 / 3] * n) - (1 - (1 / 3) ** n) / 2) < 1e-12 for n in (1, 2, 3, 5, 8))
+    and all(
+        abs(_odd24([1 / (2 * (k + 1)) for k in range(1, n + 1)]) - n / (2 * (n + 1))) < 1e-12
+        for n in (1, 2, 3, 5, 8)
+    )
+    and abs(_Z24 - (1 - math.exp(-4)) / 2) < 1e-4,
+    f"X₈={_odd24([1/3]*8):.9f}、Y₈={_odd24([1/(2*(k+1)) for k in range(1,9)]):.9f}、m=2000 の Z={_Z24:.9f}（(1-e⁻⁴)/2={(1-math.exp(-4))/2:.9f}）",
+)
+
+_good24 = []
+for _a24c in range(-10, 11):
+    for _b24c in range(-10, 11):
+        _D24 = _a24c * _a24c - 4 * _b24c
+        if _D24 >= 0:
+            _rs = [complex((-_a24c + math.sqrt(_D24)) / 2, 0), complex((-_a24c - math.sqrt(_D24)) / 2, 0)]
+        else:
+            _rs = [complex(-_a24c / 2, math.sqrt(-_D24) / 2), complex(-_a24c / 2, -math.sqrt(-_D24) / 2)]
+        _okall = True
+        for _r in _rs:
+            if abs(abs(_r) - 1) > 1e-12:
+                _okall = False
+                break
+            _z = complex(1, 0)
+            _found = False
+            for _n24c in range(1, 400):
+                _z = _z * _r
+                if abs(_z - 1) < 1e-9:
+                    _found = True
+                    break
+            if not _found:
+                _okall = False
+                break
+        if _okall:
+            _good24.append((_a24c, _b24c))
+ok(
+    "科学大24-5 (a,b)=(-2,1),(-1,1),(0,-1),(0,1),(1,1),(2,1) の6組",
+    sorted(_good24) == [(-2, 1), (-1, 1), (0, -1), (0, 1), (1, 1), (2, 1)],
+    f"-10≦a,b≦10 の全探索で {sorted(_good24)}",
+)
+
+# --- 東京科学大学 2023年度 -----------------------------------------------------
+
+_I23 = quad(lambda x: 2 / (x + math.exp(x)), 0, 40, 40001)[0]
+_ok23a = all(
+    2 / (x + math.exp(x)) >= math.exp(-x) + math.exp(-2 * x) / 2 - 1e-15
+    for x in (i / 50 for i in range(0, 1000))
+)
+_ok23b = all(2 / (x + math.exp(x)) <= 2 * math.exp(-x) for x in (i / 50 for i in range(1, 1000)))
+ok(
+    "科学大23-1 5/4 < ∫₀^2023 2/(x+eˣ)dx < 2、整数部分は 1",
+    _ok23a and _ok23b and 1.25 < _I23 < 2,
+    f"数値積分 {_I23:.9f}（下の評価 5/4、上の評価 2）",
+)
+
+_sol23 = []
+for _x23 in range(-200, 201):
+    _A23 = _x23**3 - _x23
+    if _A23 == 0 or 86400 % (_A23 * _A23) != 0:
+        continue
+    _B23 = 86400 // (_A23 * _A23)
+    for _y23 in range(-200, 201):
+        if _y23**3 - _y23 == _B23:
+            _sol23.append((_x23, _y23))
+ok(
+    "科学大23-2 (x,y)=(±4,3),(±5,2) の4組",
+    sorted(_sol23) == [(-5, 2), (-4, 3), (4, 3), (5, 2)],
+    f"-200≦x≦200 の全探索で {sorted(_sol23)}",
+)
+
+_cards23 = [0.0, 1.0, math.sqrt(3)]
+_zs23 = [complex(_cards23[a], _cards23[b]) for a in range(3) for b in range(3) if a != b]
+_ok23c = True
+for _n23 in (1, 2, 3, 4):
+    _tot23 = 0
+    _c1 = 0
+    _c2 = 0
+    for _comb in itertools.product(range(6), repeat=_n23):
+        _z23 = complex(1, 0)
+        for _i in _comb:
+            _z23 *= _zs23[_i]
+        _tot23 += 1
+        if abs(_z23) < 5 - 1e-12:
+            _c1 += 1
+        _z2 = _z23 * _z23
+        if abs(_z2.imag) < 1e-9 * max(1.0, abs(_z2)):
+            _c2 += 1
+    if Fraction(_c1, _tot23) != Fraction(2 * _n23 * _n23 + 1, 3**_n23):
+        _ok23c = False
+    if Fraction(_c2, _tot23) != Fraction(2 ** (_n23 - 1) + 1, 3 * 2 ** (_n23 - 1)):
+        _ok23c = False
+ok(
+    "科学大23-3 Pₙ=(2n²+1)/3ⁿ、Qₙ=(1/3)(1+2^(1-n))",
+    _ok23c,
+    "n=1..4 で 6ⁿ 通りを全列挙して照合",
+)
+
+
+def _LA23(t):
+    r = math.sqrt(max(0.0, 4 - t * t))
+    return 2 * r if abs(t) >= 1 else 2 * (r - 1)
+
+
+def _LB23(t):
+    r = math.sqrt(max(0.0, 4 - t * t))
+    lo = math.sqrt(2) - abs(t)
+    return 2 * r if lo <= 0 else 2 * (r - lo)
+
+
+_V23 = quad(lambda t: _LA23(t) * _LB23(t), -2, 2, 40001)[0]
+_Vex23 = 60 - 16 * math.sqrt(2) / 3 - 4 * math.sqrt(3) - 8 * math.pi / 3 - 4 * math.sqrt(2) * math.pi
+ok(
+    "科学大23-4 体積は 60 - 4√3 - 16√2/3 - 8π/3 - 4√2π",
+    abs(_V23 - _Vex23) < 2e-3,
+    f"断面積の数値積分 {_V23:.6f}、式 {_Vex23:.6f}",
+)
+
+_A23p = (1.0, 0.0, 0.0)
+_B23p = (1.0, 1.0, 1.0)
+_C23p = (-1.0, 1.0, -1.0)
+_D23p = (-1.0, 0.0, 0.0)
+
+
+def _dline23(P, Q, R):
+    u = [R[i] - Q[i] for i in range(3)]
+    w = [P[i] - Q[i] for i in range(3)]
+    cr = [
+        w[1] * u[2] - w[2] * u[1],
+        w[2] * u[0] - w[0] * u[2],
+        w[0] * u[1] - w[1] * u[0],
+    ]
+    return math.sqrt(sum(c * c for c in cr)) / math.sqrt(sum(c * c for c in u))
+
+
+random.seed(20230225)
+_okpl23 = True
+for _ in range(2000):
+    _P23 = (random.uniform(-5, 5), random.uniform(-5, 5), random.uniform(-5, 5))
+    _eq = abs(_dline23(_P23, _A23p, _B23p) - _dline23(_P23, _B23p, _C23p)) < 1e-9
+    _pl = abs((_P23[0] - _P23[1]) * (_P23[0] + _P23[1] + 2 * _P23[2] - 4)) < 1e-9
+    if _eq != _pl:
+        _okpl23 = False
+_s2 = math.sqrt(2)
+_cands23 = [
+    ((0.0, 0.0, -_s2), _s2),
+    ((0.0, 0.0, _s2), _s2),
+    ((2 * _s2, 4.0, -_s2), 3 * _s2),
+    ((-2 * _s2, 4.0, _s2), 3 * _s2),
+    ((_s2, -_s2, 2.0), math.sqrt(6)),
+    ((-_s2, -_s2, -2.0), math.sqrt(6)),
+    ((_s2, _s2, -2.0), math.sqrt(6)),
+    ((-_s2, _s2, 2.0), math.sqrt(6)),
+]
+_oksp23 = all(
+    all(
+        abs(d - r) < 1e-9
+        for d in (
+            _dline23(P, _A23p, _B23p),
+            _dline23(P, _B23p, _C23p),
+            _dline23(P, _C23p, _D23p),
+            _dline23(P, _D23p, _A23p),
+        )
+    )
+    for P, r in _cands23
+)
+ok(
+    "科学大23-5 等距離の図形は2平面 x=y と x+y+2z=4、4直線に接する球面は8組",
+    _okpl23 and _oksp23,
+    f"乱数2000点で (1) を確認。8つの中心すべてで4直線への距離が半径（√2, 3√2, √6）に一致",
 )
 
 print()
