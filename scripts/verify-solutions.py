@@ -8590,6 +8590,285 @@ ok(
     f"乱数2000点で (1) を確認。8つの中心すべてで4直線への距離が半径（√2, 3√2, √6）に一致",
 )
 
+# --- 東京科学大学 2022年度 -----------------------------------------------------
+
+
+def _reach22(x, y):
+    """z=x+yi が |a|≦1, |b|≦1 の z²+az+b=0 の解になれるか。"""
+    if abs(y) < 1e-12:
+        lo = -x * x - abs(x)
+        hi = -x * x + abs(x)
+        return hi >= -1 - 1e-12 and lo <= 1 + 1e-12
+    return abs(-2 * x) <= 1 + 1e-12 and abs(x * x + y * y) <= 1 + 1e-12
+
+
+_phi22 = (1 + math.sqrt(5)) / 2
+_bad22 = 0
+for _i22 in range(-200, 201):
+    for _j22 in range(-200, 201):
+        _x22, _y22 = _i22 / 80, _j22 / 80
+        _pred22 = (abs(_y22) < 1e-12 and abs(_x22) <= _phi22 + 1e-12) or (
+            abs(_y22) >= 1e-12 and abs(_x22) <= 0.5 + 1e-12 and _x22**2 + _y22**2 <= 1 + 1e-12
+        )
+        if _reach22(_x22, _y22) != _pred22:
+            _bad22 += 1
+ok(
+    "科学大22-1 実軸上は |z|≦(1+√5)/2、虚数なら |Re z|≦1/2 かつ |z|≦1",
+    _bad22 == 0 and _reach22(_phi22, 0) and not _reach22(_phi22 + 0.01, 0),
+    f"0.0125 刻みの格子で不一致 {_bad22} 件。φ=(1+√5)/2={_phi22:.9f} は可、{_phi22+0.01:.4f} は不可",
+)
+
+_got22 = set()
+for _a22 in range(1, 31):
+    for _b22 in range(1, 31):
+        for _c22 in range(1, 31):
+            if math.gcd(math.gcd(_a22, _b22), _c22) != 1:
+                continue
+            _got22.add(
+                math.gcd(
+                    math.gcd(_a22 + _b22 + _c22, _a22**2 + _b22**2 + _c22**2),
+                    _a22**3 + _b22**3 + _c22**3,
+                )
+            )
+_ok22e = all(
+    math.gcd(
+        math.gcd(a + b + c, a * b + b * c + c * a), a * b * c
+    )
+    == 1
+    for a in range(1, 20)
+    for b in range(1, 20)
+    for c in range(1, 20)
+    if math.gcd(math.gcd(a, b), c) == 1
+)
+ok(
+    "科学大22-2 e₁,e₂,e₃ の最大公約数は 1、p₁,p₂,p₃ の最大公約数は 1,2,3,6 のみ",
+    _ok22e and sorted(_got22) == [1, 2, 3, 6],
+    f"現れた最大公約数は {sorted(_got22)}",
+)
+
+_ok22c = True
+for _al22 in (0.3, 0.7, 1.2):
+    for _t22 in (0.0, 0.4, 1.0, math.pi / 2):
+        _A22 = (math.sin(_t22), 0.0)
+        _B22 = (0.0, math.cos(_t22))
+        _P22 = (
+            math.sin(_al22) * math.cos(_t22 - _al22),
+            math.cos(_al22) * math.cos(_t22 - _al22),
+        )
+        _v1 = (_A22[0] - _P22[0], _A22[1] - _P22[1])
+        _v2 = (_B22[0] - _P22[0], _B22[1] - _P22[1])
+        if abs(_v1[0] * _v2[0] + _v1[1] * _v2[1]) > 1e-9:
+            _ok22c = False
+        _u1 = (_P22[0] - _A22[0], _P22[1] - _A22[1])
+        _u2 = (_B22[0] - _A22[0], _B22[1] - _A22[1])
+        _ca = (_u1[0] * _u2[0] + _u1[1] * _u2[1]) / (math.hypot(*_u1) * math.hypot(*_u2))
+        if abs(math.acos(max(-1.0, min(1.0, _ca))) - _al22) > 1e-9:
+            _ok22c = False
+    _L22 = quad(lambda t, a=_al22: abs(math.sin(t - a)), 0, math.pi / 2, 8001)[0]
+    if abs(_L22 - (2 - math.sin(_al22) - math.cos(_al22))) > 1e-7:
+        _ok22c = False
+    for _i22 in range(0, 4001):
+        _t22 = math.pi / 2 * _i22 / 4000
+        _s22 = math.cos(_t22 - _al22)
+        _x22, _y22 = _s22 * math.sin(_al22), _s22 * math.cos(_al22)
+        if _x22**2 - _x22 + _y22**2 < 0 and _x22**2 + _y22**2 - _y22 < 0:
+            _ok22c = False
+ok(
+    "科学大22-3 P は直線 x cosα = y sinα 上、道のりは 2-sinα-cosα、D には入らない",
+    _ok22c,
+    "α=0.3,0.7,1.2 で ∠P=90°・∠A=α・道のり・D に入らないことをすべて確認",
+)
+
+_ok22d = True
+for _a22 in (0.2, 0.8, 1.5):
+    _cx22 = 2 * (1 + _a22**2) / (1 - 4 * _a22**2)
+    _r22 = 5 * _a22 / abs(1 - 4 * _a22**2)
+    for _k22 in range(400):
+        _th = 2 * math.pi * _k22 / 400
+        _z22 = complex(1 + _a22 * math.cos(_th), _a22 * math.sin(_th))
+        _w22 = (_z22 - 3) / (1 - 2 * _z22)
+        if abs(math.hypot(_w22.real - _cx22, _w22.imag) - _r22) > 1e-9:
+            _ok22d = False
+    if abs(_r22**2 - (_cx22 - 2) * (2 * _cx22 + 1) / 2) > 1e-9:
+        _ok22d = False
+_re22 = []
+for _k22 in range(400):
+    _z22 = complex(1 + 0.5 * math.cos(2 * math.pi * _k22 / 400), 0.5 * math.sin(2 * math.pi * _k22 / 400))
+    if abs(1 - 2 * _z22) < 1e-6:
+        continue  # z=1/2 は除外されている点
+    _re22.append(((_z22 - 3) / (1 - 2 * _z22)).real)
+ok(
+    "科学大22-4 a≠1/2 で中心 2(1+a²)/(1-4a²)・半径 5a/|1-4a²|、通過領域は (x-3/4)²-y²≧25/16",
+    _ok22d and max(abs(v - 0.75) for v in _re22) < 1e-9,
+    f"a=0.2,0.8,1.5 で円を確認し r²=(x-2)(2x+1)/2 も一致。a=1/2 では Re w がつねに 0.75",
+)
+
+_f22 = lambda x, a: (2 / 3) * (1 + math.sin(2 * a * x))
+_g22 = lambda a: 1 - math.cos(2 * a) - a
+_lo22, _hi22 = math.pi / 12, math.pi / 4
+for _ in range(200):
+    _mid22 = (_lo22 + _hi22) / 2
+    if _g22(_mid22) < 0:
+        _lo22 = _mid22
+    else:
+        _hi22 = _mid22
+_as22 = (_lo22 + _hi22) / 2
+_val22 = 1 / 3 - math.cos(2 * _as22) / (3 * _as22) + math.sin(2 * _as22) / (6 * _as22**2)
+_An22 = sum(
+    (i / 200) * quad(lambda x: _f22(x, _as22), (i - 1) / 200, i / 200, 41)[0] for i in range(1, 201)
+)
+ok(
+    "科学大22-5 f=2/3(1+sin2ax)、(*) は 1-cos2a=a でただ1つ、lim Aₙ/n = ∫₀¹ x f dx",
+    abs(quad(lambda x: _f22(x, _as22), 0, 1, 8001)[0] - 1) < 1e-9
+    and _g22(math.pi / 12) < 0 < _g22(math.pi / 4)
+    and abs(_val22 - quad(lambda x: x * _f22(x, _as22), 0, 1, 8001)[0]) < 1e-9
+    and abs(
+        _val22
+        - (2 / 3 - 1 / (3 * _as22) + math.sqrt(2 * _as22 - _as22**2) / (6 * _as22**2))
+    )
+    < 1e-9
+    and abs(_An22 - _val22) < 5e-3,
+    f"a={_as22:.9f}、∫₀¹f={quad(lambda x: _f22(x,_as22),0,1,8001)[0]:.9f}、式 {_val22:.9f}、n=200 の Aₙ/n={_An22:.9f}",
+)
+
+# --- 東京科学大学 2021年度 -----------------------------------------------------
+
+_no9 = lambda n: "9" not in str(n)
+_ak21 = [sum(1 for n in range(10 ** (k - 1), 10**k) if _no9(n)) for k in range(1, 6)]
+_sum21 = [sum(1 / n for n in range(1, 10**k) if _no9(n)) for k in range(1, 6)]
+ok(
+    "科学大21-1 aₖ=8·9^(k-1)、Σbₙ ≦ 80(1-(9/10)^k) < 80",
+    _ak21 == [8 * 9 ** (k - 1) for k in range(1, 6)]
+    and all(_sum21[k - 1] <= 80 * (1 - 0.9**k) + 1e-9 for k in range(1, 6))
+    and all(_sum21[k - 1] < 80 for k in range(1, 6)),
+    f"aₖ 実測 {_ak21}、Σbₙ は {[round(v,6) for v in _sum21]}、評価は {[round(80*(1-0.9**k),6) for k in range(1,6)]}",
+)
+
+
+def _two21(a, b):
+    return (a * b) ** 2 - (0.25 + a * a) * (b * b - 1) > 1e-12
+
+
+_ok21a = all(
+    _two21(a, b) == (b * b < 4 * a * a + 1 - 1e-12)
+    for a in (i / 10 for i in range(-30, 31))
+    for b in (j / 10 for j in range(-40, 41))
+)
+_chord21 = lambda a, b: (4 * a * a + 1 - b * b) / (0.25 + a * a) ** 2
+_S5K = 2 / math.sqrt(5)
+_sq21 = [(_S5K, _S5K), (-_S5K, _S5K), (-_S5K, -_S5K), (_S5K, -_S5K)]
+_roots21 = []
+_prev21 = (-math.sin(0.0)) ** 2 / 4 + (2 * math.cos(0.0)) ** 2 - 1
+for _i21 in range(1, 20001):
+    _th21 = 2 * math.pi * _i21 / 20000
+    _cur21 = (-math.sin(_th21)) ** 2 / 4 + (2 * math.cos(_th21)) ** 2 - 1
+    if _prev21 == 0 or _prev21 * _cur21 < 0:
+        _roots21.append(round(math.cos(_th21) ** 2, 3))
+    _prev21 = _cur21
+ok(
+    "科学大21-2 2点で交わる条件 b²<4a²+1、PQ=SR は c=-b かつ b>0、内接する正方形は1つ",
+    _ok21a
+    and abs(_chord21(0.7, 0.6) - _chord21(0.7, -0.6)) < 1e-12
+    and all(abs(p[0] ** 2 / 4 + p[1] ** 2 - 1) < 1e-12 for p in _sq21)
+    and all(abs(math.dist(_sq21[i], _sq21[(i + 1) % 4]) - 4 / math.sqrt(5)) < 1e-9 for i in range(4))
+    and len(_roots21) == 4
+    and all(abs(v - 0.2) < 2e-3 for v in _roots21),
+    f"正方形の頂点は (±2√5/5, ±2√5/5)、1辺 {math.dist(_sq21[0], _sq21[1]):.9f}（4√5/5={4/math.sqrt(5):.9f}）。cos²θ の解は {sorted(set(_roots21))}",
+)
+
+_a21 = lambda n: math.comb(2 * n, n) // (n + 1)
+
+
+def _isp21(m):
+    if m < 2:
+        return False
+    i = 2
+    while i * i <= m:
+        if m % i == 0:
+            return False
+        i += 1
+    return True
+
+
+ok(
+    "科学大21-3 n·C(2n,n)=(n+1)C(2n,n-1)、n≧4 で aₙ>n+2 かつ aₙ>2n-1、素数になるのは n=2,3",
+    all(n * math.comb(2 * n, n) == (n + 1) * math.comb(2 * n, n - 1) for n in range(1, 30))
+    and all(math.comb(2 * n, n) % (n + 1) == 0 for n in range(1, 30))
+    and all(_a21(n) > n + 2 for n in range(4, 40))
+    and all(_a21(n) > 2 * n - 1 for n in range(4, 40))
+    and [n for n in range(1, 101) if _isp21(_a21(n))] == [2, 3],
+    f"aₙ n=1..8 は {[_a21(n) for n in range(1,9)]}、素数になるのは n=2,3",
+)
+
+
+def _F21(A, B, C, D):
+    d2 = lambda P, Q: sum((P[i] - Q[i]) ** 2 for i in range(3))
+    return 2 * (d2(A, B) + d2(B, C) + d2(C, A)) - 3 * (d2(A, D) + d2(B, D) + d2(C, D))
+
+
+random.seed(20210225)
+
+
+def _rnd21():
+    while True:
+        v = [random.gauss(0, 1) for _ in range(3)]
+        n = math.sqrt(sum(c * c for c in v))
+        if n > 1e-6:
+            return tuple(c / n for c in v)
+
+
+_ok21f = True
+_best21 = -1e9
+for _ in range(20000):
+    _A21, _B21, _C21, _D21 = _rnd21(), _rnd21(), _rnd21(), _rnd21()
+    _s21 = [_A21[i] + _B21[i] + _C21[i] for i in range(3)]
+    _k21 = -2 * sum(_s21[i] * (_s21[i] - 3 * _D21[i]) for i in range(3))
+    if abs(_F21(_A21, _B21, _C21, _D21) - _k21) > 1e-9:
+        _ok21f = False
+    _best21 = max(_best21, _F21(_A21, _B21, _C21, _D21))
+_Cp21 = (-0.25, math.sqrt(15) / 4, 0.0)
+_Dp21 = (1.0, 0.0, 0.0)
+_Ap21 = (7 / 8, -math.sqrt(15) / 8, 0.0)
+ok(
+    "科学大21-4 F=-2(a+b+c)·(a+b+c-3d)、M=9/2、A=B=(7/8, -√15/8, 0)",
+    _ok21f
+    and _best21 < 4.5 + 1e-9
+    and abs(math.hypot(*_Ap21[:2]) - 1) < 1e-12
+    and abs(_F21(_Ap21, _Ap21, _Cp21, _Dp21) - 4.5) < 1e-9,
+    f"乱択2万組での最大 {_best21:.6f}（M=4.5）、A=B=(7/8,-√15/8,0) で F={_F21(_Ap21,_Ap21,_Cp21,_Dp21):.9f}",
+)
+
+
+def _inside21(a, quartic):
+    for i in range(1, 20001):
+        th = 2 * math.pi * i / 20000
+        x = a * math.cos(th)
+        y = a + a * math.sin(th)
+        lim = x * x - x**4 if quartic else x * x
+        if y < lim - 1e-12:
+            return False
+    return True
+
+
+def _vol21(a, N=20000):
+    tot = 0.0
+    for i in range(N):
+        y = 0.25 * (i + 0.5) / N
+        u1 = (1 - math.sqrt(max(0.0, 1 - 4 * y))) / 2
+        u2 = 2 * a * y - y * y
+        if u1 > u2:
+            tot += math.pi * (u1 - u2) * (0.25 / N)
+    return tot
+
+
+ok(
+    "科学大21-5 (1)(2) とも 0<a≦1/2、回転体の体積は (3-4a)π/64",
+    all(_inside21(a, False) and _inside21(a, True) for a in (0.3, 0.49, 0.5))
+    and all(not _inside21(a, False) and not _inside21(a, True) for a in (0.501, 0.52, 0.6, 0.8))
+    and all(abs(_vol21(a) - (3 - 4 * a) * math.pi / 64) < 1e-6 for a in (0.1, 0.3, 0.5)),
+    f"a=0.5 は両方とも可、a=0.501 は両方とも不可。a=0.3 の体積 {_vol21(0.3):.9f}（式 {(3-4*0.3)*math.pi/64:.9f}）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
