@@ -634,6 +634,11 @@ export const sources: Record<string, Record<number, Source>> = {
       checked: "2026-10-14",
       note: "2025年度ぶんと同じ理由。公開されているのは直近の年度だけで、令和5年度（2023年度）のページは見当たらない。",
     },
+    2022: {
+      kind: "none",
+      checked: "2026-10-14",
+      note: "2025年度ぶんと同じ理由。公開されているのは直近の年度だけで、令和4年度（2022年度）のページは見当たらない。",
+    },
   },
   "handai-bunkei": { 2026: {
       kind: "official",

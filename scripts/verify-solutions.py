@@ -11877,6 +11877,141 @@ ok(
     f"全探索の p₁..p₅={[str(v) for v in _p23]}、式とすべて一致",
 )
 
+# ── 阪大理系2022 ──
+_c22ok = True
+_c22det = []
+for _r in (0.25, 0.5, 1.0, 2.0):
+    _ws = []
+    for _i in range(2000):
+        _th = 2 * math.pi * _i / 2000
+        _z = 1.5 + _r * complex(math.cos(_th), math.sin(_th))
+        if abs(_z - 1) < 1e-12:
+            continue
+        _ws.append(_z / (_z - 1))
+    if abs(_r - 0.5) < 1e-12:
+        _re = [w.real for w in _ws]
+        _c22ok = _c22ok and max(abs(x - 2) for x in _re) < 1e-9
+        _c22det.append(f"r=0.5 では Re(w) が {min(_re):.9f}..{max(_re):.9f}（2 のはず）")
+    else:
+        _ctr = (3 - 4 * _r * _r) / (1 - 4 * _r * _r)
+        _rad = 4 * _r / abs(1 - 4 * _r * _r)
+        _ds = [abs(w - _ctr) for w in _ws]
+        _c22ok = _c22ok and max(abs(d - _rad) for d in _ds) < 1e-9
+        _c22det.append(f"r={_r}: 中心 {_ctr:.7f} 半径 {_rad:.7f} / 距離 {min(_ds):.7f}..{max(_ds):.7f}")
+ok(
+    "阪大理22-1 w=z/(z-1)、r≠1/2 なら中心 (3-4r²)/(1-4r²)・半径 4r/|1-4r²| の円、r=1/2 なら Re(w)=2 の直線",
+    _c22ok,
+    "、".join(_c22det),
+)
+
+_a22 = 2 * math.pi / 7
+_c = math.cos(_a22)
+_d4 = math.cos(4 * _a22) - math.cos(3 * _a22)
+_q4 = 8 * _c**4 - 4 * _c**3 - 8 * _c**2 + 3 * _c + 1
+_f22 = lambda x: 8 * x**3 + 4 * x**2 - 4 * x - 1
+_cand = [Fraction(p, q) for q in (1, 2, 4, 8) for p in (1, -1)]
+_vals = [(str(x), str(8 * x**3 + 4 * x**2 - 4 * x - 1)) for x in _cand]
+ok(
+    "阪大理22-2 cos4α=cos3α、f(cosα)=8c³+4c²-4c-1=0、有理数の候補 ±1,±1/2,±1/4,±1/8 はどれも解でない",
+    abs(_d4) < 1e-12 and abs(_q4) < 1e-12 and abs(_f22(_c)) < 1e-12
+    and all(8 * x**3 + 4 * x**2 - 4 * x - 1 != 0 for x in _cand),
+    f"cos4α-cos3α={_d4:.2e}、8c⁴-4c³-8c²+3c+1={_q4:.2e}、候補の値={_vals}",
+)
+
+def _in22(x, y):
+    if x < 0 or x > 1:
+        return False
+    if x < 0.25:
+        return 1 - x <= y <= 2 - 4 * x
+    if x <= 1 / 3:
+        return 1 - x <= y <= 1 / (4 * x)
+    if x <= 0.5:
+        return 2 - 4 * x <= y <= 1 / (4 * x)
+    return 0 <= y <= 1 - x
+
+# 各 x について、t を細かく動かして y=t-t²x の実際の値域を測り、求めた不等式の
+# 上下端と比べる。線分なので t は 1≦t≦min(2,1/x) に限る。
+_bad22 = 0
+_N22 = 2000
+_T22 = 4000
+for _i in range(0, _N22 + 1):
+    _x = _i / _N22
+    _thi = min(2.0, 1 / _x) if _x > 0 else 2.0
+    _ys = []
+    for _k in range(_T22 + 1):
+        _t = 1 + (_thi - 1) * _k / _T22
+        _ys.append(_t - _t * _t * _x)
+    _lo22, _hi22 = min(_ys), max(_ys)
+    if _x < 0.25:
+        _w = (1 - _x, 2 - 4 * _x)
+    elif _x <= 1 / 3:
+        _w = (1 - _x, 1 / (4 * _x))
+    elif _x <= 0.5:
+        _w = (2 - 4 * _x, 1 / (4 * _x))
+    else:
+        _w = (0.0, 1 - _x)
+    if abs(_lo22 - _w[0]) > 1e-6 or abs(_hi22 - _w[1]) > 1e-6:
+        _bad22 += 1
+    # 値域が連続（上に凸の2次関数の像なので区間）であることも見る
+    if not _in22(_x, (_lo22 + _hi22) / 2):
+        _bad22 += 1
+ok(
+    "阪大理22-3 通過部分は x<1/4:1-x≦y≦2-4x、1/4..1/3:1-x≦y≦1/(4x)、1/3..1/2:2-4x≦y≦1/(4x)、1/2..1:0≦y≦1-x",
+    _bad22 == 0,
+    f"0≦x≦1 を {_N22} 等分し、各 x で t を {_T22} 等分して測った y の値域が、"
+    f"求めた上下端と食い違った点は {_bad22} 件",
+)
+
+_fh22 = lambda x: math.log(x + 1) + 1
+_lo, _hi = 0.0, 3.0
+for _ in range(200):
+    _m = (_lo + _hi) / 2
+    if _fh22(_m) - _m > 0:
+        _lo = _m
+    else:
+        _hi = _m
+_al22 = (_lo + _hi) / 2
+_roots22 = 0
+_prev = _fh22(1e-9) - 1e-9
+for _i in range(1, 100001):
+    _x = 10 * _i / 100000
+    _cur = _fh22(_x) - _x
+    if _prev * _cur < 0:
+        _roots22 += 1
+    _prev = _cur
+_xs22 = [1.0]
+for _ in range(25):
+    _xs22.append(_fh22(_xs22[-1]))
+_rat22 = [abs(_xs22[i + 1] - _al22) / abs(_xs22[i] - _al22) for i in range(4)]
+ok(
+    "阪大理22-4 f(x)=x の解は x>0 にただ1つ（α≈2.1462）、xₙ≧1、|x_{n+1}-α|≦|xₙ-α|/2、xₙ→α",
+    _roots22 == 1
+    and all(x >= 1 - 1e-12 for x in _xs22)
+    and all(r < 0.5 for r in _rat22)
+    and abs(_xs22[-1] - _al22) < 1e-9,
+    f"0<x<10 の解は {_roots22} 個で α={_al22:.7f}、比は "
+    + ",".join(f"{r:.3f}" for r in _rat22)
+    + f"（どれも 1/2 未満）、x₂₆={_xs22[-1]:.7f}",
+)
+
+_M22 = 200001
+_pts22 = []
+for _i in range(_M22):
+    _t = math.pi * _i / (_M22 - 1)
+    _pts22.append((math.exp(_t) * math.cos(_t) + math.exp(math.pi), math.exp(_t) * math.sin(_t)))
+_sh = 0.0
+for _i in range(len(_pts22)):
+    _x1, _y1 = _pts22[_i]
+    _x2, _y2 = _pts22[(_i + 1) % len(_pts22)]
+    _sh += _x1 * _y2 - _x2 * _y1
+_area22 = abs(_sh) / 2
+_exact22 = (math.exp(2 * math.pi) - 1) / 4
+ok(
+    "阪大理22-5 xy'-yx'=e^(2t)+e^(π+t)(sint+cost)、面積は (e^(2π)-1)/4",
+    abs(_area22 - _exact22) < 1e-6,
+    f"シューレース（{_M22} 点）で {_area22:.8f}、(e^(2π)-1)/4={_exact22:.8f}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
