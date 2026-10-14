@@ -11549,6 +11549,167 @@ ok(
     f"差は {[str(_pq25[2*k-1][0]-_pq25[2*k-1][1]) for k in range(1, 5)]}、奇数番目はすべて 0",
 )
 
+
+# ---- 阪大理系2024 ----
+
+
+def _f1h(x, n):
+    return 1 - 0.5 * math.exp(n * x) + math.cos(x / 3)
+
+
+_a24h = []
+for _n in (1, 2, 5, 20, 100):
+    _lo, _hi = 0.0, 10.0
+    for _ in range(200):
+        _mid = (_lo + _hi) / 2
+        if _f1h(_mid, _n) > 0:
+            _lo = _mid
+        else:
+            _hi = _mid
+    _a24h.append((_lo + _hi) / 2 * _n)
+_dmax24 = max(
+    (_f1h(5 * i / 100000 + 1e-7, 1) - _f1h(5 * i / 100000 - 1e-7, 1)) / 2e-7 for i in range(100001)
+)
+ok(
+    "阪大理24-1 fₙ は減少して解はただ1つ、aₙ→0、naₙ→log4",
+    _dmax24 < -0.1
+    and abs(_a24h[-1] - math.log(4)) < 1e-5
+    and all(_a24h[i] < _a24h[i + 1] for i in range(len(_a24h) - 1)),
+    f"n=1 での f' の最大は {_dmax24:.7f}（負）、naₙ は n=1,2,5,20,100 で "
+    f"{[round(v, 6) for v in _a24h]}（log4={math.log(4):.7f}）",
+)
+
+random.seed(24)
+_mx24h = 0.0
+for _ in range(100000):
+    _rp = random.random() ** 0.5
+    _tp = random.uniform(0, 2 * math.pi)
+    _p = _rp * cmath.exp(1j * _tp)
+    _rq = 3 * random.random() ** 0.5
+    _tq = random.uniform(0, 2 * math.pi)
+    _q = _rq * cmath.exp(1j * _tq)
+    _u, _v = _p + 3, _q + 1
+    _al = (_u - _v - 2) / (1 - 1j)
+    _be = _u - 1 - _al
+    _fz = lambda z: z * z + _al * z + _be
+    _mx24h = max(_mx24h, abs(_fz(1 + 1j) - (2 + 2j)))
+_al0, _be0 = complex(-2, 1), complex(3, -1)
+_fz0 = lambda z: z * z + _al0 * z + _be0
+ok(
+    "阪大理24-2 f(1+i) は中心 2+2i・半径 2√2 の円板、f(1+i)=0 なら α=-2+i・β=3-i",
+    _mx24h < 2 * math.sqrt(2) + 1e-9
+    and _mx24h > 2 * math.sqrt(2) - 0.01
+    and abs(abs(_fz0(1) - 3) - 1) < 1e-12
+    and abs(abs(_fz0(1j) - 1) - 3) < 1e-12
+    and abs(_fz0(1 + 1j)) < 1e-12,
+    f"10 万組での中心からの距離の最大は {_mx24h:.7f}（2√2={2*math.sqrt(2):.7f}）、"
+    f"α=-2+i・β=3-i で f(1)={_fz0(1)}・f(i)={_fz0(1j)}・f(1+i)={_fz0(1+1j)}",
+)
+
+
+def _solve3(M, d):
+    A2 = [row[:] + [d[i]] for i, row in enumerate(M)]
+    for i in range(3):
+        piv = max(range(i, 3), key=lambda r: abs(A2[r][i]))
+        A2[i], A2[piv] = A2[piv], A2[i]
+        for r in range(3):
+            if r == i:
+                continue
+            f = A2[r][i] / A2[i][i]
+            for c in range(i, 4):
+                A2[r][c] -= f * A2[i][c]
+    return [A2[i][3] / A2[i][i] for i in range(3)]
+
+
+random.seed(243)
+_bad24 = 0
+_cnt24 = 0
+for _ in range(20000):
+    _A = [random.uniform(-3, 3) for _ in range(3)]
+    _u = [random.uniform(-3, 3) for _ in range(3)]
+    _B = [random.uniform(-3, 3) for _ in range(3)]
+    _v = [random.uniform(-3, 3) for _ in range(3)]
+    _n3 = [
+        _u[1] * _v[2] - _u[2] * _v[1],
+        _u[2] * _v[0] - _u[0] * _v[2],
+        _u[0] * _v[1] - _u[1] * _v[0],
+    ]
+    if sum(x * x for x in _n3) < 1e-6:
+        continue
+    _M = [[_u[i], _v[i], _n3[i]] for i in range(3)]
+    _det = (
+        _M[0][0] * (_M[1][1] * _M[2][2] - _M[1][2] * _M[2][1])
+        - _M[0][1] * (_M[1][0] * _M[2][2] - _M[1][2] * _M[2][0])
+        + _M[0][2] * (_M[1][0] * _M[2][1] - _M[1][1] * _M[2][0])
+    )
+    if abs(_det) < 1e-9:
+        continue
+    _a3, _b3, _c3 = _solve3(_M, [_A[i] - _B[i] for i in range(3)])
+    _P = [_A[i] - _a3 * _u[i] for i in range(3)]
+    _Q = [_B[i] + _b3 * _v[i] for i in range(3)]
+    _w = [_P[i] - _Q[i] for i in range(3)]
+    _cnt24 += 1
+    if abs(sum(_w[i] * _u[i] for i in range(3))) > 1e-6:
+        _bad24 += 1
+    if abs(sum(_w[i] * _v[i] for i in range(3))) > 1e-6:
+        _bad24 += 1
+    if sum(x * x for x in _w) < 1e-12:
+        _bad24 += 1
+ok(
+    "阪大理24-3 ねじれた2直線の共通垂線はただ1つ（方向は u×v、s・t は基底分解で一意）",
+    _bad24 == 0 and _cnt24 > 10000,
+    f"{_cnt24} 組で s=-a・t=b としたところ、PQ はつねに u とも v とも直交し、P≠Q だった",
+)
+
+_okv24 = True
+for _a in (1.5, 2.0, 4.566):
+    _V1 = math.pi * quad(lambda y: (_a + math.sqrt(max(0.0, 1 - y * y))) ** 2, -1.0, 1.0, 200001)[0]
+    _V2 = (
+        math.pi
+        * quad(
+            lambda y: (_a + math.sqrt(max(0.0, 1 - y * y))) ** 2
+            - (_a - math.sqrt(max(0.0, 1 - y * y))) ** 2,
+            -1.0,
+            1.0,
+            200001,
+        )[0]
+    )
+    if abs(_V1 - math.pi * (2 * _a * _a + math.pi * _a + 4 / 3)) > 1e-5:
+        _okv24 = False
+    if abs(_V2 - 2 * math.pi**2 * _a) > 1e-5:
+        _okv24 = False
+_aa24 = (9 * math.pi + math.sqrt(81 * math.pi**2 - 96)) / 12
+_other24 = (9 * math.pi - math.sqrt(81 * math.pi**2 - 96)) / 12
+ok(
+    "阪大理24-4 V₁=π(2a²+πa+4/3)、V₂=2π²a、V₁=2V₂ は a=(9π+√(81π²-96))/12",
+    _okv24
+    and abs(math.pi * (2 * _aa24**2 + math.pi * _aa24 + 4 / 3) - 2 * (2 * math.pi**2 * _aa24)) < 1e-9
+    and _other24 < 1,
+    f"a=1.5,2,4.566 で V₁・V₂ が式と一致、a={_aa24:.7f} で V₁-2V₂={math.pi*(2*_aa24**2+math.pi*_aa24+4/3)-2*(2*math.pi**2*_aa24):.1e}、"
+    f"もう一方の解 {_other24:.7f} は a>1 に反する",
+)
+
+
+def _phi24(n):
+    return sum(1 for k in range(1, n + 1) if math.gcd(k, n) == 1)
+
+
+_ok5h = True
+for _p, _q, _r in ((2, 3, 5), (3, 5, 7), (2, 5, 11)):
+    for _a, _b, _c in itertools.product((1, 2), repeat=3):
+        _N = _p**_a * _q**_b * _r**_c
+        if _N > 200000:
+            continue
+        if _phi24(_N) != _p ** (_a - 1) * _q ** (_b - 1) * _r ** (_c - 1) * (_p - 1) * (_q - 1) * (_r - 1):
+            _ok5h = False
+_ans5h = [n for n in range(5, 101) if n % _phi24(n) == 0]
+ok(
+    "阪大理24-5 f(p^a q^b r^c) の式、f(n)|n となる 5≦n≦100 は 13 個",
+    _ok5h
+    and _ans5h == [6, 8, 12, 16, 18, 24, 32, 36, 48, 54, 64, 72, 96],
+    f"3 組の素数で式が一致、f(n)|n となる n は {_ans5h}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

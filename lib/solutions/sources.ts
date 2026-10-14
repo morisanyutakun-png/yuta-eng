@@ -624,6 +624,11 @@ export const sources: Record<string, Record<number, Source>> = {
         "令和7年度（2025年度）にあたる /pastexam-answer/r7 は 2026-10-14 時点で 404 だった。" +
         "大学の解答例は読んでいないし、言い換えてもいない。当サイトの解答は独自に解いたもの。問題文・図は1つも載せない。",
     },
+    2024: {
+      kind: "none",
+      checked: "2026-10-14",
+      note: "2025年度ぶんと同じ理由。公開されているのは直近の年度だけで、令和6年度（2024年度）のページは見当たらない。",
+    },
   },
   "handai-bunkei": { 2026: {
       kind: "official",
