@@ -12395,6 +12395,168 @@ ok(
     f"格子走査での最大は {_bestv20[0]:.9f}（a={_bestv20[1]:.5f}、b={_bestv20[2]:.5f}）で π/12={math.pi/12:.9f}",
 )
 
+# ── 阪大理系2019 ──
+random.seed(19)
+_g19 = lambda t: math.exp(-t * t / 2)
+_f19 = lambda x, b: quad(_g19, x, b, 20001)[0] - x / (x * x + 1) * math.exp(-x * x / 2)
+_gap19 = max(
+    abs((_f19(_x + 1e-5, 5) - _f19(_x - 1e-5, 5)) / 2e-5
+        + 2 * math.exp(-_x * _x / 2) / (_x * _x + 1) ** 2)
+    for _x in [0.2 * _i - 2 for _i in range(1, 25)]
+)
+_bad19 = 0
+for _ in range(2000):
+    _a = random.uniform(0.01, 3)
+    _b = _a + random.uniform(0, 3)
+    _I = quad(_g19, _a, _b, 4001)[0]
+    _L = (_a / (_a * _a + 1) * math.exp(-_a * _a / 2)
+          - _b / (_b * _b + 1) * math.exp(-_b * _b / 2))
+    _R = math.exp(-_a * _a / 2) * (_b - _a)
+    if not (_L <= _I + 1e-12 and _I <= _R + 1e-12):
+        _bad19 += 1
+_lim19 = []
+for _n in (1, 2, 5, 20, 100, 400, 2000, 20000):
+    # e^(-n/2) をくくり出さないと桁が落ちる
+    _J = quad(lambda t: math.exp(-_n * (t * t - 1) / 2), 1, 2, 200001)[0]
+    _lim19.append(-0.5 + math.log(_J) / _n)
+ok(
+    "阪大理19-1 f'=-2e^(-x²/2)/(x²+1)²、(2) の不等式、(1/n)log Iₙ→-1/2",
+    _gap19 < 1e-7 and _bad19 == 0 and abs(_lim19[-1] + 0.5) < 1e-3,
+    f"f' の式と数値微分の最大差 {_gap19:.1e}、(2) の違反 {_bad19} 件、"
+    "(1/n)log Iₙ は " + ",".join(f"{v:.7f}" for v in _lim19) + " と -0.5 に近づいた",
+)
+
+def _z19(a, b, N):
+    w = cmath.exp(1j * a * math.pi / (3 + b))
+    z = [0, 1, 1 - w]
+    for n in range(3, N + 1):
+        z.append((1 - w) * z[n - 1] + w * z[n - 2])
+    return z
+
+_Z = _z19(4, 3, 7)
+_sides = [abs(_Z[_i + 1] - _Z[_i]) for _i in range(1, 7)]
+_ctr = sum(_Z[1:7]) / 6
+_rads = [abs(_Z[_i] - _ctr) for _i in range(1, 7)]
+_z63 = _z19(2, 1, 63)[63]
+_hits19 = []
+for _a in range(1, 7):
+    for _b in range(1, 7):
+        if abs(_z19(_a, _b, 63)[63]) < 1e-6:
+            _hits19.append((_a, _b))
+ok(
+    "阪大理19-2 a=4,b=3 で 1 辺 1 の正六角形、a=2,b=1 で z₆₃=-i、z₆₃=0 の確率 7/36",
+    all(abs(s - 1) < 1e-9 for s in _sides) and abs(_Z[7] - _Z[1]) < 1e-9
+    and all(abs(r - 1) < 1e-9 for r in _rads)
+    and abs(_z63 + 1j) < 1e-9
+    and sorted(_hits19) == [(1, 4), (1, 6), (2, 3), (3, 4), (3, 6), (5, 4), (5, 6)],
+    f"辺の長さはすべて {min(_sides):.6f}..{max(_sides):.6f}、z₇=z₁、"
+    f"中心 ({_ctr.real:.5f},{_ctr.imag:.5f}) からの距離はすべて 1.000000、"
+    f"z₆₃={_z63.real:+.7f}{_z63.imag:+.7f}i、z₆₃=0 の (a,b) は {sorted(_hits19)} の {len(_hits19)} 通り",
+)
+
+_inA19 = lambda x, y: y <= x * x / 4 + 1e-12 and y >= (x * x - 6) / 2 - 1e-12
+_badA = 0
+for _ in range(200000):
+    _s = random.uniform(-3, 3)
+    _t = random.uniform(-3, 3)
+    if _s * _s + _t * _t <= 6 and not _inA19(_s + _t, _s * _t):
+        _badA += 1
+_badB = 0
+for _ in range(200000):
+    _x = random.uniform(-4, 4)
+    _y = random.uniform(-5, 5)
+    if _inA19(_x, _y):
+        _d = _x * _x - 4 * _y
+        if _d < 0:
+            _badB += 1
+            continue
+        _s = (_x + math.sqrt(_d)) / 2
+        _t = (_x - math.sqrt(_d)) / 2
+        if abs(_s + _t - _x) > 1e-9 or abs(_s * _t - _y) > 1e-9 or _s * _s + _t * _t > 6 + 1e-9:
+            _badB += 1
+
+def _R2_19(x):
+    L = (x * x - 6) / 2
+    U = x * x / 4
+    if L <= 0 <= U:
+        return max(U, -L) ** 2
+    return U * U - L * L
+
+_V19 = 2 * math.pi * quad(_R2_19, 0, 2 * math.sqrt(3), 200001)[0]
+_Vex19 = 2 * math.pi * (56 + 24 * math.sqrt(6) - 24 * math.sqrt(3)) / 5
+ok(
+    "阪大理19-3 A は (x²-6)/2≦y≦x²/4、(2,√2) は A の外、回転体の体積は 2π(56+24√6-24√3)/5",
+    _badA == 0 and _badB == 0 and 4 - 4 * math.sqrt(2) < 0 and abs(_V19 - _Vex19) < 1e-5,
+    f"(s,t)→(s+t,st) の違反 {_badA} 件・逆向きの違反 {_badB} 件、"
+    f"(2,√2) では x²-4y={4-4*math.sqrt(2):.7f}<0、"
+    f"体積は断面積分 {_V19:.7f}／式 {_Vex19:.7f}",
+)
+
+def _par19(p, q):
+    return (p, q - p) if p < q else (p - q, q)
+
+_p19, _q19 = 19, 44
+_bits19 = []
+while (_p19, _q19) != (1, 1):
+    _bits19.append(0 if _p19 < _q19 else 1)
+    _p19, _q19 = _par19(_p19, _q19)
+_bits19.reverse()
+_row19 = len(_bits19) + 1
+_pos19 = sum(_b * 2 ** (len(_bits19) - 1 - _i) for _i, _b in enumerate(_bits19)) + 1
+_tree19 = [[(1, 1)]]
+for _ in range(11):
+    _nxt = []
+    for (_a, _b) in _tree19[-1]:
+        _nxt += [(_a, _a + _b), (_a + _b, _b)]
+    _tree19.append(_nxt)
+_found19 = [(_r + 1, _i + 1) for _r, _rw in enumerate(_tree19)
+            for _i, _ab in enumerate(_rw) if _ab == (19, 44)]
+_allred = all(math.gcd(_a, _b) == 1 for _rw in _tree19 for (_a, _b) in _rw)
+_vals19 = [Fraction(_a, _b) for _rw in _tree19 for (_a, _b) in _rw]
+ok(
+    "阪大理19-4 樹形図の分数はすべて既約で相異なる、19/44 は 11 段目の左から 29 番目",
+    _allred and len(_vals19) == len(set(_vals19))
+    and (_row19, _pos19) == (11, 29) and _found19 == [(11, 29)],
+    f"12 段ぶんの {len(_vals19)} 個はすべて既約で重複なし、"
+    f"親をたどると {_row19} 段目の {_pos19} 番目（道は {''.join(map(str,_bits19))}）、"
+    f"実際に探しても {_found19}",
+)
+
+_A19 = (1.0, 1.0, 1.0)
+_B19 = (2.0, 3.0, 3.0)
+_n19 = (2.0, 4.0, 4.0)
+_M19 = tuple(_A19[_i] + (5 / 12) * _n19[_i] for _i in range(3))
+_rho19 = math.sqrt(7 - 2.5 ** 2)
+_nh19 = tuple(_v / 6 for _v in _n19)
+_u19 = tuple((1.0, 0.0, 0.0)[_i] - sum((1.0, 0.0, 0.0)[_j] * _nh19[_j] for _j in range(3)) * _nh19[_i]
+             for _i in range(3))
+_nu19 = math.sqrt(sum(_v * _v for _v in _u19))
+_u19 = tuple(_v / _nu19 for _v in _u19)
+_v19 = (_nh19[1] * _u19[2] - _nh19[2] * _u19[1],
+        _nh19[2] * _u19[0] - _nh19[0] * _u19[2],
+        _nh19[0] * _u19[1] - _nh19[1] * _u19[0])
+_bad19b = 0
+for _k in range(2000):
+    _th = 2 * math.pi * _k / 2000
+    _P = tuple(_M19[_i] + _rho19 * (math.cos(_th) * _u19[_i] + math.sin(_th) * _v19[_i])
+               for _i in range(3))
+    if abs(sum((_P[_i] - _A19[_i]) ** 2 for _i in range(3)) - 7) > 1e-9:
+        _bad19b += 1
+    if abs(sum((_P[_i] - _B19[_i]) ** 2 for _i in range(3)) - 1) > 1e-9:
+        _bad19b += 1
+    for (_c, _r2) in (((11 / 6, 8 / 3, 8 / 3), 0.75),
+                      ((7 / 3, 11 / 3, 11 / 3), 3.0),
+                      ((4 / 3, 5 / 3, 5 / 3), 3.0)):
+        if abs(sum((_P[_i] - _c[_i]) ** 2 for _i in range(3)) - _r2) > 1e-9:
+            _bad19b += 1
+ok(
+    "阪大理19-5 C は平面 2x+4y+4z=25 上の中心 (11/6,8/3,8/3)・半径 √3/2 の円、半径最小は √3/2、半径 √3 は 2 つ",
+    _bad19b == 0 and abs(_rho19 - math.sqrt(3) / 2) < 1e-12
+    and abs(_M19[0] - 11 / 6) < 1e-12 and abs(_M19[1] - 8 / 3) < 1e-12,
+    f"C の中心 ({_M19[0]:.6f},{_M19[1]:.6f},{_M19[2]:.6f})・半径 {_rho19:.7f}（√3/2={math.sqrt(3)/2:.7f}）、"
+    f"C 上 2000 点が S₁・S₂ と 3 つの球面に乗らなかった件数は {_bad19b}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
