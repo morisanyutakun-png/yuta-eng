@@ -11710,6 +11710,173 @@ ok(
     f"3 組の素数で式が一致、f(n)|n となる n は {_ans5h}",
 )
 
+
+# ---- 阪大理系2023 ----
+
+
+def _mid23(x, n):
+    S = sum((-x) ** (k - 1) for k in range(2, n + 1))
+    return (-1) ** n * (1 / (x + 1) - 1 - S)
+
+
+_bad23 = 0
+for _n in (2, 3, 5, 8):
+    for _i in range(0, 1001):
+        _x = _i / 1000
+        _m = _mid23(_x, _n)
+        if not (0.5 * _x**_n - 1e-12 <= _m <= _x**_n - 0.5 * _x ** (_n + 1) + 1e-12):
+            _bad23 += 1
+        if abs(_m - _x**_n / (1 + _x)) > 1e-9:
+            _bad23 += 1
+_lim23 = [
+    (-1) ** n * n * (sum((-1) ** (k - 1) / k for k in range(1, n + 1)) - math.log(2))
+    for n in (10, 100, 1000, 10000)
+]
+ok(
+    "阪大理23-1 真ん中は xⁿ/(1+x)、はさみうちで (-1)ⁿn(aₙ-log2)→-1/2",
+    _bad23 == 0 and abs(_lim23[-1] + 0.5) < 1e-4 and all(v < 0 for v in _lim23),
+    f"n=2,3,5,8 の 1001 点で不等式も一致も成り立った（違反 {_bad23} 件）、"
+    f"(-1)ⁿn(aₙ-log2) は n=10,10²,10³,10⁴ で {[round(v, 6) for v in _lim23]}",
+)
+
+_u23 = (1.0, 0.0)
+_v23 = (0.0, 1.0)
+_a23v = ((2 * _u23[0] - _v23[0]) / 3, (2 * _u23[1] - _v23[1]) / 3)
+_b23v = ((2 * _v23[0] - _u23[0]) / 3, (2 * _v23[1] - _u23[1]) / 3)
+_dot2 = lambda p, q: p[0] * q[0] + p[1] * q[1]
+_U = (2 * _a23v[0] + _b23v[0], 2 * _a23v[1] + _b23v[1])
+_V = (_a23v[0] + 2 * _b23v[0], _a23v[1] + 2 * _b23v[1])
+_C23 = (_a23v[0] + _b23v[0], _a23v[1] + _b23v[1])
+_mx23 = None
+_mn23 = None
+_M23 = 1200
+for _i in range(_M23 + 1):
+    for _j in range(_M23 + 1):
+        _x = _C23[0] - 1 / 3 + (2 / 3) * _i / _M23
+        _y = _C23[1] - 1 / 3 + (2 / 3) * _j / _M23
+        if (_x - _C23[0]) ** 2 + (_y - _C23[1]) ** 2 > 1 / 9 + 1e-15:
+            continue
+        if _x > 1 / 3 + 1e-15:
+            continue
+        _r = math.hypot(_x, _y)
+        if _mx23 is None or _r > _mx23:
+            _mx23 = _r
+        if _mn23 is None or _r < _mn23:
+            _mn23 = _r
+ok(
+    "阪大理23-2 (2a+b)·(a+2b)=0、|OP| の最大 √5/3・最小 (√2-1)/3",
+    abs(math.hypot(*_U) - 1) < 1e-12
+    and abs(math.hypot(*_V) - 1) < 1e-12
+    and abs(_dot2(_U, _C23) - 1 / 3) < 1e-12
+    and abs(_dot2(_U, _V)) < 1e-12
+    and abs(_mx23 - math.sqrt(5) / 3) < 1e-9
+    and abs(_mn23 - (math.sqrt(2) - 1) / 3) < 2e-3,
+    f"|2a+b|=|a+2b|=1 と (2a+b)·(a+b)=1/3 が成り立ち、(2a+b)·(a+2b)={_dot2(_U, _V):.1e}、"
+    f"格子走査での |OP| は最大 {_mx23:.7f}（√5/3={math.sqrt(5)/3:.7f}）・最小 {_mn23:.7f}"
+    f"（(√2-1)/3={(math.sqrt(2)-1)/3:.7f}）",
+)
+
+
+def _N23(a, b, M=200000):
+    h = lambda t: math.cos(t) + (t - a) * math.sin(t) - b
+    cnt = 0
+    prev = h(-math.pi)
+    if abs(prev) < 1e-13:
+        cnt += 1
+        prev = 0.0
+    for i in range(1, M + 1):
+        t = -math.pi + 2 * math.pi * i / M
+        cur = h(t)
+        if abs(cur) < 1e-13:
+            cnt += 1
+            cur = 0.0
+        elif prev != 0.0 and prev * cur < 0:
+            cnt += 1
+        prev = cur
+    return cnt
+
+
+_cases23 = []
+for _a, _b, _want in (
+    (0.5, (math.cos(0.5) + math.pi / 2 - 0.5) / 2, 4),
+    (0.5, math.cos(0.5) - 0.05, 2),
+    (0.5, math.pi / 2 - 0.5 + 0.05, 2),
+    (2.2, (math.pi / 2 - 2.2 + math.cos(2.2)) / 2, 4),
+    (2.2, math.cos(2.2) + 0.05, 2),
+    (2.5707, -0.92, 4),
+    (2.5709, -1.0, 4),
+    (2.8, -1.0, 4),
+    (2.8, -1.05, 2),
+    (3.0, -0.98, 2),
+):
+    _cases23.append((_N23(_a, _b), _want))
+ok(
+    "阪大理23-3 N(P)=4 の範囲（a<π/2 なら cos a<b<π/2-a、a>π/2 なら max(-1,π/2-a)≦b<cos a）",
+    all(g == w for g, w in _cases23),
+    f"10 通りの (a,b) で数えた個数は {[g for g, _ in _cases23]}（期待 {[w for _, w in _cases23]}）",
+)
+
+random.seed(23)
+_bad4_23 = 0
+for _ in range(20000):
+    while True:
+        _a = random.uniform(-3, 3)
+        _b = random.uniform(-3, 3)
+        if _a * _a + _b * _b > 1 and abs(_b) > 1e-6:
+            break
+    _A = (_a, 0.0, _b)
+    _x = random.uniform(-5, 5)
+    _y = random.uniform(-5, 5)
+    _AP = (_x - _a, _y, -_b)
+    _AO = (-_a, 0.0, -_b)
+    _d2 = sum(t * t for t in _AP)
+    _lam = sum(_AO[i] * _AP[i] for i in range(3)) / _d2
+    _AQ = tuple(_lam * _AP[i] for i in range(3))
+    if abs((sum(_AP[i] * _AO[i] for i in range(3))) ** 2 - _d2 * sum(t * t for t in _AQ)) > 1e-6 * max(
+        1.0, _d2
+    ):
+        _bad4_23 += 1
+_onc23 = 0
+for _a, _b in ((0.0, 2.0), (1.0, 1.0), (1.0, 0.5), (-1.5, 1.2)):
+    _A2 = _a * _a + _b * _b - 1
+    for _i in range(4001):
+        _x = -10 + 20 * _i / 4000
+        _disc = -((_b * _b - 1) * _x * _x + 2 * _a * _x - (_a * _a + _b * _b)) / _A2
+        if _disc < 0:
+            continue
+        _yv = math.sqrt(_disc)
+        _AP = (_x - _a, _yv, -_b)
+        _AO = (-_a, 0.0, -_b)
+        _d2 = sum(t * t for t in _AP)
+        _lam = sum(_AO[i] * _AP[i] for i in range(3)) / _d2
+        _Q = (_a + _lam * _AP[0], _lam * _AP[1], _b + _lam * _AP[2])
+        if abs(math.sqrt(sum(t * t for t in _Q)) - 1) > 1e-7:
+            _onc23 += 1
+ok(
+    "阪大理23-4 (AP·AO)²=|AP|²|AQ|²、軌跡は (b²-1)x²+(a²+b²-1)y²+2ax-(a²+b²)=0",
+    _bad4_23 == 0 and _onc23 == 0,
+    f"2 万組で (1) の等式が成り立ち（違反 {_bad4_23} 件）、4 組の (a,b) の曲線上で |OQ|≠1 の点は {_onc23} 件",
+)
+
+_p23 = []
+for _n in range(1, 6):
+    _tot = 0
+    _good = 0
+    for _seq in itertools.product(range(1, 7), repeat=_n):
+        _a1 = _seq[0]
+        _bb = sum(_a1 ** (_n - _k) * _seq[_k - 1] for _k in range(1, _n + 1))
+        _tot += 1
+        if _bb % 7 == 0:
+            _good += 1
+    _p23.append(Fraction(_good, _tot))
+ok(
+    "阪大理23-5 p₁=0・p₂=1/6、pₙ={1-(-1/6)^(n-1)}/7",
+    _p23[0] == 0
+    and _p23[1] == Fraction(1, 6)
+    and all(_p23[n - 1] == Fraction(1, 7) * (1 - Fraction(-1, 6) ** (n - 1)) for n in range(1, 6)),
+    f"全探索の p₁..p₅={[str(v) for v in _p23]}、式とすべて一致",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
