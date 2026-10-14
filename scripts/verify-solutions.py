@@ -12557,6 +12557,77 @@ ok(
     f"C 上 2000 点が S₁・S₂ と 3 つの球面に乗らなかった件数は {_bad19b}",
 )
 
+# ── 阪大文系2025 ──
+_ct25 = 1 / 3
+_A25 = (3 * _ct25, 3 * math.sqrt(1 - _ct25 * _ct25))
+_bad25 = 0
+for _i in range(1, 4000):
+    _t = _i / 500
+    _P = ((_A25[0] + 2 * _t) / 3, _A25[1] / 3)
+    if abs(_P[0]) < 1e-12:
+        continue
+    # R=(r,0) は (R-A)·OP=0 から
+    _r = _A25[0] + _A25[1] * _P[1] / _P[0]
+    if abs(_r - (2 * _t + 9) / (2 * _t + 1)) > 1e-9:
+        _bad25 += 1
+_lo25 = (1 + math.sqrt(73)) / 4
+_hi25 = 3 * (1 + math.sqrt(17)) / 4
+_bad25b = 0
+for _i in range(1, 20000):
+    _t = _i / 2000
+    _r = (2 * _t + 9) / (2 * _t + 1)
+    if (_t / 2 - 1e-12 <= _r <= _t + 1e-12) != (_lo25 - 1e-12 <= _t <= _hi25 + 1e-12):
+        _bad25b += 1
+ok(
+    "阪大文25-1 OA·OB=t、OR=(2t+9)/(2t+1)、R が線分 MB 上は (1+√73)/4≦t≦3(1+√17)/4",
+    _bad25 == 0 and _bad25b == 0 and abs(_A25[0] - 1) < 1e-12,
+    f"OC={_A25[0]:.7f}、垂線から直接求めた R と式の食い違い {_bad25} 件、"
+    f"範囲の判定の食い違い {_bad25b} 件（{_lo25:.7f}≦t≦{_hi25:.7f}）",
+)
+
+_a25 = [None, Fraction(1)]
+for _n in range(1, 400):
+    _a25.append(Fraction(2 * _n - 1, 2 * _n) * _a25[_n])
+_bad25c = 0
+for _k in range(1, 40):
+    for _l in range(1, 40):
+        if (Fraction(_k, _k + _l - 1) * _a25[_k + 1] * _a25[_l]
+                + Fraction(_l, _k + _l - 1) * _a25[_k] * _a25[_l + 1]) != _a25[_k] * _a25[_l]:
+            _bad25c += 1
+_bad25d = 0
+for _m in range(1, 200):
+    if sum(_a25[_k] * _a25[_m - _k + 1] for _k in range(1, _m + 1)) != 1:
+        _bad25d += 1
+ok(
+    "阪大文25-2 (1) の恒等式と Σ_{k=1}^m aₖa_{m-k+1}=1",
+    _bad25c == 0 and _bad25d == 0,
+    f"1≦k,ℓ≦39 の 1521 組で違反 {_bad25c} 件、m=1..199 で Σ≠1 は {_bad25d} 件、"
+    f"a₁..a₅={[str(_a25[_i]) for _i in range(1, 6)]}",
+)
+
+def _S25(p):
+    return quad(lambda x: (p * p - 1) / p * x - (x * x - 1), 0, p, 20001)[0]
+
+def _T25(p):
+    return quad(lambda x: (x - p) ** 2, 0, p, 20001)[0]
+
+_bad25e = 0
+_det25 = []
+for _p in (0.5, 1.0, 1.5, 2.5):
+    _s, _t2 = _S25(_p), _T25(_p)
+    if abs(_s - (_p ** 3 / 6 + _p / 2)) > 1e-7 or abs(_t2 - _p ** 3 / 3) > 1e-7:
+        _bad25e += 1
+    _det25.append(f"p={_p}: S={_s:.7f}／{_p**3/6+_p/2:.7f}、T={_t2:.7f}／{_p**3/3:.7f}")
+_f25 = lambda p: -abs(p) ** 3 / 6 + abs(p) / 2
+_best25 = max((_f25(_i / 20000 - 5), _i / 20000 - 5) for _i in range(1, 200000)
+              if abs(_i / 20000 - 5) > 1e-9)
+ok(
+    "阪大文25-3 S=|p|³/6+|p|/2、T=|p|³/3、S-T の最大は 1/3（p=±1）",
+    _bad25e == 0 and abs(_best25[0] - 1 / 3) < 1e-7 and abs(abs(_best25[1]) - 1) < 1e-4,
+    "、".join(_det25)
+    + f"。S-T の最大は {_best25[0]:.7f}（p={_best25[1]:.5f}）で 1/3={1/3:.7f}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)

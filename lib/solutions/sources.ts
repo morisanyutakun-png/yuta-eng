@@ -655,7 +655,8 @@ export const sources: Record<string, Record<number, Source>> = {
       note: "2025年度ぶんと同じ理由。公開されているのは直近の年度だけで、平成31年度（2019年度）のページは見当たらない。",
     },
   },
-  "handai-bunkei": { 2026: {
+  "handai-bunkei": {
+    2026: {
       kind: "official",
       url: "https://www.osaka-u.ac.jp/ja/admissions/faculty/general/pastexam-answer/r8",
       publisher: "大阪大学",
@@ -663,7 +664,16 @@ export const sources: Record<string, Record<number, Source>> = {
       target: "page",
       checked: "2026-10-05",
       note: "「大阪大学入試問題等の利用について」が同じページから配られている。",
-    } },
+    },
+    2025: {
+      kind: "none",
+      checked: "2026-10-14",
+      note:
+        "阪大理系の2025年度ぶんと同じ理由。「過去の入試問題・解答例等」からたどれるのは" +
+        "令和8年度（2026年度）のページだけで、令和7年度（2025年度）にあたる /pastexam-answer/r7 は 404 だった。" +
+        "大学の解答例は読んでいないし、言い換えてもいない。当サイトの解答は独自に解いたもの。問題文・図は1つも載せない。",
+    },
+  },
 };
 
 /** 原典調査の進み具合。画面には出さず、報告のためだけに持つ。 */
