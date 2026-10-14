@@ -12696,6 +12696,96 @@ ok(
     f"n=1..11 で成り立つ n は {len(_ng24)} 件",
 )
 
+# ── 阪大文系2023 ──
+random.seed(23)
+
+def _solv23(a, b):
+    # 2s²+as+b-1=0 が -1≦s≦1 に解をもつか
+    D = a * a - 8 * (b - 1)
+    if D < -1e-9:
+        return False
+    r = math.sqrt(max(D, 0.0))
+    return any(-1 - 1e-12 <= s <= 1 + 1e-12 for s in ((-a + r) / 4, (-a - r) / 4))
+
+def _reg23(a, b):
+    lo = -abs(a) - 1
+    hi = a * a / 8 + 1 if abs(a) <= 4 else abs(a) - 1
+    return lo - 1e-12 <= b <= hi + 1e-12
+
+_bad23 = 0
+for _i in range(-700, 701):
+    for _j in range(-900, 900):
+        if _solv23(_i / 100, _j / 100) != _reg23(_i / 100, _j / 100):
+            _bad23 += 1
+ok(
+    "阪大文23-1 存在範囲は -|a|-1≦b≦a²/8+1（|a|≦4）・-|a|-1≦b≦|a|-1（|a|>4）",
+    _bad23 == 0,
+    f"a を -7..7、b を -9..9 まで 0.01 刻みでとった約 250 万点で、"
+    f"2s²+as+b-1=0 が -1≦s≦1 に解をもつかの直接判定と不等式判定の食い違いは {_bad23} 件",
+)
+
+_y23 = lambda a, t: -(t ** 3) + 3 * a * t * t
+_bad23b = 0
+for _ in range(5000):
+    _a = random.uniform(0.01, 5)
+    _x = random.uniform(0.01, 50)
+    _direct = (math.log(_x, 0.5)) ** 3 + _a * math.log(_x, math.sqrt(2)) * math.log(_x ** 3, 4)
+    if abs(_direct - _y23(_a, math.log(_x, 2))) > 1e-6:
+        _bad23b += 1
+
+def _M23(a):
+    if a <= 1:
+        return 1 + 3 * a
+    if a <= 1.5:
+        return 4 * a ** 3
+    return 27 * (a - 1)
+
+_bad23c = 0
+_det23 = []
+for _a in (0.2, 0.5, 1.0, 1.2, 1.5, 2.0, 5.0):
+    _best = max(_y23(_a, -1 + 4 * _i / 400000) for _i in range(400001))
+    if abs(_best - _M23(_a)) > 1e-5:
+        _bad23c += 1
+    _det23.append(f"a={_a}: {_best:.6f}／{_M23(_a):.6f}")
+ok(
+    "阪大文23-2 y=-t³+3at²、M=1+3a（a≦1）・4a³（1≦a≦3/2）・27(a-1)（a≧3/2）",
+    _bad23b == 0 and _bad23c == 0,
+    f"元の式との違反 {_bad23b} 件。最大値（走査／式）は " + "、".join(_det23),
+)
+
+_bad23d = 0
+for _ in range(20000):
+    _th = random.uniform(0, 2 * math.pi)
+    _ph = random.uniform(0, 2 * math.pi)
+    _u = (math.cos(_th), math.sin(_th))
+    _v = (math.cos(_ph), math.sin(_ph))
+    _ab = ((_u[0] + _v[0]) / 3, (_u[1] + _v[1]) / 3)
+    if abs(_u[0] * _ab[0] + _u[1] * _ab[1] - 1 / 3) < 1e-6:
+        if abs(_u[0] * _v[0] + _u[1] * _v[1]) > 1e-5:
+            _bad23d += 1
+_mx23 = None
+_mn23 = None
+_N23 = 1500
+for _i in range(-_N23, _N23 + 1):
+    for _j in range(-_N23, _N23 + 1):
+        _p = _i / _N23 * 0.8
+        _q = _j / _N23 * 0.8
+        if (_p - 1 / 3) ** 2 + (_q - 1 / 3) ** 2 <= 1 / 9 + 1e-12 and _p <= 1 / 3 + 1e-12:
+            _r = math.hypot(_p, _q)
+            if _mx23 is None or _r > _mx23[0]:
+                _mx23 = (_r, _p, _q)
+            if _mn23 is None or _r < _mn23[0]:
+                _mn23 = (_r, _p, _q)
+ok(
+    "阪大文23-3 u·v=0、|OP| の最大は √5/3・最小は (√2-1)/3",
+    _bad23d == 0 and abs(_mx23[0] - math.sqrt(5) / 3) < 1e-6
+    and abs(_mn23[0] - (math.sqrt(2) - 1) / 3) < 1e-3,
+    f"条件下で u·v≠0 になった件数 {_bad23d}、"
+    f"格子走査での |OP| は最大 {_mx23[0]:.7f}（√5/3={math.sqrt(5)/3:.7f}、"
+    f"(p,q)=({_mx23[1]:.3f},{_mx23[2]:.3f})）・最小 {_mn23[0]:.7f}"
+    f"（(√2-1)/3={(math.sqrt(2)-1)/3:.7f}、格子の粗さぶんのずれ）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
