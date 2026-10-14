@@ -12628,6 +12628,74 @@ ok(
     + f"。S-T の最大は {_best25[0]:.7f}（p={_best25[1]:.5f}）で 1/3={1/3:.7f}",
 )
 
+# ── 阪大文系2024 ──
+random.seed(24)
+_C24 = lambda x: abs(x * x - 1)
+_bad24 = 0
+for _i in range(1, 999):
+    _a = _i / 1000
+    for _x in (-1, 1 - 2 * _a, 1 + 2 * _a):
+        if abs(_C24(_x) - 2 * _a * (_x + 1)) > 1e-9:
+            _bad24 += 1
+
+def _ar24(a):
+    _s1 = quad(lambda x: (1 - x * x) - 2 * a * (x + 1), -1, 1 - 2 * a, 20001)[0]
+    _s2 = quad(lambda x: 2 * a * (x + 1) - abs(x * x - 1), 1 - 2 * a, 1 + 2 * a, 20001)[0]
+    return _s1, _s2
+
+_bad24b = 0
+_det24 = []
+for _a in (0.1, 0.3, 0.6):
+    _s1, _s2 = _ar24(_a)
+    if abs(_s1 - 4 * (1 - _a) ** 3 / 3) > 1e-6 or abs(_s2 - 8 * _a * _a) > 1e-6:
+        _bad24b += 1
+    _det24.append(f"a={_a}: S₁={_s1:.7f}／{4*(1-_a)**3/3:.7f}、S₂={_s2:.7f}／{8*_a*_a:.7f}")
+_ae24 = 2 ** (1 / 3) - 1
+_e1, _e2 = _ar24(_ae24)
+ok(
+    "阪大文24-1 共有点は (-1,0)・(1-2a,4a(1-a))・(1+2a,4a(1+a))、S₁=4(1-a)³/3・S₂=8a²、等しいのは a=∛2-1",
+    _bad24 == 0 and _bad24b == 0 and abs(_e1 - _e2) < 1e-9,
+    f"共有点の式の違反 {_bad24} 件。" + "、".join(_det24)
+    + f"。a=∛2-1={_ae24:.7f} で S₁={_e1:.7f}・S₂={_e2:.7f}（差 {_e1-_e2:.1e}）",
+)
+
+_bad24c = 0
+for _ in range(20000):
+    _A = [random.uniform(-3, 3) for _ in range(3)]
+    _d = [random.uniform(-3, 3) for _ in range(3)]
+    if _d[0] ** 2 + _d[1] ** 2 < 1e-6:
+        continue
+    _t0 = -(_A[0] * _d[0] + _A[1] * _d[1]) / (_d[0] ** 2 + _d[1] ** 2)
+    _s0 = _A[2] + _t0 * _d[2]
+    _P = [_A[_i] + _t0 * _d[_i] for _i in range(3)]
+    _v = [_P[0], _P[1], _P[2] - _s0]
+    if abs(_v[2]) > 1e-9:
+        _bad24c += 1
+    if abs(sum(_v[_i] * _d[_i] for _i in range(3))) > 1e-9:
+        _bad24c += 1
+    if _v[0] ** 2 + _v[1] ** 2 < 1e-12:
+        _bad24c += 1
+ok(
+    "阪大文24-2 z 軸とねじれた ℓ の共通垂線はただ 1 つ（t・s が一意に決まる）",
+    _bad24c == 0,
+    f"無作為な 2 万本で QP が z 軸・ℓ の両方と直交しなかった件数は {_bad24c}",
+)
+
+_pr24 = []
+_x24 = 2
+while len(_pr24) < 3000:
+    if all(_x24 % _p for _p in _pr24 if _p * _p <= _x24):
+        _pr24.append(_x24)
+    _x24 += 1
+_bad24d = [_n for _n in range(12, 3001) if not _pr24[_n - 1] > 3 * _n]
+_ng24 = [_n for _n in range(1, 12) if _pr24[_n - 1] > 3 * _n]
+ok(
+    "阪大文24-3 p₁₅=47、n≧12 で pₙ>3n",
+    _pr24[14] == 47 and _bad24d == [] and _ng24 == [],
+    f"p₁..p₁₅={_pr24[:15]}、n=12..3000 で pₙ>3n が破れた n は {len(_bad24d)} 件、"
+    f"n=1..11 で成り立つ n は {len(_ng24)} 件",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
