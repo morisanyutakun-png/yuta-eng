@@ -12231,6 +12231,170 @@ ok(
     + f"、無作為な t を 2000 個試して条件をみたしたのは {_hit21} 件",
 )
 
+# ── 阪大理系2020 ──
+random.seed(20)
+_f20 = lambda x: (x + 1) ** (1 / (x + 1))
+_df20 = lambda x: _f20(x) * (1 - math.log(x + 1)) / (x + 1) ** 2
+_num20 = lambda x: (_f20(x + 1e-6) - _f20(x - 1e-6)) / 2e-6
+_best20 = max((_f20(_i / 20000), _i / 20000) for _i in range(200001))
+_tail20 = [_f20(_x) for _x in (10, 1e3, 1e6, 1e9)]
+_dtail20 = [_num20(_x) for _x in (10, 1e3, 1e5)]
+_gap20 = max(abs(_num20(0.1 * _i + 0.05) - _df20(0.1 * _i + 0.05)) for _i in range(200))
+ok(
+    "阪大理20-1 最大は e^(1/e)（x=e-1）、x→∞ で f→1・f'→0",
+    abs(_best20[0] - math.e ** (1 / math.e)) < 1e-9
+    and abs(_best20[1] - (math.e - 1)) < 1e-3
+    and abs(_tail20[-1] - 1) < 1e-7 and abs(_dtail20[-1]) < 1e-8 and _gap20 < 1e-8,
+    f"20 万等分で最大 {_best20[0]:.9f}（x={_best20[1]:.6f}）、e^(1/e)={math.e**(1/math.e):.9f}・e-1={math.e-1:.6f}、"
+    f"f は " + ",".join(f"{v:.7f}" for v in _tail20) + " と 1 に近づき、"
+    f"f' は " + ",".join(f"{v:.1e}" for v in _dtail20) + f" と 0 に近づいた。f' の式と数値微分の最大差 {_gap20:.1e}",
+)
+
+_bad20 = 0
+_det20 = []
+for _n in range(1, 7):
+    _tot = 0
+    _allnz = 0
+    _real = 0
+    for _seq in itertools.product([1, -1, 0, 0, 0, 0], repeat=_n):
+        _tot += 1
+        _S = 0
+        _nz = True
+        for _x in _seq:
+            _S += _x
+            if _S % 3 == 0:
+                _nz = False
+        if _nz:
+            _allnz += 1
+        if sum(_seq) % 3 == 0:
+            _real += 1
+    _pa = Fraction(_allnz, _tot)
+    _pr = Fraction(_real, _tot)
+    if _pa != Fraction(1, 3) * Fraction(5, 6) ** (_n - 1):
+        _bad20 += 1
+    if _pr != Fraction(1, 3) + Fraction(2, 3) * Fraction(1, 2) ** _n:
+        _bad20 += 1
+    if _n <= 3:
+        _det20.append(f"n={_n}: 非実数ずっと {_pa}・実数 {_pr}")
+ok(
+    "阪大理20-2 Z₂ が実数でない確率 1/2、すべて非実数が (1/3)(5/6)^(n-1)、pₙ=1/3+(2/3)(1/2)^n→1/3",
+    _bad20 == 0,
+    f"n=1..6 の全列挙で式と食い違った件数は {_bad20}。" + "、".join(_det20),
+)
+
+_bad20b = 0
+_rmax20 = 0.0
+for _ in range(300000):
+    _n = random.randint(2, 8)
+    _be = random.uniform(1e-6, math.pi / (_n + 1) - 1e-9)
+    _ratio = math.sin(_n * _be) / math.sin(_be)
+    if _ratio >= _n:
+        _bad20b += 1
+    _rmax20 = max(_rmax20, _ratio / _n)
+ok(
+    "阪大理20-3 正弦定理で c/b=sin(nβ)/sinβ、|sin mθ|<m sinθ より c<nb",
+    _bad20b == 0,
+    f"n=2..8・0<β<π/(n+1) の 30 万組で sin(nβ)/sinβ≧n となった例は {_bad20b} 件"
+    f"（比 /n の上限は {_rmax20:.9f}、β→0 で 1 に近づく）",
+)
+
+def _S20(t):
+    if t <= 2:
+        return t * t / 2
+    r = math.sqrt(t * t - 4)
+    return t * t / 2 - (t / 2) * r + 2 * math.log((t + r) / 2)
+
+def _diff20(t):
+    r = math.sqrt(t * t - 4)
+    return 2 * t / (t + r) + 2 * math.log((t + r) / (2 * t))
+
+_mc20 = []
+_bad20c = 0
+for _t in (1.5, 2.0, 3.0, 8.0):
+    _hit = 0
+    _N = 400000
+    for _ in range(_N):
+        _x = random.uniform(0, _t)
+        _y = random.uniform(0, _t)
+        if _x + _y <= _t and _x * _y <= 1:
+            _hit += 1
+    _est = _hit / _N * _t * _t
+    if abs(_est - _S20(_t)) > 0.05 * max(1.0, _S20(_t)):
+        _bad20c += 1
+    _mc20.append(f"t={_t}: 式 {_S20(_t):.3f}／モンテカルロ {_est:.3f}")
+_lim20 = [_diff20(_t) for _t in (10, 100, 1e4, 1e6, 1e9)]
+ok(
+    "阪大理20-4 S(t)=t²/2-(t/2)√(t²-4)+2logβ、S(t)-2logt→1",
+    _bad20c == 0 and abs(_lim20[-1] - 1) < 1e-7,
+    "、".join(_mc20) + "。S(t)-2logt は " + ",".join(f"{v:.9f}" for v in _lim20),
+)
+
+def _V20(a, b):
+    c = 2 - a - b
+    if a <= 0 or b <= 0 or c <= 0:
+        return None
+    if not (a + b > c and b + c > a and c + a > b):
+        return None
+    return 4 * math.pi / 3 * (1 - a) * (1 - b) * (a + b - 1) / a
+
+def _Vnum20(a, b):
+    # 断面の外半径・内半径から直接積分する。垂線の足が BC の外でも正しい。
+    c = 2 - a - b
+    x = (c * c - b * b + a * a) / (2 * a)
+    y = math.sqrt(max(c * c - x * x, 0))
+    edges = [((0.0, 0.0), (a, 0.0)), ((a, 0.0), (x, y)), ((x, y), (0.0, 0.0))]
+    lo, hi = min(0.0, x), max(a, x)
+    n = 40001
+    h = (hi - lo) / (n - 1)
+    s = 0.0
+    for i in range(n):
+        u = lo + i * h
+        ys = []
+        for (p, q) in edges:
+            if (p[0] - u) * (q[0] - u) <= 0 and abs(p[0] - q[0]) > 1e-15:
+                ys.append(p[1] + (q[1] - p[1]) * (u - p[0]) / (q[0] - p[0]))
+        if not ys:
+            continue
+        w = 1 if i in (0, n - 1) else (4 if i % 2 else 2)
+        s += w * (max(ys) ** 2 - min(ys) ** 2)
+    return math.pi * s * h / 3
+
+_bad20d = 0
+_det20b = []
+for (_a, _b) in ((0.5, 0.75), (0.4, 0.9), (0.7, 0.6), (0.3, 0.85), (0.9, 0.55)):
+    _v1, _v2 = _V20(_a, _b), _Vnum20(_a, _b)
+    if abs(_v1 - _v2) > 1e-6:
+        _bad20d += 1
+    _det20b.append(f"(a,b)=({_a},{_b}): 式 {_v1:.7f}／断面積分 {_v2:.7f}")
+_bad20e = 0
+for _i in range(1, 10):
+    _a = _i / 10
+    _bb = None
+    for _j in range(1, 20000):
+        _b = _j / 20000 * 1.5
+        _v = _V20(_a, _b)
+        if _v is not None and (_bb is None or _v > _bb[0]):
+            _bb = (_v, _b)
+    if abs(_bb[1] - (1 - _a / 2)) > 1e-3:
+        _bad20e += 1
+_bestv20 = None
+_N20 = 600
+for _i in range(1, _N20):
+    for _j in range(1, _N20):
+        _a = _i / _N20
+        _b = _j / _N20 * 1.2
+        _v = _V20(_a, _b)
+        if _v is not None and (_bestv20 is None or _v > _bestv20[0]):
+            _bestv20 = (_v, _a, _b)
+ok(
+    "阪大理20-5 V=(π/3)ah²=(4π/3)(1-a)(1-b)(a+b-1)/a、b=1-a/2 で最大、V の最大は π/12（a=1/2・b=3/4）",
+    _bad20d == 0 and _bad20e == 0 and abs(_bestv20[0] - math.pi / 12) < 1e-5
+    and abs(_bestv20[1] - 0.5) < 5e-3 and abs(_bestv20[2] - 0.75) < 5e-3,
+    "、".join(_det20b)
+    + f"。b の最適値が 1-a/2 からずれた a は {_bad20e} 件、"
+    f"格子走査での最大は {_bestv20[0]:.9f}（a={_bestv20[1]:.5f}、b={_bestv20[2]:.5f}）で π/12={math.pi/12:.9f}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
