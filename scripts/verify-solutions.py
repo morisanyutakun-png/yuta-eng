@@ -12012,6 +12012,225 @@ ok(
     f"シューレース（{_M22} 点）で {_area22:.8f}、(e^(2π)-1)/4={_exact22:.8f}",
 )
 
+# ── 阪大理系2021 ──
+random.seed(21)
+_bad21 = 0
+for _ in range(20000):
+    _a = random.uniform(0.01, 3)
+    _b = random.uniform(0.01, 3)
+    if _a * _b >= 1:
+        continue
+    _k = math.sqrt(1 - _a * _b)
+    _s, _t = (1 - _k) / _b, (1 + _k) / _b
+    if _s >= _t or _s <= 0:
+        _bad21 += 1
+    for _u in (_s, _t):
+        if abs(_b - (-_a / _u**2 + 2 / _u)) > 1e-9:
+            _bad21 += 1
+_best21 = None
+_N21 = 400000
+for _i in range(1, _N21):
+    _a = math.sqrt(3) / 2 * _i / _N21
+    _b = 9 / 4 - 3 * _a * _a
+    if _b <= 0 or _a * _b >= 1:
+        continue
+    _k = math.sqrt(1 - _a * _b)
+    _r = (1 + _k) / (1 - _k)
+    if _best21 is None or _r < _best21[0]:
+        _best21 = (_r, _a, _b)
+ok(
+    "阪大理21-1 s=(1-√(1-ab))/b・t=(1+√(1-ab))/b、t/s の最小は 3（a=1/2・b=3/2）",
+    _bad21 == 0 and abs(_best21[0] - 3) < 1e-6
+    and abs(_best21[1] - 0.5) < 1e-5 and abs(_best21[2] - 1.5) < 1e-5,
+    f"2 万組で接線が P を通らない例は {_bad21} 件、"
+    f"40 万等分の走査で t/s の最小は {_best21[0]:.9f}（a={_best21[1]:.7f}、b={_best21[2]:.7f}）、"
+    f"そのとき ab={_best21[1]*_best21[2]:.9f}",
+)
+
+def _det21(p, q, r):
+    return (p[0] * (q[1] * r[2] - q[2] * r[1])
+            - p[1] * (q[0] * r[2] - q[2] * r[0])
+            + p[2] * (q[0] * r[1] - q[1] * r[0]))
+
+_bad21b = 0
+for _ in range(20000):
+    _va = [random.uniform(-2, 2) for _ in range(3)]
+    _vb = [random.uniform(-2, 2) for _ in range(3)]
+    _vc = [random.uniform(-2, 2) for _ in range(3)]
+    _D = _det21(_va, _vb, _vc)
+    if abs(_D) < 1e-3:
+        continue
+    _s = random.uniform(0.01, 0.99)
+    _t = 2 * _s / (_s + 1)
+    _A0 = [x / 2 for x in _va]
+    _B0 = [x / 3 for x in _vb]
+    _P = [(1 - _s) * _va[i] + _s * _vc[i] for i in range(3)]
+    _Q = [(1 - _t) * _vb[i] + _t * _vc[i] for i in range(3)]
+    _u1 = [_B0[i] - _A0[i] for i in range(3)]
+    _u2 = [_P[i] - _A0[i] for i in range(3)]
+    _u3 = [_Q[i] - _A0[i] for i in range(3)]
+    if abs(_det21(_u1, _u2, _u3)) / max(1.0, abs(_D)) > 1e-9:
+        _bad21b += 1
+
+# (2) の長さ・角をみたす座標を作る
+_oa = [1.0, 0.0, 0.0]
+_ob = [-1.0, math.sqrt(3), 0.0]
+_cx = 1.0
+_cy = -(-1.0) * _cx / math.sqrt(3)
+_oc = [_cx, _cy, math.sqrt(4 - _cx * _cx - _cy * _cy)]
+_dot21 = lambda p, q: sum(p[i] * q[i] for i in range(3))
+_gram21 = (abs(_dot21(_oa, _oa) - 1) < 1e-12 and abs(_dot21(_ob, _ob) - 4) < 1e-12
+           and abs(_dot21(_oc, _oc) - 4) < 1e-12 and abs(_dot21(_oa, _ob) + 1) < 1e-12
+           and abs(_dot21(_ob, _oc)) < 1e-12 and abs(_dot21(_oc, _oa) - 1) < 1e-12)
+
+def _poq21(s):
+    t = 2 * s / (s + 1)
+    P = [(1 - s) * _oa[i] + s * _oc[i] for i in range(3)]
+    Q = [(1 - t) * _ob[i] + t * _oc[i] for i in range(3)]
+    return _dot21(P, Q)
+
+_roots21 = []
+_prev = _poq21(1e-6)
+for _i in range(1, 200001):
+    _x = 1e-6 + (0.999999 - 1e-6) * _i / 200000
+    _cur = _poq21(_x)
+    if _prev * _cur < 0:
+        _roots21.append(_x)
+    _prev = _cur
+ok(
+    "阪大理21-2 t=2s/(s+1)、(2) の条件のもとで s=1/5",
+    _bad21b == 0 and _gram21 and len(_roots21) == 1 and abs(_roots21[0] - 0.2) < 1e-4,
+    f"2 万組の無作為な配置で 4 点が同一平面にならなかった例は {_bad21b} 件、"
+    f"長さと角を再現した座標で ∠POQ=90° をみたす s は "
+    + ",".join(f"{r:.6f}" for r in _roots21) + "（1/5=0.2）",
+)
+
+_bad21c = 0
+for _ in range(200000):
+    _t = random.uniform(1, 20)
+    _x = _t + random.uniform(0, 20)
+    _m = math.log(_x) - math.log(_t) - (_x - _t) / _t
+    if not (-(_x - _t) ** 2 / 2 - 1e-12 <= _m <= 1e-12):
+        _bad21c += 1
+_bad21d = 0
+for _ in range(400):
+    _t = random.uniform(1, 10)
+    _n = random.randint(1, 50)
+    _I = quad(math.log, _t, _t + 1 / _n, 2001)[0]
+    _m = _I - math.log(_t) / _n - 1 / (2 * _t * _n * _n)
+    if not (-1 / (6 * _n**3) - 1e-12 <= _m <= 1e-12):
+        _bad21d += 1
+_p21 = 2 * math.log(2) - 1
+_q21 = -math.log(2) / 2
+_dif21 = []
+for _n in (10, 100, 1000, 10000, 100000):
+    _an = sum(math.log(1 + _k / _n) for _k in range(_n))
+    _dif21.append(_an - _p21 * _n)
+ok(
+    "阪大理21-3 (1)(2) の不等式、aₙ-pn→q で p=2log2-1・q=-(log2)/2",
+    _bad21c == 0 and _bad21d == 0 and abs(_dif21[-1] - _q21) < 1e-5,
+    f"(1) の違反 {_bad21c} 件・(2) の違反 {_bad21d} 件、"
+    f"aₙ-pn は " + ",".join(f"{v:.7f}" for v in _dif21) + f" で q={_q21:.7f}",
+)
+
+def _ints21(a, b, c):
+    F = lambda u, k: Fraction(u) ** 3 / 3 + Fraction(k) * Fraction(u) ** 2 / 2
+    return (F(c, b) - F(a, b)) - (F(c, a) - F(b, a))
+
+_bad21e = 0
+_cmod21 = set()
+for _a in range(-40, 41):
+    for _b in range(-40, 41):
+        if _a == _b:
+            continue
+        _v = -(2 * _a + _b) * (_a + 2 * _b)
+        if _v < 0 or _v % 3:
+            continue
+        _sq = _v // 3
+        _r = math.isqrt(_sq)
+        if _r * _r != _sq:
+            continue
+        for _c in {_r, -_r}:
+            if _ints21(_a, _b, _c) != 0:
+                _bad21e += 1
+            _cmod21.add(_c % 3)
+
+_N21b = 3 * 3600**2
+_divs21 = []
+for _i in range(1, math.isqrt(_N21b) + 1):
+    if _N21b % _i == 0:
+        _divs21.append(_i)
+        if _i != _N21b // _i:
+            _divs21.append(_N21b // _i)
+_cnt21 = 0
+for _d in _divs21:
+    _u, _v = -_d, _N21b // _d
+    if (_u + _v) % 3:
+        continue
+    _a = (2 * _u - _v) // 3
+    _b = (2 * _v - _u) // 3
+    if 2 * _a + _b == _u and _a + 2 * _b == _v and _a < _b and _ints21(_a, _b, 3600) == 0:
+        _cnt21 += 1
+ok(
+    "阪大理21-4 (2a+b)(a+2b)=-3c² で c は 3 の倍数、c=3600 のとき a<b の組は 180 個",
+    _bad21e == 0 and _cmod21 == {0} and _cnt21 == 180,
+    f"|a|,|b|≦40 の全数調査で等式が破れた例は {_bad21e} 件、現れた c mod 3 は {sorted(_cmod21)}、"
+    f"N=3c²=2^8·3^5·5^4 の約数から作った組は {_cnt21} 個",
+)
+
+_f21 = lambda x: x - math.tan(x)
+_cnt21b = []
+for _a in (-10, -3, -1, 0, 0.5, 2, 7, 100):
+    _r = 0
+    _lo = -math.pi / 2 + 1e-12
+    _hi = math.pi / 2 - 1e-12
+    _prev = None
+    for _i in range(400000):
+        # 格子点ちょうどに根が来ないよう半目盛りずらして走査する
+        _x = _lo + (_hi - _lo) * (_i + 0.5) / 400000
+        _cur = _f21(_x) - _a
+        if _prev is not None and _prev * _cur < 0:
+            _r += 1
+        _prev = _cur
+    _cnt21b.append(_r)
+
+def _xn21(n):
+    _lo = -math.pi / 2 + 1e-15
+    _hi = 0.0
+    for _ in range(200):
+        _m = (_lo + _hi) / 2
+        if _f21(_m) > n * math.pi:
+            _lo = _m
+        else:
+            _hi = _m
+    return (_lo + _hi) / 2
+
+_g21 = lambda u: math.sin(u) - u * math.cos(u)
+_bad21f = 0
+_det21b = []
+for _n in range(1, 6):
+    _t = _xn21(_n)
+    _u = -_t + 2 * _n * math.pi
+    if (abs(math.cos(_u) - math.cos(_t)) > 1e-9 or abs(_g21(_u) - _g21(_t)) > 1e-9
+            or _u < math.pi / 2):
+        _bad21f += 1
+    _det21b.append(f"x_{_n}={_t:.7f}→u={_u:.4f}")
+_hit21 = 0
+for _ in range(2000):
+    _t = random.uniform(-math.pi / 2 + 1e-6, math.pi / 2 - 1e-6)
+    for _k in range(-20, 21):
+        for _u in (-_t + 2 * _k * math.pi, _t + 2 * _k * math.pi):
+            if _u < math.pi / 2:
+                continue
+            if abs(math.cos(_u) - math.cos(_t)) < 1e-9 and abs(_g21(_u) - _g21(_t)) < 1e-9:
+                _hit21 += 1
+ok(
+    "阪大理21-5 x-tanx=a の |x|<π/2 での解は 1 個、二重接線をもつのは t=xₙ のときだけ",
+    all(c == 1 for c in _cnt21b) and _bad21f == 0 and _hit21 == 0,
+    f"8 通りの a での解の個数は {_cnt21b}、" + "・".join(_det21b)
+    + f"、無作為な t を 2000 個試して条件をみたしたのは {_hit21} 件",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
