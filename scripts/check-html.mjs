@@ -224,6 +224,15 @@ if (existsSync(sitemap)) {
     new URL(m[1]).pathname.replace(/\/$/, "") || "/",
   );
   for (const l of locs) if (!seen.has(l)) ng("sitemap", `${l} のページがない`);
+  // 逆向きも見る。年度を足したのに sitemap に出ていない、を防ぐ。
+  const inMap = new Set(locs);
+  for (const p of seen) {
+    if (!p.startsWith("/kaisetsu/") && !p.startsWith("/univ/")) continue;
+    if (!inMap.has(p)) ng("sitemap", `${p} が sitemap にない`);
+  }
+  console.log(`sitemap ${locs.length} 件`);
+} else {
+  ng("sitemap", "sitemap.xml が作られていない");
 }
 
 console.log(`ビルド結果 ${files.length} ページ / 内部リンク・画像 ${linked.size} 件`);

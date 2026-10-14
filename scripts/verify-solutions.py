@@ -11428,6 +11428,127 @@ ok(
     f"q₁..q₆={[str(v) for v in _q19[:6]]}、q_(n+2) の関係と偶奇の式もすべて一致",
 )
 
+
+# ---- 阪大理系2025 ----
+
+_cs1 = 1 / 3
+_sn1 = math.sqrt(1 - _cs1 * _cs1)
+_ok25h = True
+for _t in (1.0, 2.5, 3.0, 5.0):
+    _A = (3 * _cs1, 3 * _sn1)
+    _B = (_t, 0.0)
+    if abs(_A[0] * _B[0] + _A[1] * _B[1] - _t) > 1e-12:
+        _ok25h = False
+    _P = ((_A[0] + 2 * _B[0]) / 3, (_A[1] + 2 * _B[1]) / 3)
+    _r = (_A[0] * _P[0] + _A[1] * _P[1]) / _P[0]
+    if abs(_r - (2 * _t + 9) / (2 * _t + 1)) > 1e-12:
+        _ok25h = False
+_rng25 = [i / 10000 for i in range(1, 100000) if (i / 10000) / 2 <= (2 * (i / 10000) + 9) / (2 * (i / 10000) + 1) <= i / 10000]
+ok(
+    "阪大理25-1 OA・OB=t、OR=(2t+9)/(2t+1)、R が MB 上なのは (1+√73)/4≦t≦3(1+√17)/4",
+    _ok25h
+    and abs(min(_rng25) - (1 + math.sqrt(73)) / 4) < 2e-4
+    and abs(max(_rng25) - 3 * (1 + math.sqrt(17)) / 4) < 2e-4,
+    f"内積と OR の式は t=1,2.5,3,5 で座標と一致、走査での範囲は {min(_rng25):.4f}〜{max(_rng25):.4f}"
+    f"（式 {(1+math.sqrt(73))/4:.7f}〜{3*(1+math.sqrt(17))/4:.7f}）",
+)
+
+_ok25b = True
+for _p, _m in ((0.5, -1.0), (2.0, 1.0), (-1.0, -3.0)):
+    _d = math.sqrt(_p * _p - _m)
+    _al, _be = -_p - _d, -_p + _d
+    _f = lambda x: x**3 + 3 * _p * x * x + 3 * _m * x
+    if abs((_f(_al) - _f(_be)) - 4 * (_p * _p - _m) ** 1.5) > 1e-9:
+        _ok25b = False
+_inf25 = []
+for _p in (-2.0, -0.5, 0.0, 1.0, 2.5):
+    _m = _p * _p - 1
+    _d = math.sqrt(_p * _p - _m)
+    _al, _be = -_p - _d, -_p + _d
+    _f = lambda x: x**3 + 3 * _p * x * x + 3 * _m * x
+    if abs((_f(_al) - _f(_be)) - 4) > 1e-9:
+        _ok25b = False
+    _X, _Y = -_p, _f(-_p)
+    if abs(_Y - (_X**3 - 3 * _X)) > 1e-9:
+        _ok25b = False
+    _inf25.append((round(_X, 4), round(_Y, 4)))
+ok(
+    "阪大理25-2 f(α)-f(β)=4(p²-m)^(3/2)、条件は m=p²-1、変曲点の軌跡は y=x³-3x",
+    _ok25b,
+    f"3組の (p,m) で極値の差が式と一致、m=p²-1 では差がつねに 4。変曲点は {_inf25} でどれも y=x³-3x 上",
+)
+
+_mx25 = None
+_mn25 = None
+_N25 = 400000
+for _i in range(_N25 + 1):
+    _x = -math.sqrt(2 / 3) + 2 * math.sqrt(2 / 3) * _i / _N25
+    _y = -1 + math.sqrt(max(0.0, 3 * (1 - _x * _x)))
+    if _y < -1e-12:
+        continue
+    _v = (_x + 1) * (_y + 1)
+    if _mx25 is None or _v > _mx25[0]:
+        _mx25 = (_v, _x, _y)
+    if _mn25 is None or _v < _mn25[0]:
+        _mn25 = (_v, _x, _y)
+_ang25 = []
+for _x, _y in ((0.5, 0.5), (-math.sqrt(6) / 3, 0.0)):
+    _AO = (0 - 0, 0 - 1, 0 - 1)
+    _AP = (_x - 0, _y - 1, 0 - 1)
+    _dt = sum(u * v for u, v in zip(_AO, _AP))
+    _ang25.append(_dt / (math.sqrt(sum(u * u for u in _AO)) * math.sqrt(sum(u * u for u in _AP))))
+ok(
+    "阪大理25-3 軌跡は 3x²+(y+1)²=3、(x+1)(y+1) の最大 9/4・最小 1-√6/3",
+    abs(_mx25[0] - 9 / 4) < 1e-9
+    and abs(_mx25[1] - 0.5) < 1e-3
+    and abs(_mn25[0] - (1 - math.sqrt(6) / 3)) < 1e-9
+    and abs(_mn25[1] + math.sqrt(6) / 3) < 1e-6
+    and all(abs(c - math.cos(math.radians(30))) < 1e-9 for c in _ang25),
+    f"最大 {_mx25[0]:.7f}（9/4）は ({_mx25[1]:.4f}, {_mx25[2]:.4f})、最小 {_mn25[0]:.7f}"
+    f"（1-√6/3={1-math.sqrt(6)/3:.7f}）は ({_mn25[1]:.4f}, {_mn25[2]:.4f})、"
+    f"2 点での cos∠OAP は {_ang25[0]:.9f}（cos30°={math.cos(math.radians(30)):.9f}）",
+)
+
+_ok25d = True
+for _t in (1.0, 5.0, 50.0, 500.0):
+    _I1 = quad(lambda x: math.sin(x) / x**2, _t, 2 * _t, 20001)[0]
+    if abs(_I1) >= 1 / _t:
+        _ok25d = False
+_c25 = [quad(lambda x: math.cos(x) / x, t, 2 * t, 20001)[0] for t in (50.0, 500.0)]
+_f25 = lambda x: math.sin(1.5 * x) * math.sin(0.5 * x)
+_L25 = quad(lambda x: _f25(x) / x, 1.0, 10000.0, 400001)[0]
+_R25 = 0.5 * quad(lambda x: math.cos(x) / x, 1.0, 2.0, 20001)[0]
+ok(
+    "阪大理25-4 |∫sinx/x²|<1/t、∫cosx/x→0、∫₁^t f/x→(1/2)∫₁²cosx/x",
+    _ok25d and all(abs(v) < 0.01 for v in _c25) and abs(_L25 - _R25) < 1e-4,
+    f"t=1,5,50,500 で評価が成り立ち、∫cosx/x は t=50,500 で {_c25[0]:.6f},{_c25[1]:.6f}、"
+    f"∫₁^10⁴ f/x={_L25:.7f}（(1/2)∫₁²cosx/x={_R25:.7f}）",
+)
+
+_st25 = {"ABC": Fraction(1)}
+_pq25 = []
+for _n in range(1, 17):
+    _new = {}
+    for _s0, _pr in _st25.items():
+        _a = list(_s0)
+        _a[0], _a[1] = _a[1], _a[0]
+        _k1 = "".join(_a)
+        _b = list(_s0)
+        _b[1], _b[2] = _b[2], _b[1]
+        _k2 = "".join(_b)
+        _new[_k1] = _new.get(_k1, Fraction(0)) + _pr / 2
+        _new[_k2] = _new.get(_k2, Fraction(0)) + _pr / 2
+    _st25 = _new
+    _pq25.append((_st25.get("ABC", Fraction(0)), _st25.get("BCA", Fraction(0))))
+ok(
+    "阪大理25-5 奇数 n で pₙ=qₙ=0、p_2k-q_2k=(1/4)^k、偶数 n で pₙ=(1+2^(1-n))/3",
+    all(_pq25[n - 1][0] == 0 and _pq25[n - 1][1] == 0 for n in range(1, 17, 2))
+    and all(_pq25[2 * k - 1][0] - _pq25[2 * k - 1][1] == Fraction(1, 4) ** k for k in range(1, 9))
+    and all(_pq25[n - 1][0] == Fraction(1, 3) * (1 + Fraction(2) ** (1 - n)) for n in range(2, 17, 2)),
+    f"p₂..p₈={[str(_pq25[n-1][0]) for n in (2, 4, 6, 8)]}、"
+    f"差は {[str(_pq25[2*k-1][0]-_pq25[2*k-1][1]) for k in range(1, 5)]}、奇数番目はすべて 0",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
