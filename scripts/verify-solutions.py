@@ -13002,6 +13002,68 @@ ok(
     f"|a|,|b|≦200 で c=3・a<b をみたす組は {sorted(_sols21)}",
 )
 
+# ── 阪大文系2020 ──
+random.seed(20)
+_f20b = lambda x, s: 2 * x ** 3 - (6 + 3 * s) * x * x + 12 * s * x + s ** 3 + 6 * s + 5
+_bad20b = 0
+for _i in range(-1000, 1001):
+    _s = _i / 1000
+    for _x in (-3, -1, 0.5, 1.7, 2.5, 4):
+        _d = (_f20b(_x + 1e-6, _s) - _f20b(_x - 1e-6, _s)) / 2e-6
+        if abs(_d - 6 * (_x - 2) * (_x - _s)) > 1e-3:
+            _bad20b += 1
+    if abs(_f20b(_s, _s) - (6 * _s * _s + 6 * _s + 5)) > 1e-9:
+        _bad20b += 1
+_M20 = lambda s: 6 * s * s + 6 * s + 5
+_mx20 = max((_M20(-1 + 2 * _i / 400000), -1 + 2 * _i / 400000) for _i in range(400001))
+_mn20 = min((_M20(-1 + 2 * _i / 400000), -1 + 2 * _i / 400000) for _i in range(400001))
+ok(
+    "阪大文20-1 f'=6(x-2)(x-sin a)、M=6sin²a+6sin a+5、最大 17（a=π/2）・最小 7/2（a=7π/6,11π/6）",
+    _bad20b == 0 and abs(_mx20[0] - 17) < 1e-6 and abs(_mx20[1] - 1) < 1e-4
+    and abs(_mn20[0] - 3.5) < 1e-6 and abs(_mn20[1] + 0.5) < 1e-4
+    and abs(math.sin(7 * math.pi / 6) + 0.5) < 1e-12
+    and abs(math.sin(11 * math.pi / 6) + 0.5) < 1e-12,
+    f"s を 0.001 刻みで動かして f' と f(s) の式が破れた件数は {_bad20b}、"
+    f"M の最大 {_mx20[0]:.7f}（s={_mx20[1]:.6f}）・最小 {_mn20[0]:.7f}（s={_mn20[1]:.6f}）、"
+    f"sin(7π/6)=sin(11π/6)={math.sin(7*math.pi/6):.6f}",
+)
+
+_bad20c = 0
+_det20 = []
+for _n in range(1, 7):
+    _tot = 0
+    _hit = 0
+    for _seq in itertools.product([1, -1, 0, 0, 0, 0], repeat=_n):
+        _tot += 1
+        if sum(_seq) % 3 == 0:
+            _hit += 1
+    _pn = Fraction(_hit, _tot)
+    if _pn != Fraction(1, 3) + Fraction(2, 3) * Fraction(1, 2) ** _n:
+        _bad20c += 1
+    _det20.append(f"n={_n}: {_pn}")
+ok(
+    "阪大文20-2 p₂=1/2、p_{n+1}=pₙ/2+1/6、pₙ=1/3+(2/3)(1/2)^n",
+    _bad20c == 0,
+    f"n=1..6 の全列挙で式と食い違った件数は {_bad20c}。pₙ は " + "、".join(_det20),
+)
+
+_bad20d = 0
+_rmax20b = 0.0
+for _ in range(300000):
+    _be = random.uniform(1e-7, math.pi / 4 - 1e-9)
+    _r = math.sin(3 * _be) / math.sin(_be)
+    if _r >= 3:
+        _bad20d += 1
+    if abs(_r - (3 - 4 * math.sin(_be) ** 2)) > 1e-9:
+        _bad20d += 1
+    _rmax20b = max(_rmax20b, _r)
+ok(
+    "阪大文20-3 c/b=sin3β/sinβ=3-4sin²β<3 より c<3b",
+    _bad20d == 0,
+    f"0<β<π/4 の 30 万点で sin3β/sinβ≧3 または 3-4sin²β と食い違った件数は {_bad20d}"
+    f"（比の上限は {_rmax20b:.9f}、β→0 で 3 に近づく）",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
