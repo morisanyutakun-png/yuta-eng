@@ -12889,6 +12889,119 @@ ok(
     f"(1) の公式の違反 {_bad22d} 件、(2) の違反 {_bad22e} 件。" + "、".join(_det22b),
 )
 
+# ── 阪大文系2021 ──
+random.seed(21)
+_bad21b = 0
+for _ in range(20000):
+    _a = random.uniform(-5, 5)
+    _r = math.sqrt(_a * _a + 1)
+    _t1, _t2 = _a - _r, _a + _r
+    for _t in (_t1, _t2):
+        if abs((2 * _t * _a - _t * _t) + 1) > 1e-9:
+            _bad21b += 1
+    if abs(_t1 - _t2) < 1e-9:
+        _bad21b += 1
+    if abs((_t1 * _t1 - _t2 * _t2) / (_t1 - _t2) - 2 * _a) > 1e-9:
+        _bad21b += 1
+    for _t in (_t1, _t2):
+        if abs(_t * _t - (2 * _a * _t + 1)) > 1e-9:
+            _bad21b += 1
+_L21 = lambda a: (2 * a * a + 2) / math.sqrt(4 * a * a + 1)
+_best21 = min((_L21(-6 + 12 * _i / 600000), -6 + 12 * _i / 600000) for _i in range(600001))
+ok(
+    "阪大文21-1 A(a,-1) からの接線は 2 本、PQ は y=2ax+1、L の最小は √3（a=±√2/2）",
+    _bad21b == 0 and abs(_best21[0] - math.sqrt(3)) < 1e-6
+    and abs(abs(_best21[1]) - math.sqrt(2) / 2) < 1e-4,
+    f"2 万通りの a で接線・PQ の違反は {_bad21b} 件、"
+    f"L の最小は {_best21[0]:.7f}（a={_best21[1]:.6f}）で √3={math.sqrt(3):.7f}・"
+    f"√2/2={math.sqrt(2)/2:.6f}",
+)
+
+# (2) は理系 2021 第2問と同じ設定。同じ確認をここでも通す
+def _det21b(p, q, r):
+    return (p[0] * (q[1] * r[2] - q[2] * r[1])
+            - p[1] * (q[0] * r[2] - q[2] * r[0])
+            + p[2] * (q[0] * r[1] - q[1] * r[0]))
+
+_bad21c = 0
+for _ in range(20000):
+    _va = [random.uniform(-2, 2) for _ in range(3)]
+    _vb = [random.uniform(-2, 2) for _ in range(3)]
+    _vc = [random.uniform(-2, 2) for _ in range(3)]
+    _D = _det21b(_va, _vb, _vc)
+    if abs(_D) < 1e-3:
+        continue
+    _s = random.uniform(0.01, 0.99)
+    _t = 2 * _s / (_s + 1)
+    _A0 = [x / 2 for x in _va]
+    _B0 = [x / 3 for x in _vb]
+    _P = [(1 - _s) * _va[i] + _s * _vc[i] for i in range(3)]
+    _Q = [(1 - _t) * _vb[i] + _t * _vc[i] for i in range(3)]
+    _u1 = [_B0[i] - _A0[i] for i in range(3)]
+    _u2 = [_P[i] - _A0[i] for i in range(3)]
+    _u3 = [_Q[i] - _A0[i] for i in range(3)]
+    if abs(_det21b(_u1, _u2, _u3)) / max(1.0, abs(_D)) > 1e-9:
+        _bad21c += 1
+_oa21 = [1.0, 0.0, 0.0]
+_ob21 = [-1.0, math.sqrt(3), 0.0]
+_cx21 = 1.0
+_cy21 = _cx21 / math.sqrt(3)
+_oc21 = [_cx21, _cy21, math.sqrt(4 - _cx21 * _cx21 - _cy21 * _cy21)]
+_dot21b = lambda p, q: sum(p[i] * q[i] for i in range(3))
+
+def _poq21b(s):
+    t = 2 * s / (s + 1)
+    P = [(1 - s) * _oa21[i] + s * _oc21[i] for i in range(3)]
+    Q = [(1 - t) * _ob21[i] + t * _oc21[i] for i in range(3)]
+    return _dot21b(P, Q)
+
+_roots21b = []
+_prev21 = _poq21b(1e-6)
+for _i in range(1, 200001):
+    _x = 1e-6 + (0.999999 - 1e-6) * _i / 200000
+    _cur = _poq21b(_x)
+    if _prev21 * _cur < 0:
+        _roots21b.append(_x)
+    _prev21 = _cur
+ok(
+    "阪大文21-2 t=2s/(s+1)、(2) の条件のもとで s=1/5（理系 2021 第2問と同じ）",
+    _bad21c == 0 and len(_roots21b) == 1 and abs(_roots21b[0] - 0.2) < 1e-4,
+    f"2 万組の無作為な配置で 4 点が同一平面にならなかった例は {_bad21c} 件、"
+    f"∠POQ=90° をみたす s は " + ",".join(f"{r:.6f}" for r in _roots21b) + "（1/5=0.2）",
+)
+
+def _ints21(a, b, c):
+    F = lambda u, k: Fraction(u) ** 3 / 3 + Fraction(k) * Fraction(u) ** 2 / 2
+    return (F(c, b) - F(a, b)) - (F(c, a) - F(b, a))
+
+_bad21d = 0
+_cmod21b = set()
+for _a in range(-40, 41):
+    for _b in range(-40, 41):
+        if _a == _b:
+            continue
+        _v = -(2 * _a + _b) * (_a + 2 * _b)
+        if _v < 0 or _v % 3:
+            continue
+        _sq = _v // 3
+        _r = math.isqrt(_sq)
+        if _r * _r != _sq:
+            continue
+        for _c in {_r, -_r}:
+            if _ints21(_a, _b, _c) != 0:
+                _bad21d += 1
+            if Fraction(_c) ** 2 != Fraction(-(2 * _a + _b) * (_a + 2 * _b), 3):
+                _bad21d += 1
+            _cmod21b.add(_c % 3)
+_sols21 = [(_a, _b) for _a in range(-200, 201) for _b in range(-200, 201)
+           if _a < _b and _ints21(_a, _b, 3) == 0]
+ok(
+    "阪大文21-3 c²=-(2a+b)(a+2b)/3、c=3・a<b の組は (-7,5)・(-5,7) の 2 つ、c は 3 の倍数",
+    _bad21d == 0 and _cmod21b == {0} and sorted(_sols21) == [(-7, 5), (-5, 7)],
+    f"|a|,|b|≦40 の全数調査で式が破れた例は {_bad21d} 件、現れた c mod 3 は {sorted(_cmod21b)}、"
+    f"|a|,|b|≦200 で c=3・a<b をみたす組は {sorted(_sols21)}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
