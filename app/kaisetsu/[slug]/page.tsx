@@ -304,8 +304,8 @@ export default async function UniversitySolutions({ params }: Props) {
                 ? [
                     {
                       href: moshiPath(mo),
-                      h: `${mo.university} ${mo.exam}`,
-                      body: "この分析をもとに、同じ形式で作る大学別の数学模試です。見本問題と採点表を公開しています。",
+                      h: `${mo.short} 数学 模試（${mo.exam}）`,
+                      body: "この分析をもとに、同じ形式で作る大学別模試（冠模試）です。見本問題と採点表を公開しています。",
                     },
                   ]
                 : []),

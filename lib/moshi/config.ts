@@ -13,6 +13,16 @@ export type MoshiUniversity = {
   /** 申込データに保存する識別子。あとから変えない */
   id: string;
   university: string;
+  /**
+   * 受験生が実際に打つ略称（「名工大」「名大」）。
+   *
+   * 正式名称だけで書くと「名工大 模試」で探している人に届かない。
+   * 「名古屋工業大学」を機械的に縮めた「名古屋工業大」は誰も打たないので、
+   * 縮め方を自動化せず、1つずつ決めて JSON に置いてある。
+   */
+  short: string;
+  /** 旧称など、もう1つ通りのよい呼び名（東京科学大学の「東工大」） */
+  alias?: string;
   exam: string;
   /** 既存の大学分析ページの slug。あれば「出題分析を見る」でつなぐ */
   slug?: string;
@@ -122,6 +132,38 @@ export const validIds = (ids: unknown): string[] => {
 export const moshiPath = (u: MoshiUniversity) => `/moshi/${u.id}`;
 
 export const moshiById = (id: string) => moshi.universities.find((u) => u.id === id);
+
+/* ───── 大学の呼び名 ───── */
+
+/**
+ * その大学の呼び名を、通りのよい順に並べたもの。
+ *
+ * 検索する人は「名工大」と打ち、大学の公式文書は「名古屋工業大学」と書く。
+ * どちらで来ても同じページに着くように、見出し・本文・題名のどこかに
+ * 両方を置く。重複は落とす（「一橋大」と「一橋大学」のような近い形は残す）。
+ */
+export const moshiNames = (u: MoshiUniversity): string[] =>
+  [...new Set([u.short, u.university, u.alias].filter(Boolean) as string[])];
+
+/** 「名工大 数学 模試」。見出しと題名の先頭に置く語 */
+export const moshiHeading = (u: MoshiUniversity) => `${u.short} 数学 模試`;
+
+/**
+ * この模試のページで狙う検索語。
+ *
+ * 略称・正式名称・旧称のそれぞれに「模試」「冠模試」「数学 模試」を掛ける。
+ * 事実でない語（合格率・判定の保証など）は入れない。
+ */
+export const moshiKeywords = (u: MoshiUniversity): string[] =>
+  moshiNames(u).flatMap((n) => [
+    `${n} 模試`,
+    `${n} 数学 模試`,
+    `${n} 冠模試`,
+    `${n} 数学 冠模試`,
+    `${n} 大学別模試`,
+    `${n} 記述模試 数学`,
+    `${n} 数学 対策`,
+  ]);
 
 /** その大学の分析ページがサイトにあるかを確かめてから繋ぐ */
 export const analysisHref = (u: MoshiUniversity) =>

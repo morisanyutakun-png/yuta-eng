@@ -8,60 +8,71 @@
     {
       "id": "mie-rikei",
       "university": "三重大学",
+      "short": "三重大",
       "exam": "理系数学 入試プレビュー",
       "slug": "mie"
     },
     {
       "id": "nagoya-rikei",
       "university": "名古屋大学",
+      "short": "名大",
       "exam": "理系数学 入試プレビュー",
       "slug": "nagoya-rikei"
     },
     {
       "id": "nitech",
       "university": "名古屋工業大学",
+      "short": "名工大",
       "exam": "数学 入試プレビュー",
       "slug": "nitech"
     },
     {
       "id": "kagakudai-rikou",
       "university": "東京科学大学",
+      "short": "科学大",
+      "alias": "東工大",
       "exam": "理工系数学 入試プレビュー",
       "slug": "kagakudai"
     },
     {
       "id": "hitotsubashi",
       "university": "一橋大学",
+      "short": "一橋大",
       "exam": "数学 入試プレビュー",
       "slug": "hitotsubashi"
     },
     {
       "id": "tohoku-rikei",
       "university": "東北大学",
+      "short": "東北大",
       "exam": "理系数学 入試プレビュー",
       "slug": "tohoku-rikei"
     },
     {
       "id": "tsukuba-rikei",
       "university": "筑波大学",
+      "short": "筑波大",
       "exam": "理系数学 入試プレビュー",
       "slug": "tsukuba"
     },
     {
       "id": "kobe-rikei",
       "university": "神戸大学",
+      "short": "神戸大",
       "exam": "理系数学 入試プレビュー",
       "slug": "kobe-rikei"
     },
     {
       "id": "chiba-rikei",
       "university": "千葉大学",
+      "short": "千葉大",
       "exam": "理系数学 入試プレビュー",
       "slug": "chiba"
     },
     {
       "id": "okayama-rikei",
       "university": "岡山大学",
+      "short": "岡山大",
       "exam": "理系数学 入試プレビュー",
       "slug": "okayama"
     }
@@ -130,10 +141,22 @@
   ],
   "judgementNote": "合格参考判定（A〜D）は数学のみの評価です。得点・答案の論理の明確さ・分野バランスを総合的に見て、入試に向けた現状を示します。共通テスト・他教科を含む総合判定や、統計的な合格確率を示すものではありません。",
   "judgementLevels": [
-    { "grade": "A", "label": "十分に対応できている" },
-    { "grade": "B", "label": "概ね対応・改善点あり" },
-    { "grade": "C", "label": "重点的な補強が必要" },
-    { "grade": "D", "label": "基礎からの再構築が必要" }
+    {
+      "grade": "A",
+      "label": "十分に対応できている"
+    },
+    {
+      "grade": "B",
+      "label": "概ね対応・改善点あり"
+    },
+    {
+      "grade": "C",
+      "label": "重点的な補強が必要"
+    },
+    {
+      "grade": "D",
+      "label": "基礎からの再構築が必要"
+    }
   ],
   "statsMin": 30,
   "statsNote": "受験者が30名に満たない大学では、平均点・偏差値・順位は出しません。少人数の中での位置を数字にしても、意味のある値にならないためです。"

@@ -16,13 +16,15 @@ import {
   deliverableLine,
   moshi,
   moshiById,
+  moshiHeading,
+  moshiKeywords,
+  moshiNames,
   moshiPath,
   paymentShortLine,
   priceLabel,
   roundLabel,
 } from "@/lib/moshi/config";
 import { sections, sectionStyle } from "@/lib/sections";
-import { shortName } from "@/lib/seo";
 import { getKansei } from "@/lib/series";
 import { published } from "@/lib/solutions";
 import { site } from "@/lib/site";
@@ -49,24 +51,11 @@ export function generateStaticParams() {
 
 export const dynamicParams = false;
 
-/** 「三重大 数学 模試」のように探す人の言葉を、事実の範囲でひととおり並べる */
+/** 「名工大 模試」のように探す人の言葉を、事実の範囲でひととおり並べる */
 function keywordsFor(id: string): string[] {
   const m = moshiById(id);
   if (!m) return [];
-  const u = m.slug ? getUniversity(m.slug) : undefined;
-  const short = u ? shortName(u) : m.university;
-  const bare = m.university.replace(/大学$/, "大");
-  return [
-    `${m.university} 数学 模試`,
-    `${bare} 数学 模試`,
-    `${m.university} 模試`,
-    `${short} 模試`,
-    `${m.university} 冠模試`,
-    `${m.university} 記述模試 数学`,
-    `${m.university} 数学 対策`,
-    "大学別 数学 模試",
-    "オンライン 数学模試 記述",
-  ];
+  return [...moshiKeywords(m), "大学別 数学 模試", "オンライン 数学模試 記述"];
 }
 
 /**
@@ -78,18 +67,19 @@ function keywordsFor(id: string): string[] {
  */
 function faqFor(m: NonNullable<ReturnType<typeof moshiById>>) {
   const u = m.slug ? getUniversity(m.slug) : undefined;
-  const bare = m.university.replace(/大学$/, "大");
+  // 探す人が打つ呼び名（「名工大」）で問いを立てる。正式名称は答えの中で添える
+  const short = m.short;
   const items: { q: string; a: string }[] = [];
 
   items.push({
-    q: `${bare}の数学の模試はありますか？`,
+    q: `${short}（${m.university}）の数学の模試はありますか？`,
     a:
       `当サイトが${m.university}の数学の形式に合わせて作る「${m.exam}」を、${moshi.season}に実施します。` +
       `オンラインで受験でき、記述答案は人の手で採点します。講評と今後の学習の助言までお返しします。`,
   });
 
   items.push({
-    q: `${bare}の冠模試とは何が違いますか？`,
+    q: `${short}の冠模試（大学別模試）はありますか。ほかの模試と何が違いますか？`,
     a:
       `冠模試は志望校1校の入試形式に合わせて作る模試のことで、本模試もその形式です。` +
       `当サイトのものは会場に集まらず、受験期間のうち都合のよい日時にオンラインで受けられます。` +
@@ -103,7 +93,7 @@ function faqFor(m: NonNullable<ReturnType<typeof moshiById>>) {
       u.facts.style ? `解答形式は${u.facts.style}` : null,
     ].filter(Boolean);
     items.push({
-      q: `${bare}の数学はどんな試験ですか？`,
+      q: `${short}の数学はどんな試験ですか？`,
       a: `当サイトが${yearsLabel(u) ?? "過去"}の過去問を分析した範囲では、${parts.join("、")}です。本模試もこの形式に合わせて作問します。`,
     });
   }
@@ -111,7 +101,7 @@ function faqFor(m: NonNullable<ReturnType<typeof moshiById>>) {
   if (u?.fieldChart?.items.length) {
     const top = u.fieldChart.items.slice(0, 3);
     items.push({
-      q: `${bare}の数学で狙われやすい分野はどこですか？`,
+      q: `${short}の数学で狙われやすい分野はどこですか？`,
       a:
         `${yearsLabel(u) ?? "分析対象期間"}の出題を分野別に数えると、` +
         `${top.map((t) => `${t.label}（${t.count}題）`).join("、")}が多く出ています。` +
@@ -148,13 +138,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const m = moshiById(id);
   if (!m) return {};
   const u = m.slug ? getUniversity(m.slug) : undefined;
-  const bare = m.university.replace(/大学$/, "大");
 
-  // 「三重大 数学 模試」を先頭に置く。サイト名を足すと検索結果で切れるので、
+  // 「名工大 数学 模試」を先頭に置く。サイト名を足すと検索結果で切れるので、
   // このページだけはテンプレートを使わず題名を決める。
-  const title = `${bare} 数学 模試｜${m.university} ${m.exam}`;
+  // 略称（名工大）と正式名称（名古屋工業大学）の両方を題名に入れて、
+  // どちらで探しても同じページが出るようにする。
+  // 検索結果で切れない長さに抑える。先頭は必ず「<略称> 数学 模試」
+  const title = `${moshiHeading(m)}｜${m.university}の冠模試・${moshi.title}`;
   const description =
-    `${m.university}の数学に合わせて作る大学別の数学模試です。` +
+    `${m.short}（${m.university}）の数学に合わせて作る大学別模試（冠模試）です。` +
     (u ? `${factsLine(u)}という出題形式を踏まえ、` : "") +
     `オンラインで実施し、記述答案はすべて人力で採点します。${roundLabel}。受験料は${priceLabel}。`;
 
@@ -180,7 +172,8 @@ export default async function MoshiUniversityPage({ params }: Props) {
   if (!m) notFound();
 
   const u = m.slug ? getUniversity(m.slug) : undefined;
-  const bare = m.university.replace(/大学$/, "大");
+  // 見出し・本文は略称（名工大）で書く。正式名称はそのつど添える
+  const short = m.short;
   const others = moshi.universities.filter((x) => x.id !== m.id);
 
   // この大学について、サイトの中で続けて読めるもの
@@ -198,8 +191,9 @@ export default async function MoshiUniversityPage({ params }: Props) {
     "@graph": [
       {
         "@type": "WebPage",
-        name: `${bare} 数学 模試`,
-        description: `${m.university}の数学に合わせて作る大学別の数学模試の案内です。`,
+        name: `${moshiHeading(m)}`,
+        alternateName: moshiNames(m).map((n) => `${n} 冠模試`),
+        description: `${m.short}（${m.university}）の数学に合わせて作る大学別模試（冠模試）の案内です。`,
         url: `${site.url}${moshiPath(m)}`,
         isPartOf: { "@type": "WebSite", name: site.name, url: site.url },
         inLanguage: "ja",
@@ -217,7 +211,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "トップ", item: site.url },
           { "@type": "ListItem", position: 2, name: sections.moshi.eyebrow, item: `${site.url}/moshi` },
-          { "@type": "ListItem", position: 3, name: `${m.university} ${m.exam}`, item: `${site.url}${moshiPath(m)}` },
+          { "@type": "ListItem", position: 3, name: moshiHeading(m), item: `${site.url}${moshiPath(m)}` },
         ],
       },
     ],
@@ -245,7 +239,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
 
         <FactStrip
           items={[
-            { icon: "grid", label: `${bare}の形式` },
+            { icon: "grid", label: `${short}の出題形式` },
             { icon: "pen", label: "記述式・人力採点" },
             { icon: "clock", label: "期間内に受験" },
           ]}
@@ -257,20 +251,31 @@ export default async function MoshiUniversityPage({ params }: Props) {
               <p className="eyebrow">
                 {moshi.season}・{moshi.title}
               </p>
+              {/*
+                見出しは探す人の言葉で書く。「名工大 模試」と打つ人に対して
+                「名古屋工業大学 理系数学 入試プレビュー」とだけ出していると、
+                自分の探しているものだと分からない。略称＋「数学 模試」を
+                h1 の先頭に置き、正式名称と商品名はその下に添える。
+              */}
               <h1 className="serif h-page mt-2 text-ink">
-                {m.university}
+                {short} 数学 模試
                 <br className="sm:hidden" />
-                <span className="sm:ml-3">{m.exam}</span>
+                <span className="sm:ml-3 text-[0.62em] font-normal text-ink-2">
+                  （{m.university}の冠模試）
+                </span>
               </h1>
+              <p className="serif mt-2 text-[1.02rem] font-semibold text-[var(--sec)]">
+                {m.university} {m.exam}
+              </p>
               <p className="prose-ja mt-4 max-w-[38rem] text-[0.97rem] leading-[1.95] text-ink-2">
                 {m.university}の数学の形式に合わせて作る
-                <strong className="font-semibold text-ink">大学別の数学模試</strong>
-                （冠模試の形式）です。記述答案は人の手で採点し、講評と今後の学習の助言までお返しします。
+                <strong className="font-semibold text-ink">{short}の大学別模試（冠模試）</strong>
+                です。記述答案は人の手で採点し、講評と今後の学習の助言までお返しします。
               </p>
 
               <p className="mt-6 flex flex-wrap gap-3">
                 <Link href="#apply" className="btn btn-primary">
-                  {bare}の模試に申し込む
+                  {short}の模試に申し込む
                 </Link>
                 <Link href="#sample" className="btn">
                   見本問題を見る
@@ -293,7 +298,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
         {u && (
           <section aria-labelledby="form" className="mt-12">
             <h2 id="form" className="rule-mark serif h-sect text-ink">
-              {bare}の数学は、こういう試験です
+              {short}（{m.university}）の数学は、こういう試験です
             </h2>
             <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.93rem] leading-[1.9] text-ink-2">
               当サイトが{yearsLabel(u) ?? "過去"}の過去問を分析した結果です。本模試は、この形式に合わせて作問します。
@@ -344,7 +349,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
                 </ul>
                 <p className="mt-3 text-[0.86rem]">
                   <Link href={`/univ/${u.slug}`} className="text-navy underline underline-offset-4">
-                    {bare}数学の出題分析をくわしく読む
+                    {short}数学の出題分析をくわしく読む
                   </Link>
                 </p>
               </div>
@@ -357,7 +362,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
             受験後にお返しするもの
           </h2>
           <p className="prose-ja mt-2.5 max-w-[40rem] text-[0.93rem] leading-[1.9] text-ink-2">
-            答案は人の手で最後まで読みます。{bare}の出題傾向と照らして、
+            答案は人の手で最後まで読みます。{short}の出題傾向と照らして、
             どの分野をどの順で詰めるかまで書いてお返しします。
           </p>
           <MoshiDeliverables />
@@ -398,7 +403,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
 
         <section aria-labelledby="apply-heading" className="mt-14 scroll-mt-20" id="apply">
           <h2 id="apply-heading" className="rule-mark rule-mark-accent serif h-sect text-ink">
-            {bare}の模試に申し込む
+            {short}の模試に申し込む
           </h2>
           <p className="prose-ja mt-2.5 max-w-[38rem] text-[0.93rem] leading-[1.95] text-ink-2">
             {m.university}にはあらかじめ印を付けてあります。ほかの大学も受けたい場合は、続けてお選びください。
@@ -411,17 +416,17 @@ export default async function MoshiUniversityPage({ params }: Props) {
         {u && (
           <section aria-labelledby="more" className="mt-16 border-t border-rule pt-9">
             <h2 id="more" className="serif h-sect text-ink">
-              {bare}の数学を、ほかにも
+              {short}の数学を、ほかにも
             </h2>
             <div className="mt-5 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-x-10">
               <ul className="divide-y divide-rule border-y border-rule">
                 {[
-                  { href: `/univ/${u.slug}`, h: `${bare}数学の出題分析`, body: `${yearsLabel(u) ?? "過去"}の出題を、年度別・分野別の表にまとめています。` },
+                  { href: `/univ/${u.slug}`, h: `${short}数学の出題分析`, body: `${yearsLabel(u) ?? "過去"}の出題を、年度別・分野別の表にまとめています。` },
                   ...(sets.length
                     ? [
                         {
                           href: `/kaisetsu/${u.slug}`,
-                          h: `${bare}数学の過去問の解答・解説`,
+                          h: `${short}数学の過去問の解答・解説`,
                           body: `${sets.map((s) => `${s.year}年度`).join("・")}を、当サイトが独自に解いた解答・詳解つきで掲載しています。`,
                         },
                       ]
@@ -430,7 +435,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
                     ? [
                         {
                           href: `/kansei/${kansei.slug}`,
-                          h: `${bare}数学 分野別完成演習`,
+                          h: `${short}数学 分野別完成演習`,
                           body: "頻出分野を、標準から本番の水準まで段階的に上げる演習書です。",
                         },
                       ]
@@ -439,7 +444,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
                     ? [
                         {
                           href: `/univ/${u.slug}#books`,
-                          h: `${bare}数学の予想問題集（合格答案をつくる）`,
+                          h: `${short}数学の予想問題集（合格答案をつくる）`,
                           body: `本番と同じ試験時間・大問構成で書き下ろした予想問題集を全${u.books.length}巻刊行しています。`,
                         },
                       ]
@@ -477,7 +482,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
 
         <section aria-labelledby="faq-heading" className="mt-14">
           <h2 id="faq-heading" className="rule-mark serif h-sect scroll-mt-20 text-ink">
-            {bare}の数学の模試について、よくある質問
+            {short}の数学の模試・冠模試について、よくある質問
           </h2>
           <div className="mt-5 divide-y divide-rule border-y border-rule">
             {faq.map((f) => (
@@ -498,7 +503,7 @@ export default async function MoshiUniversityPage({ params }: Props) {
             {others.map((o) => (
               <li key={o.id}>
                 <Link href={moshiPath(o)} className="badge transition-colors hover:border-navy/40 hover:text-navy">
-                  {o.university}
+                  {o.short} 模試
                 </Link>
               </li>
             ))}

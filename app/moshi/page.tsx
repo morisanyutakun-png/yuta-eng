@@ -15,6 +15,7 @@ import { getUniversity, siteTotals, universityCount } from "@/lib/data";
 import {
   deliverableLine,
   moshi,
+  moshiKeywords,
   moshiPath,
   groupPaymentLine,
   priceLabel,
@@ -36,10 +37,11 @@ import { site } from "@/lib/site";
 
 const totals = siteTotals();
 
-const title = `${sections.moshi.eyebrow}｜${moshi.title}｜${moshi.season}`;
+const title = `${sections.moshi.eyebrow}（冠模試）｜${moshi.title}｜${moshi.season}`;
 const description =
-  `${moshi.title}は志望校の入試形式に合わせて作る大学別の数学模試です。旧帝大から地方国公立大まで` +
-  `${moshi.universities.length}大学。オンラインで受験でき、記述答案はすべて人力で採点します。` +
+  `${moshi.title}は志望校の入試形式に合わせて作る大学別模試（冠模試）です。` +
+  `${moshi.universities.map((u) => u.short).join("・")}の${moshi.universities.length}大学。` +
+  `オンラインで受験でき、記述答案はすべて人力で採点します。` +
   `見本問題と採点表を公開中。${roundLabel}。参加申込受付中。`;
 
 export const metadata: Metadata = {
@@ -54,11 +56,8 @@ export const metadata: Metadata = {
     "オンライン 数学模試",
     "記述 模試 採点",
     "2027年度 入試 模試",
-    // 「三重大学 数学 模試」でも「三重大 数学 模試」でも辿り着けるようにする
-    ...moshi.universities.flatMap((u) => [
-      `${u.university} 数学 模試`,
-      `${u.university.replace(/大学$/, "大")} 数学 模試`,
-    ]),
+    // 「名古屋工業大学 数学 模試」でも「名工大 模試」でも辿り着けるようにする
+    ...moshi.universities.flatMap(moshiKeywords),
   ],
   alternates: { canonical: "/moshi" },
   openGraph: {
@@ -141,7 +140,8 @@ export default function MoshiPage() {
               <h1 className="serif h-page mt-1.5 text-ink">{sections.moshi.eyebrow}</h1>
               <p className="serif mt-2 text-[1.1rem] font-semibold text-[var(--sec)]">{moshi.title}</p>
               <p className="prose-ja mt-4 text-[1rem] leading-[1.95] text-ink-2 sm:text-[1.05rem]">
-                志望校の形式で解く、大学別のオンライン数学模試。記述答案を人力で採点し、成績・講評をPDFで返却します。
+                志望校の形式で解く、<strong className="font-semibold text-ink">大学別模試（冠模試）</strong>の
+                オンライン数学模試。記述答案を人力で採点し、成績・講評をPDFで返却します。
               </p>
               <p className="mt-3 text-[0.86rem] font-semibold leading-relaxed text-ink">{roundLabel}／{priceLabel}</p>
               <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -174,7 +174,7 @@ export default function MoshiPage() {
         */}
         <section aria-labelledby="unis-top" className="mt-9 scroll-mt-20" id="unis">
           <h2 id="unis-top" className="text-[0.97rem] font-semibold text-ink">
-            開催する{moshi.universities.length}大学
+            開催する{moshi.universities.length}大学の冠模試
           </h2>
           <ul className="mt-3 flex flex-wrap gap-2">
             {moshi.universities.map((u) => (
@@ -183,13 +183,14 @@ export default function MoshiPage() {
                   href={moshiPath(u)}
                   className="inline-flex min-h-11 items-center border border-rule bg-white px-3 text-[0.86rem] text-ink transition-colors hover:border-[var(--sec)] hover:text-[var(--sec)]"
                 >
-                  {u.university}
+                  {u.university}（{u.short}）
                 </Link>
               </li>
             ))}
           </ul>
           <p className="mt-2.5 text-[0.8rem] text-ink-3">
             大学名を選ぶと、その大学の出題形式・頻出分野と、全大学共通の見本をご覧いただけます。
+            札には略称も添えてあります。略称で探している方も同じページに着きます。
           </p>
         </section>
 

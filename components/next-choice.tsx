@@ -39,7 +39,7 @@ export function NextChoice({ u }: { u: University }) {
       ? [
           {
             want: "書いた答案を採点してほしい",
-            to: mo.exam,
+            to: `${mo.short} 数学 模試`,
             body: "記述答案を人の手で採点し、講評と今後の学習の助言までお返しします。",
             href: moshiPath(mo),
             section: "moshi" as const,

@@ -26,7 +26,7 @@ import {
   universityCount,
   yearLabel,
 } from "@/lib/data";
-import { moshi } from "@/lib/moshi/config";
+import { moshi, moshiKeywords } from "@/lib/moshi/config";
 import { sampleFor } from "@/lib/samples";
 import { kanseiFor } from "@/lib/series";
 import { Blocks } from "@/lib/render";
@@ -71,9 +71,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ...(solutionsFor(u.slug).length
       ? [`${u.university} 数学 過去問 解答`, `${short} 数学 解説`, `${bare} 数学 過去問 解説`]
       : []),
-    ...(moshi.universities.some((m) => m.slug === u.slug)
-      ? [`${u.university} 数学 模試`, `${bare} 数学 模試`, `${u.university} 冠模試`]
-      : []),
+    // 模試を開く大学では、略称・正式名称のそれぞれに「模試」「冠模試」を掛ける
+    ...moshi.universities.filter((m) => m.slug === u.slug).flatMap(moshiKeywords),
   ];
 
   return {

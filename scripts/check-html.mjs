@@ -133,7 +133,29 @@ for (const f of files) {
   if (strip(moshiNavLink) !== "大学別数学模試") ng(page, "模試タブが初見で分かる表記になっていない");
   if (page === "/moshi") {
     if (!/<h1\b[^>]*>大学別数学模試<\/h1>/.test(html)) ng(page, "模試の見出しが大学別数学模試になっていない");
-    if (!html.includes(`<title>大学別数学模試｜${moshi.title}｜`)) ng(page, "模試のページタイトルに種類とシリーズ名がない");
+    // 題名は「大学別数学模試」で始まり、シリーズ名を含むこと。
+    // 「（冠模試）」のような言い換えを足すのは構わない。
+    const moshiTitle = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "";
+    if (!moshiTitle.startsWith("大学別数学模試") || !moshiTitle.includes(moshi.title))
+      ng(page, "模試のページタイトルに種類とシリーズ名がない");
+  }
+
+  /*
+    大学別の模試ページ。
+    「名工大 模試」で探す人に届くかどうかは、見出しに略称と「模試」が
+    入っているかで決まる。商品名（入試プレビュー）だけの見出しに戻らないよう、
+    ここで止める。
+  */
+  const moshiUniv = moshi.universities.find((u) => page === `/moshi/${u.id}`);
+  if (moshiUniv) {
+    const h1 = strip(html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? "");
+    if (!h1.includes(moshiUniv.short)) ng(page, `模試の見出しに略称（${moshiUniv.short}）がない`);
+    if (!h1.includes("模試")) ng(page, "模試の見出しに「模試」の語がない");
+    const title = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? "";
+    if (!title.startsWith(`${moshiUniv.short} 数学 模試`))
+      ng(page, "模試のページタイトルが「<略称> 数学 模試」で始まっていない");
+    if (!title.includes(moshiUniv.university)) ng(page, "模試のページタイトルに正式名称がない");
+    if (!body.includes("冠模試")) ng(page, "大学別模試（冠模試）の語が本文にない");
   }
   if (page === "/moshi" || moshi.universities.some((u) => page === `/moshi/${u.id}`)) {
     if (!html.includes('aria-label="このページの案内"')) ng(page, "模試のページ内案内がない");
@@ -152,7 +174,9 @@ for (const f of files) {
       if (!sample.includes(`${image.file}?v=${image.version}`)) ng(page, "返却画像の版識別子がない（古い画像を表示するおそれ）");
     }
     for (const u of moshi.universities) {
-      if (sample.includes(u.university)) ng(page, `共通見本に実在の大学名がある（${u.university}）`);
+      for (const name of [u.university, u.short]) {
+        if (sample.includes(name)) ng(page, `共通見本に実在の大学名がある（${name}）`);
+      }
     }
   }
 
