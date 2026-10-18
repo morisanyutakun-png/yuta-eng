@@ -13064,6 +13064,126 @@ ok(
     f"（比の上限は {_rmax20b:.9f}、β→0 で 3 に近づく）",
 )
 
+# ── 阪大文系2019 ──
+random.seed(19)
+
+def _inD19(x, y):
+    if not (0 <= x <= math.pi and 0 <= y <= math.pi):
+        return False
+    return 2 * math.sin(x + y) - 2 * math.cos(x + y) >= math.sqrt(2) - 1e-12
+
+def _band19(x, y):
+    if not (0 <= x <= math.pi and 0 <= y <= math.pi):
+        return False
+    return 5 * math.pi / 12 - 1e-12 <= x + y <= 13 * math.pi / 12 + 1e-12
+
+_bad19b = 0
+_N19 = 1200
+_mx19 = None
+_mn19 = None
+for _i in range(_N19 + 1):
+    for _j in range(_N19 + 1):
+        _x = math.pi * _i / _N19
+        _y = math.pi * _j / _N19
+        if _inD19(_x, _y) != _band19(_x, _y):
+            # 境界ちょうどの丸め誤差は除く
+            _u = _x + _y
+            if min(abs(_u - 5 * math.pi / 12), abs(_u - 13 * math.pi / 12)) > 1e-6:
+                _bad19b += 1
+        if _band19(_x, _y):
+            _v = 2 * _x + _y
+            if _mx19 is None or _v > _mx19[0]:
+                _mx19 = (_v, _x, _y)
+            if _mn19 is None or _v < _mn19[0]:
+                _mn19 = (_v, _x, _y)
+ok(
+    "阪大文19-1 D は 5π/12≦x+y≦13π/12 の帯（六角形）、2x+y の最大 25π/12・最小 5π/12",
+    _bad19b == 0 and abs(_mx19[0] - 25 * math.pi / 12) < 1e-5
+    and abs(_mn19[0] - 5 * math.pi / 12) < 1e-5,
+    f"{_N19}×{_N19} の格子で元の不等式と帯の不等式の判定が食い違った点は {_bad19b} 件、"
+    f"2x+y の最大 {_mx19[0]:.7f}（({_mx19[1]:.5f},{_mx19[2]:.5f})）・"
+    f"最小 {_mn19[0]:.7f}（({_mn19[1]:.5f},{_mn19[2]:.5f})）で "
+    f"25π/12={25*math.pi/12:.7f}・5π/12={5*math.pi/12:.7f}",
+)
+
+def _SP19(p):
+    return (2 * p + abs(p) - abs(p + 1) + 1,
+            (2 * p + 3 * abs(p) - abs(p + 1) - 1) / 2)
+
+_bad19c = 0
+for _i in range(-400000, 400001):
+    _p = _i / 100000
+    _S, _P = _SP19(_p)
+    _D = _S * _S - 4 * _P
+    if _D < -1e-9:
+        _bad19c += 1
+    if _p >= 0:
+        _Sx, _Px, _Dx = 2 * _p, 2 * _p - 1, 4 * (_p - 1) ** 2
+    elif _p >= -1:
+        _Sx, _Px, _Dx = 0.0, -_p - 1, 4 * (_p + 1)
+    else:
+        _Sx, _Px, _Dx = 2 * _p + 2, 0.0, 4 * (_p + 1) ** 2
+    if abs(_S - _Sx) > 1e-9 or abs(_P - _Px) > 1e-9 or abs(_D - _Dx) > 1e-9:
+        _bad19c += 1
+
+def _okp19(p):
+    _S, _P = _SP19(p)
+    return _S * _S - 4 * _P > 1e-12 and _S * _S - 2 * _P <= 1 + 1e-12
+
+def _ans19(p):
+    return abs(p - 0.5) < 1e-12 or (-1.5 - 1e-12 <= p <= -0.5 + 1e-12 and abs(p + 1) > 1e-12)
+
+_bad19d = 0
+for _i in range(-300000, 300001):
+    _p = _i / 100000
+    if _okp19(_p) != _ans19(_p):
+        # 境界ちょうどは丸め誤差で揺れるので除く
+        if min(abs(_p - 0.5), abs(_p + 1.5), abs(_p + 0.5), abs(_p + 1)) > 1e-5:
+            _bad19d += 1
+ok(
+    "阪大文19-2 D≧0（3 通りの場合分け）、条件をみたすのは -3/2≦p≦-1/2（p≠-1）と p=1/2",
+    _bad19c == 0 and _bad19d == 0 and not _okp19(-1.0),
+    f"0.00001 刻みで D<0 または場合分けの式と食い違った件数は {_bad19c}、"
+    f"範囲の判定の食い違いは {_bad19d} 件、p=-1 は条件をみたさない（重解）",
+)
+
+_A19b = (1.0, 1.0, 1.0)
+_B19b = (2.0, 3.0, 3.0)
+_n19b = (2.0, 4.0, 4.0)
+_M19b = tuple(_A19b[_i] + (5 / 12) * _n19b[_i] for _i in range(3))
+_rho19b = math.sqrt(7 - 2.5 ** 2)
+_nh19b = tuple(_v / 6 for _v in _n19b)
+_u19b = tuple((1.0, 0.0, 0.0)[_i]
+              - sum((1.0, 0.0, 0.0)[_j] * _nh19b[_j] for _j in range(3)) * _nh19b[_i]
+              for _i in range(3))
+_nu19b = math.sqrt(sum(_v * _v for _v in _u19b))
+_u19b = tuple(_v / _nu19b for _v in _u19b)
+_v19b = (_nh19b[1] * _u19b[2] - _nh19b[2] * _u19b[1],
+         _nh19b[2] * _u19b[0] - _nh19b[0] * _u19b[2],
+         _nh19b[0] * _u19b[1] - _nh19b[1] * _u19b[0])
+_bad19e = 0
+for _k in range(2000):
+    _th = 2 * math.pi * _k / 2000
+    _P = tuple(_M19b[_i] + _rho19b * (math.cos(_th) * _u19b[_i] + math.sin(_th) * _v19b[_i])
+               for _i in range(3))
+    if abs(sum((_P[_i] - _A19b[_i]) ** 2 for _i in range(3)) - 7) > 1e-9:
+        _bad19e += 1
+    if abs(sum((_P[_i] - _B19b[_i]) ** 2 for _i in range(3)) - 1) > 1e-9:
+        _bad19e += 1
+    for (_c, _r2) in (((11 / 6, 8 / 3, 8 / 3), 0.75),
+                      ((7 / 3, 11 / 3, 11 / 3), 3.0),
+                      ((4 / 3, 5 / 3, 5 / 3), 3.0)):
+        if abs(sum((_P[_i] - _c[_i]) ** 2 for _i in range(3)) - _r2) > 1e-9:
+            _bad19e += 1
+ok(
+    "阪大文19-3 C は平面 2x+4y+4z=25 上の中心 (11/6,8/3,8/3)・半径 √3/2 の円、"
+    "半径最小は √3/2、半径 √3 は 2 つ（理系 2019 第5問と同じ）",
+    _bad19e == 0 and abs(_rho19b - math.sqrt(3) / 2) < 1e-12
+    and abs(_M19b[0] - 11 / 6) < 1e-12 and abs(_M19b[1] - 8 / 3) < 1e-12,
+    f"C の中心 ({_M19b[0]:.6f},{_M19b[1]:.6f},{_M19b[2]:.6f})・半径 {_rho19b:.7f}"
+    f"（√3/2={math.sqrt(3)/2:.7f}）、C 上 2000 点が S₁・S₂ と 3 つの球面に乗らなかった件数は {_bad19e}",
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
