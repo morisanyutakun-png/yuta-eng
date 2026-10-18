@@ -12786,6 +12786,109 @@ ok(
     f"（(√2-1)/3={(math.sqrt(2)-1)/3:.7f}、格子の粗さぶんのずれ）",
 )
 
+# ── 阪大文系2022 ──
+random.seed(22)
+_bad22b = 0
+for _ in range(20000):
+    _A = (random.uniform(-3, 3), random.uniform(-3, 3))
+    _B = (random.uniform(-3, 3), random.uniform(-3, 3))
+    _C = (random.uniform(-3, 3), random.uniform(-3, 3))
+    _ab = (_B[0] - _A[0], _B[1] - _A[1])
+    _ac = (_C[0] - _A[0], _C[1] - _A[1])
+    if abs(_ab[0] * _ac[1] - _ab[1] * _ac[0]) < 1e-6:
+        continue
+    _M = (_A[0] + 2 / 3 * _ab[0], _A[1] + 2 / 3 * _ab[1])
+    _N = (_A[0] + 1 / 3 * _ac[0], _A[1] + 1 / 3 * _ac[1])
+    _d1 = (_N[0] - _B[0], _N[1] - _B[1])
+    _d2 = (_M[0] - _C[0], _M[1] - _C[1])
+    _den = _d1[0] * (-_d2[1]) - _d1[1] * (-_d2[0])
+    if abs(_den) < 1e-9:
+        continue
+    _s = ((_C[0] - _B[0]) * (-_d2[1]) - (_C[1] - _B[1]) * (-_d2[0])) / _den
+    _P = (_B[0] + _s * _d1[0], _B[1] + _s * _d1[1])
+    _ap = (_P[0] - _A[0], _P[1] - _A[1])
+    _w = (4 / 7 * _ab[0] + 1 / 7 * _ac[0], 4 / 7 * _ab[1] + 1 / 7 * _ac[1])
+    if abs(_ap[0] - _w[0]) > 1e-7 or abs(_ap[1] - _w[1]) > 1e-7:
+        _bad22b += 1
+    _a = math.dist(_B, _C)
+    _b = math.dist(_C, _A)
+    _c = math.dist(_A, _B)
+    if abs(math.hypot(*_ap) - math.sqrt(5 * _b * _b + 20 * _c * _c - 4 * _a * _a) / 7) > 1e-7:
+        _bad22b += 1
+ok(
+    "阪大文22-1 AP=(4AB+AC)/7、AP=√(5b²+20c²-4a²)/7",
+    _bad22b == 0,
+    f"無作為な 2 万個の三角形で、座標から求めた P と式が食い違った件数は {_bad22b}",
+)
+
+_lcm22 = lambda x, y: x * y // math.gcd(x, y)
+_bad22c = 0
+_det22 = []
+for _n in (2, 3, 4, 5):
+    _tot = 0
+    _lp = 0
+    _gp = 0
+    _l5 = 0
+    _g5 = 0
+    for _seq in itertools.product(range(1, 7), repeat=_n):
+        _tot += 1
+        _L = 1
+        _G = 0
+        for _x in _seq:
+            _L = _lcm22(_L, _x)
+            _G = math.gcd(_G, _x)
+        if _L in (2, 3, 5):
+            _lp += 1
+        if _G in (2, 3, 5):
+            _gp += 1
+        if _n == 2:
+            _l5 += _L == 5
+            _g5 += _G == 5
+    if _n == 2 and (Fraction(_l5, _tot) != Fraction(1, 12) or Fraction(_g5, _tot) != Fraction(1, 36)):
+        _bad22c += 1
+    if Fraction(_tot - _lp, _tot) != 1 - Fraction(3 * (2 ** _n - 1), 6 ** _n):
+        _bad22c += 1
+    if Fraction(_tot - _gp, _tot) != 1 - Fraction(3 ** _n + 2 ** _n - 2, 6 ** _n):
+        _bad22c += 1
+    _det22.append(f"n={_n}: L {Fraction(_tot-_lp,_tot)}／G {Fraction(_tot-_gp,_tot)}")
+ok(
+    "阪大文22-2 P(L₂=5)=1/12・P(G₂=5)=1/36、L が素数でない 1-3(2ⁿ-1)/6ⁿ、G が素数でない 1-(3ⁿ+2ⁿ-2)/6ⁿ",
+    _bad22c == 0,
+    f"n=2..5 の全列挙で式と食い違った件数は {_bad22c}。素数でない確率は " + "、".join(_det22),
+)
+
+_bad22d = 0
+for _ in range(300):
+    _al = random.uniform(-3, 3)
+    _be = random.uniform(-3, 3)
+    if abs(_be - _al) < 1e-3:
+        continue
+    if abs(quad(lambda x: (x - _al) * (x - _be), _al, _be, 20001)[0] - (_al - _be) ** 3 / 6) > 1e-6:
+        _bad22d += 1
+
+def _S22(a, b, k):
+    _D = k * k - 4 * (k * a - b)
+    _r = math.sqrt(_D)
+    return quad(lambda x: (k * (x - a) + b) - x * x, (k - _r) / 2, (k + _r) / 2, 2001)[0]
+
+_bad22e = 0
+_det22b = []
+for (_a, _b) in ((0.0, 1.0), (1.0, 2.0), (-2.0, 5.0), (0.5, 0.3)):
+    for _k in (-3.0, 0.0, 2 * _a, 5.0):
+        if abs(_S22(_a, _b, _k) - (_k * _k - 4 * (_k * _a - _b)) ** 1.5 / 6) > 1e-5:
+            _bad22e += 1
+    _f22 = lambda k: (k * k - 4 * (k * _a - _b)) ** 1.5 / 6
+    _best = min((_f22(-20 + 40 * _i / 400000), -20 + 40 * _i / 400000) for _i in range(400001))
+    _ex = 4 / 3 * (_b - _a * _a) ** 1.5
+    if abs(_best[0] - _ex) > 1e-6 or abs(_best[1] - 2 * _a) > 1e-3:
+        _bad22e += 1
+    _det22b.append(f"(a,b)=({_a},{_b}): 最小 {_best[0]:.7f} at k={_best[1]:.4f}（式 {_ex:.7f}、2a={2*_a}）")
+ok(
+    "阪大文22-3 ∫(x-α)(x-β)dx=(α-β)³/6、S(k)=D^(3/2)/6 の最小は 4(b-a²)^(3/2)/3（k=2a）",
+    _bad22d == 0 and _bad22e == 0,
+    f"(1) の公式の違反 {_bad22d} 件、(2) の違反 {_bad22e} 件。" + "、".join(_det22b),
+)
+
 print()
 print("解答の確認: すべて OK" if NG == 0 else f"解答の確認: 要確認 {NG} 件")
 raise SystemExit(1 if NG else 0)
