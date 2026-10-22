@@ -1,0 +1,58 @@
+\input{meta}
+\input{store-preamble}
+\renewcommand{\BookletPart}{問題冊子}
+\hypersetup{
+  pdftitle={\ExamTitle\ \ExamSubtitle{}｜問題冊子},
+  pdfauthor={大学別数学研究室／森 祐太},
+  pdfsubject={\ExamYear 年度入試対策 \ExamScope}
+}
+
+\begin{document}
+
+\storecover{問\ \ 題\ \ 冊\ \ 子}{%
+  \item[1.] 試験開始の合図があるまで，この問題冊子の中を見てはいけない。
+  \item[2.] 解答は，すべて別紙「所定解答用紙」のそれぞれの解答欄（枠内）に記述すること。
+  \item[3.] \textbf{答えのみを書いた答案には満点を与えない。}結論に至る計算・場合分け・論証を明記すること。
+  \item[4.] 問題冊子の余白は，計算・構想の下書きに使用してよい。
+  \item[5.] 解答を終えたら，「採点基準」冊子を用いて自己採点を行い，各解答用紙の採点欄に得点を記入すること。
+}
+
+\begin{monsheet}
+
+\noindent\fbox{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+\vspace{1.0mm}
+\begin{center}\normalsize\bfseries \ExamTitle\ \ \ExamSubtitle\quad 出題構成（100分・100点満点）\end{center}
+\vspace{0.3mm}
+\begin{center}\footnotesize
+\begin{tabular}{@{}cllr@{}}
+\toprule
+\textbf{大問} & \textbf{出題分野} & \textbf{主題} & \textbf{配点} \\
+\midrule
+\probref{1} & 微分法（数学II） & 3次関数の極値・実数解の個数・区間における最小値 & 25点 \\
+\probref{2} & 確率（数学A） & 操作の繰り返しと条件つき確率 & 25点 \\
+\probref{3} & ベクトル（数学C） & 平面ベクトルによる交点の位置と面積比 & 25点 \\
+\probref{4} & 数列（数学B） & 漸化式と和の計算・数学的帰納法 & 25点 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{0.4mm}
+\begin{center}\scriptsize\textcolor{rulegray}{※ 本見本冊子には大問\probref{1}（25点分）のみを収録しています。製品版には全4題（100点満点）を収録しています。}\end{center}
+\vspace{0.6mm}
+\end{minipage}}
+
+\vspace{4mm}
+
+\begin{daimon}{1}
+$a$ を正の定数とし，関数 $f(x)=x^{3}-3ax^{2}+4$ を考える。以下の問いに答えよ。
+\begin{shomon}
+  \item $f(x)$ の極値を求めよ。\hfill（8点）
+  \item 方程式 $f(x)=0$ が異なる3つの実数解をもつような $a$ の値の範囲を求めよ。\hfill（7点）
+  \item $0\leqq x\leqq3$ における $f(x)$ の最小値 $m(a)$ を求めよ。\hfill（10点）
+\end{shomon}
+\end{daimon}
+
+\workspacenote
+
+\end{monsheet}
+
+\end{document}

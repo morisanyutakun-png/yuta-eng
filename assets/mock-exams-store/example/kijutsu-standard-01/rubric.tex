@@ -1,0 +1,100 @@
+\input{meta}
+\input{store-preamble}
+\renewcommand{\BookletPart}{採点基準}
+\hypersetup{
+  pdftitle={\ExamTitle\ \ExamSubtitle{}｜採点基準},
+  pdfauthor={大学別数学研究室／森 祐太},
+  pdfsubject={\ExamYear 年度入試対策 \ExamScope}
+}
+
+\begin{document}
+
+\storecover{採\ \ 点\ \ 基\ \ 準}{%
+  \item[1.] 本冊子は，記述答案を自己採点（または指導者が添削）するための\textbf{加点・減点基準表}である。
+  \item[2.] 答えが合っているかだけでなく，「どの記述に何点与え，どの不備で何点引くか（$\times$行）」を小問ごとに定めている。
+  \item[3.] 採点後は，所定解答用紙の右上にある「小問別の採点欄」に得点を記入し，失点の原因（計算ミス・論証不足・場合分けの漏れ）を特定すること。
+}
+
+\section*{採点基準}
+
+\hdB{自己採点の手順}
+\begin{enumerate}[leftmargin=2.2em,itemsep=3pt,topsep=3pt]
+  \item まず所定解答用紙に書いた自分の答案だけを手元に置く。頭の中で補った事柄は採点の対象にしない。
+  \item 小問ごとに\textbf{正解}と照合する。
+  \item 採点表の上段（\textbf{加点行}）を上から順に見て，\underLine{答案に実際に書かれている段階だけ}加点する。
+  \item 下段（\textbf{$\times$ の減点行}）に該当する不備があれば，その点数を引く（小問の得点は $0$ 点を下限とする）。
+\end{enumerate}
+
+\hdB{全問共通の採点原則}
+\noindent\fbox{\begin{minipage}{0.965\linewidth}\small
+\begin{itemize}[leftmargin=1.4em,itemsep=2.5pt,topsep=3pt]
+  \item 途中の過程を書かず結論のみの答案は，その小問の満点の $30\%$（端数切り捨て）を上限とする。
+  \item 「明らかに」「グラフより明らか」で済ませた箇所は加点しない。増減や符号の根拠を式で示している場合のみ加点する。
+  \item 前小問の答えが誤っていても，その値を正しく用いて後続の議論を進めていれば\textbf{過程の加点は行う}（最終結論の加点は行わない）。
+  \item 場合分けを立てながら\textbf{境界（等号）をどちらに含めるか}が書かれていない場合，$-1$ 点。
+  \item 本冊子と異なる解法であっても，論理が通っていれば満点とする。採点表の段階に読み替えて採点すること。
+\end{itemize}
+\end{minipage}}
+
+\hdB{大問 1 の配点一覧（微分法・25点）}
+\begin{center}\small
+\begin{tabular}{@{}clcr@{}}
+\toprule
+\textbf{小問} & \textbf{評価する主な内容} & \textbf{配点} & \textbf{自己採点記入欄} \\
+\midrule
+(1) & 導関数 $f'(x)$ の因数分解，$0<2a$ の確認と増減表，極大値・極小値 & 8点 & \hspace{12mm} ／ 8点 \\
+(2) & 異なる3つの実数解をもつ条件の同値変形，$a>1$ の導出 & 7点 & \hspace{12mm} ／ 7点 \\
+(3) & 極小点 $x=2a$ と区間 $0\leqq x\leqq3$ の位置による場合分けと最小値 & 10点 & \hspace{12mm} ／ 10点 \\
+\midrule
+\textbf{計} & & \textbf{25点} & \hspace{12mm} ／ \textbf{25点} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\par\vspace{3mm}\noindent\begin{minipage}{\linewidth}
+\Rh{1}{1}{8}
+\Seikai{$x=0$ で極大値 $4$，$\ x=2a$ で極小値 $4-4a^{3}$}
+\begin{saiten}
+\Sp{$f'(x)=3x^{2}-6ax=3x(x-2a)$ と因数分解できている}{2}
+\Sp{$a>0$ より $0<2a$ であることに触れ，増減表（または増減の区間）を正しく書いている}{2}
+\Sp{$x=0$ で極大値 $4$ をとることを求めている}{2}
+\Sp{$x=2a$ で極小値 $4-4a^{3}$ をとることを求めている}{2}
+\Ssep
+\Sm{$0$ と $2a$ の大小（$a>0$）に触れずに増減表を書いている}{$-1$}
+\Sm{極大値・極小値の値のみで，それをとる $x$ の値を明記していない}{$-1$}
+\end{saiten}
+\end{minipage}
+
+\par\vspace{4mm}\noindent\begin{minipage}{\linewidth}
+\Rh{1}{2}{7}
+\Seikai{$a>1$}
+\begin{saiten}
+\Sp{「異なる3つの実数解をもつ $\iff$ 極大値 $>0$ かつ 極小値 $<0$」を，3次関数の増減と $x$ 軸との共有点から説明している}{3}
+\Sp{極小値について $4-4a^{3}<0$ を立式している}{2}
+\Sp{$a^{3}>1$ から $a>1$（$a>0$ を満たす）を正しく導いている}{2}
+\Ssep
+\Sm{なぜ極大値と極小値が異符号であればよいかの説明なしに不等式だけを書いている}{$-2$}
+\Sm{極大値 $f(0)=4>0$ の確認が抜けている}{$-1$}
+\end{saiten}
+\end{minipage}
+
+\par\vspace{4mm}\noindent\begin{minipage}{\linewidth}
+\Rh{1}{3}{10}
+\Seikai{$0<a<\dfrac{3}{2}$ のとき $m(a)=4-4a^{3}$，\quad $a\geqq\dfrac{3}{2}$ のとき $m(a)=31-27a$}
+\begin{saiten}
+\Sp{極小をとる $x=2a$ が区間 $0\leqq x\leqq3$ に入るかどうか（$a=\dfrac{3}{2}$ を境にする）で場合分けしている}{2}
+\Sp{$0<a<\dfrac{3}{2}$ のとき，区間内の増減から $x=2a$ で最小となり $m(a)=4-4a^{3}$ と求めている}{3}
+\Sp{$a\geqq\dfrac{3}{2}$ のとき，区間 $0\leqq x\leqq3$ で単調減少であることから $x=3$ で最小となり $m(a)=31-27a$ と求めている}{3}
+\Sp{場合分けの境界 $a=\dfrac{3}{2}$ を少なくとも一方に含め，2つの場合を合わせて最終答をまとめている}{2}
+\Ssep
+\Sm{$0<a<\dfrac{3}{2}$ の場合で，$x=2a$ が最小となる理由（$0\leqq x\leqq2a$ で減少し $2a\leqq x\leqq3$ で増加）に触れていない}{$-1$}
+\Sm{境界 $a=\dfrac{3}{2}$ の等号がどちらの場合にも入っていない}{$-1$}
+\Sm{$f(3)$ の計算誤りのみで，場合分けと単調減少の論証は正しい場合（該当段階の3点から減点）}{$-2$}
+\end{saiten}
+\end{minipage}
+
+\vspace{6mm}
+\noindent{\footnotesize\textcolor{rulegray}{%
+※ 自己採点で減点（$\times$）に該当した項目は，解答・解説冊子の論述答案と照らし合わせ，「何を書き足せば満点になるか」を答案用紙に赤字で補っておくこと。}}
+
+\end{document}
