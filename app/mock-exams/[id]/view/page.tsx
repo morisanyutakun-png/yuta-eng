@@ -68,16 +68,16 @@ export default async function MockExamViewPage({
   if (!access.ok) {
     const info = REASON_MESSAGES[access.reason] ?? REASON_MESSAGES.invalid;
     return (
-      <div className="page page-wide mobile-compact">
-        <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
+      <div className="page page-wide mobile-compact px-3.5 sm:px-6">
+        <nav aria-label="パンくず" className="breadcrumb flex flex-wrap items-center gap-y-1 pt-3 text-[0.75rem] text-ink-3">
           <Link href="/" className="hover:text-navy">
             トップ
           </Link>
-          <span className="mx-1.5 text-rule">／</span>
+          <span className="mx-1 text-rule">／</span>
           <Link href="/mock-exams" className="hover:text-navy">
             模試PDFストア
           </Link>
-          <span className="mx-1.5 text-rule">／</span>
+          <span className="mx-1 text-rule">／</span>
           <Link href={`/mock-exams/${exam.id}`} className="hover:text-navy">
             {exam.shortTitle}
           </Link>
@@ -85,11 +85,11 @@ export default async function MockExamViewPage({
 
         <div className="sec-rule mt-3" />
 
-        <section className="mt-8 border border-rule bg-white p-6 sm:p-8">
+        <section className="mt-6 sm:mt-8 border border-rule bg-white p-5 sm:p-8">
           <p className="eyebrow">アクセス確認</p>
-          <h1 className="serif h-sect mt-1.5 text-ink">{info.heading}</h1>
-          <p className="prose-ja mt-3 text-[0.93rem] leading-[1.9] text-ink-2">{info.body}</p>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <h1 className="serif text-xl sm:text-2xl font-bold mt-1.5 text-ink leading-snug break-words">{info.heading}</h1>
+          <p className="prose-ja mt-3 text-[0.88rem] sm:text-[0.93rem] leading-[1.85] text-ink-2">{info.body}</p>
+          <div className="mt-6 flex flex-wrap gap-2.5 sm:gap-3">
             {access.reason === "pending" && rawSession ? (
               <a
                 href={`/mock-exams/${exam.id}/view?session_id=${encodeURIComponent(rawSession)}`}
@@ -99,7 +99,7 @@ export default async function MockExamViewPage({
               </a>
             ) : null}
             <Link href={`/mock-exams/${exam.id}`} className="btn">
-              {exam.shortTitle}の詳細ページへ戻る
+              {exam.shortTitle}の詳細へ戻る
             </Link>
             <Link href="/mock-exams" className="btn">
               模試一覧へ
@@ -118,40 +118,40 @@ export default async function MockExamViewPage({
   const fullToken = canSign ? signDownload({ s: access.sessionId, e: exam.id, f: "full" }) : null;
 
   return (
-    <div className="page page-wide mobile-compact">
-      <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
+    <div className="page page-wide mobile-compact px-3.5 sm:px-6">
+      <nav aria-label="パンくず" className="breadcrumb flex flex-wrap items-center gap-y-1 pt-3 text-[0.75rem] text-ink-3">
         <Link href="/" className="hover:text-navy">
           トップ
         </Link>
-        <span className="mx-1.5 text-rule">／</span>
+        <span className="mx-1 text-rule">／</span>
         <Link href="/mock-exams" className="hover:text-navy">
           模試PDFストア
         </Link>
-        <span className="mx-1.5 text-rule">／</span>
+        <span className="mx-1 text-rule">／</span>
         <Link href={`/mock-exams/${exam.id}`} className="hover:text-navy">
           {exam.shortTitle}
         </Link>
-        <span className="mx-1.5 text-rule">／</span>
+        <span className="mx-1 text-rule">／</span>
         <span className="text-ink-2">ダウンロード・解説</span>
       </nav>
 
       <div className="sec-rule mt-3" />
 
-      <header className="border-b border-rule pb-7 pt-6">
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-800 border border-emerald-200">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+      <header className="border-b border-rule pb-6 pt-5 sm:pb-7 sm:pt-6">
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] sm:text-xs font-semibold text-emerald-800 border border-emerald-200">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
           <span>決済完了 ｜ ご購入者様専用ダウンロードページ</span>
         </div>
-        <h1 className="serif h-page mt-2.5 text-ink">{exam.title}</h1>
-        <p className="prose-ja mt-3 text-[0.95rem] leading-[1.9] text-ink-2">
+        <h1 className="serif text-xl sm:text-2xl font-bold mt-2.5 text-ink leading-snug break-words">{exam.title}</h1>
+        <p className="prose-ja mt-2.5 sm:mt-3 text-[0.88rem] sm:text-[0.95rem] leading-[1.85] sm:leading-[1.9] text-ink-2">
           ご購入ありがとうございます。下のボタンから「問題冊子・所定解答用紙・解答解説・採点基準」の
           印刷用A4 PDFをダウンロードできます。このページのURLをブックマークしておくと、
           <strong className="font-semibold text-ink">{fmtDate(access.expiresAt)}</strong>
           まで何度でも再ダウンロードできます。
         </p>
-        <div className="mt-4 rounded-lg bg-slate-50 border border-slate-200 p-3 text-[11.5px] text-slate-600 leading-relaxed">
+        <div className="mt-4 rounded-lg bg-slate-50 border border-slate-200 p-3 text-[11px] sm:text-[11.5px] text-slate-600 leading-relaxed break-words">
           <span className="font-semibold text-slate-800">🔒 セキュリティ・透かし刻印について：</span>
-          本教材PDFには不正転載・再配布防止のため、ご購入者様固有の注文識別番号（<code className="font-mono text-[11px] text-slate-500">{access.sessionId.slice(0, 18)}…</code>）および学習目的限定ライセンスが全ページに自動刻印されています。個人学習の範囲内でご活用ください。
+          本教材PDFには不正転載・再配布防止のため、ご購入者様固有の注文識別番号（<code className="font-mono text-[10.5px] sm:text-[11px] text-slate-500 break-all">{access.sessionId.slice(0, 18)}…</code>）および学習目的限定ライセンスが全ページに自動刻印されています。個人学習の範囲内でご活用ください。
         </div>
       </header>
 
@@ -323,39 +323,39 @@ export default async function MockExamViewPage({
       {/* ──────────────────────────────────────────────────────────
           3. 本番と同じ条件で解き、採点基準で自己採点する手順
       ────────────────────────────────────────────────────────── */}
-      <section aria-labelledby="guide-heading" className="mt-12">
-        <h2 id="guide-heading" className="rule-mark serif h-sect text-ink">
+      <section aria-labelledby="guide-heading" className="mt-10 sm:mt-12">
+        <h2 id="guide-heading" className="rule-mark serif text-lg sm:text-xl font-bold text-ink leading-snug break-words">
           2．本番と同じ条件で解き、採点基準で自己採点する手順
         </h2>
-        <ol className="mt-4 grid gap-4 sm:grid-cols-3">
-          <li className="border border-rule bg-white p-5">
-            <h3 className="text-[0.93rem] font-semibold text-ink">Step 1：所定解答用紙に時間を計って書く</h3>
-            <p className="prose-ja mt-2 text-[0.85rem] leading-[1.85] text-ink-2">
+        <ol className="mt-4 grid gap-3 sm:gap-4 sm:grid-cols-3">
+          <li className="border border-rule bg-white p-4 sm:p-5">
+            <h3 className="text-[0.9rem] sm:text-[0.93rem] font-semibold text-ink break-words">Step 1：所定解答用紙に時間を計って書く</h3>
+            <p className="prose-ja mt-2 text-[0.82rem] sm:text-[0.85rem] leading-[1.8] sm:leading-[1.85] text-ink-2">
               試験時間（{exam.minutes}分）を計り、「問題冊子」と「所定解答用紙」だけを手元に置いて解きます。
               頭の中で解けたことにせず、解答用紙の枠内に最後まで清書してください。
             </p>
           </li>
-          <li className="border border-rule bg-white p-5">
-            <h3 className="text-[0.93rem] font-semibold text-ink">Step 2：加点行・減点行（×）で厳密に採点</h3>
-            <p className="prose-ja mt-2 text-[0.85rem] leading-[1.85] text-ink-2">
+          <li className="border border-rule bg-white p-4 sm:p-5">
+            <h3 className="text-[0.9rem] sm:text-[0.93rem] font-semibold text-ink break-words">Step 2：加点行・減点行（×）で厳密に採点</h3>
+            <p className="prose-ja mt-2 text-[0.82rem] sm:text-[0.85rem] leading-[1.8] sm:leading-[1.85] text-ink-2">
               「採点基準」PDFを開き、自分の答案に実際に書いてある段階だけを加点し、
               続く「×」の行（場合分けの境界抜け・同値性の説明不足など）に当たるものを引いて小問ごとの得点を解答用紙の採点欄に記入します。
             </p>
           </li>
-          <li className="border border-rule bg-white p-5">
-            <h3 className="text-[0.93rem] font-semibold text-ink">Step 3：解答・解説で答案の書き方を照合</h3>
-            <p className="prose-ja mt-2 text-[0.85rem] leading-[1.85] text-ink-2">
+          <li className="border border-rule bg-white p-4 sm:p-5">
+            <h3 className="text-[0.9rem] sm:text-[0.93rem] font-semibold text-ink break-words">Step 3：解答・解説で答案の書き方を照合</h3>
+            <p className="prose-ja mt-2 text-[0.82rem] sm:text-[0.85rem] leading-[1.8] sm:leading-[1.85] text-ink-2">
               「解答・解説」PDFの論述答案と自分の答案を見比べ、減点された箇所をどう書けばよかったかを赤で書き直します。
             </p>
           </li>
         </ol>
       </section>
 
-      <section aria-labelledby="rubric-preview-heading" className="mt-14">
-        <h2 id="rubric-preview-heading" className="rule-mark serif h-sect text-ink">
+      <section aria-labelledby="rubric-preview-heading" className="mt-12 sm:mt-14">
+        <h2 id="rubric-preview-heading" className="rule-mark serif text-lg sm:text-xl font-bold text-ink leading-snug break-words">
           3．採点基準・解説の読み方（大問1抜粋）
         </h2>
-        <p className="prose-ja mt-2.5 text-[0.88rem] leading-[1.85] text-ink-2">
+        <p className="prose-ja mt-2 text-[0.84rem] sm:text-[0.88rem] leading-[1.85] text-ink-2">
           全大問・全小問の完全な解答解説および採点基準は、上の「解答・解説」「採点基準」PDFに収録しています。
         </p>
         <div className="mt-4">

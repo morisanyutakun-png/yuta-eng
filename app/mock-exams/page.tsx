@@ -126,19 +126,19 @@ export default function MockExamsPage() {
       {/* ──────────────────────────────────────────────────────────
           2. メインエリア（箱で囲まず、余白と文字だけで組むエディトリアルデザイン）
       ────────────────────────────────────────────────────────── */}
-      <main className="py-8 sm:py-9">
-        <div className="mx-auto max-w-[1040px] px-4 sm:px-6">
+      <main className="py-6 sm:py-9">
+        <div className="mx-auto max-w-[1040px] px-3.5 sm:px-6">
           {/* タイトル領域：カード枠や青い線は一切使わず、余白と文字だけで組む */}
-          <header className="mb-7">
-            <div className="mb-2 flex items-center gap-2.5">
-              <span className="rounded-[2px] bg-[#1e293b] px-2 py-0.5 text-[11px] font-semibold tracking-wide text-white">
+          <header className="mb-6 sm:mb-7">
+            <div className="mb-2 flex flex-wrap items-center gap-2">
+              <span className="rounded-[2px] bg-[#1e293b] px-2 py-0.5 text-[11px] font-semibold tracking-wide text-white shrink-0">
                 2027年度 新課程対応
               </span>
-              <span className="text-[13px] font-medium text-[#64748b]">
+              <span className="text-xs sm:text-[13px] font-medium text-[#64748b]">
                 印刷用A4 数学記述模試 PDF直販ストア
               </span>
             </div>
-            <h1 className="text-2xl sm:text-[26px] font-bold tracking-tight text-[#0f172a] leading-tight">
+            <h1 className="text-lg sm:text-[24px] md:text-[26px] font-bold tracking-tight text-[#0f172a] leading-snug break-words [text-wrap:pretty]">
               数学記述模試『入試プレビュー』シリーズ
             </h1>
           </header>

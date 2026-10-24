@@ -40,10 +40,10 @@ export function DetailActionButtons({ exam }: DetailActionButtonsProps) {
         <input type="hidden" name="agreed" value="on" />
         <button
           type="submit"
-          className="w-full inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white py-3 px-4 text-xs font-bold text-slate-700 shadow-2xs hover:bg-slate-50 hover:border-slate-300 hover:text-slate-900 transition"
+          className="w-full inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white py-3 px-3 text-xs font-bold text-slate-700 shadow-2xs hover:bg-slate-50 hover:border-slate-300 hover:text-slate-900 transition cursor-pointer"
         >
-          <LockIcon size={14} className="text-slate-500" />
-          <span>この商品だけ今すぐ購入（カード / Apple Pay）</span>
+          <LockIcon size={14} className="text-slate-500 shrink-0" />
+          <span className="text-[11px] min-[360px]:text-xs">この商品だけ今すぐ購入（カード / Apple Pay）</span>
         </button>
       </form>
     </div>

@@ -40,14 +40,14 @@ export function ExamCatalog({ exams }: Props) {
       ────────────────────────────────────────────────────────── */}
       <nav
         aria-label="商品カテゴリー"
-        className="mb-6 flex flex-wrap items-end justify-between gap-y-3 border-b border-[#cbd5e1] overflow-visible"
+        className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-y-3 border-b border-[#cbd5e1]"
       >
         {/* 左側: カテゴリー切り替えタブ */}
-        <div className="flex gap-6 sm:gap-7 overflow-x-auto overflow-y-hidden sm:overflow-visible [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="w-full sm:w-auto min-w-0 flex gap-4 sm:gap-7 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <button
             type="button"
             onClick={() => setSelectedLevel("all")}
-            className={`cursor-pointer pb-3 text-sm whitespace-nowrap bg-transparent transition-colors ${
+            className={`cursor-pointer pb-2.5 sm:pb-3 text-xs sm:text-sm whitespace-nowrap bg-transparent transition-colors shrink-0 ${
               selectedLevel === "all"
                 ? "border-b-2 border-[#0f172a] -mb-px font-bold text-[#0f172a]"
                 : "border-b-2 border-transparent -mb-px font-medium text-[#64748b] hover:text-[#0f172a]"
@@ -58,7 +58,7 @@ export function ExamCatalog({ exams }: Props) {
           <button
             type="button"
             onClick={() => setSelectedLevel("zento-standard")}
-            className={`cursor-pointer pb-3 text-sm whitespace-nowrap bg-transparent transition-colors ${
+            className={`cursor-pointer pb-2.5 sm:pb-3 text-xs sm:text-sm whitespace-nowrap bg-transparent transition-colors shrink-0 ${
               selectedLevel === "zento-standard"
                 ? "border-b-2 border-[#0f172a] -mb-px font-bold text-[#0f172a]"
                 : "border-b-2 border-transparent -mb-px font-medium text-[#64748b] hover:text-[#0f172a]"
@@ -69,7 +69,7 @@ export function ExamCatalog({ exams }: Props) {
           <button
             type="button"
             onClick={() => setSelectedLevel("zento-high")}
-            className={`cursor-pointer pb-3 text-sm whitespace-nowrap bg-transparent transition-colors ${
+            className={`cursor-pointer pb-2.5 sm:pb-3 text-xs sm:text-sm whitespace-nowrap bg-transparent transition-colors shrink-0 ${
               selectedLevel === "zento-high"
                 ? "border-b-2 border-[#0f172a] -mb-px font-bold text-[#0f172a]"
                 : "border-b-2 border-transparent -mb-px font-medium text-[#64748b] hover:text-[#0f172a]"
@@ -80,7 +80,7 @@ export function ExamCatalog({ exams }: Props) {
         </div>
 
         {/* 右側: 件数表示 ＆ 並び替えセレクター */}
-        <div className="flex items-center gap-3 pb-2.5">
+        <div className="flex items-center justify-between sm:justify-end gap-3 pb-2.5 w-full sm:w-auto">
           <span className="text-xs text-[#64748b] whitespace-nowrap font-medium">
             全{filteredExams.length}件表示
           </span>

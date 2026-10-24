@@ -84,19 +84,19 @@ export function PreviewModal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* モーダルヘッダー */}
-        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-3">
-          <div className="flex items-center gap-3">
-            <span className="rounded bg-slate-900 px-2 py-0.5 text-xs font-semibold text-white">
-              {currentIndex + 1} / {previews.length} ページ
+        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-3.5 sm:px-4 py-2.5 sm:py-3 gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <span className="rounded bg-slate-900 px-2 py-0.5 text-[11px] sm:text-xs font-semibold text-white shrink-0">
+              {currentIndex + 1} / {previews.length}
             </span>
-            <span className="text-xs font-bold text-slate-800 truncate">
+            <span className="text-xs font-bold text-slate-800 truncate min-w-0">
               {current.label}
             </span>
           </div>
           <button
             type="button"
             onClick={handleClose}
-            className="flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors"
+            className="flex items-center gap-1 rounded px-2 py-1 text-xs font-medium text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors shrink-0 cursor-pointer"
             aria-label="閉じる"
           >
             <XIcon size={14} />
@@ -258,10 +258,15 @@ export function PreviewModal({
                   addToCart(exam, true);
                   handleClose();
                 }}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-b from-[#dc2626] to-[#b91c1c] hover:from-[#e11d48] hover:to-[#be123c] px-4 py-2 font-bold text-white shadow-[0_2px_10px_rgba(220,38,38,0.32)] border border-[#ef4444]/40 transition active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-b from-[#dc2626] to-[#b91c1c] hover:from-[#e11d48] hover:to-[#be123c] px-3.5 sm:px-4 py-2 font-bold text-white shadow-[0_2px_10px_rgba(220,38,38,0.32)] border border-[#ef4444]/40 transition active:scale-95 cursor-pointer whitespace-nowrap"
               >
                 <ShoppingCartIcon size={15} />
-                <span>
+                <span className="sm:hidden">
+                  {isInCart(exam.id)
+                    ? "カートを見る"
+                    : `カートへ（¥${exam.price.toLocaleString("ja-JP")}）`}
+                </span>
+                <span className="hidden sm:inline">
                   {isInCart(exam.id)
                     ? "カートに追加済（カートを開く）"
                     : `カートに入れる（¥${exam.price.toLocaleString("ja-JP")}）`}

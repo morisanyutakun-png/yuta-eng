@@ -39,16 +39,16 @@ export function StickyCta({
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-300 bg-white/95 px-4 py-2.5 backdrop-blur-md shadow-lg animate-in slide-in-from-bottom-2 duration-200">
-      <div className="mx-auto flex max-w-5xl items-center justify-between gap-4">
+    <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-slate-300 bg-white/95 px-3.5 sm:px-4 py-2 sm:py-2.5 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur-md shadow-lg animate-in slide-in-from-bottom-2 duration-200">
+      <div className="mx-auto flex max-w-5xl items-center justify-between gap-2.5 sm:gap-4">
         {/* 左側: 商品タイトルと税込価格 */}
         <div className="min-w-0">
           <p className="font-bold text-slate-900 text-xs sm:text-sm truncate">
             {title}
           </p>
-          <div className="flex items-center gap-2 text-xs">
-            <span className="font-extrabold text-slate-900 text-sm sm:text-base">
-              ¥{price.toLocaleString("ja-JP")} <span className="text-xs text-slate-500 font-normal">（税込 / 買い切り）</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 text-xs">
+            <span className="font-extrabold text-slate-900 text-xs sm:text-base">
+              ¥{price.toLocaleString("ja-JP")} <span className="text-[10.5px] sm:text-xs text-slate-500 font-normal">（税込）</span>
             </span>
             <span className="hidden sm:inline text-[11px] text-slate-500">
               A4 PDF 4点フルセット（問題・解答用紙5枚・解説・採点基準）
@@ -68,7 +68,7 @@ export function StickyCta({
                   addToCart(exam, true);
                 }
               }}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-b from-[#dc2626] to-[#b91c1c] hover:from-[#e11d48] hover:to-[#be123c] px-5 py-2.5 text-xs font-bold text-white shadow-[0_3px_12px_rgba(220,38,38,0.32)] border border-[#ef4444]/40 transition active:scale-95"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-b from-[#dc2626] to-[#b91c1c] hover:from-[#e11d48] hover:to-[#be123c] px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs font-bold text-white shadow-[0_3px_12px_rgba(220,38,38,0.32)] border border-[#ef4444]/40 transition active:scale-95 cursor-pointer whitespace-nowrap"
             >
               <ShoppingCartIcon size={14} />
               <span>{inCart ? "カートを見る" : "カートへ追加"}</span>

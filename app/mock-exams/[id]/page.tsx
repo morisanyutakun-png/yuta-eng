@@ -153,7 +153,7 @@ export default async function MockExamDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <div className="mx-auto max-w-[1040px] px-4 py-6 sm:px-6 sm:py-8">
+      <div className="mx-auto max-w-[1040px] px-3.5 py-5 sm:px-6 sm:py-8">
         {/* ──────────────────────────────────────────────────────────
             1. パンくずリスト（hidamariスタイル）
         ────────────────────────────────────────────────────────── */}
@@ -176,7 +176,7 @@ export default async function MockExamDetailPage({
               <span className="text-slate-300">›</span>
             </li>
             <li>
-              <span className="font-semibold text-slate-800">{exam.shortTitle}</span>
+              <span className="font-semibold text-slate-800 break-words">{exam.shortTitle}</span>
             </li>
           </ol>
         </nav>
@@ -186,12 +186,12 @@ export default async function MockExamDetailPage({
         ────────────────────────────────────────────────────────── */}
         <section className="w-full min-w-0 overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-2xs lg:grid lg:grid-cols-12">
           {/* 左側: サンプル画像ギャラリー（lg:col-span-7） */}
-          <div className="relative bg-slate-50/80 p-4 sm:p-6 lg:col-span-7 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-100">
+          <div className="relative bg-slate-50/80 p-3.5 sm:p-6 lg:col-span-7 flex items-center justify-center border-b lg:border-b-0 lg:border-r border-slate-100">
             <BoothGallery previews={exam.previews || []} title={exam.title} exam={exam} />
           </div>
 
           {/* 右側: タイトル・価格・スペック・購入ボタン（lg:col-span-5） */}
-          <div className="min-w-0 p-5 sm:p-6 lg:col-span-5 lg:flex lg:flex-col">
+          <div className="min-w-0 p-4 sm:p-6 lg:col-span-5 lg:flex lg:flex-col">
             {/* 商品区分バッジ */}
             <div className="flex items-center gap-2 text-xs pb-1">
               <span className="rounded bg-slate-900 text-white font-bold px-2 py-0.5 text-[10px] tracking-wide">
@@ -203,7 +203,7 @@ export default async function MockExamDetailPage({
             </div>
 
             {/* 商品タイトル */}
-            <h1 className="mt-1 text-xl sm:text-2xl font-bold leading-snug tracking-tight text-slate-900">
+            <h1 className="mt-1 text-lg sm:text-2xl font-bold leading-snug tracking-tight text-slate-900 break-words [text-wrap:pretty]">
               {exam.title}
             </h1>
 
@@ -217,25 +217,25 @@ export default async function MockExamDetailPage({
 
             {/* スペック定義DLリスト */}
             <dl className="mt-4 divide-y divide-slate-100 border-y border-slate-100 text-xs">
-              <div className="flex justify-between py-2.5">
-                <dt className="text-slate-500 font-medium">試験構成</dt>
-                <dd className="font-semibold text-slate-800 text-right">
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-2 sm:py-2.5 gap-0.5 sm:gap-2">
+                <dt className="text-slate-500 font-medium shrink-0">試験構成</dt>
+                <dd className="font-semibold text-slate-800 sm:text-right">
                   {exam.minutes}分・大問{exam.daimonCount}題（{exam.fullMark}点）
                 </dd>
               </div>
-              <div className="flex justify-between py-2.5">
-                <dt className="text-slate-500 font-medium">出題範囲</dt>
-                <dd className="font-semibold text-slate-800 text-right">{exam.scope}</dd>
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-2 sm:py-2.5 gap-0.5 sm:gap-2">
+                <dt className="text-slate-500 font-medium shrink-0">出題範囲</dt>
+                <dd className="font-semibold text-slate-800 sm:text-right break-words">{exam.scope}</dd>
               </div>
-              <div className="flex justify-between py-2.5">
-                <dt className="text-slate-500 font-medium">納品形式</dt>
-                <dd className="font-semibold text-slate-800 text-right">
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-2 sm:py-2.5 gap-0.5 sm:gap-2">
+                <dt className="text-slate-500 font-medium shrink-0">納品形式</dt>
+                <dd className="font-semibold text-slate-800 sm:text-right">
                   A4ベクターPDF（全{totalPages}p）
                 </dd>
               </div>
-              <div className="flex justify-between py-2.5">
-                <dt className="text-slate-500 font-medium">納品方法</dt>
-                <dd className="font-semibold text-slate-800 text-right">
+              <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between py-2 sm:py-2.5 gap-0.5 sm:gap-2">
+                <dt className="text-slate-500 font-medium shrink-0">納品方法</dt>
+                <dd className="font-semibold text-slate-800 sm:text-right">
                   決済完了後、即時ダウンロード
                 </dd>
               </div>
@@ -247,7 +247,7 @@ export default async function MockExamDetailPage({
             </div>
 
             {/* 安心シグナル */}
-            <div className="mt-3 flex items-center justify-center gap-3 text-[11px] text-slate-500 text-center">
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-[11px] text-slate-500 text-center">
               <span>領収書PDF自動発行</span>
               <span>•</span>
               <span>購入者限定・いつでも再DL可能</span>
@@ -258,7 +258,7 @@ export default async function MockExamDetailPage({
         {/* ──────────────────────────────────────────────────────────
             3. 模試について（出題のねらいと同梱ファイル）
         ────────────────────────────────────────────────────────── */}
-        <section className="mt-6 rounded-xl border border-slate-200/90 bg-white p-5 sm:p-7 shadow-2xs">
+        <section className="mt-6 rounded-xl border border-slate-200/90 bg-white p-4 sm:p-7 shadow-2xs">
           <h2 className="text-base sm:text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">
             出題のねらいと演習パッケージの特徴
           </h2>
@@ -268,7 +268,7 @@ export default async function MockExamDetailPage({
 
           {/* 出題方針の箇条書き */}
           {exam.aims && exam.aims.length > 0 && (
-            <ul className="mt-4 space-y-2 text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-4 rounded-xl border border-slate-100">
+            <ul className="mt-4 space-y-2 text-xs text-slate-700 leading-relaxed bg-slate-50/70 p-3.5 sm:p-4 rounded-xl border border-slate-100">
               {exam.aims.map((aim, i) => (
                 <li key={i} className="flex items-start gap-2">
                   <span className="font-bold text-[#1b3a63] shrink-0 mt-0.5">•</span>
@@ -281,7 +281,7 @@ export default async function MockExamDetailPage({
           {/* 同梱されるファイル一覧 */}
           <div className="mt-6 border-t border-slate-100 pt-5">
             <h3 className="text-xs font-bold text-slate-900 flex items-center gap-1.5 mb-3">
-              <FileTextIcon size={14} className="text-[#1b3a63]" />
+              <FileTextIcon size={14} className="text-[#1b3a63] shrink-0" />
               <span>購入後にダウンロードできる4大演習ファイル（全{totalPages}ページ）</span>
             </h3>
             <div className="grid gap-2.5 sm:grid-cols-2">
@@ -290,7 +290,7 @@ export default async function MockExamDetailPage({
                   <div className="flex items-center justify-between font-bold text-slate-900 mb-0.5">
                     <span>{i + 1}. {file.label}</span>
                     {file.pages && (
-                      <span className="text-[10px] rounded bg-slate-100 px-1.5 py-0.5 text-slate-600 font-normal">
+                      <span className="text-[10px] rounded bg-slate-100 px-1.5 py-0.5 text-slate-600 font-normal shrink-0">
                         {file.pages}p
                       </span>
                     )}
@@ -309,7 +309,7 @@ export default async function MockExamDetailPage({
         ────────────────────────────────────────────────────────── */}
         <div className="mt-6 grid gap-6 lg:grid-cols-2 items-start">
           {/* 左側: 大問構成・出題テーマ */}
-          <section className="rounded-xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-2xs">
+          <section className="rounded-xl border border-slate-200/90 bg-white p-4 sm:p-6 shadow-2xs">
             <h2 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-2.5">
               出題構成と大問別テーマ
             </h2>
@@ -326,7 +326,7 @@ export default async function MockExamDetailPage({
           </section>
 
           {/* 右側: 採点基準のサンプル抜粋 */}
-          <section className="rounded-xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-2xs">
+          <section className="rounded-xl border border-slate-200/90 bg-white p-4 sm:p-6 shadow-2xs">
             <h2 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-2.5">
               採点基準の見本（加点・減点マトリクス抜粋）
             </h2>
@@ -346,7 +346,7 @@ export default async function MockExamDetailPage({
         {/* ──────────────────────────────────────────────────────────
             5. よくあるご質問 FAQ
         ────────────────────────────────────────────────────────── */}
-        <section className="mt-6 rounded-xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-2xs">
+        <section className="mt-6 rounded-xl border border-slate-200/90 bg-white p-4 sm:p-6 shadow-2xs">
           <h2 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-2.5 mb-4">
             よくあるご質問
           </h2>

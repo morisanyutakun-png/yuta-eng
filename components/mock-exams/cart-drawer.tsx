@@ -189,7 +189,7 @@ export function CartDrawer() {
             フッター・小計 ＆ 購入手続き
         ────────────────────────────────────────────────────────── */}
         {items.length > 0 && (
-          <div className="border-t border-slate-200 bg-slate-50 p-5 space-y-4">
+          <div className="border-t border-slate-200 bg-slate-50 p-4 sm:p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] space-y-3.5 sm:space-y-4">
             {/* 金額内訳 */}
             <div className="space-y-1.5 text-xs text-slate-600">
               <div className="flex justify-between">

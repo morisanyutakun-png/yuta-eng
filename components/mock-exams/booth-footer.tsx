@@ -3,9 +3,9 @@ import { PaymentBrandBadges } from "@/components/mock-exams/payment-badges";
 
 export function BoothFooter() {
   return (
-    <footer className="mt-20 border-t border-slate-200 bg-white py-12 text-xs text-slate-500">
-      <div className="mx-auto max-w-[1040px] px-4 sm:px-6">
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
+    <footer className="mt-14 sm:mt-20 border-t border-slate-200 bg-white py-10 sm:py-12 text-xs text-slate-500">
+      <div className="mx-auto max-w-[1040px] px-3.5 sm:px-6">
+        <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 md:grid-cols-4">
           {/* 模試ラインナップ */}
           <div>
             <h4 className="font-bold text-slate-900">演習模試ラインナップ</h4>

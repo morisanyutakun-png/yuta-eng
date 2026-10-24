@@ -67,45 +67,45 @@ const legalRows = [
 export default function MockExamsLegalPage() {
   if (!isStoreEnabled()) notFound();
   return (
-    <div className="page mobile-compact">
-      <nav aria-label="パンくず" className="breadcrumb pt-3 text-[0.75rem] text-ink-3">
+    <div className="page mobile-compact px-3.5 sm:px-6">
+      <nav aria-label="パンくず" className="breadcrumb flex flex-wrap items-center gap-y-1 pt-3 text-[0.75rem] text-ink-3">
         <Link href="/" className="hover:text-navy">
           トップ
         </Link>
-        <span className="mx-1.5 text-rule">／</span>
+        <span className="mx-1 text-rule">／</span>
         <Link href="/mock-exams" className="hover:text-navy">
           模試PDFストア
         </Link>
-        <span className="mx-1.5 text-rule">／</span>
+        <span className="mx-1 text-rule">／</span>
         <span className="text-ink-2">特定商取引法に基づく表記</span>
       </nav>
 
       <div className="sec-rule mt-3" />
 
-      <header className="border-b border-rule pb-6 pt-6">
+      <header className="border-b border-rule pb-5 pt-5 sm:pb-6 sm:pt-6">
         <p className="eyebrow">模試PDFストア</p>
-        <h1 className="serif h-page mt-1.5 text-ink">特定商取引法に基づく表記・ご利用条件</h1>
+        <h1 className="serif text-xl sm:text-2xl font-bold mt-1.5 text-ink leading-snug break-words">特定商取引法に基づく表記・ご利用条件</h1>
       </header>
 
-      <section aria-labelledby="tokusho-heading" className="mt-8">
-        <h2 id="tokusho-heading" className="rule-mark serif h-sect text-ink">
+      <section aria-labelledby="tokusho-heading" className="mt-7 sm:mt-8">
+        <h2 id="tokusho-heading" className="rule-mark serif text-lg sm:text-xl font-bold text-ink leading-snug break-words">
           特定商取引法に基づく表記
         </h2>
-        <dl className="mt-4 divide-y divide-rule border-y border-rule text-[0.88rem] leading-relaxed">
+        <dl className="mt-4 divide-y divide-rule border-y border-rule text-[0.85rem] sm:text-[0.88rem] leading-relaxed">
           {legalRows.map((row) => (
-            <div key={row.k} className="grid gap-1 py-3.5 sm:grid-cols-[11rem_1fr] sm:gap-4">
-              <dt className="font-semibold text-ink">{row.k}</dt>
-              <dd className="text-ink-2">{row.v}</dd>
+            <div key={row.k} className="grid gap-1 py-3 sm:grid-cols-[11rem_1fr] sm:gap-4">
+              <dt className="font-semibold text-ink shrink-0">{row.k}</dt>
+              <dd className="text-ink-2 break-words">{row.v}</dd>
             </div>
           ))}
         </dl>
       </section>
 
-      <section aria-labelledby="terms-heading" className="mt-12">
-        <h2 id="terms-heading" className="rule-mark serif h-sect text-ink">
+      <section aria-labelledby="terms-heading" className="mt-10 sm:mt-12">
+        <h2 id="terms-heading" className="rule-mark serif text-lg sm:text-xl font-bold text-ink leading-snug break-words">
           PDF 教材のご利用条件（流出防止・著作権）
         </h2>
-        <ul className="prose-ja mt-4 list-disc space-y-2 pl-5 text-[0.9rem] leading-[1.9] text-ink-2">
+        <ul className="prose-ja mt-4 list-disc space-y-2 pl-5 text-[0.86rem] sm:text-[0.9rem] leading-[1.85] sm:leading-[1.9] text-ink-2 break-words">
           <li>
             本ストアで販売するすべての PDF（問題冊子・所定解答用紙・解答解説・採点基準）の著作権は、制作者（{storeSeller.seller}）に帰属します。
           </li>

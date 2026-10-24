@@ -111,7 +111,7 @@ export function BundleExamCard({ exams }: BundleCardProps) {
       {/* ──────────────────────────────────────────────────────────
           2. 本文・お得情報・価格・一括購入ボタン
       ────────────────────────────────────────────────────────── */}
-      <div className="flex min-w-0 flex-1 flex-col p-5 sm:p-6 justify-between">
+      <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-6 justify-between">
         <div>
           {/* お得バッジ ＆ セット概要 */}
           <div className="flex flex-wrap items-center gap-2 mb-1.5">
@@ -124,9 +124,9 @@ export function BundleExamCard({ exams }: BundleCardProps) {
           </div>
 
           {/* セットタイトル */}
-          <h2 className="text-lg sm:text-[20px] font-extrabold leading-snug tracking-tight text-slate-950">
+          <h2 className="text-lg sm:text-[20px] font-extrabold leading-snug tracking-tight text-slate-950 break-words">
             数学記述模試『入試プレビュー』全3回コンプリートパッケージ
-            <span className="block text-xs sm:text-sm font-semibold text-slate-600 mt-0.5">
+            <span className="block text-xs sm:text-sm font-semibold text-slate-600 mt-1 break-words">
               第1回（8月夏期）＋ 第2回（10月秋期）＋ 第3回（12月直前）3巻一括セット
             </span>
           </h2>
@@ -137,7 +137,7 @@ export function BundleExamCard({ exams }: BundleCardProps) {
           </p>
 
           {/* 収録セットのピル一覧 */}
-          <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[11px]">
+          <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[10.5px] sm:text-[11px]">
             <span className="rounded border border-sky-200 bg-sky-50 px-2 py-0.5 font-bold text-sky-800">
               第1回：数I・A・II・B・Cベクトル（100分）
             </span>
@@ -153,8 +153,8 @@ export function BundleExamCard({ exams }: BundleCardProps) {
         {/* ──────────────────────────────────────────────────────────
             3. 下部: 価格・割引表示 ＆ 一括カート追加
         ────────────────────────────────────────────────────────── */}
-        <div className="mt-5 pt-4 border-t border-amber-200/80">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-4 sm:mt-5 pt-3.5 sm:pt-4 border-t border-amber-200/80">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             {/* 左側: 単品合計 → セット特別価格 */}
             <div>
               <div className="flex items-baseline gap-2">
@@ -166,25 +166,25 @@ export function BundleExamCard({ exams }: BundleCardProps) {
                 </span>
               </div>
               <div className="tabular-nums flex items-baseline mt-0.5">
-                <span className="text-[28px] sm:text-[32px] font-black leading-none text-rose-600">
+                <span className="text-[26px] sm:text-[32px] font-black leading-none text-rose-600">
                   ¥{bundleSpecialPrice.toLocaleString("ja-JP")}
                 </span>
                 <span className="ml-1.5 text-xs font-semibold text-slate-500">
                   （税込） / 3巻買い切り
                 </span>
               </div>
-              <p className="mt-1 text-[11px] text-slate-400 font-normal">
+              <p className="mt-1 text-[10.5px] sm:text-[11px] text-slate-400 font-normal">
                 メール送付・いつでも再DL可能 ｜ 領収書PDF自動発行
               </p>
             </div>
 
             {/* 右側: 一括追加CTAボタン */}
-            <div>
+            <div className="w-full sm:w-auto">
               {allInCart ? (
                 <button
                   type="button"
                   onClick={openCart}
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white py-3 px-6 text-xs sm:text-sm font-bold shadow-md transition-all active:scale-95"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-white py-3 px-5 text-xs sm:text-sm font-bold shadow-md transition-all active:scale-95 cursor-pointer"
                 >
                   <CheckIcon size={16} className="text-emerald-400" />
                   <span>3回セット追加済（カートを見る）</span>
@@ -193,7 +193,7 @@ export function BundleExamCard({ exams }: BundleCardProps) {
                 <button
                   type="button"
                   onClick={() => addMultipleToCart(bundleExams, true)}
-                  className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-b from-[#dc2626] to-[#b91c1c] hover:from-[#e11d48] hover:to-[#be123c] text-white py-3 px-6 text-xs sm:text-sm font-bold shadow-[0_4px_16px_rgba(220,38,38,0.38)] hover:shadow-[0_6px_22px_rgba(220,38,38,0.5)] border border-[#ef4444]/40 transition-all duration-200 active:scale-95"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-b from-[#dc2626] to-[#b91c1c] hover:from-[#e11d48] hover:to-[#be123c] text-white py-3 px-5 text-xs sm:text-sm font-bold shadow-[0_4px_16px_rgba(220,38,38,0.38)] hover:shadow-[0_6px_22px_rgba(220,38,38,0.5)] border border-[#ef4444]/40 transition-all duration-200 active:scale-95 cursor-pointer"
                 >
                   <ShoppingCartIcon size={17} />
                   <span>全3回をセット購入（¥4,980でカートに追加）</span>

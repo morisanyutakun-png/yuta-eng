@@ -27,7 +27,7 @@ export function MockExamsStoreChrome({ children }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-[#f4f6f8] text-slate-900 font-sans antialiased">
+    <div className="min-h-screen bg-[#f4f6f8] text-slate-900 font-sans antialiased overflow-x-clip">
       <BoothHeader />
       <CartDrawer />
       <div className="min-h-[calc(100vh-280px)]">{children}</div>

@@ -12,23 +12,23 @@ export function StoreUtilityBar() {
       aria-label="模試演習パッケージの納品仕様"
       className="border-b border-[#dce2ea] bg-[#e8ecf2] py-2 text-xs text-[#334155]"
     >
-      <div className="mx-auto flex max-w-[1040px] flex-wrap items-center justify-between gap-x-6 gap-y-1.5 px-4 sm:px-6">
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
-          <span className="whitespace-nowrap">
+      <div className="mx-auto flex max-w-[1040px] flex-wrap items-center justify-between gap-x-6 gap-y-1.5 px-3 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-x-5 gap-y-1 text-[11px] sm:text-xs">
+          <span className="leading-snug break-words">
             <strong className="font-semibold text-slate-800">収録内容：</strong>
             問題冊子・所定解答用紙5枚・模範解答・採点基準（全32p）
           </span>
-          <span className="hidden lg:inline text-[#cbd5e1]" aria-hidden="true">
+          <span className="hidden sm:inline text-[#cbd5e1]" aria-hidden="true">
             |
           </span>
-          <span className="whitespace-nowrap">
+          <span className="leading-snug break-words">
             <strong className="font-semibold text-slate-800">形式：</strong>
             A4原寸ベクターPDF（自宅・コンビニ印刷対応）
           </span>
-          <span className="hidden lg:inline text-[#cbd5e1]" aria-hidden="true">
+          <span className="hidden sm:inline text-[#cbd5e1]" aria-hidden="true">
             |
           </span>
-          <span className="whitespace-nowrap">
+          <span className="leading-snug break-words">
             <strong className="font-semibold text-slate-800">納品：</strong>
             オンライン決済後 即時ダウンロード
           </span>

@@ -94,31 +94,31 @@ export function BoothGallery({ previews, title, exam }: BoothGalleryProps) {
         )}
 
         {/* 画像ラベルバッジ（左上） */}
-        <div className="absolute left-3 top-3 flex items-center gap-1.5 z-20">
-          <span className="rounded bg-slate-900/85 px-2.5 py-1 text-[11px] font-bold text-white shadow-2xs backdrop-blur-xs">
+        <div className="absolute left-2.5 sm:left-3 top-2.5 sm:top-3 flex items-center gap-1.5 z-20 max-w-[62%]">
+          <span className="rounded bg-slate-900/85 px-2 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold text-white shadow-2xs backdrop-blur-xs truncate">
             {selectedIndex + 1} / {previews.length}　{current.label}
           </span>
         </div>
 
         {/* ネタバレ防止バッジ（右上） */}
         {isProblem && (
-          <div className="absolute top-3 right-3 pointer-events-none z-20">
-            <span className="rounded bg-amber-400 text-slate-950 px-2 py-0.5 text-[10px] font-bold shadow-xs border border-amber-300">
-              🔒 大問2〜5 マスキング済
+          <div className="absolute top-2.5 sm:top-3 right-2.5 sm:right-3 pointer-events-none z-20">
+            <span className="rounded bg-amber-400 text-slate-950 px-1.5 sm:px-2 py-0.5 text-[9.5px] sm:text-[10px] font-bold shadow-xs border border-amber-300">
+              🔒 大問2〜5 マスキング
             </span>
           </div>
         )}
         {isSolution && (
-          <div className="absolute top-3 right-3 pointer-events-none z-20">
-            <span className="rounded bg-amber-400 text-slate-950 px-2 py-0.5 text-[10px] font-bold shadow-xs border border-amber-300">
-              🔒 解答下部 マスキング済
+          <div className="absolute top-2.5 sm:top-3 right-2.5 sm:right-3 pointer-events-none z-20">
+            <span className="rounded bg-amber-400 text-slate-950 px-1.5 sm:px-2 py-0.5 text-[9.5px] sm:text-[10px] font-bold shadow-xs border border-amber-300">
+              🔒 解答下部 マスキング
             </span>
           </div>
         )}
         {isRubric && (
-          <div className="absolute top-3 right-3 pointer-events-none z-20">
-            <span className="rounded bg-emerald-500 text-white px-2 py-0.5 text-[10px] font-bold shadow-xs border border-emerald-400">
-              ✓ 配点・評価基準 全文公開中
+          <div className="absolute top-2.5 sm:top-3 right-2.5 sm:right-3 pointer-events-none z-20">
+            <span className="rounded bg-emerald-500 text-white px-1.5 sm:px-2 py-0.5 text-[9.5px] sm:text-[10px] font-bold shadow-xs border border-emerald-400">
+              ✓ 採点基準 全文公開中
             </span>
           </div>
         )}

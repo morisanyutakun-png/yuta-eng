@@ -44,6 +44,21 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 export async function verifyPurchase(examId: string, sessionId: unknown): Promise<AccessResult> {
   const exam = getExam(examId);
   if (!exam) return { ok: false, reason: "not-found" };
+
+  // 開発プレビュー用バイパス
+  if (process.env.STORE_PREVIEW === "1" && (sessionId === "preview" || sessionId === "demo")) {
+    const days = accessDays(storeSeller.accessDays);
+    const now = new Date();
+    return {
+      ok: true,
+      exam,
+      sessionId: "cs_test_preview_demo_guest",
+      email: "buyer@example.com",
+      purchasedAt: now,
+      expiresAt: new Date(now.getTime() + days * DAY_MS),
+    };
+  }
+
   if (!isSessionId(sessionId)) return { ok: false, reason: "invalid", exam };
 
   const days = accessDays(storeSeller.accessDays);

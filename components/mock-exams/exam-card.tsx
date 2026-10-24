@@ -163,17 +163,17 @@ export function ExamCard({
       {/* ──────────────────────────────────────────────────────────
           2. 本文・商品固有スペック・価格・ボタン群
       ────────────────────────────────────────────────────────── */}
-      <div className="flex min-w-0 flex-1 flex-col p-5 sm:p-6 justify-between">
+      <div className="flex min-w-0 flex-1 flex-col p-4 sm:p-6 justify-between">
         <div>
           {/* 商品区分バッジ ＆ 対象志望校 */}
-          <div className="flex flex-wrap items-center gap-2 mb-1.5">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5">
             <span
-              className={`rounded-md border px-2.5 py-0.5 text-[11px] ${theme.badgeClass}`}
+              className={`rounded-md border px-2 py-0.5 text-[10.5px] sm:text-[11px] ${theme.badgeClass}`}
             >
               {exam.edition || exam.monthLabel}
             </span>
             {exam.targetSummary && (
-              <span className="text-xs font-medium text-slate-500">
+              <span className="text-[11px] sm:text-xs font-medium text-slate-500">
                 {exam.targetSummary}
               </span>
             )}
@@ -181,29 +181,29 @@ export function ExamCard({
 
           {/* 商品タイトル */}
           <Link href={`/mock-exams/${exam.id}`} className="group/title block">
-            <h2 className="text-lg sm:text-[20px] font-bold leading-snug tracking-tight text-slate-900 transition-colors group-hover/title:text-[#1b3a63]">
+            <h2 className="text-base sm:text-[20px] font-bold leading-snug tracking-tight text-slate-900 transition-colors group-hover/title:text-[#1b3a63] break-words">
               {exam.title}
             </h2>
           </Link>
 
           {/* 商品固有の具体的スペック（共通スペックの重複を排除し、固有情報に特化） */}
-          <div className="mt-3 mb-5 space-y-2.5">
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="inline-flex items-center rounded bg-slate-100 px-2.5 py-0.5 font-bold text-slate-800">
+          <div className="mt-2.5 sm:mt-3 mb-4 sm:mb-5 space-y-2 sm:space-y-2.5">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
+              <span className="inline-flex items-center rounded bg-slate-100 px-2 py-0.5 font-bold text-slate-800 text-[11px] sm:text-xs">
                 {exam.minutes}分 ｜ 大問{exam.daimonCount}題 ｜ {exam.fullMark}点満点
               </span>
-              <span className="text-xs text-slate-600 font-medium">
+              <span className="text-xs text-slate-600 font-medium break-words">
                 出題範囲: {exam.scope}
               </span>
             </div>
 
             {/* 具体的な出題単元タグ（1行でピシッと揃うよう文字サイズ・余白を最適化） */}
-            <div className="flex flex-wrap items-center gap-1.5 text-[10.5px] text-slate-600">
-              <span className="font-semibold text-slate-400 shrink-0 text-[11px]">出題単元:</span>
+            <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[10.5px] text-slate-600">
+              <span className="font-semibold text-slate-400 shrink-0 text-[10.5px] sm:text-[11px]">出題単元:</span>
               {exam.fields.map((field) => (
                 <span
                   key={field}
-                  className="rounded border border-slate-200/80 bg-slate-50 px-1.5 py-0.5 text-slate-700 font-medium whitespace-nowrap"
+                  className="rounded border border-slate-200/80 bg-slate-50 px-1.5 py-0.5 text-slate-700 font-medium"
                 >
                   {field}
                 </span>
@@ -215,20 +215,22 @@ export function ExamCard({
         {/* ──────────────────────────────────────────────────────────
             3. 下部: 価格・安心材料 ＆ アクションボタン（空白を埋めて1箇所に集約）
         ────────────────────────────────────────────────────────── */}
-        <div className="mt-auto pt-4 border-t border-slate-100">
-          <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="mt-auto pt-3.5 sm:pt-4 border-t border-slate-100">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             {/* 左側: 価格表示 ＆ 安心材料の補足テキスト ＆ 決済ブランド */}
             <div>
               <div className="tabular-nums flex items-baseline">
-                <span className="text-[26px] sm:text-[28px] font-black leading-none text-slate-900">
+                <span className="text-[24px] sm:text-[28px] font-black leading-none text-slate-900">
                   ¥{exam.price.toLocaleString("ja-JP")}
                 </span>
                 <span className="ml-1.5 text-xs font-semibold text-slate-500">
                   （税込） / 買い切り
                 </span>
               </div>
-              <div className="mt-1 flex items-center gap-2 text-[11px] text-slate-400 font-normal">
-                <span>メール送付・いつでも再DL可能 ｜ 領収書PDF自動発行</span>
+              <div className="mt-1 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10.5px] sm:text-[11px] text-slate-400 font-normal">
+                <span>メール送付・いつでも再DL可能</span>
+                <span className="text-slate-300">|</span>
+                <span>領収書PDF自動発行</span>
                 <span className="hidden xl:inline text-slate-300">|</span>
                 <div className="hidden xl:inline-flex">
                   <PaymentBrandBadges compact />
@@ -237,12 +239,12 @@ export function ExamCard({
             </div>
 
             {/* 右側: ボタン群（「サンプルを見る」＋「カートに入れる」のペア配置） */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
               {exam.previews && exam.previews.length > 0 && (
                 <button
                   type="button"
                   onClick={() => setShowPreview(true)}
-                  className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 py-2.5 px-3.5 text-xs font-bold shadow-2xs transition active:scale-95 cursor-pointer"
+                  className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 py-2.5 px-3 text-xs font-bold shadow-2xs transition active:scale-95 cursor-pointer whitespace-nowrap"
                 >
                   <EyeIcon size={14} className="text-slate-500" />
                   <span>サンプルを見る</span>
@@ -253,7 +255,7 @@ export function ExamCard({
                 <button
                   type="button"
                   onClick={() => addToCart(exam, true)}
-                  className={`inline-flex items-center justify-center gap-2 rounded-lg py-2.5 px-5 text-xs sm:text-sm font-bold transition-all duration-200 active:scale-95 cursor-pointer ${
+                  className={`flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg py-2.5 px-4 sm:px-5 text-xs sm:text-sm font-bold transition-all duration-200 active:scale-95 cursor-pointer whitespace-nowrap ${
                     inCart
                       ? "bg-slate-900 text-white hover:bg-slate-800 shadow-md"
                       : "bg-gradient-to-b from-[#dc2626] to-[#b91c1c] hover:from-[#e11d48] hover:to-[#be123c] text-white shadow-[0_3px_12px_rgba(220,38,38,0.32)] hover:shadow-[0_6px_18px_rgba(220,38,38,0.45)] border border-[#ef4444]/40"
@@ -263,7 +265,7 @@ export function ExamCard({
                   <span>{inCart ? "カートを見る" : "カートに入れる"}</span>
                 </button>
               ) : (
-                <span className="rounded-lg bg-slate-100 px-5 py-2.5 text-xs font-semibold text-slate-400">
+                <span className="flex-1 sm:flex-initial text-center rounded-lg bg-slate-100 px-5 py-2.5 text-xs font-semibold text-slate-400">
                   準備中
                 </span>
               )}
