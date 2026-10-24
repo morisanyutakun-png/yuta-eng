@@ -11,20 +11,20 @@ import { mockExams as staticMockExams, type MockExam } from "@/data/mock-exams";
  */
 
 function loadDynamicExams(): MockExam[] {
-  const dynamicExams: MockExam[] = [];
-  try {
-    const salesDir = path.resolve(process.cwd(), "sales", "mock-exams");
-    if (fs.existsSync(salesDir)) {
-      const entries = fs.readdirSync(salesDir, { withFileTypes: true });
+  const dynamicExamsMap = new Map<string, MockExam>();
+  const scanDirectory = (dirPath: string) => {
+    try {
+      if (!fs.existsSync(dirPath)) return;
+      const entries = fs.readdirSync(dirPath, { withFileTypes: true });
       for (const entry of entries) {
         if (entry.isDirectory()) {
-          const productJsonPath = path.join(salesDir, entry.name, "product.json");
+          const productJsonPath = path.join(dirPath, entry.name, "product.json");
           if (fs.existsSync(productJsonPath)) {
             try {
               const raw = fs.readFileSync(productJsonPath, "utf-8");
               const parsed = JSON.parse(raw) as MockExam;
               if (parsed && typeof parsed.id === "string" && parsed.id.trim()) {
-                dynamicExams.push(parsed);
+                dynamicExamsMap.set(parsed.id, parsed);
               }
             } catch (readErr) {
               console.error(`[catalog-server] ${entry.name}/product.json 読み込み失敗:`, readErr);
@@ -32,11 +32,23 @@ function loadDynamicExams(): MockExam[] {
           }
         }
       }
+    } catch (err) {
+      console.error(`[catalog-server] フォルダ走査エラー (${dirPath}):`, err);
     }
-  } catch (err) {
-    console.error("[catalog-server] 動的商品フォルダ走査エラー:", err);
+  };
+
+  // 1. Git管理されている sales/mock-exams を走査
+  scanDirectory(path.resolve(process.cwd(), "sales", "mock-exams"));
+
+  // 2. AWS Lambda / Vercel Serverless のタスクルートを走査
+  if (process.env.LAMBDA_TASK_ROOT) {
+    scanDirectory(path.join(process.env.LAMBDA_TASK_ROOT, "sales", "mock-exams"));
   }
-  return dynamicExams;
+
+  // 3. サーバーレス環境での編集・追加（/tmp/sales-mock-exams）があれば上書き
+  scanDirectory(path.join("/tmp", "sales-mock-exams"));
+
+  return Array.from(dynamicExamsMap.values());
 }
 
 export function allExams(): MockExam[] {

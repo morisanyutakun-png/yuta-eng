@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
 import { ShelfManager } from "@/components/mock-exams/shelf-manager";
@@ -19,21 +20,26 @@ export default async function ShelfPage({
 }) {
   if (!isStoreEnabled()) notFound();
 
-  // 本番環境（Vercel）では外部からの不正アクセスや誤操作を防ぐため、
-  // STORE_DOWNLOAD_SECRET によるアクセスキー認証を必須化（ローカル開発時はそのまま閲覧可能）
-  if (process.env.NODE_ENV === "production") {
-    const { key } = await searchParams;
-    const secret = process.env.STORE_DOWNLOAD_SECRET;
-    if (!secret || key !== secret) {
-      notFound();
-    }
-  }
+  const { key } = await searchParams;
+  const secret = process.env.STORE_DOWNLOAD_SECRET;
+  const cookieStore = await cookies();
+  const cookieKey = cookieStore.get("store_admin_key")?.value;
+
+  const currentKey = key || cookieKey || "";
+  const isAuthorized =
+    process.env.NODE_ENV !== "production" ||
+    !secret ||
+    currentKey === secret;
 
   const enriched = getEnrichedShelfItems();
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-slate-200">
-      <ShelfManager initialItems={enriched} />
+      <ShelfManager
+        initialItems={enriched}
+        adminKey={currentKey}
+        isAuthorized={isAuthorized}
+      />
     </div>
   );
 }

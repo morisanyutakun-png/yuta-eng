@@ -60,16 +60,24 @@ export async function loadExamPdf(examId: string, key: ExamFileKey): Promise<Pdf
     return { body: res.body, size: Number.isFinite(len) && len > 0 ? len : null };
   }
 
-  // 1. プロジェクト内販売用フォルダ sales/mock-exams/<id>/<key>.pdf を最優先で探索
-  const workspaceSalesRoot = path.resolve(process.cwd(), "sales", "mock-exams");
-  const workspaceFile = path.join(workspaceSalesRoot, examId, `${key}.pdf`);
-  if (workspaceFile.startsWith(workspaceSalesRoot + path.sep)) {
-    try {
-      const info = await stat(workspaceFile);
-      const data = await readFile(workspaceFile);
-      return { body: new Uint8Array(data), size: info.size };
-    } catch {
-      // 次の候補へ
+  // 1. プロジェクト内販売用フォルダ（/tmp または sales/mock-exams/<id>/<key>.pdf）を最優先で探索
+  const candidateRoots = [
+    path.join("/tmp", "sales-mock-exams"),
+    path.resolve(process.cwd(), "sales", "mock-exams"),
+  ];
+  if (process.env.LAMBDA_TASK_ROOT) {
+    candidateRoots.push(path.join(process.env.LAMBDA_TASK_ROOT, "sales", "mock-exams"));
+  }
+  for (const root of candidateRoots) {
+    const candidateFile = path.join(root, examId, `${key}.pdf`);
+    if (candidateFile.startsWith(root + path.sep)) {
+      try {
+        const info = await stat(candidateFile);
+        const data = await readFile(candidateFile);
+        return { body: new Uint8Array(data), size: info.size };
+      } catch {
+        // 次の候補へ
+      }
     }
   }
 

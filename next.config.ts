@@ -7,18 +7,18 @@ const nextConfig: NextConfig = {
   // サーバー関数のバンドルに含める。assets/ や sales/ は静的配信の対象外なので、
   // 指定しないと Vercel 本番でファイルが見つからない。public/ には置かない。
   outputFileTracingIncludes: {
-    "/api/moshi/*": ["./assets/moshi-exams/**/*.pdf", "./assets/moshi-exams/**/*.json"],
+    "/api/moshi/**": ["./assets/moshi-exams/**/*"],
     "/api/stripe/webhook": [
-      "./sales/mock-exams/**/*.pdf",
-      "./sales/mock-exams/**/product.json",
+      "./sales/mock-exams/**/*",
     ],
-    "/api/mock-exams/*": [
-      "./sales/mock-exams/**/*.pdf",
-      "./sales/mock-exams/**/product.json",
+    "/api/mock-exams/**": [
+      "./sales/mock-exams/**/*",
     ],
-    "/mock-exams/*": [
-      "./sales/mock-exams/**/*.pdf",
-      "./sales/mock-exams/**/product.json",
+    "/mock-exams/**": [
+      "./sales/mock-exams/**/*",
+    ],
+    "/**": [
+      "./sales/mock-exams/**/*",
     ],
   },
   images: {

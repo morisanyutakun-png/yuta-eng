@@ -20,6 +20,8 @@ type ItemWithShelf = MockExam & { shelf?: ShelfInfo };
 
 interface Props {
   initialItems: ItemWithShelf[];
+  adminKey?: string;
+  isAuthorized?: boolean;
 }
 
 interface ExamPreset {
@@ -126,11 +128,89 @@ function getThumbTheme(id: string) {
   };
 }
 
-export function ShelfManager({ initialItems }: Props) {
+export function ShelfManager({
+  initialItems,
+  adminKey = "",
+  isAuthorized = true,
+}: Props) {
   const [items, setItems] = useState<ItemWithShelf[]>(initialItems);
   const [searchQuery, setSearchQuery] = useState("");
   const [refreshing, setRefreshing] = useState(false);
   const [msg, setMsg] = useState<{ text: string; error?: boolean } | null>(null);
+
+  // 認証状態（STORE_DOWNLOAD_SECRET）
+  const [key, setKey] = useState<string>(adminKey || "");
+  const [authorized, setAuthorized] = useState<boolean>(isAuthorized);
+  const [authKeyInput, setAuthKeyInput] = useState("");
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authError, setAuthError] = useState("");
+
+  // マウント時に URL や sessionStorage から管理者キーを自動復元
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlKey = new URLSearchParams(window.location.search).get("key");
+      const storedKey = window.sessionStorage.getItem("store_admin_key");
+      const activeKey = adminKey || urlKey || storedKey || "";
+      if (activeKey && activeKey !== key) {
+        setKey(activeKey);
+      }
+      if (activeKey) {
+        window.sessionStorage.setItem("store_admin_key", activeKey);
+        document.cookie = `store_admin_key=${encodeURIComponent(activeKey)}; path=/; max-age=2592000; SameSite=Lax`;
+      }
+    }
+  }, [adminKey, key]);
+
+  // 認証付き fetch ラッパー
+  const authFetch = async (url: string, init?: RequestInit): Promise<Response> => {
+    const activeKey =
+      key ||
+      (typeof window !== "undefined"
+        ? window.sessionStorage.getItem("store_admin_key") || ""
+        : "");
+    const headers = new Headers(init?.headers);
+    if (activeKey) {
+      headers.set("Authorization", `Bearer ${activeKey}`);
+    }
+    const sep = url.includes("?") ? "&" : "?";
+    const targetUrl = activeKey ? `${url}${sep}key=${encodeURIComponent(activeKey)}` : url;
+
+    const res = await fetch(targetUrl, { ...init, headers });
+    if (res.status === 401) {
+      setAuthorized(false);
+      setAuthModalOpen(true);
+      throw new Error(
+        "管理者認証が必要です（401 Unauthorized）。パスコードを入力してログインしてください。",
+      );
+    }
+    return res;
+  };
+
+  // 管理者パスコード送信ハンドラー
+  const handleAuthSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const clean = authKeyInput.trim();
+    if (!clean) return;
+    setAuthError("");
+    try {
+      const res = await fetch(`/api/mock-exams/shelf?key=${encodeURIComponent(clean)}`);
+      if (res.ok) {
+        setKey(clean);
+        setAuthorized(true);
+        setAuthModalOpen(false);
+        setAuthKeyInput("");
+        if (typeof window !== "undefined") {
+          window.sessionStorage.setItem("store_admin_key", clean);
+          document.cookie = `store_admin_key=${encodeURIComponent(clean)}; path=/; max-age=2592000; SameSite=Lax`;
+        }
+        setMsg({ text: "管理者として認証されました。すべての編集・保存が有効です。" });
+      } else {
+        setAuthError("キーが一致しません。正しい STORE_DOWNLOAD_SECRET を入力してください。");
+      }
+    } catch {
+      setAuthError("認証通信エラーが発生しました。");
+    }
+  };
 
   // インライン価格編集用状態
   const [editingPriceId, setEditingPriceId] = useState<string | null>(null);
@@ -180,16 +260,17 @@ export function ShelfManager({ initialItems }: Props) {
     setRefreshing(true);
     setMsg(null);
     try {
-      const res = await fetch("/api/mock-exams/shelf", { cache: "no-store" });
+      const res = await authFetch("/api/mock-exams/shelf", { cache: "no-store" });
       if (res.ok) {
         const data = await res.json();
         if (data?.items && Array.isArray(data.items)) {
           setItems(data.items);
-          setMsg({ text: "sales/mock-exams/ フォルダとの同期が完了しました。" });
+          setMsg({ text: "最新の商品棚データと同期しました。" });
         }
       }
-    } catch {
-      setMsg({ text: "同期に失敗しました", error: true });
+    } catch (err: unknown) {
+      const text = err instanceof Error ? err.message : String(err);
+      setMsg({ text, error: true });
     } finally {
       setRefreshing(false);
     }
@@ -302,7 +383,7 @@ export function ShelfManager({ initialItems }: Props) {
       prev.map((it) => (it.id === item.id ? { ...it, status: nextStatus } : it)),
     );
     try {
-      const res = await fetch("/api/mock-exams/shelf", {
+      const res = await authFetch("/api/mock-exams/shelf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -316,12 +397,13 @@ export function ShelfManager({ initialItems }: Props) {
           nextStatus === "on-sale" ? "公開中" : "準備中"
         }にしました。`,
       });
-    } catch {
+    } catch (err: unknown) {
       // ロールバック
       setItems((prev) =>
         prev.map((it) => (it.id === item.id ? { ...it, status: item.status } : it)),
       );
-      setMsg({ text: "ステータス更新に失敗しました", error: true });
+      const text = err instanceof Error ? err.message : String(err);
+      setMsg({ text, error: true });
     }
   };
 
@@ -336,7 +418,7 @@ export function ShelfManager({ initialItems }: Props) {
       prev.map((it) => (it.id === item.id ? { ...it, price: newPrice } : it)),
     );
     try {
-      const res = await fetch("/api/mock-exams/shelf", {
+      const res = await authFetch("/api/mock-exams/shelf", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -346,12 +428,13 @@ export function ShelfManager({ initialItems }: Props) {
       });
       if (!res.ok) throw new Error("価格更新に失敗しました");
       setMsg({ text: `「${item.title.split("（")[0]}」の価格を ${yen(newPrice)} に改定しました。` });
-    } catch {
+    } catch (err: unknown) {
       // ロールバック
       setItems((prev) =>
         prev.map((it) => (it.id === item.id ? { ...it, price: item.price } : it)),
       );
-      setMsg({ text: "価格更新に失敗しました", error: true });
+      const text = err instanceof Error ? err.message : String(err);
+      setMsg({ text, error: true });
     }
   };
 
@@ -392,19 +475,24 @@ export function ShelfManager({ initialItems }: Props) {
         formData.append("fullPdf", pdfFile);
       }
 
-      const res = await fetch("/api/mock-exams/shelf", {
+      const res = await authFetch("/api/mock-exams/shelf", {
         method: "POST",
         body: formData,
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "保存に失敗しました");
 
-      setItems((prev) => [
-        data.exam,
-        ...prev.filter((it) => it.id !== data.exam.id),
-      ]);
+      if (data.exam) {
+        setItems((prev) => {
+          const exists = prev.some((it) => it.id === data.exam.id);
+          if (exists) {
+            return prev.map((it) => (it.id === data.exam.id ? data.exam : it));
+          }
+          return [data.exam, ...prev];
+        });
+      }
       setMsg({
-        text: `「${data.exam.title.split("（")[0]}」を${
+        text: `「${(data.exam?.title || formTitle).split("（")[0]}」を${
           pdfFile ? "PDFファイルと共に" : ""
         }保存しました。`,
       });
@@ -426,7 +514,7 @@ export function ShelfManager({ initialItems }: Props) {
     if (!ok) return;
 
     try {
-      const res = await fetch(`/api/mock-exams/shelf?id=${encodeURIComponent(item.id)}`, {
+      const res = await authFetch(`/api/mock-exams/shelf?id=${encodeURIComponent(item.id)}`, {
         method: "DELETE",
       });
       const data = await res.json();
@@ -444,14 +532,14 @@ export function ShelfManager({ initialItems }: Props) {
   const handleSendTestMail = async (item: ItemWithShelf) => {
     const cleanTitle = item.title.split("（")[0] || item.title;
     const ok = confirm(
-      `「${cleanTitle}」の購入完了メール（透かし刻印PDF添付）を、管理者アドレス（morisan.yutakun@gmail.com）へ1通テスト送信しますか？`
+      `「${cleanTitle}」の購入完了メール（透かし刻印PDF添付）を、管理者アドレス（morisan.yutakun@gmail.com）へ1通テスト送信しますか？`,
     );
     if (!ok) return;
 
     setSendingTestMailId(item.id);
     setMsg(null);
     try {
-      const res = await fetch("/api/mock-exams/test-mail", {
+      const res = await authFetch("/api/mock-exams/test-mail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -543,6 +631,18 @@ export function ShelfManager({ initialItems }: Props) {
 
         {/* 右側: アクション（重複なしの厳選配置） */}
         <div className="flex items-center gap-2">
+          {!authorized && (
+            <button
+              type="button"
+              onClick={() => {
+                setAuthError("");
+                setAuthModalOpen(true);
+              }}
+              className="inline-flex items-center gap-1 rounded bg-amber-500 hover:bg-amber-400 px-2.5 py-1 text-xs font-bold text-slate-950 shadow-2xs transition"
+            >
+              <span>🔒 ログイン</span>
+            </button>
+          )}
           <Link
             href="/mock-exams"
             target="_blank"
@@ -559,6 +659,28 @@ export function ShelfManager({ initialItems }: Props) {
           </button>
         </div>
       </header>
+
+      {/* 認証案内バー（未認証時） */}
+      {!authorized && (
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-3">
+          <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 flex flex-wrap items-center justify-between gap-2 shadow-xs">
+            <div className="flex items-center gap-2">
+              <span className="font-bold">⚠️ 管理者認証が必要です:</span>
+              <span>商品の編集やステータス変更を保存するには、管理者パスコードによる認証が必要です。</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setAuthError("");
+                setAuthModalOpen(true);
+              }}
+              className="rounded bg-amber-800 px-3 py-1 font-bold text-white hover:bg-amber-700 transition"
+            >
+              パスコードを入力してログイン
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ──────────────────────────────────────────────────────────
           通知メッセージ
@@ -723,26 +845,26 @@ export function ShelfManager({ initialItems }: Props) {
                       </div>
                     </td>
 
-                    {/* 3. PDF状態（1行固定の洗練された緑ピル＋サイズ表記） */}
+                    {/* 3. PDF状態（PDF登録済・未登録とサイズ表記） */}
                     <td className="px-3 py-3 align-middle whitespace-nowrap">
                       {hasFullPdf ? (
                         <div
                           className="inline-flex items-center gap-1.5 whitespace-nowrap"
-                          title={`一括統合版 full.pdf (${shelf?.fullPdf?.sizeFormatted}) - 最終更新: ${shelf?.fullPdf?.mtime}`}
+                          title={`納品用PDF full.pdf (${shelf?.fullPdf?.sizeFormatted}) - 最終更新: ${shelf?.fullPdf?.mtime}`}
                         >
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-800 border border-emerald-200/80 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-800 border border-emerald-200/80 whitespace-nowrap">
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
-                            <span>4点完備</span>
+                            <span>PDF登録済</span>
                           </span>
                           {shelf?.fullPdf?.sizeFormatted && (
-                            <span className="font-mono text-[11px] text-slate-400 font-medium tabular-nums">
+                            <span className="font-mono text-[11px] text-slate-500 font-medium tabular-nums">
                               {shelf.fullPdf.sizeFormatted}
                             </span>
                           )}
                         </div>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-2.5 py-1 text-[11px] font-semibold text-rose-700 border border-rose-200/80 whitespace-nowrap">
-                          <span className="h-1.5 w-1.5 rounded-full bg-rose-500 shrink-0" />
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-600 border border-slate-200/80 whitespace-nowrap">
+                          <span className="h-1.5 w-1.5 rounded-full bg-slate-400 shrink-0" />
                           <span>PDF未登録</span>
                         </span>
                       )}
@@ -824,7 +946,9 @@ export function ShelfManager({ initialItems }: Props) {
                       </button>
                       {hasFullPdf && (
                         <a
-                          href={`/api/mock-exams/shelf?download=1&id=${item.id}&file=full.pdf`}
+                          href={`/api/mock-exams/shelf?download=1&id=${item.id}&file=full.pdf${
+                            key ? `&key=${encodeURIComponent(key)}` : ""
+                          }`}
                           target="_blank"
                           rel="noreferrer"
                           className="inline-block rounded border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition shadow-2xs"
@@ -1087,7 +1211,9 @@ export function ShelfManager({ initialItems }: Props) {
                     </label>
                     {existingPdfInfo && drawerMode === "edit" && (
                       <a
-                        href={`/api/mock-exams/shelf?download=1&id=${formId}&file=full.pdf`}
+                        href={`/api/mock-exams/shelf?download=1&id=${formId}&file=full.pdf${
+                          key ? `&key=${encodeURIComponent(key)}` : ""
+                        }`}
                         target="_blank"
                         rel="noreferrer"
                         className="text-[11px] font-semibold text-indigo-700 hover:underline inline-flex items-center gap-1"
@@ -1137,6 +1263,70 @@ export function ShelfManager({ initialItems }: Props) {
               </div>
             </form>
           </aside>
+        </div>
+      )}
+
+      {/* ──────────────────────────────────────────────────────────
+          管理者認証モーダル（STORE_DOWNLOAD_SECRET）
+      ────────────────────────────────────────────────────────── */}
+      {authModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+          <div className="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl border border-slate-200 space-y-4">
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-base font-bold text-slate-900">管理者認証</h3>
+                <p className="text-xs text-slate-500 mt-1">
+                  商品情報の編集・ステータス更新・PDF保存を行うには、環境変数 <code className="bg-slate-100 px-1 py-0.5 rounded text-slate-800 font-mono">STORE_DOWNLOAD_SECRET</code> の入力が必要です。
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setAuthModalOpen(false)}
+                className="text-slate-400 hover:text-slate-700"
+              >
+                <XIcon size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleAuthSubmit} className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  管理者パスコード（STORE_DOWNLOAD_SECRET）
+                </label>
+                <input
+                  type="password"
+                  autoFocus
+                  required
+                  value={authKeyInput}
+                  onChange={(e) => setAuthKeyInput(e.target.value)}
+                  placeholder="パスコードを入力..."
+                  className="w-full rounded border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-slate-900 focus:outline-hidden font-mono"
+                />
+              </div>
+
+              {authError && (
+                <div className="rounded bg-rose-50 border border-rose-200 p-2 text-xs text-rose-700 font-medium">
+                  {authError}
+                </div>
+              )}
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setAuthModalOpen(false)}
+                  className="rounded border border-slate-200 px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100"
+                >
+                  キャンセル
+                </button>
+                <button
+                  type="submit"
+                  className="rounded bg-blue-600 px-4 py-1.5 text-xs font-bold text-white hover:bg-blue-500 shadow-sm"
+                >
+                  認証して保存を有効化
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

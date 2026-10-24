@@ -26,10 +26,22 @@ function formatBytes(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function getCandidateDirs(id: string): string[] {
+  const dirs: string[] = [
+    path.join("/tmp", "sales-mock-exams", id),
+    path.resolve(process.cwd(), "sales", "mock-exams", id),
+  ];
+  if (process.env.LAMBDA_TASK_ROOT) {
+    dirs.push(path.join(process.env.LAMBDA_TASK_ROOT, "sales", "mock-exams", id));
+  }
+  return dirs;
+}
+
 export function checkExamFiles(id: string): ShelfInfo {
-  const dir = path.join(SALES_ROOT, id);
-  const exists = fs.existsSync(dir);
-  if (!exists) {
+  const candidateDirs = getCandidateDirs(id);
+  const existingDir = candidateDirs.find((d) => fs.existsSync(d));
+
+  if (!existingDir) {
     return {
       hasDir: false,
       hasProductJson: false,
@@ -37,13 +49,21 @@ export function checkExamFiles(id: string): ShelfInfo {
       pdfs: [],
     };
   }
-  const hasProductJson = fs.existsSync(path.join(dir, "product.json"));
-  const expectedPdfs = ["full.pdf", "problems.pdf", "answer-sheets.pdf", "solutions.pdf", "rubric.pdf"];
-  const presentPdfs = expectedPdfs.filter((f) => fs.existsSync(path.join(dir, f)));
+
+  let hasProductJson = false;
+  let fullPdfPath: string | null = null;
+
+  for (const dir of candidateDirs) {
+    if (!hasProductJson && fs.existsSync(path.join(dir, "product.json"))) {
+      hasProductJson = true;
+    }
+    if (!fullPdfPath && fs.existsSync(path.join(dir, "full.pdf"))) {
+      fullPdfPath = path.join(dir, "full.pdf");
+    }
+  }
 
   let fullPdfInfo: ShelfFileInfo | undefined;
-  const fullPdfPath = path.join(dir, "full.pdf");
-  if (fs.existsSync(fullPdfPath)) {
+  if (fullPdfPath) {
     try {
       const st = fs.statSync(fullPdfPath);
       fullPdfInfo = {
@@ -63,11 +83,13 @@ export function checkExamFiles(id: string): ShelfInfo {
     }
   }
 
+  const hasFull = Boolean(fullPdfInfo);
+
   return {
     hasDir: true,
     hasProductJson,
-    pdfCount: presentPdfs.length,
-    pdfs: presentPdfs,
+    pdfCount: hasFull ? 1 : 0,
+    pdfs: hasFull ? ["full.pdf"] : [],
     fullPdf: fullPdfInfo,
   };
 }
