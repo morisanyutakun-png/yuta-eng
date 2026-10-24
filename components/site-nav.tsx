@@ -151,7 +151,7 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
       </nav>
 
       {/* 狭い画面：ストア直行ピル ＋ ハンバーガーメニュー */}
-      <div ref={box} className="flex items-center gap-2 lg:hidden">
+      <div className="flex items-center gap-2 lg:hidden">
         {/* スマホでもヘッダー右端にストアへの誘導ピルを目立たせて常設 */}
         <Link
           href="/mock-exams"
@@ -192,29 +192,38 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
           </svg>
         </Link>
 
-        <button
-          type="button"
-          onClick={() => setOpenedAt(open ? null : path)}
-          aria-expanded={open}
-          aria-controls="site-menu"
-          className="flex min-h-11 items-center gap-1.5 pl-1.5 text-ink-2"
-        >
-          <span className="sr-only">{open ? "メニューを閉じる" : "メニューを開く"}</span>
-          <svg aria-hidden="true" viewBox="0 0 20 20" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.8">
-            {open ? (
-              <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" />
-            ) : (
-              <path d="M3 5.5h14M3 10h14M3 14.5h14" strokeLinecap="round" />
-            )}
-          </svg>
-        </button>
-
-        {open && (
-          <nav
-            id="site-menu"
-            aria-label="サイト内"
-            className="absolute right-0 top-[calc(100%+0.6rem)] z-40 w-[17.5rem] border border-rule bg-paper shadow-[0_4px_16px_rgba(21,24,28,0.14)]"
+        {/* ドロップダウンの基準位置となるコンテナ（relative） */}
+        <div ref={box} className="relative">
+          <button
+            type="button"
+            onClick={() => setOpenedAt(open ? null : path)}
+            aria-expanded={open}
+            aria-controls="site-menu"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded text-ink-2 hover:text-ink active:bg-paper-2"
           >
+            <span className="sr-only">{open ? "メニューを閉じる" : "メニューを開く"}</span>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 20 20"
+              className="pointer-events-none size-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            >
+              {open ? (
+                <path d="M5 5l10 10M15 5L5 15" strokeLinecap="round" />
+              ) : (
+                <path d="M3 5.5h14M3 10h14M3 14.5h14" strokeLinecap="round" />
+              )}
+            </svg>
+          </button>
+
+          {open && (
+            <nav
+              id="site-menu"
+              aria-label="サイト内"
+              className="absolute right-0 top-[calc(100%+0.5rem)] z-50 w-[17.5rem] max-w-[calc(100vw-2rem)] rounded-md border border-rule bg-paper shadow-[0_8px_24px_rgba(21,24,28,0.18)]"
+            >
             <ul className="divide-y divide-rule">
               {items.map((it) => (
                 <li
@@ -259,6 +268,7 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
             </ul>
           </nav>
         )}
+        </div>
       </div>
     </>
   );

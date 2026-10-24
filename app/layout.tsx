@@ -46,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
 
         <SiteHeaderWrapper>
-          <header className="border-b border-rule">
+          <header className="relative z-40 border-b border-rule bg-paper">
             <div className="mx-auto flex max-w-[46rem] items-center justify-between px-5 py-3.5 sm:px-6 lg:max-w-[74rem] lg:px-8">
               <Link href="/" className="flex min-h-11 items-center gap-2.5 text-ink">
                 <LogoMark className="size-7 shrink-0 text-navy" />
