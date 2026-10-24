@@ -12,10 +12,10 @@ interface Props {
 }
 
 /**
- * 模試演習ストア（/mock-exams 以下）の共通レイアウト切り替えコンポーネント。
+ * 模試PDFストア（/mock-exams 以下）の共通レイアウト切り替えコンポーネント。
  *
  * 管理画面（/mock-exams/shelf）を開いている時は、
- * 一般顧客用のヘッダー（カート・購入履歴など）やストア用フッター（特商法表記など）を
+ * 一般顧客用のヘッダー（カートなど）やストア用フッター（特商法表記など）を
  * 完全に非表示にし、Admin専用の集中できるUIを提供する。
  */
 export function MockExamsStoreChrome({ children }: Props) {

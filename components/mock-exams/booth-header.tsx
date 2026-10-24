@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCart } from "@/components/mock-exams/cart-context";
-import { FileTextIcon, ShoppingCartIcon } from "@/components/mock-exams/icons";
+import { ShoppingCartIcon } from "@/components/mock-exams/icons";
 import { StoreLogoMark } from "@/components/mock-exams/store-logo";
 
 export function BoothHeader() {
@@ -35,20 +35,9 @@ export function BoothHeader() {
           {/* 研究室サイトへ */}
           <Link
             href="/"
-            className="hidden md:inline-flex text-[11px] text-slate-400 hover:text-white transition-colors"
+            className="text-xs text-slate-300 hover:text-white transition-colors"
           >
-            研究室トップ
-          </Link>
-
-          <span className="hidden md:inline text-slate-700">|</span>
-
-          {/* 購入履歴（書類アイコンつき） */}
-          <Link
-            href="/mock-exams/shelf"
-            className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-200 hover:text-white hover:bg-white/10 transition"
-          >
-            <FileTextIcon size={16} className="text-slate-300" />
-            <span>購入履歴</span>
+            ← 研究室トップ
           </Link>
 
           {/* カートボタン（EC王道UI: アイコン + 右上赤丸白抜きバッジ） */}
