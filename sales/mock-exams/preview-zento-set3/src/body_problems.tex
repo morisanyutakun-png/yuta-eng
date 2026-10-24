@@ -1,0 +1,77 @@
+\begin{monsheet}
+\addcontentsline{toc}{section}{\ExamTocProblemLabel}
+
+\begin{daimon}{1}
+自然数 $n$ に対して，整数 $a_{n}$ を
+\[
+  a_{n} = 5^{n} + 2^{n+1}
+\]
+と定める。次の問いに答えよ。\hfill（配点 20点）
+\begin{shomon}
+  \item $a_{1}$，$a_{2}$，$a_{3}$ の値をそれぞれ求めよ。また，すべての自然数 $n$ に対して $a_{n}$ は $3$ の倍数であることを示せ。
+  \item すべての自然数 $n$ に対して $a_{n+2}=7a_{n+1}-10a_{n}$ が成り立つことを示せ。また，これを用いて（または二項定理・合同式を用いて），$a_{n}$ が $9$ の倍数となるための自然数 $n$ の必要十分条件を求めよ。
+  \item すべての自然数 $n$ に対して，$a_{n+1}-2a_{n}$ および $5a_{n}-a_{n+1}$ を $n$ の式で表せ。さらに，隣り合う $2$ 項 $a_{n}$ と $a_{n+1}$ の最大公約数を求めよ。
+  \item $a_{n}$ が平方数（ある整数の $2$ 乗）となるような自然数 $n$ をすべて求めよ。
+\end{shomon}
+\end{daimon}
+
+\begin{daimon}{2}
+底面が正三角形 $\Pt{ABC}$ および $\Pt{DEF}$ であり，側面が $3$ つの長方形 $\Pt{ABED}$，$\Pt{BCFE}$，$\Pt{CAFD}$ である正三角柱 $\Pt{ABC\text{-}DEF}$ がある（頂点 $\Pt{A}, \Pt{B}, \Pt{C}$ から下底面に下ろした辺がそれぞれ $\Pt{AD}, \Pt{BE}, \Pt{CF}$ である）。動点 $\Pt{P}$ は時刻 $0$ に頂点 $\Pt{A}$ にあり，$1$ 秒ごとに，いまいる頂点と辺で結ばれた $3$ つの頂点のうちの $1$ つに等しい確率 $\dfrac{1}{3}$ で移動する。自然数 $n$（または $n\geqq 0$）に対し，$n$ 秒後に $\Pt{P}$ が頂点 $\Pt{A}, \Pt{B}, \Pt{C}, \Pt{D}, \Pt{E}, \Pt{F}$ にある確率をそれぞれ $a_{n}, b_{n}, c_{n}, d_{n}, e_{n}, f_{n}$ とする。次の問いに答えよ。\hfill（配点 20点）
+\begin{shomon}
+  \item 対称性により $b_{n}=c_{n}$，$e_{n}=f_{n}$ であることに注意して，$a_{n+1}, b_{n+1}, d_{n+1}, e_{n+1}$ をそれぞれ $a_{n}, b_{n}, d_{n}, e_{n}$ を用いて表せ。
+  \item $n$ 秒後に $\Pt{P}$ が上底面 $\Pt{ABC}$ のいずれかの頂点にある確率を $p_{n}=a_{n}+2b_{n}$ とおく。$p_{n+1}$ を $p_{n}$ を用いて表し，$p_{n}$ を $n$ の式で表せ。
+  \item $n\geqq 1$ のとき，和 $a_{n}+d_{n}$ および $b_{n}+e_{n}$ の値をそれぞれ求めよ。
+  \item $r_{n}=a_{n}-b_{n}$ とおくとき，$r_{n+1}$ を $r_{n}$ と $p_{n}$（または $a_{n}-b_{n}$ と $d_{n}-e_{n}$）の関係から調べることで，$a_{n}, b_{n}, d_{n}, e_{n}$ をそれぞれ $n\ (n\geqq 1)$ の式で表せ。また，$\lim\limits_{n\to\infty}a_{n}$ を求めよ。
+\end{shomon}
+\end{daimon}
+
+\begin{daimon}{3}
+$xy$ 平面上の放物線 $C: y=\dfrac{1}{2}x^{2}$ と，直線 $d: y=-\dfrac{1}{2}$ を考える。直線 $d$ 上の点 $\Pt{P}\left(a, -\dfrac{1}{2}\right)$（$a$ は実数）から放物線 $C$ に引いた $2$ 本の接線の接点をそれぞれ $\Pt{Q}\left(\alpha, \dfrac{1}{2}\alpha^{2}\right)$，$\Pt{R}\left(\beta, \dfrac{1}{2}\beta^{2}\right)$（$\alpha<\beta$）とする。次の問いに答えよ。\hfill（配点 20点）
+\begin{shomon}
+  \item $\alpha+\beta$ および $\alpha\beta$ を $a$ を用いて表せ。また，$2$ 本の接線 $\Pt{PQ}$ と $\Pt{PR}$ は実数 $a$ の値によらずつねに直交することを示せ。
+  \item $2$ 点 $\Pt{Q}, \Pt{R}$ を通る直線 $\Pt{QR}$ の方程式を $a$ を用いて表し，直線 $\Pt{QR}$ は $a$ の値によらず定点 $\Pt{F}$ を通ることを示して，その定点 $\Pt{F}$ の座標を求めよ。
+  \item 放物線 $C$ と直線 $\Pt{QR}$ で囲まれた部分の面積を $S(a)$ とする。$S(a)$ を $a$ の式で表し，$S(a)$ の最小値とそのときの三角形 $\Pt{PQR}$ の面積を求めよ。
+  \item $a=0$ のとき，放物線 $C$ と直線 $\Pt{QR}$ で囲まれた図形を $x$ 軸のまわりに $1$ 回転してできる立体の体積 $V_{x}$ を求めよ。また，$a=0$ のとき，放物線 $C$ と $2$ 本の接線 $\Pt{PQ}, \Pt{PR}$ で囲まれた部分の $x\geqq 0, y\geqq 0$ の領域を $y$ 軸のまわりに $1$ 回転してできる立体の体積 $V_{y}$ を求めよ。
+\end{shomon}
+\end{daimon}
+
+\clearpage
+
+\begin{daimon}{4}
+座標空間において，連立不等式
+\[
+  x^{2} + y + z \leqq 1,\qquad y \geqq 0,\qquad z \geqq 0
+\]
+の表す立体を $K$ とする。次の問いに答えよ。\hfill（配点 20点）
+\begin{shomon}
+  \item 実数 $t$ が $-1\leqq t\leqq 1$ を満たすとき，立体 $K$ を平面 $x=t$ で切った切り口の面積 $S(t)$ を $t$ の式で表せ。また，立体 $K$ の体積 $V$ を求めよ。
+  \item 実数 $u$ が $0\leqq u\leqq 1$ を満たすとき，立体 $K$ を平面 $y=u$ で切った切り口の面積 $T(u)$ を $u$ の式で表し，$\dsp\int_{0}^{1}T(u)\,du$ を計算して (1) の体積 $V$ と一致することを確かめよ。
+  \item 立体 $K$ の境界のうち曲面 $x^{2}+y+z=1\ (y\geqq 0, z\geqq 0)$ 上の点を $\Pt{P}(x, y, z)$ とする。平面 $x=t\ (-1\leqq t\leqq 1)$ 上に点 $\Pt{P}$ があるとき，原点 $\Pt{O}(0,0,0)$ から点 $\Pt{P}$ までの距離 $\Pt{OP}$ の最小値 $d(t)$ を $t$ の式で表せ。さらに，点 $\Pt{P}$ が曲面 $x^{2}+y+z=1\ (y\geqq 0, z\geqq 0)$ 全体を動くときの $\Pt{OP}$ の最小値と，そのときの点 $\Pt{P}$ の座標を求めよ。
+  \item 平面 $x=t\ (-1\leqq t\leqq 1)$ による立体 $K$ の切り口上の点 $\Pt{Q}(t, y, z)$ と，$x$ 軸上の点 $\Pt{H}(t, 0, 0)$ との距離 $\Pt{HQ}$ の最大値 $R(t)$ を $t$ の式で表せ。さらに，立体 $K$ を $x$ 軸のまわりに $1$ 回転してできる立体の体積 $W$ を求めよ。
+\end{shomon}
+\end{daimon}
+
+\begin{daimon}{5}
+$0$ 以上の整数 $n\ (n=0, 1, 2, \ldots)$ に対して，定積分 $I_{n}$ を
+\[
+  I_{n} = \int_{0}^{1}\frac{x^{n}}{x+3}\,dx
+\]
+と定める。ただし，対数は自然対数とする。次の問いに答えよ。\hfill（配点 20点）
+\begin{shomon}
+  \item $I_{0}$ および $I_{1}$ の値をそれぞれ求めよ。
+  \item すべての $0$ 以上の整数 $n$ に対して，$I_{n+1}+3I_{n}$ を $n$ の式で表せ。
+  \item すべての自然数 $n$ に対して，不等式
+  \[
+    \frac{1}{4(n+1)} \leqq I_{n} \leqq \frac{1}{3(n+1)}
+  \]
+  が成り立つことを示し，$\lim\limits_{n\to\infty}I_{n}$ を求めよ。さらに，(2) の関係式と不等式 $I_{n+1}\leqq I_{n}$ を用いて極限値 $\lim\limits_{n\to\infty}nI_{n}$ を求めよ。
+  \item (2) の関係式を用いて，すべての自然数 $n$ に対して
+  \[
+    \sum_{k=1}^{n}\frac{(-1)^{k-1}}{k\cdot 3^{k}} = I_{0} + \frac{(-1)^{n-1}}{3^{n}}I_{n}
+  \]
+  が成り立つことを示せ。さらに，無限級数 $\dsp\sum_{k=1}^{\infty}\frac{(-1)^{k-1}}{k\cdot 3^{k}}$ の和を求めよ。
+\end{shomon}
+\end{daimon}
+
+\scratchpage
+\end{monsheet}

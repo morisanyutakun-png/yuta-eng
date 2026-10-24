@@ -1,0 +1,545 @@
+\addcontentsline{toc}{section}{第2セット 解答・解説}
+
+\noindent
+{\Large\sffamily\bfseries 第2セット\ \ 解答・解説}
+\par\vspace{2mm}
+
+% =====================================================================
+% 第1問
+% =====================================================================
+\hdA{第1問\ \ 小問集合（不定方程式・三角関数・極限・積分方程式）}
+\hdTag{数学I・A・II・III ── 1次不定方程式／対称型三角関数／関数と数列の極限／定積分を含む関数方程式}
+
+\hdB{出題のねらい・指針}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+  \item[(1)] $5x+8y=200$ において $8y$ と $200$ がともに $8$ の倍数であることに着目すると，$x$ が $8$ の倍数であることが直ちにわかる。
+  \item[(2)] $\sin\theta+\cos\theta=t$ とおくと，$t^{2}=1+\sin 2\theta$ より $\sin 2\theta=t^{2}-1$ と表せる。合成により $t=\sqrt{2}\sin\left(\theta+\dfrac{\pi}{4}\right)$ として $t$ の変域を抑える。
+  \item[(3)] (i) は $\sqrt{A}-\sqrt{B}$ の分子の有理化，(ii) は標準極限 $\lim\limits_{u\to 0}\dfrac{e^{u}-1}{u}=1$，$\lim\limits_{u\to 0}\dfrac{\sin u}{u}=1$，$\lim\limits_{u\to 0}\dfrac{1-\cos u}{u^{2}}=\dfrac{1}{2}$ を組み合わせる。
+  \item[(4)] 加法定理 $\sin(x-t)=\sin x\cos t-\cos x\sin t$ で被積分関数を展開し，$x$ を定数因子として積分の外に出すことで，$2$ つの定積分を定数 $A, B$ とおく連立方程式に帰着させる。
+\end{itemize}
+
+\Q{1}{5}
+$5x+8y=200$ を変形すると $5x=8(25-y)$ である。$5$ と $8$ は互いに素であるから，$x$ は $8$ の倍数であり，整数 $k$ を用いて
+\[
+  x = 8k,\qquad y = 25 - 5k
+\]
+と表される。$x, y$ がともに正の整数であるための条件は
+\[
+  8k \geqq 1 \quad\text{かつ}\quad 25-5k \geqq 1
+  \iff 1 \leqq k \leqq 4
+\]
+である。したがって，正の整数の組 $(x, y)$ は $k=1, 2, 3, 4$ に対応する
+\[
+  (x, y) = (8, 20),\ (16, 15),\ (24, 10),\ (32, 5)
+\]
+の $4$ 個である。それぞれの組について $x^{2}+y^{2}$ を計算すると，
+\begin{align*}
+  (8, 20) &: 8^{2}+20^{2} = 64+400 = 464,\\
+  (16, 15) &: 16^{2}+15^{2} = 256+225 = 481,\\
+  (24, 10) &: 24^{2}+10^{2} = 576+100 = 676,\\
+  (32, 5) &: 32^{2}+5^{2} = 1024+25 = 1049
+\end{align*}
+となる（二次関数 $g(k)=(8k)^{2}+(25-5k)^{2}=89k^{2}-250k+625$ の軸が $k=\dfrac{125}{89}\fallingdotseq 1.40$ であることからも，整数 $k$ では $k=1$ で最小となることがわかる）。
+
+\Ans{\text{個数：}4\text{ 個},\quad (x, y)=(8, 20)\text{ のとき最小値 }464}
+
+\Q{2}{5}
+$t=\sin\theta+\cos\theta$ の両辺を $2$ 乗すると
+\[
+  t^{2} = \sin^{2}\theta+2\sin\theta\cos\theta+\cos^{2}\theta = 1+\sin 2\theta
+  \iff \sin 2\theta = t^{2}-1
+\]
+である。これを $f(\theta)$ に代入すると，
+\[
+  f(\theta) = 2(t^{2}-1) + 2\sqrt{2}\,t = 2t^{2}+2\sqrt{2}\,t-2 = 2\left(t+\frac{\sqrt{2}}{2}\right)^{2}-3
+\]
+となる。また，三角関数の合成により $t=\sqrt{2}\sin\left(\theta+\dfrac{\pi}{4}\right)$ である。$0\leqq\theta<2\pi$ のとき $\dfrac{\pi}{4}\leqq\theta+\dfrac{\pi}{4}<\dfrac{9}{4}\pi$ であるから，$t$ のとり得る値の範囲は
+\[
+  -\sqrt{2} \leqq t \leqq \sqrt{2}
+\]
+である。$-\sqrt{2}\leqq t\leqq\sqrt{2}$ における二次関数 $2\left(t+\dfrac{\sqrt{2}}{2}\right)^{2}-3$ について：
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+  \item $t=\sqrt{2}$ のとき最大値 $2(\sqrt{2})^{2}+2\sqrt{2}\cdot\sqrt{2}-2=6$ をとる。このとき $\sin\left(\theta+\dfrac{\pi}{4}\right)=1$ より $\theta+\dfrac{\pi}{4}=\dfrac{\pi}{2}$，すなわち $\theta=\dfrac{\pi}{4}$ である。
+  \item $t=-\dfrac{\sqrt{2}}{2}$ のとき最小値 $-3$ をとる。このとき $\sin\left(\theta+\dfrac{\pi}{4}\right)=-\dfrac{1}{2}$ より $\theta+\dfrac{\pi}{4}=\dfrac{7}{6}\pi, \dfrac{11}{6}\pi$，すなわち $\theta=\dfrac{11}{12}\pi, \dfrac{19}{12}\pi$ である。
+\end{itemize}
+
+\Ans{\begin{aligned}[t]
+  &f(\theta)=2t^{2}+2\sqrt{2}\,t-2\ \ (-\sqrt{2}\leqq t\leqq\sqrt{2}),\\
+  &\theta=\frac{\pi}{4}\text{ のとき最大値 }6,\quad \theta=\frac{11}{12}\pi, \frac{19}{12}\pi\text{ のとき最小値 }-3
+\end{aligned}}
+
+\Q{3}{5}
+(i) 分子を有理化すると，
+\[
+  \sqrt{9n^{2}+6n+2}-3n
+  = \frac{(9n^{2}+6n+2)-9n^{2}}{\sqrt{9n^{2}+6n+2}+3n}
+  = \frac{6+\dfrac{2}{n}}{\sqrt{9+\dfrac{6}{n}+\dfrac{2}{n^{2}}}+3}
+  \xrightarrow[n\to\infty]{} \frac{6}{\sqrt{9}+3} = 1.
+\]
+(ii) $x\neq 0$ のとき，
+\[
+  \frac{(e^{2x}-1)\sin 3x}{1-\cos 2x}
+  = \frac{e^{2x}-1}{2x}\cdot\frac{\sin 3x}{3x}\cdot\frac{(2x)^{2}}{1-\cos 2x}\cdot\frac{2\cdot 3}{4}
+\]
+と変形できる。$x\to 0$ のとき $\dfrac{e^{2x}-1}{2x}\to 1$，$\dfrac{\sin 3x}{3x}\to 1$，$\dfrac{1-\cos 2x}{(2x)^{2}}\to\dfrac{1}{2}$ であるから，
+\[
+  \lim_{x\to 0}\frac{(e^{2x}-1)\sin 3x}{1-\cos 2x}
+  = 1\cdot 1\cdot 2\cdot\frac{3}{2} = 3.
+\]
+
+\Ans{\text{(i)}\ 1,\qquad \text{(ii)}\ 3}
+
+\Q{4}{5}
+$\sin(x-t)=\sin x\cos t-\cos x\sin t$ を用いて与えられた等式を整理すると，
+\[
+  f(x) = 2\sin x + \left(\frac{2}{\pi}\int_{0}^{\pi}f(t)\cos t\,dt\right)\sin x - \left(\frac{2}{\pi}\int_{0}^{\pi}f(t)\sin t\,dt\right)\cos x
+\]
+となる。ここで定積分は定数であるから，
+\[
+  A = \frac{2}{\pi}\int_{0}^{\pi}f(t)\cos t\,dt,\qquad
+  B = \frac{2}{\pi}\int_{0}^{\pi}f(t)\sin t\,dt
+\]
+とおくと，$f(x)=(2+A)\sin x-B\cos x$ と表される。ここで，
+\[
+  \int_{0}^{\pi}\sin^{2}t\,dt = \int_{0}^{\pi}\frac{1-\cos 2t}{2}\,dt = \frac{\pi}{2},\qquad
+  \int_{0}^{\pi}\cos^{2}t\,dt = \int_{0}^{\pi}\frac{1+\cos 2t}{2}\,dt = \frac{\pi}{2},
+\]
+\[
+  \int_{0}^{\pi}\sin t\cos t\,dt = \left[-\frac{\cos 2t}{4}\right]_{0}^{\pi} = 0
+\]
+であるから，$f(t)=(2+A)\sin t-B\cos t$ を $A, B$ の定義式に代入すると，
+\begin{align*}
+  A &= \frac{2}{\pi}\left\{(2+A)\cdot 0 - B\cdot\frac{\pi}{2}\right\} = -B,\\
+  B &= \frac{2}{\pi}\left\{(2+A)\cdot\frac{\pi}{2} - B\cdot 0\right\} = 2+A
+\end{align*}
+を得る。この連立方程式を解くと $B=2-B$ より $B=1$，ゆえに $A=-1$ となる。したがって，
+\[
+  f(x) = (2-1)\sin x - 1\cdot\cos x = \sin x - \cos x.
+\]
+
+\Ans{f(x) = \sin x - \cos x}
+
+% =====================================================================
+% 第2問
+% =====================================================================
+\hdA{第2問\ \ 数列の漸化式と無限級数}
+\hdTag{数学B（数列）・数学III（極限）── 分数係数漸化式の置き換え／階差数列／部分分数分解と無限級数}
+
+\hdB{出題のねらい・指針}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+  \item[(1)] 漸化式の両辺に $(n+1)(n+2)$ を掛けると，$(n+1)(n+2)a_{n+1}=n(n+1)a_{n}+(3n+2)$ となり，$b_{n}=n(n+1)a_{n}$ の階差が $1$ 次式 $3n+2$ になる。
+  \item[(3)(4)] 無限級数 $\sum c_{n}$ の和は，必ず**第 $N$ 部分和 $S_{N}=\sum_{n=1}^{N}c_{n}$ を求めてから $N\to\infty$ の極限をとる**手順で記述する。特に (4) では $2$ 個飛ばしの望遠鏡和が現れるため，末尾に $2$ 項残ることに注意する。
+\end{itemize}
+
+\Q{1}{4}
+漸化式に $n=1, 2$ を代入すると，
+\begin{align*}
+  a_{2} &= \frac{1}{3}a_{1} + \frac{5}{2\cdot 3} = \frac{1}{3} + \frac{5}{6} = \frac{7}{6},\\
+  a_{3} &= \frac{2}{4}a_{2} + \frac{8}{3\cdot 4} = \frac{1}{2}\cdot\frac{7}{6} + \frac{2}{3} = \frac{7}{12} + \frac{8}{12} = \frac{15}{12} = \frac{5}{4}.
+\end{align*}
+また，漸化式の両辺に $(n+1)(n+2)$ を掛けると，
+\[
+  (n+1)(n+2)a_{n+1} = n(n+1)a_{n} + 3n + 2
+\]
+となる。$b_{n}=n(n+1)a_{n}$ であるから，$b_{n+1}=(n+1)(n+2)a_{n+1}$ であり，
+\[
+  b_{n+1} - b_{n} = 3n + 2.
+\]
+
+\Ans{a_{2}=\frac{7}{6},\quad a_{3}=\frac{5}{4},\quad b_{n+1}-b_{n}=3n+2}
+
+\Q{2}{5}
+$b_{1}=1\cdot 2\cdot a_{1}=2$ である。(1) より $n\geqq 2$ のとき，
+\[
+  b_{n} = b_{1} + \sum_{k=1}^{n-1}(3k+2)
+  = 2 + 3\cdot\frac{(n-1)n}{2} + 2(n-1)
+  = \frac{3n^{2}-3n+4n}{2} = \frac{n(3n+1)}{2}
+\]
+であり，これは $n=1$ のときも $\dfrac{1\cdot 4}{2}=2=b_{1}$ となって成り立つ。したがって，すべての自然数 $n$ に対して
+\[
+  a_{n} = \frac{b_{n}}{n(n+1)} = \frac{3n+1}{2(n+1)}.
+\]
+
+\Ans{b_{n}=\frac{n(3n+1)}{2},\qquad a_{n}=\frac{3n+1}{2(n+1)}}
+
+\Q{3}{5}
+(2) より，
+\[
+  L = \lim_{n\to\infty}a_{n} = \lim_{n\to\infty}\frac{3+\dfrac{1}{n}}{2\left(1+\dfrac{1}{n}\right)} = \frac{3}{2}.
+\]
+このとき，
+\[
+  \frac{L-a_{n}}{n}
+  = \frac{1}{n}\left\{\frac{3}{2}-\frac{3n+1}{2(n+1)}\right\}
+  = \frac{1}{n}\cdot\frac{3(n+1)-(3n+1)}{2(n+1)}
+  = \frac{1}{n(n+1)} = \frac{1}{n} - \frac{1}{n+1}
+\]
+である。初項から第 $N$ 項までの部分和を $S_{N}$ とすると，
+\[
+  S_{N} = \sum_{n=1}^{N}\left(\frac{1}{n}-\frac{1}{n+1}\right) = 1 - \frac{1}{N+1}
+  \xrightarrow[N\to\infty]{} 1.
+\]
+よって与えられた無限級数は収束し，その和は $1$ である。
+
+\Ans{L=\frac{3}{2},\quad \text{収束し，その和は }1}
+
+\Q{4}{6}
+(2) より，一般項は
+\[
+  \frac{a_{n}}{n(n+2)} = \frac{3n+1}{2n(n+1)(n+2)}
+\]
+である。ここで，部分分数分解を行うと，
+\[
+  \frac{3n+1}{2n(n+1)(n+2)}
+  = \frac{2(n+1)+(n-1)}{2n(n+1)(n+2)}
+  = \frac{1}{n(n+2)} + \frac{n-1}{2n(n+1)(n+2)}
+\]
+より，定数 $p, q, r$ を用いて $\dfrac{3n+1}{2n(n+1)(n+2)}=\dfrac{p}{n}+\dfrac{q}{n+1}+\dfrac{r}{n+2}$ とおくと，分母を払った恒等式 $3n+1=2p(n+1)(n+2)+2qn(n+2)+2rn(n+1)$ に $n=0, -1, -2$ を代入して
+\[
+  p = \frac{1}{4},\qquad q = 1,\qquad r = -\frac{5}{4}
+\]
+を得る。したがって，
+\[
+  \frac{a_{n}}{n(n+2)}
+  = \frac{1}{4}\left(\frac{1}{n}-\frac{1}{n+1}\right) + \frac{5}{4}\left(\frac{1}{n+1}-\frac{1}{n+2}\right)
+\]
+と変形できる。初項から第 $N$ 項までの部分和を $T_{N}$ とすると，
+\[
+  T_{N}
+  = \frac{1}{4}\sum_{n=1}^{N}\left(\frac{1}{n}-\frac{1}{n+1}\right) + \frac{5}{4}\sum_{n=1}^{N}\left(\frac{1}{n+1}-\frac{1}{n+2}\right)
+  = \frac{1}{4}\left(1-\frac{1}{N+1}\right) + \frac{5}{4}\left(\frac{1}{2}-\frac{1}{N+2}\right)
+\]
+である。$N\to\infty$ のとき $\dfrac{1}{N+1}\to 0$，$\dfrac{1}{N+2}\to 0$ であるから，求める無限級数の和は
+\[
+  \lim_{N\to\infty}T_{N} = \frac{1}{4}\cdot 1 + \frac{5}{4}\cdot\frac{1}{2} = \frac{7}{8}.
+\]
+
+\Ans{\frac{7}{8}}
+
+% =====================================================================
+% 第3問
+% =====================================================================
+\hdA{第3問\ \ 複素数平面と一次分数変換}
+\hdTag{数学C（複素数平面）── 一次分数変換の逆変換／円と直線の像／除外点の処理／偏角の正接の最大値}
+
+\hdB{出題のねらい・指針}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+  \item[(1)] $w=\dfrac{2z-1}{z-2}$ を $z$ について解くと，元の式とまったく同じ形の対合（自己逆変換）$z=\dfrac{2w-1}{w-2}$ が得られる。
+  \item[(2)] 「点 $z$ が虚軸全体を動く」とは，純虚数条件 $z+\bar{z}=0$，あるいは垂直二等分線として $|z-(-1)|=|z-1|$ が成り立つことと同値である。逆変換 $z=\dfrac{2w-1}{w-2}$ を代入し，**除外点 $w\neq 2$ を忘れずに明記する**。
+  \item[(4)] 円上の点 $w$ の偏角 $\theta$ について $\tan\theta$ が最大となるのは，原点からその円に引いた接線の接点においてである。媒介変数表示 $z=ti\ (t<0)$ から実部・虚部を表して相加・相乗平均の関係を使ってもよいし，図形的に接線条件から求めてもよい。
+\end{itemize}
+
+\Q{1}{4}
+$w=\dfrac{2z-1}{z-2}$ より $w(z-2)=2z-1$，すなわち
+\[
+  (w-2)z = 2w-1 \quad\cdots\text{①}
+\]
+である。もし $w=2$ であると仮定すると，①は $0\cdot z=3$ となり，これを満たす複素数 $z$ は存在しない。よって $w\neq 2$ であり，①の両辺を $w-2$ で割って
+\[
+  z = \frac{2w-1}{w-2}
+\]
+を得る。これを $|z|=1$ に代入すると，
+\[
+  \left|\frac{2w-1}{w-2}\right| = 1 \iff |2w-1| = |w-2| \quad (\text{かつ }w\neq 2).
+\]
+両辺を $2$ 乗して共役複素数を用いて展開すると，
+\[
+  (2w-1)(2\bar{w}-1) = (w-2)(\bar{w}-2)
+  \iff 4|w|^{2}-2(w+\bar{w})+1 = |w|^{2}-2(w+\bar{w})+4
+  \iff 3|w|^{2}=3 \iff |w|=1.
+\]
+単位円 $|w|=1$ は除外点 $w=2$ を含まないから，点 $w$ は単位円 $|w|=1$ の全体を描く。
+
+\Ans{z=\frac{2w-1}{w-2},\quad \text{単位円 }|w|=1}
+
+\Q{2}{5}
+点 $z$ が虚軸上にあるための必要十分条件は $z+\bar{z}=0$ である。(1) の $z=\dfrac{2w-1}{w-2}\ (w\neq 2)$ を代入すると，
+\[
+  \frac{2w-1}{w-2} + \frac{2\bar{w}-1}{\bar{w}-2} = 0
+  \iff (2w-1)(\bar{w}-2) + (2\bar{w}-1)(w-2) = 0 \quad (w\neq 2).
+\]
+これを展開して整理すると，
+\[
+  4|w|^{2} - 5(w+\bar{w}) + 4 = 0
+  \iff |w|^{2} - \frac{5}{4}(w+\bar{w}) + 1 = 0
+  \iff \left|w-\frac{5}{4}\right|^{2} = \frac{25}{16}-1 = \frac{9}{16}
+\]
+すなわち
+\[
+  \left|w-\frac{5}{4}\right| = \frac{3}{4} \quad (\text{ただし }w\neq 2)
+\]
+となる（実際，$w=2$ は $\left|2-\dfrac{5}{4}\right|=\dfrac{3}{4}$ を満たすため，この円周上の点であるが除外される）。よって点 $w$ が描く図形は，点 $\dfrac{5}{4}$ を中心とする半径 $\dfrac{3}{4}$ の円から点 $2$ を除いたものである。
+
+\begin{center}
+\begin{tikzpicture}[scale=2.0]
+  \draw[-{Stealth[length=2mm]}, line width=0.5pt] (-0.3, 0) -- (2.5, 0) node[right] {$\mathrm{Re}$};
+  \draw[-{Stealth[length=2mm]}, line width=0.5pt] (0, -1.0) -- (0, 1.0) node[above] {$\mathrm{Im}$};
+  \draw[line width=0.9pt] (1.25, 0) circle (0.75);
+  \fill (1.25, 0) circle (1.1pt) node[below] {$\dfrac{5}{4}$};
+  \fill (0.5, 0) circle (1.1pt) node[below left] {$\dfrac{1}{2}$};
+  \fill[white] (2.0, 0) circle (1.8pt);
+  \draw[line width=0.7pt] (2.0, 0) circle (1.8pt);
+  \node[below right] at (2.0, 0) {$2$（除外点）};
+  \node[ below left] at (0,0) {$\Pt{O}$};
+  \node[above] at (1.25, 0.75) {$\left|w-\dfrac{5}{4}\right|=\dfrac{3}{4}$};
+\end{tikzpicture}
+\end{center}
+
+\Ans{\text{点 }\frac{5}{4}\text{ を中心とする半径 }\frac{3}{4}\text{ の円（ただし点 }2\text{ を除く）}}
+
+\Q{3}{5}
+(2) の円は実軸上の点 $\dfrac{5}{4}$ を中心とし，半径 $\dfrac{3}{4}$ の円（点 $2$ を除く）であるから，原点 $\Pt{O}$ からこの円周上の点 $w$ までの距離 $|w|$ は，
+\[
+  \frac{5}{4}-\frac{3}{4} \leqq |w| < \frac{5}{4}+\frac{3}{4}
+  \iff \frac{1}{2} \leqq |w| < 2
+\]
+を満たす（$|w|=2$ となる点は除外点 $w=2$ のみであるため，上端の等号はつかない）。$|w|$ が最小値 $\dfrac{1}{2}$ をとるのは $w=\dfrac{1}{2}$ のときであり，このとき (1) より
+\[
+  z = \frac{2\cdot\frac{1}{2}-1}{\frac{1}{2}-2} = 0
+\]
+である。
+
+\Ans{z=0\text{ のとき最小値 }\frac{1}{2},\quad \text{値の範囲は }\frac{1}{2}\leqq |w|<2}
+
+\Q{4}{6}
+$z=ti\ (t<0)$ を $w=\dfrac{2z-1}{z-2}$ に代入し，分母・分子に $-ti-2$ を掛けて実部と虚部に分けると，
+\[
+  w = \frac{2ti-1}{ti-2} = \frac{(2ti-1)(-ti-2)}{t^{2}+4} = \frac{2t^{2}+2 - 3ti}{t^{2}+4}
+\]
+となる。$t<0$ のとき，実部 $X=\dfrac{2(t^{2}+1)}{t^{2}+4}>0$，虚部 $Y=\dfrac{-3t}{t^{2}+4}>0$ であるから，点 $w$ は第 $1$ 象限（(2) の円の上半円弧）を動く。このとき，
+\[
+  \tan\theta = \frac{Y}{X} = \frac{-3t}{2(t^{2}+1)} = \frac{3}{2\left((-t)+\dfrac{1}{-t}\right)}
+\]
+である。$-t>0$ であるから，相加平均と相乗平均の関係により
+\[
+  (-t) + \frac{1}{-t} \geqq 2\sqrt{(-t)\cdot\frac{1}{-t}} = 2
+\]
+が成り立ち，等号は $-t=\dfrac{1}{-t}\ (t<0)$ すなわち $t=-1$ のときに成り立つ。したがって，$\tan\theta$ は $t=-1$（すなわち $z=-i$）のとき最大値
+\[
+  \tan\theta = \frac{3}{2\cdot 2} = \frac{3}{4}
+\]
+をとる。このときの $w$ の値は，
+\[
+  w = \frac{2(-1)^{2}+2-3(-1)i}{(-1)^{2}+4} = \frac{4+3i}{5}.
+\]
+
+\begin{betsu}[別解（原点から円への接線による幾何的解法）]
+$z=ti\ (t<0)$ のとき $\mathrm{Im}\,w=\dfrac{-3t}{t^{2}+4}>0$ であるから，点 $w$ は中心 $\Pt{C}\left(\dfrac{5}{4}, 0\right)$，半径 $r=\dfrac{3}{4}$ の円の上半円（実軸より上側の開半円弧）全体を動く。よって偏角 $\theta\ \left(0<\theta<\dfrac{\pi}{2}\right)$ および $\tan\theta$ が最大となるのは，半直線 $\Pt{O}w$ がこの円に上側から接するときである。接点を $\Pt{T}$ とすると，$\angle\Pt{OTC}=90^{\circ}$，$\Pt{OC}=\dfrac{5}{4}$，$\Pt{CT}=\dfrac{3}{4}$ より $\Pt{OT}=\sqrt{\left(\dfrac{5}{4}\right)^{2}-\left(\dfrac{3}{4}\right)^{2}}=1$ であり，
+\[
+  \tan\theta = \frac{\Pt{CT}}{\Pt{OT}} = \frac{3/4}{1} = \frac{3}{4},\qquad
+  \cos\theta = \frac{4}{5},\quad \sin\theta = \frac{3}{5}.
+\]
+ゆえに $w=\Pt{OT}(\cos\theta+i\sin\theta)=\dfrac{4+3i}{5}$ であり，$z=\dfrac{2w-1}{w-2}=-i$ を得る。
+\end{betsu}
+
+\Ans{\tan\theta\text{ の最大値 }\frac{3}{4}\quad \left(w=\frac{4+3i}{5},\ z=-i\right)}
+
+% =====================================================================
+% 第4問
+% =====================================================================
+\hdA{第4問\ \ 空間ベクトルと球面の切り口}
+\hdTag{数学C（空間ベクトル）── 平面の方程式／球面と平面の交円／円周上の内積の最大最小／四面体の体積の最大}
+
+\hdB{出題のねらい・指針}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+  \item[(1)] $x, y, z$ 軸上の切片がすべて $3$ である平面 $\alpha$ は $x+y+z=3$ であり，法線ベクトルは $\vec{n}=(1, 1, 1)$ である。
+  \item[(2)] 円 $K$ の中心 $\Pt{H}(1, 1, 1)$ を基準として $\Vec{OP}=\Vec{OH}+\Vec{HP}$ と分解するのが鉄則である。$\Vec{OA}$ も平面 $\alpha$ への正射影と法線方向に分解するか，あるいは $\Vec{HP}$ と平面 $\alpha$ 上のベクトル $\Vec{HA}$ のなす角に着目すると，円周上の点 $\Pt{P}$ に対する内積の最大・最小が鮮やかに求まる。
+  \item[(4)] 底面 $\triangle\Pt{BCD}$ は平面 $\alpha$ 上に固定されているため，四面体 $\Pt{BCDQ}$ の体積が最大となるのは，球面 $S$ 上の点 $\Pt{Q}$ から平面 $\alpha$ までの距離（高さ）が最大となるときである。
+\end{itemize}
+
+\Q{1}{4}
+$3$ 点 $\Pt{A}(3,0,0)$，$\Pt{B}(0,3,0)$，$\Pt{C}(0,0,3)$ を通る平面 $\alpha$ の方程式は
+\[
+  \frac{x}{3}+\frac{y}{3}+\frac{z}{3}=1 \iff x+y+z=3
+\]
+である。平面 $\alpha$ の法線ベクトルは $\vec{n}=(1, 1, 1)$ であるから，原点 $\Pt{O}$ から平面 $\alpha$ に下ろした垂線の足 $\Pt{H}$ は，実数 $k$ を用いて $\Vec{OH}=k\vec{n}=(k, k, k)$ と表される。点 $\Pt{H}$ は平面 $\alpha$ 上にあるから，
+\[
+  k+k+k = 3 \iff k=1.
+\]
+したがって $\Pt{H}(1, 1, 1)$ であり，線分 $\Pt{OH}$ の長さは
+\[
+  \Pt{OH} = \sqrt{1^{2}+1^{2}+1^{2}} = \sqrt{3}.
+\]
+
+\Ans{\alpha: x+y+z=3,\quad \Pt{H}(1, 1, 1),\quad \Pt{OH}=\sqrt{3}}
+
+\Q{2}{5}
+球面 $S$ の半径は $R=3$ であり，$\Pt{OH}\perp\alpha$ であるから，三平方の定理により円 $K$ の半径 $r$ は
+\[
+  r = \sqrt{R^{2}-\Pt{OH}^{2}} = \sqrt{9-3} = \sqrt{6}
+\]
+である。次に，円 $K$ の周上の点 $\Pt{P}$ に対して $\Vec{OP}=\Vec{OH}+\Vec{HP}$ と分解する。ここで点 $\Pt{A}(3, 0, 0)$ は平面 $\alpha$ 上かつ球面 $S$ 上にあるから，点 $\Pt{A}$ 自身も円 $K$ の周上の点であり，$\Vec{HA}=(2, -1, -1)$，$|\Vec{HA}|=r=\sqrt{6}$ である。また，$\Vec{OH}\perp\alpha$ より $\Vec{OH}\cdot\Vec{HP}=0$ であるから，
+\[
+  \Vec{OA}\cdot\Vec{OP}
+  = (\Vec{OH}+\Vec{HA})\cdot(\Vec{OH}+\Vec{HP})
+  = |\Vec{OH}|^{2} + \Vec{HA}\cdot\Vec{HP}
+  = 3 + |\Vec{HA}|\,|\Vec{HP}|\cos\varphi
+  = 3 + 6\cos\varphi
+\]
+となる（ただし $\varphi$ は平面 $\alpha$ 上の $2$ つのベクトル $\Vec{HA}$ と $\Vec{HP}$ のなす角）。点 $\Pt{P}$ が円 $K$ の周全体を動くとき，$\varphi$ は $0\leqq\varphi\leqq\pi$ のすべての値をとるから，$-1\leqq\cos\varphi\leqq 1$ より，
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+  \item $\cos\varphi=1$（$\Vec{HP}=\Vec{HA}$，すなわち $\Pt{P}=\Pt{A}(3,0,0)$）のとき，最大値 $3+6=9$，
+  \item $\cos\varphi=-1$（$\Vec{HP}=-\Vec{HA}$，すなわち $\Pt{P}(-1,2,2)$）のとき，最小値 $3-6=-3$
+\end{itemize}
+をとる。
+
+\Ans{r=\sqrt{6},\quad \text{最大値 }9,\quad \text{最小値 }-3}
+
+\Q{3}{5}
+点 $\Pt{D}(-1, 2, 2)$ について，$(-1)+2+2=3$ かつ $(-1)^{2}+2^{2}+2^{2}=9$ が成り立つから，点 $\Pt{D}$ は平面 $\alpha$ と球面 $S$ の交円 $K$ 上にある。
+\[
+  \Vec{BC} = (0, -3, 3),\qquad \Vec{BD} = (-1, -1, 2)
+\]
+であるから，$|\Vec{BC}|^{2}=0+9+9=18$，$|\Vec{BD}|^{2}=1+1+4=6$，$\Vec{BC}\cdot\Vec{BD}=0+3+6=9$ であり，三角形 $\Pt{BCD}$ の面積は
+\[
+  \triangle\Pt{BCD}
+  = \frac{1}{2}\sqrt{|\Vec{BC}|^{2}|\Vec{BD}|^{2}-(\Vec{BC}\cdot\Vec{BD})^{2}}
+  = \frac{1}{2}\sqrt{18\cdot 6 - 9^{2}}
+  = \frac{1}{2}\sqrt{108-81}
+  = \frac{1}{2}\sqrt{27} = \frac{3\sqrt{3}}{2}.
+\]
+
+\Ans{\triangle\Pt{BCD}=\frac{3\sqrt{3}}{2}}
+
+\Q{4}{6}
+底面 $\triangle\Pt{BCD}$ は平面 $\alpha$ 上にあるから，四面体 $\Pt{BCDQ}$ の体積は，球面 $S$ 上の点 $\Pt{Q}$ から平面 $\alpha$ に下ろした垂線の長さ（高さ $h$）が最大となるときに最大となる。球面 $S$ の中心 $\Pt{O}$ から平面 $\alpha$ に下ろした垂線の足が $\Pt{H}(1, 1, 1)$（$\Pt{OH}=\sqrt{3}$）であり，球面 $S$ の半径が $R=3$ であるから，高さ $h$ が最大となるのは，直線 $\Pt{OH}$ と球面 $S$ の交点のうち，平面 $\alpha$ に関して点 $\Pt{H}$ の反対側にある点
+\[
+  \Vec{OQ} = -\frac{R}{\Pt{OH}}\Vec{OH} = -\frac{3}{\sqrt{3}}(1, 1, 1) = (-\sqrt{3}, -\sqrt{3}, -\sqrt{3})
+\]
+のときであり，このときの高さの最大値は
+\[
+  h_{\max} = \Pt{OH} + R = \sqrt{3} + 3
+\]
+である。したがって，四面体 $\Pt{BCDQ}$ の体積の最大値は
+\[
+  V_{\max} = \frac{1}{3}\cdot\triangle\Pt{BCD}\cdot h_{\max}
+  = \frac{1}{3}\cdot\frac{3\sqrt{3}}{2}\cdot(\sqrt{3}+3)
+  = \frac{3\sqrt{3}+3}{2}.
+\]
+
+\Ans{\text{点 }\Pt{Q}(-\sqrt{3}, -\sqrt{3}, -\sqrt{3})\text{ のとき，体積の最大値 }\frac{3\sqrt{3}+3}{2}}
+
+% =====================================================================
+% 第5問
+% =====================================================================
+\hdA{第5問\ \ 対数関数の微積分・面積・回転体の体積}
+\hdTag{数学III（微分法・積分法）── $y=\frac{\log x}{x}$ の増減凹凸と極限／曲線外の点からの接線／面積／部分積分と回転体の体積}
+
+\hdB{出題のねらい・指針}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+  \item[(1)] $f(x)=\dfrac{\log x}{x}$ の第1次・第2次導関数を計算し，$x=e$ で極大値 $\dfrac{1}{e}$，$x=e^{3/2}$ で変曲点をとること，および $x\to\infty$ で $x$ 軸が漸近線となることを示す。
+  \item[(2)] 原点から引いた接線は，**接点を $(t, f(t))$ とおいて接線の方程式を立て，原点 $(0,0)$ を通る条件から $t$ を決定する**。また，不等式 $\dfrac{\log x}{x}\leqq\dfrac{x}{2e}$ は，同値な $\log x-\dfrac{x^{2}}{2e}\leqq 0$（または $\dfrac{\log x}{x^{2}}\leqq\dfrac{1}{2e}$）として微分すれば一瞬で示せる。
+  \item[(4)] $V=\pi\int_{1}^{e}\left(\dfrac{\log x}{x}\right)^{2}dx$ は，$\left(-\dfrac{1}{x}\right)'=\dfrac{1}{x^{2}}$ に着目して部分積分を行う。
+\end{itemize}
+
+\Q{1}{4}
+$x>0$ において商の微分法により，
+\begin{align*}
+  f'(x) &= \frac{\dfrac{1}{x}\cdot x - (\log x)\cdot 1}{x^{2}} = \frac{1-\log x}{x^{2}},\\
+  f''(x) &= \frac{-\dfrac{1}{x}\cdot x^{2} - (1-\log x)\cdot 2x}{x^{4}} = \frac{2\log x - 3}{x^{3}}
+\end{align*}
+である。$f'(x)=0\iff x=e$，$f''(x)=0\iff x=e^{3/2}=e\sqrt{e}$ であり，増減および凹凸は次の表のようになる。
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|c||c|c|c|c|c|c|}
+\hline
+$x$ & $(0)$ & $\cdots$ & $e$ & $\cdots$ & $e^{3/2}$ & $\cdots$ \\
+\hline
+$f'(x)$ & & $+$ & $0$ & $-$ & $-$ & $-$ \\
+\hline
+$f''(x)$ & & $-$ & $-$ & $-$ & $0$ & $+$ \\
+\hline
+$f(x)$ & & $\curvearrowright$ & 極大 $\dfrac{1}{e}$ & $\searrow$ & 変曲点 $\dfrac{3}{2e^{3/2}}$ & $\hookrightarrow$ \\
+\hline
+\end{tabular}
+\end{center}
+
+また，$x\to +0$ のとき $\dfrac{1}{x}\to +\infty$，$\log x\to -\infty$ より $\lim\limits_{x\to +0}f(x)=-\infty$ であり，$x\to\infty$ のとき公式 $\lim\limits_{x\to\infty}\dfrac{\log x}{x}=0$ が成り立つ。よって極大値は $f(e)=\dfrac{1}{e}$（極小値なし），変曲点は $\left(e^{3/2}, \dfrac{3}{2e^{3/2}}\right)$ であり，曲線 $C$ の概形は下図の通りである。
+
+\begin{center}
+\begin{tikzpicture}[xscale=1.1,yscale=4.2]
+  \draw[-{Stealth[length=2mm]}, line width=0.5pt] (-0.3, 0) -- (6.2, 0) node[right] {$x$};
+  \draw[-{Stealth[length=2mm]}, line width=0.5pt] (0, -0.55) -- (0, 0.55) node[above] {$y$};
+  \draw[line width=0.9pt, domain=0.62:6.0, samples=100] plot (\x, {ln(\x)/\x});
+  \draw[line width=0.5pt, dashed] (0, 0) -- (2.8, {2.8/(2*2.71828)}) node[right] {$\ell$};
+  \draw[dotted] (2.71828, 0) node[below] {$e$} -- (2.71828, {1/2.71828}) -- (0, {1/2.71828}) node[left] {$\dfrac{1}{e}$};
+  \draw[dotted] (1.6487, 0) node[below] {$\sqrt{e}$} -- (1.6487, {0.5/1.6487});
+  \fill (1, 0) circle (1.2pt) node[below right] {$1$};
+  \fill (1.6487, {0.5/1.6487}) circle (1.3pt) node[above left] {$\Pt{T}$};
+  \fill (2.71828, {1/2.71828}) circle (1.3pt);
+  \fill (4.4817, {1.5/4.4817}) circle (1.3pt) node[above right] {変曲点 $\left(e^{3/2}, \dfrac{3}{2e^{3/2}}\right)$};
+  \node[below left] at (0,0) {$\Pt{O}$};
+\end{tikzpicture}
+\end{center}
+
+\Ans{\text{極大値 }\frac{1}{e}\ (x=e),\ \text{極小値なし},\ \text{変曲点 }\left(e^{3/2}, \frac{3}{2e^{3/2}}\right),\ \lim_{x\to +0}f(x)=-\infty,\ \lim_{x\to\infty}f(x)=0}
+
+\Q{2}{5}
+曲線 $C$ 上の接点を $\Pt{T}(t, f(t))\ (t>0)$ とおくと，点 $\Pt{T}$ における接線の方程式は
+\[
+  y - \frac{\log t}{t} = \frac{1-\log t}{t^{2}}(x-t)
+  \iff y = \frac{1-\log t}{t^{2}}x + \frac{2\log t - 1}{t}
+\]
+である。これが原点 $\Pt{O}(0, 0)$ を通るから，
+\[
+  \frac{2\log t - 1}{t} = 0 \iff \log t = \frac{1}{2} \iff t = e^{1/2} = \sqrt{e}.
+\]
+よって接点の座標は $\Pt{T}\left(\sqrt{e}, \dfrac{1}{2\sqrt{e}}\right)$ であり，接線 $\ell$ の方程式は
+\[
+  y = \frac{1-\frac{1}{2}}{(\sqrt{e})^{2}}x = \frac{1}{2e}x
+\]
+である。次に，$x>0$ において不等式 $\dfrac{\log x}{x}\leqq\dfrac{x}{2e}$ を示す。$x>0$ より両辺に $x$ を掛けて移項すると，示すべき不等式は
+\[
+  g(x) = \frac{x^{2}}{2e} - \log x \geqq 0
+\]
+と同値である。$g(x)$ を微分すると，
+\[
+  g'(x) = \frac{x}{e} - \frac{1}{x} = \frac{x^{2}-e}{ex} = \frac{(x+\sqrt{e})(x-\sqrt{e})}{ex}
+\]
+となる。$x>0$ において $g'(x)$ は $0<x<\sqrt{e}$ で負，$x=\sqrt{e}$ で $0$，$x>\sqrt{e}$ で正となるから，$g(x)$ は $x=\sqrt{e}$ で最小値
+\[
+  g(\sqrt{e}) = \frac{e}{2e} - \log\sqrt{e} = \frac{1}{2} - \frac{1}{2} = 0
+\]
+をとる。ゆえにすべての $x>0$ に対して $g(x)\geqq 0$，すなわち $\dfrac{\log x}{x}\leqq\dfrac{x}{2e}$ が成り立つ（等号は $x=\sqrt{e}$ のとき）。
+
+\Ans{\ell: y=\frac{1}{2e}x,\quad \Pt{T}\left(\sqrt{e}, \frac{1}{2\sqrt{e}}\right)}
+
+\Q{3}{5}
+曲線 $C$ と $x$ 軸の交点は $(1, 0)$，曲線 $C$ と接線 $\ell$ の接点は $\Pt{T}\left(\sqrt{e}, \dfrac{1}{2\sqrt{e}}\right)$ であり，(2) より $x>0$ でつねに $f(x)\leqq\dfrac{x}{2e}$ である。したがって，曲線 $C$ と接線 $\ell$ および $x$ 軸で囲まれた部分の面積 $S$ は，原点 $\Pt{O}$，点 $\left(\sqrt{e}, 0\right)$，接点 $\Pt{T}$ を頂点とする直角三角形の面積から，$1\leqq x\leqq\sqrt{e}$ における曲線 $C$ と $x$ 軸の間の面積を引いたものに等しい。すなわち，
+\[
+  S = \frac{1}{2}\cdot\sqrt{e}\cdot\frac{1}{2\sqrt{e}} - \int_{1}^{\sqrt{e}}\frac{\log x}{x}\,dx.
+\]
+ここで $(\log x)'=\dfrac{1}{x}$ より $\dsp\int\frac{\log x}{x}\,dx=\frac{1}{2}(\log x)^{2}+C$ であるから，
+\[
+  \int_{1}^{\sqrt{e}}\frac{\log x}{x}\,dx
+  = \left[\frac{1}{2}(\log x)^{2}\right]_{1}^{\sqrt{e}}
+  = \frac{1}{2}\left(\frac{1}{2}\right)^{2} - 0 = \frac{1}{8}.
+\]
+ゆえに，
+\[
+  S = \frac{1}{4} - \frac{1}{8} = \frac{1}{8}.
+\]
+
+\Ans{S = \frac{1}{8}}
+
+\Q{4}{6}
+求める回転体の体積 $V$ は，
+\[
+  V = \pi\int_{1}^{e}\{f(x)\}^{2}\,dx = \pi\int_{1}^{e}\frac{(\log x)^{2}}{x^{2}}\,dx
+\]
+である。$\left(-\dfrac{1}{x}\right)'=\dfrac{1}{x^{2}}$ を用いて部分積分を行うと，
+\begin{align*}
+  \int_{1}^{e}\frac{(\log x)^{2}}{x^{2}}\,dx
+  &= \left[-\frac{(\log x)^{2}}{x}\right]_{1}^{e} + \int_{1}^{e}\frac{1}{x}\cdot\frac{2\log x}{x}\,dx \\
+  &= -\frac{1}{e} + 2\left[-\frac{\log x}{x}\right]_{1}^{e} + 2\int_{1}^{e}\frac{1}{x^{2}}\,dx \\
+  &= -\frac{1}{e} - \frac{2}{e} + 2\left[-\frac{1}{x}\right]_{1}^{e} \\
+  &= -\frac{3}{e} + 2\left(1-\frac{1}{e}\right) = 2 - \frac{5}{e}.
+\end{align*}
+したがって，
+\[
+  V = \pi\left(2-\frac{5}{e}\right).
+\]
+
+\Ans{V = \pi\left(2-\frac{5}{e}\right)}
+

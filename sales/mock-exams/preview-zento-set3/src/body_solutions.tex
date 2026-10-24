@@ -1,0 +1,538 @@
+\addcontentsline{toc}{section}{第3セット 解答・解説}
+
+\noindent
+{\Large\sffamily\bfseries 第3セット\ \ 解答・解説}
+\par\vspace{2mm}
+
+% =====================================================================
+% 第1問
+% =====================================================================
+\hdA{第1問\ \ 整数と指数数列・最大公約数・平方数}
+\hdTag{数学A（整数の性質）・数学B（数列）── 合同式／隣接3項間漸化式と周期性／ユークリッドの互除法／平方数の剰余}
+
+\hdB{出題のねらい・指針}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+  \item[(1)] $5\equiv -1\pmod{3}$，$2\equiv -1\pmod{3}$ に着目すると，$5^{n}+2^{n+1}\equiv (-1)^{n}+(-1)^{n+1}=0\pmod{3}$ が直ちに得られる。
+  \item[(2)] 公比 $5$ と $2$ を解にもつ特性方程式 $(t-5)(t-2)=t^{2}-7t+10=0$ から，隣接 $3$ 項間漸化式 $a_{n+2}=7a_{n+1}-10a_{n}$ が成り立つ。あるいは $5^{n}=(6-1)^{n}$，$2^{n+1}=2(3-1)^{n}$ を二項展開して $\bmod 9$ で調べてもよい。
+  \item[(3)] 連立方程式として $2^{n+1}$ または $5^{n}$ を消去すると，$a_{n+1}-2a_{n}=3\cdot 5^{n}$，$5a_{n}-a_{n+1}=3\cdot 2^{n+1}$ が得られる。ここから公約数の候補を絞り込む。
+  \item[(4)] $n$ が偶数のときは $\bmod 5$（または $\bmod 8$），$n$ が奇数のときは (2) の $9$ の倍数条件（平方数が $3$ の倍数ならば必ず $9$ の倍数であること）と $\bmod 8$ を組み合わせることで，$n=1$ 以外に平方数が存在しないことを鮮やかに示す。
+\end{itemize}
+
+\Q{1}{4}
+$a_{n}=5^{n}+2^{n+1}$ に $n=1, 2, 3$ を代入すると，
+\begin{align*}
+  a_{1} &= 5^{1} + 2^{2} = 5 + 4 = 9,\\
+  a_{2} &= 5^{2} + 2^{3} = 25 + 8 = 33,\\
+  a_{3} &= 5^{3} + 2^{4} = 125 + 16 = 141
+\end{align*}
+である。また，$5\equiv -1\pmod{3}$，$2\equiv -1\pmod{3}$ であるから，すべての自然数 $n$ に対して
+\[
+  a_{n} = 5^{n} + 2^{n+1} \equiv (-1)^{n} + (-1)^{n+1} = (-1)^{n}(1-1) = 0 \pmod{3}
+\]
+が成り立つ。したがって，すべての自然数 $n$ に対して $a_{n}$ は $3$ の倍数である。
+
+\Ans{a_{1}=9,\quad a_{2}=33,\quad a_{3}=141}
+
+\Q{2}{5}
+すべての自然数 $n$ に対して，右辺を計算すると
+\begin{align*}
+  7a_{n+1} - 10a_{n}
+  &= 7\left(5^{n+1}+2^{n+2}\right) - 10\left(5^{n}+2^{n+1}\right) \\
+  &= (7\cdot 5 - 10)\cdot 5^{n} + (7\cdot 2 - 10)\cdot 2^{n+1} \\
+  &= 25\cdot 5^{n} + 4\cdot 2^{n+1} = 5^{n+2} + 2^{n+3} = a_{n+2}
+\end{align*}
+となり，$a_{n+2}=7a_{n+1}-10a_{n}$ が成り立つ。
+
+ここで $\bmod 9$ で考えると，$-10\equiv -1\pmod{9}$ であるから，
+\[
+  a_{n+2} \equiv 7a_{n+1} - a_{n} \pmod{9}
+\]
+が成り立つ。(1) より $a_{1}=9\equiv 0\pmod{9}$，$a_{2}=33\equiv 6\pmod{9}$，$a_{3}=141\equiv 6\pmod{9}$ であり，さらに
+\begin{align*}
+  a_{4} &\equiv 7\cdot 6 - 6 = 36 \equiv 0 \pmod{9},\\
+  a_{5} &\equiv 7\cdot 0 - 6 = -6 \equiv 3 \pmod{9},\\
+  a_{6} &\equiv 7\cdot 3 - 0 = 21 \equiv 3 \pmod{9},\\
+  a_{7} &\equiv 7\cdot 3 - 3 = 18 \equiv 0 \pmod{9}
+\end{align*}
+より，一般に漸化式を繰り返し用いると
+\[
+  a_{n+3} = 7a_{n+2}-10a_{n+1} = 7(7a_{n+1}-10a_{n})-10a_{n+1} = 39a_{n+1}-70a_{n}
+\]
+において，(1) より $a_{n+1}$ は $3$ の倍数（$a_{n+1}=3k$）であるから $39a_{n+1}=117k\equiv 0\pmod{9}$ であり，$-70\equiv -7\equiv 2\pmod{9}$ と $3a_{n}\equiv 0\pmod{9}$ から
+\[
+  a_{n+3} \equiv -70a_{n} \equiv -a_{n} \pmod{9}
+\]
+がすべての自然数 $n$ で成り立つ。したがって，
+\[
+  a_{n}\equiv 0\pmod{9} \iff a_{n+3}\equiv 0\pmod{9}
+\]
+であり，$a_{1}\equiv 0,\ a_{2}\equiv 6\not\equiv 0,\ a_{3}\equiv 6\not\equiv 0\pmod{9}$ であるから，$a_{n}$ が $9$ の倍数となるための必要十分条件は
+\[
+  n\text{ を }3\text{ で割った余りが }1\text{ であること（}n=3m-2,\ m\text{ は自然数）}
+\]
+である。
+
+\begin{betsu}[別解（二項定理による $\bmod 9$ の直接評価）]
+$5=6-1$，$2=3-1$ より，二項定理を用いると $\bmod 9$ において $6^{2}=36\equiv 0$，$3^{2}=9\equiv 0$ であるから，
+\begin{align*}
+  5^{n} &= (-1)^{n} + n\cdot 6(-1)^{n-1} + (\text{$9$ の倍数}) \equiv (-1)^{n}(1-6n) \equiv (-1)^{n}(1+3n) \pmod{9},\\
+  2^{n+1} &= (-1)^{n+1} + (n+1)\cdot 3(-1)^{n} + (\text{$9$ の倍数}) \equiv (-1)^{n}(-1+3n+3) = (-1)^{n}(3n+2) \pmod{9}
+\end{align*}
+となる。よって
+\[
+  a_{n} = 5^{n} + 2^{n+1} \equiv (-1)^{n}(6n+3) = 3(-1)^{n}(2n+1) \pmod{9}
+\]
+である。ゆえに $a_{n}$ が $9$ の倍数となることは，$2n+1$ が $3$ の倍数となること，すなわち $n\equiv 1\pmod{3}$ であることと同値である。
+\end{betsu}
+
+\Ans{n\equiv 1\pmod{3}\ \ (\text{すなわち }n=3m-2,\ m=1, 2, 3, \ldots)}
+
+\Q{3}{5}
+定義式より，
+\begin{align*}
+  a_{n+1} - 2a_{n} &= \left(5^{n+1}+2^{n+2}\right) - 2\left(5^{n}+2^{n+1}\right) = (5-2)\cdot 5^{n} = 3\cdot 5^{n},\\
+  5a_{n} - a_{n+1} &= 5\left(5^{n}+2^{n+1}\right) - \left(5^{n+1}+2^{n+2}\right) = (5-2)\cdot 2^{n+1} = 3\cdot 2^{n+1}
+\end{align*}
+である。いま，$a_{n}$ と $a_{n+1}$ の最大公約数を $g$ とおく。(1) より $a_{n}$ と $a_{n+1}$ はともに $3$ の倍数であるから，$g$ は $3$ の倍数である。一方，$g$ は $a_{n}$ と $a_{n+1}$ の公約数であるから，それらの線形結合である
+\[
+  a_{n+1}-2a_{n} = 3\cdot 5^{n} \quad\text{および}\quad 5a_{n}-a_{n+1} = 3\cdot 2^{n+1}
+\]
+の公約数でもある。ここで $5^{n}$ と $2^{n+1}$ は互いに素であるから，$3\cdot 5^{n}$ と $3\cdot 2^{n+1}$ の最大公約数は $3$ である。よって $g$ は $3$ の約数であり，かつ $3$ の倍数であるから，
+\[
+  g = 3
+\]
+である。
+
+\Ans{a_{n+1}-2a_{n}=3\cdot 5^{n},\quad 5a_{n}-a_{n+1}=3\cdot 2^{n+1},\quad \text{最大公約数は }3}
+
+\Q{4}{6}
+$a_{n}=5^{n}+2^{n+1}$ が平方数となると仮定する。
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+  \item $n=1$ のとき，$a_{1}=9=3^{2}$ であり，確かに平方数である。
+  \item $n\geqq 2$ のとき，(1) より $a_{n}$ はつねに $3$ の倍数である。素数 $3$ の倍数である整数が平方数ならば，その整数は必ず $3^{2}=9$ の倍数でなければならない。さらに，ここでもし $n$ が偶数（$n=2k,\ k\geqq 1$）であるとすると，$\bmod 5$ において
+  \[
+    a_{2k} = 5^{2k} + 2^{2k+1} \equiv 0 + 2\cdot 4^{k} \equiv 2\cdot (-1)^{k} \equiv 2\text{ または }3 \pmod{5}
+  \]
+  となるが，任意の整数 $m$ に対して $m^{2}\equiv 0, 1, 4\pmod{5}$ であるから，平方数を $5$ で割った余りが $2$ または $3$ になることはない。よって $n$ は奇数でなければならない。
+  \item あるいは $\bmod 8$ で考えると，$n\geqq 2$ のとき $n+1\geqq 3$ であるから $2^{n+1}=8\cdot 2^{n-2}\equiv 0\pmod{8}$ であり，
+  \[
+    a_{n} = 5^{n} + 2^{n+1} \equiv 5^{n} \pmod{8}
+  \]
+  となる。もし $n$ が奇数（$n=2k-1$）ならば，$5^{2}=25\equiv 1\pmod{8}$ より
+  \[
+    a_{n} \equiv 5\cdot (5^{2})^{k-1} \equiv 5 \pmod{8}
+  \]
+  となる。しかし，任意の奇数 $m$ の平方は $m^{2}\equiv 1\pmod{8}$ を満たすから，$a_{n}\equiv 5\pmod{8}$ となる奇数が平方数になることはあり得ない。
+\end{itemize}
+以上より，$n\geqq 2$ では偶数のとき $\bmod 5$ で不適，奇数のとき $\bmod 8$ で不適となるから，$a_{n}$ が平方数となる自然数 $n$ は $n=1$ のみである。
+
+\Ans{n = 1}
+
+% =====================================================================
+% 第2問
+% =====================================================================
+\hdA{第2問\ \ 正三角柱上のランダムウォークと確率漸化式}
+\hdTag{数学A（確率）・数学B（数列）・数学III（極限）── 対称性による状態縮約／連立確率漸化式／固有値分解と極限}
+
+\hdB{出題のねらい・指針}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+  \item[(1)] 正三角柱において，頂点 $\Pt{B}$ と $\Pt{C}$，および頂点 $\Pt{E}$ と $\Pt{F}$ は出発点 $\Pt{A}$ に関して完全に対称であるため，つねに $b_{n}=c_{n}$，$e_{n}=f_{n}$ が成り立つ。各頂点の隣接頂点（次数 $3$）を正確に書き出して推移式を立てる。
+  \item[(2)] 上底面 $\Pt{ABC}$ にいる確率 $p_{n}=a_{n}+2b_{n}$ と下底面 $\Pt{DEF}$ にいる確率 $1-p_{n}=d_{n}+2e_{n}$ の間の推移は，上底面のどの頂点からも「上底面内の他の $2$ 頂点へ $\dfrac{2}{3}$，下底面の対応頂点へ $\dfrac{1}{3}$」で移るため，直ちに $p_{n+1}=\dfrac{2}{3}p_{n}+\dfrac{1}{3}(1-p_{n})=\dfrac{1}{3}p_{n}+\dfrac{1}{3}$ となる。
+  \item[(3)] 縦の辺 $\Pt{AD}$ の組に属する確率 $q_{n}=a_{n}+d_{n}$ について，どの状態からでも $1$ 秒後には $\{A,D\},\{B,E\},\{C,F\}$ のうち現在の組以外の $2$ 組へ確率 $\dfrac{1}{3}$ ずつ，現在の組の反対側の頂点へ確率 $\dfrac{1}{3}$ で移るため，実は $n\geqq 1$ で $a_{n}+d_{n}=\dfrac{1}{3}$，$b_{n}+e_{n}=\dfrac{1}{3}$ が定数として成立する！
+\end{itemize}
+
+\Q{1}{4}
+各頂点に隣接する $3$ 頂点は，
+\begin{itemize}[leftmargin=1.6em,itemsep=1pt]
+  \item $\Pt{A}$ の隣接頂点：$\Pt{B}, \Pt{C}, \Pt{D}$
+  \item $\Pt{B}$ の隣接頂点：$\Pt{A}, \Pt{C}, \Pt{E}$
+  \item $\Pt{D}$ の隣接頂点：$\Pt{E}, \Pt{F}, \Pt{A}$
+  \item $\Pt{E}$ の隣接頂点：$\Pt{D}, \Pt{F}, \Pt{B}$
+\end{itemize}
+であり，対称性からすべての $n\geqq 0$ で $c_{n}=b_{n}$，$f_{n}=e_{n}$ である。したがって，$n$ 秒後から $n+1$ 秒後への推移を考えると，
+\begin{align*}
+  a_{n+1} &= \frac{1}{3}b_{n} + \frac{1}{3}c_{n} + \frac{1}{3}d_{n} = \frac{2}{3}b_{n} + \frac{1}{3}d_{n},\\
+  b_{n+1} &= \frac{1}{3}a_{n} + \frac{1}{3}c_{n} + \frac{1}{3}e_{n} = \frac{1}{3}a_{n} + \frac{1}{3}b_{n} + \frac{1}{3}e_{n},\\
+  d_{n+1} &= \frac{1}{3}e_{n} + \frac{1}{3}f_{n} + \frac{1}{3}a_{n} = \frac{1}{3}a_{n} + \frac{2}{3}e_{n},\\
+  e_{n+1} &= \frac{1}{3}d_{n} + \frac{1}{3}f_{n} + \frac{1}{3}b_{n} = \frac{1}{3}b_{n} + \frac{1}{3}d_{n} + \frac{1}{3}e_{n}
+\end{align*}
+が成り立つ。
+
+\Ans{\begin{aligned}[t]
+  a_{n+1} &= \frac{2}{3}b_{n}+\frac{1}{3}d_{n}, & b_{n+1} &= \frac{1}{3}a_{n}+\frac{1}{3}b_{n}+\frac{1}{3}e_{n},\\
+  d_{n+1} &= \frac{1}{3}a_{n}+\frac{2}{3}e_{n}, & e_{n+1} &= \frac{1}{3}b_{n}+\frac{1}{3}d_{n}+\frac{1}{3}e_{n}
+\end{aligned}}
+
+\Q{2}{5}
+全事象の確率の和は $1$ であるから，$a_{n}+2b_{n}+d_{n}+2e_{n}=1$，すなわち $d_{n}+2e_{n}=1-p_{n}$ である。(1) の漸化式より，
+\begin{align*}
+  p_{n+1} &= a_{n+1} + 2b_{n+1}
+  = \left(\frac{2}{3}b_{n}+\frac{1}{3}d_{n}\right) + 2\left(\frac{1}{3}a_{n}+\frac{1}{3}b_{n}+\frac{1}{3}e_{n}\right) \\
+  &= \frac{2}{3}(a_{n}+2b_{n}) + \frac{1}{3}(d_{n}+2e_{n})
+  = \frac{2}{3}p_{n} + \frac{1}{3}(1-p_{n}) = \frac{1}{3}p_{n} + \frac{1}{3}
+\end{align*}
+となる。これを変形すると，
+\[
+  p_{n+1} - \frac{1}{2} = \frac{1}{3}\left(p_{n}-\frac{1}{2}\right)
+\]
+である。時刻 $0$ では点 $\Pt{P}$ は頂点 $\Pt{A}$ にあるから $p_{0}=1$（$n=1$ のときは $p_{1}=\dfrac{1}{3}\cdot 1+\dfrac{1}{3}=\dfrac{2}{3}$）であり，数列 $\left\{p_{n}-\dfrac{1}{2}\right\}$ は初項 $p_{0}-\dfrac{1}{2}=\dfrac{1}{2}$，公比 $\dfrac{1}{3}$ の等比数列である。ゆえに，
+\[
+  p_{n} = \frac{1}{2} + \frac{1}{2}\left(\frac{1}{3}\right)^{n}.
+\]
+
+\Ans{p_{n+1}=\frac{1}{3}p_{n}+\frac{1}{3},\qquad p_{n}=\frac{1}{2}+\frac{1}{2}\left(\frac{1}{3}\right)^{n}}
+
+\Q{3}{5}
+(1) の第1式と第3式を辺々加えると，すべての $n\geqq 0$ に対して
+\[
+  a_{n+1} + d_{n+1} = \frac{1}{3}a_{n} + \frac{2}{3}b_{n} + \frac{1}{3}d_{n} + \frac{2}{3}e_{n}
+  = \frac{1}{3}(a_{n}+d_{n}) + \frac{2}{3}(b_{n}+e_{n})
+\]
+が成り立つ。また，(1) の第2式と第4式を辺々加えると，
+\[
+  b_{n+1} + e_{n+1} = \frac{1}{3}(a_{n}+d_{n}) + \frac{2}{3}(b_{n}+e_{n})
+\]
+となる。ここで全確率の和より $(a_{n}+d_{n})+2(b_{n}+e_{n})=1$ であるから，その右辺はつねに
+\[
+  \frac{1}{3}\left\{(a_{n}+d_{n})+2(b_{n}+e_{n})\right\} = \frac{1}{3}\cdot 1 = \frac{1}{3}
+\]
+に等しい！したがって，$n\geqq 1$ のとき，$n$ の値によらずつねに
+\[
+  a_{n} + d_{n} = \frac{1}{3},\qquad b_{n} + e_{n} = \frac{1}{3}
+\]
+が成り立つ。
+
+\Ans{a_{n}+d_{n}=\frac{1}{3},\qquad b_{n}+e_{n}=\frac{1}{3}\quad (n\geqq 1)}
+
+\Q{4}{6}
+(1) の第1式から第2式を引くと，
+\[
+  r_{n+1} = a_{n+1}-b_{n+1} = -\frac{1}{3}(a_{n}-b_{n}) + \frac{1}{3}(d_{n}-e_{n})
+\]
+である。ここで (3) より，$n\geqq 1$ のとき $d_{n}=\dfrac{1}{3}-a_{n}$，$e_{n}=\dfrac{1}{3}-b_{n}$ であるから，
+\[
+  d_{n} - e_{n} = -(a_{n}-b_{n}) = -r_{n} \quad (n\geqq 1)
+\]
+が成り立つ。これを代入すると，$n\geqq 1$ において
+\[
+  r_{n+1} = -\frac{1}{3}r_{n} - \frac{1}{3}r_{n} = -\frac{2}{3}r_{n}
+\]
+となる。$n=1$ のとき，$a_{1}=0,\ b_{1}=\dfrac{1}{3}$ より $r_{1}=a_{1}-b_{1}=-\dfrac{1}{3}$ であるから，$n\geqq 1$ のとき
+\[
+  r_{n} = -\frac{1}{3}\left(-\frac{2}{3}\right)^{n-1} = \frac{1}{2}\left(-\frac{2}{3}\right)^{n}
+\]
+である。いま，$p_{n}=a_{n}+2b_{n}$ と $r_{n}=a_{n}-b_{n}$ より
+\[
+  a_{n} = \frac{1}{3}(p_{n}+2r_{n}),\qquad b_{n} = \frac{1}{3}(p_{n}-r_{n})
+\]
+であるから，(2) の $p_{n}=\dfrac{1}{2}+\dfrac{1}{2}\left(\dfrac{1}{3}\right)^{n}$ とあわせて，$n\geqq 1$ のとき
+\begin{align*}
+  a_{n} &= \frac{1}{6} + \frac{1}{6}\left(\frac{1}{3}\right)^{n} + \frac{1}{3}\left(-\frac{2}{3}\right)^{n},\\
+  b_{n} &= \frac{1}{6} + \frac{1}{6}\left(\frac{1}{3}\right)^{n} - \frac{1}{6}\left(-\frac{2}{3}\right)^{n}
+\end{align*}
+を得る。さらに (3) の $d_{n}=\dfrac{1}{3}-a_{n}$，$e_{n}=\dfrac{1}{3}-b_{n}$ より，$n\geqq 1$ のとき
+\begin{align*}
+  d_{n} &= \frac{1}{6} - \frac{1}{6}\left(\frac{1}{3}\right)^{n} - \frac{1}{3}\left(-\frac{2}{3}\right)^{n},\\
+  e_{n} &= \frac{1}{6} - \frac{1}{6}\left(\frac{1}{3}\right)^{n} + \frac{1}{6}\left(-\frac{2}{3}\right)^{n}
+\end{align*}
+である。最後に，$n\to\infty$ のとき $\left(\dfrac{1}{3}\right)^{n}\to 0$，$\left(-\dfrac{2}{3}\right)^{n}\to 0$ であるから，
+\[
+  \lim_{n\to\infty}a_{n} = \frac{1}{6}.
+\]
+
+\Ans{\begin{aligned}[t]
+  a_{n} &= \frac{1}{6}+\frac{1}{6}\left(\frac{1}{3}\right)^{n}+\frac{1}{3}\left(-\frac{2}{3}\right)^{n}, &
+  b_{n} &= \frac{1}{6}+\frac{1}{6}\left(\frac{1}{3}\right)^{n}-\frac{1}{6}\left(-\frac{2}{3}\right)^{n},\\
+  d_{n} &= \frac{1}{6}-\frac{1}{6}\left(\frac{1}{3}\right)^{n}-\frac{1}{3}\left(-\frac{2}{3}\right)^{n}, &
+  e_{n} &= \frac{1}{6}-\frac{1}{6}\left(\frac{1}{3}\right)^{n}+\frac{1}{6}\left(-\frac{2}{3}\right)^{n},\\
+  \lim_{n\to\infty}a_{n} &= \frac{1}{6}
+\end{aligned}}
+
+% =====================================================================
+% 第3問
+% =====================================================================
+\hdA{第3問\ \ 放物線の準線からの直交2接線・面積・回転体の体積}
+\hdTag{数学II（微積分）・数学C（二次曲線）・数学III（体積）── 準線と焦点の幾何学的性質／極線／面積の最小／回転体}
+
+\hdB{出題のねらい・指針}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+  \item[(1)(2)] 放物線 $C: x^{2}=2y=4\cdot\dfrac{1}{2}y$ の焦点は $\Pt{F}\left(0, \dfrac{1}{2}\right)$，準線は $d: y=-\dfrac{1}{2}$ である。「準線上の点から引いた $2$ 接線は直交し，その接点を結ぶ弦（極線）は焦点を通る」という二次曲線の基本性質を背景としている。
+  \item[(3)] 放物線と弦 $\Pt{QR}$ が囲む面積 $S(a)=\dfrac{1}{12}(\beta-\alpha)^{3}$ と，接線がつくる三角形 $\triangle\Pt{PQR}$ の面積の比はつねに $S(a):\triangle\Pt{PQR}=2:3$（アルキメデスの性質）を満たす。
+  \item[(4)] $y$ 軸まわりの回転体の体積 $V_{y}$ は，円柱・円錐の差として求めてもよいし，$\pi\int x^{2}\,dy$ で積分してもよい。
+\end{itemize}
+
+\Q{1}{4}
+$y=\dfrac{1}{2}x^{2}$ を微分すると $y'=x$ であるから，放物線 $C$ 上の点 $\left(t, \dfrac{1}{2}t^{2}\right)$ における接線の方程式は
+\[
+  y - \frac{1}{2}t^{2} = t(x-t) \iff y = tx - \frac{1}{2}t^{2}
+\]
+である。この接線が点 $\Pt{P}\left(a, -\dfrac{1}{2}\right)$ を通るための条件は，
+\[
+  -\frac{1}{2} = ta - \frac{1}{2}t^{2} \iff t^{2} - 2at - 1 = 0
+\]
+である。この $t$ についての二次方程式の判別式は $D/4=a^{2}+1>0$ であるから，実数 $a$ の値によらず異なる $2$ つの実数解 $\alpha, \beta\ (\alpha<\beta)$ をもつ。解と係数の関係により，
+\[
+  \alpha + \beta = 2a,\qquad \alpha\beta = -1
+\]
+である。また，$2$ 本の接線 $\Pt{PQ}, \Pt{PR}$ の傾きはそれぞれ $\alpha, \beta$ であり，その積が $\alpha\beta=-1$ であるから，$2$ 本の接線 $\Pt{PQ}$ と $\Pt{PR}$ は実数 $a$ の値によらずつねに直交する。
+
+\Ans{\alpha+\beta=2a,\quad \alpha\beta=-1}
+
+\Q{2}{5}
+$2$ 点 $\Pt{Q}\left(\alpha, \dfrac{1}{2}\alpha^{2}\right)$，$\Pt{R}\left(\beta, \dfrac{1}{2}\beta^{2}\right)$ を通る直線 $\Pt{QR}$ の方程式は，傾きが
+\[
+  \frac{\dfrac{1}{2}\beta^{2}-\dfrac{1}{2}\alpha^{2}}{\beta-\alpha} = \frac{1}{2}(\alpha+\beta)
+\]
+であるから，
+\[
+  y - \frac{1}{2}\alpha^{2} = \frac{1}{2}(\alpha+\beta)(x-\alpha)
+  \iff y = \frac{1}{2}(\alpha+\beta)x - \frac{1}{2}\alpha\beta
+\]
+となる。これに (1) の $\alpha+\beta=2a$，$\alpha\beta=-1$ を代入すると，直線 $\Pt{QR}$ の方程式は
+\[
+  y = ax + \frac{1}{2}
+\]
+である。この式は $x=0$ のとき $a$ の値によらず $y=\dfrac{1}{2}$ となるから，直線 $\Pt{QR}$ は実数 $a$ の値によらず定点 $\Pt{F}\left(0, \dfrac{1}{2}\right)$ を通る。
+
+\Ans{\text{直線 }\Pt{QR}: y=ax+\frac{1}{2},\quad \text{定点 }\Pt{F}\left(0, \frac{1}{2}\right)}
+
+\Q{3}{5}
+$\alpha<\beta$ であり，$\alpha\leqq x\leqq\beta$ において直線 $\Pt{QR}$ は放物線 $C$ の上側にあるから，囲まれた部分の面積 $S(a)$ は
+\[
+  S(a) = \int_{\alpha}^{\beta}\left(ax+\frac{1}{2}-\frac{1}{2}x^{2}\right)dx
+  = -\frac{1}{2}\int_{\alpha}^{\beta}(x-\alpha)(x-\beta)\,dx
+  = \frac{1}{12}(\beta-\alpha)^{3}
+\]
+である。ここで
+\[
+  (\beta-\alpha)^{2} = (\alpha+\beta)^{2}-4\alpha\beta = 4a^{2}+4 = 4(a^{2}+1)
+\]
+および $\beta-\alpha>0$ より $\beta-\alpha=2\sqrt{a^{2}+1}$ であるから，
+\[
+  S(a) = \frac{1}{12}\left(2\sqrt{a^{2}+1}\right)^{3} = \frac{2}{3}(a^{2}+1)^{3/2}
+\]
+である。$a^{2}\geqq 0$ より $S(a)$ は $a=0$ のとき最小値 $\dfrac{2}{3}$ をとる。
+
+$a=0$ のとき，$\alpha=-1,\ \beta=1$ であり，$3$ 点の座標は $\Pt{P}\left(0, -\dfrac{1}{2}\right)$，$\Pt{Q}\left(-1, \dfrac{1}{2}\right)$，$\Pt{R}\left(1, \dfrac{1}{2}\right)$ である。底辺 $\Pt{QR}$ の長さは $1-(-1)=2$，高さは $\dfrac{1}{2}-\left(-\dfrac{1}{2}\right)=1$ であるから，三角形 $\Pt{PQR}$ の面積は
+\[
+  \triangle\Pt{PQR} = \frac{1}{2}\cdot 2\cdot 1 = 1.
+\]
+
+\Ans{S(a)=\frac{2}{3}(a^{2}+1)^{3/2},\quad S(a)\text{ の最小値 }\frac{2}{3},\quad \triangle\Pt{PQR}=1}
+
+\Q{4}{6}
+$a=0$ のとき，直線 $\Pt{QR}$ は $y=\dfrac{1}{2}$，交点は $x=\pm 1$ である。$-1\leqq x\leqq 1$ で $0\leqq\dfrac{1}{2}x^{2}\leqq\dfrac{1}{2}$ かつ被積分関数は偶関数であるから，$x$ 軸のまわりの回転体の体積 $V_{x}$ は，
+\[
+  V_{x} = \pi\int_{-1}^{1}\left\{\left(\frac{1}{2}\right)^{2}-\left(\frac{1}{2}x^{2}\right)^{2}\right\}dx
+  = 2\pi\int_{0}^{1}\left(\frac{1}{4}-\frac{1}{4}x^{4}\right)dx
+  = \frac{\pi}{2}\left[x-\frac{x^{5}}{5}\right]_{0}^{1}
+  = \frac{\pi}{2}\cdot\frac{4}{5} = \frac{2}{5}\pi
+\]
+である。次に，$a=0$ のとき接線 $\Pt{PR}$ の方程式は $y=x-\dfrac{1}{2}$ であり，$x\geqq 0, y\geqq 0$ の範囲において放物線 $C: x^{2}=2y$ と接線 $\Pt{PR}: x=y+\dfrac{1}{2}$ および $x$ 軸（$y=0$）で囲まれた領域は，
+\[
+  0 \leqq y \leqq \frac{1}{2},\qquad \sqrt{2y} \leqq x \leqq y + \frac{1}{2}
+\]
+と表される。この領域を $y$ 軸のまわりに $1$ 回転してできる立体の体積 $V_{y}$ は，
+\begin{align*}
+  V_{y} &= \pi\int_{0}^{1/2}\left\{\left(y+\frac{1}{2}\right)^{2} - \left(\sqrt{2y}\right)^{2}\right\}dy
+  = \pi\int_{0}^{1/2}\left(y^{2}-y+\frac{1}{4}\right)dy \\
+  &= \pi\int_{0}^{1/2}\left(y-\frac{1}{2}\right)^{2}dy
+  = \pi\left[\frac{1}{3}\left(y-\frac{1}{2}\right)^{3}\right]_{0}^{1/2}
+  = \pi\left(0 - \frac{-1}{24}\right) = \frac{\pi}{24}.
+\end{align*}
+
+\Ans{V_{x} = \frac{2}{5}\pi,\qquad V_{y} = \frac{\pi}{24}}
+
+% =====================================================================
+% 第4問
+% =====================================================================
+\hdA{第4問\ \ 不等式で表された空間図形の断面・最短距離・回転体}
+\hdTag{数学III（積分法の応用）・数学C（空間図形）── 2通りの平面による断面と体積／条件付き最小値／軸まわりの回転体}
+
+\hdB{出題のねらい・指針}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+  \item[(1)] 平面 $x=t\ (-1\leqq t\leqq 1)$ で切ると，$y\geqq 0, z\geqq 0, y+z\leqq 1-t^{2}$ となり，等しい $2$ 辺の長さが $1-t^{2}$ の直角二等辺三角形が現れる。
+  \item[(2)] 平面 $y=u\ (0\leqq u\leqq 1)$ で切ると，$0\leqq z\leqq 1-u-x^{2}$ となり，放物線と直線で囲まれた領域が現れる。その面積に $\dfrac{1}{6}$ 公式を適用できる。
+  \item[(3)] 平面 $x=t$ 上で $y+z=1-t^{2}\ (y,z\geqq 0)$ を満たす点 $\Pt{P}(t, y, z)$ について，$\Pt{OP}^{2}=t^{2}+y^{2}+z^{2}$ は $y=z=\dfrac{1-t^{2}}{2}$ のときに最小となる。
+  \item[(4)] 平面 $x=t$ 上の直角二等辺三角形は回転中心 $\Pt{H}(t, 0, 0)$ を頂点として含むため，$x$ 軸のまわりに $1$ 回転すると，点 $\Pt{H}$ から最も遠い頂点 $(t, 1-t^{2}, 0)$ までの距離 $R(t)=1-t^{2}$ を半径とする中実な円板を描く。
+\end{itemize}
+
+\Q{1}{4}
+平面 $x=t\ (-1\leqq t\leqq 1)$ における立体 $K$ の切り口は，$yz$ 平面に平行な平面上の連立不等式
+\[
+  y \geqq 0,\qquad z \geqq 0,\qquad y + z \leqq 1 - t^{2}
+\]
+で表される領域である。$1-t^{2}\geqq 0$ より，これは直交する $2$ 辺の長さがともに $1-t^{2}$ の直角二等辺三角形であるから，その面積 $S(t)$ は
+\[
+  S(t) = \frac{1}{2}\left(1-t^{2}\right)^{2}
+\]
+である。したがって，立体 $K$ の体積 $V$ は，偶関数の性質を用いて
+\[
+  V = \int_{-1}^{1}S(t)\,dt = 2\int_{0}^{1}\frac{1}{2}\left(1-2t^{2}+t^{4}\right)dt
+  = \left[t-\frac{2}{3}t^{3}+\frac{1}{5}t^{5}\right]_{0}^{1}
+  = 1 - \frac{2}{3} + \frac{1}{5} = \frac{8}{15}.
+\]
+
+\Ans{S(t)=\frac{1}{2}\left(1-t^{2}\right)^{2},\qquad V=\frac{8}{15}}
+
+\Q{2}{5}
+平面 $y=u\ (0\leqq u\leqq 1)$ における立体 $K$ の切り口は，$xz$ 平面に平行な平面上の連立不等式
+\[
+  0 \leqq z \leqq (1-u) - x^{2}
+\]
+で表される領域である。放物線 $z=(1-u)-x^{2}$ と直線 $z=0$ の交点の $x$ 座標は $x=\pm\sqrt{1-u}$ であるから，切り口の面積 $T(u)$ は
+\[
+  T(u) = \int_{-\sqrt{1-u}}^{\sqrt{1-u}}\left\{(1-u)-x^{2}\right\}dx
+  = \frac{1}{6}\left\{2\sqrt{1-u}\right\}^{3} = \frac{4}{3}(1-u)^{3/2}
+\]
+である。これを $0\leqq u\leqq 1$ で積分すると，
+\[
+  \int_{0}^{1}T(u)\,du = \frac{4}{3}\int_{0}^{1}(1-u)^{3/2}\,du
+  = \frac{4}{3}\left[-\frac{2}{5}(1-u)^{5/2}\right]_{0}^{1}
+  = \frac{4}{3}\cdot\frac{2}{5} = \frac{8}{15}
+\]
+となり，(1) で求めた体積 $V=\dfrac{8}{15}$ と一致する。
+
+\Ans{T(u)=\frac{4}{3}(1-u)^{3/2}}
+
+\Q{3}{6}
+平面 $x=t\ (-1\leqq t\leqq 1)$ 上で曲面 $x^{2}+y+z=1\ (y\geqq 0, z\geqq 0)$ 上にある点 $\Pt{P}(t, y, z)$ は，
+\[
+  y + z = 1 - t^{2},\qquad y \geqq 0,\qquad z \geqq 0
+\]
+を満たす。このとき，
+\[
+  \Pt{OP}^{2} = t^{2} + y^{2} + z^{2}
+  = t^{2} + \frac{(y+z)^{2}+(y-z)^{2}}{2}
+  = t^{2} + \frac{(1-t^{2})^{2}}{2} + \frac{(y-z)^{2}}{2}
+\]
+である。$y=z=\dfrac{1-t^{2}}{2}\ (\geqq 0)$ のとき $(y-z)^{2}=0$ となって $\Pt{OP}^{2}$ は最小となるから，平面 $x=t$ 上での $\Pt{OP}$ の最小値 $d(t)$ は
+\[
+  d(t) = \sqrt{t^{2}+\frac{(1-t^{2})^{2}}{2}} = \sqrt{\frac{t^{4}+1}{2}}
+\]
+である。さらに，$t$ が $-1\leqq t\leqq 1$ を動くとき，$t^{4}\geqq 0$ より $d(t)$ は $t=0$ のとき最小値
+\[
+  d(0) = \frac{1}{\sqrt{2}} = \frac{\sqrt{2}}{2}
+\]
+をとる。このとき $t=0$，$y=z=\dfrac{1-0}{2}=\dfrac{1}{2}$ であるから，点 $\Pt{P}$ の座標は $\left(0, \dfrac{1}{2}, \dfrac{1}{2}\right)$ である。
+
+\Ans{d(t)=\sqrt{\frac{t^{4}+1}{2}},\quad \text{点 }\Pt{P}\left(0, \frac{1}{2}, \frac{1}{2}\right)\text{ のとき最小値 }\frac{\sqrt{2}}{2}}
+
+\Q{4}{5}
+平面 $x=t\ (-1\leqq t\leqq 1)$ による立体 $K$ の切り口 $y\geqq 0, z\geqq 0, y+z\leqq 1-t^{2}$ 上の点 $\Pt{Q}(t, y, z)$ について，$y\geqq 0, z\geqq 0$ より $yz\geqq 0$ であるから，
+\[
+  \Pt{HQ}^{2} = y^{2} + z^{2} = (y+z)^{2} - 2yz \leqq (y+z)^{2} \leqq \left(1-t^{2}\right)^{2}
+\]
+が成り立つ。等号は $(y, z)=(1-t^{2}, 0)$ または $(0, 1-t^{2})$ のときに成り立つから，$\Pt{HQ}$ の最大値は
+\[
+  R(t) = 1 - t^{2}
+\]
+である。また，切り口は点 $\Pt{H}(t, 0, 0)$ 自身を含む連結な領域（直角二等辺三角形）であるから，この切り口を点 $\Pt{H}$ のまわりに $1$ 回転してできる図形は，半径 $R(t)=1-t^{2}$ の円板（面積 $\pi\{R(t)\}^{2}$）である。したがって，求める回転体の体積 $W$ は，(1) の計算結果を用いて
+\[
+  W = \int_{-1}^{1}\pi\{R(t)\}^{2}\,dt
+  = \pi\int_{-1}^{1}\left(1-t^{2}\right)^{2}dt
+  = 2\pi\int_{-1}^{1}S(t)\,dt = 2\pi V = \frac{16}{15}\pi.
+\]
+
+\Ans{R(t)=1-t^{2},\qquad W=\frac{16}{15}\pi}
+
+% =====================================================================
+% 第5問
+% =====================================================================
+\hdA{第5問\ \ 定積分漸化式・はさみうちの原理・無限級数の和}
+\hdTag{数学III（積分法・極限）── 定積分漸化式／積分区間での不等式評価／はさみうちの原理／交代級数の収束と和}
+
+\hdB{出題のねらい・指針}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt,topsep=2pt]
+  \item[(2)] $x^{n+1}+3x^{n}=x^{n}(x+3)$ に着目すると，被積分関数の分母 $x+3$ が約分され，直ちに $I_{n+1}+3I_{n}=\int_{0}^{1}x^{n}\,dx=\dfrac{1}{n+1}$ が得られる。
+  \item[(3)] $0\leqq x\leqq 1$ において $3\leqq x+3\leqq 4$ かつ $x^{n}\geqq 0$ であることから被積分関数を評価する。後半の $\lim\limits_{n\to\infty}nI_{n}$ は，$I_{n+1}\leqq I_{n}$ と $I_{n+1}+3I_{n}=\dfrac{1}{n+1}$ を組み合わせることで $4I_{n+1}\leqq\dfrac{1}{n+1}\leqq 4I_{n}$ を導くのが最も精密で速い。
+  \item[(4)] (2) の関係式の両辺に $\dfrac{(-1)^{k-1}}{3^{k}}$ を掛けて $k=1, \ldots, n$ の和をとると，見事な望遠鏡和（階差の打ち消し合い）が現れる。
+\end{itemize}
+
+\Q{1}{4}
+定義に従って計算すると，
+\begin{align*}
+  I_{0} &= \int_{0}^{1}\frac{1}{x+3}\,dx = \Bigl[\log(x+3)\Bigr]_{0}^{1} = \log 4 - \log 3 = \log\frac{4}{3},\\
+  I_{1} &= \int_{0}^{1}\frac{x}{x+3}\,dx = \int_{0}^{1}\left(1-\frac{3}{x+3}\right)dx = \Bigl[x-3\log(x+3)\Bigr]_{0}^{1} = 1 - 3\log\frac{4}{3}.
+\end{align*}
+
+\Ans{I_{0}=\log\frac{4}{3},\qquad I_{1}=1-3\log\frac{4}{3}}
+
+\Q{2}{4}
+すべての $0$ 以上の整数 $n$ に対して，定積分の線形性により
+\[
+  I_{n+1} + 3I_{n}
+  = \int_{0}^{1}\frac{x^{n+1}+3x^{n}}{x+3}\,dx
+  = \int_{0}^{1}\frac{x^{n}(x+3)}{x+3}\,dx
+  = \int_{0}^{1}x^{n}\,dx
+  = \left[\frac{x^{n+1}}{n+1}\right]_{0}^{1} = \frac{1}{n+1}.
+\]
+
+\Ans{I_{n+1}+3I_{n} = \frac{1}{n+1}}
+
+\Q{3}{6}
+$0\leqq x\leqq 1$ において $3\leqq x+3\leqq 4$ すなわち $\dfrac{1}{4}\leqq\dfrac{1}{x+3}\leqq\dfrac{1}{3}$ であり，かつ $x^{n}\geqq 0$ であるから，
+\[
+  \frac{x^{n}}{4} \leqq \frac{x^{n}}{x+3} \leqq \frac{x^{n}}{3} \quad (0\leqq x\leqq 1)
+\]
+が成り立つ。辺々を $0$ から $1$ まで積分すると，
+\[
+  \int_{0}^{1}\frac{x^{n}}{4}\,dx \leqq I_{n} \leqq \int_{0}^{1}\frac{x^{n}}{3}\,dx
+  \iff \frac{1}{4(n+1)} \leqq I_{n} \leqq \frac{1}{3(n+1)}
+\]
+が成り立つ。$n\to\infty$ のとき $\dfrac{1}{4(n+1)}\to 0$，$\dfrac{1}{3(n+1)}\to 0$ であるから，はさみうちの原理により
+\[
+  \lim_{n\to\infty}I_{n} = 0
+\]
+である。次に，$0\leqq x\leqq 1$ において $x^{n+1}\leqq x^{n}$ かつ $x+3>0$ であるから，
+\[
+  I_{n+1} \leqq I_{n}
+\]
+が成り立つ。これと (2) の $I_{n+1}+3I_{n}=\dfrac{1}{n+1}$ より，
+\[
+  4I_{n+1} = I_{n+1}+3I_{n+1} \leqq I_{n+1}+3I_{n} = \frac{1}{n+1} \leqq I_{n}+3I_{n} = 4I_{n}
+\]
+すなわち
+\[
+  \frac{1}{4(n+1)} \leqq I_{n} \quad\text{かつ}\quad I_{n+1} \leqq \frac{1}{4(n+1)}
+\]
+がすべての $n\geqq 0$ で成り立つ。第2の不等式で $n$ を $n-1\ (n\geqq 1)$ に置き換えると $I_{n}\leqq\dfrac{1}{4n}$ となるから，すべての自然数 $n$ に対して
+\[
+  \frac{n}{4(n+1)} \leqq nI_{n} \leqq \frac{1}{4}
+\]
+が成り立つ。$\lim\limits_{n\to\infty}\dfrac{n}{4(n+1)}=\dfrac{1}{4}$ であるから，はさみうちの原理により
+\[
+  \lim_{n\to\infty}nI_{n} = \frac{1}{4}.
+\]
+
+\Ans{\lim_{n\to\infty}I_{n}=0,\qquad \lim_{n\to\infty}nI_{n}=\frac{1}{4}}
+
+\Q{4}{6}
+(2) の関係式で $n$ を $k-1\ (k\geqq 1)$ に置き換えると，
+\[
+  I_{k} + 3I_{k-1} = \frac{1}{k}
+\]
+である。両辺に $\dfrac{(-1)^{k-1}}{3^{k}}$ を掛けると，
+\[
+  \frac{(-1)^{k-1}}{k\cdot 3^{k}}
+  = \frac{(-1)^{k-1}}{3^{k}}I_{k} + \frac{(-1)^{k-1}}{3^{k-1}}I_{k-1}
+  = \frac{(-1)^{k-1}}{3^{k}}I_{k} - \frac{(-1)^{k-2}}{3^{k-1}}I_{k-1}
+\]
+となる。したがって，$k=1$ から $n$ まで辺々加えると，隣り合う項が打ち消し合って
+\begin{align*}
+  \sum_{k=1}^{n}\frac{(-1)^{k-1}}{k\cdot 3^{k}}
+  &= \left(\frac{1}{3}I_{1} + I_{0}\right) + \left(-\frac{1}{3^{2}}I_{2} - \frac{1}{3}I_{1}\right) + \cdots + \left(\frac{(-1)^{n-1}}{3^{n}}I_{n} - \frac{(-1)^{n-2}}{3^{n-1}}I_{n-1}\right) \\
+  &= I_{0} + \frac{(-1)^{n-1}}{3^{n}}I_{n}
+\end{align*}
+が成り立つ。ここで (3) より $\lim\limits_{n\to\infty}I_{n}=0$ かつ $\lim\limits_{n\to\infty}\dfrac{(-1)^{n-1}}{3^{n}}=0$ であるから，
+\[
+  \lim_{n\to\infty}\frac{(-1)^{n-1}}{3^{n}}I_{n} = 0
+\]
+であり，求める無限級数の和は
+\[
+  \sum_{k=1}^{\infty}\frac{(-1)^{k-1}}{k\cdot 3^{k}}
+  = \lim_{n\to\infty}\left\{I_{0}+\frac{(-1)^{n-1}}{3^{n}}I_{n}\right\} = I_{0} = \log\frac{4}{3}.
+\]
+
+\Ans{\log\frac{4}{3}}
+

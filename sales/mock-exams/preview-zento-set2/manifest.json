@@ -1,0 +1,78 @@
+{
+  "examId": "preview-zento-set2",
+  "example": false,
+  "files": [
+    {
+      "key": "full",
+      "label": "1冊統合版（問題・解答解説・採点基準・解答用紙）",
+      "file": "full.pdf",
+      "pages": 32,
+      "bytes": 521168,
+      "sha256": "22dace3171e99905c94c6396be002aec807619e99f551f4729d0076ed608911c"
+    },
+    {
+      "key": "problems",
+      "label": "問題冊子",
+      "file": "problems.pdf",
+      "pages": 4,
+      "bytes": 183317,
+      "sha256": "ec63003d0b27bdd730fae3bc97777062e8355bb2155507f9edf17c5e7c65d195"
+    },
+    {
+      "key": "answer-sheets",
+      "label": "所定解答用紙",
+      "file": "answer-sheets.pdf",
+      "pages": 5,
+      "bytes": 61464,
+      "sha256": "e5ff26802f989343e5e85ae381637edc0c89fb4d722ff8ab745c29715574bf5f"
+    },
+    {
+      "key": "solutions",
+      "label": "解答・解説",
+      "file": "solutions.pdf",
+      "pages": 14,
+      "bytes": 362299,
+      "sha256": "4cea246d8947faa4d6c4df305d305fa2d2ff395d265103f8a4e81f24f60270c8"
+    },
+    {
+      "key": "rubric",
+      "label": "採点基準",
+      "file": "rubric.pdf",
+      "pages": 9,
+      "bytes": 345819,
+      "sha256": "f078bc394b359311808c90ef2d76cf75f873cc9621075eaa18c52623ba512f75"
+    }
+  ],
+  "previews": [
+    {
+      "src": "/samples/mock-exams/preview-zento-set2/cover.webp",
+      "label": "表紙（問題冊子）",
+      "width": 900,
+      "height": 1273
+    },
+    {
+      "src": "/samples/mock-exams/preview-zento-set2/problem.webp",
+      "label": "問題紙（大問1サンプル）",
+      "width": 900,
+      "height": 1273
+    },
+    {
+      "src": "/samples/mock-exams/preview-zento-set2/answer-sheet.webp",
+      "label": "所定解答用紙（第1問）",
+      "width": 900,
+      "height": 1273
+    },
+    {
+      "src": "/samples/mock-exams/preview-zento-set2/solution.webp",
+      "label": "解答・解説（大問1・論述答案）",
+      "width": 900,
+      "height": 1273
+    },
+    {
+      "src": "/samples/mock-exams/preview-zento-set2/rubric.webp",
+      "label": "採点基準（配点一覧・加点減点表）",
+      "width": 900,
+      "height": 1273
+    }
+  ]
+}

@@ -1,0 +1,562 @@
+\hdA{大問 1 ── 小問集合（対称式・内接四角形・条件付き確率・対数関数）}
+
+\Q{1}{5}
+まず $x$，$y$ の分母を有理化する。$(\sqrt{6}-\sqrt{2})(\sqrt{6}+\sqrt{2})=6-2=4$ であるから
+\[
+  x=\frac{(\sqrt{6}+\sqrt{2})^{2}}{6-2}=\frac{8+4\sqrt{3}}{4}=2+\sqrt{3},\qquad
+  y=\frac{(\sqrt{6}-\sqrt{2})^{2}}{6-2}=\frac{8-4\sqrt{3}}{4}=2-\sqrt{3}
+\]
+である。したがって，基本対称式 $x+y$，$xy$ の値は
+\[
+  x+y=(2+\sqrt{3})+(2-\sqrt{3})=4,\qquad
+  xy=(2+\sqrt{3})(2-\sqrt{3})=4-3=1
+\]
+となる。これを用いると
+\[
+  x^{2}+y^{2}=(x+y)^{2}-2xy=4^{2}-2\cdot 1=14,
+\]
+\[
+  x^{3}+y^{3}=(x+y)^{3}-3xy(x+y)=4^{3}-3\cdot 1\cdot 4=64-12=52
+\]
+であり，さらに恒等式 $x^{5}+y^{5}=(x^{2}+y^{2})(x^{3}+y^{3})-x^{2}y^{2}(x+y)$ より
+\[
+  x^{5}+y^{5}=14\cdot 52-1^{2}\cdot 4=728-4=724
+\]
+を得る。以上より
+\Ans{x+y=4,\quad xy=1,\quad x^{3}+y^{3}=52,\quad x^{5}+y^{5}=724}
+である。
+
+\begin{betsu}[別解：漸化式 $S_{n}=4S_{n-1}-S_{n-2}$ を用いる方法]
+$x, y$ は 2 次方程式 $t^{2}-4t+1=0$ の 2 解であるから，$S_{n}=x^{n}+y^{n}$ とおくと $S_{n+2}=4S_{n+1}-S_{n}$ が成り立つ。$S_{1}=4$，$S_{2}=14$ より順に $S_{3}=4\cdot 14-4=52$，$S_{4}=4\cdot 52-14=194$，$S_{5}=4\cdot 194-52=724$ と検算できる。
+\end{betsu}
+
+\Q{2}{5}
+四角形 $\Pt{ABCD}$ は円に内接するから，$\angle\Pt{ABC}=\theta$ とおくと $\angle\Pt{ADC}=\pi-\theta$ であり，$\cos\angle\Pt{ADC}=-\cos\theta$，$\sin\angle\Pt{ADC}=\sin\theta$ が成り立つ。
+$\triangle\Pt{ABC}$ と $\triangle\Pt{ADC}$ のそれぞれにおいて対角線 $\Pt{AC}$ に余弦定理を適用すると
+\[
+  \Pt{AC}^{2}=3^{2}+4^{2}-2\cdot 3\cdot 4\cos\theta=25-24\cos\theta,
+\]
+\[
+  \Pt{AC}^{2}=5^{2}+6^{2}-2\cdot 5\cdot 6\cos(\pi-\theta)=61+60\cos\theta
+\]
+となる。この 2 式から $\Pt{AC}^{2}$ を消去すると
+\[
+  25-24\cos\theta=61+60\cos\theta \iff 84\cos\theta=-36 \iff \cos\angle\Pt{ABC}=-\frac{3}{7}
+\]
+を得る。$0<\theta<\pi$ より $\sin\theta>0$ であるから
+\[
+  \sin\angle\Pt{ABC}=\sqrt{1-\left(-\frac{3}{7}\right)^{2}}=\sqrt{\frac{40}{49}}=\frac{2\sqrt{10}}{7}
+\]
+であり，四角形 $\Pt{ABCD}$ の面積 $S$ は
+\[
+  S=\triangle\Pt{ABC}+\triangle\Pt{ADC}=\frac{1}{2}\cdot 3\cdot 4\sin\theta+\frac{1}{2}\cdot 5\cdot 6\sin(\pi-\theta)=(6+15)\sin\theta=21\cdot\frac{2\sqrt{10}}{7}=6\sqrt{10}
+\]
+となる。また，対角線 $\Pt{AC}$ の長さは
+\[
+  \Pt{AC}^{2}=25-24\cdot\left(-\frac{3}{7}\right)=\frac{175+72}{7}=\frac{247}{7}
+\]
+および $\Pt{AC}>0$ より $\Pt{AC}=\sqrt{\dfrac{247}{7}}=\dfrac{\sqrt{1729}}{7}$ である。以上より
+\Ans{\cos\angle\Pt{ABC}=-\frac{3}{7},\quad S=6\sqrt{10},\quad \Pt{AC}=\frac{\sqrt{1729}}{7}}
+である。
+
+\begin{betsu}[別解：ブラーマグプタの公式による面積の検算]
+円に内接する四角形の周長の半分は $s=\dfrac{3+4+5+6}{2}=9$ であるから，ブラーマグプタの公式より $S=\sqrt{(9-3)(9-4)(9-5)(9-6)}=\sqrt{6\cdot 5\cdot 4\cdot 3}=6\sqrt{10}$ となり一致する（ただし記述答案では余弦定理から導くこと）。
+\end{betsu}
+
+\Q{3}{5}
+硬貨 $\Pt{A}$ が選ばれる事象を $A$，硬貨 $\Pt{B}$ が選ばれる事象を $B$ とし，選んだ硬貨を $3$ 回投げて表がちょうど $2$ 回出る事象を $E$ とおく。
+さいころで $1$ または $2$ の目が出る確率は $P(A)=\dfrac{2}{6}=\dfrac{1}{3}$，$3$ 以上の目が出る確率は $P(B)=\dfrac{4}{6}=\dfrac{2}{3}$ である。
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+  \item 硬貨 $\Pt{A}$ を選んだとき，表がちょうど $2$ 回出る条件付き確率は，反復試行の確率より
+  \[
+    P_{A}(E)=\Cb{3}{2}\left(\frac{2}{3}\right)^{2}\left(\frac{1}{3}\right)=3\cdot\frac{4}{27}=\frac{4}{9}
+  \]
+  であるから，$P(A\cap E)=P(A)P_{A}(E)=\dfrac{1}{3}\cdot\dfrac{4}{9}=\dfrac{4}{27}$ となる。
+  \item 硬貨 $\Pt{B}$ を選んだとき，表がちょうど $2$ 回出る条件付き確率は
+  \[
+    P_{B}(E)=\Cb{3}{2}\left(\frac{1}{4}\right)^{2}\left(\frac{3}{4}\right)=\frac{9}{64}
+  \]
+  であるから，$P(B\cap E)=P(B)P_{B}(E)=\dfrac{2}{3}\cdot\dfrac{9}{64}=\dfrac{3}{32}$ となる。
+\end{itemize}
+事象 $A\cap E$ と $B\cap E$ は互いに排反であるから，求める確率 $p=P(E)$ は
+\[
+  p=P(A\cap E)+P(B\cap E)=\frac{4}{27}+\frac{3}{32}=\frac{128+81}{864}=\frac{209}{864}
+\]
+である。また，表がちょうど $2$ 回出たときに硬貨 $\Pt{A}$ が選ばれていた条件付き確率 $q=P_{E}(A)$ は
+\[
+  q=\frac{P(A\cap E)}{P(E)}=\frac{\dfrac{4}{27}}{\dfrac{209}{864}}=\frac{128}{209}
+\]
+である。以上より
+\Ans{p=\frac{209}{864},\quad q=\frac{128}{209}}
+である。
+
+\Q{4}{5}
+まず対数の真数条件より，$x-1>0$ かつ $7-x>0$，すなわち
+\[
+  1<x<7 \tag{1}
+\]
+である。(1) のもとで，与えられた不等式は $\log_{3}\{(x-1)(7-x)\}<\log_{3}3^{2}$ と変形できる。底 $3$ は $1$ より大きいから
+\[
+  (x-1)(7-x)<9 \iff -x^{2}+8x-7<9 \iff x^{2}-8x+16>0 \iff (x-4)^{2}>0
+\]
+となり，これは $x\ne 4$ を満たすすべての実数 $x$ で成り立つ。(1) との共通部分をとって
+\[
+  1<x<4,\quad 4<x<7
+\]
+を得る。
+
+次に，$6^{40}$ の常用対数をとると
+\[
+  \log_{10}6^{40}=40\log_{10}(2\cdot 3)=40(\log_{10}2+\log_{10}3)=40(0.3010+0.4771)=40\times 0.7781=31.124
+\]
+である。$31<\log_{10}6^{40}<32$ より $10^{31}<6^{40}<10^{32}$ であるから，$6^{40}$ は $32$ 桁の整数である。
+さらに，小数部分 $0.124$ について $0=\log_{10}1<0.124<\log_{10}2=0.3010$ が成り立つから
+\[
+  1<10^{0.124}<2 \implies 1\times 10^{31}<6^{40}<2\times 10^{31}
+\]
+となり，$6^{40}$ の最高位の数字は $1$ である。以上より
+\Ans{1<x<4,\ 4<x<7,\quad 32\text{ 桁},\quad \text{最高位の数字は }1}
+である。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hdA{大問 2 ── 数学II 微積分（3次関数の対称性・接線・面積比）}
+
+\Q{1}{4}
+$f(x)=x^{3}-3x^{2}-9x+11$ を微分すると
+\[
+  f'(x)=3x^{2}-6x-9=3(x+1)(x-3)
+\]
+である。$f'(x)=0$ とすると $x=-1, 3$ であり，$f(-1)=(-1)-3+9+11=16$，$f(3)=27-27-27+11=-16$ であるから，$y=f(x)$ の増減表は次のようになる。
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{|c||c|c|c|c|c|}
+\hline
+$x$ & $\cdots$ & $-1$ & $\cdots$ & $3$ & $\cdots$ \\ \hline
+$f'(x)$ & $+$ & $0$ & $-$ & $0$ & $+$ \\ \hline
+$f(x)$ & $\nearrow$ & 極大 $16$ & $\searrow$ & 極小 $-16$ & $\nearrow$ \\ \hline
+\end{tabular}
+\end{center}
+また，$f(1)=1-3-9+11=0$ であるから，因数定理により $f(x)$ は $x-1$ を因数にもち
+\[
+  f(x)=(x-1)(x^{2}-2x-11)
+\]
+と因数分解される。$x^{2}-2x-11=0$ を解くと $x=1\pm\sqrt{1+11}=1\pm 2\sqrt{3}$ であるから，曲線 $C$ と $x$ 軸の共有点の座標は
+\[
+  \left(1-2\sqrt{3},\ 0\right),\quad (1,\ 0),\quad \left(1+2\sqrt{3},\ 0\right)
+\]
+である。これより曲線 $C$ の概形は下図の実線部分のようになる。
+
+\begin{center}
+\begin{tikzpicture}[scale=0.58,>=Stealth]
+  \draw[->,thin] (-3.5,0) -- (6.2,0) node[right] {$x$};
+  \draw[->,thin] (0,-4.2) -- (0,4.5) node[above] {$y$};
+  \node[below left,font=\footnotesize] at (0,0) {$\mathrm{O}$};
+  % y scaled by 1/5
+  \draw[thick,domain=-2.75:5.15,samples=120] plot (\x, {((\x)^3 - 3*(\x)^2 - 9*\x + 11)/5});
+  \draw[dashed,black!60] (-1, 3.2) -- (5, 3.2) node[right,font=\footnotesize] {$m: y=16$};
+  \draw[dotted] (-1,0) node[below,font=\footnotesize] {$-1$} -- (-1,3.2);
+  \draw[dotted] (3,0) node[above,font=\footnotesize] {$3$} -- (3,-3.2) -- (0,-3.2) node[left,font=\footnotesize] {$-16$};
+  \draw[dotted] (5,0) node[below,font=\footnotesize] {$5$} -- (5,3.2);
+  \draw[dotted] (-1,3.2) -- (0,3.2) node[right,font=\footnotesize] {$16$};
+  \fill (-1,3.2) circle (2.2pt) node[above left,font=\footnotesize] {$\mathrm{P}(-1,16)$};
+  \fill (5,3.2) circle (2.2pt) node[above right,font=\footnotesize] {$\mathrm{Q}(5,16)$};
+  \fill (1,0) circle (2.2pt) node[above right,font=\footnotesize] {$\mathrm{A}(1,0)$};
+  \fill (3,-3.2) circle (2.2pt);
+\end{tikzpicture}
+\end{center}
+
+\Ans{\begin{aligned}
+  &\text{極大値 }16\ (x=-1\text{ のとき}),\quad \text{極小値 }-16\ (x=3\text{ のとき}),\\
+  &x\text{ 軸との共有点 }:\ \left(1-2\sqrt{3},\ 0\right),\ (1,\ 0),\ \left(1+2\sqrt{3},\ 0\right)\quad(\text{概形は上図})
+\end{aligned}}
+
+\Q{2}{5}
+任意の実数 $h$ に対して，$f(x)=(x-1)(x^{2}-2x-11)=(x-1)\{(x-1)^{2}-12\}$ に $x=1+h$ および $x=1-h$ を代入すると
+\[
+  f(1+h)=h(h^{2}-12)=h^{3}-12h,\qquad
+  f(1-h)=(-h)\{(-h)^{2}-12\}=-h^{3}+12h
+\]
+となる。したがって，すべての実数 $h$ に対して
+\[
+  f(1+h)+f(1-h)=(h^{3}-12h)+(-h^{3}+12h)=0
+\]
+が成り立つ。これは，曲線 $C$ 上の任意の点 $(1+h, f(1+h))$ を点 $\Pt{A}(1, 0)$ に関して対称移動した点 $(1-h, -f(1+h))=(1-h, f(1-h))$ もまた曲線 $C$ 上にあることを意味するから，曲線 $C$ は点 $\Pt{A}(1, 0)$ に関して点対称である。
+また，点 $\Pt{A}(1, 0)$ における接線の傾きは $f'(1)=3(1+1)(1-3)=-12$ であるから，接線 $\ell$ の方程式は
+\[
+  y-0=-12(x-1) \iff y=-12x+12
+\]
+である。以上より
+\Ans{\ell:\ y=-12x+12\quad(\text{対称性の証明は上記})}
+である。
+
+\Q{3}{5}
+(1) より曲線 $C$ の極大点は $\Pt{P}(-1, 16)$ であり，$f'(-1)=0$ であるから，点 $\Pt{P}$ における接線 $m$ の方程式は $y=16$ である。
+曲線 $C$ と直線 $m$ の共有点の $x$ 座標は，方程式 $f(x)=16$ を解いて
+\[
+  x^{3}-3x^{2}-9x-5=0 \iff (x+1)^{2}(x-5)=0
+\]
+より $x=-1, 5$ である。したがって，点 $\Pt{P}$ 以外の共有点 $\Pt{Q}$ の座標は $\Pt{Q}(5, 16)$ である。
+区間 $-1\leqq x\leqq 5$ において $16-f(x)=-(x+1)^{2}(x-5)=(5-x)(x+1)^{2}\geqq 0$ であるから，求める面積 $S_{1}$ は
+\[
+  S_{1}=\int_{-1}^{5}\{16-f(x)\}\,dx=\int_{-1}^{5}(5-x)(x+1)^{2}\,dx
+\]
+である。ここで $u=x+1$ と置換すると，$x:-1\to 5$ のとき $u:0\to 6$ であり，$5-x=6-u$ となるから
+\[
+  S_{1}=\int_{0}^{6}(6-u)u^{2}\,du=\left[2u^{3}-\frac{1}{4}u^{4}\right]_{0}^{6}=2\cdot 216-324=108
+\]
+となる。以上より
+\Ans{\Pt{Q}(5, 16),\quad S_{1}=108}
+である。
+
+\begin{betsu}[別解：$3$ 次関数と接線の面積公式（$\frac{1}{12}$ 公式）]
+$3$ 次関数 $y=ax^{3}+\cdots$ の曲線と接線が $x=\alpha$ で接し $x=\beta$ で交わるとき，囲まれる面積は $\dfrac{|a|}{12}(\beta-\alpha)^{4}$ で与えられる。本問では $a=1, \alpha=-1, \beta=5$ より $S_{1}=\dfrac{1}{12}(5-(-1))^{4}=\dfrac{1296}{12}=108$ と直ちに確かめられる。
+\end{betsu}
+
+\Q{4}{6}
+$-1<t<5$ において，直線 $m:y=16$ は曲線 $C:y=f(x)$ の上側にあるから，線分 $\Pt{MN}$ の長さ $L(t)$ は
+\[
+  L(t)=16-f(t)
+\]
+である。$L'(t)=-f'(t)=-3(t+1)(t-3)$ であるから，$-1<t<5$ において $L(t)$ は $t=3$（すなわち $f(t)$ が極小値 $-16$ をとるとき）に最大となり，その最大値は
+\[
+  L(3)=16-f(3)=16-(-16)=32
+\]
+である。
+このとき $t=3$ であり，$x\leqq 3$ の部分の面積 $S_{2}$ は，(3) と同様に $u=x+1$（$-1\leqq x\leqq 3 \iff 0\leqq u\leqq 4$）と置換して
+\[
+  S_{2}=\int_{-1}^{3}(5-x)(x+1)^{2}\,dx=\int_{0}^{4}(6-u)u^{2}\,du=\left[2u^{3}-\frac{1}{4}u^{4}\right]_{0}^{4}=2\cdot 64-64=64
+\]
+となる。したがって，求める面積の比は
+\[
+  S_{2}:S_{1}=64:108=16:27
+\]
+である。以上より
+\Ans{t=3\text{ のとき最大値 }32,\quad S_{2}:S_{1}=16:27}
+である。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hdA{大問 3 ── 数学II 三角関数・高次方程式（3倍角と3次方程式の解の配置）}
+
+\Q{1}{4}
+加法定理と 2 倍角の公式 $\cos 2\theta=2\cos^{2}\theta-1$，$\sin 2\theta=2\sin\theta\cos\theta$，および $\sin^{2}\theta=1-\cos^{2}\theta$ を用いると，$t=\cos\theta$ として
+\begin{align*}
+  \cos 3\theta &= \cos(2\theta+\theta)=\cos 2\theta\cos\theta-\sin 2\theta\sin\theta \\
+  &= (2\cos^{2}\theta-1)\cos\theta-2\sin^{2}\theta\cos\theta \\
+  &= (2t^{2}-1)t-2(1-t^{2})t = 4t^{3}-3t
+\end{align*}
+である。
+また，$0<\theta<\pi$ のとき $0<3\theta<3\pi$ である。この範囲で $\cos 3\theta=\dfrac{1}{2}$ を満たす $3\theta$ は
+\[
+  3\theta=\frac{\pi}{3},\quad \frac{5\pi}{3},\quad \frac{7\pi}{3}
+\]
+の $3$ つであるから，$\theta$ について解いて
+\Ans{\cos 3\theta=4t^{3}-3t,\quad \theta=\frac{\pi}{9},\ \frac{5\pi}{9},\ \frac{7\pi}{9}}
+を得る。
+
+\Q{2}{5}
+$3$ 次方程式 $8t^{3}-6t-1=0$ は $2(4t^{3}-3t)=1$，すなわち
+\[
+  4t^{3}-3t=\frac{1}{2}
+\]
+と同値である。(1) より，$t=\cos\theta$（$0<\theta<\pi$）とおくと $\cos 3\theta=\dfrac{1}{2}$ となり，$\theta=\dfrac{\pi}{9},\ \dfrac{5\pi}{9},\ \dfrac{7\pi}{9}$ が得られる。
+区間 $0<\theta<\pi$ において $\cos\theta$ は単調減少であるから
+\[
+  \cos\frac{7\pi}{9} < \cos\frac{5\pi}{9} < \cos\frac{\pi}{9}
+\]
+は互いに異なる $3$ つの実数であり，$3$ 次方程式は高々 $3$ 個の解しかもたないから，これらが $8t^{3}-6t-1=0$ の $3$ つの実数解のすべてである。よって
+\[
+  \alpha=\cos\frac{7\pi}{9},\qquad \beta=\cos\frac{5\pi}{9},\qquad \gamma=\cos\frac{\pi}{9}
+\]
+である。
+次に，$3$ 次方程式 $8t^{3}-6t-1=0$（すなわち $t^{3}-\dfrac{3}{4}t-\dfrac{1}{8}=0$）の解と係数の関係より
+\[
+  \alpha+\beta+\gamma=0,\qquad
+  \alpha\beta+\beta\gamma+\gamma\alpha=-\frac{6}{8}=-\frac{3}{4},\qquad
+  \alpha\beta\gamma=\frac{1}{8}
+\]
+であり，これらを用いると
+\[
+  \alpha^{2}+\beta^{2}+\gamma^{2}=(\alpha+\beta+\gamma)^{2}-2(\alpha\beta+\beta\gamma+\gamma\alpha)=0^{2}-2\cdot\left(-\frac{3}{4}\right)=\frac{3}{2}
+\]
+となる。以上より
+\Ans{\begin{aligned}
+  &\alpha=\cos\frac{7\pi}{9},\quad \beta=\cos\frac{5\pi}{9},\quad \gamma=\cos\frac{\pi}{9},\\
+  &\alpha+\beta+\gamma=0,\quad \alpha\beta+\beta\gamma+\gamma\alpha=-\frac{3}{4},\quad \alpha\beta\gamma=\frac{1}{8},\quad \alpha^{2}+\beta^{2}+\gamma^{2}=\frac{3}{2}
+\end{aligned}}
+である。
+
+\Q{3}{5}
+$g(t)=8t^{3}-6t-1$ を微分すると
+\[
+  g'(t)=24t^{2}-6=6(2t+1)(2t-1)
+\]
+である。$g'(t)=0$ とすると $t=-\dfrac{1}{2},\ \dfrac{1}{2}$ であり，極大値は $g\!\left(-\dfrac{1}{2}\right)=-1+3-1=1$，極小値は $g\!\left(\dfrac{1}{2}\right)=1-3-1=-3$ である。
+さらに，各区間の端点における $g(t)$ の値を計算すると
+\begin{align*}
+  g\!\left(-\frac{\sqrt{3}}{2}\right) &= 8\left(-\frac{3\sqrt{3}}{8}\right)-6\left(-\frac{\sqrt{3}}{2}\right)-1=-1<0, & g\!\left(-\frac{1}{2}\right) &= 1>0, \\
+  g(0) &= -1<0, & g\!\left(\frac{\sqrt{3}}{2}\right) &= 8\left(\frac{3\sqrt{3}}{8}\right)-3\sqrt{3}-1=-1<0, \\
+  g(1) &= 8-6-1=1>0 & &
+\end{align*}
+である。連続関数 $g(t)$ は区間 $\left(-\dfrac{\sqrt{3}}{2}, -\dfrac{1}{2}\right)$ で単調増加かつ端点で異符号，区間 $\left(-\dfrac{1}{2}, 0\right)$ で単調減少かつ端点で異符号，区間 $\left(\dfrac{\sqrt{3}}{2}, 1\right)$ で単調増加かつ端点で異符号であるから，中間値の定理により各開区間にただ $1$ つの実数解が存在する。$\alpha<\beta<\gamma$ より
+\[
+  -\frac{\sqrt{3}}{2}<\alpha<-\frac{1}{2},\qquad -\frac{1}{2}<\beta<0,\qquad \frac{\sqrt{3}}{2}<\gamma<1
+\]
+が成り立つ。
+\Ans{\text{極大値 }1\ \left(t=-\frac{1}{2}\right),\ \text{極小値 }-3\ \left(t=\frac{1}{2}\right)\quad(\text{不等式の証明は上記})}
+
+\begin{betsu}[別解：余弦関数の単調性による直接証明]
+$0<\theta<\pi$ において $\cos\theta$ は狭義単調減少であるから，
+$\dfrac{2\pi}{3}<\dfrac{7\pi}{9}<\dfrac{5\pi}{6}$ より $-\dfrac{\sqrt{3}}{2}<\cos\dfrac{7\pi}{9}<-\dfrac{1}{2}$，
+$\dfrac{\pi}{2}<\dfrac{5\pi}{9}<\dfrac{2\pi}{3}$ より $-\dfrac{1}{2}<\cos\dfrac{5\pi}{9}<0$，
+$0<\dfrac{\pi}{9}<\dfrac{\pi}{6}$ より $\dfrac{\sqrt{3}}{2}<\cos\dfrac{\pi}{9}<1$ が直ちに従う。
+\end{betsu}
+
+\Q{4}{6}
+$t=\cos\theta$ とおくと，$0\leqq\theta\leqq\pi$ において $\theta$ と $t$（$-1\leqq t\leqq 1$）は $1$ 対 $1$ に対応する。したがって，与えられた $\theta$ の方程式の $0\leqq\theta\leqq\pi$ における異なる実数解の個数は，$-1\leqq t\leqq 1$ における $t$ の方程式
+\[
+  (4t^{3}-3t)-3at=0 \iff t\left\{4t^{2}-3(a+1)\right\}=0
+\]
+の異なる実数解 $t$ の個数に等しい。
+まず $t=0$（$\theta=\dfrac{\pi}{2}$）は定数 $a$ の値によらずつねに $-1\leqq t\leqq 1$ 内の解である。
+残りの因数 $4t^{2}=3(a+1)$，すなわち $t^{2}=\dfrac{3(a+1)}{4}$ が区間 $-1\leqq t\leqq 1$ かつ $t\ne 0$ に何個の実数解をもつかを調べる。
+$t\in[-1, 1]$ かつ $t\ne 0$ を動くとき，$t^{2}$ のとり得る値の範囲は $0<t^{2}\leqq 1$ であり，$t^{2}$ の各値に対して $t=\pm\sqrt{\dfrac{3(a+1)}{4}}$ の $2$ 個の異なる実数解 $t$ が対応する。
+ここで
+\[
+  0<\frac{3(a+1)}{4}\leqq 1 \iff 0<a+1\leqq\frac{4}{3} \iff -1<a\leqq\frac{1}{3}
+\]
+であるから，$a$ の値によって次のように分類される。
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+  \item $a<-1$ のとき：$t^{2}=\dfrac{3(a+1)}{4}<0$ を満たす実数 $t$ は存在しないから，解は $t=0$ の $1$ 個。
+  \item $a=-1$ のとき：$t^{2}=0$ より $t=0$（重解）となるから，異なる実数解は $t=0$ の $1$ 個。
+  \item $-1<a\leqq\dfrac{1}{3}$ のとき：$0<\dfrac{3(a+1)}{4}\leqq 1$ より，$t=0$ と $t=\pm\dfrac{\sqrt{3(a+1)}}{2}$ の計 $3$ 個。
+  \item $a>\dfrac{1}{3}$ のとき：$\dfrac{3(a+1)}{4}>1$ より $t^{2}>1$ となり，$-1\leqq t\leqq 1$ を満たす解は $t=0$ の $1$ 個。
+\end{itemize}
+以上をまとめて
+\Ans{\begin{cases}
+  -1<a\leqq\dfrac{1}{3}\text{ のとき} & 3\text{ 個} \\[4pt]
+  a\leqq -1\text{ または }a>\dfrac{1}{3}\text{ のとき} & 1\text{ 個}
+\end{cases}}
+である。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hdA{大問 4 ── 数学B 数列（和 $S_{n}$ を含む漸化式・指数型漸化式・和の計算）}
+
+\Q{1}{4}
+すべての自然数 $n$ に対して
+\[
+  S_{n}=\frac{3}{2}a_{n}-2^{n+1}+3 \tag{1}
+\]
+が成り立つ。まず $n=1$ を代入すると，$S_{1}=a_{1}$ より
+\[
+  a_{1}=\frac{3}{2}a_{1}-2^{2}+3 \iff \frac{1}{2}a_{1}=1 \iff a_{1}=2
+\]
+である。次に $n\geqq 1$ のとき，$a_{n+1}=S_{n+1}-S_{n}$ であるから，(1) より
+\[
+  a_{n+1}=\left(\frac{3}{2}a_{n+1}-2^{n+2}+3\right)-\left(\frac{3}{2}a_{n}-2^{n+1}+3\right)
+  =\frac{3}{2}a_{n+1}-\frac{3}{2}a_{n}-2^{n+1}
+\]
+となり，整理すると $\dfrac{1}{2}a_{n+1}=\dfrac{3}{2}a_{n}+2^{n+1}$，すなわち
+\[
+  a_{n+1}=3a_{n}+2^{n+2} \tag{2}
+\]
+が成り立つ。(2) に $n=1, 2$ を順に代入すると
+\[
+  a_{2}=3a_{1}+2^{3}=3\cdot 2+8=14,\qquad
+  a_{3}=3a_{2}+2^{4}=3\cdot 14+16=58
+\]
+を得る。以上より
+\Ans{a_{1}=2,\quad a_{2}=14,\quad a_{3}=58,\quad a_{n+1}=3a_{n}+2^{n+2}}
+である。
+
+\Q{2}{5}
+(1) の漸化式 $a_{n+1}=3a_{n}+2^{n+2}$ の両辺を $2^{n+1}$ で割ると
+\[
+  \frac{a_{n+1}}{2^{n+1}}=\frac{3}{2}\cdot\frac{a_{n}}{2^{n}}+2
+\]
+となる。$b_{n}=\dfrac{a_{n}}{2^{n}}$ とおくと $b_{1}=\dfrac{a_{1}}{2^{1}}=\dfrac{2}{2}=1$ であり
+\[
+  b_{n+1}=\frac{3}{2}b_{n}+2
+\]
+が成り立つ。特性方程式 $\alpha=\dfrac{3}{2}\alpha+2$ を解くと $\alpha=-4$ であるから
+\[
+  b_{n+1}+4=\frac{3}{2}(b_{n}+4)
+\]
+と変形できる。よって数列 $\{b_{n}+4\}$ は初項 $b_{1}+4=1+4=5$，公比 $\dfrac{3}{2}$ の等比数列であるから
+\[
+  b_{n}+4=5\left(\frac{3}{2}\right)^{n-1} \iff b_{n}=5\left(\frac{3}{2}\right)^{n-1}-4
+\]
+を得る。したがって，$a_{n}=2^{n}b_{n}$ より
+\[
+  a_{n}=2^{n}\left\{5\cdot\frac{3^{n-1}}{2^{n-1}}-4\right\}=10\cdot 3^{n-1}-2^{n+2}
+\]
+である。以上より
+\Ans{b_{n+1}=\frac{3}{2}b_{n}+2,\quad b_{n}=5\left(\frac{3}{2}\right)^{n-1}-4,\quad a_{n}=10\cdot 3^{n-1}-2^{n+2}}
+である。
+
+\Q{3}{5}
+(1) の関係式 $S_{n}=\dfrac{3}{2}a_{n}-2^{n+1}+3$ に (2) の $a_{n}=10\cdot 3^{n-1}-2^{n+2}$ を代入すると
+\[
+  S_{n}=\frac{3}{2}\left(10\cdot 3^{n-1}-2^{n+2}\right)-2^{n+1}+3
+  =5\cdot 3^{n}-3\cdot 2^{n+1}-2^{n+1}+3
+  =5\cdot 3^{n}-2^{n+3}+3
+\]
+である。
+また，不等式 $a_{n}>10\cdot 2^{n}$ は，両辺を $2^{n}>0$ で割ると $b_{n}>10$ と同値である。(2) より
+\[
+  5\left(\frac{3}{2}\right)^{n-1}-4>10 \iff 5\left(\frac{3}{2}\right)^{n-1}>14 \iff \left(\frac{3}{2}\right)^{n-1}>\frac{14}{5}=2.8
+\]
+となる。数列 $\left\{\left(\dfrac{3}{2}\right)^{n-1}\right\}$ は単調増加であり，
+$n=3$ のとき $\left(\dfrac{3}{2}\right)^{2}=\dfrac{9}{4}=2.25<2.8$，
+$n=4$ のとき $\left(\dfrac{3}{2}\right)^{3}=\dfrac{27}{8}=3.375>2.8$
+であるから，満たす最小の自然数 $n$ は $n=4$ である。以上より
+\Ans{S_{n}=5\cdot 3^{n}-2^{n+3}+3,\quad n=4}
+である。
+
+\Q{4}{6}
+(2) より $a_{k}+2^{k+2}=10\cdot 3^{k-1}$ であるから，$c_{k}=\dfrac{a_{k}+2^{k+2}}{10}=3^{k-1}$ である。
+したがって，求める和 $W_{n}$ は（等差）$\times$（等比）型の和
+\[
+  W_{n}=\sum_{k=1}^{n}\frac{k}{3^{k-1}}=1+\frac{2}{3}+\frac{3}{3^{2}}+\cdots+\frac{n}{3^{n-1}}
+\]
+である。両辺に公比 $\dfrac{1}{3}$ を掛けた式を並べると
+\begin{align*}
+  W_{n} &= 1+\frac{2}{3}+\frac{3}{3^{2}}+\cdots+\frac{n}{3^{n-1}}, \\
+  \frac{1}{3}W_{n} &= \phantom{1+{}}\frac{1}{3}+\frac{2}{3^{2}}+\cdots+\frac{n-1}{3^{n-1}}+\frac{n}{3^{n}}
+\end{align*}
+となり，辺々を引くと
+\[
+  \frac{2}{3}W_{n}=\left(1+\frac{1}{3}+\frac{1}{3^{2}}+\cdots+\frac{1}{3^{n-1}}\right)-\frac{n}{3^{n}}
+  =\frac{1-\left(\dfrac{1}{3}\right)^{n}}{1-\dfrac{1}{3}}-\frac{n}{3^{n}}
+  =\frac{3}{2}\left(1-\frac{1}{3^{n}}\right)-\frac{n}{3^{n}}
+  =\frac{3}{2}-\frac{2n+3}{2\cdot 3^{n}}
+\]
+となる。両辺に $\dfrac{3}{2}$ を掛けて
+\Ans{W_{n}=\frac{9}{4}-\frac{2n+3}{4\cdot 3^{n-1}}}
+を得る（$n=1$ のとき $\dfrac{9}{4}-\dfrac{5}{4}=1$，$n=2$ のとき $\dfrac{9}{4}-\dfrac{7}{12}=\dfrac{5}{3}$ となり確かに成り立つ）。
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hdA{大問 5 ── 数学C 空間ベクトル（等面四面体の垂線・体積・外接球）}
+
+\Q{1}{4}
+条件より $|\vec{a}|=2$，$|\vec{b}|=|\vec{c}|=\sqrt{5}$ である。
+$\triangle\Pt{OAB}$ において $\Pt{AB}=\sqrt{5}$ より $|\vec{b}-\vec{a}|^{2}=5$ であるから
+\[
+  |\vec{a}|^{2}-2\vec{a}\cdot\vec{b}+|\vec{b}|^{2}=5 \implies 4-2\vec{a}\cdot\vec{b}+5=5 \implies \vec{a}\cdot\vec{b}=2
+\]
+である。まったく同様に $\triangle\Pt{OAC}$ において $|\vec{c}-\vec{a}|^{2}=5$ より $\vec{a}\cdot\vec{c}=2$ を得る。
+また，$\triangle\Pt{OBC}$ において $\Pt{BC}=2$ より $|\vec{c}-\vec{b}|^{2}=4$ であるから
+\[
+  |\vec{b}|^{2}-2\vec{b}\cdot\vec{c}+|\vec{c}|^{2}=4 \implies 5-2\vec{b}\cdot\vec{c}+5=4 \implies \vec{b}\cdot\vec{c}=3
+\]
+である。これより $\triangle\Pt{OBC}$ の面積は
+\[
+  \triangle\Pt{OBC}=\frac{1}{2}\sqrt{|\vec{b}|^{2}|\vec{c}|^{2}-(\vec{b}\cdot\vec{c})^{2}}
+  =\frac{1}{2}\sqrt{5\cdot 5-3^{2}}=\frac{1}{2}\sqrt{16}=2
+\]
+である。以上より
+\Ans{\vec{a}\cdot\vec{b}=2,\quad \vec{a}\cdot\vec{c}=2,\quad \vec{b}\cdot\vec{c}=3,\quad \triangle\Pt{OBC}=2}
+である。
+
+\Q{2}{5}
+点 $\Pt{H}$ は平面 $\Pt{OBC}$ 上にあるから，実数 $s, t$ を用いて $\Vec{OH}=s\vec{b}+t\vec{c}$ と表せる。
+このとき $\Vec{AH}=\Vec{OH}-\Vec{OA}=-\vec{a}+s\vec{b}+t\vec{c}$ であり，直線 $\Pt{AH}$ は平面 $\Pt{OBC}$ に垂直であるから
+\[
+  \Vec{AH}\cdot\vec{b}=0 \quad\text{かつ}\quad \Vec{AH}\cdot\vec{c}=0
+\]
+が成り立つ。(1) の内積の値を代入すると
+\[
+  \begin{cases}
+    -\vec{a}\cdot\vec{b}+s|\vec{b}|^{2}+t\vec{b}\cdot\vec{c}=-2+5s+3t=0 \\[2pt]
+    -\vec{a}\cdot\vec{c}+s\vec{b}\cdot\vec{c}+t|\vec{c}|^{2}=-2+3s+5t=0
+  \end{cases}
+  \iff
+  \begin{cases}
+    5s+3t=2 \\[2pt]
+    3s+5t=2
+  \end{cases}
+\]
+となり，これを解いて $s=t=\dfrac{1}{4}$ を得る。よって
+\[
+  \Vec{OH}=\frac{1}{4}\vec{b}+\frac{1}{4}\vec{c}
+\]
+である。このとき $\Vec{AH}\perp\Vec{OH}$ であり，
+\[
+  |\Vec{OH}|^{2}=\frac{1}{16}\left(|\vec{b}|^{2}+2\vec{b}\cdot\vec{c}+|\vec{c}|^{2}\right)=\frac{5+6+5}{16}=1
+\]
+であるから，三平方の定理より
+\[
+  \Pt{AH}=\sqrt{|\Vec{OA}|^{2}-|\Vec{OH}|^{2}}=\sqrt{2^{2}-1}=\sqrt{3}
+\]
+となる。したがって，四面体 $\Pt{OABC}$ の体積 $V$ は
+\[
+  V=\frac{1}{3}\cdot\triangle\Pt{OBC}\cdot\Pt{AH}=\frac{1}{3}\cdot 2\cdot\sqrt{3}=\frac{2\sqrt{3}}{3}
+\]
+である。以上より
+\Ans{\Vec{OH}=\frac{1}{4}\vec{b}+\frac{1}{4}\vec{c},\quad \Pt{AH}=\sqrt{3},\quad V=\frac{2\sqrt{3}}{3}}
+である。
+
+\Q{3}{5}
+辺 $\Pt{OA}$ の中点 $\Pt{M}$ と辺 $\Pt{BC}$ の中点 $\Pt{N}$ について，$\Vec{OM}=\dfrac{1}{2}\vec{a}$，$\Vec{ON}=\dfrac{1}{2}(\vec{b}+\vec{c})$ であるから
+\[
+  \Vec{MN}=\Vec{ON}-\Vec{OM}=\frac{1}{2}(\vec{b}+\vec{c}-\vec{a})
+\]
+である。これと $\Vec{OA}=\vec{a}$ および $\Vec{BC}=\vec{c}-\vec{b}$ の内積を計算すると
+\begin{align*}
+  \Vec{MN}\cdot\Vec{OA} &= \frac{1}{2}(\vec{a}\cdot\vec{b}+\vec{a}\cdot\vec{c}-|\vec{a}|^{2})=\frac{1}{2}(2+2-4)=0, \\
+  \Vec{MN}\cdot\Vec{BC} &= \frac{1}{2}(\vec{b}+\vec{c}-\vec{a})\cdot(\vec{c}-\vec{b})=\frac{1}{2}\left(|\vec{c}|^{2}-|\vec{b}|^{2}-\vec{a}\cdot\vec{c}+\vec{a}\cdot\vec{b}\right)=\frac{1}{2}(5-5-2+2)=0
+\end{align*}
+となる。よって $\Vec{MN}\perp\Vec{OA}$ かつ $\Vec{MN}\perp\Vec{BC}$ であり，直線 $\Pt{MN}$ は辺 $\Pt{OA}$ と辺 $\Pt{BC}$ の両方に垂直である。
+また，$|\vec{b}+\vec{c}|^{2}=5+2\cdot 3+5=16$ より
+\[
+  |\Vec{MN}|^{2}=\frac{1}{4}\left(|\vec{b}+\vec{c}|^{2}-2\vec{a}\cdot(\vec{b}+\vec{c})+|\vec{a}|^{2}\right)
+  =\frac{1}{4}(16-8+4)=3
+\]
+であるから，$\Pt{MN}>0$ より $\Pt{MN}=\sqrt{3}$ である。
+\Ans{\Pt{MN}=\sqrt{3}\quad(\text{垂直の証明は上記})}
+
+\Q{4}{6}
+$\vec{a}, \vec{b}, \vec{c}$ は同一平面上にないから，外接球の中心 $\Pt{K}$ に対して $\Vec{OK}=p\vec{a}+q\vec{b}+r\vec{c}$（$p, q, r$ は実数）とおける。
+外接球の中心の条件 $\Pt{OK}=\Pt{AK}=\Pt{BK}=\Pt{CK}$ は
+\[
+  |\Vec{OK}|^{2}=|\Vec{OK}-\vec{a}|^{2}=|\Vec{OK}-\vec{b}|^{2}=|\Vec{OK}-\vec{c}|^{2}
+\]
+と同値であり，展開して $|\Vec{OK}|^{2}$ を消去すると
+\[
+  \vec{a}\cdot\Vec{OK}=\frac{1}{2}|\vec{a}|^{2}=2,\qquad
+  \vec{b}\cdot\Vec{OK}=\frac{1}{2}|\vec{b}|^{2}=\frac{5}{2},\qquad
+  \vec{c}\cdot\Vec{OK}=\frac{1}{2}|\vec{c}|^{2}=\frac{5}{2}
+\]
+となる。それぞれに $\Vec{OK}=p\vec{a}+q\vec{b}+r\vec{c}$ を代入すると
+\[
+  \begin{cases}
+    4p+2q+2r=2 \\[2pt]
+    2p+5q+3r=\dfrac{5}{2} \\[4pt]
+    2p+3q+5r=\dfrac{5}{2}
+  \end{cases}
+\]
+を得る。第 2 式と第 3 式の差より $2(q-r)=0$，すなわち $q=r$ である。これを第 1 式と第 2 式に代入すると
+\[
+  4p+4q=2,\qquad 2p+8q=\frac{5}{2}
+\]
+となり，これを解いて $p=q=r=\dfrac{1}{4}$ を得る。したがって
+\[
+  \Vec{OK}=\frac{1}{4}\vec{a}+\frac{1}{4}\vec{b}+\frac{1}{4}\vec{c}
+\]
+である。また，外接球の半径 $R=|\Vec{OK}|$ は，$\Vec{OK}\cdot\vec{a}=2$，$\Vec{OK}\cdot\vec{b}=\dfrac{5}{2}$，$\Vec{OK}\cdot\vec{c}=\dfrac{5}{2}$ を用いると
+\[
+  R^{2}=|\Vec{OK}|^{2}=\Vec{OK}\cdot\left(\frac{1}{4}\vec{a}+\frac{1}{4}\vec{b}+\frac{1}{4}\vec{c}\right)
+  =\frac{1}{4}\left(2+\frac{5}{2}+\frac{5}{2}\right)=\frac{7}{4}
+\]
+より $R=\dfrac{\sqrt{7}}{2}$ である。以上より
+\Ans{\Vec{OK}=\frac{1}{4}\vec{a}+\frac{1}{4}\vec{b}+\frac{1}{4}\vec{c},\quad R=\frac{\sqrt{7}}{2}}
+である。
+
+\begin{betsu}[別解：等面四面体の対称性と線分 $\Pt{MN}$ の中点を用いる方法]
+本問の四面体 $\Pt{OABC}$ は $3$ 組の対辺がそれぞれ等しい等面四面体（$\Pt{OA}=\Pt{BC}=2$，$\Pt{OB}=\Pt{AC}=\sqrt{5}$，$\Pt{OC}=\Pt{AB}=\sqrt{5}$）である。(3) より直線 $\Pt{MN}$ は辺 $\Pt{OA}$ の垂直二等分線かつ辺 $\Pt{BC}$ の垂直二等分線であるから，線分 $\Pt{MN}$ の中点 $\Pt{K}$\ $\left(\Vec{OK}=\dfrac{\Vec{OM}+\Vec{ON}}{2}=\dfrac{1}{4}\vec{a}+\dfrac{1}{4}\vec{b}+\dfrac{1}{4}\vec{c}\right)$ は，三平方の定理より
+\[
+  \Pt{OK}^{2}=\Pt{AK}^{2}=\Pt{OM}^{2}+\Pt{MK}^{2}=1^{2}+\left(\frac{\sqrt{3}}{2}\right)^{2}=\frac{7}{4},\qquad
+  \Pt{BK}^{2}=\Pt{CK}^{2}=\Pt{BN}^{2}+\Pt{NK}^{2}=1^{2}+\left(\frac{\sqrt{3}}{2}\right)^{2}=\frac{7}{4}
+\]
+を満たし，$4$ 頂点から等距離にある外接球の中心であることが幾何学的に直ちにわかる。
+\end{betsu}
+

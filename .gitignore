@@ -46,9 +46,8 @@ public/prints/冊子*/
 public/prints/**/*.pdf
 public/prints/**/*.log
 
-# paid exam PDFs & internal full source booklets (keep private / never commit to public repo)
+# internal full source booklets
 assets/moshi-exams/
-sales/
 
 # python
 __pycache__/
