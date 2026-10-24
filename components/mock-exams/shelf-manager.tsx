@@ -212,6 +212,18 @@ export function ShelfManager({
     }
   };
 
+  // 管理者ログアウト
+  const handleLogout = () => {
+    setAuthorized(false);
+    setKey("");
+    setItems([]);
+    if (typeof window !== "undefined") {
+      window.sessionStorage.removeItem("store_admin_key");
+      document.cookie = "store_admin_key=; path=/; max-age=0";
+    }
+    setMsg({ text: "ログアウトしました。" });
+  };
+
   // インライン価格編集用状態
   const [editingPriceId, setEditingPriceId] = useState<string | null>(null);
   const [editingPriceVal, setEditingPriceVal] = useState<string>("");
@@ -595,6 +607,60 @@ export function ShelfManager({
   const totalItems = items.length;
   const onSaleItems = items.filter((i) => i.status === "on-sale").length;
 
+  if (!authorized) {
+    return (
+      <div className="min-h-screen bg-[#0f172a] flex flex-col justify-center items-center p-4 selection:bg-slate-700">
+        <div className="w-full max-w-md rounded-2xl bg-white p-6 sm:p-8 shadow-2xl border border-slate-200">
+          <div className="text-center mb-6">
+            <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 mb-3 text-2xl shadow-inner border border-blue-100">
+              🔒
+            </div>
+            <h1 className="text-lg font-bold text-slate-900">大学別数学研究室 管理者認証</h1>
+            <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+              商品棚・販売管理マネージャーへアクセスするには、環境変数 <code className="bg-slate-100 px-1 py-0.5 rounded font-mono text-slate-700 font-bold">STORE_DOWNLOAD_SECRET</code> を入力してください。
+            </p>
+          </div>
+
+          <form onSubmit={handleAuthSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                管理者パスコード
+              </label>
+              <input
+                type="password"
+                autoFocus
+                required
+                value={authKeyInput}
+                onChange={(e) => setAuthKeyInput(e.target.value)}
+                placeholder="パスコードを入力..."
+                className="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-600 focus:outline-hidden font-mono shadow-xs"
+              />
+            </div>
+
+            {authError && (
+              <div className="rounded-lg bg-rose-50 border border-rose-200 p-2.5 text-xs text-rose-700 font-medium">
+                {authError}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full rounded-lg bg-blue-600 hover:bg-blue-500 py-2.5 text-sm font-bold text-white shadow-md transition active:scale-95"
+            >
+              ログインして管理画面を開く
+            </button>
+          </form>
+
+          <div className="mt-6 text-center pt-4 border-t border-slate-100">
+            <Link href="/" className="text-xs text-slate-400 hover:text-slate-600 transition">
+              ← サイトトップへ戻る
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans text-xs antialiased pb-20">
       {/* ──────────────────────────────────────────────────────────
@@ -631,18 +697,6 @@ export function ShelfManager({
 
         {/* 右側: アクション（重複なしの厳選配置） */}
         <div className="flex items-center gap-2">
-          {!authorized && (
-            <button
-              type="button"
-              onClick={() => {
-                setAuthError("");
-                setAuthModalOpen(true);
-              }}
-              className="inline-flex items-center gap-1 rounded bg-amber-500 hover:bg-amber-400 px-2.5 py-1 text-xs font-bold text-slate-950 shadow-2xs transition"
-            >
-              <span>🔒 ログイン</span>
-            </button>
-          )}
           <Link
             href="/mock-exams"
             target="_blank"
@@ -657,30 +711,16 @@ export function ShelfManager({
           >
             <span>＋ 新規模試を追加</span>
           </button>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="inline-flex items-center gap-1 rounded border border-white/20 bg-white/5 px-2.5 py-1 text-xs font-medium text-slate-300 hover:bg-white/15 hover:text-rose-300 transition shadow-2xs"
+            title="管理者ログアウト"
+          >
+            <span>ログアウト</span>
+          </button>
         </div>
       </header>
-
-      {/* 認証案内バー（未認証時） */}
-      {!authorized && (
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-3">
-          <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-xs text-amber-900 flex flex-wrap items-center justify-between gap-2 shadow-xs">
-            <div className="flex items-center gap-2">
-              <span className="font-bold">⚠️ 管理者認証が必要です:</span>
-              <span>商品の編集やステータス変更を保存するには、管理者パスコードによる認証が必要です。</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                setAuthError("");
-                setAuthModalOpen(true);
-              }}
-              className="rounded bg-amber-800 px-3 py-1 font-bold text-white hover:bg-amber-700 transition"
-            >
-              パスコードを入力してログイン
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* ──────────────────────────────────────────────────────────
           通知メッセージ
@@ -944,6 +984,14 @@ export function ShelfManager({
                       >
                         編集
                       </button>
+                      <Link
+                        href={`/mock-exams/${item.id}/view`}
+                        target="_blank"
+                        className="inline-block rounded border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition shadow-2xs"
+                        title="購入者専用ダウンロード画面を管理者プレビュー"
+                      >
+                        購入者画面 ↗
+                      </Link>
                       {hasFullPdf && (
                         <a
                           href={`/api/mock-exams/shelf?download=1&id=${item.id}&file=full.pdf${
@@ -952,9 +1000,9 @@ export function ShelfManager({
                           target="_blank"
                           rel="noreferrer"
                           className="inline-block rounded border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition shadow-2xs"
-                          title="PDFを新しいタブで確認"
+                          title="納品用PDFをブラウザで開く"
                         >
-                          ↗
+                          PDF ↗
                         </a>
                       )}
                       <button

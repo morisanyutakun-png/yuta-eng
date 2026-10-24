@@ -1,3 +1,5 @@
+import { createHmac, timingSafeEqual } from "node:crypto";
+
 import { storeSeller, type MockExam } from "@/data/mock-exams";
 import { getExam } from "@/lib/mock-exams/catalog-server";
 import { findOrder, hasOrderDb, upsertOrder, type OrderStatus } from "@/lib/mock-exams/db";
@@ -32,6 +34,8 @@ export type AccessResult =
       email: string | null;
       purchasedAt: Date;
       expiresAt: Date;
+      isTest?: boolean;
+      isAdminPreview?: boolean;
     }
   | {
       ok: false;
@@ -41,11 +45,102 @@ export type AccessResult =
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+function getSecretForTest(): string {
+  return (
+    process.env.STORE_DOWNLOAD_SECRET?.trim() ||
+    process.env.STRIPE_SECRET_KEY?.trim() ||
+    "fallback-internal-test-key-yuta-mock"
+  );
+}
+
+/**
+ * テストメール送信用のセッションIDを発行する。
+ * 形式: `cs_test_mock_${ts}_${sig}`
+ * サーバー側で STORE_DOWNLOAD_SECRET によりHMAC署名されており、第三者は偽造できない。
+ */
+export function createTestSessionId(examId: string): string {
+  const ts = Date.now();
+  const secret = getSecretForTest();
+  const raw = `${examId}:${ts}`;
+  const sig = createHmac("sha256", secret).update(raw).digest("hex").slice(0, 24);
+  return `cs_test_mock_${ts}_${sig}`;
+}
+
+/**
+ * テストメール用のセッションIDを検証する。
+ * 署名と有効期限（30日以内）が正しい場合のみ true を返す。
+ */
+export function verifyTestSessionId(
+  examId: string,
+  sessionId: string,
+): { valid: boolean; ts: number } {
+  if (!sessionId.startsWith("cs_test_mock_")) {
+    return { valid: false, ts: 0 };
+  }
+  const parts = sessionId.split("_");
+  if (parts.length !== 5) {
+    return { valid: false, ts: 0 };
+  }
+  const ts = Number(parts[3]);
+  const sig = parts[4];
+  if (!Number.isFinite(ts) || !sig) {
+    return { valid: false, ts: 0 };
+  }
+  // 30日以内、かつ未来1分以内
+  const MAX_AGE = 30 * 24 * 60 * 60 * 1000;
+  if (Date.now() - ts > MAX_AGE || ts > Date.now() + 60000) {
+    return { valid: false, ts: 0 };
+  }
+
+  const secret = getSecretForTest();
+  const raw = `${examId}:${ts}`;
+  const expectedSig = createHmac("sha256", secret).update(raw).digest("hex").slice(0, 24);
+  try {
+    const ok = timingSafeEqual(Buffer.from(sig), Buffer.from(expectedSig));
+    return { valid: ok, ts };
+  } catch {
+    return { valid: false, ts: 0 };
+  }
+}
+
 export async function verifyPurchase(examId: string, sessionId: unknown): Promise<AccessResult> {
   const exam = getExam(examId);
   if (!exam) return { ok: false, reason: "not-found" };
 
-  // 開発プレビュー用バイパス
+  // 1. テストメール送信経由の署名付きセッション判定（テストメール例外処理）
+  if (typeof sessionId === "string") {
+    const testCheck = verifyTestSessionId(exam.id, sessionId);
+    if (testCheck.valid) {
+      const days = accessDays(storeSeller.accessDays);
+      const purchasedAt = new Date(testCheck.ts);
+      return {
+        ok: true,
+        exam,
+        sessionId,
+        email: "morisan.yutakun@gmail.com",
+        purchasedAt,
+        expiresAt: new Date(purchasedAt.getTime() + days * DAY_MS),
+        isTest: true,
+      };
+    }
+  }
+
+  // 2. 管理者プレビュー用セッション判定（管理画面からの直接プレビュー例外処理）
+  if (sessionId === "admin_preview_session") {
+    const days = accessDays(storeSeller.accessDays);
+    const now = new Date();
+    return {
+      ok: true,
+      exam,
+      sessionId: "admin_preview_session",
+      email: "morisan.yutakun@gmail.com",
+      purchasedAt: now,
+      expiresAt: new Date(now.getTime() + days * DAY_MS),
+      isAdminPreview: true,
+    };
+  }
+
+  // 3. 開発プレビュー用バイパス
   if (process.env.STORE_PREVIEW === "1" && (sessionId === "preview" || sessionId === "demo")) {
     const days = accessDays(storeSeller.accessDays);
     const now = new Date();

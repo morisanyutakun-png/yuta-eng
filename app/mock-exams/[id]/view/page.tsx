@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -63,7 +64,21 @@ export default async function MockExamViewPage({
   const exam = getExam(id);
   if (!exam) notFound();
 
-  const access = await verifyPurchase(exam.id, rawSession);
+  // 管理者判定（Cookie: store_admin_key または ?key=）
+  const cookieStore = await cookies();
+  const cookieKey = cookieStore.get("store_admin_key")?.value;
+  const adminSecret = process.env.STORE_DOWNLOAD_SECRET?.trim();
+  const rawKey = Array.isArray(query.key) ? query.key[0] : query.key;
+  const isAdmin = Boolean(
+    adminSecret && (cookieKey === adminSecret || rawKey === adminSecret)
+  );
+
+  let access = await verifyPurchase(exam.id, rawSession);
+
+  // 管理者アクセスの場合、未決済やセッション未指定でもプレビューを許可（例外処理）
+  if (!access.ok && isAdmin) {
+    access = await verifyPurchase(exam.id, "admin_preview_session");
+  }
 
   if (!access.ok) {
     const info = REASON_MESSAGES[access.reason] ?? REASON_MESSAGES.invalid;
@@ -138,10 +153,22 @@ export default async function MockExamViewPage({
       <div className="sec-rule mt-3" />
 
       <header className="border-b border-rule pb-6 pt-5 sm:pb-7 sm:pt-6">
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] sm:text-xs font-semibold text-emerald-800 border border-emerald-200">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
-          <span>決済完了 ｜ ご購入者様専用ダウンロードページ</span>
-        </div>
+        {access.isTest ? (
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 px-3 py-1 text-[11px] sm:text-xs font-bold text-purple-900 border border-purple-200">
+            <span className="h-1.5 w-1.5 rounded-full bg-purple-600 animate-pulse shrink-0" />
+            <span>🧪 送信テスト検証モード ｜ 管理者送信テスト（PDFダウンロード検証可能）</span>
+          </div>
+        ) : access.isAdminPreview ? (
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-[11px] sm:text-xs font-bold text-amber-900 border border-amber-200">
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-600 shrink-0" />
+            <span>🛡️ 管理者プレビューモード ｜ 管理者権限で閲覧・ダウンロード確認中</span>
+          </div>
+        ) : (
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] sm:text-xs font-semibold text-emerald-800 border border-emerald-200">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <span>決済完了 ｜ ご購入者様専用ダウンロードページ</span>
+          </div>
+        )}
         <h1 className="serif text-xl sm:text-2xl font-bold mt-2.5 text-ink leading-snug break-words">{exam.title}</h1>
         <p className="prose-ja mt-2.5 sm:mt-3 text-[0.88rem] sm:text-[0.95rem] leading-[1.85] sm:leading-[1.9] text-ink-2">
           ご購入ありがとうございます。下のボタンから「問題冊子・所定解答用紙・解答解説・採点基準」の

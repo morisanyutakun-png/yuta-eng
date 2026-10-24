@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { storeSeller } from "@/data/mock-exams";
+import { createTestSessionId } from "@/lib/mock-exams/access";
 import { allExams, getExam } from "@/lib/mock-exams/catalog-server";
 import {
   buildAdminNoticeHtml,
@@ -48,7 +49,7 @@ export async function GET(req: Request) {
     return new Response("商品データが見つかりません", { status: 404 });
   }
 
-  const dummySessionId = "cs_test_preview_sample_session_id_12345";
+  const dummySessionId = createTestSessionId(exam.id);
   const dummyViewUrl = `${url.origin}/mock-exams/${exam.id}/view?session_id=${dummySessionId}`;
   const days = storeSeller.accessDays;
 
@@ -549,7 +550,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: "商品が見つかりません" }, { status: 400 });
     }
 
-    const dummySessionId = `cs_test_mock_${Date.now()}`;
+    const dummySessionId = createTestSessionId(exam.id);
     const dummyViewUrl = `https://yuta-eng.com/mock-exams/${exam.id}/view?session_id=${dummySessionId}`;
     const days = storeSeller.accessDays;
 

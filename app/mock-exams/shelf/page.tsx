@@ -31,7 +31,8 @@ export default async function ShelfPage({
     !secret ||
     currentKey === secret;
 
-  const enriched = getEnrichedShelfItems();
+  // 未認証時は商品データを一切クライアントへ送らない（情報漏洩の防止）
+  const enriched = isAuthorized ? getEnrichedShelfItems() : [];
 
   return (
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans selection:bg-slate-200">
