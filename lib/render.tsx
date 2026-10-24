@@ -73,12 +73,26 @@ const dashes = (v: string) => v.replace(/---/g, "—").replace(/--/g, "–");
  * 先に `$` で切ってしまうと、またいだ `**` が本文に残って見えてしまうので、
  * 両方をひとつの正規表現で拾い、強調の中身はもう一度この関数に通す。
  */
+function autoWrapLatex(text: string): string {
+  if (!text) return "";
+  if (!text.includes("$")) {
+    if (text.includes("\\text{") || (text.trim().startsWith("\\") && !text.includes("\n"))) {
+      return `$${text}$`;
+    }
+    return text.replace(
+      /(\\[a-zA-Z]+(?:\{[^{}]*\}|\[[^[\]]*\])*(?:_\{?[0-9a-zA-Z]+\}?|\^\{?[0-9a-zA-Z]+\}?)*)/g,
+      "$$$1$$",
+    );
+  }
+  return text;
+}
+
 export function MathText({ children }: { children: string }) {
   // この関数は強調の中身で自分を呼び直すので、g つき正規表現は毎回作る
   // （使い回すと lastIndex が入れ子の呼び出しどうしで混ざる）
   const token = /(\*\*[\s\S]+?\*\*)|(\$[^$]+\$)/g;
   // \$ は素の $ として残す（私用領域の文字に退避させてから戻す）
-  const src = children.replace(/\\\$/g, "\u0000");
+  const src = autoWrapLatex(children).replace(/\\\$/g, "\u0000");
   const out: React.ReactNode[] = [];
   let last = 0;
   let m: RegExpExecArray | null;

@@ -207,7 +207,7 @@ export const mockExams: MockExam[] = [
         {
           "no": 2,
           "full": 5,
-          "answer": "対称性の証明，\\ell: y = -12x + 12",
+          "answer": "対称性の証明，$\\ell: y = -12x + 12$",
           "plus": [
             {
               "text": "$f(1+h)+f(1-h)$ を計算し，展開または奇関数への帰着により $0$ となることを示す",
@@ -232,7 +232,7 @@ export const mockExams: MockExam[] = [
         {
           "no": 3,
           "full": 5,
-          "answer": "m: y=16,\\ \\mathrm{Q}(5, 16),\\ S_1 = 108",
+          "answer": "$m: y=16,\\ \\mathrm{Q}(5, 16),\\ S_1 = 108$",
           "plus": [
             {
               "text": "接線 $m: y=16$ を求め，$16-f(x)=-(x+1)^2(x-5)$ から交点 $\\mathrm{Q}(5, 16)$ を得る",
@@ -403,7 +403,7 @@ export const mockExams: MockExam[] = [
         {
           "no": 2,
           "full": 5,
-          "answer": "点 \\frac{5}{4} を中心とする半径 \\frac{3}{4} の円（ただし点 2 を除く）",
+          "answer": "点 $\\frac{5}{4}$ を中心とする半径 $\\frac{3}{4}$ の円（ただし点 $2$ を除く）",
           "plus": [
             {
               "text": "虚軸上の条件 $z+\\bar{z}=0$ に $z=\\frac{2w-1}{w-2}$ を代入する",
@@ -428,7 +428,7 @@ export const mockExams: MockExam[] = [
         {
           "no": 4,
           "full": 6,
-          "answer": "\\tan\\theta \\text{ の最大値 } \\frac{3}{4}\\ \\left(w=\\frac{4+3i}{5},\\ z=-i\\right)",
+          "answer": "$\\tan\\theta$ の最大値 $\\frac{3}{4}\\ \\left(w=\\frac{4+3i}{5},\\ z=-i\\right)$",
           "plus": [
             {
               "text": "$z=ti\\ (t<0)$ から $w=\\frac{2(t^2+1)-3ti}{t^2+4}$ と表し，$\\tan\\theta=\\frac{-3t}{2(t^2+1)}$ を導く（または円への接線条件を立てる）",
@@ -599,7 +599,7 @@ export const mockExams: MockExam[] = [
         {
           "no": 3,
           "full": 5,
-          "answer": "a_{n+1}-2a_{n}=3\\cdot 5^n,\\ 5a_{n}-a_{n+1}=3\\cdot 2^{n+1},\\ \\text{最大公約数は } 3",
+          "answer": "$a_{n+1}-2a_{n}=3\\cdot 5^n,\\ 5a_{n}-a_{n+1}=3\\cdot 2^{n+1},$ 最大公約数は $3$",
           "plus": [
             {
               "text": "$a_{n+1}-2a_n=3\\cdot 5^n$ および $5a_n-a_{n+1}=3\\cdot 2^{n+1}$ をともに正しく求める",
@@ -624,7 +624,7 @@ export const mockExams: MockExam[] = [
         {
           "no": 4,
           "full": 6,
-          "answer": "n = 1",
+          "answer": "$n = 1$",
           "plus": [
             {
               "text": "$n=1$ で $a_1=9=3^2$（平方数）であることを確認する",

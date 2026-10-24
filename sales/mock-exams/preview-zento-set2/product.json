@@ -72,7 +72,7 @@
       {
         "no": 2,
         "full": 5,
-        "answer": "点 \\frac{5}{4} を中心とする半径 \\frac{3}{4} の円（ただし点 2 を除く）",
+        "answer": "点 $\\frac{5}{4}$ を中心とする半径 $\\frac{3}{4}$ の円（ただし点 $2$ を除く）",
         "plus": [
           {
             "text": "虚軸上の条件 $z+\\bar{z}=0$ に $z=\\frac{2w-1}{w-2}$ を代入する",
@@ -97,7 +97,7 @@
       {
         "no": 4,
         "full": 6,
-        "answer": "\\tan\\theta \\text{ の最大値 } \\frac{3}{4}\\ \\left(w=\\frac{4+3i}{5},\\ z=-i\\right)",
+        "answer": "$\\tan\\theta$ の最大値 $\\frac{3}{4}\\ \\left(w=\\frac{4+3i}{5},\\ z=-i\\right)$",
         "plus": [
           {
             "text": "$z=ti\\ (t<0)$ から $w=\\frac{2(t^2+1)-3ti}{t^2+4}$ と表し，$\\tan\\theta=\\frac{-3t}{2(t^2+1)}$ を導く（または円への接線条件を立てる）",
