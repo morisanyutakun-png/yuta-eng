@@ -95,7 +95,7 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
                 key={it.href}
                 href={it.href}
                 aria-current={here(it.href) ? "page" : undefined}
-                className={`ml-1.5 inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[0.82rem] font-bold tracking-tight transition shadow-xs active:scale-98 ${
+                className={`group ml-1.5 inline-flex items-center gap-1.5 rounded-full pl-3.5 pr-3 py-1.5 text-[0.82rem] font-bold tracking-tight transition shadow-xs active:scale-98 ${
                   here(it.href)
                     ? "bg-[#0f233d] text-white ring-2 ring-blue-300/40 shadow-sm"
                     : "bg-[#1b3a63] text-white hover:bg-[#0f233d] hover:shadow-sm"
@@ -116,9 +116,20 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
                   <path d="M16 10a4 4 0 0 1-8 0" />
                 </svg>
                 <span>{it.label}</span>
-                <span className="rounded bg-white/20 px-1 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-blue-100">
-                  PDF
-                </span>
+                <svg
+                  className="size-3 text-blue-200 transition-transform duration-200 group-hover:translate-x-0.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                  />
+                </svg>
               </Link>
             );
           }
@@ -144,7 +155,7 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
         {/* スマホでもヘッダー右端にストアへの誘導ピルを目立たせて常設 */}
         <Link
           href="/mock-exams"
-          className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[0.76rem] font-bold shadow-2xs transition active:scale-95 ${
+          className={`group inline-flex items-center gap-1 rounded-full pl-2.5 pr-2 py-1 text-[0.76rem] font-bold shadow-2xs transition active:scale-95 ${
             here("/mock-exams")
               ? "bg-[#0f233d] text-white ring-1 ring-blue-300"
               : "bg-[#1b3a63] text-white hover:bg-[#0f233d]"
@@ -165,6 +176,20 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
             <path d="M16 10a4 4 0 0 1-8 0" />
           </svg>
           <span>模試PDF</span>
+          <svg
+            className="size-2.5 text-blue-200 transition-transform duration-200 group-hover:translate-x-0.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+            />
+          </svg>
         </Link>
 
         <button
