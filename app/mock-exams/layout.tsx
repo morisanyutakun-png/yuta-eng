@@ -1,23 +1,21 @@
 import { notFound } from "next/navigation";
 
-import { StoreBar } from "@/components/mock-exams/store-bar";
+import { CartProvider } from "@/components/mock-exams/cart-context";
+import { MockExamsStoreChrome } from "@/components/mock-exams/store-chrome";
 import { isStoreEnabled } from "@/lib/mock-exams/env";
-import { sectionStyle } from "@/lib/sections";
 
 /**
- * 模試演習ストア（/mock-exams 以下）の共通の枠。
- *
- * Stripe の環境変数（STRIPE_SECRET_KEY）が未設定の間は 404 を返し、
- * 環境変数を設定した時点でストアが出現する。
+ * 模試演習ストア（/mock-exams 以下）専用のレイアウト。
+ * 一般ストア画面では BOOTH スタイルのヘッダー・フッター・カートを提供し、
+ * 管理画面（/mock-exams/shelf）では顧客用パーツを自動排除してAdmin専用UIを提供する。
  */
 export default function MockExamsLayout({ children }: { children: React.ReactNode }) {
   if (!isStoreEnabled()) notFound();
 
   return (
-    <div style={sectionStyle("moshi")}>
-      <StoreBar />
-      {children}
-    </div>
+    <CartProvider>
+      <MockExamsStoreChrome>{children}</MockExamsStoreChrome>
+    </CartProvider>
   );
 }
 

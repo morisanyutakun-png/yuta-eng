@@ -1,5 +1,5 @@
 import { storeSeller, type MockExam } from "@/data/mock-exams";
-import { getExam } from "@/lib/mock-exams/catalog";
+import { getExam } from "@/lib/mock-exams/catalog-server";
 import { findOrder, hasOrderDb, upsertOrder, type OrderStatus } from "@/lib/mock-exams/db";
 import { accessDays } from "@/lib/mock-exams/env";
 import {

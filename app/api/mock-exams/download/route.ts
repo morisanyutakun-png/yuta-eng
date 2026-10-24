@@ -6,6 +6,7 @@ import { downloadName } from "@/lib/mock-exams/catalog";
 import { hasOrderDb, recordDownload } from "@/lib/mock-exams/db";
 import { StoreConfigError, verifyDownload } from "@/lib/mock-exams/env";
 import { PdfNotFoundError, isFileKey, loadExamPdf } from "@/lib/mock-exams/files";
+import { stampExamPdf } from "@/lib/mock-exams/watermark";
 
 /**
  * PDF のダウンロード。
@@ -69,6 +70,26 @@ export async function GET(req: Request) {
     );
   }
 
+  let rawBytes: Buffer;
+  if (pdf.body instanceof Uint8Array) {
+    rawBytes = Buffer.from(pdf.body);
+  } else {
+    const reader = pdf.body.getReader();
+    const chunks: Uint8Array[] = [];
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (value) chunks.push(value);
+    }
+    rawBytes = Buffer.concat(chunks);
+  }
+
+  // 不正再配布防止：注文IDごとのセキュリティ透かし・スタンプ刻印
+  const stampedBuffer = await stampExamPdf(rawBytes, {
+    orderId: access.sessionId,
+    examTitle: access.exam.title,
+  });
+
   const name = downloadName(access.exam, claims.f);
   const headers: Record<string, string> = {
     "Content-Type": "application/pdf",
@@ -76,8 +97,8 @@ export async function GET(req: Request) {
     "Content-Disposition": `attachment; filename="${access.exam.id}-${claims.f}.pdf"; filename*=UTF-8''${encodeURIComponent(name)}`,
     "Cache-Control": "private, no-store",
     "X-Robots-Tag": "noindex, nofollow",
+    "Content-Length": String(stampedBuffer.length),
   };
-  if (pdf.size) headers["Content-Length"] = String(pdf.size);
 
-  return new NextResponse(pdf.body as BodyInit, { status: 200, headers });
+  return new NextResponse(new Uint8Array(stampedBuffer), { status: 200, headers });
 }

@@ -2,80 +2,124 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { CheckoutNotice } from "@/components/mock-exams/checkout-notice";
+import { LockIcon, ShieldCheckIcon } from "@/components/mock-exams/icons";
 import { storeSeller, type MockExam } from "@/data/mock-exams";
 import { priceLabel } from "@/lib/mock-exams/catalog";
 
 /**
- * 購入の枠（最終確認画面を兼ねる）。
+ * 日本国内向け（Zenn / 技術書典 / SEshop型）フリクションレス購入パネル。
  *
- * 通信販売の申込みの最終確認として、ボタンの直前に
- * 「何を・いくらで・いつ受け取り・返品できるか」をまとめて表示し、同意を取る。
- * 決済そのものは Stripe の画面（Checkout）で行い、カード情報はこのサイトを通らない。
- *
- * ふつうのフォーム送信なので JS が無くても動く。同意のチェックは
- * 画面の required に加えて、受け口の API でも確かめている。
+ * カート不要の直接決済、税込表示の徹底、JCB対応を含む主要ブランド表記、
+ * 領収書PDF・即時納品を明快に提示。
  */
 export function BuyPanel({ exam }: { exam: MockExam }) {
   const onSale = exam.status === "on-sale";
 
   return (
-    <div id="purchase" className="scroll-mt-20 border border-rule bg-white">
-      <div className="border-b border-rule px-5 py-4 sm:px-6">
-        <p className="text-[0.8rem] text-ink-3">{exam.shortTitle}（PDF 4点セット）</p>
-        <p className="mt-1 text-ink">
-          <span className="serif text-[1.9rem] leading-none">{exam.price.toLocaleString("ja-JP")}</span>
-          <span className="ml-1 text-[0.86rem]">円（税込）</span>
+    <div className="rounded-lg border border-slate-300 bg-white shadow-xs overflow-hidden">
+      {/* 上部: 税込価格表示 */}
+      <div className="border-b border-slate-200 bg-slate-50 p-5">
+        <p className="text-xs font-medium text-slate-500">
+          {exam.shortTitle}（印刷用A4 PDF 4点セット）
         </p>
+        <div className="mt-1 flex items-baseline gap-2">
+          <span className="text-3xl font-extrabold text-slate-900 tracking-tight">
+            ¥{exam.price.toLocaleString("ja-JP")}
+          </span>
+          <span className="text-xs font-bold text-slate-700">（税込） / 買い切り</span>
+        </div>
       </div>
 
-      <div className="space-y-4 px-5 py-5 sm:px-6">
+      <div className="p-5 space-y-4 text-xs leading-relaxed">
         <Suspense fallback={null}>
           <CheckoutNotice />
         </Suspense>
 
-        <dl className="grid grid-cols-[6.5em_1fr] gap-x-3 gap-y-2 text-[0.84rem] leading-relaxed">
-          <dt className="text-ink-3">お届け</dt>
-          <dd className="text-ink">決済完了後すぐに、画面からダウンロード（A4・PDF）</dd>
-          <dt className="text-ink-3">収録</dt>
-          <dd className="text-ink">{exam.files.map((f) => f.label).join("・")}</dd>
-          <dt className="text-ink-3">再ダウンロード</dt>
-          <dd className="text-ink">購入から{storeSeller.accessDays}日間（購入確認メールのリンクから）</dd>
-          <dt className="text-ink-3">お支払い</dt>
-          <dd className="text-ink">クレジットカードほか（Stripe の決済画面で選択）</dd>
-          <dt className="text-ink-3">返品</dt>
-          <dd className="text-ink">デジタル商品のため、購入後の返品・キャンセルはできません</dd>
+        {/* 取引条件・安心スペック */}
+        <dl className="grid grid-cols-[5.5em_1fr] gap-x-3 gap-y-2.5 border-b border-slate-100 pb-4 text-slate-600">
+          <dt className="text-slate-500 font-medium">お渡し方法</dt>
+          <dd className="text-slate-900 font-semibold">
+            決済完了後、画面および確認メールにてPDF即時ダウンロード
+          </dd>
+          <dt className="text-slate-500 font-medium">同梱内容</dt>
+          <dd className="text-slate-800">{exam.files.map((f) => f.label).join("・")}</dd>
+          <dt className="text-slate-500 font-medium">再取得期間</dt>
+          <dd className="text-slate-800">
+            いつでも再ダウンロード可能（メール記載URLより何度でも再取得可能 ※購入者ご本人の利用限定）
+          </dd>
+          <dt className="text-slate-500 font-medium">決済方法</dt>
+          <dd className="text-slate-800 font-medium">
+            クレジットカード（JCB / Visa / Mastercard / Amex） / Apple Pay / Google Pay
+          </dd>
+          <dt className="text-slate-500 font-medium">領収書</dt>
+          <dd className="text-slate-800">
+            領収書PDFを即時自動発行（経費精算対応）
+          </dd>
         </dl>
 
         {onSale ? (
           <form action="/api/mock-exams/checkout" method="post" className="space-y-4">
             <input type="hidden" name="examId" value={exam.id} />
-            <label className="flex cursor-pointer items-start gap-3 border border-rule bg-paper-2 p-3 text-[0.84rem] leading-relaxed text-ink">
-              <input type="checkbox" name="agreed" required className="mt-1 size-4 shrink-0 accent-[var(--sec)]" />
-              <span>
-                上の内容と
-                <Link href="/mock-exams/legal" className="mx-0.5 text-navy underline underline-offset-4">
-                  特定商取引法に基づく表記・ご利用条件
+
+            <label className="flex cursor-pointer items-start gap-2.5 rounded border border-slate-200 bg-slate-50/80 p-3 text-slate-700 hover:bg-slate-50">
+              <input
+                type="checkbox"
+                name="agreed"
+                required
+                className="mt-0.5 size-4 shrink-0 rounded accent-slate-900"
+              />
+              <span className="text-[11px] leading-relaxed">
+                <Link
+                  href="/mock-exams/legal"
+                  target="_blank"
+                  className="font-semibold text-slate-800 underline underline-offset-2 hover:text-slate-600"
+                >
+                  特定商取引法に基づく表記・利用規約
                 </Link>
-                を確認し、PDF を個人の学習のためだけに使い、再配布しないことに同意します。
+                を確認し、PDFを個人の学習目的のみで利用し再配布しないことに同意します。
               </span>
             </label>
-            <button type="submit" className="btn btn-primary w-full text-[1rem]">
-              今すぐ受験する（{priceLabel(exam)}で購入）
+
+            <button
+              type="submit"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-slate-900 py-3.5 px-4 text-sm font-semibold text-white shadow-xs hover:bg-slate-800 hover:shadow-md transition active:scale-98"
+            >
+              <LockIcon size={16} />
+              <span>この模試を購入する（{priceLabel(exam)}）</span>
             </button>
-            <p className="text-[0.75rem] leading-relaxed text-ink-3">
-              Stripe の安全な決済画面に移動します。カード番号は当サイトに送信・保存されません。
-            </p>
+
+            {/* 対応決済ブランド表記（国内向けJCB含む） */}
+            <div className="pt-2 text-center">
+              <p className="text-[10px] text-slate-400 font-medium mb-1.5">
+                対応決済ブランド（Stripe安全決済・カード情報は暗号化保護）
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-1.5 text-[10px] text-slate-600 font-bold">
+                <span className="rounded border border-slate-200 bg-slate-50 px-2 py-0.5">VISA</span>
+                <span className="rounded border border-slate-200 bg-slate-50 px-2 py-0.5">Mastercard</span>
+                <span className="rounded border border-slate-300 bg-slate-100 text-slate-800 px-2 py-0.5">JCB対応</span>
+                <span className="rounded border border-slate-200 bg-slate-50 px-2 py-0.5">AMEX</span>
+                <span className="rounded border border-slate-200 bg-slate-50 px-2 py-0.5">Apple Pay</span>
+                <span className="rounded border border-slate-200 bg-slate-50 px-2 py-0.5">Google Pay</span>
+              </div>
+            </div>
           </form>
         ) : (
           <div className="space-y-3">
-            <button type="button" disabled className="btn w-full cursor-not-allowed opacity-60">
-              販売開始前です
+            <button
+              type="button"
+              disabled
+              className="w-full rounded-lg bg-slate-100 py-3 text-xs font-bold text-slate-400 cursor-not-allowed"
+            >
+              順次公開予定（販売準備中）
             </button>
-            {exam.availableNote && <p className="text-[0.84rem] leading-relaxed text-ink-2">{exam.availableNote}</p>}
+            {exam.availableNote && (
+              <p className="text-xs leading-relaxed text-slate-500">
+                {exam.availableNote}
+              </p>
+            )}
           </div>
         )}
       </div>
     </div>
   );
 }
-

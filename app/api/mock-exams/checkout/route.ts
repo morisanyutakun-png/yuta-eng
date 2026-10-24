@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { getExam, isOnSale, stripePriceIdFor } from "@/lib/mock-exams/catalog";
+import { isOnSale, stripePriceIdFor } from "@/lib/mock-exams/catalog";
+import { getExam } from "@/lib/mock-exams/catalog-server";
 import { baseUrl } from "@/lib/mock-exams/env";
 import { StripeApiError, createCheckoutSession, hasStripe } from "@/lib/mock-exams/stripe";
 

@@ -22,7 +22,13 @@ import type { ExamFileKey } from "@/data/mock-exams";
  * 手元で組んだフォルダをそのままストレージに上げれば済む。
  */
 
-const FILE_KEYS: readonly ExamFileKey[] = ["problems", "answer-sheets", "solutions", "rubric"];
+const FILE_KEYS: readonly ExamFileKey[] = [
+  "full",
+  "problems",
+  "answer-sheets",
+  "solutions",
+  "rubric",
+];
 
 export const isFileKey = (v: unknown): v is ExamFileKey =>
   typeof v === "string" && (FILE_KEYS as readonly string[]).includes(v);
@@ -54,7 +60,23 @@ export async function loadExamPdf(examId: string, key: ExamFileKey): Promise<Pdf
     return { body: res.body, size: Number.isFinite(len) && len > 0 ? len : null };
   }
 
-  const root = path.resolve(process.env.STORE_PDF_DIR?.trim() || path.join(homedir(), "模試演習ストア", "_dist"));
+  // 1. プロジェクト内販売用フォルダ sales/mock-exams/<id>/<key>.pdf を最優先で探索
+  const workspaceSalesRoot = path.resolve(process.cwd(), "sales", "mock-exams");
+  const workspaceFile = path.join(workspaceSalesRoot, examId, `${key}.pdf`);
+  if (workspaceFile.startsWith(workspaceSalesRoot + path.sep)) {
+    try {
+      const info = await stat(workspaceFile);
+      const data = await readFile(workspaceFile);
+      return { body: new Uint8Array(data), size: info.size };
+    } catch {
+      // 次の候補へ
+    }
+  }
+
+  // 2. STORE_PDF_DIR またはフォールバックフォルダ
+  const root = path.resolve(
+    process.env.STORE_PDF_DIR?.trim() || path.join(homedir(), "模試演習ストア", "_dist"),
+  );
   // public/ の下を指していたら止める（設定の取り違えで有料 PDF を公開しない）
   if (root.split(path.sep).includes("public")) {
     throw new PdfNotFoundError("STORE_PDF_DIR に public/ 配下は指定できない");
@@ -66,7 +88,7 @@ export async function loadExamPdf(examId: string, key: ExamFileKey): Promise<Pdf
     const data = await readFile(file);
     return { body: new Uint8Array(data), size: info.size };
   } catch {
-    console.error(`[mock-exams/files] 見つからない ${examId}/${key}.pdf（STORE_PDF_DIR）`);
+    console.error(`[mock-exams/files] 見つからない ${examId}/${key}.pdf`);
     throw new PdfNotFoundError("PDF が見つからない");
   }
 }

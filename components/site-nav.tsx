@@ -35,6 +35,7 @@ function navItems(hasSolutions: boolean): Item[] {
     ...(hasSolutions
       ? [{ href: "/kaisetsu", label: "過去問解答", note: "当サイト独自の解答・解説" }]
       : []),
+    { href: "/mock-exams", label: "模試演習ストア", note: "入試プレビューPDF演習セット・即日DL" },
     { href: "/moshi", label: sections.moshi.eyebrow, note: `${moshiData.title}・オンラインで受験` },
     { href: "/kansei", label: "完成演習", note: "過去問の前に解く分野別演習" },
     { href: "/shindan", label: "志望校診断", note: "いまの実力から受かる大学を探す" },

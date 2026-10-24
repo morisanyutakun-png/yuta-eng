@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { storeSeller } from "@/data/mock-exams";
-import { getExam } from "@/lib/mock-exams/catalog";
+import { getExam } from "@/lib/mock-exams/catalog-server";
 import {
   claimWebhookEvent,
   hasOrderDb,
@@ -10,7 +10,7 @@ import {
   upsertOrder,
 } from "@/lib/mock-exams/db";
 import { accessDays, baseUrl } from "@/lib/mock-exams/env";
-import { sendPurchaseMail } from "@/lib/mock-exams/mail";
+import { sendAdminPurchaseNotice, sendPurchaseMail } from "@/lib/mock-exams/mail";
 import {
   WebhookSignatureError,
   constructWebhookEvent,
@@ -136,10 +136,31 @@ async function onSession(event: StripeEvent, session: CheckoutSession, req: Requ
     });
   }
 
-  // 支払いが確定したときだけ、閲覧ページの URL（＝再ダウンロードの鍵）を送る
+  // 支払いが確定したとき、購入者へメール（PDF添付）と運営控え（morisan.yutakun@gmail.com）を送る
   if (status === "paid" && email) {
     const viewUrl = `${baseUrl(req)}/mock-exams/${exam.id}/view?session_id=${encodeURIComponent(session.id)}`;
-    await sendPurchaseMail(email, exam, viewUrl, accessDays(storeSeller.accessDays));
+    const days = accessDays(storeSeller.accessDays);
+
+    // 1. 購入者へ PDF 添付付きで購入確認メールを送信（購入者限定透かし・スタンプ刻印）
+    const customerMailResult = await sendPurchaseMail(email, exam, viewUrl, days, session.id);
+    console.info(
+      `[mock-exams/webhook] 購入者メール送信: ${customerMailResult.ok ? "成功" : "失敗"} (${customerMailResult.detail}) hasAttachment=${Boolean(customerMailResult.hasAttachment)}`,
+    );
+
+    // 2. 運営控えメールを送信（morisan.yutakun@gmail.com または STORE_ADMIN_EMAIL）
+    const adminMailResult = await sendAdminPurchaseNotice({
+      customerEmail: email,
+      exam,
+      viewUrl,
+      days,
+      sessionId: session.id,
+      paymentIntentId: paymentIntentId(session),
+      amountTotal: session.amount_total,
+      livemode: session.livemode,
+    });
+    console.info(
+      `[mock-exams/webhook] 運営控えメール送信: ${adminMailResult.ok ? "成功" : "失敗"} (${adminMailResult.detail})`,
+    );
   }
 }
 

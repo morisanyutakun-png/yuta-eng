@@ -4,16 +4,23 @@ import { notFound } from "next/navigation";
 
 import { storeSeller } from "@/data/mock-exams";
 import { isStoreEnabled } from "@/lib/mock-exams/env";
+import { site } from "@/lib/site";
 
-const title = "特定商取引法に基づく表記・ご利用条件｜模試演習ストア";
-const description = "大学別数学研究室 模試演習ストアにおける特定商取引法に基づく表記およびデジタル教材（PDF）のご利用条件。";
+const title = "特定商取引法に基づく表記｜数学記述模試『入試プレビュー』公式ストア";
+const description = "大学別数学研究室 公式ストアにおける特定商取引法に基づく表記およびデジタル教材（PDF）のご利用条件。";
 
 export function generateMetadata(): Metadata {
   if (!isStoreEnabled()) return { robots: { index: false, follow: false } };
   return {
     title,
     description,
-    alternates: { canonical: "/mock-exams/legal" },
+    alternates: { canonical: `${site.url}/mock-exams/legal` },
+    openGraph: {
+      title,
+      description,
+      url: `${site.url}/mock-exams/legal`,
+      siteName: "大学別数学研究室 公式ストア",
+    },
   };
 }
 
@@ -41,7 +48,11 @@ const legalRows = [
   },
   {
     k: "商品の引渡時期",
-    v: `決済完了後ただちに、購入完了ページから印刷用 A4 PDF（問題冊子・所定解答用紙・解答解説・採点基準）をダウンロードいただけます。ご購入から${storeSeller.accessDays}日間は再ダウンロードが可能です。`,
+    v: "決済完了後ただちに、購入完了ページおよび購入確認メール記載の専用リンクから印刷用 A4 PDF（問題冊子・所定解答用紙・解答解説・採点基準）をダウンロードいただけます。購入者ご本人の利用に限り、本サービスの提供期間中はいつでも再ダウンロードが可能です。",
+  },
+  {
+    k: "領収書の発行",
+    v: "決済完了時に送信されるメールおよび購入完了画面より、PDF形式の領収書を即時自動発行いただけます（※当方は適格請求書発行事業者の登録を行っていないため、インボイス制度に基づく適格請求書ではなく、通常の領収書PDFとなります）。",
   },
   {
     k: "返品・交換・キャンセル",
@@ -102,7 +113,7 @@ export default function MockExamsLegalPage() {
             ご購入いただいた PDF は、ご購入者ご本人の学習目的でのみ閲覧・印刷してご利用いただけます。
           </li>
           <li>
-            第三者へのデータ共有、ダウンロード URL の転送、SNS・Web サイトへの転載、複製しての配布・販売は固く禁じます。学校・塾・予備校等で複数名に配布して使用される場合は、別途団体利用についてお問い合わせください。
+            第三者へのデータ共有、ダウンロード URL の転送、SNS・Web サイトへの転載、複製しての配布・販売は固く禁じます。購入確認メール記載の専用リンクはご購入者ご本人専用となります。学校・塾・予備校等で複数名に配布して使用される場合は、別途団体利用についてお問い合わせください。
           </li>
           <li>
             掲載している模試は当サイトが独自に制作した非公式の演習教材であり、各大学および予備校（河合塾「全統記述模試」等）とは一切関係ありません。「全統記述レベル」は難易度の目安を示す表記です。

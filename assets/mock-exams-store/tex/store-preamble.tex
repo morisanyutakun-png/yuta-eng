@@ -1,28 +1,17 @@
 % =====================================================================
 %  大学別数学研究室 模試演習ストア ── 共通プリアンブル（A4・白黒印刷用）
 %
-%  既刊「合格答案をつくる」シリーズ（三重大数学・名大数学ほか）の
-%  組版・意匠（明朝＋TeX Gyre Termes・細罫・\bdot・問題紙・二重下線の答・
-%  加点／減点つき採点表）をそのまま継承し、リポジトリ単体で LuaLaTeX 組版が
-%  完結するようにまとめたもの。
-%
-%  各模試フォルダの meta.tex で以下を定義してから \input{store-preamble} する:
-%    \newcommand{\ExamTitle}{全統記述レベル 実戦模試 数学}
-%    \newcommand{\ExamSubtitle}{標準編 第1回}
-%    \newcommand{\ExamShort}{実戦模試 標準編 第1回}
-%    \newcommand{\ExamScope}{数学I・II・A・B・C}
-%    \newcommand{\ExamTime}{100}
-%    \newcommand{\ExamFullMark}{100}
-%    \newcommand{\ExamDaimonNum}{4}
-%    \newcommand{\ExamYear}{2027}
-%    \newcommand{\ExamSampleBadge}{見本（大問1のみ収録）} % 製品版では空にする
+%  既刊「合格答案をつくる」シリーズ（全92巻超）および『入試プレビュー』試作版の
+%  組版・意匠（原ノ味明朝・ゴシック＋TeX Gyre Termes・細罫・\bdot・パンチ穴つき問題冊子・
+%  枠付き大問番号・二重下線の答・網掛け別解・加点／減点つき採点表・A4所定解答用紙）を
+%  完全再現する共通プリアンブル。
 % =====================================================================
 \documentclass[a4paper,10pt]{ltjsarticle}
 
 \usepackage[top=24mm,bottom=22mm,left=25mm,right=25mm,headsep=6mm,footskip=12mm]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta,calc,patterns, positioning}
+\usetikzlibrary{arrows.meta,calc,patterns,decorations.pathreplacing,positioning}
 \usepackage[table]{xcolor}
 \usepackage{fancyhdr}
 \usepackage{array,booktabs,longtable,tabularx}
@@ -73,10 +62,18 @@
 \definecolor{warn}{gray}{0.22}
 
 % ブランド・シリーズ意匠
+\newcommand{\seriesname}{合格答案をつくるシリーズ}
 \newcommand{\storename}{大学別数学研究室\ \ 模試演習ストア}
 \newcommand{\authorname}{森\ \ 祐太}
-\providecommand{\BuyerStamp}{}
-\providecommand{\BookletPart}{問題冊子}
+\providecommand*{\BuyerStamp}{}
+\providecommand*{\BookletPart}{問題冊子}
+\providecommand*{\ExamYear}{2027}
+\providecommand*{\ExamSampleBadge}{}
+\providecommand{\ExamSetShort}{第1セット}
+\providecommand{\ExamSetTitle}{第1セット：高校1・2・3年（夏）向け［基礎〜標準編］}
+\providecommand{\ExamStageLabel}{夏期・基礎〜標準編}
+\providecommand{\ExamTargetLabel}{高校1・2・3年（夏）向け}
+\providecommand{\ExamTocProblemLabel}{第1セット（高1・高2・高3［夏］向け）問題}
 
 \newcommand{\bdot}{\rule[0.22ex]{1.5pt}{1.5pt}}
 \newcommand{\bdotrow}{\bdot\hspace{0.55em}\bdot\hspace{0.55em}\bdot}
@@ -84,11 +81,11 @@
 \newcommand{\framedline}[2][3.2em]{%
   \rule[0.5ex]{#1}{0.5pt}\hspace{0.9em}#2\hspace{0.9em}\rule[0.5ex]{#1}{0.5pt}}
 
-% 柱・ノンブル
+% 柱・ノンブル（『合格答案をつくるシリーズ ／ 入試プレビュー 数学 2027』）
 \fancypagestyle{mainstyle}{%
   \fancyhf{}%
-  \lhead{\small\bdot\hspace{0.5em}\storename\ ──\ \BookletPart}%
-  \rhead{\small \ExamShort\ （\ExamYear 年度入試向け）}%
+  \lhead{\small\bdot\hspace{0.5em}\seriesname}%
+  \rhead{\small 入試プレビュー\ 数学\ \ExamYear}%
   \cfoot{\small \thepage\ \bdot\ \pageref{LastPage}}%
   \rfoot{\footnotesize\textcolor{rulegray}{\BuyerStamp}}%
   \renewcommand{\headrulewidth}{0.35pt}%
@@ -105,6 +102,7 @@
 \newcommand{\Pt}[1]{\ensuremath{\mathrm{#1}}}
 \newcommand{\Cb}[2]{\mskip2.5mu{}_{#1}\mathrm{C}_{#2}}
 \newcommand{\Pb}[2]{\mskip2.5mu{}_{#1}\mathrm{P}_{#2}}
+\newcommand{\Hb}[2]{\mskip2.5mu{}_{#1}\mathrm{H}_{#2}}
 
 % 紙面左端の綴じ帯（シリーズ問題冊子共通）
 \newcommand{\bindmarks}{%
@@ -113,10 +111,111 @@
     \textcolor{black!30}{\rule{4.2mm}{15mm}}}%
   \par\vspace{-\baselineskip}}
 
+% 問題冊子上部のパンチ穴マーク（2穴）
+\newcommand{\punchmarks}{%
+  \begin{center}
+    \vspace*{-6mm}
+    \begin{tikzpicture}
+      \fill[black] (-30mm, 0) circle (1.8mm);
+      \fill[black] ( 30mm, 0) circle (1.8mm);
+    \end{tikzpicture}
+    \vspace*{2mm}
+  \end{center}}
+
+\newcommand{\cleartorecto}{%
+  \clearpage
+  \ifodd\value{page}\else\thispagestyle{empty}\null\clearpage\fi}
+
 % =====================================================================
-%  表紙（各冊子共通・シリーズの扉と試験冊子表紙を統合）
-%   #1 = 冊子の種別（問題冊子／解答・解説／採点基準）
-%   #2 = 注意事項・案内（箇条書き \item ...）
+%  1冊統合版の大扉＋目次（『入試プレビュー』独自仕様 p.1 準拠）
+% =====================================================================
+\newcommand{\previewtitlepage}{%
+  \thispagestyle{empty}%
+  \null\vspace*{8mm}
+  \begin{center}
+    {\large\sffamily\bfseries 合格答案をつくるシリーズ\ 特別編集・国公立二次実戦}\\[4mm]
+    \rule{\linewidth}{1.5pt}\\[5mm]
+    {\fontsize{24}{30}\selectfont\sffamily\bfseries 数学記述模試『入試プレビュー』}\\[4mm]
+    {\fontsize{13.3}{19}\selectfont\sffamily\bfseries \ExamSetTitle}\\[3mm]
+    \rule{\linewidth}{1.5pt}\\[4mm]
+    {\small\sffamily\bfseries 出題範囲：\ExamScope{}\quad{}／\quad{}試験時間：\ExamTime{}分\quad{}／\quad{}配点：\ExamFullMark{}点（\ExamDaimonNum{}大問$\times$20点）}
+  \end{center}
+  \vspace{8mm}
+  {\renewcommand{\contentsname}{\sffamily\bfseries 目次}%
+   \tableofcontents}
+  \cleartorecto
+}
+
+% =====================================================================
+%  問題冊子表紙（『入試プレビュー』独自仕様 p.3 準拠）
+% =====================================================================
+\newcommand{\mockcover}{%
+  \thispagestyle{empty}%
+  \begingroup
+  \fontsize{10}{16.8}\selectfont
+  \punchmarks
+  \vspace*{2mm}
+  \noindent
+  \setlength{\fboxsep}{3.5pt}\setlength{\fboxrule}{0.5pt}%
+  \fbox{\strut{\small\sffamily\bfseries 入試プレビュー}}\hspace{0.8em}%
+  {\small\sffamily\bfseries \ExamSetShort}{\small （\ExamStageLabel）}%
+  \hfill{\small 問題冊子}\par
+  \vspace{2.2mm}
+  \noindent\rule{\linewidth}{0.85pt}\par
+  \vspace{16mm}
+
+  \begin{center}
+    {\fontsize{25}{30}\selectfont\sffamily\bfseries 数\hspace{2.4em}学}\\[7mm]
+    {\large\sffamily\bfseries 【対象：\ExamTargetLabel】}\\[3.5mm]
+    {\normalsize 出題範囲：\ExamScope}
+    \ifx\ExamSampleBadge\empty\else
+      \\[3.5mm]{\footnotesize\fbox{\strut\hspace{0.6em}\textbf{\ExamSampleBadge}\hspace{0.6em}}}%
+    \fi
+  \end{center}
+
+  \vspace{7mm}
+  \begin{center}
+    \begin{tabular}{@{}c@{}}
+    \toprule[0.8pt]
+    \rule{0pt}{3.0ex}%
+    \hspace{1.2em}試験時間\ \ \textbf{\ExamTime{}分}\hspace{1.2em}%
+    \rule[-0.5ex]{0.4pt}{2.0ex}%
+    \hspace{1.2em}満点\ \ \textbf{\ExamFullMark{}点}（200点換算併記）\hspace{1.2em}%
+    \rule[-0.5ex]{0.4pt}{2.0ex}%
+    \hspace{1.2em}大問\ \ \textbf{\ExamDaimonNum{}題}（各20点）\hspace{1.2em}%
+    \rule[-1.4ex]{0pt}{1.4ex}\\
+    \bottomrule[0.8pt]
+    \end{tabular}
+  \end{center}
+
+  \vspace{8mm}
+  \noindent\textcolor{black!25}{\rule{\linewidth}{0.4pt}}
+  \par\vspace{3.5mm}\noindent
+  \rule[-0.18em]{2.4pt}{1.05em}\hspace{0.6em}%
+  {\normalsize\bfseries 注\hspace{0.9em}意\hspace{0.9em}事\hspace{0.9em}項}
+  \par\vspace{3.0mm}
+  \begin{list}{}{\setlength{\leftmargin}{2.0em}\setlength{\labelwidth}{1.6em}%
+     \setlength{\labelsep}{0.4em}\setlength{\itemsep}{0.48em}\setlength{\topsep}{0pt}%
+     \renewcommand{\makelabel}[1]{\hss\llap{##1}}}
+    \item[1.] 試験開始の合図まで，この問題冊子を開いてはいけない。
+    \item[2.] 問題は大問\probref{1}〜\probref{5}の5題からなる。原則として全5題に解答すること（未習単元がある場合は，1題20点$\times$選択題数で換算する）。
+    \item[3.] 解答は必ず各問題別の所定解答用紙（または白紙のノート）に記述し，問題番号・小問番号を明記すること。
+    \item[4.] \textbf{答えのみを書いた答案には点を与えない。}定義・公式の適用条件，同値変形，場合分け，図形の上下・内外関係など，結論に至る過程を論理的に記述すること。
+    \item[5.] 問題紙の余白および下書きページは計算に使用してよい。
+    \item[6.] 試験場で\textbf{数学公式集は配布されない。}必要な公式・定理はすべて自力で導出・適用すること。
+  \end{list}
+
+  \vfill
+  \noindent\textcolor{black!25}{\rule{\linewidth}{0.4pt}}
+  \par\vspace{2.4mm}\noindent
+  {\footnotesize 本書『入試プレビュー』は，国公立大学二次試験および難関私大記述試験の演習用として大学別数学研究室が独自に制作・出題した完全オリジナル模擬試験です。}
+  \vspace{1mm}
+  \endgroup
+  \clearpage
+}
+
+% =====================================================================
+%  各冊子単体用の汎用表紙（問題冊子／解答・解説／採点基準）
 % =====================================================================
 \newcommand{\storecover}[2]{%
   \thispagestyle{empty}%
@@ -126,12 +225,12 @@
   \bindmarks
   \vspace*{6mm}
   \begin{center}
-    {\small\framedline{\storename}}\\[5mm]
-    {\normalsize \ExamYear 年度入試対策\ \ ・\ \ \ExamScope}\\[4mm]
+    {\small\framedline{\seriesname\ ──\ 入試プレビュー}}\\[5mm]
+    {\normalsize \ExamYear{}年度入試対策\ \ ・\ \ \ExamScope}\\[4mm]
     \rule[-4.5mm]{0.85pt}{18mm}\hspace{5mm}%
     {\fontsize{24}{29}\selectfont\bfseries \ExamTitle}%
     \hspace{5mm}\rule[-4.5mm]{0.85pt}{18mm}\\[4mm]
-    {\fontsize{16}{21}\selectfont\bfseries \ExamSubtitle}\\[3.5mm]
+    {\fontsize{15}{20}\selectfont\bfseries \ExamSubtitle}\\[3.5mm]
     {\bdotrow}\\[3.5mm]
     {\large\bfseries 【\ #1\ 】}%
     \ifx\ExamSampleBadge\empty\else
@@ -144,11 +243,11 @@
     \begin{tabular}{@{}c@{}}
     \toprule[0.8pt]
     \rule{0pt}{3.0ex}%
-    \hspace{1.2em}試験時間\ \ \ExamTime 分\hspace{1.2em}%
+    \hspace{1.2em}試験時間\ \ \ExamTime{}分\hspace{1.2em}%
     \rule[-0.5ex]{0.4pt}{2.0ex}%
-    \hspace{1.2em}満点\ \ \ExamFullMark 点\hspace{1.2em}%
+    \hspace{1.2em}満点\ \ \ExamFullMark{}点（200点換算併記）\hspace{1.2em}%
     \rule[-0.5ex]{0.4pt}{2.0ex}%
-    \hspace{1.2em}構成\ \ 大問\ExamDaimonNum 題（完全記述式）\hspace{1.2em}%
+    \hspace{1.2em}構成\ \ 大問\ExamDaimonNum{}題（完全記述式）\hspace{1.2em}%
     \rule[-1.4ex]{0pt}{1.4ex}\\
     \bottomrule[0.8pt]
     \end{tabular}
@@ -175,13 +274,13 @@
   \noindent\textcolor{black!25}{\rule{\linewidth}{0.4pt}}
   \par\vspace{1.5mm}\noindent
   {\footnotesize\textcolor{rulegray}{%
-   本模試は大学別数学研究室が独自に制作した非公式の演習教材であり，特定の大学・予備校（河合塾「全統記述模試」等）とは一切関係ありません。「全統記述レベル」は難易度の目安を示す表記です。本PDFの無断複製・第三者への共有・転載を固く禁じます。}}
+   本書『入試プレビュー』は大学別数学研究室が独自に制作した非公式の演習教材であり，特定の大学・予備校（河合塾「全統記述模試」等）とは一切関係ありません。本PDFの無断複製・第三者への共有・転載を固く禁じます。}}
   \endgroup
   \clearpage
 }
 
 % =====================================================================
-%  問題紙（「合格答案をつくる」シリーズの問題紙環境を再現）
+%  問題紙（「合格答案をつくる」シリーズ・『入試プレビュー』共通）
 % =====================================================================
 \newlength{\pbW}\setlength{\pbW}{16.0pt}
 \newlength{\pbH}\setlength{\pbH}{16.3pt}
@@ -219,7 +318,7 @@
 \newlist{shomon}{enumerate}{1}
 \setlist[shomon]{label=(\arabic*),
   labelindent=\probhang, labelwidth=12pt, labelsep=3pt, leftmargin=!,
-  align=left, itemsep=3.5pt, topsep=5pt, parsep=0pt, partopsep=0pt}
+  align=left, itemsep=3.2pt, topsep=4.5pt, parsep=0pt, partopsep=0pt}
 
 \fancypagestyle{monsheetstyle}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}%
   \cfoot{\small\thepage\ \bdot\ \pageref{LastPage}}%
@@ -234,17 +333,25 @@
 
 \newenvironment{monsheet}%
   {\clearpage
-   \newgeometry{top=18mm,bottom=20mm,left=19mm,right=19mm,footskip=10mm}%
+   \newgeometry{top=18mm,bottom=20mm,left=20mm,right=20mm,footskip=10mm}%
    \pagestyle{monsheetstyle}\thispagestyle{monsheetstyle}%
    \begingroup
    \renewcommand{\baselinestretch}{1.0}%
-   \fontsize{9.2}{16.2}\selectfont
+   \fontsize{9.2}{16.0}\selectfont
    \setlength{\parindent}{1\zw}\setlength{\parskip}{0pt}%
-   \bindmarks
-   \vspace{2.0mm}
-   \begin{center}{\fontsize{12.5}{16}\selectfont\bfseries 問\hspace{1.0em}題\hspace{1.0em}紙}\end{center}
-   \vspace{2.5mm}}%
+   \punchmarks
+   \vspace{1.0mm}
+   \begin{center}{\fontsize{12.5}{16}\selectfont\bfseries 問\hspace{1.2em}題\hspace{1.2em}紙}\end{center}
+   \vspace{2.0mm}}%
   {\par\endgroup\clearpage\restoregeometry\resetcolht\pagestyle{mainstyle}}
+
+% 計算・下書きページ（問題冊子末尾）
+\newcommand{\scratchpage}{%
+  \clearpage
+  \thispagestyle{monsheetstyle}%
+  \begin{center}
+    {\footnotesize\textcolor{rulegray}{—— このページは計算・下書きに使用してよい ——}}
+  \end{center}}
 
 % 下書き余白
 \newcommand{\workspacenote}{%
@@ -253,13 +360,13 @@
   \vspace{1.5mm}\noindent\textcolor{black!22}{\rule{\linewidth}{0.35pt}}\vspace{42mm}}
 
 % =====================================================================
-%  解答・解説の体裁（「合格答案をつくる」シリーズ共通）
+%  解答・解説の体裁（「合格答案をつくる」シリーズ・『入試プレビュー』共通）
 % =====================================================================
 \newif\iffirstQ\firstQfalse
 
 \newcommand{\hdA}[1]{\par\penalty-400\vspace{6.5mm}\noindent
   \rule{\linewidth}{1.1pt}\par\nopagebreak\vspace{1.9mm}\noindent
-  \bdot\hspace{0.7em}{\large\bfseries #1}\par\nopagebreak\vspace{1.5mm}\noindent
+  \bdot\hspace{0.7em}{\large\sffamily\bfseries #1}\par\nopagebreak\vspace{1.5mm}\noindent
   \textcolor{black!25}{\rule{\linewidth}{0.4pt}}%
   \par\nopagebreak\vspace{3.2mm}\firstQtrue\noindent}
 
@@ -267,17 +374,17 @@
   {\footnotesize\textcolor{rulegray}{#1}}\par\vspace{2.4mm}\firstQtrue\noindent}
 
 \newcommand{\hdB}[1]{\par\vspace{3.4mm}\noindent
-  {\bfseries\textcolor{accent}{\rule[-0.4ex]{2.8pt}{1.65ex}}\ \textbf{#1}}%
+  {\sffamily\bfseries\textcolor{accent}{\rule[-0.4ex]{2.8pt}{1.65ex}}\ \textbf{#1}}%
   \par\nopagebreak\vspace{1.5mm}\noindent}
 
 \newcommand{\Q}[2]{%
   \par\iffirstQ\vspace{1.0mm}\firstQfalse\else
-    \penalty-300\vspace{5.5mm}%
+    \penalty-300\vspace{5.2mm}%
     \noindent\textcolor{black!22}{\rule{\linewidth}{0.5pt}}\par\vspace{2.6mm}%
   \fi
   \nobreak
-  \noindent\rule[-0.18em]{2.4pt}{1.05em}\hspace{0.5em}{\bfseries(#1)}\hspace{0.7em}%
-  {\footnotesize\textcolor{rulegray}{〔配点 #2点〕}}\par\nopagebreak\vspace{1.2mm}\noindent\ignorespaces}
+  \noindent\rule[-0.18em]{2.4pt}{1.05em}\hspace{0.5em}{\bfseries(#1)}\hspace{0.5em}%
+  {\footnotesize\textcolor{rulegray}{［配点 #2 点］}}\hspace{0.7em}\ignorespaces}
 
 \newlength{\anslab}\setlength{\anslab}{2.9em}
 \newcommand{\Ans}[1]{%
@@ -296,84 +403,92 @@
   \par\vspace{2.8mm}\noindent}
 
 \newenvironment{betsu}[1][別\ 解]%
-  {\par\vspace{4.0mm}\begingroup\small
+  {\par\vspace{3.8mm}\begingroup\small
    \noindent\colorbox{shade}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{%
-     \rule{0pt}{2.8ex}\hspace{0.2em}\textcolor{accent}{\bfseries #1}\rule[-1.0ex]{0pt}{1.0ex}}}%
+     \rule{0pt}{2.8ex}\hspace{0.2em}\textcolor{accent}{\sffamily\bfseries #1}\rule[-1.0ex]{0pt}{1.0ex}}}%
    \par\vspace{1.6mm}%
    \leftskip=1.3em\relax\noindent\ignorespaces}%
   {\par\leftskip=0pt\relax\vspace{1.4mm}%
-   \noindent\textcolor{black!22}{\rule{\linewidth}{0.5pt}}\endgroup\par\vspace{4.0mm}\noindent}
+   \noindent\textcolor{black!22}{\rule{\linewidth}{0.5pt}}\endgroup\par\vspace{3.8mm}\noindent}
 
 \newcommand{\hs}[1]{\par\smallskip\noindent\textbf{#1}\quad\ignorespaces}
 
 % =====================================================================
-%  採点基準の体裁（「合格答案をつくる」シリーズ共通）
+%  採点基準の体裁（「合格答案をつくる」シリーズ・『入試プレビュー』共通）
 % =====================================================================
-\newcommand{\Rh}[3]{\par\penalty-300\vspace{3.5mm}\noindent
-  \rule[-0.18em]{2.4pt}{1.05em}\hspace{0.5em}{\bfseries 大問#1 ── (#2)}\hspace{0.9em}%
-  \textcolor{rulegray}{\small 配点 #3点}\par\nopagebreak\vspace{1.2mm}\noindent}
+\newcommand{\Rh}[3]{\par\penalty-300\vspace{4.0mm}\noindent
+  \rule[-0.18em]{2.4pt}{1.05em}\hspace{0.5em}{\bfseries #1-(#2)}\hspace{0.9em}%
+  \textcolor{rulegray}{\small #3点}\par\nopagebreak\vspace{1.3mm}\noindent}
 
 \newcommand{\Seikai}[1]{\par\nopagebreak\noindent
-  {\small\textbf{正解}}\hspace{0.8em}#1\par\nopagebreak\vspace{1.2mm}}
+  {\small\textbf{正解}}\hspace{0.8em}#1\par\nopagebreak\vspace{1.3mm}}
 
 \newenvironment{saiten}%
   {\par\nopagebreak\begingroup\footnotesize\setlength{\extrarowheight}{2.0pt}%
-   \renewcommand{\arraystretch}{1.34}%
+   \renewcommand{\arraystretch}{1.35}%
    \noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-4.8em\relax}@{}%
      >{\raggedleft\arraybackslash}p{4.4em}@{}}\toprule}%
-  {\bottomrule\end{tabular}\endgroup\par\vspace{0.8mm}}
+  {\bottomrule\end{tabular}\endgroup\par\vspace{1.0mm}}
 
 \newcommand{\Sp}[2]{#1 & \textbf{#2} \\}
 \newcommand{\Sm}[2]{\textcolor{warn}{$\times$}\ #1 & \textcolor{warn}{\textbf{#2}} \\}
 \newcommand{\Ssep}{\midrule}
+\newcommand{\betsunote}[1]{\par\noindent{\footnotesize #1}\par\vspace{1.5mm}}
+
+% 採点基準ページの冒頭案内ブロック
+\newcommand{\rubricintro}[1]{%
+  \hdB{採点の手順}
+  \begin{enumerate}[leftmargin=2.0em,itemsep=2.5pt,topsep=2.5pt]
+    \item 各小問の採点表において，答案に書かれている内容と上段の加点項目（$+$）を照合し，到達している段階の得点を合計する。
+    \item 下段の減点項目（$\times$）に該当する誤り・記述不備がある場合は，積み上げた得点から所定の点数を差し引く（ただし各小問の得点は $0$ 点を下限とする）。
+    \item 本解とは異なる別解で解いている場合も，数学的に正しい論理展開であれば，各段階に対応する同等の部分点を与える。
+  \end{enumerate}
+
+  \hdB{全セット共通の原則}
+  \begin{itemize}[leftmargin=1.5em,itemsep=2.5pt,topsep=2.5pt]
+    \item \textbf{答えのみの答案}：途中の論証や計算過程が一切なく答えのみを記した答案は，原則として正答であっても $1$ 点以下とする。
+    \item \textbf{連動する誤り（雪だるま式減点）の救済}：前問の計算ミスを引き継いで後続の小問を解いている場合，後続の小問における立式・変形の方針が正しければ，方針点（配点の半分程度）を与える。
+    \item \textbf{同値性・定義域・排反な場合分けの明記}：#1
+  \end{itemize}
+}
 
 % =====================================================================
-%  所定解答用紙（A4・大問ごとに1枚・小問別採点欄＋記述枠）
-%   #1 = 大問番号
-%   #2 = 大問の満点
-%   #3 = 分野・小問構成の注記（例：微分法／小問 (1) 8点・(2) 7点・(3) 10点）
-%   #4 = 小問ごとの採点欄ラベル（例：(1) / 8点 & (2) / 7点 & (3) / 10点）
+%  所定解答用紙（A4・大問ごとに1枚・3小問版 / 4小問版）
 % =====================================================================
 \newcommand{\answersheet}[4]{%
   \clearpage
   \thispagestyle{empty}%
   \begingroup
   \setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
-  % 上部ヘッダー
   \noindent
   {\small\bdot\hspace{0.45em}\textbf{\ExamTitle\ \ \ExamSubtitle}}\hfill
-  {\footnotesize\textcolor{rulegray}{所定解答用紙（A4原寸印刷）\quad \thepage\ /\ \pageref{LastPage}}}\par
+  {\footnotesize\textcolor{rulegray}{所定解答用紙（A4原寸印刷）\quad{}第\,#1\,問}}\par
   \vspace{1.8mm}
   \noindent\rule{\linewidth}{0.9pt}\par
   \vspace{2.0mm}
 
-  % 大問番号＋受験番号・氏名・採点欄
   \noindent
-  \begin{tabularx}{\linewidth}{@{}p{25mm}@{\hspace{2.5mm}}X@{\hspace{2.5mm}}p{66mm}@{}}
-    % 左：大問番号枠
-    \vbox to 17mm{\vfill
-      \setlength{\fboxsep}{2.5pt}\setlength{\fboxrule}{1.0pt}%
-      \fbox{\parbox[c][12.5mm][c]{21mm}{\centering
-        {\fontsize{13}{15}\selectfont\bfseries 第\,#1\,問}\\[1mm]
+  \begin{tabularx}{\linewidth}{@{}p{23mm}@{\hspace{2.5mm}}X@{\hspace{2.5mm}}p{70mm}@{}}
+    \vbox to 15.5mm{\vfill
+      \setlength{\fboxsep}{2.5pt}\setlength{\fboxrule}{0.95pt}%
+      \fbox{\parbox[c][12.0mm][c]{20mm}{\centering
+        {\fontsize{12.5}{14.5}\selectfont\bfseries 第\,#1\,問}\\[1mm]
         {\scriptsize （配点 #2 点）}}}%
       \vfill}
     &
-    % 中：受験番号・氏名・自己採点日
-    \vbox to 17mm{\vfill
-      \renewcommand{\arraystretch}{1.2}\footnotesize
+    \vbox to 15.5mm{\vfill
+      \renewcommand{\arraystretch}{1.25}\footnotesize
       \begin{tabular}{@{}l@{\hspace{2mm}}l@{}}
         \textbf{受験番号} &
         \setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.4pt}%
-        \framebox[5.2mm]{\rule{0pt}{4.6mm}}\framebox[5.2mm]{\rule{0pt}{4.6mm}}%
-        \framebox[5.2mm]{\rule{0pt}{4.6mm}}\framebox[5.2mm]{\rule{0pt}{4.6mm}}%
-        \framebox[5.2mm]{\rule{0pt}{4.6mm}}\framebox[5.2mm]{\rule{0pt}{4.6mm}} \\[1.2mm]
-        \textbf{氏\hspace{2em}名} & \underline{\hspace{38mm}} \\[1.0mm]
-        \multicolumn{2}{@{}l@{}}{\scriptsize\textcolor{rulegray}{#3}}
+        \framebox[5.0mm]{\rule{0pt}{4.5mm}}\framebox[5.0mm]{\rule{0pt}{4.5mm}}%
+        \framebox[5.0mm]{\rule{0pt}{4.5mm}}\framebox[5.0mm]{\rule{0pt}{4.5mm}}%
+        \framebox[5.0mm]{\rule{0pt}{4.5mm}}\framebox[5.0mm]{\rule{0pt}{4.5mm}} \\[1.3mm]
+        \textbf{氏\hspace{2em}名} & \underline{\hspace{42mm}}
       \end{tabular}
       \vfill}
     &
-    % 右：小問別採点欄＋大問計
-    \vbox to 17mm{\vfill
+    \vbox to 15.5mm{\vfill
       \renewcommand{\arraystretch}{1.15}\scriptsize
       \begin{tabular}{|c|c|c|>{\bfseries}c|}
         \hline
@@ -381,29 +496,100 @@
         \hline
         #4 & \ \,/\,#2点 \\
         \hline
-        \rule{0pt}{6.0mm}\hspace{10.5mm} & \hspace{10.5mm} & \hspace{10.5mm} & \hspace{12.5mm} \\
+        \rule{0pt}{5.6mm}\hspace{11.0mm} & \hspace{11.0mm} & \hspace{11.0mm} & \hspace{13.0mm} \\
         \hline
       \end{tabular}
       \vfill}
   \end{tabularx}
 
-  \vspace{2.0mm}
-  \noindent{\scriptsize\textcolor{rulegray}{%
-    ※ 結論だけでなく，そこに至る過程（式変形・増減表・図・論証）をこの枠内に書くこと。枠外に書かれた記述は採点しない。}}\par
+  \vspace{1.2mm}
+  \noindent\textcolor{black!25}{\rule{\linewidth}{0.4pt}}\par
+  \vspace{1.0mm}
+  \noindent
+  {\scriptsize\textbf{【出題分野】}\ #3}\hfill
+  {\scriptsize\textcolor{rulegray}{※ 導出過程（式変形・増減表・図・論証）を枠内に記述すること。}}\par
   \vspace{1.2mm}
 
-  % 記述枠（A4 1ページに収まる高さ 196mm・7mm間隔の薄い横罫入り）
   \noindent
   \begin{tikzpicture}
-    \draw[line width=0.8pt] (0,0) rectangle (\linewidth, -196mm);
-    \foreach \y in {1,2,...,27} {
-      \draw[black!16, line width=0.25pt, densely dotted] (2mm, -\y*7.0mm) -- (\linewidth-2mm, -\y*7.0mm);
+    \draw[line width=0.8pt] (0,0) rectangle (\linewidth, -186mm);
+    \foreach \y in {1,2,...,25} {
+      \draw[black!16, line width=0.25pt, densely dotted] (2mm, -\y*7.1mm) -- (\linewidth-2mm, -\y*7.1mm);
     }
     \node[anchor=north west, font=\footnotesize\bfseries, text=black!65] at (3mm, -2.5mm) {【第\,#1\,問 解答欄】};
   \end{tikzpicture}
 
   \vspace{1.5mm}
-  \noindent{\scriptsize\textcolor{rulegray}{大学別数学研究室 模試演習ストア（yuta-eng.com）\hfill \BuyerStamp}}
+  \noindent{\scriptsize\textcolor{rulegray}{合格答案をつくるシリーズ・数学記述模試『入試プレビュー』（yuta-eng.com）\hfill \BuyerStamp}}
   \endgroup
 }
 
+% 4小問用の所定解答用紙（5大問×20点・各4小問の標準形式）
+\newcommand{\answersheetfour}[4]{%
+  \clearpage
+  \thispagestyle{empty}%
+  \begingroup
+  \setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
+  \noindent
+  {\small\bdot\hspace{0.45em}\textbf{数学記述模試『入試プレビュー』\ \ \ExamSetShort}}\hfill
+  {\footnotesize\textcolor{rulegray}{所定解答用紙（A4原寸印刷）\quad{}第\,#1\,問}}\par
+  \vspace{1.8mm}
+  \noindent\rule{\linewidth}{0.9pt}\par
+  \vspace{2.0mm}
+
+  \noindent
+  \begin{tabularx}{\linewidth}{@{}p{23mm}@{\hspace{2.5mm}}X@{\hspace{2.5mm}}p{77mm}@{}}
+    \vbox to 15.5mm{\vfill
+      \setlength{\fboxsep}{2.2pt}\setlength{\fboxrule}{0.95pt}%
+      \fbox{\parbox[c][12.0mm][c]{19mm}{\centering
+        {\fontsize{12}{14}\selectfont\bfseries 第\,#1\,問}\\[1mm]
+        {\scriptsize （配点 #2 点）}}}%
+      \vfill}
+    &
+    \vbox to 15.5mm{\vfill
+      \renewcommand{\arraystretch}{1.25}\footnotesize
+      \begin{tabular}{@{}l@{\hspace{2mm}}l@{}}
+        \textbf{受験番号} &
+        \setlength{\fboxsep}{0pt}\setlength{\fboxrule}{0.4pt}%
+        \framebox[4.8mm]{\rule{0pt}{4.4mm}}\framebox[4.8mm]{\rule{0pt}{4.4mm}}%
+        \framebox[4.8mm]{\rule{0pt}{4.4mm}}\framebox[4.8mm]{\rule{0pt}{4.4mm}}%
+        \framebox[4.8mm]{\rule{0pt}{4.4mm}}\framebox[4.8mm]{\rule{0pt}{4.4mm}} \\[1.3mm]
+        \textbf{氏\hspace{2em}名} & \underline{\hspace{40mm}}
+      \end{tabular}
+      \vfill}
+    &
+    \vbox to 15.5mm{\vfill
+      \renewcommand{\arraystretch}{1.15}\scriptsize
+      \begin{tabular}{|c|c|c|c|>{\bfseries}c|}
+        \hline
+        \multicolumn{4}{|c|}{小問別の採点欄（自己採点・添削用）} & 大問計 \\
+        \hline
+        #4 & \ \,/\,#2点 \\
+        \hline
+        \rule{0pt}{5.6mm}\hspace{8.8mm} & \hspace{8.8mm} & \hspace{8.8mm} & \hspace{8.8mm} & \hspace{11.5mm} \\
+        \hline
+      \end{tabular}
+      \vfill}
+  \end{tabularx}
+
+  \vspace{1.2mm}
+  \noindent\textcolor{black!25}{\rule{\linewidth}{0.4pt}}\par
+  \vspace{1.0mm}
+  \noindent
+  {\scriptsize\textbf{【出題分野】}\ #3}\hfill
+  {\scriptsize\textcolor{rulegray}{※ 導出過程（式変形・増減表・図・論証）を枠内に記述すること。}}\par
+  \vspace{1.2mm}
+
+  \noindent
+  \begin{tikzpicture}
+    \draw[line width=0.8pt] (0,0) rectangle (\linewidth, -186mm);
+    \foreach \y in {1,2,...,25} {
+      \draw[black!16, line width=0.25pt, densely dotted] (2mm, -\y*7.1mm) -- (\linewidth-2mm, -\y*7.1mm);
+    }
+    \node[anchor=north west, font=\footnotesize\bfseries, text=black!65] at (3mm, -2.5mm) {【第\,#1\,問 解答欄】};
+  \end{tikzpicture}
+
+  \vspace{1.5mm}
+  \noindent{\scriptsize\textcolor{rulegray}{合格答案をつくるシリーズ・数学記述模試『入試プレビュー』（yuta-eng.com）\hfill \BuyerStamp}}
+  \endgroup
+}

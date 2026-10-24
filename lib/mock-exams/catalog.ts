@@ -1,22 +1,19 @@
 import {
   examLevels,
-  mockExams,
+  mockExams as staticMockExams,
   type ExamFileKey,
   type ExamLevel,
   type MockExam,
 } from "@/data/mock-exams";
 
 /**
- * 商品データの読み出し。
+ * 商品データの表示・計算ヘルパー（クライアント・サーバー共通）。
  *
- * 画面・API はどれも data/mock-exams.ts を直接さわらず、ここを通す。
- * 「販売中かどうか」「どの Price ID を使うか」の判断を1か所にまとめ、
- * 画面では買えないのに API では買える、といった食い違いを作らないため。
+ * `node:fs` などの Node.js 専用モジュールを含まないため、
+ * クライアントコンポーネントからも安全に import できる。
  */
 
-export const allExams = (): MockExam[] => mockExams;
-
-export const getExam = (id: string): MockExam | undefined => mockExams.find((e) => e.id === id);
+export const mockExams = staticMockExams;
 
 export const isOnSale = (exam: MockExam) => exam.status === "on-sale";
 
@@ -29,8 +26,10 @@ export const priceLabel = (exam: MockExam) => `${yen(exam.price)}（税込）`;
 
 export const examPath = (exam: MockExam) => `/mock-exams/${exam.id}`;
 
-export const fileLabel = (exam: MockExam, key: ExamFileKey) =>
-  exam.files.find((f) => f.key === key)?.label ?? key;
+export const fileLabel = (exam: MockExam, key: ExamFileKey) => {
+  if (key === "full") return "全4冊統合版（問題・解答用紙・解説・基準）";
+  return exam.files.find((f) => f.key === key)?.label ?? key;
+};
 
 /** 購入者がダウンロードするときのファイル名。日本語のまま渡す */
 export const downloadName = (exam: MockExam, key: ExamFileKey) =>
@@ -38,8 +37,6 @@ export const downloadName = (exam: MockExam, key: ExamFileKey) =>
 
 /**
  * 使う Stripe の Price ID。
- * テスト用の鍵で本番の Price ID を指定すると Stripe がエラーを返すので、
- * 鍵の種類に合わせて選ぶ。無ければ null（決済時に価格を組み立てる）。
  */
 export function stripePriceIdFor(exam: MockExam): string | null {
   const key = process.env.STRIPE_SECRET_KEY ?? "";
@@ -50,4 +47,3 @@ export function stripePriceIdFor(exam: MockExam): string | null {
 
 /** 一覧の絞り込みの並び。「すべて」は画面側で足す */
 export const levelOrder: ExamLevel[] = ["zento-standard", "zento-high", "kanmuri"];
-
