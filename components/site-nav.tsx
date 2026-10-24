@@ -103,17 +103,17 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
               >
                 <svg
                   className="size-3.5 shrink-0 text-blue-200"
-                  fill="none"
                   viewBox="0 0 24 24"
+                  fill="none"
                   stroke="currentColor"
-                  strokeWidth="2.2"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   aria-hidden="true"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                  />
+                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                  <path d="M3 6h18" />
+                  <path d="M16 10a4 4 0 0 1-8 0" />
                 </svg>
                 <span>{it.label}</span>
                 <span className="rounded bg-white/20 px-1 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-blue-100">
@@ -152,17 +152,17 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
         >
           <svg
             className="size-3 shrink-0 text-blue-200"
-            fill="none"
             viewBox="0 0 24 24"
+            fill="none"
             stroke="currentColor"
-            strokeWidth="2.2"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             aria-hidden="true"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-            />
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+            <path d="M3 6h18" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
           </svg>
           <span>模試PDF</span>
         </Link>
