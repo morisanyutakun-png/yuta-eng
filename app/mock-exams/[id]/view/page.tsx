@@ -292,12 +292,12 @@ export default async function MockExamViewPage({
               <span>セブン-イレブン</span>
             </div>
             <ol className="mt-2 space-y-1 text-[11px] text-slate-600 leading-relaxed list-decimal list-inside">
-              <li>「かんたんnetprint」アプリまたはLINEにPDFを登録</li>
-              <li>発行された8桁の予約番号を控える</li>
-              <li>店頭マルチコピー機で「ネットプリント」を選び番号を入力</li>
+              <li>セブン公式「ネットプリント」のLINE公式アカウントまたはアプリにPDFを送信</li>
+              <li>自動返信される8桁のプリント予約番号を控える</li>
+              <li>店頭マルチコピー機で「プリント」→「ネットプリント」を選び番号を入力</li>
             </ol>
             <div className="mt-2.5 pt-2 border-t border-slate-200/70 text-[10.5px] text-slate-500">
-              白黒A4：1枚20円 ｜ 公式アプリまたはLINEで即日発行
+              白黒A4：1枚20円 ｜ セブン公式「ネットプリント」LINE／アプリで即日番号発行
             </div>
           </div>
 
@@ -321,12 +321,12 @@ export default async function MockExamViewPage({
               />
             </div>
             <ol className="mt-2 space-y-1 text-[11px] text-slate-600 leading-relaxed list-decimal list-inside">
-              <li>「ネットワークプリント」アプリまたはLINEにPDFを登録</li>
-              <li>発行されたユーザー番号を控える</li>
+              <li>シャープ提供「ネットワークプリント」LINE公式アカウントまたはアプリにPDFを送信</li>
+              <li>自動返信されるユーザー番号を控える</li>
               <li>店頭マルチコピー機で「ネットワークプリント」を選び印刷</li>
             </ol>
             <div className="mt-2.5 pt-2 border-t border-slate-200/70 text-[10.5px] text-slate-500">
-              白黒A4：1枚20円 ｜ アプリまたは公式LINEで即日発行
+              白黒A4：1枚20円 ｜ コンビニ複合機公式LINE／アプリで即日番号発行
             </div>
           </div>
 
