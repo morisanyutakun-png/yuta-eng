@@ -26,7 +26,7 @@ import { sections } from "@/lib/sections";
  * いま見ているページは、どちらの並べ方でも印を付ける。
  */
 
-type Item = { href: string; label: string; note: string };
+type Item = { href: string; label: string; note: string; isStore?: boolean };
 
 /** 折りたたみでは説明も出す。横並びでは label だけ使う。 */
 function navItems(hasSolutions: boolean): Item[] {
@@ -35,12 +35,17 @@ function navItems(hasSolutions: boolean): Item[] {
     ...(hasSolutions
       ? [{ href: "/kaisetsu", label: "過去問解答", note: "当サイト独自の解答・解説" }]
       : []),
-    { href: "/mock-exams", label: "模試PDFストア", note: "問題・解答・解説・採点基準PDF・即日DL" },
     { href: "/moshi", label: sections.moshi.eyebrow, note: `${moshiData.title}・オンラインで受験` },
     { href: "/kansei", label: "完成演習", note: "過去問の前に解く分野別演習" },
     { href: "/shindan", label: "志望校診断", note: "いまの実力から受かる大学を探す" },
     { href: "/books", label: "教材一覧", note: "刊行している全冊を学習段階順に" },
     { href: "/educators", label: "学校・法人", note: "学校・塾・法人の教材・団体受験" },
+    {
+      href: "/mock-exams",
+      label: "模試PDFストア",
+      note: "問題・解答・解説・採点基準PDF・即日DL",
+      isStore: true,
+    },
   ];
 }
 
@@ -82,31 +87,92 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
   return (
     <>
       {/* 広い画面：横に並べる */}
-      <nav aria-label="サイト内" className="hidden items-center gap-5 text-[0.86rem] text-ink-2 lg:flex">
-        {items.map((it) => (
-          <Link
-            key={it.href}
-            href={it.href}
-            aria-current={here(it.href) ? "page" : undefined}
-            className={
-              here(it.href)
-                ? "font-semibold text-navy"
-                : "transition-colors hover:text-navy"
-            }
-          >
-            {it.label}
-          </Link>
-        ))}
+      <nav aria-label="サイト内" className="hidden items-center gap-4 text-[0.86rem] text-ink-2 lg:flex xl:gap-5">
+        {items.map((it) => {
+          if (it.isStore) {
+            return (
+              <Link
+                key={it.href}
+                href={it.href}
+                aria-current={here(it.href) ? "page" : undefined}
+                className={`ml-1.5 inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[0.82rem] font-bold tracking-tight transition shadow-xs active:scale-98 ${
+                  here(it.href)
+                    ? "bg-[#0f233d] text-white ring-2 ring-blue-300/40 shadow-sm"
+                    : "bg-[#1b3a63] text-white hover:bg-[#0f233d] hover:shadow-sm"
+                }`}
+              >
+                <svg
+                  className="size-3.5 shrink-0 text-blue-200"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
+                </svg>
+                <span>{it.label}</span>
+                <span className="rounded bg-white/20 px-1 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-blue-100">
+                  PDF
+                </span>
+              </Link>
+            );
+          }
+          return (
+            <Link
+              key={it.href}
+              href={it.href}
+              aria-current={here(it.href) ? "page" : undefined}
+              className={
+                here(it.href)
+                  ? "font-semibold text-navy"
+                  : "transition-colors hover:text-navy"
+              }
+            >
+              {it.label}
+            </Link>
+          );
+        })}
       </nav>
 
-      {/* 狭い画面：ボタンひとつにまとめる */}
-      <div ref={box} className="relative lg:hidden">
+      {/* 狭い画面：ストア直行ピル ＋ ハンバーガーメニュー */}
+      <div ref={box} className="flex items-center gap-2 lg:hidden">
+        {/* スマホでもヘッダー右端にストアへの誘導ピルを目立たせて常設 */}
+        <Link
+          href="/mock-exams"
+          className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[0.76rem] font-bold shadow-2xs transition active:scale-95 ${
+            here("/mock-exams")
+              ? "bg-[#0f233d] text-white ring-1 ring-blue-300"
+              : "bg-[#1b3a63] text-white hover:bg-[#0f233d]"
+          }`}
+        >
+          <svg
+            className="size-3 shrink-0 text-blue-200"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+            />
+          </svg>
+          <span>模試PDF</span>
+        </Link>
+
         <button
           type="button"
           onClick={() => setOpenedAt(open ? null : path)}
           aria-expanded={open}
           aria-controls="site-menu"
-          className="flex min-h-11 items-center gap-1.5 pl-3 text-ink-2"
+          className="flex min-h-11 items-center gap-1.5 pl-1.5 text-ink-2"
         >
           <span className="sr-only">{open ? "メニューを閉じる" : "メニューを開く"}</span>
           <svg aria-hidden="true" viewBox="0 0 20 20" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -126,21 +192,42 @@ export function SiteNav({ hasSolutions }: { hasSolutions: boolean }) {
           >
             <ul className="divide-y divide-rule">
               {items.map((it) => (
-                <li key={it.href}>
+                <li
+                  key={it.href}
+                  className={it.isStore ? "bg-slate-50 border-t-2 border-[#1b3a63]/25" : ""}
+                >
                   <Link
                     href={it.href}
                     // いま見ているページの項目を押したときは移動が起きない。
                     // 行き先の変化だけに任せず、押した時点でも閉じる。
                     onClick={close}
                     aria-current={here(it.href) ? "page" : undefined}
-                    className="block px-4 py-3 transition-colors hover:bg-paper-2"
+                    className={
+                      it.isStore
+                        ? "flex items-start justify-between px-4 py-3.5 transition-colors hover:bg-slate-100"
+                        : "block px-4 py-3 transition-colors hover:bg-paper-2"
+                    }
                   >
-                    <span
-                      className={`block text-[0.93rem] font-semibold ${here(it.href) ? "text-navy" : "text-ink"}`}
-                    >
-                      {it.label}
-                    </span>
-                    <span className="mt-0.5 block text-[0.8rem] leading-snug text-ink-3">{it.note}</span>
+                    <div>
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className={`text-[0.93rem] font-bold ${
+                            it.isStore ? "text-[#1b3a63]" : here(it.href) ? "text-navy" : "text-ink"
+                          }`}
+                        >
+                          {it.label}
+                        </span>
+                        {it.isStore && (
+                          <span className="rounded bg-[#1b3a63] px-1.5 py-0.5 text-[9.5px] font-bold text-white tracking-wide">
+                            即日DL
+                          </span>
+                        )}
+                      </div>
+                      <span className="mt-0.5 block text-[0.8rem] leading-snug text-ink-3">{it.note}</span>
+                    </div>
+                    {it.isStore && (
+                      <span className="mt-1 text-xs text-[#1b3a63] font-bold">→</span>
+                    )}
                   </Link>
                 </li>
               ))}
