@@ -82,11 +82,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   {[
                     { href: "/universities", label: "大学別の出題分析" },
                     ...(hasSolutions ? [{ href: "/kaisetsu", label: "過去問の解答・解説" }] : []),
-                    { href: "/mock-exams", label: "模試演習ストア（PDF直販）" },
+                    { href: "/mock-exams", label: "模試PDFストア（公式直販）" },
                     { href: "/moshi", label: `${sections.moshi.eyebrow}（${moshi.title}）` },
                     { href: "/books", label: "教材一覧" },
                     { href: "/educators", label: "学校・塾・法人の方へ" },
-                    { href: "/mock-exams/legal", label: "特定商取引法に基づく表記（模試ストア）" },
+                    { href: "/mock-exams/legal", label: "特定商取引法に基づく表記（模試PDFストア）" },
                     { href: "/moshi/privacy", label: "模試の個人情報の取り扱い" },
                     { href: "/kaisetsu/policy", label: "解答・解説の掲載方針" },
                     ...(site.contact ? [{ href: `mailto:${site.contact}`, label: "お問い合わせ" }] : []),

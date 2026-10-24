@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${site.url}/shindan`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site.url}/kansei`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${site.url}/educators`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
-    // 模試演習ストア（PDF直販・全セット・即日ダウンロード）
+    // 模試PDFストア（公式直販・全セット・即日ダウンロード）
     { url: `${site.url}/mock-exams`, lastModified: now, changeFrequency: "daily", priority: 0.9 },
     ...allExams().map((e) => ({
       url: `${site.url}/mock-exams/${e.id}`,

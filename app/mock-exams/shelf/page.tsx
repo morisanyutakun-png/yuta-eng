@@ -8,7 +8,7 @@ import { getEnrichedShelfItems } from "@/lib/mock-exams/shelf-server";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "商品棚・販売管理マネージャー（Admin）｜模試演習ストア",
+  title: "商品棚・販売管理マネージャー（Admin）｜模試PDFストア",
   robots: { index: false, follow: false },
 };
 

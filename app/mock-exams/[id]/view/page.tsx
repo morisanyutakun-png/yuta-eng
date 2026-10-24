@@ -75,7 +75,7 @@ export default async function MockExamViewPage({
           </Link>
           <span className="mx-1.5 text-rule">／</span>
           <Link href="/mock-exams" className="hover:text-navy">
-            模試演習ストア
+            模試PDFストア
           </Link>
           <span className="mx-1.5 text-rule">／</span>
           <Link href={`/mock-exams/${exam.id}`} className="hover:text-navy">
@@ -125,7 +125,7 @@ export default async function MockExamViewPage({
         </Link>
         <span className="mx-1.5 text-rule">／</span>
         <Link href="/mock-exams" className="hover:text-navy">
-          模試演習ストア
+          模試PDFストア
         </Link>
         <span className="mx-1.5 text-rule">／</span>
         <Link href={`/mock-exams/${exam.id}`} className="hover:text-navy">

@@ -32,7 +32,7 @@ export async function generateMetadata({
   const exam = getExam(id);
   if (!exam) return {};
   const cleanShortName = exam.shortTitle || exam.title;
-  const title = `${cleanShortName}｜数学記述模試『入試プレビュー』公式ストア`;
+  const title = `${cleanShortName}｜数学記述模試『入試プレビュー』模試PDFストア`;
   const description = `${exam.summary}（制限時間${exam.minutes}分・大問${exam.daimonCount}題・${exam.fullMark}点満点／問題冊子・所定解答用紙・詳細解答解説・小問別採点基準表のA4 PDF 4点セット完全収録）。決済後すぐにダウンロードして自宅やコンビニで印刷演習できます。`;
   const canonicalUrl = `${site.url}/mock-exams/${exam.id}`;
   const ogImage = `${site.url}/samples/mock-exams/${exam.id}/cover.webp`;
@@ -131,7 +131,7 @@ export default async function MockExamDetailPage({
       {
         "@type": "ListItem",
         position: 2,
-        name: "模試演習ストア",
+        name: "模試PDFストア",
         item: `${site.url}/mock-exams`,
       },
       {

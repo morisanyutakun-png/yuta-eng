@@ -8,9 +8,9 @@ import { allExams } from "@/lib/mock-exams/catalog-server";
 import { isStoreEnabled } from "@/lib/mock-exams/env";
 import { site } from "@/lib/site";
 
-const title = "数学記述模試『入試プレビュー』公式ストア｜国公立二次対策 PDF即日ダウンロード";
+const title = "数学記述模試『入試プレビュー』模試PDFストア｜国公立二次対策 即日ダウンロード";
 const description =
-  "国公立二次・難関大二次試験対策のための数学記述模試『入試プレビュー』公式直販ストア。2027年度新課程対応（数I・A・II・B・C）。問題冊子・所定解答用紙・詳細解答解説・採点基準表（全32〜33p）を決済完了後すぐにPDFで一括ダウンロード。自宅プリンターやコンビニ複合機で即日A4実寸演習が可能です。";
+  "国公立二次・難関大二次試験対策のための数学記述模試『入試プレビュー』模試PDFストア。2027年度新課程対応（数I・A・II・B・C）。問題冊子・所定解答用紙・詳細解答解説・採点基準表（全32〜33p）を決済完了後すぐにPDFで一括ダウンロード。自宅プリンターやコンビニ複合機で即日A4実寸演習が可能です。";
 
 export const dynamic = "force-dynamic";
 
@@ -42,7 +42,7 @@ export function generateMetadata(): Metadata {
           url: `${site.url}/samples/mock-exams/preview-zento-set1/cover.webp`,
           width: 1200,
           height: 630,
-          alt: "数学記述模試『入試プレビュー』公式演習ストア",
+          alt: "数学記述模試『入試プレビュー』模試PDFストア",
         },
       ],
       type: "website",
@@ -63,7 +63,7 @@ export default function MockExamsPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "数学記述模試『入試プレビュー』公式演習ストア",
+    name: "数学記述模試『入試プレビュー』模試PDFストア",
     description,
     url: `${site.url}/mock-exams`,
     mainEntity: {
@@ -102,7 +102,7 @@ export default function MockExamsPage() {
       {
         "@type": "ListItem",
         position: 2,
-        name: "模試演習ストア",
+        name: "模試PDFストア",
         item: `${site.url}/mock-exams`,
       },
     ],
@@ -135,7 +135,7 @@ export default function MockExamsPage() {
                 2027年度 新課程対応
               </span>
               <span className="text-[13px] font-medium text-[#64748b]">
-                印刷用A4 数学記述模試 直販ストア
+                印刷用A4 数学記述模試 PDF直販ストア
               </span>
             </div>
             <h1 className="text-2xl sm:text-[26px] font-bold tracking-tight text-[#0f172a] leading-tight">

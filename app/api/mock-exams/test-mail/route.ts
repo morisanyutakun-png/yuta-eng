@@ -331,7 +331,7 @@ export async function GET(req: Request) {
 <div class="container">
   <div class="header">
     <div>
-      <h1>模試演習ストア ｜ メール送信・PDF添付検証コンソール</h1>
+      <h1>模試PDFストア ｜ メール送信・PDF添付検証コンソール</h1>
       <div style="font-size:12px;color:#94a3b8;margin-top:2px;">顧客向け購入完了メール（PDF添付）と運営控えメールの動作検証</div>
     </div>
     <div>

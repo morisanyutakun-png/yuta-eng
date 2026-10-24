@@ -6,8 +6,8 @@ import { storeSeller } from "@/data/mock-exams";
 import { isStoreEnabled } from "@/lib/mock-exams/env";
 import { site } from "@/lib/site";
 
-const title = "特定商取引法に基づく表記｜数学記述模試『入試プレビュー』公式ストア";
-const description = "大学別数学研究室 公式ストアにおける特定商取引法に基づく表記およびデジタル教材（PDF）のご利用条件。";
+const title = "特定商取引法に基づく表記｜数学記述模試『入試プレビュー』模試PDFストア";
+const description = "大学別数学研究室 模試PDFストアにおける特定商取引法に基づく表記およびデジタル教材（PDF）のご利用条件。";
 
 export function generateMetadata(): Metadata {
   if (!isStoreEnabled()) return { robots: { index: false, follow: false } };
@@ -19,7 +19,7 @@ export function generateMetadata(): Metadata {
       title,
       description,
       url: `${site.url}/mock-exams/legal`,
-      siteName: "大学別数学研究室 公式ストア",
+      siteName: "大学別数学研究室 模試PDFストア",
     },
   };
 }
@@ -74,7 +74,7 @@ export default function MockExamsLegalPage() {
         </Link>
         <span className="mx-1.5 text-rule">／</span>
         <Link href="/mock-exams" className="hover:text-navy">
-          模試演習ストア
+          模試PDFストア
         </Link>
         <span className="mx-1.5 text-rule">／</span>
         <span className="text-ink-2">特定商取引法に基づく表記</span>
@@ -83,7 +83,7 @@ export default function MockExamsLegalPage() {
       <div className="sec-rule mt-3" />
 
       <header className="border-b border-rule pb-6 pt-6">
-        <p className="eyebrow">模試演習ストア</p>
+        <p className="eyebrow">模試PDFストア</p>
         <h1 className="serif h-page mt-1.5 text-ink">特定商取引法に基づく表記・ご利用条件</h1>
       </header>
 
@@ -123,7 +123,7 @@ export default function MockExamsLegalPage() {
 
       <p className="mt-10">
         <Link href="/mock-exams" className="btn">
-          ← 模試演習ストア一覧へ戻る
+          ← 模試PDFストア一覧へ戻る
         </Link>
       </p>
     </div>
