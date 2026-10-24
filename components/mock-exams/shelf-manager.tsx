@@ -726,7 +726,7 @@ export function ShelfManager({
           通知メッセージ
       ────────────────────────────────────────────────────────── */}
       {msg && (
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 pt-3">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 pt-3">
           <div
             className={`rounded-md px-3.5 py-2 text-xs border flex items-center justify-between ${
               msg.error
@@ -749,7 +749,7 @@ export function ShelfManager({
       {/* ──────────────────────────────────────────────────────────
           メインコンテンツ（作業エリアが即座に始まる）
       ────────────────────────────────────────────────────────── */}
-      <main className="mx-auto max-w-6xl px-4 py-5 sm:px-6 space-y-3.5">
+      <main className="mx-auto max-w-7xl px-4 py-5 sm:px-6 space-y-3.5">
         {/* ツールバー: 件数見出し ＆ 検索 ＆ 再同期 */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
@@ -796,16 +796,16 @@ export function ShelfManager({
         {/* ──────────────────────────────────────────────────────────
             Shopify / Linear 風 高密度横1行テーブル（リスト表示メイン）
         ────────────────────────────────────────────────────────── */}
-        <div className="overflow-hidden rounded-xl border border-slate-200/90 bg-white shadow-2xs">
-          <table className="w-full border-collapse text-left text-xs">
+        <div className="overflow-x-auto rounded-xl border border-slate-200/90 bg-white shadow-2xs">
+          <table className="w-full min-w-[980px] border-collapse text-left text-xs">
             <thead className="border-b border-slate-200 bg-slate-50/80 text-slate-500 font-semibold text-[11px]">
               <tr>
                 <th className="w-12 px-3 py-2.5">画像</th>
-                <th className="px-3 py-2.5">商品名 / 出題範囲</th>
-                <th className="px-3 py-2.5 w-36">PDF状態</th>
-                <th className="px-3 py-2.5 w-28">価格 (税込)</th>
-                <th className="px-3 py-2.5 w-28">公開状態</th>
-                <th className="px-3 py-2.5 text-right w-36">操作</th>
+                <th className="px-3 py-2.5 min-w-[240px]">商品名 / 出題範囲</th>
+                <th className="px-3 py-2.5 w-36 whitespace-nowrap">PDF状態</th>
+                <th className="px-3 py-2.5 w-28 whitespace-nowrap">価格 (税込)</th>
+                <th className="px-3 py-2.5 w-24 whitespace-nowrap">公開状態</th>
+                <th className="px-3 py-2.5 text-right min-w-[340px] whitespace-nowrap">操作</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -975,19 +975,28 @@ export function ShelfManager({
                       </div>
                     </td>
 
-                    {/* 6. 操作（絵文字なしの洗練されたボタン） */}
+                    {/* 6. 操作（編集 ＆ ✉送信テスト ＆ プレビュー ＆ 削除） */}
                     <td className="px-3 py-3 align-middle text-right space-x-1.5 whitespace-nowrap">
                       <button
                         type="button"
                         onClick={() => openEditDrawer(item)}
-                        className="rounded border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition shadow-2xs"
+                        className="rounded border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition shadow-2xs inline-block"
                       >
                         編集
+                      </button>
+                      <button
+                        type="button"
+                        disabled={sendingTestMailId === item.id}
+                        onClick={() => handleSendTestMail(item)}
+                        className="rounded border border-blue-200 bg-blue-50/90 px-2.5 py-1 text-xs font-semibold text-blue-700 hover:bg-blue-100 transition shadow-2xs disabled:opacity-50 inline-block"
+                        title="管理者アドレス宛てに透かし刻印PDF添付メールを1通テスト送信"
+                      >
+                        {sendingTestMailId === item.id ? "送信中..." : "✉ 送信テスト"}
                       </button>
                       <Link
                         href={`/mock-exams/${item.id}/view`}
                         target="_blank"
-                        className="inline-block rounded border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition shadow-2xs"
+                        className="inline-block rounded border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition shadow-2xs"
                         title="購入者専用ダウンロード画面を管理者プレビュー"
                       >
                         購入者画面 ↗
@@ -1007,17 +1016,8 @@ export function ShelfManager({
                       )}
                       <button
                         type="button"
-                        disabled={sendingTestMailId === item.id}
-                        onClick={() => handleSendTestMail(item)}
-                        className="rounded border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-blue-600 transition shadow-2xs disabled:opacity-50"
-                        title="管理者アドレス宛てに透かし刻印PDF添付メールを1通テスト送信"
-                      >
-                        {sendingTestMailId === item.id ? "送信中..." : "✉ 送信テスト"}
-                      </button>
-                      <button
-                        type="button"
                         onClick={() => handleDelete(item)}
-                        className="rounded p-1 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition inline-block align-middle"
+                        className="rounded p-1 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition inline-block align-middle ml-1"
                         title="模試を削除"
                       >
                         <TrashIcon size={14} />
